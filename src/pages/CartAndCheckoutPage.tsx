@@ -6,11 +6,7 @@ import {
   Plus,
   ArrowLeft,
   MessageSquare,
-  Copy,
-  Check,
-  AlertCircle,
   ShoppingBag,
-  FileText,
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { CustomerOrderInput, DemoOrderRecord } from '../types/store';
@@ -38,7 +34,6 @@ export const CartAndCheckoutPage: React.FC = () => {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [copiedSummary, setCopiedSummary] = useState(false);
   const [generatedOrderRecord, setGeneratedOrderRecord] = useState<DemoOrderRecord | null>(
     null
   );
@@ -65,18 +60,20 @@ export const CartAndCheckoutPage: React.FC = () => {
       `*Ordered Products:*`,
     ];
 
+    const currency = storeConfig.currencySymbol || 'TSh';
+
     detailedCart.forEach((item, index) => {
       lines.push(
         `${index + 1}. ${item.product.name} (${item.product.sku})`,
-        `   Qty: ${item.quantity} × ₹${item.effectiveUnitPrice} = ₹${item.lineTotal}`
+        `   Qty: ${item.quantity} × ${currency} ${item.effectiveUnitPrice.toLocaleString()} = ${currency} ${item.lineTotal.toLocaleString()}`
       );
     });
 
     lines.push(
       `----------------------------------------`,
-      `Items Subtotal: ₹${subtotal}`,
-      `Delivery Charges: ${effectiveDeliveryFee === 0 ? '₹0 (Free)' : `₹${effectiveDeliveryFee}`}`,
-      `*Total Amount Payable: ₹${finalTotal}*`
+      `Items Subtotal: ${currency} ${subtotal.toLocaleString()}`,
+      `Delivery Charges: ${effectiveDeliveryFee === 0 ? 'Free' : `${currency} ${effectiveDeliveryFee.toLocaleString()}`}`,
+      `*Total Amount Payable: ${currency} ${finalTotal.toLocaleString()}*`
     );
 
     if (formData.orderNotes.trim()) {
@@ -120,19 +117,6 @@ export const CartAndCheckoutPage: React.FC = () => {
     }
 
     setErrors(nextErrors);
-    return Object.keys(nextErrors).length === 0;
-  };
-
-  const handleCopySummary = async () => {
-    try {
-      if (typeof navigator !== 'undefined' && navigator.clipboard) {
-        await navigator.clipboard.writeText(readableOrderSummary);
-        setCopiedSummary(true);
-        setTimeout(() => setCopiedSummary(false), 2500);
-      }
-    } catch {
-      // Fallback
-    }
   };
 
   const handlePrepareOrderSummary = (e: React.FormEvent) => {
@@ -140,6 +124,9 @@ export const CartAndCheckoutPage: React.FC = () => {
     if (!validateForm()) return;
     const rec = recordDemoOrder(formData);
     setGeneratedOrderRecord(rec);
+    if (typeof window !== 'undefined') {
+      window.open(whatsappOrderUrl, '_blank', 'noopener,noreferrer');
+    }
   };
 
   const cleanWhatsappDigits = storeConfig.whatsappNumber.replace(/\D/g, '');
@@ -224,18 +211,18 @@ export const CartAndCheckoutPage: React.FC = () => {
               <span>
                 Add{' '}
                 <strong className="font-mono-tabular text-stone-900">
-                  ₹{amountForFreeDelivery}
+                  {storeConfig.currencySymbol || 'TSh'} {amountForFreeDelivery.toLocaleString()}
                 </strong>{' '}
                 more to qualify for{' '}
                 <strong className="text-stone-900">
-                  Free Local Delivery (Orders ₹{storeConfig.freeDeliveryThreshold}+)
+                  Free Local Delivery (Orders {storeConfig.currencySymbol || 'TSh'} {storeConfig.freeDeliveryThreshold.toLocaleString()}+)
                 </strong>
                 , or choose free In-Store Pickup.
               </span>
             ) : (
               <span className="font-medium text-emerald-800">
-                Your order qualifies for Free Local Delivery (Subtotal ₹
-                {storeConfig.freeDeliveryThreshold}+).
+                Your order qualifies for Free Local Delivery (Subtotal {storeConfig.currencySymbol || 'TSh'}{' '}
+                {storeConfig.freeDeliveryThreshold.toLocaleString()}+).
               </span>
             )}
           </div>
@@ -279,7 +266,7 @@ export const CartAndCheckoutPage: React.FC = () => {
                         <span className="font-mono-tabular">{product.sku}</span>
                         <span aria-hidden="true">·</span>
                         <span className="font-mono-tabular font-medium text-stone-700">
-                          ₹{effectiveUnitPrice} each
+                          {storeConfig.currencySymbol || 'TSh'} {effectiveUnitPrice.toLocaleString()} each
                         </span>
                       </div>
                     </div>
@@ -311,7 +298,7 @@ export const CartAndCheckoutPage: React.FC = () => {
 
                     <div className="text-right min-w-[72px]">
                       <p className="text-sm sm:text-base font-bold text-stone-900 font-mono-tabular">
-                        ₹{lineTotal}
+                        {storeConfig.currencySymbol || 'TSh'} {lineTotal.toLocaleString()}
                       </p>
                     </div>
 
@@ -495,13 +482,13 @@ export const CartAndCheckoutPage: React.FC = () => {
               />
             </div>
 
-            <div className="pt-2">
+            <div className="pt-2 sm:hidden">
               <button
                 type="submit"
-                className="w-full sm:w-auto px-5 py-2.5 bg-stone-900 text-white text-xs sm:text-sm font-semibold rounded-md hover:bg-stone-800 transition-colors inline-flex items-center justify-center gap-2"
+                className="w-full px-5 py-3.5 bg-[#25D366] text-white text-base font-bold rounded-lg hover:bg-[#20ba5a] transition-colors flex items-center justify-center gap-2 shadow-xs"
               >
-                <FileText className="w-4 h-4" />
-                <span>Validate Details &amp; Lock Order Summary</span>
+                <MessageSquare className="w-5 h-5 fill-current" />
+                <span>Order via WhatsApp</span>
               </button>
             </div>
           </form>
@@ -511,14 +498,14 @@ export const CartAndCheckoutPage: React.FC = () => {
         <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-24">
           <div className="border border-stone-200 rounded-lg p-6 bg-stone-50 space-y-5">
             <h2 className="text-lg font-bold text-stone-900 border-b border-stone-200 pb-3">
-              Order Calculation (INR)
+              Order Calculation ({storeConfig.currencySymbol || 'TSh'})
             </h2>
 
             <div className="space-y-2.5 text-sm">
               <div className="flex justify-between text-stone-600">
                 <span>Products Subtotal</span>
                 <span className="font-mono-tabular font-semibold text-stone-900">
-                  ₹{subtotal}
+                  {storeConfig.currencySymbol || 'TSh'} {subtotal.toLocaleString()}
                 </span>
               </div>
               <div className="flex justify-between text-stone-600">
@@ -526,49 +513,21 @@ export const CartAndCheckoutPage: React.FC = () => {
                   Estimated Delivery ({formData.fulfillmentType})
                 </span>
                 <span className="font-mono-tabular font-semibold text-stone-900">
-                  {effectiveDeliveryFee === 0 ? '₹0 (Free)' : `₹${effectiveDeliveryFee}`}
+                  {effectiveDeliveryFee === 0
+                    ? 'Free (TSh 0)'
+                    : `${storeConfig.currencySymbol || 'TSh'} ${effectiveDeliveryFee.toLocaleString()}`}
                 </span>
               </div>
               <div className="pt-3 border-t border-stone-200 flex justify-between items-baseline">
                 <span className="text-base font-bold text-stone-900">Total Amount</span>
-                <span className="text-2xl font-bold text-red-700 font-mono-tabular">
-                  ₹{finalTotal}
+                <span className="text-2xl font-bold text-[#4a121c] font-mono-tabular">
+                  {storeConfig.currencySymbol || 'TSh'} {finalTotal.toLocaleString()}
                 </span>
               </div>
             </div>
 
-            {/* Preview Box */}
-            <div className="space-y-2 pt-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-stone-800">
-                  Readable Order Summary Preview
-                </span>
-                <button
-                  type="button"
-                  onClick={handleCopySummary}
-                  className="text-xs font-semibold text-red-700 hover:text-red-800 inline-flex items-center gap-1"
-                >
-                  {copiedSummary ? (
-                    <>
-                      <Check className="w-3.5 h-3.5" />
-                      <span>Copied</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3.5 h-3.5" />
-                      <span>Copy Text</span>
-                    </>
-                  )}
-                </button>
-              </div>
-
-              <pre className="p-3.5 bg-white border border-stone-200 rounded-md text-[11px] leading-relaxed text-stone-800 font-mono-tabular whitespace-pre-wrap max-h-64 overflow-y-auto">
-                {readableOrderSummary}
-              </pre>
-            </div>
-
-            {/* WhatsApp Button */}
-            <div className="space-y-3 pt-1">
+            {/* WhatsApp Order Button Only */}
+            <div className="pt-3">
               <a
                 href={whatsappOrderUrl}
                 target="_blank"
@@ -581,50 +540,12 @@ export const CartAndCheckoutPage: React.FC = () => {
                     setGeneratedOrderRecord(rec);
                   }
                 }}
-                className="w-full px-5 py-3.5 bg-red-700 text-white text-sm font-semibold rounded-md hover:bg-red-800 transition-colors flex items-center justify-center gap-2 shadow-xs"
+                className="w-full px-6 py-4 bg-[#25D366] hover:bg-[#20ba5a] text-white text-base font-bold rounded-lg transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2.5 active:scale-[0.99]"
               >
-                <MessageSquare className="w-4 h-4" />
-                <span>Send Order via WhatsApp ({storeConfig.whatsappNumber})</span>
+                <MessageSquare className="w-5 h-5 fill-current" />
+                <span>Order via WhatsApp</span>
               </a>
-
-              <p className="text-[11px] text-stone-500 leading-relaxed">
-                Configured WhatsApp Number:{' '}
-                <strong className="font-mono-tabular text-stone-700">
-                  +{cleanWhatsappDigits}
-                </strong>{' '}
-                (Editable in{' '}
-                <Link to="/admin" className="text-red-700 underline">
-                  Admin Demo
-                </Link>
-                ).
-              </p>
             </div>
-
-            {/* Disclosure */}
-            <div className="p-3.5 bg-amber-50/90 border border-amber-200 rounded-md flex items-start gap-2.5 text-xs text-amber-950 leading-relaxed">
-              <AlertCircle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
-              <div>
-                <p className="font-semibold">Demo Checkout Transparency</p>
-                <p className="mt-0.5 text-amber-900/90">
-                  This storefront is currently running in frontend demo mode without a live backend order server or online payment gateway. Clicking above prepares your summary for WhatsApp; an order is only confirmed after the shop replies to your message.
-                </p>
-              </div>
-            </div>
-
-            {generatedOrderRecord && (
-              <div className="p-4 bg-white border border-stone-300 rounded-md space-y-2 text-xs">
-                <p className="font-bold text-stone-900">
-                  Draft Reference Prepared: {generatedOrderRecord.orderReference}
-                </p>
-                <p className="text-stone-600 leading-relaxed">
-                  Your order summary for{' '}
-                  <strong className="text-stone-900">
-                    {generatedOrderRecord.customerName}
-                  </strong>{' '}
-                  (Total: ₹{generatedOrderRecord.totalAmount}) is formatted and ready. Please send the message in WhatsApp or copy the summary text above to send directly to the shop.
-                </p>
-              </div>
-            )}
           </div>
         </div>
       </div>

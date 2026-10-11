@@ -10,10 +10,10 @@ import {
 import { INITIAL_PRODUCTS, INITIAL_STORE_CONFIG } from '../data/products';
 
 const STORAGE_KEYS = {
-  PRODUCTS: 'omega_demo_products_v1',
-  CONFIG: 'omega_demo_store_config_v1',
-  CART: 'omega_demo_cart_v1',
-  ORDERS: 'omega_demo_orders_v1',
+  PRODUCTS: 'omega_products_v2',
+  CONFIG: 'omega_config_v2',
+  CART: 'omega_cart_v2',
+  ORDERS: 'omega_orders_v2',
 };
 
 interface DetailedCartItem {
@@ -89,8 +89,8 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       // Fallback
     }
     return [
-      { productId: 'prod-omega-ex-01', quantity: 4 },
-      { productId: 'prod-pen-01', quantity: 1 },
+      { productId: 'prod-omega-cb-q2', quantity: 2 },
+      { productId: 'prod-omega-ex-200sl', quantity: 5 },
     ];
   });
 

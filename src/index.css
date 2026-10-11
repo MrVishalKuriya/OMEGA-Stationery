@@ -2,21 +2,40 @@
 
 @layer base {
   :root {
-    --font-display: 'Fraunces', Georgia, serif;
+    --font-display: 'Playfair Display', 'Fraunces', Georgia, serif;
+    --font-serif-luxury: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+    --font-script: 'Caveat', cursive;
     --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+    --color-wine-950: #2d0910;
+    --color-wine-900: #3c0c16;
+    --color-wine-800: #4a121c;
+    --color-wine-700: #5f1725;
+    --color-wine-600: #7b2031;
+    --color-cream-50: #faf7f2;
+    --color-cream-100: #f6efe6;
+    --color-cream-200: #ede0d2;
+    --color-gold-500: #c59b6b;
   }
 
   body {
     font-family: var(--font-sans);
-    color: #111827;
-    background-color: #ffffff;
+    color: #1f1a1b;
+    background-color: #faf7f2;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
-  h1, h2, .font-serif-display {
+  h1, h2, h3, .font-serif-display {
     font-family: var(--font-display);
     text-wrap: balance;
+  }
+
+  .font-serif-luxury {
+    font-family: var(--font-serif-luxury);
+  }
+
+  .font-script {
+    font-family: var(--font-script);
   }
 
   .font-mono-tabular {

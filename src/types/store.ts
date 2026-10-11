@@ -1,22 +1,22 @@
 export type ProductCategory =
+  | 'Counter Books'
   | 'Exercise Books'
-  | 'Notebooks'
+  | 'Bahasha & Envelopes'
+  | 'Files & Folders'
   | 'School Stationery'
-  | 'Pens and Pencils'
-  | 'Art and Craft Supplies'
   | 'Office Supplies'
-  | 'School Essentials'
-  | 'Other Products';
+  | 'Bulk & Wholesale Paper'
+  | 'Packaging & Cartons';
 
 export const PRODUCT_CATEGORIES: ProductCategory[] = [
+  'Counter Books',
   'Exercise Books',
-  'Notebooks',
+  'Bahasha & Envelopes',
+  'Files & Folders',
   'School Stationery',
-  'Pens and Pencils',
-  'Art and Craft Supplies',
   'Office Supplies',
-  'School Essentials',
-  'Other Products',
+  'Bulk & Wholesale Paper',
+  'Packaging & Cartons',
 ];
 
 export type StockStatus = 'In Stock' | 'Low Stock' | 'Out of Stock';
@@ -24,6 +24,11 @@ export type StockStatus = 'In Stock' | 'Low Stock' | 'Out of Stock';
 export interface ProductSpecification {
   label: string;
   value: string;
+}
+
+export interface ProductColorOption {
+  name: string;
+  hex: string;
 }
 
 export interface Product {
@@ -34,14 +39,23 @@ export interface Product {
   gallery?: string[];
   description: string;
   specifications: ProductSpecification[];
-  price: number; // Price in INR
-  discountPrice?: number; // Optional discounted price in INR
+  price: number; // Price in TSh
+  discountPrice?: number; // Optional discounted price in TSh
   stockStatus: StockStatus;
   sku: string;
   featured?: boolean;
   bestSeller?: boolean;
   isDemoData: boolean;
+  rating?: number;
+  reviewCount?: number;
+  subtitle?: string;
+  badge?: string;
+  colorOptions?: ProductColorOption[];
 }
+
+export const formatPrice = (amount: number, currency = 'TSh'): string => {
+  return `${currency} ${amount.toLocaleString('en-US')}`;
+};
 
 export interface CartItem {
   productId: string;
@@ -52,13 +66,15 @@ export interface StoreConfig {
   businessName: string;
   logoText: string;
   tagline: string;
+  brandSubtitle: string;
   announcementText: string;
   phoneNumber: string;
-  whatsappNumber: string; // Digits with country code e.g. 919876543210
+  whatsappNumber: string; // Digits with country code e.g. 255715268391
   shopAddress: string;
   businessHours: string;
   googleMapsUrl: string;
   emailAddress: string;
+  currencySymbol: string;
   freeDeliveryThreshold: number;
   standardDeliveryFee: number;
   aboutIntro: string;

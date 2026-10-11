@@ -81,6 +81,7 @@ export const ProductDetailsPage: React.FC = () => {
     setTimeout(() => setJustAdded(false), 1500);
   };
 
+  const currency = storeConfig.currencySymbol || 'TSh';
   const cleanWhatsappDigits = storeConfig.whatsappNumber.replace(/\D/g, '');
   const directWhatsappText = [
     `Hello ${storeConfig.businessName},`,
@@ -88,8 +89,8 @@ export const ProductDetailsPage: React.FC = () => {
     `- Product: ${product.name}`,
     `- SKU: ${product.sku}`,
     `- Quantity: ${quantity}`,
-    `- Sample Unit Price: ₹${effectivePrice}`,
-    `- Estimated Subtotal: ₹${effectivePrice * quantity}`,
+    `- Unit Price: ${currency} ${effectivePrice.toLocaleString()}`,
+    `- Estimated Subtotal: ${currency} ${(effectivePrice * quantity).toLocaleString()}`,
   ].join('\n');
 
   const directWhatsappUrl = `https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
@@ -99,7 +100,7 @@ export const ProductDetailsPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
       <SEOHead
-        title={`${product.name} (₹${effectivePrice})`}
+        title={`${product.name} (${currency} ${effectivePrice.toLocaleString()})`}
         description={product.description}
         product={product}
       />
@@ -234,15 +235,15 @@ export const ProductDetailsPage: React.FC = () => {
             <div className="pt-2 flex flex-wrap items-baseline justify-between gap-4">
               <div className="flex items-baseline gap-3">
                 <span className="text-2xl sm:text-3xl font-bold text-stone-900 font-mono-tabular">
-                  ₹{effectivePrice}
+                  {currency} {effectivePrice.toLocaleString()}
                 </span>
                 {hasDiscount && (
                   <span className="text-base text-stone-400 line-through font-mono-tabular">
-                    ₹{product.price}
+                    {currency} {product.price.toLocaleString()}
                   </span>
                 )}
                 <span className="text-xs text-stone-500">
-                  Inclusive of all taxes (Demo INR Price)
+                  Official OMEGA Factory Price
                 </span>
               </div>
 
@@ -321,7 +322,7 @@ export const ProductDetailsPage: React.FC = () => {
               <div className="text-right">
                 <p className="text-xs text-stone-500">Item Subtotal</p>
                 <p className="text-lg font-bold text-stone-900 font-mono-tabular">
-                  ₹{effectivePrice * quantity}
+                  {currency} {(effectivePrice * quantity).toLocaleString()}
                 </p>
               </div>
             </div>
@@ -336,7 +337,7 @@ export const ProductDetailsPage: React.FC = () => {
                     ? 'bg-stone-200 text-stone-500 cursor-not-allowed'
                     : justAdded
                     ? 'bg-stone-900 text-white'
-                    : 'bg-red-700 text-white hover:bg-red-800'
+                    : 'bg-[#4a121c] text-white hover:bg-[#340b13]'
                 }`}
               >
                 {isOutOfStock ? (
@@ -369,16 +370,15 @@ export const ProductDetailsPage: React.FC = () => {
               </button>
             </div>
 
-            <div className="pt-2 border-t border-stone-200 flex items-center justify-between gap-2 text-xs text-stone-600">
-              <span>Need bulk school packs or have a question?</span>
+            <div className="pt-2 border-t border-stone-200">
               <a
                 href={directWhatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-semibold text-red-700 hover:text-red-800 inline-flex items-center gap-1"
+                className="w-full px-5 py-3 bg-[#25D366] hover:bg-[#20ba5a] text-white rounded-md text-sm font-semibold transition-colors flex items-center justify-center gap-2 shadow-xs"
               >
-                <MessageSquare className="w-3.5 h-3.5" />
-                <span>Inquire on WhatsApp</span>
+                <MessageSquare className="w-4 h-4 fill-current" />
+                <span>Order via WhatsApp</span>
               </a>
             </div>
           </div>

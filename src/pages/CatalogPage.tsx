@@ -120,15 +120,11 @@ export const CatalogPage: React.FC = () => {
             <span aria-hidden="true">/</span>
             <span className="text-stone-900 font-medium">Product Catalog</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-stone-900">
+          <h1 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#2d0910]">
             Stationery &amp; Books Catalog
           </h1>
-          <p className="text-sm text-stone-600 max-w-2xl">
-            Showing sample product data across 8 departments. All product details, INR prices, and stock levels are demo placeholders and can be customized in the{' '}
-            <Link to="/admin" className="text-red-700 font-semibold hover:underline">
-              Admin Demo Dashboard
-            </Link>
-            .
+          <p className="text-sm text-stone-600 max-w-2xl font-normal">
+            Explore authentic OMEGA Counter Books, Indigo exercise books, kraft bahasha envelopes, and school stationery manufactured for enduring quality.
           </p>
         </div>
 
@@ -139,7 +135,7 @@ export const CatalogPage: React.FC = () => {
           <span aria-hidden="true">·</span>
           <Link
             to="/admin"
-            className="inline-flex items-center gap-1 text-red-700 hover:text-red-800 font-semibold"
+            className="inline-flex items-center gap-1 text-[#7c293a] hover:text-[#4a121c] font-semibold"
           >
             <Settings className="w-3.5 h-3.5" />
             <span>Manage Inventory</span>
@@ -148,7 +144,7 @@ export const CatalogPage: React.FC = () => {
       </div>
 
       {/* Controls */}
-      <div className="bg-stone-50 border border-stone-200 rounded-lg p-4 sm:p-5 space-y-4">
+      <div className="bg-[#fcfaf7] border border-[#ebdcd0] rounded-xl p-4 sm:p-5 space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
           {/* Search Input */}
           <div className="md:col-span-6 relative">
@@ -157,9 +153,9 @@ export const CatalogPage: React.FC = () => {
               type="search"
               value={searchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
-              placeholder="Search by product name, ruling type, or SKU (e.g., OMG-EX-SL172)..."
+              placeholder="Search by product name, ruling type, or SKU (e.g., OMG-CB-Q2)..."
               aria-label="Search products"
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-stone-300 rounded-md text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-red-700"
+              className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#ebdcd0] rounded-lg text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#4a121c]"
             />
           </div>
 
@@ -173,11 +169,11 @@ export const CatalogPage: React.FC = () => {
               id="sort-select"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="w-full px-3 py-2.5 bg-white border border-stone-300 rounded-md text-sm text-stone-900 focus:outline-none focus:border-red-700"
+              className="w-full px-3 py-2.5 bg-white border border-[#ebdcd0] rounded-lg text-sm text-stone-900 focus:outline-none focus:border-[#4a121c]"
             >
               <option value="featured">Sort: Featured &amp; Popular</option>
-              <option value="price-asc">Price: Low to High (INR)</option>
-              <option value="price-desc">Price: High to Low (INR)</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
               <option value="name-asc">Name: A to Z</option>
             </select>
           </div>
@@ -216,10 +212,10 @@ export const CatalogPage: React.FC = () => {
           <button
             type="button"
             onClick={() => handleCategoryChange('All')}
-            className={`px-3.5 py-2 text-xs font-semibold rounded-md transition-colors whitespace-nowrap shrink-0 ${
+            className={`px-3.5 py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shrink-0 uppercase tracking-wider ${
               selectedCategory === 'All'
-                ? 'bg-red-700 text-white'
-                : 'bg-white text-stone-700 border border-stone-200 hover:border-stone-300'
+                ? 'bg-[#4a121c] text-white shadow-xs'
+                : 'bg-white text-stone-700 border border-[#ebdcd0] hover:border-stone-400'
             }`}
           >
             All Categories ({products.length})
@@ -233,10 +229,10 @@ export const CatalogPage: React.FC = () => {
                 key={category}
                 type="button"
                 onClick={() => handleCategoryChange(category)}
-                className={`px-3.5 py-2 text-xs font-semibold rounded-md transition-colors whitespace-nowrap shrink-0 ${
+                className={`px-3.5 py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shrink-0 uppercase tracking-wider ${
                   isSelected
-                    ? 'bg-red-700 text-white'
-                    : 'bg-white text-stone-700 border border-stone-200 hover:border-stone-300'
+                    ? 'bg-[#4a121c] text-white shadow-xs'
+                    : 'bg-white text-stone-700 border border-[#ebdcd0] hover:border-stone-400'
                 }`}
               >
                 {category} ({count})
