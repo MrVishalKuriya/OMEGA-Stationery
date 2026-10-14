@@ -271,91 +271,13 @@ export const Navbar: React.FC = () => {
                 })}
               </nav>
 
-              {/* ================= RIGHT: TOOLS (Inline Search, Language Toggle, Search Icon, Wishlist, Account, Cart) ================= */}
-              <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-                {/* 1. Desktop Inline Search Bar with Live Suggestions Dropdown */}
-                <div ref={inlineSearchRef} className="relative hidden md:block w-48 lg:w-56 xl:w-72">
-                  <form onSubmit={handleDesktopSearchSubmit} className="relative flex items-center">
-                    <Search className="w-4 h-4 text-[#6B7280] absolute left-3 pointer-events-none" />
-                    <input
-                      type="search"
-                      value={desktopSearchQuery}
-                      onChange={(e) => {
-                        setDesktopSearchQuery(e.target.value);
-                        setIsInlineSearchFocused(true);
-                      }}
-                      onFocus={() => setIsInlineSearchFocused(true)}
-                      placeholder={language === 'sw' ? 'Tafuta madaftari, bahasha...' : 'Search notebooks, bahasha...'}
-                      className="w-full pl-9 pr-8 py-2 text-xs bg-[#FAF7F0] hover:bg-white focus:bg-white rounded-full border border-[#E4DDCC] focus:border-[#1E2A5E] text-[#14182B] placeholder:text-[#6B7280] transition-all focus:outline-none focus:ring-1 focus:ring-[#1E2A5E]"
-                    />
-                    {desktopSearchQuery && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setDesktopSearchQuery('');
-                          setIsInlineSearchFocused(false);
-                        }}
-                        className="absolute right-2.5 p-1 text-[#6B7280] hover:text-[#14182B]"
-                        aria-label="Clear search"
-                      >
-                        <X className="w-3.5 h-3.5" />
-                      </button>
-                    )}
-                  </form>
-
-                  {/* Live Suggestions Dropdown */}
-                  {isInlineSearchFocused && inlineMatches.length > 0 && (
-                    <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-[12px] border border-[#E4DDCC] shadow-xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                      <div className="px-3 py-2 bg-[#FAF7F0] border-b border-[#E4DDCC]/60 flex items-center justify-between text-[11px] font-bold text-[#6B7280]">
-                        <span>Suggested Products</span>
-                        <button
-                          type="button"
-                          onClick={handleDesktopSearchSubmit}
-                          className="text-[#1E2A5E] hover:text-[#F5A623] cursor-pointer flex items-center gap-1"
-                        >
-                          All ({inlineMatches.length}) <ArrowRight className="w-3 h-3" />
-                        </button>
-                      </div>
-                      <div className="max-h-64 overflow-y-auto divide-y divide-[#E4DDCC]/40">
-                        {inlineMatches.map((item) => (
-                          <button
-                            key={item.id}
-                            type="button"
-                            onClick={() => {
-                              navigate(`/product/${item.id}`);
-                              setIsInlineSearchFocused(false);
-                              setDesktopSearchQuery('');
-                            }}
-                            className="w-full p-2.5 flex items-center gap-2.5 hover:bg-[#FAF7F0] text-left transition-colors cursor-pointer group"
-                          >
-                            <img
-                              src={item.image}
-                              alt={item.name}
-                              className="w-9 h-9 object-contain rounded bg-white p-0.5 border border-[#E4DDCC]/60 shrink-0"
-                            />
-                            <div className="flex-1 min-w-0">
-                              <p className="text-xs font-semibold text-[#14182B] group-hover:text-[#1E2A5E] truncate">
-                                {language === 'sw' && item.nameSw ? item.nameSw : item.name}
-                              </p>
-                              <p className="text-[10px] text-[#6B7280] truncate font-mono">
-                                {item.category} · {item.quire || item.pageCount || item.size || 'Stationery'}
-                              </p>
-                            </div>
-                            <span className="text-xs font-mono font-bold text-[#1E2A5E] shrink-0">
-                              TZS {(item.discountPrice || item.price).toLocaleString()}
-                            </span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* 2. Visible Language Switcher Pill (EN ⇄ SW) */}
+              {/* ================= RIGHT: TOOLS (Language Toggle, Search Modal Icon, Wishlist, Account, Cart) ================= */}
+              <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+                {/* 1. Visible Language Switcher Pill (EN ⇄ SW) */}
                 <button
                   type="button"
                   onClick={toggleLanguage}
-                  className="flex items-center gap-1 px-2.5 py-1.5 rounded-full border border-[#E4DDCC] hover:border-[#1E2A5E] bg-[#FAF7F0] hover:bg-white text-xs font-bold text-[#1E2A5E] transition-all min-h-[36px] focus-ring-gold"
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border border-[#E4DDCC] hover:border-[#1E2A5E] bg-[#FAF7F0] hover:bg-white text-xs font-bold text-[#1E2A5E] transition-all min-h-[36px] focus-ring-gold shadow-2xs"
                   title={language === 'en' ? 'Badili lugha kuwa Kiswahili' : 'Switch to English'}
                   aria-label="Toggle language between English and Swahili"
                 >
@@ -363,13 +285,13 @@ export const Navbar: React.FC = () => {
                   <span className="font-mono uppercase text-[11px]">{language === 'en' ? 'SW' : 'EN'}</span>
                 </button>
 
-                {/* 3. Search Icon (Modal Overlay Trigger for Mobile / Fullscreen) */}
+                {/* 2. Fullscreen Search Icon Trigger */}
                 <button
                   type="button"
                   onClick={() => setIsSearchOpen(true)}
                   aria-label="Search catalog (Press /)"
                   className="p-2.5 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[44px] min-h-[44px] flex items-center justify-center relative group"
-                  title="Full Search (/)"
+                  title="Full Search Overlay (/)"
                 >
                   <Search className="w-[20px] h-[20px] stroke-[1.5]" />
                   <span className="hidden xl:inline-block ml-1 text-xs text-[#6B7280] font-mono group-hover:text-[#1E2A5E]">
@@ -377,7 +299,7 @@ export const Navbar: React.FC = () => {
                   </span>
                 </button>
 
-                {/* 2. Wishlist Icon (Heart) */}
+                {/* 3. Wishlist Icon (Heart) */}
                 <button
                   type="button"
                   onClick={() => setIsWishlistModalOpen(true)}
@@ -397,7 +319,7 @@ export const Navbar: React.FC = () => {
                   )}
                 </button>
 
-                {/* 3. Account Icon (User) */}
+                {/* 4. Account Icon (User) */}
                 <div className="relative">
                   <button
                     type="button"
@@ -424,7 +346,7 @@ export const Navbar: React.FC = () => {
                   />
                 </div>
 
-                {/* 4. Cart Icon (Bag) with Gold Badge (18px circle) & Bounce Animation */}
+                {/* 5. Cart Icon (Bag) with Gold Badge & Bounce Animation */}
                 <button
                   type="button"
                   onClick={() => setIsCartDrawerOpen(true)}
@@ -447,7 +369,113 @@ export const Navbar: React.FC = () => {
             </div>
           </div>
 
-          {/* C) Mega Menu (Desktop full-width panel below header) */}
+          {/* ================= C) NAVBAR BOTTOM: Dedicated Search Bar Row ================= */}
+          <div className="w-full bg-[#FAF7F0] border-t border-[#E4DDCC]/70 px-4 sm:px-6 lg:px-8 py-2">
+            <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 sm:gap-6">
+              {/* Prominent Search Bar */}
+              <div ref={inlineSearchRef} className="relative flex-1 max-w-2xl lg:max-w-3xl">
+                <form onSubmit={handleDesktopSearchSubmit} className="relative flex items-center">
+                  <Search className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#1E2A5E] absolute left-3.5 pointer-events-none" />
+                  <input
+                    type="search"
+                    value={desktopSearchQuery}
+                    onChange={(e) => {
+                      setDesktopSearchQuery(e.target.value);
+                      setIsInlineSearchFocused(true);
+                    }}
+                    onFocus={() => setIsInlineSearchFocused(true)}
+                    placeholder={
+                      language === 'sw'
+                        ? 'Tafuta madaftari ya OMEGA, counter books, bahasha, kalamu...'
+                        : 'Search OMEGA notebooks, counter books, bahasha, stationery...'
+                    }
+                    className="w-full pl-10 sm:pl-11 pr-10 py-2 sm:py-2.5 text-xs sm:text-sm bg-white hover:bg-white focus:bg-white rounded-[10px] border border-[#E4DDCC] focus:border-[#1E2A5E] text-[#14182B] placeholder:text-[#6B7280] transition-all shadow-xs focus:outline-none focus:ring-1 focus:ring-[#1E2A5E]"
+                  />
+                  {desktopSearchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setDesktopSearchQuery('');
+                        setIsInlineSearchFocused(false);
+                      }}
+                      className="absolute right-3 p-1 text-[#6B7280] hover:text-[#14182B]"
+                      aria-label="Clear search"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </form>
+
+                {/* Suggestions Dropdown */}
+                {isInlineSearchFocused && inlineMatches.length > 0 && (
+                  <div className="absolute left-0 right-0 top-full mt-1.5 bg-white rounded-[12px] border border-[#E4DDCC] shadow-2xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                    <div className="px-3.5 py-2 bg-[#FAF7F0] border-b border-[#E4DDCC]/60 flex items-center justify-between text-xs font-bold text-[#6B7280]">
+                      <span>{language === 'sw' ? 'Bidhaa Zinazolingana' : 'Matching Products'}</span>
+                      <button
+                        type="button"
+                        onClick={handleDesktopSearchSubmit}
+                        className="text-[#1E2A5E] hover:text-[#F5A623] cursor-pointer flex items-center gap-1 font-semibold"
+                      >
+                        {language === 'sw' ? 'Tazama zote' : 'View all'} ({inlineMatches.length}) <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                    <div className="max-h-72 overflow-y-auto divide-y divide-[#E4DDCC]/40">
+                      {inlineMatches.map((item) => (
+                        <button
+                          key={item.id}
+                          type="button"
+                          onClick={() => {
+                            navigate(`/product/${item.id}`);
+                            setIsInlineSearchFocused(false);
+                            setDesktopSearchQuery('');
+                          }}
+                          className="w-full p-2.5 sm:p-3 flex items-center gap-3 hover:bg-[#FAF7F0] text-left transition-colors cursor-pointer group"
+                        >
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-10 h-10 object-contain rounded bg-white p-0.5 border border-[#E4DDCC]/60 shrink-0"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs sm:text-sm font-semibold text-[#14182B] group-hover:text-[#1E2A5E] truncate">
+                              {language === 'sw' && item.nameSw ? item.nameSw : item.name}
+                            </p>
+                            <p className="text-[11px] text-[#6B7280] truncate font-mono">
+                              {item.category} · {item.quire || item.pageCount || item.size || 'Stationery'}
+                            </p>
+                          </div>
+                          <span className="text-xs sm:text-sm font-mono font-bold text-[#1E2A5E] shrink-0">
+                            TZS {(item.discountPrice || item.price).toLocaleString()}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Quick Popular Categories / Tags */}
+              <div className="hidden md:flex items-center gap-1.5 shrink-0 text-xs text-[#6B7280]">
+                <span className="font-semibold text-[#1E2A5E]">
+                  {language === 'sw' ? 'Maarufu:' : 'Popular:'}
+                </span>
+                {['Counter Books', 'Bahasha A4', 'Exercise 200p', 'Math Set'].map((tag) => (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => {
+                      navigate(`/catalog?q=${encodeURIComponent(tag)}`);
+                    }}
+                    className="px-2.5 py-1 rounded-full bg-white hover:bg-[#F3EEE2] border border-[#E4DDCC] text-xs font-medium text-[#14182B] hover:text-[#1E2A5E] transition-colors"
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* D) Mega Menu (Desktop full-width panel below header) */}
           <div onMouseEnter={() => {
             if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
           }}>
@@ -459,8 +487,8 @@ export const Navbar: React.FC = () => {
         </div>
       </header>
 
-      {/* Reserve header height to prevent content jump / layout shift (36px announcement + 72px desktop / 60px mobile) */}
-      <div className="h-[96px] lg:h-[108px] w-full" aria-hidden="true" />
+      {/* Reserve header height to prevent content jump / layout shift (36px announcement + 60/72px main + 48px search) */}
+      <div className="h-[144px] lg:h-[156px] w-full" aria-hidden="true" />
 
       {/* Search Overlay */}
       <SearchOverlay
