@@ -121,10 +121,14 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
       .filter((p) => {
         return (
           p.name.toLowerCase().includes(lower) ||
+          (p.nameSw && p.nameSw.toLowerCase().includes(lower)) ||
           p.category.toLowerCase().includes(lower) ||
           p.description.toLowerCase().includes(lower) ||
+          (p.descriptionSw && p.descriptionSw.toLowerCase().includes(lower)) ||
           (p.sku && p.sku.toLowerCase().includes(lower)) ||
-          (p.quire && p.quire.toLowerCase().includes(lower))
+          (p.quire && p.quire.toLowerCase().includes(lower)) ||
+          (p.pageCount && p.pageCount.toLowerCase().includes(lower)) ||
+          (p.size && p.size.toLowerCase().includes(lower))
         );
       })
       .slice(0, 6);
@@ -147,7 +151,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
       role="dialog"
       aria-modal="true"
       aria-label="Site Search"
-      className="fixed inset-0 z-50 flex flex-col bg-[#FAF7F0] lg:bg-[#FAF7F0]/95 lg:backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 z-[100] flex flex-col bg-[#FAF7F0] lg:bg-[#FAF7F0]/95 lg:backdrop-blur-md animate-in fade-in duration-200"
     >
       {/* Header Bar with Search Input */}
       <div className="w-full bg-[#FAF7F0] border-b border-[#E4DDCC] px-4 sm:px-8 py-4 sm:py-6 shadow-sm">

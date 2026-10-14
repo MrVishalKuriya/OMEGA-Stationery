@@ -104,10 +104,30 @@ export const CatalogPage: React.FC = () => {
       }
       if (q) {
         const matchesName = p.name.toLowerCase().includes(q);
+        const matchesNameSw = p.nameSw ? p.nameSw.toLowerCase().includes(q) : false;
         const matchesSku = p.sku.toLowerCase().includes(q);
         const matchesCategory = p.category.toLowerCase().includes(q);
         const matchesDesc = p.description.toLowerCase().includes(q);
-        return matchesName || matchesSku || matchesCategory || matchesDesc;
+        const matchesDescSw = p.descriptionSw ? p.descriptionSw.toLowerCase().includes(q) : false;
+        const matchesQuire = p.quire ? p.quire.toLowerCase().includes(q) : false;
+        const matchesPageCount = p.pageCount ? p.pageCount.toLowerCase().includes(q) : false;
+        const matchesSize = p.size ? p.size.toLowerCase().includes(q) : false;
+        const matchesPaper = p.paperType ? p.paperType.toLowerCase().includes(q) : false;
+        const matchesBinding = p.binding ? p.binding.toLowerCase().includes(q) : false;
+
+        return (
+          matchesName ||
+          matchesNameSw ||
+          matchesSku ||
+          matchesCategory ||
+          matchesDesc ||
+          matchesDescSw ||
+          matchesQuire ||
+          matchesPageCount ||
+          matchesSize ||
+          matchesPaper ||
+          matchesBinding
+        );
       }
       return true;
     });

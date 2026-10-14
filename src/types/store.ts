@@ -71,7 +71,7 @@ export interface Product {
   colorOptions?: ProductColorOption[];
 }
 
-export const formatPrice = (amount: number, currency = 'TSh'): string => {
+export const formatPrice = (amount: number, currency = 'TZS'): string => {
   return `${currency} ${amount.toLocaleString('en-US')}`;
 };
 
@@ -140,3 +140,14 @@ export interface DemoOrderRecord extends CustomerOrderInput {
   deliveryFee: number;
   totalAmount: number;
 }
+
+export interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  accountType?: 'individual' | 'wholesale' | 'school';
+  initials: string;
+  createdAt?: string;
+}
+

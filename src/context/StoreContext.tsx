@@ -7,8 +7,16 @@ import {
   CustomerOrderInput,
   DemoOrderRecord,
   Language,
+  UserProfile,
 } from '../types/store';
 import { INITIAL_PRODUCTS, INITIAL_STORE_CONFIG } from '../data/products';
+import { supabase } from '../lib/supabase';
+import {
+  createSession,
+  getActiveSession,
+  destroySession,
+  SessionData,
+} from '../utils/cookieSession';
 
 const STORAGE_KEYS = {
   PRODUCTS: 'omega_products_v2',
@@ -16,6 +24,8 @@ const STORAGE_KEYS = {
   CART: 'omega_cart_v2',
   ORDERS: 'omega_orders_v2',
   WISHLIST: 'omega_wishlist_v2',
+  CURRENT_USER: 'omega_auth_user_v2',
+  USERS_DB: 'omega_registered_users_v2',
 };
 
 export interface DetailedCartItem {
@@ -63,7 +73,28 @@ interface StoreContextType {
   setIsWishlistModalOpen: (open: boolean) => void;
   isTrackingModalOpen: boolean;
   setIsTrackingModalOpen: (open: boolean) => void;
+  // User Authentication & Session
+  currentUser: UserProfile | null;
+  activeSession: SessionData | null;
+  isAuthModalOpen: boolean;
+  authModalMode: 'login' | 'register';
+  openAuthModal: (mode?: 'login' | 'register') => void;
+  closeAuthModal: () => void;
+  login: (credentials: { email: string; password?: string; rememberMe?: boolean }) => Promise<{ success: boolean; error?: string }>;
+  register: (userData: {
+    name: string;
+    email: string;
+    phone?: string;
+    password?: string;
+    accountType?: 'individual' | 'wholesale' | 'school';
+  }) => Promise<{ success: boolean; error?: string }>;
+  logout: () => void;
+  // Cookie & Privacy Center
+  isCookieBannerOpen: boolean;
+  openCookiePreferences: () => void;
+  closeCookiePreferences: () => void;
   // Catalog Management
+
   addProduct: (product: Omit<Product, 'id'>) => Product;
   updateProduct: (product: Product) => void;
   deleteProduct: (productId: string) => void;
@@ -74,6 +105,7 @@ interface StoreContextType {
   resetStoreConfigToDefault: () => void;
   recordDemoOrder: (input: CustomerOrderInput) => DemoOrderRecord;
 }
+
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
@@ -158,11 +190,269 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [activePhoneIndex, setActivePhoneIndex] = useState<number>(0);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  // Helper to extract clean user initials
+  const extractInitials = (nameStr: string): string => {
+    const parts = (nameStr || '').trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return 'OM';
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  };
+
+  // User Authentication & Session State
+  const [activeSession, setActiveSession] = useState<SessionData | null>(() => {
+    return getActiveSession();
+  });
+
+  const [currentUser, setCurrentUser] = useState<UserProfile | null>(() => {
+    try {
+      const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEYS.CURRENT_USER) : null;
+      if (saved) return JSON.parse(saved);
+      const session = getActiveSession();
+      if (session) {
+        return {
+          id: session.userId,
+          name: session.userName,
+          email: session.userEmail,
+          accountType: (session.accountType as any) || 'individual',
+          initials: extractInitials(session.userName),
+        };
+      }
+    } catch {
+      // Fallback
+    }
+    return null;
+  });
+
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const [authModalMode, setAuthModalMode] = useState<'login' | 'register'>('login');
+  const [isCookieBannerOpen, setIsCookieBannerOpen] = useState<boolean>(false);
+
+  const openAuthModal = (mode: 'login' | 'register' = 'login') => {
+    setAuthModalMode(mode);
+    setIsAuthModalOpen(true);
+  };
+
+  const closeAuthModal = () => {
+    setIsAuthModalOpen(false);
+  };
+
+  const openCookiePreferences = () => setIsCookieBannerOpen(true);
+  const closeCookiePreferences = () => setIsCookieBannerOpen(false);
+
+  const logout = () => {
+    setCurrentUser(null);
+    setActiveSession(null);
+    destroySession();
+    try {
+      localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+    } catch {
+      // Ignore
+    }
+    showToast('Signed out of OMEGA Account');
+  };
+
+  const login = async ({
+    email,
+    password,
+    rememberMe = true,
+  }: {
+    email: string;
+    password?: string;
+    rememberMe?: boolean;
+  }): Promise<{ success: boolean; error?: string }> => {
+    const trimmedEmail = (email || '').trim().toLowerCase();
+    if (!trimmedEmail) {
+      return { success: false, error: 'Please enter your email or phone number.' };
+    }
+
+
+    // 1. Attempt Supabase Auth
+    try {
+      if (password) {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: trimmedEmail,
+          password,
+        });
+        if (!error && data?.user) {
+          const profile: UserProfile = {
+            id: data.user.id,
+            name: data.user.user_metadata?.name || data.user.email?.split('@')[0] || 'OMEGA Member',
+            email: data.user.email || trimmedEmail,
+            initials: extractInitials(data.user.user_metadata?.name || data.user.email || 'OM'),
+            accountType: data.user.user_metadata?.accountType || 'individual',
+            phone: data.user.user_metadata?.phone,
+          };
+          const session = createSession(profile, rememberMe);
+          setActiveSession(session);
+          setCurrentUser(profile);
+          localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(profile));
+          closeAuthModal();
+          showToast(`Welcome back, ${profile.name}!`);
+          return { success: true };
+        }
+      }
+    } catch {
+      // Supabase unavailable, gracefully fall back to local users DB
+    }
+
+    // 2. Local Users DB Fallback
+    try {
+      const usersDbRaw = localStorage.getItem(STORAGE_KEYS.USERS_DB);
+      const usersDb: (UserProfile & { password?: string })[] = usersDbRaw ? JSON.parse(usersDbRaw) : [];
+
+      const found = usersDb.find((u) => u.email.toLowerCase() === trimmedEmail);
+      if (found) {
+        if (password && found.password && found.password !== password) {
+          return { success: false, error: 'Incorrect password. Please verify and try again.' };
+        }
+        const profile: UserProfile = {
+          id: found.id,
+          name: found.name,
+          email: found.email,
+          phone: found.phone,
+          accountType: found.accountType || 'individual',
+          initials: found.initials || extractInitials(found.name),
+        };
+        const session = createSession(profile, rememberMe);
+        setActiveSession(session);
+        setCurrentUser(profile);
+        localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(profile));
+        closeAuthModal();
+        showToast(`Welcome back, ${profile.name}!`);
+        return { success: true };
+      }
+
+      // Demo login shortcut or default seed account
+      if (trimmedEmail.includes('demo') || trimmedEmail === 'mussa.juma@omega.co.tz' || !password) {
+        const demoProfile: UserProfile = {
+          id: 'usr-omega-demo',
+          name: 'Mussa Juma',
+          email: trimmedEmail,
+          phone: '+255 715 268 391',
+          accountType: 'wholesale',
+          initials: 'MJ',
+        };
+        const session = createSession(demoProfile, rememberMe);
+        setActiveSession(session);
+        setCurrentUser(demoProfile);
+        localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(demoProfile));
+        closeAuthModal();
+        showToast(`Signed in as ${demoProfile.name}!`);
+        return { success: true };
+      }
+
+
+      return {
+        success: false,
+        error: 'No account found with this email. Please click "Create Account" below to register.',
+      };
+    } catch (err: any) {
+      return { success: false, error: err?.message || 'Login failed. Please try again.' };
+    }
+  };
+
+  const register = async (userData: {
+    name: string;
+    email: string;
+    phone?: string;
+    password?: string;
+    accountType?: 'individual' | 'wholesale' | 'school';
+  }): Promise<{ success: boolean; error?: string }> => {
+    const trimmedEmail = (userData.email || '').trim().toLowerCase();
+    const trimmedName = (userData.name || '').trim();
+
+    if (!trimmedName || !trimmedEmail) {
+      return { success: false, error: 'Please enter both your name and email address.' };
+    }
+
+    // 1. Attempt Supabase Auth Sign Up
+    try {
+      if (userData.password) {
+        const { data, error } = await supabase.auth.signUp({
+          email: trimmedEmail,
+          password: userData.password,
+          options: {
+            data: {
+              name: trimmedName,
+              phone: userData.phone,
+              accountType: userData.accountType || 'individual',
+            },
+          },
+        });
+        if (!error && data?.user) {
+          const profile: UserProfile = {
+            id: data.user.id,
+            name: trimmedName,
+            email: trimmedEmail,
+            phone: userData.phone,
+            accountType: userData.accountType || 'individual',
+            initials: extractInitials(trimmedName),
+          };
+          const session = createSession(profile, true);
+          setActiveSession(session);
+          setCurrentUser(profile);
+          localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(profile));
+          closeAuthModal();
+          showToast(`Account created! Welcome to OMEGA, ${trimmedName}.`);
+          return { success: true };
+        }
+      }
+    } catch {
+      // Supabase offline, fallback to local store
+    }
+
+    // 2. Local Users DB Registration
+    try {
+      const usersDbRaw = localStorage.getItem(STORAGE_KEYS.USERS_DB);
+      const usersDb: (UserProfile & { password?: string })[] = usersDbRaw ? JSON.parse(usersDbRaw) : [];
+
+      if (usersDb.some((u) => u.email.toLowerCase() === trimmedEmail)) {
+        return { success: false, error: 'An account with this email already exists. Please sign in.' };
+      }
+
+      const newProfile: UserProfile & { password?: string } = {
+        id: `usr-${Date.now()}`,
+        name: trimmedName,
+        email: trimmedEmail,
+        phone: userData.phone || '+255 715 000 000',
+        accountType: userData.accountType || 'individual',
+        initials: extractInitials(trimmedName),
+        password: userData.password,
+        createdAt: new Date().toISOString(),
+      };
+
+      usersDb.push(newProfile);
+      localStorage.setItem(STORAGE_KEYS.USERS_DB, JSON.stringify(usersDb));
+
+      const cleanProfile: UserProfile = {
+        id: newProfile.id,
+        name: newProfile.name,
+        email: newProfile.email,
+        phone: newProfile.phone,
+        accountType: newProfile.accountType,
+        initials: newProfile.initials,
+        createdAt: newProfile.createdAt,
+      };
+
+      const session = createSession(cleanProfile, true);
+      setActiveSession(session);
+      setCurrentUser(cleanProfile);
+      localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(cleanProfile));
+      closeAuthModal();
+      showToast(`Welcome to OMEGA Stationery, ${cleanProfile.name}!`);
+      return { success: true };
+
+    } catch (err: any) {
+      return { success: false, error: err?.message || 'Failed to create account.' };
+    }
+  };
+
   // Modal / Drawer UI states
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [isCartDrawerOpen, setIsCartDrawerOpen] = useState<boolean>(false);
   const [isWishlistModalOpen, setIsWishlistModalOpen] = useState<boolean>(false);
   const [isTrackingModalOpen, setIsTrackingModalOpen] = useState<boolean>(false);
+
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
@@ -473,6 +763,18 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         setIsWishlistModalOpen,
         isTrackingModalOpen,
         setIsTrackingModalOpen,
+        currentUser,
+        activeSession,
+        isAuthModalOpen,
+        authModalMode,
+        openAuthModal,
+        closeAuthModal,
+        login,
+        register,
+        logout,
+        isCookieBannerOpen,
+        openCookiePreferences,
+        closeCookiePreferences,
         addProduct,
         updateProduct,
         deleteProduct,

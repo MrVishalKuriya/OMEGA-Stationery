@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Search, Heart, User, ShoppingBag, Menu, Sparkles, ChevronDown } from 'lucide-react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Search, Heart, User, ShoppingBag, Menu, Sparkles, ChevronDown, Globe, X, ArrowRight } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import { AnnouncementBar } from './AnnouncementBar';
 import { MegaMenu, MEGA_MENU_DATA } from './MegaMenu';
@@ -11,14 +11,19 @@ import { MobileBottomBar } from './MobileBottomBar';
 
 export const Navbar: React.FC = () => {
   const {
+    products,
     cartItemCount,
     wishlistCount,
+    currentUser,
+    language,
+    toggleLanguage,
     setIsCartDrawerOpen,
     setIsWishlistModalOpen,
     setIsTrackingModalOpen,
   } = useStore();
 
   const location = useLocation();
+  const navigate = useNavigate();
   const isHomePage = location.pathname === '/';
 
   // Navigation & Interactive states
@@ -26,6 +31,47 @@ export const Navbar: React.FC = () => {
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMegaCategory, setActiveMegaCategory] = useState<string | null>(null);
+
+  // Desktop Inline Search State
+  const [desktopSearchQuery, setDesktopSearchQuery] = useState('');
+  const [isInlineSearchFocused, setIsInlineSearchFocused] = useState(false);
+  const inlineSearchRef = useRef<HTMLDivElement>(null);
+
+  // Close inline search dropdown on outside click
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (inlineSearchRef.current && !inlineSearchRef.current.contains(e.target as Node)) {
+        setIsInlineSearchFocused(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  }, []);
+
+  // Compute live inline search matches
+  const inlineMatches = useMemo(() => {
+    const q = desktopSearchQuery.trim().toLowerCase();
+    if (!q) return [];
+    return products
+      .filter((p) => {
+        return (
+          p.name.toLowerCase().includes(q) ||
+          (p.nameSw && p.nameSw.toLowerCase().includes(q)) ||
+          p.category.toLowerCase().includes(q) ||
+          (p.quire && p.quire.toLowerCase().includes(q)) ||
+          (p.sku && p.sku.toLowerCase().includes(q))
+        );
+      })
+      .slice(0, 5);
+  }, [desktopSearchQuery, products]);
+
+  const handleDesktopSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (desktopSearchQuery.trim()) {
+      navigate(`/catalog?q=${encodeURIComponent(desktopSearchQuery.trim())}`);
+      setIsInlineSearchFocused(false);
+    }
+  };
 
   // Cart bounce animation state
   const [isCartBouncing, setIsCartBouncing] = useState(false);
@@ -225,18 +271,108 @@ export const Navbar: React.FC = () => {
                 })}
               </nav>
 
-              {/* ================= RIGHT: TOOLS (Search, Wishlist, Account, Cart) ================= */}
-              <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-                {/* 1. Search Icon */}
+              {/* ================= RIGHT: TOOLS (Inline Search, Language Toggle, Search Icon, Wishlist, Account, Cart) ================= */}
+              <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+                {/* 1. Desktop Inline Search Bar with Live Suggestions Dropdown */}
+                <div ref={inlineSearchRef} className="relative hidden md:block w-48 lg:w-56 xl:w-72">
+                  <form onSubmit={handleDesktopSearchSubmit} className="relative flex items-center">
+                    <Search className="w-4 h-4 text-[#6B7280] absolute left-3 pointer-events-none" />
+                    <input
+                      type="search"
+                      value={desktopSearchQuery}
+                      onChange={(e) => {
+                        setDesktopSearchQuery(e.target.value);
+                        setIsInlineSearchFocused(true);
+                      }}
+                      onFocus={() => setIsInlineSearchFocused(true)}
+                      placeholder={language === 'sw' ? 'Tafuta madaftari, bahasha...' : 'Search notebooks, bahasha...'}
+                      className="w-full pl-9 pr-8 py-2 text-xs bg-[#FAF7F0] hover:bg-white focus:bg-white rounded-full border border-[#E4DDCC] focus:border-[#1E2A5E] text-[#14182B] placeholder:text-[#6B7280] transition-all focus:outline-none focus:ring-1 focus:ring-[#1E2A5E]"
+                    />
+                    {desktopSearchQuery && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setDesktopSearchQuery('');
+                          setIsInlineSearchFocused(false);
+                        }}
+                        className="absolute right-2.5 p-1 text-[#6B7280] hover:text-[#14182B]"
+                        aria-label="Clear search"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </form>
+
+                  {/* Live Suggestions Dropdown */}
+                  {isInlineSearchFocused && inlineMatches.length > 0 && (
+                    <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-[12px] border border-[#E4DDCC] shadow-xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                      <div className="px-3 py-2 bg-[#FAF7F0] border-b border-[#E4DDCC]/60 flex items-center justify-between text-[11px] font-bold text-[#6B7280]">
+                        <span>Suggested Products</span>
+                        <button
+                          type="button"
+                          onClick={handleDesktopSearchSubmit}
+                          className="text-[#1E2A5E] hover:text-[#F5A623] cursor-pointer flex items-center gap-1"
+                        >
+                          All ({inlineMatches.length}) <ArrowRight className="w-3 h-3" />
+                        </button>
+                      </div>
+                      <div className="max-h-64 overflow-y-auto divide-y divide-[#E4DDCC]/40">
+                        {inlineMatches.map((item) => (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => {
+                              navigate(`/product/${item.id}`);
+                              setIsInlineSearchFocused(false);
+                              setDesktopSearchQuery('');
+                            }}
+                            className="w-full p-2.5 flex items-center gap-2.5 hover:bg-[#FAF7F0] text-left transition-colors cursor-pointer group"
+                          >
+                            <img
+                              src={item.image}
+                              alt={item.name}
+                              className="w-9 h-9 object-contain rounded bg-white p-0.5 border border-[#E4DDCC]/60 shrink-0"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-xs font-semibold text-[#14182B] group-hover:text-[#1E2A5E] truncate">
+                                {language === 'sw' && item.nameSw ? item.nameSw : item.name}
+                              </p>
+                              <p className="text-[10px] text-[#6B7280] truncate font-mono">
+                                {item.category} · {item.quire || item.pageCount || item.size || 'Stationery'}
+                              </p>
+                            </div>
+                            <span className="text-xs font-mono font-bold text-[#1E2A5E] shrink-0">
+                              TZS {(item.discountPrice || item.price).toLocaleString()}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* 2. Visible Language Switcher Pill (EN ⇄ SW) */}
+                <button
+                  type="button"
+                  onClick={toggleLanguage}
+                  className="flex items-center gap-1 px-2.5 py-1.5 rounded-full border border-[#E4DDCC] hover:border-[#1E2A5E] bg-[#FAF7F0] hover:bg-white text-xs font-bold text-[#1E2A5E] transition-all min-h-[36px] focus-ring-gold"
+                  title={language === 'en' ? 'Badili lugha kuwa Kiswahili' : 'Switch to English'}
+                  aria-label="Toggle language between English and Swahili"
+                >
+                  <Globe className="w-3.5 h-3.5 text-[#F5A623]" />
+                  <span className="font-mono uppercase text-[11px]">{language === 'en' ? 'SW' : 'EN'}</span>
+                </button>
+
+                {/* 3. Search Icon (Modal Overlay Trigger for Mobile / Fullscreen) */}
                 <button
                   type="button"
                   onClick={() => setIsSearchOpen(true)}
                   aria-label="Search catalog (Press /)"
                   className="p-2.5 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[44px] min-h-[44px] flex items-center justify-center relative group"
-                  title="Search catalog (/)"
+                  title="Full Search (/)"
                 >
-                  <Search className="w-[22px] h-[22px] stroke-[1.5]" />
-                  <span className="hidden xl:inline-block ml-1.5 text-xs text-[#6B7280] font-mono group-hover:text-[#1E2A5E]">
+                  <Search className="w-[20px] h-[20px] stroke-[1.5]" />
+                  <span className="hidden xl:inline-block ml-1 text-xs text-[#6B7280] font-mono group-hover:text-[#1E2A5E]">
                     /
                   </span>
                 </button>
@@ -266,12 +402,18 @@ export const Navbar: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setIsAccountOpen(!isAccountOpen)}
-                    aria-label="Account and Orders"
+                    aria-label={currentUser ? `Account: ${currentUser.name}` : 'Account and Orders'}
                     aria-expanded={isAccountOpen}
-                    className="p-2.5 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[44px] min-h-[44px] flex items-center justify-center"
-                    title="Account"
+                    className="p-1.5 sm:p-2 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[44px] min-h-[44px] flex items-center justify-center"
+                    title={currentUser ? currentUser.name : 'Account'}
                   >
-                    <User className="w-[22px] h-[22px] stroke-[1.5]" />
+                    {currentUser ? (
+                      <div className="w-7 h-7 rounded-full bg-[#1E2A5E] text-[#F5A623] font-bold text-xs flex items-center justify-center font-mono shadow-2xs">
+                        {currentUser.initials}
+                      </div>
+                    ) : (
+                      <User className="w-[22px] h-[22px] stroke-[1.5]" />
+                    )}
                   </button>
 
                   <AccountDropdown

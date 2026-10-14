@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   X,
   ChevronDown,
@@ -12,6 +12,7 @@ import {
   Sparkles,
   ShoppingBag,
   ExternalLink,
+  Search,
 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import { MEGA_MENU_DATA } from './MegaMenu';
@@ -36,9 +37,22 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
     language,
     toggleLanguage,
     storeConfig,
+    currentUser,
+    openAuthModal,
+    logout,
   } = useStore();
 
+  const navigate = useNavigate();
+  const [mobileSearchQuery, setMobileSearchQuery] = useState('');
   const [expandedCategory, setExpandedCategory] = useState<string | null>('notebooks');
+
+  const handleMobileSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (mobileSearchQuery.trim()) {
+      navigate(`/catalog?q=${encodeURIComponent(mobileSearchQuery.trim())}`);
+      onClose();
+    }
+  };
 
   // Lock body scroll
   useEffect(() => {
@@ -102,6 +116,84 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
           >
             <X className="w-5 h-5" />
           </button>
+        </div>
+
+        {/* Mobile Search Input */}
+        <div className="p-3 bg-white border-b border-[#E4DDCC]">
+          <form onSubmit={handleMobileSearch} className="relative flex items-center">
+            <Search className="w-4 h-4 text-[#1E2A5E] absolute left-3 pointer-events-none" />
+            <input
+              type="search"
+              value={mobileSearchQuery}
+              onChange={(e) => setMobileSearchQuery(e.target.value)}
+              placeholder={language === 'sw' ? 'Tafuta madaftari, bahasha...' : 'Search notebooks, bahasha...'}
+              className="w-full pl-9 pr-8 py-2 text-xs bg-[#FAF7F0] focus:bg-white rounded-[8px] border border-[#E4DDCC] focus:border-[#1E2A5E] text-[#14182B] placeholder:text-[#6B7280] focus:outline-none focus:ring-1 focus:ring-[#1E2A5E]"
+            />
+            {mobileSearchQuery && (
+              <button
+                type="button"
+                onClick={() => setMobileSearchQuery('')}
+                className="absolute right-2.5 p-1 text-[#6B7280] hover:text-[#14182B]"
+                aria-label="Clear search"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </form>
+        </div>
+
+        {/* Mobile Account Section */}
+        <div className="p-3 border-b border-[#E4DDCC] bg-white">
+          {currentUser ? (
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-8 h-8 rounded-full bg-[#1E2A5E] text-[#F5A623] font-bold text-xs flex items-center justify-center font-mono shrink-0 shadow-2xs">
+                  {currentUser.initials}
+                </div>
+                <div className="min-w-0">
+                  <span className="text-xs font-bold text-[#14182B] block truncate leading-tight">
+                    {currentUser.name}
+                  </span>
+                  <span className="text-[10px] text-[#6B7280] block truncate">
+                    {currentUser.email}
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  logout();
+                  onClose();
+                }}
+                className="text-[11px] font-bold text-[#D64545] hover:underline shrink-0 ml-2"
+              >
+                Log Out
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  openAuthModal('login');
+                }}
+                className="py-2 px-3 rounded-[6px] btn-cta-yellow text-xs font-bold text-center"
+              >
+                Sign In
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  openAuthModal('register');
+                }}
+                className="py-2 px-3 rounded-[6px] bg-[#FAF7F0] border border-[#E4DDCC] hover:bg-[#F3EEE2] text-xs font-bold text-center text-[#1E2A5E]"
+              >
+                Register
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Quick Tools Row (Wishlist, Track, Language) */}

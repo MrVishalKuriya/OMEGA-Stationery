@@ -1,5 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { User, LogIn, UserPlus, Package, Heart, LogOut, CheckCircle, ShieldCheck, ChevronRight } from 'lucide-react';
+import React, { useEffect, useRef } from 'react';
+import {
+  User,
+  LogIn,
+  UserPlus,
+  Package,
+  Heart,
+  LogOut,
+  ShieldCheck,
+  ChevronRight,
+  Cookie,
+} from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 
 interface AccountDropdownProps {
@@ -15,18 +25,15 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
   onOpenOrders,
   onOpenWishlist,
 }) => {
-  const { wishlistCount, showToast } = useStore();
+  const {
+    wishlistCount,
+    currentUser,
+    activeSession,
+    openAuthModal,
+    logout,
+    openCookiePreferences,
+  } = useStore();
   const dropdownRef = useRef<HTMLDivElement>(null);
-
-  // Simulated login state stored in localStorage
-  const [currentUser, setCurrentUser] = useState<{ name: string; email: string; initials: string } | null>(() => {
-    try {
-      const saved = localStorage.getItem('omega_demo_user');
-      return saved ? JSON.parse(saved) : { name: 'Mussa Juma', email: 'mussa.juma@omega.co.tz', initials: 'MJ' };
-    } catch {
-      return null;
-    }
-  });
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -48,19 +55,19 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
     };
   }, [isOpen, onClose]);
 
-  const handleLoginToggle = () => {
-    if (currentUser) {
-      // Logout
-      setCurrentUser(null);
-      localStorage.removeItem('omega_demo_user');
-      showToast('Logged out of OMEGA Account');
-    } else {
-      // Demo Login
-      const demoUser = { name: 'Mussa Juma', email: 'mussa.juma@omega.co.tz', initials: 'MJ' };
-      setCurrentUser(demoUser);
-      localStorage.setItem('omega_demo_user', JSON.stringify(demoUser));
-      showToast('Signed in as Mussa Juma (OMEGA Member)');
-    }
+  const handleOpenSignIn = () => {
+    onClose();
+    openAuthModal('login');
+  };
+
+  const handleOpenRegister = () => {
+    onClose();
+    openAuthModal('register');
+  };
+
+  const handleLogout = () => {
+    logout();
+    onClose();
   };
 
   if (!isOpen) return null;
@@ -75,22 +82,39 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
       {/* Header Profile Info */}
       <div className="p-3 rounded-[8px] bg-[#FAF7F0] border border-[#E4DDCC]/50 mb-2">
         {currentUser ? (
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#1E2A5E] text-[#F5A623] font-bold text-sm flex items-center justify-center font-mono shrink-0 shadow-xs">
-              {currentUser.initials}
+          <div>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-[#1E2A5E] text-[#F5A623] font-bold text-sm flex items-center justify-center font-mono shrink-0 shadow-xs">
+                {currentUser.initials}
+              </div>
+              <div className="min-w-0 flex-1">
+                <span className="text-xs font-bold text-[#14182B] block truncate">
+                  {currentUser.name}
+                </span>
+                <span className="text-[11px] text-[#6B7280] block truncate font-mono">
+                  {currentUser.email}
+                </span>
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#2A9D8F] mt-0.5">
+                  <ShieldCheck className="w-3 h-3" />
+                  {currentUser.accountType === 'wholesale'
+                    ? 'Wholesale Partner'
+                    : currentUser.accountType === 'school'
+                    ? 'Institutional Account'
+                    : 'Verified OMEGA Member'}
+                </span>
+              </div>
             </div>
-            <div className="min-w-0 flex-1">
-              <span className="text-xs font-bold text-[#14182B] block truncate">
-                {currentUser.name}
-              </span>
-              <span className="text-[11px] text-[#6B7280] block truncate font-mono">
-                {currentUser.email}
-              </span>
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#2A9D8F] mt-0.5">
-                <ShieldCheck className="w-3 h-3" />
-                Verified OMEGA Member
-              </span>
-            </div>
+
+            {/* Active Session Token Indicator */}
+            {activeSession && (
+              <div className="mt-2 pt-2 border-t border-[#E4DDCC]/60 flex items-center justify-between text-[10px] text-[#6B7280]">
+                <span className="flex items-center gap-1 text-[#2A9D8F] font-bold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#2A9D8F] animate-pulse" />
+                  Active Secure Session
+                </span>
+                <span className="font-mono text-[9px]">30-Day Cookie</span>
+              </div>
+            )}
           </div>
         ) : (
           <div className="space-y-1">
@@ -140,13 +164,30 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
           </span>
         </button>
 
+        {/* Cookie & Session Privacy Settings */}
+        <button
+          type="button"
+          onClick={() => {
+            onClose();
+            openCookiePreferences();
+          }}
+          className="w-full flex items-center justify-between p-2.5 rounded-[8px] hover:bg-[#F3EEE2] text-[#14182B] hover:text-[#1E2A5E] transition-colors group focus-ring-gold"
+        >
+          <div className="flex items-center gap-2.5">
+            <Cookie className="w-4 h-4 text-[#F5A623]" />
+            <span>Cookie &amp; Session Privacy</span>
+          </div>
+          <ChevronRight className="w-3.5 h-3.5 text-[#6B7280] group-hover:translate-x-0.5 transition-transform" />
+        </button>
+
+
         <div className="my-1.5 border-t border-[#E4DDCC]" />
 
         {/* Login / Register or Logout */}
         {currentUser ? (
           <button
             type="button"
-            onClick={handleLoginToggle}
+            onClick={handleLogout}
             className="w-full flex items-center gap-2.5 p-2.5 rounded-[8px] hover:bg-[#D64545]/10 text-[#D64545] font-semibold transition-colors focus-ring-gold"
           >
             <LogOut className="w-4 h-4" />
@@ -156,17 +197,19 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
           <div className="grid grid-cols-2 gap-2 pt-1">
             <button
               type="button"
-              onClick={handleLoginToggle}
-              className="w-full py-2 px-3 rounded-[8px] btn-cta-yellow text-xs font-bold text-center"
+              onClick={handleOpenSignIn}
+              className="w-full py-2 px-3 rounded-[8px] btn-cta-yellow text-xs font-bold text-center flex items-center justify-center gap-1.5 shadow-xs"
             >
-              Sign In
+              <LogIn className="w-3.5 h-3.5" />
+              <span>Sign In</span>
             </button>
             <button
               type="button"
-              onClick={handleLoginToggle}
-              className="w-full py-2 px-3 rounded-[8px] bg-white border border-[#E4DDCC] hover:bg-[#F3EEE2] text-xs font-bold text-center text-[#1E2A5E]"
+              onClick={handleOpenRegister}
+              className="w-full py-2 px-3 rounded-[8px] bg-white border border-[#E4DDCC] hover:bg-[#F3EEE2] text-xs font-bold text-center text-[#1E2A5E] flex items-center justify-center gap-1.5"
             >
-              Register
+              <UserPlus className="w-3.5 h-3.5" />
+              <span>Register</span>
             </button>
           </div>
         )}
