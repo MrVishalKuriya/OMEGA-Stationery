@@ -203,7 +203,7 @@ export const Navbar: React.FC = () => {
       <header
         ref={headerRef}
         role="banner"
-        className={`fixed top-0 left-0 right-0 z-40 transition-transform duration-200 ease-out ${
+        className={`fixed top-0 left-0 right-0 z-40 w-full max-w-full overflow-x-clip transition-transform duration-200 ease-out ${
           isVisible ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
@@ -211,9 +211,9 @@ export const Navbar: React.FC = () => {
         <AnnouncementBar />
 
         {/* B) Main Header (60px mobile, 68px desktop) */}
-        <div className={`w-full transition-colors duration-200 ease-out ${headerBgClass}`}>
-          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-[56px] sm:h-[60px] lg:h-[68px] gap-2 sm:gap-4 lg:gap-6">
+        <div className={`w-full max-w-full overflow-x-clip transition-colors duration-200 ease-out ${headerBgClass}`}>
+          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 w-full">
+            <div className="flex items-center justify-between h-[56px] sm:h-[60px] lg:h-[68px] gap-2 sm:gap-4 lg:gap-6 w-full">
               {/* ================= LEFT: MOBILE HAMBURGER & LOGO ================= */}
               <div className="flex items-center gap-1.5 sm:gap-3 shrink-0 min-w-0">
                 {/* Mobile / Tablet Hamburger (Visible under 1280px to prevent center nav collision) */}
@@ -250,11 +250,11 @@ export const Navbar: React.FC = () => {
                 </Link>
               </div>
 
-              {/* ================= CENTER: PRIMARY NAV LINKS (Desktop XL only) ================= */}
+              {/* ================= CENTER: PRIMARY NAV LINKS (Desktop XL only, compact and responsive) ================= */}
               <nav
                 role="navigation"
                 aria-label="Primary Navigation"
-                className="hidden xl:flex items-center gap-1 2xl:gap-2 h-full flex-nowrap shrink-0"
+                className="hidden xl:flex items-center justify-center gap-0.5 2xl:gap-1.5 h-full flex-1 min-w-0 px-2"
                 onMouseLeave={handleNavMouseLeave}
               >
                 {NAV_ITEMS.map((item) => {
@@ -262,13 +262,13 @@ export const Navbar: React.FC = () => {
                   return (
                     <div
                       key={item.id}
-                      className="relative h-full flex items-center"
+                      className="relative h-full flex items-center shrink-0"
                       onMouseEnter={() => handleNavMouseEnter(item.id)}
                     >
                       <NavLink
                         to={item.href}
                         className={({ isActive }) =>
-                          `nav-link-ink px-3 py-2 text-[15px] font-medium tracking-tight text-[#14182B] hover:text-[#1E2A5E] focus-ring-gold rounded-[4px] flex items-center gap-1.5 transition-colors ${
+                          `nav-link-ink px-2 2xl:px-2.5 py-1.5 text-[13px] 2xl:text-[14px] font-medium tracking-tight text-[#14182B] hover:text-[#1E2A5E] focus-ring-gold rounded-[4px] flex items-center gap-1 transition-colors whitespace-nowrap ${
                             isActive || isMegaActive ? 'text-[#1E2A5E] active' : ''
                           }`
                         }
@@ -277,12 +277,12 @@ export const Navbar: React.FC = () => {
                       >
                         <span>{item.label}</span>
                         {item.badge ? (
-                          <span className="text-[10px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-[#F5A623] text-[#1E2A5E] leading-none shadow-2xs">
+                          <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-[#F5A623] text-[#1E2A5E] leading-none shadow-2xs">
                             {item.badge}
                           </span>
                         ) : (
                           <ChevronDown
-                            className={`w-3.5 h-3.5 opacity-50 transition-transform duration-150 ${
+                            className={`w-3 h-3 opacity-50 hidden 2xl:inline-block transition-transform duration-150 ${
                               isMegaActive ? 'rotate-180 text-[#1E2A5E] opacity-100' : ''
                             }`}
                           />
@@ -293,9 +293,9 @@ export const Navbar: React.FC = () => {
                 })}
               </nav>
 
-              {/* ================= RIGHT: TOOLS (Clean & Responsive) ================= */}
-              <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-                {/* 1. Visible Language Switcher Pill (EN ⇄ SW) - Always Visible */}
+              {/* ================= RIGHT: TOOLS (Always Anchored Inside Viewport) ================= */}
+              <div className="flex items-center gap-1 sm:gap-2 shrink-0 ml-auto">
+                {/* 1. Visible Language Switcher Pill (EN ⇄ SW) */}
                 <button
                   type="button"
                   onClick={toggleLanguage}
@@ -307,30 +307,16 @@ export const Navbar: React.FC = () => {
                   <span className="font-mono uppercase text-[10px] sm:text-[11px]">{language === 'en' ? 'SW' : 'EN'}</span>
                 </button>
 
-                {/* 2. Fullscreen Search Icon Trigger (Visible on md+ since mobile has direct bottom bar) */}
-                <button
-                  type="button"
-                  onClick={() => setIsSearchOpen(true)}
-                  aria-label="Search catalog (Press /)"
-                  className="hidden md:flex p-2 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] items-center justify-center relative group shrink-0"
-                  title="Full Search Overlay (/)"
-                >
-                  <Search className="w-[18px] h-[18px] stroke-[1.5]" />
-                  <span className="hidden xl:inline-block ml-1 text-xs text-[#6B7280] font-mono group-hover:text-[#1E2A5E]">
-                    /
-                  </span>
-                </button>
-
-                {/* 3. Wishlist Icon (Heart) - Visible on sm+ screens */}
+                {/* 2. Wishlist Icon (Heart) - Visible on sm+ screens */}
                 <button
                   type="button"
                   onClick={() => setIsWishlistModalOpen(true)}
                   aria-label={`Wishlist (${wishlistCount} saved items)`}
-                  className="hidden sm:flex p-2 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] items-center justify-center relative shrink-0"
+                  className="hidden sm:flex p-2 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[36px] min-h-[36px] sm:min-w-[40px] sm:min-h-[40px] items-center justify-center relative shrink-0"
                   title="Wishlist"
                 >
                   <Heart
-                    className={`w-[18px] h-[18px] stroke-[1.5] ${
+                    className={`w-[18px] h-[18px] sm:w-[19px] sm:h-[19px] stroke-[1.5] ${
                       wishlistCount > 0 ? 'fill-[#D64545] text-[#D64545]' : ''
                     }`}
                   />
@@ -341,14 +327,14 @@ export const Navbar: React.FC = () => {
                   )}
                 </button>
 
-                {/* 4. Account Icon (User) - Visible on sm+ screens */}
+                {/* 3. Account Icon (User) - Visible on sm+ screens */}
                 <div className="relative hidden sm:block shrink-0">
                   <button
                     type="button"
                     onClick={() => setIsAccountOpen(!isAccountOpen)}
                     aria-label={currentUser ? `Account: ${currentUser.name}` : 'Account and Orders'}
                     aria-expanded={isAccountOpen}
-                    className="p-1.5 sm:p-2 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] flex items-center justify-center"
+                    className="p-1.5 sm:p-2 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[36px] min-h-[36px] sm:min-w-[40px] sm:min-h-[40px] flex items-center justify-center"
                     title={currentUser ? currentUser.name : 'Account'}
                   >
                     {currentUser ? (
@@ -356,7 +342,7 @@ export const Navbar: React.FC = () => {
                         {currentUser.initials}
                       </div>
                     ) : (
-                      <User className="w-[18px] h-[18px] stroke-[1.5]" />
+                      <User className="w-[18px] h-[18px] sm:w-[19px] sm:h-[19px] stroke-[1.5]" />
                     )}
                   </button>
 
@@ -368,12 +354,12 @@ export const Navbar: React.FC = () => {
                   />
                 </div>
 
-                {/* 5. Cart Icon (Bag) - Always Visible with Gold Badge */}
+                {/* 4. Cart Icon (Bag) - Always Visible with Gold Badge */}
                 <button
                   type="button"
                   onClick={() => setIsCartDrawerOpen(true)}
                   aria-label={`Shopping bag (${cartItemCount} items)`}
-                  className="p-1.5 sm:p-2 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] flex items-center justify-center relative group shrink-0"
+                  className="p-1.5 sm:p-2 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[36px] min-h-[36px] sm:min-w-[40px] sm:min-h-[40px] flex items-center justify-center relative group shrink-0"
                   title="Shopping Bag"
                 >
                   <ShoppingBag className="w-[20px] h-[20px] stroke-[1.5] text-[#1E2A5E]" />
@@ -392,10 +378,10 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* ================= C) NAVBAR BOTTOM: Dedicated Search Bar Row ================= */}
-          <div className="w-full bg-[#FAF7F0] border-t border-[#E4DDCC]/70 px-4 sm:px-6 lg:px-8 py-2">
-            <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 sm:gap-6">
+          <div className="w-full max-w-full overflow-x-clip bg-[#FAF7F0] border-t border-[#E4DDCC]/70 px-3 sm:px-6 lg:px-8 py-2">
+            <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4 lg:gap-6 w-full">
               {/* Prominent Search Bar */}
-              <div ref={inlineSearchRef} className="relative flex-1 max-w-2xl lg:max-w-3xl">
+              <div ref={inlineSearchRef} className="relative flex-1 min-w-0 max-w-2xl lg:max-w-3xl">
                 <form onSubmit={handleDesktopSearchSubmit} className="relative flex items-center">
                   <Search className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#1E2A5E] absolute left-3.5 pointer-events-none" />
                   <input
