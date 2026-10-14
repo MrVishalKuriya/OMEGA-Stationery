@@ -1,432 +1,329 @@
 import React, { useState } from 'react';
 import {
   Phone,
-  MessageSquare,
+  MessageCircle,
   MapPin,
   Clock,
   ExternalLink,
   Edit3,
   Check,
   RotateCcw,
+  Mail,
+  Send,
+  Building2,
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { SEOHead } from '../components/SEOHead';
+import { TRANSLATIONS } from '../data/translations';
 
 export const ContactPage: React.FC = () => {
-  const { storeConfig, updateStoreConfig, resetStoreConfigToDefault } = useStore();
-  const [isEditingContact, setIsEditingContact] = useState(false);
-
-  const [contactDraft, setContactDraft] = useState({
-    phoneNumber: storeConfig.phoneNumber,
-    whatsappNumber: storeConfig.whatsappNumber,
-    shopAddress: storeConfig.shopAddress,
-    businessHours: storeConfig.businessHours,
-    googleMapsUrl: storeConfig.googleMapsUrl,
-  });
+  const { storeConfig, updateStoreConfig, language } = useStore();
+  const t = TRANSLATIONS[language];
 
   const [inquiryName, setInquiryName] = useState('');
   const [inquiryPhone, setInquiryPhone] = useState('');
   const [inquirySubject, setInquirySubject] = useState('School Booklist / Bulk Stationery Inquiry');
   const [inquiryMessage, setInquiryMessage] = useState('');
-
-  const handleOpenEdit = () => {
-    setContactDraft({
-      phoneNumber: storeConfig.phoneNumber,
-      whatsappNumber: storeConfig.whatsappNumber,
-      shopAddress: storeConfig.shopAddress,
-      businessHours: storeConfig.businessHours,
-      googleMapsUrl: storeConfig.googleMapsUrl,
-    });
-    setIsEditingContact(true);
-  };
-
-  const handleSaveContact = (e: React.FormEvent) => {
-    e.preventDefault();
-    updateStoreConfig({
-      phoneNumber: contactDraft.phoneNumber.trim() || storeConfig.phoneNumber,
-      whatsappNumber:
-        contactDraft.whatsappNumber.replace(/\D/g, '') || storeConfig.whatsappNumber,
-      shopAddress: contactDraft.shopAddress.trim() || storeConfig.shopAddress,
-      businessHours: contactDraft.businessHours.trim() || storeConfig.businessHours,
-      googleMapsUrl: contactDraft.googleMapsUrl.trim() || storeConfig.googleMapsUrl,
-      isPlaceholderConfig: false,
-    });
-    setIsEditingContact(false);
-  };
-
-  const cleanWhatsappDigits = storeConfig.whatsappNumber.replace(/\D/g, '');
-  const directWhatsappChatUrl = `https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
-    `Hello ${storeConfig.businessName}, I have a question regarding stationery availability.`
-  )}`;
+  const [selectedDesk, setSelectedDesk] = useState<string>('255715268391');
 
   const formattedInquiryText = [
     `*${storeConfig.businessName} — Customer Inquiry*`,
-    `Name: ${inquiryName.trim() || 'Visitor'}`,
-    `Contact: ${inquiryPhone.trim() || 'Not provided'}`,
+    `----------------------------------------`,
+    `Customer Name: ${inquiryName.trim() || 'Visitor'}`,
+    `Phone / WhatsApp: ${inquiryPhone.trim() || 'Not provided'}`,
     `Topic: ${inquirySubject}`,
-    `Message: ${inquiryMessage.trim() || 'Please share store availability details.'}`,
+    `Message: ${inquiryMessage.trim() || 'Please share stationery availability and wholesale prices.'}`,
+    `----------------------------------------`,
+    `Sent from OMEGA Official Website`,
   ].join('\n');
 
-  const inquiryWhatsappUrl = `https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
+  const inquiryWhatsappUrl = `https://wa.me/${selectedDesk}?text=${encodeURIComponent(
     formattedInquiryText
   )}`;
 
+  const handleSubmitInquiry = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (typeof window !== 'undefined') {
+      window.open(inquiryWhatsappUrl, '_blank', 'noopener,noreferrer');
+    }
+  };
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12 w-full max-w-full overflow-hidden">
       <SEOHead
-        title="Contact Us & Store Location"
-        description={`Contact ${storeConfig.businessName} via phone or WhatsApp, view business hours, and find directions on Google Maps.`}
+        title="Contact Us &amp; Official Desks — OMEGA Tanzania"
+        description="Official contact numbers (+255 715 268 391, +255 624 265 480, +255 699 032 777), WhatsApp ordering desks, and store location in Dar es Salaam."
       />
 
       {/* Header */}
       <div className="border-b border-stone-200 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="space-y-2 max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-wider text-red-700">
-            Store Directory · Editable Placeholders
+          <p className="text-xs font-bold uppercase tracking-wider text-red-700">
+            {language === 'sw' ? 'Mawasiliano Rasmi ya OMEGA' : 'Official OMEGA Tanzanian Directory'}
           </p>
-          <h1 className="text-3xl sm:text-4xl font-bold text-stone-900">
-            Contact &amp; Shop Location
+          <h1 className="text-3xl sm:text-4xl font-black text-stone-900 font-serif-luxury">
+            {t.contact}
           </h1>
           <p className="text-sm sm:text-base text-stone-600">
-            Reach us by phone, send a direct WhatsApp message, or visit our counter during business hours. All contact placeholders below can be updated by the store owner.
+            {language === 'sw'
+              ? 'Wasiliana nasi kwa simu, WhatsApp, au fika stoo yetu Dar es Salaam. Tunasambaza mikoani kote Tanzania.'
+              : 'Reach our sales and logistics desks via direct phone calls or WhatsApp. We deliver wholesale and retail orders across all regions of Tanzania.'}
           </p>
-        </div>
-
-        <div className="shrink-0">
-          {!isEditingContact ? (
-            <button
-              type="button"
-              onClick={handleOpenEdit}
-              className="px-4 py-2.5 bg-stone-900 text-white text-xs sm:text-sm font-semibold rounded-md hover:bg-stone-800 transition-colors inline-flex items-center gap-2"
-            >
-              <Edit3 className="w-4 h-4" />
-              <span>Edit Contact Placeholders</span>
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => setIsEditingContact(false)}
-              className="px-4 py-2.5 bg-white border border-stone-300 text-stone-700 text-xs sm:text-sm font-semibold rounded-md hover:bg-stone-50"
-            >
-              Cancel Editing
-            </button>
-          )}
         </div>
       </div>
 
-      {/* Inline Editor */}
-      {isEditingContact && (
-        <form
-          onSubmit={handleSaveContact}
-          className="bg-stone-50 border border-stone-300 rounded-lg p-6 space-y-5"
-        >
-          <div className="flex items-center justify-between border-b border-stone-200 pb-3">
-            <div>
-              <h2 className="text-base font-bold text-stone-900">
-                Edit Store Contact &amp; Location Details
-              </h2>
-              <p className="text-xs text-stone-600">
-                Update the placeholder phone number, WhatsApp order number, address, hours, and Google Maps link.
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={() => {
-                resetStoreConfigToDefault();
-                setIsEditingContact(false);
-              }}
-              className="text-xs font-semibold text-red-700 hover:text-red-800 inline-flex items-center gap-1"
+      {/* 3 Official Phone Desks Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Desk 1 */}
+        <div className="p-6 rounded-2xl bg-white border border-stone-200 shadow-sm space-y-4 hover:border-red-500 transition-all">
+          <div className="w-12 h-12 rounded-xl bg-red-50 text-red-700 flex items-center justify-center">
+            <Phone className="w-6 h-6" />
+          </div>
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-red-700 bg-red-50 px-2 py-0.5 rounded">
+              Sales Desk 1
+            </span>
+            <h3 className="text-lg font-black text-stone-900 mt-1">General Orders</h3>
+            <p className="text-base font-mono font-bold text-stone-800 mt-1">+255 715 268 391</p>
+            <p className="text-xs text-stone-500 mt-1">
+              Notebook and stationery retail orders &amp; product inquiries.
+            </p>
+          </div>
+          <div className="pt-2 flex items-center gap-2">
+            <a
+              href="tel:+255715268391"
+              className="flex-1 py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold text-center transition-colors"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
-              <span>Reset Defaults</span>
-            </button>
+              Voice Call
+            </a>
+            <a
+              href={`https://wa.me/255715268391?text=${encodeURIComponent(
+                'Habari OMEGA Desk 1, ninahitaji kuagiza madaftari.'
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold text-center transition-colors flex items-center justify-center gap-1"
+            >
+              <MessageCircle className="w-3.5 h-3.5 fill-white" />
+              <span>WhatsApp</span>
+            </a>
+          </div>
+        </div>
+
+        {/* Desk 2 */}
+        <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4 hover:border-blue-500 transition-all">
+          <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+            <Building2 className="w-6 h-6" />
+          </div>
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
+              Wholesale Desk 2
+            </span>
+            <h3 className="text-lg font-black text-slate-900 mt-1">Schools &amp; Tenders</h3>
+            <p className="text-base font-mono font-bold text-slate-800 mt-1">+255 624 265 480</p>
+            <p className="text-xs text-slate-500 mt-1">
+              Carton quantity bulk pricing for schools, colleges, and bookstores.
+            </p>
+          </div>
+          <div className="pt-2 flex items-center gap-2">
+            <a
+              href="tel:+255624265480"
+              className="flex-1 py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold text-center transition-colors"
+            >
+              Voice Call
+            </a>
+            <a
+              href={`https://wa.me/255624265480?text=${encodeURIComponent(
+                'Habari OMEGA Wholesale Desk 2, naomba quotation ya katoni za madaftari.'
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold text-center transition-colors flex items-center justify-center gap-1"
+            >
+              <MessageCircle className="w-3.5 h-3.5 fill-white" />
+              <span>WhatsApp</span>
+            </a>
+          </div>
+        </div>
+
+        {/* Desk 3 */}
+        <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4 hover:border-blue-500 transition-all">
+          <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center">
+            <MessageCircle className="w-6 h-6" />
+          </div>
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-amber-800 bg-amber-50 px-2 py-0.5 rounded">
+              Logistics Desk 3
+            </span>
+            <h3 className="text-lg font-black text-slate-900 mt-1">Support &amp; Mikoani</h3>
+            <p className="text-base font-mono font-bold text-slate-800 mt-1">+255 699 032 777</p>
+            <p className="text-xs text-slate-500 mt-1">
+              Parcel dispatch tracking, bus freight, and delivery confirmations.
+            </p>
+          </div>
+          <div className="pt-2 flex items-center gap-2">
+            <a
+              href="tel:+255699032777"
+              className="flex-1 py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold text-center transition-colors"
+            >
+              Voice Call
+            </a>
+            <a
+              href={`https://wa.me/255699032777?text=${encodeURIComponent(
+                'Habari OMEGA Desk 3, nina swali kuhusu kusafirisha mzigo mikoani.'
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold text-center transition-colors flex items-center justify-center gap-1"
+            >
+              <MessageCircle className="w-3.5 h-3.5 fill-white" />
+              <span>WhatsApp</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Split: Form & Location Details */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+        {/* Left Column: Direct WhatsApp Inquiry Form */}
+        <div className="lg:col-span-7 bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-sm space-y-6">
+          <div>
+            <h2 className="text-xl font-bold text-slate-900 font-serif-luxury">
+              {language === 'sw' ? 'Tuma Ujumbe Moja kwa Moja WhatsApp' : 'Send Instant WhatsApp Inquiry'}
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+              Fill in your requirement below and click send to open prefilled chat with our team.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <form onSubmit={handleSubmitInquiry} className="space-y-4">
+            {/* Target Desk Selection */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
+                Choose Department Desk
+              </label>
+              <select
+                value={selectedDesk}
+                onChange={(e) => setSelectedDesk(e.target.value)}
+                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-blue-600 font-medium"
+              >
+                <option value="255715268391">Desk 1: General Orders (+255 715 268 391)</option>
+                <option value="255624265480">Desk 2: Wholesale &amp; Schools (+255 624 265 480)</option>
+                <option value="255699032777">Desk 3: Logistics &amp; Upcountry (+255 699 032 777)</option>
+              </select>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
+                  {t.fullName}
+                </label>
+                <input
+                  type="text"
+                  value={inquiryName}
+                  onChange={(e) => setInquiryName(e.target.value)}
+                  placeholder="Your full name"
+                  className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-blue-600"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
+                  {t.phoneNumber}
+                </label>
+                <input
+                  type="tel"
+                  value={inquiryPhone}
+                  onChange={(e) => setInquiryPhone(e.target.value)}
+                  placeholder="+255..."
+                  className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-blue-600"
+                />
+              </div>
+            </div>
+
             <div className="space-y-1">
-              <label className="block text-xs font-semibold text-stone-800">
-                Display Phone Number
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
+                Subject / Topic
               </label>
               <input
                 type="text"
-                value={contactDraft.phoneNumber}
-                onChange={(e) =>
-                  setContactDraft({ ...contactDraft, phoneNumber: e.target.value })
-                }
-                className="w-full px-3 py-2 bg-white border border-stone-300 rounded-md text-sm font-mono-tabular"
+                value={inquirySubject}
+                onChange={(e) => setInquirySubject(e.target.value)}
+                placeholder="e.g. Quire 2, 3, 4 Carton Pricing"
+                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-blue-600"
               />
             </div>
 
             <div className="space-y-1">
-              <label className="block text-xs font-semibold text-stone-800">
-                WhatsApp Business Number (Country Code + Digits, e.g. 919876543210)
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
+                Your Message / Product List
               </label>
-              <input
-                type="text"
-                value={contactDraft.whatsappNumber}
-                onChange={(e) =>
-                  setContactDraft({ ...contactDraft, whatsappNumber: e.target.value })
-                }
-                className="w-full px-3 py-2 bg-white border border-stone-300 rounded-md text-sm font-mono-tabular"
-              />
-            </div>
-          </div>
-
-          <div className="space-y-1">
-            <label className="block text-xs font-semibold text-stone-800">
-              Shop Street Address
-            </label>
-            <input
-              type="text"
-              value={contactDraft.shopAddress}
-              onChange={(e) =>
-                setContactDraft({ ...contactDraft, shopAddress: e.target.value })
-              }
-              className="w-full px-3 py-2 bg-white border border-stone-300 rounded-md text-sm"
-            />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="space-y-1">
-              <label className="block text-xs font-semibold text-stone-800">
-                Business Hours
-              </label>
-              <input
-                type="text"
-                value={contactDraft.businessHours}
-                onChange={(e) =>
-                  setContactDraft({ ...contactDraft, businessHours: e.target.value })
-                }
-                className="w-full px-3 py-2 bg-white border border-stone-300 rounded-md text-sm"
+              <textarea
+                rows={4}
+                value={inquiryMessage}
+                onChange={(e) => setInquiryMessage(e.target.value)}
+                placeholder="Write your notebook quantity, size, or delivery location..."
+                className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-blue-600"
               />
             </div>
 
-            <div className="space-y-1">
-              <label className="block text-xs font-semibold text-stone-800">
-                Google Maps Share Link
-              </label>
-              <input
-                type="url"
-                value={contactDraft.googleMapsUrl}
-                onChange={(e) =>
-                  setContactDraft({ ...contactDraft, googleMapsUrl: e.target.value })
-                }
-                className="w-full px-3 py-2 bg-white border border-stone-300 rounded-md text-sm"
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-end">
             <button
               type="submit"
-              className="px-5 py-2.5 bg-red-700 text-white text-xs sm:text-sm font-semibold rounded-md hover:bg-red-800 inline-flex items-center gap-2"
+              className="w-full py-3.5 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-md shadow-emerald-700/25"
             >
-              <Check className="w-4 h-4" />
-              <span>Save Contact Details</span>
+              <MessageCircle className="w-4 h-4 fill-white" />
+              <span>Launch WhatsApp Chat</span>
             </button>
-          </div>
-        </form>
-      )}
+          </form>
+        </div>
 
-      {/* 2-Column Split */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-        {/* Left 6 Columns */}
-        <div className="lg:col-span-6 space-y-4">
-          {/* Phone */}
-          <div className="p-6 bg-white border border-stone-200 rounded-lg flex items-start gap-4">
-            <div className="w-10 h-10 rounded-md bg-red-50 text-red-700 flex items-center justify-center shrink-0">
-              <Phone className="w-5 h-5" />
+        {/* Right Column: Physical Location & Details */}
+        <div className="lg:col-span-5 space-y-4">
+          <div className="p-6 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-2">
+            <div className="flex items-center gap-2 text-blue-700">
+              <MapPin className="w-5 h-5" />
+              <h3 className="font-bold text-sm uppercase tracking-wider text-slate-900">
+                Shop &amp; Warehouse Address
+              </h3>
             </div>
-            <div className="space-y-1">
-              <h2 className="text-sm font-semibold text-stone-900">1. Phone Number</h2>
-              <p className="text-base font-bold text-stone-900 font-mono-tabular">
-                {storeConfig.phoneNumber}
-              </p>
-              <p className="text-xs text-stone-500">
-                Call our shop counter during business hours for immediate stock checks.
-              </p>
-            </div>
-          </div>
-
-          {/* WhatsApp */}
-          <div className="p-6 bg-white border border-stone-200 rounded-lg flex items-start gap-4">
-            <div className="w-10 h-10 rounded-md bg-red-50 text-red-700 flex items-center justify-center shrink-0">
-              <MessageSquare className="w-5 h-5" />
-            </div>
-            <div className="space-y-3 flex-1">
-              <div>
-                <h2 className="text-sm font-semibold text-stone-900">
-                  2. WhatsApp Business Order Desk
-                </h2>
-                <p className="text-xs text-stone-600 mt-0.5">
-                  Configured Number:{' '}
-                  <span className="font-mono-tabular font-semibold text-stone-900">
-                    +{cleanWhatsappDigits}
-                  </span>
-                </p>
-              </div>
+            <p className="text-sm text-slate-700 leading-relaxed">
+              {language === 'sw' ? storeConfig.shopAddressSw : storeConfig.shopAddress}
+            </p>
+            <div className="pt-2">
               <a
-                href={directWhatsappChatUrl}
+                href={storeConfig.googleMapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-red-700 text-white text-xs sm:text-sm font-semibold rounded-md hover:bg-red-800 transition-colors"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900"
               >
-                <MessageSquare className="w-4 h-4" />
-                <span>Chat with Store on WhatsApp</span>
+                <span>Open on Google Maps</span>
+                <ExternalLink className="w-3.5 h-3.5" />
               </a>
             </div>
           </div>
 
-          {/* Address */}
-          <div className="p-6 bg-white border border-stone-200 rounded-lg flex items-start gap-4">
-            <div className="w-10 h-10 rounded-md bg-red-50 text-red-700 flex items-center justify-center shrink-0">
-              <MapPin className="w-5 h-5" />
-            </div>
-            <div className="space-y-1">
-              <h2 className="text-sm font-semibold text-stone-900">3. Shop Address</h2>
-              <p className="text-sm text-stone-800 leading-relaxed">
-                {storeConfig.shopAddress}
-              </p>
-            </div>
-          </div>
-
-          {/* Business Hours */}
-          <div className="p-6 bg-white border border-stone-200 rounded-lg flex items-start gap-4">
-            <div className="w-10 h-10 rounded-md bg-red-50 text-red-700 flex items-center justify-center shrink-0">
+          <div className="p-6 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-2">
+            <div className="flex items-center gap-2 text-emerald-700">
               <Clock className="w-5 h-5" />
+              <h3 className="font-bold text-sm uppercase tracking-wider text-slate-900">
+                {t.workingHours}
+              </h3>
             </div>
-            <div className="space-y-1">
-              <h2 className="text-sm font-semibold text-stone-900">4. Business Hours</h2>
-              <p className="text-sm text-stone-800 leading-relaxed">
-                {storeConfig.businessHours}
-              </p>
-            </div>
-          </div>
-
-          {/* Google Maps Link */}
-          <div className="p-6 bg-stone-50 border border-stone-200 rounded-lg flex items-center justify-between gap-4">
-            <div className="space-y-1">
-              <h2 className="text-sm font-semibold text-stone-900">
-                5. Google Maps Directions
-              </h2>
-              <p className="text-xs text-stone-600">
-                View our location and get turn-by-turn directions on Google Maps.
-              </p>
-            </div>
-            <a
-              href={storeConfig.googleMapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2.5 bg-white border border-stone-300 text-stone-900 text-xs sm:text-sm font-semibold rounded-md hover:bg-stone-100 transition-colors inline-flex items-center gap-2 shrink-0"
-            >
-              <span>Open Google Maps</span>
-              <ExternalLink className="w-4 h-4" />
-            </a>
-          </div>
-        </div>
-
-        {/* Right 6 Columns */}
-        <div className="lg:col-span-6 bg-stone-50 border border-stone-200 rounded-lg p-6 sm:p-8 space-y-5">
-          <div className="border-b border-stone-200 pb-4">
-            <h2 className="text-xl font-bold text-stone-900">
-              Send a Custom Booklist or Stock Inquiry
-            </h2>
-            <p className="text-xs sm:text-sm text-stone-600 mt-1">
-              Looking for a specific school book set, bulk OMEGA exercise book cartons, or office stationery quote? Fill in the details below to open a pre-filled WhatsApp message.
+            <p className="text-sm text-slate-700 leading-relaxed">
+              {language === 'sw' ? storeConfig.businessHoursSw : storeConfig.businessHours}
             </p>
           </div>
 
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <label
-                  htmlFor="inq-name"
-                  className="block text-xs font-semibold text-stone-800"
-                >
-                  Your Name
-                </label>
-                <input
-                  id="inq-name"
-                  type="text"
-                  value={inquiryName}
-                  onChange={(e) => setInquiryName(e.target.value)}
-                  placeholder="Enter your name"
-                  className="w-full px-3.5 py-2.5 bg-white border border-stone-300 rounded-md text-sm"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label
-                  htmlFor="inq-phone"
-                  className="block text-xs font-semibold text-stone-800"
-                >
-                  Phone Number
-                </label>
-                <input
-                  id="inq-phone"
-                  type="tel"
-                  value={inquiryPhone}
-                  onChange={(e) => setInquiryPhone(e.target.value)}
-                  placeholder="10-digit mobile number"
-                  className="w-full px-3.5 py-2.5 bg-white border border-stone-300 rounded-md text-sm font-mono-tabular"
-                />
-              </div>
+          <div className="p-6 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-2">
+            <div className="flex items-center gap-2 text-amber-700">
+              <Mail className="w-5 h-5" />
+              <h3 className="font-bold text-sm uppercase tracking-wider text-slate-900">
+                Official Email
+              </h3>
             </div>
-
-            <div className="space-y-1.5">
-              <label
-                htmlFor="inq-subject"
-                className="block text-xs font-semibold text-stone-800"
-              >
-                Inquiry Category
-              </label>
-              <select
-                id="inq-subject"
-                value={inquirySubject}
-                onChange={(e) => setInquirySubject(e.target.value)}
-                className="w-full px-3.5 py-2.5 bg-white border border-stone-300 rounded-md text-sm"
-              >
-                <option value="School Booklist / Bulk Stationery Inquiry">
-                  School Booklist / Bulk Stationery Inquiry
-                </option>
-                <option value="OMEGA Exercise Books Availability">
-                  OMEGA Exercise Books Availability
-                </option>
-                <option value="Office Registers & Supplies Quote">
-                  Office Registers &amp; Supplies Quote
-                </option>
-                <option value="Store Pickup / Timing Question">
-                  Store Pickup / Timing Question
-                </option>
-              </select>
-            </div>
-
-            <div className="space-y-1.5">
-              <label
-                htmlFor="inq-message"
-                className="block text-xs font-semibold text-stone-800"
-              >
-                Message / Item List
-              </label>
-              <textarea
-                id="inq-message"
-                rows={4}
-                value={inquiryMessage}
-                onChange={(e) => setInquiryMessage(e.target.value)}
-                placeholder="List the exercise books, notebooks, or stationery items you need..."
-                className="w-full px-3.5 py-2.5 bg-white border border-stone-300 rounded-md text-sm"
-              />
-            </div>
-
-            <a
-              href={inquiryWhatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full px-5 py-3 bg-red-700 text-white text-sm font-semibold rounded-md hover:bg-red-800 transition-colors flex items-center justify-center gap-2"
-            >
-              <MessageSquare className="w-4 h-4" />
-              <span>Send Inquiry via WhatsApp</span>
-            </a>
+            <p className="text-sm font-mono text-slate-800">
+              {storeConfig.emailAddress}
+            </p>
           </div>
         </div>
       </div>

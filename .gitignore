@@ -1,6 +1,12 @@
 node_modules
+server/node_modules
 dist
 dist-ssr
 *.local
 .env
+.env.*
+!.env.example
+server/.env
+server/.env.*
+!server/.env.example
 .DS_Store

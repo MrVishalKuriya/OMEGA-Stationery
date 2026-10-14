@@ -8,6 +8,7 @@ import { ProductDetailsPage } from './pages/ProductDetailsPage';
 import { CartAndCheckoutPage } from './pages/CartAndCheckoutPage';
 import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
+import { WishlistPage } from './pages/WishlistPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
 
 const ScrollToTop: React.FC = () => {
@@ -54,9 +55,13 @@ export default function App() {
             <Route path="/catalog" element={<CatalogPage />} />
             <Route path="/product/:id" element={<ProductDetailsPage />} />
             <Route path="/cart" element={<CartAndCheckoutPage />} />
+            <Route path="/wishlist" element={<WishlistPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
-            <Route path="/admin" element={<AdminDashboardPage />} />
+            {/* Dedicated obfuscated administrative portal (hidden from public URLs) */}
+            <Route path="/omega-hq-portal-2026" element={<AdminDashboardPage />} />
+            {/* Explicit 404 for standard /admin scans */}
+            <Route path="/admin" element={<NotFoundPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Layout>

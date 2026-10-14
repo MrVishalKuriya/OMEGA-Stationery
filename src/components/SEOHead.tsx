@@ -59,7 +59,7 @@ export const SEOHead: React.FC<SEOHeadProps> = ({ title, description, product })
         image: typeof window !== 'undefined' ? window.location.origin + product.image : product.image,
         offers: {
           '@type': 'Offer',
-          priceCurrency: 'INR',
+          priceCurrency: 'TZS',
           price: effectivePrice,
           availability: availabilityMap[product.stockStatus] || 'https://schema.org/InStock',
           seller: {

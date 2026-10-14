@@ -16,32 +16,58 @@ export const IMAGES = {
 };
 
 export const INITIAL_STORE_CONFIG: StoreConfig = {
-  businessName: 'OMEGA Stationery & Books',
+  businessName: 'OMEGA Writing Notebooks & Stationery',
   logoText: 'OMEGA',
-  tagline: 'Write Beautiful Ideas Into Life',
-  brandSubtitle: 'PAPER & ACADEMIC STATIONERY · EST. 1998',
+  tagline: 'Quality for Every Page',
+  taglineSw: 'Ubora kwa Kila Ukurasa',
+  brandSubtitle: 'PREMIER TANZANIAN WRITING NOTEBOOKS · EST. 1998',
+  brandSubtitleSw: 'MADAFTARI BORA YA UANDISHI TANZANIA · TANGU 1998',
   announcementText:
-    'FREE DELIVERY ON ORDERS OVER TSh 100,000 | TIMELESS QUALITY FOR BRIGHTER MINDS | UNLOCK 10% OFF YOUR FIRST ORDER →',
-  phoneNumber: '+255 715 268 391 / +255 699 032 777',
+    'QUALITY FOR EVERY PAGE | WHOLESALE & RETAIL ORDERS ACROSS TANZANIA | OFFICIAL OMEGA DISTRIBUTOR',
+  announcementTextSw:
+    'UBORA KWA KILA UKURASA | ODA ZA JUMLA NA REJAREJA TANZANIA NZIMA | MSAMBAZAJI HALISI WA OMEGA',
+  phoneNumber: '+255 715 268 391',
+  secondaryPhone: '+255 624 265 480',
+  thirdPhone: '+255 699 032 777',
+  phoneNumbers: ['+255 715 268 391', '+255 624 265 480', '+255 699 032 777'],
   whatsappNumber: '255715268391',
-  shopAddress: 'P.O. Box 10424, Dar es Salaam, Tanzania',
+  whatsappNumbers: [
+    { label: 'Sales & Orders 1', number: '+255 715 268 391', digits: '255715268391' },
+    { label: 'Wholesale Desk 2', number: '+255 624 265 480', digits: '255624265480' },
+    { label: 'Customer Support 3', number: '+255 699 032 777', digits: '255699032777' },
+  ],
+  shopAddress: 'Kariakoo / City Center, P.O. Box 10424, Dar es Salaam, Tanzania',
+  shopAddressSw: 'Kariakoo / City Center, S.L.P 10424, Dar es Salaam, Tanzania',
   businessHours: 'Monday – Saturday: 8:00 AM – 6:30 PM · Sunday: Closed',
+  businessHoursSw: 'Jumatatu – Jumamosi: Saa 2:00 Asubuhi – Saa 12:30 Jioni · Jumapili: Tumefungwa',
   googleMapsUrl: 'https://maps.google.com/?q=Dar+es+Salaam+Stationery+Market',
   emailAddress: 'indigoprinter06423@gmail.com',
   currencySymbol: 'TSh',
-  freeDeliveryThreshold: 100000,
+  freeDeliveryThreshold: 150000,
   standardDeliveryFee: 5000,
   aboutIntro:
-    'OMEGA - Ubora Unaouaminiwa. Tunatoa Counter Books, Exercise Books na vifaa vya ofisi vyenye ubora wa hali ya juu, zinazofaa kwa shule, vyuo, ofisi na biashara nchini kote. OMEGA ni chaguo bora kwa maandishi bora tangu 1998.',
+    'OMEGA - Ubora Unaouaminiwa. We manufacture and supply heavy-duty Counter Books, Exercise Books, Registers, and Bahasha envelopes designed for schools, universities, offices, and institutions throughout Tanzania since 1998.',
+  aboutIntroSw:
+    'OMEGA - Ubora Unaouaminiwa. Tunatengeneza na kusambaza Counter Books zenye majalada magumu, Madaftari ya Mazoezi, Rejesta, na Bahasha nzito kwa ajili ya shule, vyuo, ofisi na taasisi nchini kote Tanzania tangu mwaka 1998.',
   aboutProductRange:
+    'Our catalog features Hardcover Counter Books (Q2, Q3, Q4), Exercise Books (32, 80, 100, 200 Pages in Single Line, Double Line, Square Grid), Heavy Kraft Bahasha (A3, A4, A5, A6), PVC & Manila Files, Examination Ruled Paper, and Geometry Mathematical Sets.',
+  aboutProductRangeSw:
     'Mkusanyiko wetu unajumuisha Counter Books za jalada gumu (Q2, Q3, Q4), Madaftari ya OMEGA (Kurasa 32, 80, 100, 200 Single Line, Double Line, Square), Bahasha nzito (A3, A4, A5, A6), Mafaili ya PVC na Manila, Karatasi za mitihani na vifaa vya kijiometri.',
   aboutCustomerService:
-    'Tunatoa huduma ya haraka kwa wateja binafsi, shule, na mashirika ya serikali na binafsi. Agiza moja kwa moja mtandaoni au kupitia WhatsApp kwa namba +255 715 268 391.',
+    'We provide prompt sales and logistics service for retailers, schools, colleges, and bulk wholesale tenders. Direct instant ordering via WhatsApp on any of our official numbers: +255 715 268 391, +255 624 265 480, or +255 699 032 777.',
+  aboutCustomerServiceSw:
+    'Tunatoa huduma ya haraka kwa wauzaji wa rejareja, shule, vyuo, na zabuni za jumla. Agiza mara moja kupitia WhatsApp kwa namba zetu rasmi: +255 715 268 391, +255 624 265 480, au +255 699 032 777.',
   aboutValues: [
-    'Ubora wa Hali ya Juu (High-GSM Paper): Karatasi ngumu isiyopenyeza wino.',
-    'Uimara wa Jalada (Stiff & Hardcover): Majalada imara yanayodumu miaka mingi.',
-    'Indigo Precision Printing: Mistari nadhifu iliyonyooka kwa viwango vya elimu.',
-    'Usambazaji wa Haraka (Nationwide Delivery): Usafirishaji ndani ya Dar es Salaam na mikoani kote.',
+    'High-GSM Bleed-Proof Paper: Rigid opacity that resists fountain pen & gel ink bleed.',
+    'Stiff & Rigid Hardcovers: Thread-sewn binding built to withstand daily handling for years.',
+    'Indigo Precision Ruling: Accurate, clean margins and ruling conforming to educational standards.',
+    'Nationwide Delivery: Fast dispatch within Dar es Salaam and reliable bus cargo parcel service to all upcountry regions.',
+  ],
+  aboutValuesSw: [
+    'Ubora wa Hali ya Juu (High-GSM Paper): Karatasi ngumu isiyopenyeza wino wa kalamu au jeli.',
+    'Uimara wa Jalada (Stiff Hardcover): Majalada imara ya kushonwa kwa nyuzi yanayodumu miaka mingi.',
+    'Mistari Sahihi ya Indigo: Mistari nadhifu iliyonyooka kwa viwango rasmi vya elimu.',
+    'Usambazaji Tanzania Nzima: Usafirishaji wa haraka ndani ya Dar es Salaam na huduma ya mabasi mikoani kote.',
   ],
   isPlaceholderConfig: false,
 };

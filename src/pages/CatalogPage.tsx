@@ -1,21 +1,25 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { Search, SlidersHorizontal, RotateCcw, Settings } from 'lucide-react';
+import { Search, SlidersHorizontal, RotateCcw, Settings, Filter } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { PRODUCT_CATEGORIES, ProductCategory } from '../types/store';
 import { ProductCard } from '../components/ProductCard';
 import { SEOHead } from '../components/SEOHead';
+import { TRANSLATIONS } from '../data/translations';
 
 type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'name-asc';
 
 export const CatalogPage: React.FC = () => {
-  const { products } = useStore();
+  const { products, language } = useStore();
+  const t = TRANSLATIONS[language];
   const [searchParams, setSearchParams] = useSearchParams();
 
   const initialCategory = searchParams.get('category') || 'All';
   const initialQuery = searchParams.get('q') || '';
+  const initialQuire = searchParams.get('quire') || 'All';
 
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
+  const [selectedQuire, setSelectedQuire] = useState<string>(initialQuire);
   const [searchQuery, setSearchQuery] = useState<string>(initialQuery);
   const [sortBy, setSortBy] = useState<SortOption>('featured');
   const [inStockOnly, setInStockOnly] = useState<boolean>(false);
@@ -23,6 +27,8 @@ export const CatalogPage: React.FC = () => {
   useEffect(() => {
     const catParam = searchParams.get('category');
     const qParam = searchParams.get('q');
+    const quireParam = searchParams.get('quire');
+
     if (catParam && PRODUCT_CATEGORIES.includes(catParam as ProductCategory)) {
       setSelectedCategory(catParam);
     } else if (!catParam) {
@@ -30,6 +36,11 @@ export const CatalogPage: React.FC = () => {
     }
     if (qParam !== null) {
       setSearchQuery(qParam);
+    }
+    if (quireParam) {
+      setSelectedQuire(quireParam);
+    } else {
+      setSelectedQuire('All');
     }
   }, [searchParams]);
 
@@ -40,6 +51,17 @@ export const CatalogPage: React.FC = () => {
       nextParams.delete('category');
     } else {
       nextParams.set('category', category);
+    }
+    setSearchParams(nextParams, { replace: true });
+  };
+
+  const handleQuireChange = (quire: string) => {
+    setSelectedQuire(quire);
+    const nextParams = new URLSearchParams(searchParams);
+    if (quire === 'All') {
+      nextParams.delete('quire');
+    } else {
+      nextParams.set('quire', quire);
     }
     setSearchParams(nextParams, { replace: true });
   };
@@ -57,6 +79,7 @@ export const CatalogPage: React.FC = () => {
 
   const resetFilters = () => {
     setSelectedCategory('All');
+    setSelectedQuire('All');
     setSearchQuery('');
     setSortBy('featured');
     setInStockOnly(false);
@@ -69,6 +92,12 @@ export const CatalogPage: React.FC = () => {
     const filtered = products.filter((p) => {
       if (selectedCategory !== 'All' && p.category !== selectedCategory) {
         return false;
+      }
+      if (selectedQuire !== 'All') {
+        const matchesQuire =
+          p.quire?.toLowerCase().includes(selectedQuire.toLowerCase()) ||
+          p.name.toLowerCase().includes(selectedQuire.toLowerCase());
+        if (!matchesQuire) return false;
       }
       if (inStockOnly && p.stockStatus === 'Out of Stock') {
         return false;
@@ -97,79 +126,70 @@ export const CatalogPage: React.FC = () => {
       const scoreB = (b.featured ? 2 : 0) + (b.bestSeller ? 1 : 0);
       return scoreB - scoreA;
     });
-  }, [products, selectedCategory, searchQuery, sortBy, inStockOnly]);
+  }, [products, selectedCategory, selectedQuire, searchQuery, sortBy, inStockOnly]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 w-full max-w-full overflow-hidden">
       <SEOHead
         title={
           selectedCategory === 'All'
-            ? 'Product Catalog (35+ Books & Stationery Items)'
-            : `${selectedCategory} – Stationery Catalog`
+            ? 'Stationery & Books Catalogue — OMEGA Tanzania'
+            : `${selectedCategory} — OMEGA Catalogue`
         }
-        description="Browse exercise books, hardcover notebooks, school stationery, pens, pencils, art supplies, and office essentials with INR pricing."
+        description="Browse genuine OMEGA Counter Books (Q2, Q3, Q4), Exercise Books, Bahasha, Registers, and School Stationery with TZS pricing."
       />
 
       {/* Page Header */}
-      <div className="border-b border-stone-200 pb-6 flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+      <div className="border-b border-slate-200 pb-6 flex flex-col lg:flex-row lg:items-end justify-between gap-4">
         <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs text-stone-500">
-            <Link to="/" className="hover:text-stone-900">
-              Home
+          <div className="flex items-center gap-2 text-xs text-slate-500 font-semibold">
+            <Link to="/" className="hover:text-slate-900">
+              {t.home}
             </Link>
             <span aria-hidden="true">/</span>
-            <span className="text-stone-900 font-medium">Product Catalog</span>
+            <span className="text-slate-900 font-bold">{t.catalog}</span>
           </div>
-          <h1 className="font-serif-luxury text-3xl sm:text-4xl font-bold text-[#2d0910]">
-            Stationery &amp; Books Catalog
+          <h1 className="font-cinzel text-3xl sm:text-4xl font-black text-stone-900">
+            {language === 'sw' ? 'Katalogi ya Vitabu & Stationery' : 'Stationery & Notebooks Catalogue'}
           </h1>
-          <p className="text-sm text-stone-600 max-w-2xl font-normal">
-            Explore authentic OMEGA Counter Books, Indigo exercise books, kraft bahasha envelopes, and school stationery manufactured for enduring quality.
+          <p className="text-sm text-stone-600 max-w-2xl font-normal font-outfit">
+            {language === 'sw'
+              ? 'Tazama madaftari asilia ya OMEGA yenye majalada magumu, madaftari ya mazoezi, na bahasha nzito kwa bei za kiwanda nchini Tanzania.'
+              : 'Explore authentic OMEGA Counter Books, school exercise notebooks, heavy kraft bahasha, and registers manufactured for enduring quality.'}
           </p>
         </div>
 
-        <div className="flex items-center gap-3 text-xs text-stone-600 shrink-0">
-          <span className="font-mono-tabular font-semibold text-stone-900">
-            Showing {filteredProducts.length} of {products.length} items
+        <div className="flex items-center gap-3 text-xs text-stone-600 shrink-0 font-space">
+          <span className="font-bold text-rose-700 bg-rose-50 border border-rose-200 px-3 py-1 rounded-full">
+            {filteredProducts.length} {language === 'sw' ? 'Bidhaa Zimepatikana' : 'Products Available'}
           </span>
-          <span aria-hidden="true">·</span>
-          <Link
-            to="/admin"
-            className="inline-flex items-center gap-1 text-[#7c293a] hover:text-[#4a121c] font-semibold"
-          >
-            <Settings className="w-3.5 h-3.5" />
-            <span>Manage Inventory</span>
-          </Link>
         </div>
       </div>
 
-      {/* Controls */}
-      <div className="bg-[#fcfaf7] border border-[#ebdcd0] rounded-xl p-4 sm:p-5 space-y-4">
+      {/* Search & Sort Controls Bar */}
+      <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 space-y-4 shadow-xs">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
           {/* Search Input */}
           <div className="md:col-span-6 relative">
-            <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="search"
               value={searchQuery}
               onChange={(e) => handleSearchChange(e.target.value)}
-              placeholder="Search by product name, ruling type, or SKU (e.g., OMG-CB-Q2)..."
+              placeholder={t.searchPlaceholder}
               aria-label="Search products"
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#ebdcd0] rounded-lg text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-[#4a121c]"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-600 focus:bg-white transition-all"
             />
           </div>
 
           {/* Sort Select */}
           <div className="md:col-span-3 flex items-center gap-2">
-            <SlidersHorizontal className="w-4 h-4 text-stone-500 shrink-0" />
-            <label htmlFor="sort-select" className="sr-only">
-              Sort products
-            </label>
+            <SlidersHorizontal className="w-4 h-4 text-slate-500 shrink-0" />
             <select
               id="sort-select"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="w-full px-3 py-2.5 bg-white border border-[#ebdcd0] rounded-lg text-sm text-stone-900 focus:outline-none focus:border-[#4a121c]"
+              className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-blue-600"
             >
               <option value="featured">Sort: Featured &amp; Popular</option>
               <option value="price-asc">Price: Low to High</option>
@@ -180,21 +200,21 @@ export const CatalogPage: React.FC = () => {
 
           {/* Stock Filter & Reset */}
           <div className="md:col-span-3 flex items-center justify-between md:justify-end gap-4">
-            <label className="inline-flex items-center gap-2 text-xs sm:text-sm text-stone-700 cursor-pointer select-none">
+            <label className="inline-flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer select-none">
               <input
                 type="checkbox"
                 checked={inStockOnly}
                 onChange={(e) => setInStockOnly(e.target.checked)}
-                className="w-4 h-4 rounded border-stone-300 text-red-700 focus:ring-red-700"
+                className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-600"
               />
-              <span>In Stock Only</span>
+              <span>{language === 'sw' ? 'Ipo Stoo Pekee' : 'In Stock Only'}</span>
             </label>
 
-            {(selectedCategory !== 'All' || searchQuery || sortBy !== 'featured' || inStockOnly) && (
+            {(selectedCategory !== 'All' || selectedQuire !== 'All' || searchQuery || inStockOnly) && (
               <button
                 type="button"
                 onClick={resetFilters}
-                className="text-xs font-semibold text-red-700 hover:text-red-800 inline-flex items-center gap-1 whitespace-nowrap shrink-0"
+                className="text-xs font-bold text-rose-600 hover:text-rose-800 inline-flex items-center gap-1 whitespace-nowrap shrink-0"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Reset</span>
@@ -203,7 +223,28 @@ export const CatalogPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Category Buttons */}
+        {/* Quire Filter Buttons (Q2, Q3, Q4) */}
+        <div className="pt-2 border-t border-slate-100 flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+          <span className="font-bold text-slate-500 uppercase tracking-wider text-[11px] shrink-0">
+            Quire Filter:
+          </span>
+          {['All', 'Q2', 'Q3', 'Q4'].map((q) => (
+            <button
+              key={q}
+              type="button"
+              onClick={() => handleQuireChange(q)}
+              className={`px-3 py-1 rounded-lg font-bold text-xs transition-colors shrink-0 ${
+                selectedQuire === q
+                  ? 'bg-amber-600 text-white shadow-xs'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+              }`}
+            >
+              {q === 'All' ? 'All Quires' : `${q} (${q === 'Q2' ? '192p' : q === 'Q3' ? '288p' : '384p'})`}
+            </button>
+          ))}
+        </div>
+
+        {/* Category Buttons Bar */}
         <div
           role="group"
           aria-label="Filter by product category"
@@ -212,13 +253,13 @@ export const CatalogPage: React.FC = () => {
           <button
             type="button"
             onClick={() => handleCategoryChange('All')}
-            className={`px-3.5 py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shrink-0 uppercase tracking-wider ${
+            className={`px-3.5 py-2 text-xs font-bold rounded-xl transition-colors whitespace-nowrap shrink-0 uppercase tracking-wider ${
               selectedCategory === 'All'
-                ? 'bg-[#4a121c] text-white shadow-xs'
-                : 'bg-white text-stone-700 border border-[#ebdcd0] hover:border-stone-400'
+                ? 'bg-red-700 text-white shadow-xs'
+                : 'bg-stone-50 text-stone-700 border border-stone-200 hover:border-red-400'
             }`}
           >
-            All Categories ({products.length})
+            {t.allProducts} ({products.length})
           </button>
 
           {PRODUCT_CATEGORIES.map((category) => {
@@ -229,10 +270,10 @@ export const CatalogPage: React.FC = () => {
                 key={category}
                 type="button"
                 onClick={() => handleCategoryChange(category)}
-                className={`px-3.5 py-2 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap shrink-0 uppercase tracking-wider ${
+                className={`px-3.5 py-2 text-xs font-bold rounded-xl transition-colors whitespace-nowrap shrink-0 uppercase tracking-wider ${
                   isSelected
-                    ? 'bg-[#4a121c] text-white shadow-xs'
-                    : 'bg-white text-stone-700 border border-[#ebdcd0] hover:border-stone-400'
+                    ? 'bg-red-700 text-white shadow-xs'
+                    : 'bg-stone-50 text-stone-700 border border-stone-200 hover:border-red-400'
                 }`}
               >
                 {category} ({count})
@@ -244,23 +285,25 @@ export const CatalogPage: React.FC = () => {
 
       {/* Grid or Empty State */}
       {filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
       ) : (
-        <div className="bg-stone-50 border border-stone-200 rounded-lg p-12 text-center max-w-lg mx-auto my-8 space-y-4">
-          <h2 className="text-xl font-bold text-stone-900">
-            No matching stationery products found
+        <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center max-w-lg mx-auto my-8 space-y-4 shadow-xs">
+          <h2 className="text-xl font-black text-slate-900">
+            {language === 'sw' ? 'Hakuna bidhaa inayolingana' : 'No matching stationery products found'}
           </h2>
-          <p className="text-sm text-stone-600">
-            We could not find any items matching your current search or category filters. Try clearing your search query or viewing all categories.
+          <p className="text-sm text-slate-600">
+            {language === 'sw'
+              ? 'Jaribu kuondoa maneno ya utafutaji au chagua aina zote za bidhaa kuona katalogi nzima.'
+              : 'Try clearing your search query or reset filters to view all products in the catalogue.'}
           </p>
           <button
             type="button"
             onClick={resetFilters}
-            className="px-5 py-2.5 bg-red-700 text-white text-xs sm:text-sm font-semibold rounded-md hover:bg-red-800 transition-colors inline-flex items-center gap-2"
+            className="px-6 py-2.5 bg-[#0f2342] text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl hover:bg-[#1e3a8a] transition-colors inline-flex items-center gap-2"
           >
             <RotateCcw className="w-4 h-4" />
             <span>Reset All Filters</span>

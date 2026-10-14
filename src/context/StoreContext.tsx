@@ -6,6 +6,7 @@ import {
   StockStatus,
   CustomerOrderInput,
   DemoOrderRecord,
+  Language,
 } from '../types/store';
 import { INITIAL_PRODUCTS, INITIAL_STORE_CONFIG } from '../data/products';
 
@@ -14,9 +15,10 @@ const STORAGE_KEYS = {
   CONFIG: 'omega_config_v2',
   CART: 'omega_cart_v2',
   ORDERS: 'omega_orders_v2',
+  WISHLIST: 'omega_wishlist_v2',
 };
 
-interface DetailedCartItem {
+export interface DetailedCartItem {
   product: Product;
   quantity: number;
   effectiveUnitPrice: number;
@@ -26,6 +28,11 @@ interface DetailedCartItem {
 interface StoreContextType {
   products: Product[];
   storeConfig: StoreConfig;
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  toggleLanguage: () => void;
+  activePhoneIndex: number;
+  setActivePhoneIndex: (idx: number) => void;
   cart: CartItem[];
   detailedCart: DetailedCartItem[];
   demoOrders: DemoOrderRecord[];
@@ -35,10 +42,28 @@ interface StoreContextType {
   cartTotal: number;
   toastMessage: string | null;
   clearToast: () => void;
-  addToCart: (productId: string, quantity?: number) => void;
+  showToast: (msg: string) => void;
+  addToCart: (productId: string, quantity?: number, openDrawer?: boolean) => void;
   removeFromCart: (productId: string) => void;
   updateCartQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
+  // Wishlist feature
+  wishlist: string[];
+  wishlistCount: number;
+  toggleWishlist: (productId: string) => void;
+  isInWishlist: (productId: string) => boolean;
+  clearWishlist: () => void;
+  // Quick View Modal
+  quickViewProduct: Product | null;
+  setQuickViewProduct: (product: Product | null) => void;
+  // Drawers & Modals
+  isCartDrawerOpen: boolean;
+  setIsCartDrawerOpen: (open: boolean) => void;
+  isWishlistModalOpen: boolean;
+  setIsWishlistModalOpen: (open: boolean) => void;
+  isTrackingModalOpen: boolean;
+  setIsTrackingModalOpen: (open: boolean) => void;
+  // Catalog Management
   addProduct: (product: Omit<Product, 'id'>) => Product;
   updateProduct: (product: Product) => void;
   deleteProduct: (productId: string) => void;
@@ -94,6 +119,19 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     ];
   });
 
+  const [wishlist, setWishlist] = useState<string[]>(() => {
+    try {
+      const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEYS.WISHLIST) : null;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) return parsed;
+      }
+    } catch {
+      // Fallback
+    }
+    return ['prod-omega-cb-q3', 'prod-omega-bahasha-a4'];
+  });
+
   const [demoOrders, setDemoOrders] = useState<DemoOrderRecord[]>(() => {
     try {
       const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEYS.ORDERS) : null;
@@ -107,7 +145,37 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return [];
   });
 
+  const [language, setLanguageState] = useState<Language>(() => {
+    try {
+      const saved = typeof window !== 'undefined' ? localStorage.getItem('omega_language_v2') : null;
+      if (saved === 'en' || saved === 'sw') return saved;
+    } catch {
+      // Fallback
+    }
+    return 'en';
+  });
+
+  const [activePhoneIndex, setActivePhoneIndex] = useState<number>(0);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // Modal / Drawer UI states
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
+  const [isCartDrawerOpen, setIsCartDrawerOpen] = useState<boolean>(false);
+  const [isWishlistModalOpen, setIsWishlistModalOpen] = useState<boolean>(false);
+  const [isTrackingModalOpen, setIsTrackingModalOpen] = useState<boolean>(false);
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    try {
+      localStorage.setItem('omega_language_v2', lang);
+    } catch {
+      // Ignore
+    }
+  };
+
+  const toggleLanguage = () => {
+    setLanguage(language === 'en' ? 'sw' : 'en');
+  };
 
   useEffect(() => {
     try {
@@ -135,6 +203,14 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     try {
+      localStorage.setItem(STORAGE_KEYS.WISHLIST, JSON.stringify(wishlist));
+    } catch {
+      // Ignore
+    }
+  }, [wishlist]);
+
+  useEffect(() => {
+    try {
       localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(demoOrders));
     } catch {
       // Ignore
@@ -152,6 +228,28 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const clearToast = () => setToastMessage(null);
+
+  // Wishlist actions
+  const toggleWishlist = (productId: string) => {
+    const product = products.find((p) => p.id === productId);
+    setWishlist((prev) => {
+      const exists = prev.includes(productId);
+      if (exists) {
+        showToast(`Removed "${product ? product.name : 'Item'}" from wishlist`);
+        return prev.filter((id) => id !== productId);
+      } else {
+        showToast(`Added "${product ? product.name : 'Item'}" to your wishlist ❤️`);
+        return [...prev, productId];
+      }
+    });
+  };
+
+  const isInWishlist = (productId: string) => wishlist.includes(productId);
+
+  const clearWishlist = () => {
+    setWishlist([]);
+    showToast('Wishlist cleared.');
+  };
 
   const detailedCart = useMemo<DetailedCartItem[]>(() => {
     return cart
@@ -190,7 +288,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const cartTotal = subtotal + estimatedDelivery;
 
-  const addToCart = (productId: string, quantity = 1) => {
+  const addToCart = (productId: string, quantity = 1, openDrawer = true) => {
     const product = products.find((p) => p.id === productId);
     if (!product) return;
     if (product.stockStatus === 'Out of Stock') {
@@ -211,6 +309,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     });
 
     showToast(`Added ${quantity} × ${product.name} to cart.`);
+    if (openDrawer) {
+      setIsCartDrawerOpen(true);
+    }
   };
 
   const removeFromCart = (productId: string) => {
@@ -257,6 +358,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const target = products.find((p) => p.id === productId);
     setProducts((prev) => prev.filter((p) => p.id !== productId));
     setCart((prev) => prev.filter((c) => c.productId !== productId));
+    setWishlist((prev) => prev.filter((id) => id !== productId));
     if (target) {
       showToast(`Removed "${target.name}" from demo catalog.`);
     }
@@ -339,6 +441,11 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       value={{
         products,
         storeConfig,
+        language,
+        setLanguage,
+        toggleLanguage,
+        activePhoneIndex,
+        setActivePhoneIndex,
         cart,
         detailedCart,
         demoOrders,
@@ -348,10 +455,24 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         cartTotal,
         toastMessage,
         clearToast,
+        showToast,
         addToCart,
         removeFromCart,
         updateCartQuantity,
         clearCart,
+        wishlist,
+        wishlistCount: wishlist.length,
+        toggleWishlist,
+        isInWishlist,
+        clearWishlist,
+        quickViewProduct,
+        setQuickViewProduct,
+        isCartDrawerOpen,
+        setIsCartDrawerOpen,
+        isWishlistModalOpen,
+        setIsWishlistModalOpen,
+        isTrackingModalOpen,
+        setIsTrackingModalOpen,
         addProduct,
         updateProduct,
         deleteProduct,

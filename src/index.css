@@ -2,55 +2,217 @@
 
 @layer base {
   :root {
-    --font-display: 'Playfair Display', 'Fraunces', Georgia, serif;
-    --font-serif-luxury: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
-    --font-script: 'Caveat', cursive;
-    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
-    --color-wine-950: #2d0910;
-    --color-wine-900: #3c0c16;
-    --color-wine-800: #4a121c;
-    --color-wine-700: #5f1725;
-    --color-wine-600: #7b2031;
-    --color-cream-50: #faf7f2;
-    --color-cream-100: #f6efe6;
-    --color-cream-200: #ede0d2;
-    --color-gold-500: #c59b6b;
+    /* "Ink & Paper" Boutique Theme Variables */
+    --primary: #1E2A5E;
+    --accent: #F5A623;
+    --bg: #FAF7F0;
+    --surface: #FFFFFF;
+    --text: #14182B;
+    --muted: #6B7280;
+    --border: #E4DDCC;
+    --success: #2A9D8F;
+    --danger: #D64545;
+
+    /* Canonical Boutique Tokens */
+    --navy: #1E2A5E;
+    --ink: #14182B;
+    --gold: #F5A623;
+    --paper: #FAF7F0;
+    --cream: #F3EEE2;
+    --white: #FFFFFF;
+    --line: #E4DDCC;
+
+    /* Typography */
+    --font-heading: 'Fraunces', Georgia, serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
-  body {
-    font-family: var(--font-sans);
-    color: #1f1a1b;
-    background-color: #faf7f2;
+  @media (prefers-color-scheme: dark) {
+    :root[data-theme='dark'] {
+      --navy: #1E2A5E;
+      --ink: #F2EFE6;
+      --gold: #F5A623;
+      --paper: #0F1220;
+      --cream: #181C2E;
+      --white: #181C2E;
+      --line: #2B3145;
+      --muted: #9CA3AF;
+      --bg: #0F1220;
+      --surface: #181C2E;
+      --text: #F2EFE6;
+      --border: #2B3145;
+    }
+  }
+
+  html, body {
+    overflow-x: hidden;
+    max-width: 100%;
+    width: 100%;
+    font-family: var(--font-body);
+    color: var(--text);
+    background-color: var(--bg);
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
-  h1, h2, h3, .font-serif-display {
-    font-family: var(--font-display);
-    text-wrap: balance;
+  #root {
+    overflow-x: hidden;
+    max-width: 100%;
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--bg);
+    color: var(--text);
   }
 
-  .font-serif-luxury {
-    font-family: var(--font-serif-luxury);
+  h1, h2, h3, h4, h5, h6, .font-heading, .font-fraunces, .font-cinzel, .font-serif-luxury {
+    font-family: var(--font-heading) !important;
+    letter-spacing: -0.015em;
   }
 
-  .font-script {
-    font-family: var(--font-script);
-  }
-
-  .font-mono-tabular {
-    font-family: var(--font-mono);
-    font-variant-numeric: tabular-nums;
+  p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
+    font-family: var(--font-body);
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  ::before,
-  ::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+/* "Ink & Paper" Components & Utilities */
+
+/* 1. Header (Deep Ink Blue #1E2A5E) */
+.header-ink-blue {
+  background-color: #1E2A5E;
+  color: #FFFFFF;
+  border-bottom: 1px solid rgba(230, 224, 210, 0.2);
 }
+
+/* 2. Yellow CTA Buttons with Dark-Blue Text */
+.btn-cta-yellow {
+  background-color: #F5A623 !important;
+  color: #1E2A5E !important;
+  font-weight: 700 !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(245, 166, 35, 0.28);
+}
+
+.btn-cta-yellow:hover {
+  background-color: #e69919 !important;
+  color: #111a3d !important;
+  box-shadow: 0 4px 14px rgba(245, 166, 35, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-cta-yellow:active {
+  transform: translateY(0);
+}
+
+/* 3. Primary Ink-Blue Buttons */
+.btn-ink-primary {
+  background-color: #1E2A5E !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  transition: all 0.2s ease;
+}
+
+.btn-ink-primary:hover {
+  background-color: #162047 !important;
+}
+
+/* 4. Rounded Cards (12px) with Soft Shadows & Paper Surface */
+.card-ink-paper {
+  border-radius: 12px;
+  background-color: #FFFFFF;
+  border: 1px solid #E6E0D2;
+  box-shadow: 0 2px 10px -2px rgba(30, 42, 94, 0.06);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+
+/* 5. Hover Lift on Product Cards */
+.hover-lift {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px -4px rgba(30, 42, 94, 0.12);
+  border-color: #d8d0be;
+}
+
+/* 6. Clear Sale & Status Badges */
+.badge-clear-sale {
+  background-color: #D64545;
+  color: #FFFFFF;
+  font-weight: 700;
+  border-radius: 9999px;
+  padding: 0.18rem 0.6rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  box-shadow: 0 2px 6px rgba(214, 69, 69, 0.25);
+}
+
+.badge-ink-pill {
+  background-color: #F5A623;
+  color: #1E2A5E;
+  font-weight: 700;
+  border-radius: 9999px;
+  padding: 0.18rem 0.6rem;
+  font-size: 0.6875rem;
+}
+
+.badge-stock-success {
+  background-color: rgba(42, 157, 143, 0.12);
+  color: #2A9D8F;
+  font-weight: 600;
+  border: 1px solid rgba(42, 157, 143, 0.25);
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 7. Navbar Boutique Interactions & Animations */
+@keyframes cart-bounce {
+  0%, 100% { transform: scale(1); }
+  40% { transform: scale(1.28); }
+  75% { transform: scale(0.92); }
+}
+
+.animate-cart-bounce {
+  animation: cart-bounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.nav-link-ink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.2s ease-out;
+}
+
+.nav-link-ink::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--gold, #F5A623);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.nav-link-ink:hover::after,
+.nav-link-ink.active::after {
+  transform: scaleX(1);
+}
+
+.shadow-boutique-soft {
+  box-shadow: 0 12px 40px rgba(20, 24, 43, 0.08);
+}
+
+.focus-ring-gold:focus-visible {
+  outline: 2px solid var(--gold, #F5A623);
+  outline-offset: 2px;
+}
+

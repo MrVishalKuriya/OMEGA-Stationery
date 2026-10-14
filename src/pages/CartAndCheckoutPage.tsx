@@ -5,12 +5,18 @@ import {
   Minus,
   Plus,
   ArrowLeft,
-  MessageSquare,
+  MessageCircle,
   ShoppingBag,
+  CheckCircle2,
+  Phone,
+  Truck,
+  CreditCard,
+  Building,
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { CustomerOrderInput, DemoOrderRecord } from '../types/store';
 import { SEOHead } from '../components/SEOHead';
+import { TRANSLATIONS } from '../data/translations';
 
 export const CartAndCheckoutPage: React.FC = () => {
   const {
@@ -18,18 +24,23 @@ export const CartAndCheckoutPage: React.FC = () => {
     subtotal,
     estimatedDelivery,
     storeConfig,
+    language,
     updateCartQuantity,
     removeFromCart,
     clearCart,
     recordDemoOrder,
   } = useStore();
 
+  const t = TRANSLATIONS[language];
+
+  const [selectedWhatsAppNumber, setSelectedWhatsAppNumber] = useState<string>('255715268391');
+
   const [formData, setFormData] = useState<CustomerOrderInput>({
     customerName: '',
     phoneNumber: '',
     deliveryAddress: '',
     fulfillmentType: 'Home Delivery',
-    paymentPreference: 'Cash on Delivery (COD)',
+    paymentPreference: 'Mobile Money (M-Pesa / Tigo / Airtel)',
     orderNotes: '',
   });
 
@@ -41,23 +52,22 @@ export const CartAndCheckoutPage: React.FC = () => {
   const effectiveDeliveryFee =
     formData.fulfillmentType === 'In-Store Pickup' ? 0 : estimatedDelivery;
   const finalTotal = subtotal + effectiveDeliveryFee;
-  const amountForFreeDelivery = Math.max(0, storeConfig.freeDeliveryThreshold - subtotal);
 
   const readableOrderSummary = useMemo(() => {
     const lines: string[] = [
       `*${storeConfig.businessName} — Order Request*`,
       `----------------------------------------`,
-      `Customer Name: ${formData.customerName.trim() || '[Enter Name]'}`,
-      `Contact Number: ${formData.phoneNumber.trim() || '[Enter Phone Number]'}`,
-      `Order Type: ${formData.fulfillmentType}`,
-      `Delivery Address: ${
+      `Customer Name: ${formData.customerName.trim() || '[Customer Name]'}`,
+      `Contact Phone: ${formData.phoneNumber.trim() || '[Phone Number]'}`,
+      `Delivery Type: ${formData.fulfillmentType}`,
+      `Delivery Location: ${
         formData.fulfillmentType === 'In-Store Pickup'
-          ? `In-Store Counter Pickup (${storeConfig.shopAddress})`
-          : formData.deliveryAddress.trim() || '[Enter Delivery Address]'
+          ? `In-Store Pickup (${storeConfig.shopAddress})`
+          : formData.deliveryAddress.trim() || '[Location / City]'
       }`,
       `Payment Preference: ${formData.paymentPreference}`,
       `----------------------------------------`,
-      `*Ordered Products:*`,
+      `*Products Ordered:*`,
     ];
 
     const currency = storeConfig.currencySymbol || 'TSh';
@@ -71,18 +81,18 @@ export const CartAndCheckoutPage: React.FC = () => {
 
     lines.push(
       `----------------------------------------`,
-      `Items Subtotal: ${currency} ${subtotal.toLocaleString()}`,
-      `Delivery Charges: ${effectiveDeliveryFee === 0 ? 'Free' : `${currency} ${effectiveDeliveryFee.toLocaleString()}`}`,
-      `*Total Amount Payable: ${currency} ${finalTotal.toLocaleString()}*`
+      `Subtotal: ${currency} ${subtotal.toLocaleString()}`,
+      `Delivery Fee: ${effectiveDeliveryFee === 0 ? 'Free / In-Store' : `${currency} ${effectiveDeliveryFee.toLocaleString()}`}`,
+      `*Total Amount: ${currency} ${finalTotal.toLocaleString()}*`
     );
 
     if (formData.orderNotes.trim()) {
-      lines.push(`Customer Notes: ${formData.orderNotes.trim()}`);
+      lines.push(`Notes / School: ${formData.orderNotes.trim()}`);
     }
 
     lines.push(
       `----------------------------------------`,
-      `Please confirm availability and expected pickup/delivery time.`
+      `Please confirm availability, wholesale discounts, and delivery time.`
     );
 
     return lines.join('\n');
@@ -100,24 +110,34 @@ export const CartAndCheckoutPage: React.FC = () => {
     const nextErrors: Record<string, string> = {};
 
     if (formData.customerName.trim().length < 2) {
-      nextErrors.customerName = 'Please enter your full name (at least 2 characters).';
+      nextErrors.customerName = language === 'sw'
+        ? 'Tafadhali weka jina lako kamili.'
+        : 'Please enter your full name (at least 2 characters).';
     }
 
     const digitsOnly = formData.phoneNumber.replace(/\D/g, '');
-    if (digitsOnly.length < 10 || digitsOnly.length > 15) {
-      nextErrors.phoneNumber = 'Please enter a valid 10-digit mobile number.';
+    if (digitsOnly.length < 9) {
+      nextErrors.phoneNumber = language === 'sw'
+        ? 'Tafadhali weka namba sahihi ya simu / WhatsApp.'
+        : 'Please enter a valid phone or WhatsApp number.';
     }
 
     if (
-      formData.fulfillmentType === 'Home Delivery' &&
-      formData.deliveryAddress.trim().length < 8
+      formData.fulfillmentType !== 'In-Store Pickup' &&
+      formData.deliveryAddress.trim().length < 4
     ) {
-      nextErrors.deliveryAddress =
-        'Please enter your complete street address, landmark, and pincode for delivery.';
+      nextErrors.deliveryAddress = language === 'sw'
+        ? 'Tafadhali weka eneo, mji au stendi ya kupokelea mzigo.'
+        : 'Please specify your delivery address, city, or regional bus terminal.';
     }
 
     setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
   };
+
+  const whatsappOrderUrl = `https://wa.me/${selectedWhatsAppNumber}?text=${encodeURIComponent(
+    readableOrderSummary
+  )}`;
 
   const handlePrepareOrderSummary = (e: React.FormEvent) => {
     e.preventDefault();
@@ -129,424 +149,343 @@ export const CartAndCheckoutPage: React.FC = () => {
     }
   };
 
-  const cleanWhatsappDigits = storeConfig.whatsappNumber.replace(/\D/g, '');
-  const whatsappOrderUrl = `https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
-    readableOrderSummary
-  )}`;
-
   if (detailedCart.length === 0) {
     return (
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center space-y-6">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center space-y-6">
         <SEOHead
-          title="Shopping Cart"
-          description="Review your selected exercise books, notebooks, and stationery items and place your order via WhatsApp."
+          title="Shopping Cart &amp; WhatsApp Order — OMEGA"
+          description="View items in your order and submit directly to OMEGA sales team via WhatsApp."
         />
-        <div className="w-14 h-14 mx-auto rounded-full bg-stone-100 text-stone-600 flex items-center justify-center">
-          <ShoppingBag className="w-7 h-7" />
+        <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+          <ShoppingBag className="w-8 h-8" />
         </div>
-        <div className="space-y-2">
-          <h1 className="text-2xl sm:text-3xl font-bold text-stone-900">
-            Your Shopping Cart is Empty
-          </h1>
-          <p className="text-sm text-stone-600 max-w-md mx-auto">
-            Browse our catalog of OMEGA exercise books, hardcover registers, pens, and school stationery to start building your order list.
-          </p>
-        </div>
-        <div>
-          <Link
-            to="/catalog"
-            className="px-6 py-3 bg-red-700 text-white text-sm font-semibold rounded-md hover:bg-red-800 transition-colors inline-flex items-center gap-2"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Continue Shopping</span>
-          </Link>
-        </div>
+        <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
+          {language === 'sw' ? 'Kikapu Chako Kiko Wazi' : 'Your Order List is Empty'}
+        </h1>
+        <p className="text-sm text-slate-600 max-w-md mx-auto">
+          {language === 'sw'
+            ? 'Bofya kitufe hapa chini kutazama madaftari yetu ya OMEGA Quire 2, 3, 4 na bahasha.'
+            : 'Explore our catalog to add OMEGA writing notebooks, counter books, and stationery.'}
+        </p>
+        <Link
+          to="/catalog"
+          className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#0f2342] text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl hover:bg-[#1e3a8a] transition-all shadow-sm"
+        >
+          <span>{t.exploreCatalog}</span>
+        </Link>
       </div>
     );
   }
 
+  const currency = storeConfig.currencySymbol || 'TSh';
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 w-full max-w-full overflow-hidden">
       <SEOHead
-        title={`Shopping Cart (${detailedCart.length} Items) & WhatsApp Ordering`}
-        description="Review your stationery cart, calculate delivery charges, and generate a formatted WhatsApp order summary."
+        title="Review Order &amp; WhatsApp Checkout — OMEGA"
+        description="Submit your writing notebooks and stationery order directly to OMEGA sales specialists in Tanzania."
       />
 
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-200 pb-6">
+      <div className="flex items-center justify-between border-b border-slate-200 pb-5">
         <div>
-          <h1 className="text-3xl font-bold text-stone-900">
-            Shopping Cart &amp; Ordering
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
+            {language === 'sw' ? 'Kikapu & Oda ya WhatsApp' : 'Cart & WhatsApp Checkout'}
           </h1>
-          <p className="text-sm text-stone-600 mt-1">
-            Review quantities, enter your contact details, and generate a readable order summary for WhatsApp verification.
+          <p className="text-xs sm:text-sm text-slate-500 mt-1">
+            {language === 'sw'
+              ? 'Kagua bidhaa ulizochagua kisha tuma oda moja kwa moja kwa wauzaji wetu kupitia WhatsApp.'
+              : 'Review your items and send your order directly to our sales desk on WhatsApp.'}
           </p>
         </div>
 
-        <div className="flex items-center gap-4">
-          <Link
-            to="/catalog"
-            className="text-xs sm:text-sm font-semibold text-stone-700 hover:text-stone-900 inline-flex items-center gap-1.5"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Continue Shopping</span>
-          </Link>
-          <button
-            type="button"
-            onClick={clearCart}
-            className="text-xs sm:text-sm font-semibold text-red-700 hover:text-red-800 inline-flex items-center gap-1"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-            <span>Clear Cart</span>
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={clearCart}
+          className="text-xs text-rose-600 hover:text-rose-800 font-bold uppercase tracking-wider"
+        >
+          {language === 'sw' ? 'Futa Yote' : 'Clear All'}
+        </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-        {/* Left 7 Columns */}
-        <div className="lg:col-span-7 space-y-8">
-          {/* Free Delivery Banner */}
-          <div className="bg-stone-50 border border-stone-200 rounded-lg px-4 py-3 text-xs sm:text-sm text-stone-700 flex items-center justify-between gap-4">
-            {amountForFreeDelivery > 0 ? (
-              <span>
-                Add{' '}
-                <strong className="font-mono-tabular text-stone-900">
-                  {storeConfig.currencySymbol || 'TSh'} {amountForFreeDelivery.toLocaleString()}
-                </strong>{' '}
-                more to qualify for{' '}
-                <strong className="text-stone-900">
-                  Free Local Delivery (Orders {storeConfig.currencySymbol || 'TSh'} {storeConfig.freeDeliveryThreshold.toLocaleString()}+)
-                </strong>
-                , or choose free In-Store Pickup.
-              </span>
-            ) : (
-              <span className="font-medium text-emerald-800">
-                Your order qualifies for Free Local Delivery (Subtotal {storeConfig.currencySymbol || 'TSh'}{' '}
-                {storeConfig.freeDeliveryThreshold.toLocaleString()}+).
-              </span>
-            )}
-          </div>
-
-          {/* Cart Table */}
-          <div className="border border-stone-200 rounded-lg overflow-hidden bg-white">
-            <div className="bg-stone-50 px-5 py-3 border-b border-stone-200 flex items-center justify-between text-xs font-semibold text-stone-600 uppercase tracking-wider">
-              <span>Selected Stationery Items ({detailedCart.length})</span>
-              <span>Subtotal (INR)</span>
-            </div>
-
-            <div className="divide-y divide-stone-200">
-              {detailedCart.map(({ product, quantity, effectiveUnitPrice, lineTotal }) => (
-                <div
-                  key={product.id}
-                  className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-                >
-                  <div className="flex items-start gap-4">
-                    <Link
-                      to={`/product/${product.id}`}
-                      className="w-20 h-16 rounded-md overflow-hidden border border-stone-200 bg-stone-100 shrink-0"
-                    >
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        referrerPolicy="no-referrer"
-                        className="w-full h-full object-cover"
-                      />
-                    </Link>
-
-                    <div className="space-y-1">
-                      <Link
-                        to={`/product/${product.id}`}
-                        className="text-sm sm:text-base font-semibold text-stone-900 hover:text-red-700 transition-colors line-clamp-1"
-                      >
-                        {product.name}
-                      </Link>
-                      <div className="flex items-center gap-2 text-xs text-stone-500">
-                        <span>{product.category}</span>
-                        <span aria-hidden="true">·</span>
-                        <span className="font-mono-tabular">{product.sku}</span>
-                        <span aria-hidden="true">·</span>
-                        <span className="font-mono-tabular font-medium text-stone-700">
-                          {storeConfig.currencySymbol || 'TSh'} {effectiveUnitPrice.toLocaleString()} each
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between sm:justify-end gap-4 pt-2 sm:pt-0 border-t sm:border-t-0 border-stone-100">
-                    {/* Stepper */}
-                    <div className="inline-flex items-center border border-stone-300 rounded-md bg-white">
-                      <button
-                        type="button"
-                        onClick={() => updateCartQuantity(product.id, quantity - 1)}
-                        aria-label={`Decrease quantity of ${product.name}`}
-                        className="p-2 text-stone-600 hover:text-stone-900"
-                      >
-                        <Minus className="w-3.5 h-3.5" />
-                      </button>
-                      <span className="w-9 text-center text-xs sm:text-sm font-semibold font-mono-tabular text-stone-900">
-                        {quantity}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => updateCartQuantity(product.id, quantity + 1)}
-                        aria-label={`Increase quantity of ${product.name}`}
-                        className="p-2 text-stone-600 hover:text-stone-900"
-                      >
-                        <Plus className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-
-                    <div className="text-right min-w-[72px]">
-                      <p className="text-sm sm:text-base font-bold text-stone-900 font-mono-tabular">
-                        {storeConfig.currencySymbol || 'TSh'} {lineTotal.toLocaleString()}
-                      </p>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => removeFromCart(product.id)}
-                      aria-label={`Remove ${product.name} from cart`}
-                      className="p-1.5 text-stone-400 hover:text-red-700 transition-colors"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Left Column: Cart Items List */}
+        <div className="lg:col-span-7 space-y-4">
+          <div className="bg-white rounded-2xl border border-slate-200 divide-y divide-slate-100 shadow-xs overflow-hidden">
+            {detailedCart.map((item) => (
+              <div key={item.product.id} className="p-4 sm:p-5 flex items-center gap-4">
+                {/* Thumbnail */}
+                <div className="w-16 h-16 rounded-xl bg-slate-50 border border-slate-200 p-1 shrink-0 flex items-center justify-center">
+                  <img
+                    src={item.product.image}
+                    alt={item.product.name}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-contain"
+                  />
                 </div>
-              ))}
-            </div>
+
+                {/* Details */}
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-sm font-bold text-slate-900 truncate">
+                    {language === 'sw' && item.product.nameSw ? item.product.nameSw : item.product.name}
+                  </h3>
+                  <div className="flex items-center gap-2 text-xs text-slate-500 font-mono mt-0.5">
+                    <span>{item.product.sku}</span>
+                    {item.product.quire && (
+                      <span className="text-amber-700 font-bold bg-amber-50 px-1.5 py-0.5 rounded text-[10px]">
+                        {item.product.quire}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs font-bold text-slate-800 font-mono-tabular mt-1">
+                    {currency} {item.effectiveUnitPrice.toLocaleString()}
+                  </p>
+                </div>
+
+                {/* Quantity Controls */}
+                <div className="flex items-center border border-slate-200 rounded-xl bg-slate-50">
+                  <button
+                    type="button"
+                    onClick={() => updateCartQuantity(item.product.id, item.quantity - 1)}
+                    className="p-1.5 text-slate-600 hover:text-slate-900"
+                    aria-label="Decrease quantity"
+                  >
+                    <Minus className="w-3.5 h-3.5" />
+                  </button>
+                  <span className="w-8 text-center text-xs font-bold text-slate-900 font-mono-tabular">
+                    {item.quantity}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => updateCartQuantity(item.product.id, item.quantity + 1)}
+                    className="p-1.5 text-slate-600 hover:text-slate-900"
+                    aria-label="Increase quantity"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                {/* Line Total */}
+                <div className="text-right shrink-0">
+                  <p className="text-sm font-black text-slate-900 font-mono-tabular">
+                    {currency} {item.lineTotal.toLocaleString()}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => removeFromCart(item.product.id)}
+                    className="text-slate-400 hover:text-rose-600 p-1 mt-1 transition-colors"
+                    aria-label="Remove item"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
 
-          {/* Customer Details Form */}
+          <div className="pt-2">
+            <Link
+              to="/catalog"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>{language === 'sw' ? 'Endelea Kuangalia Bidhaa Zingine' : 'Continue Shopping Other Products'}</span>
+            </Link>
+          </div>
+        </div>
+
+        {/* Right Column: Customer Info & WhatsApp Order Generator */}
+        <div className="lg:col-span-5 space-y-6">
           <form
             onSubmit={handlePrepareOrderSummary}
-            noValidate
-            className="border border-stone-200 rounded-lg p-5 sm:p-6 bg-white space-y-5"
+            className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-5"
           >
-            <div className="border-b border-stone-200 pb-3">
-              <h2 className="text-lg font-bold text-stone-900">
-                Customer &amp; Delivery Details
-              </h2>
-              <p className="text-xs text-stone-500 mt-0.5">
-                Enter your details below to populate the WhatsApp order summary. No online payment card details are collected.
-              </p>
+            <h2 className="text-base font-bold text-slate-900 uppercase tracking-wider border-b border-slate-100 pb-3 flex items-center gap-2">
+              <MessageCircle className="w-4 h-4 text-emerald-600 fill-emerald-600" />
+              <span>{t.whatsAppOrderingTitle}</span>
+            </h2>
+
+            {/* Choose WhatsApp Sales Desk (1 of 3) */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
+                {t.choosePhone}
+              </label>
+              <div className="space-y-1.5">
+                {[
+                  {
+                    digits: '255715268391',
+                    label: 'Desk 1: +255 715 268 391',
+                    desc: 'General Orders & Retail Enquiries',
+                  },
+                  {
+                    digits: '255624265480',
+                    label: 'Desk 2: +255 624 265 480',
+                    desc: 'Wholesale Cartons & School Supplies',
+                  },
+                  {
+                    digits: '255699032777',
+                    label: 'Desk 3: +255 699 032 777',
+                    desc: 'Logistics, Stoo & Upcountry Mikoani',
+                  },
+                ].map((d) => (
+                  <label
+                    key={d.digits}
+                    className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-all ${
+                      selectedWhatsAppNumber === d.digits
+                        ? 'bg-emerald-50/70 border-emerald-500 shadow-xs'
+                        : 'bg-slate-50 border-slate-200 hover:border-slate-300'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="sales_desk"
+                      value={d.digits}
+                      checked={selectedWhatsAppNumber === d.digits}
+                      onChange={() => setSelectedWhatsAppNumber(d.digits)}
+                      className="mt-1 text-emerald-600 focus:ring-emerald-500"
+                    />
+                    <div>
+                      <p className="text-xs font-bold text-slate-900">{d.label}</p>
+                      <p className="text-[11px] text-slate-500">{d.desc}</p>
+                    </div>
+                  </label>
+                ))}
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <label
-                  htmlFor="customerName"
-                  className="block text-xs font-semibold text-stone-800"
-                >
-                  Full Name <span className="text-red-700">*</span>
+            {/* Customer Name */}
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
+                {t.fullName} *
+              </label>
+              <input
+                type="text"
+                value={formData.customerName}
+                onChange={(e) => setFormData({ ...formData, customerName: e.target.value })}
+                placeholder="e.g. Juma Rashid / St. Joseph School"
+                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-blue-600 focus:bg-white"
+              />
+              {errors.customerName && (
+                <p className="text-xs text-rose-600 font-semibold">{errors.customerName}</p>
+              )}
+            </div>
+
+            {/* Phone Number */}
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
+                {t.phoneNumber} *
+              </label>
+              <input
+                type="tel"
+                value={formData.phoneNumber}
+                onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
+                placeholder="e.g. +255 712 345 678"
+                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-blue-600 focus:bg-white"
+              />
+              {errors.phoneNumber && (
+                <p className="text-xs text-rose-600 font-semibold">{errors.phoneNumber}</p>
+              )}
+            </div>
+
+            {/* Delivery Option */}
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
+                {t.deliveryOptions}
+              </label>
+              <select
+                value={formData.fulfillmentType}
+                onChange={(e) =>
+                  setFormData({ ...formData, fulfillmentType: e.target.value as any })
+                }
+                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-blue-600 focus:bg-white"
+              >
+                <option value="Home Delivery">{t.homeDelivery}</option>
+                <option value="In-Store Pickup">{t.pickupStore}</option>
+                <option value="Upcountry Bus Parcel (Mikoani)">{t.mikoaniParcel}</option>
+              </select>
+            </div>
+
+            {/* Delivery Location */}
+            {formData.fulfillmentType !== 'In-Store Pickup' && (
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
+                  {t.deliveryLocation} *
                 </label>
                 <input
-                  id="customerName"
                   type="text"
-                  required
-                  value={formData.customerName}
-                  onChange={(e) => {
-                    setFormData((prev) => ({ ...prev, customerName: e.target.value }));
-                    if (errors.customerName) {
-                      setErrors((prev) => ({ ...prev, customerName: '' }));
-                    }
-                  }}
-                  placeholder="e.g., Rajesh Sharma"
-                  className="w-full px-3.5 py-2.5 bg-white border border-stone-300 rounded-md text-sm text-stone-900 focus:outline-none focus:border-red-700"
-                />
-                {errors.customerName && (
-                  <p className="text-xs text-red-700">{errors.customerName}</p>
-                )}
-              </div>
-
-              <div className="space-y-1.5">
-                <label
-                  htmlFor="phoneNumber"
-                  className="block text-xs font-semibold text-stone-800"
-                >
-                  Phone / WhatsApp Number <span className="text-red-700">*</span>
-                </label>
-                <input
-                  id="phoneNumber"
-                  type="tel"
-                  required
-                  value={formData.phoneNumber}
-                  onChange={(e) => {
-                    setFormData((prev) => ({ ...prev, phoneNumber: e.target.value }));
-                    if (errors.phoneNumber) {
-                      setErrors((prev) => ({ ...prev, phoneNumber: '' }));
-                    }
-                  }}
-                  placeholder="e.g., 9876543210"
-                  className="w-full px-3.5 py-2.5 bg-white border border-stone-300 rounded-md text-sm text-stone-900 font-mono-tabular focus:outline-none focus:border-red-700"
-                />
-                {errors.phoneNumber && (
-                  <p className="text-xs text-red-700">{errors.phoneNumber}</p>
-                )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-1.5">
-                <label
-                  htmlFor="fulfillmentType"
-                  className="block text-xs font-semibold text-stone-800"
-                >
-                  Order Fulfillment Option
-                </label>
-                <select
-                  id="fulfillmentType"
-                  value={formData.fulfillmentType}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      fulfillmentType: e.target.value as CustomerOrderInput['fulfillmentType'],
-                    }))
-                  }
-                  className="w-full px-3.5 py-2.5 bg-white border border-stone-300 rounded-md text-sm text-stone-900 focus:outline-none focus:border-red-700"
-                >
-                  <option value="Home Delivery">Home Delivery</option>
-                  <option value="In-Store Pickup">In-Store Counter Pickup (₹0 Fee)</option>
-                </select>
-              </div>
-
-              <div className="space-y-1.5">
-                <label
-                  htmlFor="paymentPreference"
-                  className="block text-xs font-semibold text-stone-800"
-                >
-                  Payment Preference (Offline / On Delivery)
-                </label>
-                <select
-                  id="paymentPreference"
-                  value={formData.paymentPreference}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      paymentPreference:
-                        e.target.value as CustomerOrderInput['paymentPreference'],
-                    }))
-                  }
-                  className="w-full px-3.5 py-2.5 bg-white border border-stone-300 rounded-md text-sm text-stone-900 focus:outline-none focus:border-red-700"
-                >
-                  <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
-                  <option value="UPI on Delivery">UPI Scan on Delivery / Pickup</option>
-                  <option value="Pay at Store Counter">Pay Cash/UPI at Store Counter</option>
-                </select>
-              </div>
-            </div>
-
-            {formData.fulfillmentType === 'Home Delivery' && (
-              <div className="space-y-1.5">
-                <label
-                  htmlFor="deliveryAddress"
-                  className="block text-xs font-semibold text-stone-800"
-                >
-                  Complete Delivery Address <span className="text-red-700">*</span>
-                </label>
-                <textarea
-                  id="deliveryAddress"
-                  rows={3}
-                  required
                   value={formData.deliveryAddress}
-                  onChange={(e) => {
-                    setFormData((prev) => ({ ...prev, deliveryAddress: e.target.value }));
-                    if (errors.deliveryAddress) {
-                      setErrors((prev) => ({ ...prev, deliveryAddress: '' }));
-                    }
-                  }}
-                  placeholder="House/Flat No., Building Name, Street, Landmark, City & Pincode"
-                  className="w-full px-3.5 py-2.5 bg-white border border-stone-300 rounded-md text-sm text-stone-900 focus:outline-none focus:border-red-700"
+                  onChange={(e) => setFormData({ ...formData, deliveryAddress: e.target.value })}
+                  placeholder="e.g. Kariakoo / Sinza / Mwanza (Nyegezi Terminal)"
+                  className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-blue-600 focus:bg-white"
                 />
                 {errors.deliveryAddress && (
-                  <p className="text-xs text-red-700">{errors.deliveryAddress}</p>
+                  <p className="text-xs text-rose-600 font-semibold">{errors.deliveryAddress}</p>
                 )}
               </div>
             )}
 
-            <div className="space-y-1.5">
-              <label
-                htmlFor="orderNotes"
-                className="block text-xs font-semibold text-stone-800"
-              >
-                Special Instructions / School Grade Notes (Optional)
+            {/* Payment Preference */}
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
+                {t.paymentMethod}
               </label>
-              <input
-                id="orderNotes"
-                type="text"
-                value={formData.orderNotes}
+              <select
+                value={formData.paymentPreference}
                 onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, orderNotes: e.target.value }))
+                  setFormData({ ...formData, paymentPreference: e.target.value as any })
                 }
-                placeholder="e.g., Please pack single-line books separately for Class 6"
-                className="w-full px-3.5 py-2 bg-white border border-stone-300 rounded-md text-sm text-stone-900 focus:outline-none focus:border-red-700"
+                className="w-full px-3.5 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-blue-600 focus:bg-white"
+              >
+                <option value="Mobile Money (M-Pesa / Tigo / Airtel)">{t.mobileMoney}</option>
+                <option value="Cash on Delivery (COD)">{t.cashOnDelivery}</option>
+                <option value="Bank Transfer (CRDB/NMB)">{t.bankTransfer}</option>
+              </select>
+            </div>
+
+            {/* Notes */}
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
+                {t.orderNotes}
+              </label>
+              <textarea
+                rows={2}
+                value={formData.orderNotes}
+                onChange={(e) => setFormData({ ...formData, orderNotes: e.target.value })}
+                placeholder="Optional notes or instructions..."
+                className="w-full px-3.5 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-blue-600 focus:bg-white"
               />
             </div>
 
-            <div className="pt-2 sm:hidden">
-              <button
-                type="submit"
-                className="w-full px-5 py-3.5 bg-[#25D366] text-white text-base font-bold rounded-lg hover:bg-[#20ba5a] transition-colors flex items-center justify-center gap-2 shadow-xs"
-              >
-                <MessageSquare className="w-5 h-5 fill-current" />
-                <span>Order via WhatsApp</span>
-              </button>
+            {/* Order Totals Summary */}
+            <div className="pt-3 border-t border-slate-100 space-y-2 text-xs text-slate-600">
+              <div className="flex justify-between">
+                <span>{language === 'sw' ? 'Jumla ya Bidhaa:' : 'Items Subtotal:'}</span>
+                <span className="font-bold text-slate-900 font-mono-tabular">
+                  {currency} {subtotal.toLocaleString()}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span>{language === 'sw' ? 'Gharama ya Usafiri:' : 'Delivery Charges:'}</span>
+                <span className="font-bold text-slate-900 font-mono-tabular">
+                  {effectiveDeliveryFee === 0 ? 'Free / Pickup' : `${currency} ${effectiveDeliveryFee.toLocaleString()}`}
+                </span>
+              </div>
+              <div className="flex justify-between pt-2 border-t border-slate-200 text-sm font-black text-slate-900">
+                <span>{language === 'sw' ? 'Jumla Kuu ya Kulipa:' : 'Total Payable:'}</span>
+                <span className="font-mono-tabular text-red-700 text-lg font-black">
+                  {currency} {finalTotal.toLocaleString()}
+                </span>
+              </div>
             </div>
+
+            {/* Submit Order Button */}
+            <button
+              type="submit"
+              className="w-full py-4 px-6 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm uppercase tracking-wider rounded-xl shadow-lg shadow-emerald-700/25 transition-all flex items-center justify-center gap-2 hover:scale-[1.01]"
+            >
+              <MessageCircle className="w-5 h-5 fill-white" />
+              <span>{t.sendWhatsAppBtn}</span>
+            </button>
           </form>
-        </div>
-
-        {/* Right 5 Columns */}
-        <div className="lg:col-span-5 space-y-6 lg:sticky lg:top-24">
-          <div className="border border-stone-200 rounded-lg p-6 bg-stone-50 space-y-5">
-            <h2 className="text-lg font-bold text-stone-900 border-b border-stone-200 pb-3">
-              Order Calculation ({storeConfig.currencySymbol || 'TSh'})
-            </h2>
-
-            <div className="space-y-2.5 text-sm">
-              <div className="flex justify-between text-stone-600">
-                <span>Products Subtotal</span>
-                <span className="font-mono-tabular font-semibold text-stone-900">
-                  {storeConfig.currencySymbol || 'TSh'} {subtotal.toLocaleString()}
-                </span>
-              </div>
-              <div className="flex justify-between text-stone-600">
-                <span>
-                  Estimated Delivery ({formData.fulfillmentType})
-                </span>
-                <span className="font-mono-tabular font-semibold text-stone-900">
-                  {effectiveDeliveryFee === 0
-                    ? 'Free (TSh 0)'
-                    : `${storeConfig.currencySymbol || 'TSh'} ${effectiveDeliveryFee.toLocaleString()}`}
-                </span>
-              </div>
-              <div className="pt-3 border-t border-stone-200 flex justify-between items-baseline">
-                <span className="text-base font-bold text-stone-900">Total Amount</span>
-                <span className="text-2xl font-bold text-[#4a121c] font-mono-tabular">
-                  {storeConfig.currencySymbol || 'TSh'} {finalTotal.toLocaleString()}
-                </span>
-              </div>
-            </div>
-
-            {/* WhatsApp Order Button Only */}
-            <div className="pt-3">
-              <a
-                href={whatsappOrderUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => {
-                  if (!validateForm()) {
-                    e.preventDefault();
-                  } else {
-                    const rec = recordDemoOrder(formData);
-                    setGeneratedOrderRecord(rec);
-                  }
-                }}
-                className="w-full px-6 py-4 bg-[#25D366] hover:bg-[#20ba5a] text-white text-base font-bold rounded-lg transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2.5 active:scale-[0.99]"
-              >
-                <MessageSquare className="w-5 h-5 fill-current" />
-                <span>Order via WhatsApp</span>
-              </a>
-            </div>
-          </div>
         </div>
       </div>
     </div>
