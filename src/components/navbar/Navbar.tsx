@@ -77,6 +77,27 @@ export const Navbar: React.FC = () => {
   const [isCartBouncing, setIsCartBouncing] = useState(false);
   const prevCountRef = useRef(cartItemCount);
 
+  // Dynamic Header Height measurement to prevent content overlap or jumps
+  const headerRef = useRef<HTMLElement>(null);
+  const [headerHeight, setHeaderHeight] = useState<number>(148);
+
+  useEffect(() => {
+    if (!headerRef.current) return;
+    const updateHeight = () => {
+      if (headerRef.current) {
+        setHeaderHeight(headerRef.current.offsetHeight);
+      }
+    };
+    updateHeight();
+    const observer = new ResizeObserver(updateHeight);
+    observer.observe(headerRef.current);
+    window.addEventListener('resize', updateHeight);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', updateHeight);
+    };
+  }, []);
+
   // Scroll states for sticky hide on scroll down / reveal on scroll up
   const [isVisible, setIsVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -180,6 +201,7 @@ export const Navbar: React.FC = () => {
 
       {/* Main Sticky Header Container */}
       <header
+        ref={headerRef}
         role="banner"
         className={`fixed top-0 left-0 right-0 z-40 transition-transform duration-200 ease-out ${
           isVisible ? 'translate-y-0' : '-translate-y-full'
@@ -188,18 +210,18 @@ export const Navbar: React.FC = () => {
         {/* A) Announcement Bar (36px, #1E2A5E) */}
         <AnnouncementBar />
 
-        {/* B) Main Header (72px desktop, 60px mobile) */}
+        {/* B) Main Header (60px mobile, 68px desktop) */}
         <div className={`w-full transition-colors duration-200 ease-out ${headerBgClass}`}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-[60px] lg:h-[72px] gap-2 sm:gap-6">
+          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-[56px] sm:h-[60px] lg:h-[68px] gap-2 sm:gap-4 lg:gap-6">
               {/* ================= LEFT: MOBILE HAMBURGER & LOGO ================= */}
-              <div className="flex items-center gap-2 sm:gap-4 shrink-0">
-                {/* Mobile Hamburger (Under 1024px) */}
+              <div className="flex items-center gap-1.5 sm:gap-3 shrink-0 min-w-0">
+                {/* Mobile / Tablet Hamburger (Visible under 1280px to prevent center nav collision) */}
                 <button
                   type="button"
                   onClick={() => setIsMobileMenuOpen(true)}
                   aria-label="Open navigation menu"
-                  className="lg:hidden p-2 rounded-full text-[#14182B] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[44px] min-h-[44px] flex items-center justify-center"
+                  className="xl:hidden p-2 rounded-full text-[#14182B] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[40px] min-h-[40px] flex items-center justify-center shrink-0"
                 >
                   <Menu className="w-5 h-5 stroke-[1.5]" />
                 </button>
@@ -207,32 +229,32 @@ export const Navbar: React.FC = () => {
                 {/* Logo linking to Home */}
                 <Link
                   to="/"
-                  className="flex items-center gap-2.5 sm:gap-3 group focus-ring-gold rounded-[8px] p-1"
+                  className="flex items-center gap-2 sm:gap-2.5 group focus-ring-gold rounded-[8px] p-0.5 min-w-0"
                   aria-label="OMEGA Stationery &amp; Books Home"
                 >
-                  <div className="bg-white px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-[8px] border border-[#E4DDCC] shadow-2xs group-hover:border-[#F5A623] transition-all">
+                  <div className="bg-white px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-[8px] border border-[#E4DDCC] shadow-2xs group-hover:border-[#F5A623] transition-all shrink-0">
                     <img
                       src="/omega-logo.png"
                       alt="OMEGA Logo"
-                      className="h-7 sm:h-9 w-auto object-contain"
+                      className="h-6 sm:h-8 w-auto object-contain"
                     />
                   </div>
-                  <div className="flex flex-col">
-                    <span className="font-heading text-sm sm:text-base font-bold tracking-tight text-[#1E2A5E] leading-none group-hover:text-[#F5A623] transition-colors">
+                  <div className="flex flex-col min-w-0">
+                    <span className="font-heading text-xs sm:text-base font-bold tracking-tight text-[#1E2A5E] leading-none group-hover:text-[#F5A623] transition-colors truncate">
                       OMEGA
                     </span>
-                    <span className="text-[9px] sm:text-[10px] tracking-widest font-semibold uppercase text-[#6B7280] mt-0.5 whitespace-nowrap">
+                    <span className="text-[8px] sm:text-[10px] tracking-wider sm:tracking-widest font-semibold uppercase text-[#6B7280] mt-0.5 truncate hidden min-[360px]:block">
                       Stationery &amp; Books
                     </span>
                   </div>
                 </Link>
               </div>
 
-              {/* ================= CENTER: PRIMARY NAV LINKS (Desktop) ================= */}
+              {/* ================= CENTER: PRIMARY NAV LINKS (Desktop XL only) ================= */}
               <nav
                 role="navigation"
                 aria-label="Primary Navigation"
-                className="hidden lg:flex items-center gap-1 xl:gap-2 h-full"
+                className="hidden xl:flex items-center gap-1 2xl:gap-2 h-full flex-nowrap shrink-0"
                 onMouseLeave={handleNavMouseLeave}
               >
                 {NAV_ITEMS.map((item) => {
@@ -271,70 +293,70 @@ export const Navbar: React.FC = () => {
                 })}
               </nav>
 
-              {/* ================= RIGHT: TOOLS (Language Toggle, Search Modal Icon, Wishlist, Account, Cart) ================= */}
+              {/* ================= RIGHT: TOOLS (Clean & Responsive) ================= */}
               <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-                {/* 1. Visible Language Switcher Pill (EN ⇄ SW) */}
+                {/* 1. Visible Language Switcher Pill (EN ⇄ SW) - Always Visible */}
                 <button
                   type="button"
                   onClick={toggleLanguage}
-                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border border-[#E4DDCC] hover:border-[#1E2A5E] bg-[#FAF7F0] hover:bg-white text-xs font-bold text-[#1E2A5E] transition-all min-h-[36px] focus-ring-gold shadow-2xs"
+                  className="flex items-center gap-1 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-full border border-[#E4DDCC] hover:border-[#1E2A5E] bg-[#FAF7F0] hover:bg-white text-[10px] sm:text-xs font-bold text-[#1E2A5E] transition-all min-h-[30px] sm:min-h-[34px] focus-ring-gold shadow-2xs shrink-0"
                   title={language === 'en' ? 'Badili lugha kuwa Kiswahili' : 'Switch to English'}
                   aria-label="Toggle language between English and Swahili"
                 >
-                  <Globe className="w-3.5 h-3.5 text-[#F5A623]" />
-                  <span className="font-mono uppercase text-[11px]">{language === 'en' ? 'SW' : 'EN'}</span>
+                  <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#F5A623]" />
+                  <span className="font-mono uppercase text-[10px] sm:text-[11px]">{language === 'en' ? 'SW' : 'EN'}</span>
                 </button>
 
-                {/* 2. Fullscreen Search Icon Trigger */}
+                {/* 2. Fullscreen Search Icon Trigger (Visible on md+ since mobile has direct bottom bar) */}
                 <button
                   type="button"
                   onClick={() => setIsSearchOpen(true)}
                   aria-label="Search catalog (Press /)"
-                  className="p-2.5 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[44px] min-h-[44px] flex items-center justify-center relative group"
+                  className="hidden md:flex p-2 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] items-center justify-center relative group shrink-0"
                   title="Full Search Overlay (/)"
                 >
-                  <Search className="w-[20px] h-[20px] stroke-[1.5]" />
+                  <Search className="w-[18px] h-[18px] stroke-[1.5]" />
                   <span className="hidden xl:inline-block ml-1 text-xs text-[#6B7280] font-mono group-hover:text-[#1E2A5E]">
                     /
                   </span>
                 </button>
 
-                {/* 3. Wishlist Icon (Heart) */}
+                {/* 3. Wishlist Icon (Heart) - Visible on sm+ screens */}
                 <button
                   type="button"
                   onClick={() => setIsWishlistModalOpen(true)}
                   aria-label={`Wishlist (${wishlistCount} saved items)`}
-                  className="p-2.5 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[44px] min-h-[44px] flex items-center justify-center relative"
+                  className="hidden sm:flex p-2 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] items-center justify-center relative shrink-0"
                   title="Wishlist"
                 >
                   <Heart
-                    className={`w-[22px] h-[22px] stroke-[1.5] ${
+                    className={`w-[18px] h-[18px] stroke-[1.5] ${
                       wishlistCount > 0 ? 'fill-[#D64545] text-[#D64545]' : ''
                     }`}
                   />
                   {wishlistCount > 0 && (
-                    <span className="absolute top-1.5 right-1.5 min-w-[18px] h-[18px] px-1 rounded-full bg-[#D64545] text-white text-[10px] font-bold flex items-center justify-center font-mono leading-none shadow-xs">
+                    <span className="absolute top-1 right-1 min-w-[16px] h-[16px] px-0.5 rounded-full bg-[#D64545] text-white text-[9px] font-bold flex items-center justify-center font-mono leading-none shadow-xs">
                       {wishlistCount}
                     </span>
                   )}
                 </button>
 
-                {/* 4. Account Icon (User) */}
-                <div className="relative">
+                {/* 4. Account Icon (User) - Visible on sm+ screens */}
+                <div className="relative hidden sm:block shrink-0">
                   <button
                     type="button"
                     onClick={() => setIsAccountOpen(!isAccountOpen)}
                     aria-label={currentUser ? `Account: ${currentUser.name}` : 'Account and Orders'}
                     aria-expanded={isAccountOpen}
-                    className="p-1.5 sm:p-2 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[44px] min-h-[44px] flex items-center justify-center"
+                    className="p-1.5 sm:p-2 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] flex items-center justify-center"
                     title={currentUser ? currentUser.name : 'Account'}
                   >
                     {currentUser ? (
-                      <div className="w-7 h-7 rounded-full bg-[#1E2A5E] text-[#F5A623] font-bold text-xs flex items-center justify-center font-mono shadow-2xs">
+                      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#1E2A5E] text-[#F5A623] font-bold text-[10px] sm:text-xs flex items-center justify-center font-mono shadow-2xs">
                         {currentUser.initials}
                       </div>
                     ) : (
-                      <User className="w-[22px] h-[22px] stroke-[1.5]" />
+                      <User className="w-[18px] h-[18px] stroke-[1.5]" />
                     )}
                   </button>
 
@@ -346,19 +368,19 @@ export const Navbar: React.FC = () => {
                   />
                 </div>
 
-                {/* 5. Cart Icon (Bag) with Gold Badge & Bounce Animation */}
+                {/* 5. Cart Icon (Bag) - Always Visible with Gold Badge */}
                 <button
                   type="button"
                   onClick={() => setIsCartDrawerOpen(true)}
                   aria-label={`Shopping bag (${cartItemCount} items)`}
-                  className="p-2.5 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[44px] min-h-[44px] flex items-center justify-center relative group"
+                  className="p-1.5 sm:p-2 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] flex items-center justify-center relative group shrink-0"
                   title="Shopping Bag"
                 >
-                  <ShoppingBag className="w-[22px] h-[22px] stroke-[1.5] text-[#1E2A5E]" />
+                  <ShoppingBag className="w-[20px] h-[20px] stroke-[1.5] text-[#1E2A5E]" />
 
                   {/* Gold count badge: 18px circle, background #F5A623, dark text #1E2A5E */}
                   <span
-                    className={`absolute top-1.5 right-1.5 w-[18px] h-[18px] rounded-full bg-[#F5A623] text-[#1E2A5E] text-[10px] font-black flex items-center justify-center font-mono leading-none shadow-xs ${
+                    className={`absolute top-0.5 right-0.5 w-[17px] h-[17px] sm:w-[18px] sm:h-[18px] rounded-full bg-[#F5A623] text-[#1E2A5E] text-[9px] sm:text-[10px] font-black flex items-center justify-center font-mono leading-none shadow-xs ${
                       isCartBouncing ? 'animate-cart-bounce' : ''
                     }`}
                   >
@@ -455,8 +477,8 @@ export const Navbar: React.FC = () => {
               </div>
 
               {/* Quick Popular Categories / Tags */}
-              <div className="hidden md:flex items-center gap-1.5 shrink-0 text-xs text-[#6B7280]">
-                <span className="font-semibold text-[#1E2A5E]">
+              <div className="hidden lg:flex items-center gap-1.5 shrink-0 text-xs text-[#6B7280]">
+                <span className="font-semibold text-[#1E2A5E] whitespace-nowrap">
                   {language === 'sw' ? 'Maarufu:' : 'Popular:'}
                 </span>
                 {['Counter Books', 'Bahasha A4', 'Exercise 200p', 'Math Set'].map((tag) => (
@@ -466,7 +488,7 @@ export const Navbar: React.FC = () => {
                     onClick={() => {
                       navigate(`/catalog?q=${encodeURIComponent(tag)}`);
                     }}
-                    className="px-2.5 py-1 rounded-full bg-white hover:bg-[#F3EEE2] border border-[#E4DDCC] text-xs font-medium text-[#14182B] hover:text-[#1E2A5E] transition-colors"
+                    className="px-2.5 py-1 rounded-full bg-white hover:bg-[#F3EEE2] border border-[#E4DDCC] text-xs font-medium text-[#14182B] hover:text-[#1E2A5E] transition-colors whitespace-nowrap shadow-2xs"
                   >
                     {tag}
                   </button>
@@ -487,8 +509,8 @@ export const Navbar: React.FC = () => {
         </div>
       </header>
 
-      {/* Reserve header height to prevent content jump / layout shift (36px announcement + 60/72px main + 48px search) */}
-      <div className="h-[144px] lg:h-[156px] w-full" aria-hidden="true" />
+      {/* Reserve exact header height dynamically to prevent content jump or overlap */}
+      <div style={{ height: `${headerHeight}px` }} className="w-full shrink-0" aria-hidden="true" />
 
       {/* Search Overlay */}
       <SearchOverlay
