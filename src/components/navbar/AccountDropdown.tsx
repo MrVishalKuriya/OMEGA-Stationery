@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import {
   User,
   LogIn,
@@ -36,6 +37,8 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!isOpen) return;
+
     const handleClickOutside = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         onClose();
@@ -45,12 +48,15 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
       if (e.key === 'Escape') onClose();
     };
 
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-      window.addEventListener('keydown', handleKeyDown);
-    }
+    // Use standard click instead of mousedown to guarantee button click events complete
+    const timer = setTimeout(() => {
+      document.addEventListener('click', handleClickOutside);
+    }, 50);
+    window.addEventListener('keydown', handleKeyDown);
+
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      clearTimeout(timer);
+      document.removeEventListener('click', handleClickOutside);
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen, onClose]);
@@ -77,7 +83,9 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
       ref={dropdownRef}
       role="menu"
       aria-label="Account Menu"
-      className="absolute right-0 top-full mt-2 w-72 rounded-[12px] bg-white text-[#14182B] border border-[#E4DDCC] shadow-boutique-soft z-50 p-2 animate-in fade-in slide-in-from-top-1 font-sans"
+      onMouseDown={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
+      className="absolute right-0 top-full mt-2 w-72 rounded-[12px] bg-white text-[#14182B] border border-[#E4DDCC] shadow-2xl z-[100] p-2 animate-in fade-in slide-in-from-top-1 font-sans pointer-events-auto"
     >
       {/* Header Profile Info */}
       <div className="p-3 rounded-[8px] bg-[#FAF7F0] border border-[#E4DDCC]/50 mb-2">
@@ -130,6 +138,21 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
 
       {/* Menu Actions */}
       <div className="space-y-1 text-xs font-medium">
+        {/* My Account & Profile */}
+        {currentUser && (
+          <Link
+            to="/account"
+            onClick={onClose}
+            className="w-full flex items-center justify-between p-2.5 rounded-[8px] hover:bg-[#F3EEE2] text-[#14182B] hover:text-[#1E2A5E] transition-colors group focus-ring-gold font-bold bg-[#FAF7F0]/60 border border-[#E4DDCC]/50"
+          >
+            <div className="flex items-center gap-2.5">
+              <User className="w-4 h-4 text-[#1E2A5E]" />
+              <span>My Account &amp; Profile</span>
+            </div>
+            <ChevronRight className="w-3.5 h-3.5 text-[#6B7280] group-hover:translate-x-0.5 transition-transform" />
+          </Link>
+        )}
+
         {/* Track Orders */}
         <button
           type="button"
@@ -194,23 +217,48 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
             <span>Log Out</span>
           </button>
         ) : (
-          <div className="grid grid-cols-2 gap-2 pt-1">
-            <button
-              type="button"
-              onClick={handleOpenSignIn}
-              className="w-full py-2 px-3 rounded-[8px] btn-cta-yellow text-xs font-bold text-center flex items-center justify-center gap-1.5 shadow-xs"
-            >
-              <LogIn className="w-3.5 h-3.5" />
-              <span>Sign In</span>
-            </button>
-            <button
-              type="button"
-              onClick={handleOpenRegister}
-              className="w-full py-2 px-3 rounded-[8px] bg-white border border-[#E4DDCC] hover:bg-[#F3EEE2] text-xs font-bold text-center text-[#1E2A5E] flex items-center justify-center gap-1.5"
-            >
-              <UserPlus className="w-3.5 h-3.5" />
-              <span>Register</span>
-            </button>
+          <div className="space-y-2 pt-1">
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                id="navbar-signin-btn"
+                onMouseDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleOpenSignIn();
+                }}
+                className="w-full py-2.5 px-3 rounded-[8px] btn-cta-yellow text-xs font-bold text-center flex items-center justify-center gap-1.5 shadow-xs cursor-pointer hover:brightness-105 active:scale-95 transition-all select-none"
+              >
+                <LogIn className="w-3.5 h-3.5 pointer-events-none" />
+                <span className="pointer-events-none">Sign In</span>
+              </button>
+              <button
+                type="button"
+                id="navbar-register-btn"
+                onMouseDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleOpenRegister();
+                }}
+                className="w-full py-2.5 px-3 rounded-[8px] bg-white border border-[#E4DDCC] hover:bg-[#F3EEE2] text-xs font-bold text-center text-[#1E2A5E] flex items-center justify-center gap-1.5 cursor-pointer hover:border-[#1E2A5E] active:scale-95 transition-all select-none"
+              >
+                <UserPlus className="w-3.5 h-3.5 pointer-events-none" />
+                <span className="pointer-events-none">Register</span>
+              </button>
+            </div>
+            <div className="text-center text-[10px] text-[#6B7280] pt-1">
+              <Link
+                to="/login"
+                onMouseDown={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onClose();
+                }}
+                className="hover:text-[#1E2A5E] hover:underline cursor-pointer select-none"
+              >
+                Open Full Dedicated Sign In Page →
+              </Link>
+            </div>
           </div>
         )}
       </div>

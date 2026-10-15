@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   X,
   Mail,
@@ -20,6 +21,7 @@ import {
 import { useStore } from '../context/StoreContext';
 
 export const AuthModal: React.FC = () => {
+  const navigate = useNavigate();
   const {
     isAuthModalOpen,
     authModalMode,
@@ -92,6 +94,9 @@ export const AuthModal: React.FC = () => {
         const result = await login({ email, password, rememberMe });
         if (!result.success) {
           setErrorMessage(result.error || 'Failed to sign in. Please verify your credentials.');
+        } else {
+          closeAuthModal();
+          navigate('/account');
         }
 
       } else {
@@ -112,6 +117,9 @@ export const AuthModal: React.FC = () => {
 
         if (!result.success) {
           setErrorMessage(result.error || 'Failed to create account. Please try again.');
+        } else {
+          closeAuthModal();
+          navigate('/account');
         }
       }
     } catch (err: any) {
@@ -126,7 +134,7 @@ export const AuthModal: React.FC = () => {
       role="dialog"
       aria-modal="true"
       aria-label={isLogin ? 'Sign In to OMEGA' : 'Create OMEGA Account'}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
+      className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200"
     >
       {/* Backdrop */}
       <div
@@ -217,6 +225,23 @@ export const AuthModal: React.FC = () => {
             <div className="p-3 rounded-[8px] bg-[#2A9D8F]/10 border border-[#2A9D8F]/30 text-[#2A9D8F] text-xs font-medium flex items-start gap-2 animate-in fade-in">
               <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
               <span>{successMessage}</span>
+            </div>
+          )}
+
+          {/* 1-Click Test Credentials Helper */}
+          {isLogin && (
+            <div className="p-2.5 rounded-[8px] bg-amber-50 border border-amber-200/80 flex items-center justify-between gap-2 text-xs">
+              <div className="flex items-center gap-2 text-[11px] text-amber-900">
+                <Sparkles className="w-3.5 h-3.5 text-[#F5A623] shrink-0" />
+                <span>Test: <strong className="font-mono text-[#1E2A5E]">mussa.juma@omega.co.tz</strong></span>
+              </div>
+              <button
+                type="button"
+                onClick={handleDemoFill}
+                className="text-[11px] font-bold text-[#1E2A5E] bg-white border border-[#E4DDCC] hover:bg-[#1E2A5E] hover:text-white px-2.5 py-1 rounded-[6px] transition-colors shrink-0 shadow-xs"
+              >
+                Auto-Fill
+              </button>
             </div>
           )}
 

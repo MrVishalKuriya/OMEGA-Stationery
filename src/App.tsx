@@ -10,6 +10,12 @@ import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
 import { WishlistPage } from './pages/WishlistPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
+import { LoginPage } from './pages/LoginPage';
+import { RegisterPage } from './pages/RegisterPage';
+import { AccountPage } from './pages/AccountPage';
+import { ProtectedRoute } from './components/routing/ProtectedRoute';
+import { AdminRoute } from './components/routing/AdminRoute';
+import { GuestRoute } from './components/routing/GuestRoute';
 
 const ScrollToTop: React.FC = () => {
   const { pathname } = useLocation();
@@ -58,9 +64,27 @@ export default function App() {
             <Route path="/wishlist" element={<WishlistPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
-            {/* Dedicated obfuscated administrative portal (hidden from public URLs) */}
-            <Route path="/omega-hq-portal-2026" element={<AdminDashboardPage />} />
-            {/* Explicit 404 for standard /admin scans */}
+
+            {/* Guest-only Authentication Routes (redirect to destination or /account if already signed in) */}
+            <Route path="/login" element={<GuestRoute><LoginPage /></GuestRoute>} />
+            <Route path="/signin" element={<GuestRoute><LoginPage /></GuestRoute>} />
+            <Route path="/sign-in" element={<GuestRoute><LoginPage /></GuestRoute>} />
+            <Route path="/loging" element={<GuestRoute><LoginPage /></GuestRoute>} />
+            <Route path="/register" element={<GuestRoute><RegisterPage /></GuestRoute>} />
+            <Route path="/registration" element={<GuestRoute><RegisterPage /></GuestRoute>} />
+            <Route path="/signup" element={<GuestRoute><RegisterPage /></GuestRoute>} />
+            <Route path="/sign-up" element={<GuestRoute><RegisterPage /></GuestRoute>} />
+
+            {/* Protected Customer Account Routes (guards unauthorized access, preserves state.from) */}
+            <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
+            <Route path="/my-account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
+            <Route path="/orders" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
+
+            {/* Protected Administrative Portal (enforces ADMIN / MANAGER role guard) */}
+            <Route path="/omega-hq-portal-2026" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
+
+            {/* Explicit 404 for standard /admin scans & catch-all */}
             <Route path="/admin" element={<NotFoundPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>

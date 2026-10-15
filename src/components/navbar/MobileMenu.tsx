@@ -146,7 +146,11 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
         <div className="p-3 border-b border-[#E4DDCC] bg-white">
           {currentUser ? (
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5 min-w-0">
+              <Link
+                to="/account"
+                onClick={onClose}
+                className="flex items-center gap-2.5 min-w-0 hover:opacity-80 transition-opacity"
+              >
                 <div className="w-8 h-8 rounded-full bg-[#1E2A5E] text-[#F5A623] font-bold text-xs flex items-center justify-center font-mono shrink-0 shadow-2xs">
                   {currentUser.initials}
                 </div>
@@ -155,10 +159,10 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
                     {currentUser.name}
                   </span>
                   <span className="text-[10px] text-[#6B7280] block truncate">
-                    {currentUser.email}
+                    {currentUser.email} • <span className="text-[#1E2A5E] font-semibold underline">Manage Account</span>
                   </span>
                 </div>
-              </div>
+              </Link>
               <button
                 type="button"
                 onClick={() => {
@@ -171,27 +175,38 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  onClose();
-                  openAuthModal('login');
-                }}
-                className="py-2 px-3 rounded-[6px] btn-cta-yellow text-xs font-bold text-center"
-              >
-                Sign In
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  onClose();
-                  openAuthModal('register');
-                }}
-                className="py-2 px-3 rounded-[6px] bg-[#FAF7F0] border border-[#E4DDCC] hover:bg-[#F3EEE2] text-xs font-bold text-center text-[#1E2A5E]"
-              >
-                Register
-              </button>
+            <div className="space-y-2">
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose();
+                    openAuthModal('login');
+                  }}
+                  className="py-2.5 px-3 rounded-[6px] btn-cta-yellow text-xs font-bold text-center block w-full shadow-xs cursor-pointer"
+                >
+                  Sign In
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose();
+                    openAuthModal('register');
+                  }}
+                  className="py-2.5 px-3 rounded-[6px] bg-[#FAF7F0] border border-[#E4DDCC] hover:bg-[#F3EEE2] text-xs font-bold text-center text-[#1E2A5E] block w-full cursor-pointer"
+                >
+                  Register
+                </button>
+              </div>
+              <div className="text-center text-[10px] text-[#6B7280]">
+                <Link
+                  to="/login"
+                  onClick={onClose}
+                  className="hover:text-[#1E2A5E] hover:underline"
+                >
+                  Open Full Sign In Page →
+                </Link>
+              </div>
             </div>
           )}
         </div>

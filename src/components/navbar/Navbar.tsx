@@ -55,9 +55,9 @@ export const Navbar: React.FC = () => {
     return products
       .filter((p) => {
         return (
-          p.name.toLowerCase().includes(q) ||
+          (p.name && p.name.toLowerCase().includes(q)) ||
           (p.nameSw && p.nameSw.toLowerCase().includes(q)) ||
-          p.category.toLowerCase().includes(q) ||
+          (p.category && p.category.toLowerCase().includes(q)) ||
           (p.quire && p.quire.toLowerCase().includes(q)) ||
           (p.sku && p.sku.toLowerCase().includes(q))
         );
@@ -104,7 +104,7 @@ export const Navbar: React.FC = () => {
   const lastScrollYRef = useRef(0);
 
   // Mega menu open delay ref (150ms delay)
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Detect count changes and trigger bounce
   useEffect(() => {
@@ -203,7 +203,7 @@ export const Navbar: React.FC = () => {
       <header
         ref={headerRef}
         role="banner"
-        className={`fixed top-0 left-0 right-0 z-40 w-full max-w-full overflow-x-clip transition-transform duration-200 ease-out ${
+        className={`fixed top-0 left-0 right-0 z-40 w-full max-w-full overflow-visible transition-transform duration-200 ease-out ${
           isVisible ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
@@ -211,7 +211,7 @@ export const Navbar: React.FC = () => {
         <AnnouncementBar />
 
         {/* B) Main Header (60px mobile, 68px desktop) */}
-        <div className={`w-full max-w-full overflow-x-clip transition-colors duration-200 ease-out ${headerBgClass}`}>
+        <div className={`relative z-30 w-full max-w-full overflow-visible transition-colors duration-200 ease-out ${headerBgClass}`}>
           <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 w-full">
             <div className="flex items-center justify-between h-[56px] sm:h-[60px] lg:h-[68px] gap-2 sm:gap-4 lg:gap-6 w-full">
               {/* ================= LEFT: MOBILE HAMBURGER & LOGO ================= */}
@@ -328,7 +328,7 @@ export const Navbar: React.FC = () => {
                 </button>
 
                 {/* 3. Account Icon (User) - Visible on sm+ screens */}
-                <div className="relative hidden sm:block shrink-0">
+                <div className="relative z-50 hidden sm:block shrink-0">
                   <button
                     type="button"
                     onClick={() => setIsAccountOpen(!isAccountOpen)}
@@ -378,7 +378,7 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* ================= C) NAVBAR BOTTOM: Dedicated Search Bar Row ================= */}
-          <div className="w-full max-w-full overflow-x-clip bg-[#FAF7F0] border-t border-[#E4DDCC]/70 px-3 sm:px-6 lg:px-8 py-2">
+          <div className="relative z-20 w-full max-w-full bg-[#FAF7F0] border-t border-[#E4DDCC]/70 px-3 sm:px-6 lg:px-8 py-2">
             <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4 lg:gap-6 w-full">
               {/* Prominent Search Bar */}
               <div ref={inlineSearchRef} className="relative flex-1 min-w-0 max-w-2xl lg:max-w-3xl">

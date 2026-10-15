@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, X, ArrowRight, Clock, Flame, Tag, BookOpen, ChevronRight } from 'lucide-react';
+import { Search, X, ArrowRight, Clock, Flame, Tag, BookOpen, ChevronRight, Sparkles } from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import { formatPrice } from '../../types/store';
 
@@ -112,26 +112,49 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
     executeSearch(searchTerm);
   };
 
-  // Matching live results
+  // E-Commerce Weighted Relevance Search Algorithm
   const matchingResults = useMemo(() => {
     if (!debouncedTerm) return { products: [], categories: [] };
     const lower = debouncedTerm.toLowerCase();
 
-    const matchedProducts = products
-      .filter((p) => {
-        return (
-          p.name.toLowerCase().includes(lower) ||
-          (p.nameSw && p.nameSw.toLowerCase().includes(lower)) ||
-          p.category.toLowerCase().includes(lower) ||
-          p.description.toLowerCase().includes(lower) ||
-          (p.descriptionSw && p.descriptionSw.toLowerCase().includes(lower)) ||
-          (p.sku && p.sku.toLowerCase().includes(lower)) ||
-          (p.quire && p.quire.toLowerCase().includes(lower)) ||
-          (p.pageCount && p.pageCount.toLowerCase().includes(lower)) ||
-          (p.size && p.size.toLowerCase().includes(lower))
-        );
-      })
-      .slice(0, 6);
+    const scoredProducts: { product: typeof products[0]; score: number }[] = [];
+
+    for (const p of products) {
+      let score = 0;
+      const nameL = p.name.toLowerCase();
+      const skuL = (p.sku || '').toLowerCase();
+      const catL = p.category.toLowerCase();
+      const nameSwL = p.nameSw ? p.nameSw.toLowerCase() : '';
+
+      // 1. Direct name or SKU prefix match (Top Priority)
+      if (nameL.startsWith(lower) || nameSwL.startsWith(lower)) score += 60;
+      else if (nameL.includes(lower) || nameSwL.includes(lower)) score += 35;
+
+      if (skuL.startsWith(lower)) score += 50;
+      else if (skuL.includes(lower)) score += 25;
+
+      // 2. Category match
+      if (catL.startsWith(lower)) score += 30;
+      else if (catL.includes(lower)) score += 15;
+
+      // 3. Technical specifications (quire, pageCount, size)
+      if (p.quire && p.quire.toLowerCase().includes(lower)) score += 20;
+      if (p.pageCount && p.pageCount.toLowerCase().includes(lower)) score += 15;
+      if (p.size && p.size.toLowerCase().includes(lower)) score += 10;
+
+      // 4. Secondary description match
+      if (p.description && p.description.toLowerCase().includes(lower)) score += 5;
+
+      // Merchandising boost for featured/best-seller items
+      if (score > 0) {
+        if (p.featured) score += 3;
+        if (p.bestSeller) score += 2;
+        scoredProducts.push({ product: p, score });
+      }
+    }
+
+    scoredProducts.sort((a, b) => b.score - a.score);
+    const matchedProducts = scoredProducts.slice(0, 6).map((item) => item.product);
 
     const matchedCategories = Array.from(
       new Set(

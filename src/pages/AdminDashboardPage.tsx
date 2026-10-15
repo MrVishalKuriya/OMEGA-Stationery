@@ -892,19 +892,19 @@ export const AdminDashboardPage: React.FC = () => {
                 <div className="p-2.5 bg-stone-50 rounded-lg text-center">
                   <span className="text-stone-500 block text-[10px] uppercase font-bold">Hit Ratio</span>
                   <span className="text-base font-black text-emerald-600 font-mono-tabular">
-                    {backendHealth?.cache.hitRatioPercent ?? 100}%
+                    {backendHealth?.cache?.hitRatioPercent ?? 100}%
                   </span>
                 </div>
                 <div className="p-2.5 bg-stone-50 rounded-lg text-center">
                   <span className="text-stone-500 block text-[10px] uppercase font-bold">Avg Latency</span>
                   <span className="text-base font-black text-red-700 font-mono-tabular">
-                    {backendHealth?.cache.averageLatencyMs ?? 1.5}ms
+                    {backendHealth?.cache?.averageLatencyMs ?? 1.5}ms
                   </span>
                 </div>
                 <div className="p-2.5 bg-stone-50 rounded-lg text-center">
                   <span className="text-stone-500 block text-[10px] uppercase font-bold">Cache Hits</span>
                   <span className="text-base font-black text-stone-900 font-mono-tabular">
-                    {backendHealth?.cache.hits ?? 0}
+                    {backendHealth?.cache?.hits ?? 0}
                   </span>
                 </div>
               </div>

@@ -10,3 +10,7 @@ server/.env
 server/.env.*
 !server/.env.example
 .DS_Store
+target/
+**/target/
+.vscode/
+*.log

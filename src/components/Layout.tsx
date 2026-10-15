@@ -7,6 +7,7 @@ import {
   Truck,
   ShieldCheck,
   Cookie,
+  Server,
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { QuickViewModal } from './QuickViewModal';
@@ -15,6 +16,7 @@ import { WishlistModal } from './WishlistModal';
 import { OrderTrackingModal } from './OrderTrackingModal';
 import { AuthModal } from './AuthModal';
 import { CookieBanner } from './CookieBanner';
+import { BackendStatusModal } from './BackendStatusModal';
 import { OmegaLogo } from './OmegaLogo';
 import { Navbar } from './navbar';
 
@@ -28,7 +30,10 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     closeCookiePreferences,
     toastMessage,
     clearToast,
+    isBackendOnline,
   } = useStore();
+
+  const [isBackendModalOpen, setIsBackendModalOpen] = React.useState(false);
 
 
   return (
@@ -186,6 +191,19 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 <Cookie className="w-3.5 h-3.5 text-[#F5A623]" />
                 <span>Cookies &amp; Session</span>
               </button>
+              <button
+                type="button"
+                onClick={() => setIsBackendModalOpen(true)}
+                className="hover:text-[#F5A623] transition-colors flex items-center gap-1.5 text-stone-300 bg-white/5 px-2.5 py-1 rounded-lg border border-white/10"
+              >
+                <Server className="w-3.5 h-3.5 text-[#F5A623]" />
+                <span>Backend &amp; DB</span>
+                <span
+                  className={`w-2 h-2 rounded-full inline-block ${
+                    isBackendOnline ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'
+                  }`}
+                />
+              </button>
             </div>
           </div>
         </div>
@@ -198,6 +216,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       <OrderTrackingModal />
       <AuthModal />
       <CookieBanner forceOpen={isCookieBannerOpen} onClose={closeCookiePreferences} />
+      <BackendStatusModal isOpen={isBackendModalOpen} onClose={() => setIsBackendModalOpen(false)} />
     </div>
   );
 };

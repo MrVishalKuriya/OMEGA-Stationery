@@ -147,6 +147,7 @@ export interface UserProfile {
   email: string;
   phone?: string;
   accountType?: 'individual' | 'wholesale' | 'school';
+  role?: string;
   initials: string;
   createdAt?: string;
 }

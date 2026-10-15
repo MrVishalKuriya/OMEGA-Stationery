@@ -384,7 +384,7 @@ export const INITIAL_PRODUCTS: Product[] = [
   {
     id: 'prod-omega-shorthand',
     name: 'OMEGA Shorthand Wire-Bound Notebook 5"x8" (70 Sheets)',
-    category: 'Exercise Books',
+    category: 'Registers',
     image: '/omega-products/omega-shorthand-notebook.jpeg',
     gallery: [
       '/omega-products/omega-shorthand-notebook.jpeg',
@@ -583,7 +583,7 @@ export const INITIAL_PRODUCTS: Product[] = [
   {
     id: 'prod-omega-manila-folder',
     name: 'OMEGA Manila Project File Folder',
-    category: 'Files & Folders',
+    category: 'Manila & Folders',
     image: '/omega-products/manila-file-folder-flat.jpeg',
     gallery: [
       '/omega-products/manila-file-folder-flat.jpeg',
@@ -878,7 +878,7 @@ export const INITIAL_PRODUCTS: Product[] = [
   {
     id: 'prod-omega-ruled-paper',
     name: 'OMEGA Ruled Exam Writing Paper (400 Sheets / 16 Pkt)',
-    category: 'Bulk & Wholesale Paper',
+    category: 'Ruled Paper',
     image: '/omega-products/ruled-paper-pack.jpeg',
     gallery: [
       '/omega-products/ruled-paper-pack.jpeg',
@@ -908,7 +908,7 @@ export const INITIAL_PRODUCTS: Product[] = [
   {
     id: 'prod-omega-flipchart',
     name: 'OMEGA Conference Flipchart Paper Pad (Bulk Stack Pack)',
-    category: 'Bulk & Wholesale Paper',
+    category: 'Flipcharts',
     image: '/omega-products/flipchart-bundle-stack.jpeg',
     gallery: [
       '/omega-products/flipchart-bundle-stack.jpeg',
