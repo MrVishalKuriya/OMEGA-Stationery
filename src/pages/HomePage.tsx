@@ -315,7 +315,7 @@ export const HomePage: React.FC = () => {
                   </div>
 
                   {/* Quire Tabs */}
-                  <div className="flex items-center gap-1 p-1 bg-[#292420] rounded-full border border-white/15">
+                  <div className="flex items-center gap-1 p-1 bg-[#292420] rounded-full border border-white/15 overflow-x-auto no-scrollbar max-w-full">
                     {[
                       { key: 'q2', label: 'Quire 2' },
                       { key: 'q3', label: 'Quire 3' },
@@ -734,24 +734,25 @@ export const HomePage: React.FC = () => {
                 <label className="text-xs font-bold uppercase tracking-wider text-[#c49b7c] block">
                   1. Select Notebook Model:
                 </label>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-3 gap-1.5 sm:gap-3">
                   {[
-                    { key: 'q2', label: 'Quire 2 (198p)', rate: '56,000/-' },
-                    { key: 'q3', label: 'Quire 3 (288p)', rate: '57,000/-' },
-                    { key: 'q4', label: 'Quire 4 (384p)', rate: '60,000/-' },
+                    { key: 'q2', label: 'Quire 2', sub: '198p', rate: '56,000/-' },
+                    { key: 'q3', label: 'Quire 3', sub: '288p', rate: '57,000/-' },
+                    { key: 'q4', label: 'Quire 4', sub: '384p', rate: '60,000/-' },
                   ].map((item) => (
                     <button
                       key={item.key}
                       type="button"
                       onClick={() => setCalcBookType(item.key as any)}
-                      className={`p-3 rounded-[12px] border text-center transition-all ${
+                      className={`p-2 sm:p-3 rounded-[12px] border text-center transition-all ${
                         calcBookType === item.key
                           ? 'btn-ledup-copper text-[#23201d] font-bold border-transparent shadow-md'
                           : 'bg-[#4b423b] text-stone-200 border-white/15 hover:border-[#c49b7c]'
                       }`}
                     >
-                      <div className="text-xs font-bold">{item.label}</div>
-                      <div className={`text-[11px] mt-0.5 font-mono ${calcBookType === item.key ? 'text-[#23201d]' : 'text-[#c49b7c]'}`}>{item.rate}</div>
+                      <div className="text-xs font-bold truncate">{item.label}</div>
+                      <div className="text-[10px] opacity-80 font-mono hidden sm:block">{item.sub}</div>
+                      <div className={`text-[10px] sm:text-[11px] mt-0.5 font-mono ${calcBookType === item.key ? 'text-[#23201d] font-bold' : 'text-[#c49b7c]'}`}>{item.rate}</div>
                     </button>
                   ))}
                 </div>
@@ -767,7 +768,7 @@ export const HomePage: React.FC = () => {
                     {calcQuantity} Cartons ({calcQuantity * (calcBookType === 'q2' ? 48 : calcBookType === 'q3' ? 36 : 24)} Books)
                   </span>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap sm:flex-nowrap gap-1.5 sm:gap-2">
                   {[1, 5, 10, 20, 50].map((qty) => (
                     <button
                       key={qty}

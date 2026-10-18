@@ -63,22 +63,28 @@
 }
 
 html, body {
-  overflow-x: hidden;
-  max-width: 100%;
-  width: 100%;
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+  width: 100% !important;
+  position: relative;
   font-family: var(--font-body);
   color: var(--text);
   background-color: var(--bg);
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 #root {
-  overflow-x: hidden;
-  max-width: 100%;
-  width: 100%;
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+  width: 100% !important;
   min-height: 100vh;
   background-color: var(--bg);
   color: var(--text);
+  display: flex;
+  flex-direction: column;
 }
 
 h1, h2, h3, h4, h5, h6, .font-heading, .font-fraunces, .font-cinzel, .font-serif-luxury {

@@ -21,6 +21,7 @@ import { MegaMenu } from './MegaMenu';
 import { SearchOverlay } from './SearchOverlay';
 import { AccountDropdown } from './AccountDropdown';
 import { MobileMenu } from './MobileMenu';
+import { MobileBottomBar } from './MobileBottomBar';
 
 export const Navbar: React.FC = () => {
   const {
@@ -371,11 +372,12 @@ export const Navbar: React.FC = () => {
                 </button>
 
                 {/* 4. Wishlist Icon (Heart) */}
+                {/* 4. Wishlist Icon (Heart) - Visible sm+ */}
                 <button
                   type="button"
                   onClick={() => setIsWishlistModalOpen(true)}
                   aria-label={`Wishlist (${wishlistCount} saved items)`}
-                  className="p-2 rounded-full text-[#3b352f] hover:text-[#4b423b] hover:bg-[#f5f4f4] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] flex items-center justify-center relative shrink-0"
+                  className="hidden sm:flex p-2 rounded-full text-[#3b352f] hover:text-[#4b423b] hover:bg-[#f5f4f4] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] items-center justify-center relative shrink-0"
                   title="Wishlist"
                 >
                   <Heart
@@ -390,8 +392,8 @@ export const Navbar: React.FC = () => {
                   )}
                 </button>
 
-                {/* 5. Account Icon (User) */}
-                <div className="relative z-50 shrink-0">
+                {/* 5. Account Icon (User) - Visible sm+ */}
+                <div className="relative z-50 shrink-0 hidden sm:block">
                   <button
                     type="button"
                     onClick={() => setIsAccountOpen(!isAccountOpen)}
@@ -438,13 +440,17 @@ export const Navbar: React.FC = () => {
             </div>
 
             {/* Mobile Inline Search Bar (Visible on mobile screens < md) */}
-            <div className="md:hidden pb-2.5 pt-1">
+            <div className="md:hidden pb-2.5 pt-1 relative">
               <form onSubmit={handleDesktopSearchSubmit} className="relative flex items-center">
                 <Search className="w-4 h-4 text-[#8c847e] absolute left-3.5 pointer-events-none" />
                 <input
                   type="search"
                   value={desktopSearchQuery}
-                  onChange={(e) => setDesktopSearchQuery(e.target.value)}
+                  onChange={(e) => {
+                    setDesktopSearchQuery(e.target.value);
+                    setIsInlineSearchFocused(true);
+                  }}
+                  onFocus={() => setIsInlineSearchFocused(true)}
                   placeholder={
                     language === 'sw'
                       ? 'Tafuta madaftari, counter books, bahasha...'
@@ -452,7 +458,57 @@ export const Navbar: React.FC = () => {
                   }
                   className="w-full pl-9 pr-8 py-2 text-xs bg-white rounded-full border border-[#e2dedb] text-[#3b352f] placeholder:text-[#8c847e] shadow-2xs focus:outline-none focus:ring-1 focus:ring-[#4b423b]"
                 />
+                {desktopSearchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDesktopSearchQuery('');
+                      setIsInlineSearchFocused(false);
+                    }}
+                    className="absolute right-3 p-1 text-[#8c847e]"
+                    aria-label="Clear"
+                  >
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                )}
               </form>
+
+              {/* Mobile Live Suggestions Dropdown */}
+              {isInlineSearchFocused && inlineMatches.length > 0 && (
+                <div className="absolute left-0 right-0 top-full mt-1.5 bg-white rounded-[14px] border border-[#e2dedb] shadow-2xl overflow-hidden z-50">
+                  <div className="max-h-56 overflow-y-auto divide-y divide-[#e2dedb]/50">
+                    {inlineMatches.map((item) => (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => {
+                          navigate(`/product/${item.id}`);
+                          setIsInlineSearchFocused(false);
+                          setDesktopSearchQuery('');
+                        }}
+                        className="w-full p-2.5 flex items-center gap-2.5 hover:bg-[#fafafa] text-left transition-colors cursor-pointer"
+                      >
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-8 h-8 object-contain rounded bg-white p-0.5 border border-[#e2dedb] shrink-0"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs font-semibold text-[#3b352f] truncate">
+                            {language === 'sw' && item.nameSw ? item.nameSw : item.name}
+                          </p>
+                          <p className="text-[10px] text-[#736c67] truncate font-mono">
+                            {item.category}
+                          </p>
+                        </div>
+                        <span className="text-xs font-mono font-bold text-[#4b423b] shrink-0">
+                          TZS {(item.discountPrice || item.price).toLocaleString()}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -519,6 +575,14 @@ export const Navbar: React.FC = () => {
         onOpenSearch={() => setIsSearchOpen(true)}
         onOpenWishlist={() => setIsWishlistModalOpen(true)}
         onOpenTracking={() => setIsTrackingModalOpen(true)}
+      />
+
+      {/* Mobile Bottom Navigation Bar (Android & iOS Ergonomic Bottom Nav) */}
+      <MobileBottomBar
+        onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
+        onOpenSearch={() => setIsSearchOpen(true)}
+        onOpenWishlist={() => setIsWishlistModalOpen(true)}
+        onOpenCart={() => setIsCartDrawerOpen(true)}
       />
     </>
   );

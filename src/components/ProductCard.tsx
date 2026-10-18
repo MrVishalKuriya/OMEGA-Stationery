@@ -290,12 +290,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
 
         {/* ================= REGION 3: ACTION BUTTONS (LEDUP Copper Gradient + Mocha) ================= */}
-        <div className="grid grid-cols-2 gap-2 pt-1 font-sans">
+        <div className="grid grid-cols-2 gap-1.5 sm:gap-2 pt-1 font-sans">
           <button
             type="button"
             onClick={handleQuickAdd}
             disabled={isOutOfStock}
-            className={`py-2.5 px-3 rounded-full text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 min-h-[44px] transition-all duration-200 active:scale-95 shadow-sm ${
+            className={`py-2 px-2 sm:px-3 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5 min-h-[44px] transition-all duration-200 active:scale-95 shadow-sm ${
               isOutOfStock
                 ? 'bg-stone-100 text-stone-400 cursor-not-allowed border border-[#e2dedb]'
                 : justAdded
@@ -307,12 +307,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               t.outOfStock
             ) : justAdded ? (
               <>
-                <Check className="w-4 h-4 text-white" />
+                <Check className="w-3.5 h-3.5 text-white" />
                 <span>{language === 'sw' ? 'Ipo!' : 'Added'}</span>
               </>
             ) : (
               <>
-                <ShoppingBag className="w-4 h-4 text-white" />
+                <ShoppingBag className="w-3.5 h-3.5 text-white" />
                 <span className="text-white">{language === 'sw' ? 'Weka Oda' : 'Add to Bag'}</span>
               </>
             )}
@@ -323,9 +323,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             target="_blank"
             rel="noopener noreferrer"
             title="Direct WhatsApp Order"
-            className="py-2.5 px-3 rounded-full text-xs font-bold uppercase tracking-wider btn-ledup-mocha text-white flex items-center justify-center gap-1.5 min-h-[44px] transition-all duration-200 active:scale-95 shadow-sm group"
+            className="py-2 px-2 sm:px-3 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider btn-ledup-mocha text-white flex items-center justify-center gap-1 sm:gap-1.5 min-h-[44px] transition-all duration-200 active:scale-95 shadow-sm group"
           >
-            <MessageCircle className="w-4 h-4 fill-white" />
+            <MessageCircle className="w-3.5 h-3.5 fill-white" />
             <span>WhatsApp</span>
           </a>
         </div>

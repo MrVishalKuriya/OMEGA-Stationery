@@ -75,7 +75,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       )}
 
       {/* ==================== 4. MAIN PAGE CONTENT ==================== */}
-      <main className="flex-1 w-full max-w-full overflow-x-hidden">
+      <main className="flex-1 w-full max-w-full overflow-x-hidden pb-16 lg:pb-0">
         {children}
       </main>
 
@@ -396,7 +396,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       </footer>
 
       {/* Floating High-Contrast Quick Action Dock (Indra Notebooks Style) */}
-      <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-2.5 pointer-events-none">
+      <div className="fixed bottom-20 right-3 sm:bottom-24 sm:right-6 lg:bottom-6 lg:right-6 z-30 flex flex-col items-end gap-2 pointer-events-none">
         <div className="flex flex-col items-end gap-2 pointer-events-auto">
           {/* Direct WhatsApp Orders Quick Pill */}
           <a
