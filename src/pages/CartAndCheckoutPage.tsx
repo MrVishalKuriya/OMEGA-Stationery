@@ -33,7 +33,7 @@ export const CartAndCheckoutPage: React.FC = () => {
 
   const t = TRANSLATIONS[language];
 
-  const [selectedWhatsAppNumber, setSelectedWhatsAppNumber] = useState<string>('255715268391');
+  const [selectedWhatsAppNumber, setSelectedWhatsAppNumber] = useState<string>('255746268391');
 
   const [formData, setFormData] = useState<CustomerOrderInput>({
     customerName: '',
@@ -312,8 +312,8 @@ export const CartAndCheckoutPage: React.FC = () => {
               <div className="space-y-1.5">
                 {[
                   {
-                    digits: '255715268391',
-                    label: 'Desk 1: +255 715 268 391',
+                    digits: '255746268391',
+                    label: 'Desk 1: +255 746 268 391',
                     desc: 'General Orders & Retail Enquiries',
                   },
                   {

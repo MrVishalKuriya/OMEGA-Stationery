@@ -40,7 +40,7 @@ export const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
 
   if (!isAdmin) {
     return (
-      <div className="min-h-[75vh] flex items-center justify-center py-16 px-4 bg-[#FAF7F0]">
+      <div className="min-h-[75vh] flex items-center justify-center py-16 px-4 bg-[#fafafa]">
         <SEOHead
           title="Access Restricted | OMEGA Stationery"
           description="Access to this administrative section requires verified administrative clearance."
@@ -60,14 +60,14 @@ export const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
           <div className="flex flex-col gap-2.5 pt-2">
             <Link
               to="/account"
-              className="py-2.5 px-4 rounded-[8px] btn-cta-yellow font-bold text-xs flex items-center justify-center gap-1.5"
+              className="py-2.5 px-4 rounded-[8px] btn-indra-primary font-bold text-xs flex items-center justify-center gap-1.5"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Return to My Customer Account</span>
             </Link>
             <Link
               to="/login"
-              className="py-2.5 px-4 rounded-[8px] bg-white border border-[#E4DDCC] hover:bg-[#FAF7F0] font-bold text-xs text-[#1E2A5E] flex items-center justify-center gap-1.5"
+              className="py-2.5 px-4 rounded-[8px] bg-white border border-[#e2dedb] hover:bg-[#fafafa] font-bold text-xs text-[#4b423b] flex items-center justify-center gap-1.5"
             >
               <LogIn className="w-4 h-4" />
               <span>Switch to Admin Account</span>

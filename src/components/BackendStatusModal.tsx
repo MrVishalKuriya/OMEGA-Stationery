@@ -26,14 +26,14 @@ export const BackendStatusModal: React.FC<BackendStatusModalProps> = ({ isOpen, 
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="bg-[#1E2A5E] text-white px-6 py-5 flex items-center justify-between">
+        <div className="bg-[#4b423b] text-white px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-white/10 rounded-xl">
-              <Server className="w-5 h-5 text-[#F5A623]" />
+              <Server className="w-5 h-5 text-[#c49b7c]" />
             </div>
             <div>
-              <h3 className="font-serif-luxury font-bold text-lg text-white">Java Backend &amp; MongoDB</h3>
-              <p className="text-xs text-stone-300">Spring Boot 3 + MongoDB Atlas Architecture</p>
+              <h3 className="font-serif-luxury font-bold text-lg text-white">High-Performance Backend &amp; MongoDB</h3>
+              <p className="text-xs text-stone-300">Node.js microservice + MongoDB Atlas + Redis &amp; AI</p>
             </div>
           </div>
           <button
@@ -62,13 +62,13 @@ export const BackendStatusModal: React.FC<BackendStatusModalProps> = ({ isOpen, 
             <div className="flex-1 text-xs">
               <p className="font-bold text-sm">
                 {isBackendOnline
-                  ? 'Connected to Live Java Spring Boot Service'
-                  : 'Backend Offline or Waking Up (Local Fallback Active)'}
+                  ? 'Connected to Live Node.js & MongoDB Atlas Backend'
+                  : 'Backend Offline or Standby (High-Resilience Local Mode Active)'}
               </p>
               <p className="mt-1 leading-relaxed opacity-90">
                 {isBackendOnline
-                  ? 'Connected to Spring Boot API and MongoDB. Real-time product inventory and orders are syncing.'
-                  : 'When deployed on Render free tier, instances spin down after inactivity and take ~30s to boot. The frontend is operating in high-resilience mode with local data.'}
+                  ? 'Connected to high-performance Node.js API with live MongoDB Atlas synchronization, caching, and AI model endpoints.'
+                  : 'Operating in high-resilience offline mode with full local catalog access.'}
               </p>
             </div>
           </div>
@@ -80,7 +80,7 @@ export const BackendStatusModal: React.FC<BackendStatusModalProps> = ({ isOpen, 
                 <ExternalLink className="w-3.5 h-3.5" />
                 Backend API URL:
               </span>
-              <span className="font-mono font-bold text-[#1E2A5E] truncate max-w-[240px]">
+              <span className="font-mono font-bold text-[#4b423b] truncate max-w-[240px]">
                 {backendUrl}
               </span>
             </div>
@@ -91,7 +91,7 @@ export const BackendStatusModal: React.FC<BackendStatusModalProps> = ({ isOpen, 
                 Database Engine:
               </span>
               <span className="font-semibold text-stone-900">
-                {backendHealth?.database?.engine || 'MongoDB Atlas / Local'}
+                {backendHealth?.database?.engine || 'MongoDB Atlas'}
               </span>
             </div>
 
@@ -107,17 +107,17 @@ export const BackendStatusModal: React.FC<BackendStatusModalProps> = ({ isOpen, 
                     : 'bg-stone-100 text-stone-700'
                 }`}
               >
-                {backendHealth?.database?.connected ? 'Connected' : isBackendOnline ? 'Connecting...' : 'Standby'}
+                {backendHealth?.database?.connected ? 'Connected (Atlas)' : isBackendOnline ? 'Connecting...' : 'Standby'}
               </span>
             </div>
 
             <div className="flex items-center justify-between text-xs py-2 border-b border-stone-100">
               <span className="text-stone-500 font-medium flex items-center gap-2">
                 <Cpu className="w-3.5 h-3.5" />
-                Java Runtime:
+                Runtime Engine:
               </span>
               <span className="font-mono text-stone-700">
-                {backendHealth?.runtime || 'Java 21 (Temurin LTS)'}
+                {backendHealth?.runtime || 'Node.js Express (Mongoose + Helmet + AI)'}
               </span>
             </div>
 
@@ -137,13 +137,13 @@ export const BackendStatusModal: React.FC<BackendStatusModalProps> = ({ isOpen, 
           {/* Quick Render Action */}
           <div className="p-3.5 bg-stone-50 rounded-xl border border-stone-200 text-xs space-y-1.5">
             <div className="flex items-center justify-between">
-              <span className="font-bold text-[#1E2A5E]">Render Cloud Deployment</span>
-              <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md bg-[#1E2A5E]/10 text-[#1E2A5E]">
+              <span className="font-bold text-[#4b423b]">Render Native Node.js Service</span>
+              <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md bg-[#4b423b]/10 text-[#4b423b]">
                 Blueprint Ready
               </span>
             </div>
             <p className="text-stone-600 text-[11px]">
-              Deploy the <code className="bg-stone-200 px-1 rounded font-mono">backend-java</code> folder to Render as a Docker Web Service with your MongoDB Atlas connection string.
+              Deploy the <code className="bg-stone-200 px-1 rounded font-mono">server</code> folder directly to Render as a native Node.js Web Service with zero container overhead.
             </p>
           </div>
         </div>
@@ -162,7 +162,7 @@ export const BackendStatusModal: React.FC<BackendStatusModalProps> = ({ isOpen, 
           <button
             type="button"
             onClick={onClose}
-            className="px-5 py-2 bg-[#1E2A5E] hover:bg-[#2A3B82] text-white text-xs font-bold rounded-xl transition-colors shadow-xs"
+            className="px-5 py-2 bg-[#4b423b] hover:bg-[#2A3B82] text-white text-xs font-bold rounded-xl transition-colors shadow-xs"
           >
             Close
           </button>

@@ -8,18 +8,18 @@ interface AnnouncementBarProps {
 
 const ANNOUNCEMENTS = [
   {
-    text: 'Free delivery on orders over TSh 250,000 | Back-to-school wholesale deals',
-    link: '/catalog',
-    badge: 'Offer',
+    text: 'Wholesale & School Tenders: Save up to 40% OFF Cartons — Direct From Factory',
+    link: '/wholesale',
+    badge: 'Wholesale',
   },
   {
-    text: 'Genuine OMEGA Hardcover Counter Books (Q2, Q3, Q4) — Direct from Factory',
+    text: 'Genuine OMEGA Hardcover Counter Books (Q2, Q3, Q4) — Direct from Mbeya Factory',
     link: '/catalog?category=Counter+Books',
     badge: 'Bestseller',
   },
   {
-    text: 'Direct logistics dispatch across Dar es Salaam & all Tanzania regions',
-    link: '/contact',
+    text: 'Free delivery on orders over TSh 250,000 | Regional bus parcel waybill dispatch',
+    link: '/wholesale',
     badge: 'Logistics',
   },
 ];
@@ -62,7 +62,7 @@ export const AnnouncementBar: React.FC<AnnouncementBarProps> = ({ onDismiss }) =
       aria-label="Announcement"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      className="relative z-50 w-full h-9 bg-[#1E2A5E] text-[#FAF7F0] text-[13px] font-sans flex items-center justify-between px-4 sm:px-6 border-b border-[#FAF7F0]/10 overflow-hidden select-none"
+      className="relative z-50 w-full h-9 bg-[#4b423b] text-white text-[13px] font-sans flex items-center justify-between px-4 sm:px-6 border-b border-[#e2dedb]/20 overflow-hidden select-none"
     >
       <div className="w-8 shrink-0" aria-hidden="true" />
 
@@ -70,9 +70,9 @@ export const AnnouncementBar: React.FC<AnnouncementBarProps> = ({ onDismiss }) =
       <div className="flex-1 flex items-center justify-center overflow-hidden">
         <Link
           to={current.link}
-          className="group inline-flex items-center gap-2 max-w-full truncate hover:text-[#F5A623] transition-colors focus-ring-gold rounded-sm px-1 py-0.5"
+          className="group inline-flex items-center gap-2 max-w-full truncate hover:text-[#c49b7c] transition-colors focus-ring-gold rounded-sm px-1 py-0.5"
         >
-          <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-[#F5A623] text-[#1E2A5E]">
+          <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#c49b7c] text-[#3b352f] shadow-xs">
             <Sparkles className="w-2.5 h-2.5" />
             {current.badge}
           </span>
@@ -88,7 +88,7 @@ export const AnnouncementBar: React.FC<AnnouncementBarProps> = ({ onDismiss }) =
         type="button"
         onClick={handleDismiss}
         aria-label="Dismiss announcement"
-        className="w-8 h-8 shrink-0 flex items-center justify-center rounded-full text-[#FAF7F0]/70 hover:text-white hover:bg-white/10 transition-colors focus-ring-gold"
+        className="w-8 h-8 shrink-0 flex items-center justify-center rounded-full text-[#fafafa]/70 hover:text-white hover:bg-white/10 transition-colors focus-ring-gold"
       >
         <X className="w-3.5 h-3.5" />
       </button>

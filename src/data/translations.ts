@@ -42,7 +42,7 @@ export const TRANSLATIONS = {
     quire4Label: 'Q4 (384 Pages)',
 
     // Positive Thinking & Writing Section
-    positiveThinkingBadge: 'POSITIVE THINKING & WRITING ✍🏻',
+    positiveThinkingBadge: 'POSITIVE THINKING & WRITING',
     positiveThinkingTitle: 'Great Thoughts Begin on Clean Pages',
     positiveThinkingSubtitle:
       'Writing by hand sharpens intellect, organizes visions, and brings clarity to future leaders.',
@@ -181,7 +181,7 @@ export const TRANSLATIONS = {
     quire4Label: 'Q4 (Kurasa 384)',
 
     // Positive Thinking & Writing Section
-    positiveThinkingBadge: 'MAWAZO MAZURI NA UANDISHI BORA ✍🏻',
+    positiveThinkingBadge: 'MAWAZO MAZURI NA UANDISHI BORA',
     positiveThinkingTitle: 'Mawazo Mazuri Hujengwa kwa Karatasi na Kalamu Bora',
     positiveThinkingSubtitle:
       'Kuandika kwa mkono kunanoa akili, kunaratibu ndoto, na huleta mwanga kwa viongozi wa kesho.',

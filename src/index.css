@@ -1,124 +1,143 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    /* "Ink & Paper" Boutique Theme Variables */
-    --primary: #1E2A5E;
-    --accent: #F5A623;
-    --bg: #FAF7F0;
-    --surface: #FFFFFF;
-    --text: #14182B;
-    --muted: #6B7280;
-    --border: #E4DDCC;
-    --success: #2A9D8F;
-    --danger: #D64545;
+:root {
+  /* ==================== LEDUP.PT SIGNATURE ARCHITECTURAL PALETTE ==================== */
+  /* Primary Deep Walnut / Mocha: #4b423b | Accent Copper: #c49b7c | Accent Amber: #a46b44 */
+  /* Canvas: #fafafa | Hairline Border: #e2dedb | Deep Espresso Text: #3b352f */
+  --clr-main: #4b423b;              /* Signature LEDUP Deep Mocha / Walnut */
+  --clr-main-50: #fafafa;           /* Clean Off-white Surface */
+  --clr-main-100: #f5f4f4;          /* Soft Gray Stone */
+  --clr-main-200: #efeded;          /* Architectural Panel */
+  --clr-main-300: #e2dedb;          /* Hairline Border */
+  --clr-main-400: #beb5ae;          /* Warm Muted Taupe */
+  --clr-main-500: #a69d98;          /* Neutral Taupe */
+  --clr-main-600: #a1948c;          /* Medium Deep Taupe */
+  --clr-main-700: #736c67;          /* Charcoal Taupe */
+  --clr-main-900: #3b352f;          /* Rich Espresso Dark */
+  --clr-copper: #c49b7c;            /* Warm Copper Bronze */
+  --clr-amber: #a46b44;             /* Deep Amber Bronze */
+  --clr-copper-gradient: linear-gradient(90deg, #a46b44, #c49b7c, #a46b44);
+  --clr-glass-header: linear-gradient(90.48deg, rgba(255,255,255,.88) -4.41%, rgba(245,244,244,.88) 100.38%);
+  --clr-white: #ffffff;
+  --clr-bg: #fafafa;
+  --clr-black: #000000;
 
-    /* Canonical Boutique Tokens */
-    --navy: #1E2A5E;
-    --ink: #14182B;
-    --gold: #F5A623;
-    --paper: #FAF7F0;
-    --cream: #F3EEE2;
-    --white: #FFFFFF;
-    --line: #E4DDCC;
+  /* Canonical Tokens */
+  --primary: #4b423b;               /* LEDUP Core Mocha */
+  --primary-light: #5f5751;
+  --primary-lighter: #736c67;
+  --accent: #c49b7c;                /* LEDUP Copper Bronze */
+  --accent-light: #d6b59d;
+  --accent-dark: #a46b44;
+  --bg: #fafafa;                    /* LEDUP Soft Canvas */
+  --surface: #ffffff;
+  --surface-alt: #f5f4f4;
+  --surface-dark: #efeded;
+  --text: #3b352f;
+  --text-light: #736c67;
+  --muted: #8c847e;
+  --border: #e2dedb;
+  --success: #2A9D8F;
+  --danger: #D64545;
 
-    /* Typography */
-    --font-heading: 'Fraunces', Georgia, serif;
-    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  }
+  --navy: #4b423b;
+  --ink: #3b352f;
+  --gold: #c49b7c;
+  --paper: #fafafa;
+  --cream: #f5f4f4;
+  --white: #ffffff;
+  --line: #e2dedb;
 
-  @media (prefers-color-scheme: dark) {
-    :root[data-theme='dark'] {
-      --navy: #1E2A5E;
-      --ink: #F2EFE6;
-      --gold: #F5A623;
-      --paper: #0F1220;
-      --cream: #181C2E;
-      --white: #181C2E;
-      --line: #2B3145;
-      --muted: #9CA3AF;
-      --bg: #0F1220;
-      --surface: #181C2E;
-      --text: #F2EFE6;
-      --border: #2B3145;
-    }
-  }
+  /* Seamless Rustic Charm Aliases mapped to LEDUP.PT palette */
+  --clr-rustic-primary: #4b423b;
+  --clr-rustic-secondary: #c49b7c;
+  --clr-rustic-taupe: #a69d98;
+  --clr-rustic-linen: #e2dedb;
+  --clr-rustic-canvas: #fafafa;
+  --clr-rustic-espresso: #3b352f;
+  --clr-rustic-dark: #292420;
 
-  html, body {
-    overflow-x: hidden;
-    max-width: 100%;
-    width: 100%;
-    font-family: var(--font-body);
-    color: var(--text);
-    background-color: var(--bg);
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-  }
-
-  #root {
-    overflow-x: hidden;
-    max-width: 100%;
-    width: 100%;
-    min-height: 100vh;
-    background-color: var(--bg);
-    color: var(--text);
-  }
-
-  h1, h2, h3, h4, h5, h6, .font-heading, .font-fraunces, .font-cinzel, .font-serif-luxury {
-    font-family: var(--font-heading) !important;
-    letter-spacing: -0.015em;
-  }
-
-  p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
-    font-family: var(--font-body);
-  }
+  /* Typography */
+  --font-heading: 'Poppins', 'Fraunces', sans-serif;
+  --font-body: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* "Ink & Paper" Components & Utilities */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
+  font-family: var(--font-body);
+  color: var(--text);
+  background-color: var(--bg);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
 
-/* 1. Header (Deep Ink Blue #1E2A5E) */
+#root {
+  overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading, .font-fraunces, .font-cinzel, .font-serif-luxury {
+  font-family: var(--font-heading) !important;
+  letter-spacing: -0.015em;
+}
+
+p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
+  font-family: var(--font-body);
+}
+
+/* Indra Notebook High-Contrast Components & Utilities */
+
+/* 1. Header (Dark Teal #084C54) */
 .header-ink-blue {
-  background-color: #1E2A5E;
+  background-color: #084C54;
   color: #FFFFFF;
-  border-bottom: 1px solid rgba(230, 224, 210, 0.2);
+  border-bottom: 1px solid rgba(241, 235, 213, 0.2);
 }
 
-/* 2. Yellow CTA Buttons with Dark-Blue Text */
-.btn-cta-yellow {
-  background-color: #F5A623 !important;
-  color: #1E2A5E !important;
-  font-weight: 700 !important;
+/* 2. Vibrant Gen-Z Orange CTA Buttons */
+.btn-indra-primary, .btn-indra-primary {
+  background-color: #FD7E14 !important;
+  color: #084C54 !important;
+  font-weight: 800 !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 2px 8px rgba(245, 166, 35, 0.28);
+  box-shadow: 0 4px 14px rgba(253, 126, 20, 0.32);
 }
 
-.btn-cta-yellow:hover {
-  background-color: #e69919 !important;
-  color: #111a3d !important;
-  box-shadow: 0 4px 14px rgba(245, 166, 35, 0.4);
-  transform: translateY(-1px);
+.btn-indra-primary:hover, .btn-indra-primary:hover {
+  background-color: #FF922B !important;
+  color: #042529 !important;
+  box-shadow: 0 6px 20px rgba(253, 126, 20, 0.45);
+  transform: translateY(-2px);
 }
 
-.btn-cta-yellow:active {
+.btn-indra-primary:active, .btn-indra-primary:active {
   transform: translateY(0);
 }
 
-/* 3. Primary Ink-Blue Buttons */
-.btn-ink-primary {
-  background-color: #1E2A5E !important;
+/* 3. Primary Dark Teal Buttons */
+.btn-ink-primary, .btn-indra-secondary {
+  background-color: #084C54 !important;
   color: #FFFFFF !important;
   font-weight: 700 !important;
   transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(8, 76, 84, 0.25);
 }
 
-.btn-ink-primary:hover {
-  background-color: #162047 !important;
+.btn-ink-primary:hover, .btn-indra-secondary:hover {
+  background-color: #0D6D78 !important;
+  transform: translateY(-2px);
 }
 
 /* 4. Rounded Cards (12px) with Soft Shadows & Paper Surface */
 .card-ink-paper {
   border-radius: 12px;
   background-color: #FFFFFF;
-  border: 1px solid #E6E0D2;
+  border: 1px solid #F1EBD5;
   box-shadow: 0 2px 10px -2px rgba(30, 42, 94, 0.06);
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
 }
@@ -147,8 +166,8 @@
 }
 
 .badge-ink-pill {
-  background-color: #F5A623;
-  color: #1E2A5E;
+  background-color: #FD7E14;
+  color: #084C54;
   font-weight: 700;
   border-radius: 9999px;
   padding: 0.18rem 0.6rem;
@@ -196,7 +215,7 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: var(--gold, #F5A623);
+  background-color: var(--gold, #FD7E14);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -212,7 +231,362 @@
 }
 
 .focus-ring-gold:focus-visible {
-  outline: 2px solid var(--gold, #F5A623);
+  outline: 2px solid var(--gold, #FD7E14);
   outline-offset: 2px;
+}
+
+/* 8. Aardvark Book Club Inspired Interactive Book Animations */
+
+/* 3D Perspective Book Wrapper */
+.aardvark-book-stage {
+  perspective: 1200px;
+}
+
+.aardvark-book-3d {
+  position: relative;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+  transform-style: preserve-3d;
+}
+
+.group:hover .aardvark-book-3d {
+  transform: translateY(-6px) rotateY(-5deg) rotateX(3deg) scale(1.03);
+  box-shadow: -8px 16px 26px -6px rgba(30, 42, 94, 0.2), 0 2px 6px rgba(0,0,0,0.06);
+}
+
+/* Realistic Hardbound Book Spine & Edge highlights */
+.aardvark-book-spine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  background: linear-gradient(90deg, rgba(0,0,0,0.28) 0%, rgba(255,255,255,0.2) 25%, rgba(0,0,0,0.12) 55%, transparent 100%);
+  pointer-events: none;
+  z-index: 5;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+/* Book Cover Gloss Reflection / Sheen */
+.aardvark-sheen {
+  position: relative;
+  overflow: hidden;
+}
+
+.aardvark-sheen::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -120%;
+  width: 60%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    rgba(255, 255, 255, 0) 20%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 80%
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+}
+
+.group:hover .aardvark-sheen::after {
+  left: 150%;
+  transition: left 0.75s ease-in-out;
+}
+
+/* Gentle Floating Levitation */
+@keyframes aardvark-float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(0.4deg);
+  }
+}
+
+.animate-aardvark-float {
+  animation: aardvark-float 4.5s ease-in-out infinite;
+}
+
+/* Playful Tilted Badge / Sticker */
+.aardvark-sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transform: rotate(-2deg);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+}
+
+.group:hover .aardvark-sticker {
+  transform: rotate(1.5deg) scale(1.06);
+}
+
+/* Tactile Elastic Button Press */
+.aardvark-btn-spring {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, background-color 0.15s ease;
+}
+
+.aardvark-btn-spring:active {
+  transform: scale(0.94);
+}
+
+.aardvark-btn-spring:hover {
+  transform: translateY(-2px);
+}
+
+/* 9. Heimplanet Technical & Architectural Minimalist Utilities */
+.heimplanet-tag {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.heimplanet-hairline {
+  border-color: rgba(228, 221, 204, 0.45);
+}
+
+.heimplanet-card {
+  position: relative;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(228, 221, 204, 0.65);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.heimplanet-card:hover {
+  border-color: var(--clr-main, #4b423b);
+  box-shadow: 0 16px 36px -8px rgba(75, 66, 59, 0.12);
+}
+
+.heimplanet-pill-tab {
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+}
+
+.heimplanet-grid-pattern {
+  background-size: 28px 28px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+/* ==================== 10. LEDUP.PT SIGNATURE ANIMATIONS & MICRO-INTERACTIONS ==================== */
+
+/* A) LEDUP Custom Smooth Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--clr-main-50, #fafafa);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--clr-main-500, #a69d98);
+  border-radius: 999px;
+  border: 2px solid var(--clr-main-50, #fafafa);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--clr-main-700, #736c67);
+}
+
+/* ==================== RUSTIC CHARM SIGNATURE BUTTONS & COMPONENTS ==================== */
+/* 1. Primary Warm Brown (#6D4C41) Button */
+.btn-rustic-primary {
+  background-color: #6D4C41 !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  border-radius: 9999px !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 4px 14px rgba(109, 76, 65, 0.28) !important;
+}
+
+.btn-rustic-primary:hover {
+  background-color: #5D4037 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 22px rgba(93, 64, 55, 0.38) !important;
+}
+
+/* ==================== LEDUP.PT SIGNATURE BUTTONS & COMPONENTS ==================== */
+/* 1. Primary Deep Walnut / Mocha (#4b423b) Button */
+.btn-ledup-mocha, .btn-rustic-primary {
+  background-color: #4b423b !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 9999px !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 4px 14px rgba(75, 66, 59, 0.24) !important;
+}
+
+.btn-ledup-mocha:hover, .btn-rustic-primary:hover {
+  background-color: #3b352f !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 22px rgba(59, 53, 47, 0.35) !important;
+}
+
+.btn-ledup-mocha:active, .btn-rustic-primary:active {
+  transform: scale(0.96) !important;
+}
+
+/* 2. Signature Warm Copper & Amber Gradient Button (#a46b44 -> #c49b7c) */
+.btn-ledup-copper, .btn-rustic-secondary {
+  background: linear-gradient(90deg, #a46b44, #c49b7c, #a46b44) !important;
+  background-size: 200% auto !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  border-radius: 9999px !important;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 4px 16px rgba(164, 107, 68, 0.28) !important;
+}
+
+.btn-ledup-copper:hover, .btn-rustic-secondary:hover {
+  background-position: right center !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px rgba(196, 155, 124, 0.42) !important;
+}
+
+.btn-ledup-copper:active, .btn-rustic-secondary:active {
+  transform: scale(0.96) !important;
+}
+
+/* 3. Hairline Architectural Outline Button */
+.btn-rustic-outline, .btn-ledup-outline {
+  background-color: transparent !important;
+  color: #4b423b !important;
+  border: 1.5px solid #4b423b !important;
+  font-weight: 700 !important;
+  border-radius: 9999px !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-rustic-outline:hover, .btn-ledup-outline:hover {
+  background-color: #4b423b !important;
+  color: #ffffff !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 18px rgba(75, 66, 59, 0.22) !important;
+}
+
+/* 4. LEDUP Signature Badges */
+.badge-rustic-primary, .badge-ledup-mocha {
+  background-color: #4b423b;
+  color: #ffffff;
+}
+
+.badge-rustic-secondary, .badge-ledup-copper {
+  background-color: #c49b7c;
+  color: #ffffff;
+}
+
+.badge-rustic-taupe, .badge-ledup-taupe {
+  background-color: #a69d98;
+  color: #ffffff;
+}
+
+.badge-rustic-linen, .badge-ledup-stone {
+  background-color: #efeded;
+  color: #3b352f;
+}
+
+/* B) LEDUP Pill Floating Island & Glassmorphism */
+.ledup-glass-pill {
+  background: linear-gradient(90.48deg, rgba(255, 255, 255, 0.88) -4.41%, rgba(245, 244, 244, 0.88) 100.38%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 9999px;
+  border: 1px solid rgba(226, 222, 219, 0.85);
+  box-shadow: 0 4px 20px -2px rgba(75, 66, 59, 0.08);
+}
+
+/* C) LEDUP Architectural Card (24px radius, soft drop shadow, copper hover) */
+.ledup-card, .card-rustic {
+  border-radius: 1.5rem;
+  background-color: #ffffff;
+  border: 1px solid #e2dedb;
+  box-shadow: 0 4px 20px -4px rgba(75, 66, 59, 0.06);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+
+.ledup-card:hover, .card-rustic:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -10px rgba(75, 66, 59, 0.14);
+  border-color: #c49b7c;
+}
+
+/* F) LEDUP Rotating 45-degree Arrow on Link Hover */
+.ledup-arrow-icon {
+  display: inline-block;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.group:hover .ledup-arrow-icon,
+.hover-rotate-arrow:hover .ledup-arrow-icon {
+  transform: rotate(45deg);
+}
+
+/* G) LEDUP Ambient Illumination Glow Animation */
+@keyframes ledup-ambient-breathe {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.1) translate(12px, -8px);
+  }
+}
+
+.animate-ledup-ambient {
+  animation: ledup-ambient-breathe 8s ease-in-out infinite alternate;
+}
+
+/* H) LEDUP Light Sheen Animation */
+@keyframes ledup-shimmer-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.ledup-sheen {
+  position: relative;
+  overflow: hidden;
+}
+
+.ledup-sheen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+
+.group:hover .ledup-sheen::after {
+  animation: ledup-shimmer-sweep 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* I) LEDUP Large Architectural Radius Corners (50px / 3.125rem) */
+.ledup-rounded-hero-bottom {
+  border-bottom-left-radius: 3.125rem;
+  border-bottom-right-radius: 3.125rem;
+}
+
+.ledup-rounded-footer-top {
+  border-top-left-radius: 3.125rem;
+  border-top-right-radius: 3.125rem;
 }
 

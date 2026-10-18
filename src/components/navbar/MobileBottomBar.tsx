@@ -22,7 +22,7 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({
   return (
     <nav
       aria-label="Mobile Bottom Navigation"
-      className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#FAF7F0]/95 backdrop-blur-md border-t border-[#E4DDCC] shadow-lg px-2 py-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))]"
+      className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#fafafa]/95 backdrop-blur-md border-t border-[#e2dedb] shadow-lg px-2 py-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))]"
     >
       <div className="grid grid-cols-5 items-center max-w-md mx-auto text-[11px] font-medium">
         {/* Home */}
@@ -30,7 +30,7 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({
           to="/"
           className={({ isActive }) =>
             `flex flex-col items-center justify-center min-h-[44px] py-1 transition-colors ${
-              isActive ? 'text-[#1E2A5E] font-bold' : 'text-[#6B7280] hover:text-[#14182B]'
+              isActive ? 'text-[#4b423b] font-bold' : 'text-[#6B7280] hover:text-[#14182B]'
             }`
           }
         >
@@ -42,7 +42,7 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({
         <button
           type="button"
           onClick={onOpenMobileMenu}
-          className="flex flex-col items-center justify-center min-h-[44px] py-1 text-[#6B7280] hover:text-[#1E2A5E] transition-colors"
+          className="flex flex-col items-center justify-center min-h-[44px] py-1 text-[#6B7280] hover:text-[#4b423b] transition-colors"
         >
           <Grid className="w-5 h-5 stroke-[1.5]" />
           <span className="text-[10px] mt-0.5">Categories</span>
@@ -52,7 +52,7 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({
         <button
           type="button"
           onClick={onOpenSearch}
-          className="flex flex-col items-center justify-center min-h-[44px] py-1 text-[#6B7280] hover:text-[#1E2A5E] transition-colors"
+          className="flex flex-col items-center justify-center min-h-[44px] py-1 text-[#6B7280] hover:text-[#4b423b] transition-colors"
         >
           <Search className="w-5 h-5 stroke-[1.5]" />
           <span className="text-[10px] mt-0.5">Search</span>
@@ -62,7 +62,7 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({
         <button
           type="button"
           onClick={onOpenWishlist}
-          className="flex flex-col items-center justify-center min-h-[44px] py-1 text-[#6B7280] hover:text-[#1E2A5E] transition-colors relative"
+          className="flex flex-col items-center justify-center min-h-[44px] py-1 text-[#6B7280] hover:text-[#4b423b] transition-colors relative"
         >
           <div className="relative">
             <Heart className={`w-5 h-5 stroke-[1.5] ${wishlistCount > 0 ? 'fill-[#D64545] text-[#D64545]' : ''}`} />
@@ -79,11 +79,11 @@ export const MobileBottomBar: React.FC<MobileBottomBarProps> = ({
         <button
           type="button"
           onClick={onOpenCart}
-          className="flex flex-col items-center justify-center min-h-[44px] py-1 text-[#1E2A5E] font-bold transition-colors relative"
+          className="flex flex-col items-center justify-center min-h-[44px] py-1 text-[#4b423b] font-bold transition-colors relative"
         >
           <div className="relative">
-            <ShoppingBag className="w-5 h-5 stroke-[1.5] text-[#1E2A5E]" />
-            <span className="absolute -top-1.5 -right-2.5 w-4 h-4 rounded-full bg-[#F5A623] text-[#1E2A5E] text-[9px] font-black flex items-center justify-center font-mono shadow-xs">
+            <ShoppingBag className="w-5 h-5 stroke-[1.5] text-[#4b423b]" />
+            <span className="absolute -top-1.5 -right-2.5 w-4 h-4 rounded-full bg-[#c49b7c] text-[#4b423b] text-[9px] font-black flex items-center justify-center font-mono shadow-xs">
               {cartItemCount}
             </span>
           </div>

@@ -15,6 +15,7 @@ import {
   Zap,
   RefreshCw,
   Lock,
+  Info,
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import {
@@ -25,7 +26,7 @@ import {
 } from '../types/store';
 import { IMAGES } from '../data/products';
 import { SEOHead } from '../components/SEOHead';
-import { fetchHealth, flushRedisCache, BackendHealth } from '../services/api';
+import { fetchHealth, flushRedisCache, syncDatabaseProducts, BackendHealth } from '../services/api';
 
 export const AdminDashboardPage: React.FC = () => {
   const {
@@ -45,6 +46,29 @@ export const AdminDashboardPage: React.FC = () => {
   const [backendHealth, setBackendHealth] = useState<BackendHealth | null>(null);
   const [flushingCache, setFlushingCache] = useState(false);
   const [cacheFlushMessage, setCacheFlushMessage] = useState('');
+  const [syncingDb, setSyncingDb] = useState(false);
+  const [dbSyncMessage, setDbSyncMessage] = useState<{ text: string; success: boolean } | null>(null);
+
+  const handleSyncDatabase = async () => {
+    setSyncingDb(true);
+    setDbSyncMessage(null);
+    const res = await syncDatabaseProducts();
+    if (res.success) {
+      setDbSyncMessage({
+        text: res.message || 'All 33 products synchronized into MongoDB database successfully!',
+        success: true,
+      });
+      const data = await fetchHealth();
+      if (data) setBackendHealth(data);
+    } else {
+      setDbSyncMessage({
+        text: `Sync info: ${res.message}`,
+        success: false,
+      });
+    }
+    setSyncingDb(false);
+    setTimeout(() => setDbSyncMessage(null), 6000);
+  };
 
   useEffect(() => {
     const loadHealth = async () => {
@@ -839,7 +863,9 @@ export const AdminDashboardPage: React.FC = () => {
                 <div className="p-3 bg-stone-50 rounded-lg">
                   <span className="text-stone-500 block text-[10px] uppercase font-bold">Status</span>
                   <span className="font-semibold text-stone-900">
-                    {backendHealth ? 'Connected & Ready' : 'Backend Initializing...'}
+                    {backendHealth?.database.connected
+                      ? 'Atlas Connected (Live)'
+                      : 'Resilient In-Memory / Local Engine'}
                   </span>
                 </div>
                 <div className="p-3 bg-stone-50 rounded-lg">
@@ -848,14 +874,57 @@ export const AdminDashboardPage: React.FC = () => {
                 </div>
                 <div className="p-3 bg-stone-50 rounded-lg">
                   <span className="text-stone-500 block text-[10px] uppercase font-bold">Catalog Documents</span>
-                  <span className="font-semibold text-stone-900">
-                    {backendHealth?.database.totalDocuments ?? products.length} Products
+                  <span className="font-semibold text-stone-900 font-mono-tabular">
+                    {backendHealth?.database.productsCount ?? products.length} Products
                   </span>
                 </div>
                 <div className="p-3 bg-stone-50 rounded-lg">
                   <span className="text-stone-500 block text-[10px] uppercase font-bold">Storage Target</span>
                   <span className="font-mono text-[11px] text-stone-800">omega_stationery</span>
                 </div>
+              </div>
+
+              {/* One-Click Catalog Synchronization into MongoDB */}
+              <div className="pt-3 border-t border-stone-100 space-y-2">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <span className="text-xs font-bold text-stone-900 block">Catalog Synchronization</span>
+                    <span className="text-[11px] text-stone-500">Sync all 33 products &amp; specs directly into MongoDB</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleSyncDatabase}
+                    disabled={syncingDb}
+                    className="px-3.5 py-1.5 bg-[#4b423b] hover:bg-[#151D42] text-[#c49b7c] rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs disabled:opacity-50 shrink-0 self-start sm:self-auto"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${syncingDb ? 'animate-spin' : ''}`} />
+                    <span>{syncingDb ? 'Syncing...' : 'Sync All 33 to MongoDB'}</span>
+                  </button>
+                </div>
+
+                {dbSyncMessage && (
+                  <div
+                    className={`p-2.5 rounded-lg text-xs font-medium ${
+                      dbSyncMessage.success
+                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                        : 'bg-amber-50 text-amber-800 border border-amber-200'
+                    }`}
+                  >
+                    {dbSyncMessage.text}
+                  </div>
+                )}
+
+                {!backendHealth?.database.connected && (
+                  <div className="p-2.5 bg-stone-50 border border-stone-200 rounded-lg text-[11px] text-stone-600 space-y-1">
+                    <p className="font-semibold text-stone-800 flex items-center gap-1.5">
+                      <Info className="w-3.5 h-3.5 text-stone-600 inline" />
+                      <span>MongoDB Atlas Cloud Notice:</span>
+                    </p>
+                    <p>
+                      Your server is serving the full 33-product catalog via high-speed in-memory MongoDB storage. To activate live cloud writes to MongoDB Atlas, add your current IP address (or <code>0.0.0.0/0</code>) to your cluster's IP Whitelist in <strong>MongoDB Atlas &gt; Network Access</strong>.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -909,8 +978,9 @@ export const AdminDashboardPage: React.FC = () => {
                 </div>
               </div>
 
-              <p className="text-[11px] text-stone-500 leading-relaxed italic">
-                ⚡ <strong>Doherty Threshold Advantage:</strong> With Redis caching, catalogue responses return in under 3ms, preventing page lag and ensuring optimal user experience for mobile shoppers on 3G/4G networks across Tanzania.
+              <p className="text-[11px] text-stone-500 leading-relaxed italic flex items-center gap-1.5">
+                <Zap className="w-3.5 h-3.5 text-amber-500 shrink-0 inline" />
+                <span><strong>Doherty Threshold Advantage:</strong> With Redis caching, catalogue responses return in under 3ms, preventing page lag and ensuring optimal user experience for mobile shoppers on 3G/4G networks across Tanzania.</span>
               </p>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Rotate3d, Play, Pause, BookOpen, Layers, CheckCircle2, MessageCircle, Sparkles, SlidersHorizontal, RefreshCw } from 'lucide-react';
+import { Rotate3d, Play, Pause, BookOpen, Layers, CheckCircle2, MessageCircle, Sparkles, SlidersHorizontal, RefreshCw, Star, Check } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { TRANSLATIONS } from '../data/translations';
 
@@ -327,7 +327,9 @@ export const Notebook3D: React.FC<Notebook3DProps> = () => {
                   >
                     {currentBook.spineText}
                   </div>
-                  <div className="text-amber-400 text-[9px] font-mono">★</div>
+                  <div className="flex items-center justify-center">
+                    <Star className="w-2.5 h-2.5 text-amber-400 fill-amber-400" />
+                  </div>
                 </div>
 
                 {/* 3. PAPER BLOCK EDGE (Right Face) */}
@@ -420,7 +422,7 @@ export const Notebook3D: React.FC<Notebook3DProps> = () => {
                   {/* Feint Ruled Lines with Poetic Handwritten Thoughts from PPTX */}
                   <div className="border-b border-blue-200 pb-1 pl-16">
                     <p className="font-serif italic text-base sm:text-lg text-stone-900 leading-none">
-                      OMEGA – Ubora Unaouaminiwa. ✨
+                      OMEGA – Ubora Unaouaminiwa.
                     </p>
                   </div>
                   <div className="border-b border-blue-200 pb-1 pl-16">
@@ -441,7 +443,9 @@ export const Notebook3D: React.FC<Notebook3DProps> = () => {
                 </div>
 
                 <div className="pt-2 border-t border-stone-200 flex items-center justify-between text-xs text-stone-600 font-medium">
-                  <span className="font-bold text-emerald-700">✓ 100% Bleed-Proof Guarantee</span>
+                  <span className="font-bold text-emerald-700 flex items-center gap-1.5">
+                    <Check className="w-4 h-4 text-emerald-600" /> 100% Bleed-Proof Guarantee
+                  </span>
                   <button
                     type="button"
                     onClick={() => setViewMode('3d')}

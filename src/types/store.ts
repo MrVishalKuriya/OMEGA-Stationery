@@ -68,6 +68,9 @@ export interface Product {
   reviewCount?: number;
   subtitle?: string;
   badge?: string;
+  packaging?: string; // Box/bundle packaging specification e.g. "48 Pcs / Box"
+  freeDelivery?: boolean; // Eligible for free delivery / dispatch
+  dispatchTime?: string; // Dispatch time estimate e.g. "Same-day dispatch"
   colorOptions?: ProductColorOption[];
 }
 
@@ -89,11 +92,11 @@ export interface StoreConfig {
   brandSubtitleSw: string;
   announcementText: string;
   announcementTextSw: string;
-  phoneNumber: string; // Primary: +255 715 268 391
+  phoneNumber: string; // Primary: +255 746 268 391
   secondaryPhone: string; // +255 624 265 480
   thirdPhone: string; // +255 699 032 777
   phoneNumbers: string[];
-  whatsappNumber: string; // 255715268391
+  whatsappNumber: string; // 255746268391
   whatsappNumbers: { label: string; number: string; digits: string }[];
   shopAddress: string;
   shopAddressSw: string;

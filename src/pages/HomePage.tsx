@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   ArrowRight,
+  ArrowUpRight,
   Sparkles,
   ShoppingBag,
   MessageCircle,
@@ -17,6 +18,12 @@ import {
   CheckCircle2,
   BookOpen,
   Award,
+  Clock,
+  Compass,
+  FileText,
+  MapPin,
+  ChevronRight,
+  PhoneCall,
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { ProductCard } from '../components/ProductCard';
@@ -40,8 +47,8 @@ export const HomePage: React.FC = () => {
     'all' | 'counter' | 'exercise' | 'bahasha' | 'registers'
   >('all');
 
-  // Spotlight active quire in hero
-  const [spotlightQuire, setSpotlightQuire] = useState<'q2' | 'q3' | 'q4'>('q2');
+  // Spotlight active product in Hero
+  const [spotlightKey, setSpotlightKey] = useState<'q2' | 'q3' | 'q4' | 'ex200'>('q2');
 
   // Wholesale calculator state
   const [calcQuantity, setCalcQuantity] = useState<number>(5);
@@ -52,47 +59,61 @@ export const HomePage: React.FC = () => {
       id: 'prod-omega-cb-q2',
       sku: 'OMG-CB-Q2',
       title: 'Counter Book 2 Quire',
-      titleSw: 'Counter Book Quire 2',
-      pages: '198 Pages (Kurasa 198)',
-      size: 'A4 Folio Hardcover',
+      subtitle: '198 Pages · A4 Folio Hardcover',
       cartonPrice: 56000,
       unitPrice: 5800,
+      packaging: '48 Pcs / Carton',
+      boxPcs: 48,
       image: '/omega-products/counter-book-q2-catalog.jpeg',
-      badge: 'Official 2026 Batch',
-      desc: 'Double-sewn binding with 70 GSM feint ruled bleed-proof paper. Best for high-frequency daily notes and store ledgers.',
-      descSw: 'Jalada gumu lililoshonwa kwa uzi imara na karatasi ya 70 GSM isiyopenyeza wino.',
+      badge: 'Best-Seller 2026',
+      desc: 'Double-sewn Smyth binding with 70 GSM feint-ruled bleed-proof paper. Built for high-frequency daily store ledgers and school notes.',
+      highlights: ['Double thread-sewn spine', '70 GSM bleed-proof bond', '198 numbered ruled pages'],
     },
     q3: {
       id: 'prod-omega-cb-q3',
       sku: 'OMG-CB-Q3',
       title: 'Counter Book 3 Quire',
-      titleSw: 'Counter Book Quire 3',
-      pages: '288 Pages (Kurasa 288)',
-      size: 'A4 Folio Hardcover',
+      subtitle: '288 Pages · A4 Folio Hardcover',
       cartonPrice: 57000,
       unitPrice: 7500,
+      packaging: '36 Pcs / Carton',
+      boxPcs: 36,
       image: '/omega-products/counter-book-q3-catalog.jpeg',
-      badge: 'Bestseller Choice',
-      desc: 'The corporate and school ledger standard in Tanzania. 288 numbered ruled pages with moisture-resistant laminated cover.',
-      descSw: 'Kiwango cha juu cha madaftari ya kibiashara na kitaasisi Tanzania.',
+      badge: 'Corporate Standard',
+      desc: 'The corporate accounting and school standard across Tanzania. 288 numbered ruled pages encased in a moisture-resistant laminated hardcover.',
+      highlights: ['Full academic year ledger', 'Laminated water-resistant cover', 'Indigo feint ruling with margins'],
     },
     q4: {
       id: 'prod-omega-cb-q4',
       sku: 'OMG-CB-Q4',
       title: 'Counter Book 4 Quire',
-      titleSw: 'Counter Book Quire 4',
-      pages: '384 Pages (Kurasa 384)',
-      size: 'A4 Folio Hardcover',
+      subtitle: '384 Pages · A4 Folio Hardcover',
       cartonPrice: 60000,
       unitPrice: 9500,
+      packaging: '24 Pcs / Carton',
+      boxPcs: 24,
       image: '/omega-products/counter-book-q4-catalog.jpeg',
-      badge: 'Maximum Ledger Capacity',
-      desc: '384 heavy-duty pages built for full-year academic notes, legal records, and high-volume business bookkeeping.',
-      descSw: 'Kurasa 384 za kudumu mwaka mzima kwa ajili ya kumbukumbu na mahesabu mazito.',
+      badge: 'Heavy-Duty Archive',
+      desc: '384 heavy-duty pages crafted for permanent multi-year legal archives, auditing records, and rigorous university degree notes.',
+      highlights: ['Heavyweight 384 pages', 'Reinforced spine cloth', 'Archival grade acid-free paper'],
+    },
+    ex200: {
+      id: 'prod-omega-ex-200p-sl',
+      sku: 'OMG-EX-200-SL',
+      title: 'Exercise Book 200 Pages',
+      subtitle: 'Single Line · Stiff Cover',
+      cartonPrice: 48000,
+      unitPrice: 2200,
+      packaging: '120 Pcs / Carton',
+      boxPcs: 120,
+      image: '/omega-products/exercise-book-200p-purple.jpeg',
+      badge: 'School Favorite',
+      desc: 'The benchmark primary and secondary school exercise book in Tanzania. Heavyweight cover with standard syllabus margin lines.',
+      highlights: ['Strong stapled centerfold', 'Bright white 60 GSM pages', 'Tanzania curriculum standard'],
     },
   };
 
-  const currentSpotlight = spotlightData[spotlightQuire];
+  const currentSpotlight = spotlightData[spotlightKey];
   const currency = storeConfig.currencySymbol || 'TSh';
 
   // Filter products for the featured section
@@ -109,46 +130,51 @@ export const HomePage: React.FC = () => {
   const cleanWhatsappDigits = storeConfig.whatsappNumber.replace(/\D/g, '');
   const whatsappGreetingUrl = `https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
     language === 'sw'
-      ? `Habari OMEGA Tanzania, ninahitaji katalogi na bei za jumla za madaftari (Counter Books, Exercise Books na Bahasha).`
-      : `Hello OMEGA Writing Notebooks, I would like to inquire about notebook catalog and wholesale price list.`
+      ? `Habari OMEGA Tanzania, ninahitaji kuagiza madaftari (Counter Books, Exercise Books na Bahasha) kwa bei ya jumla.`
+      : `Hello OMEGA Stationery, I would like to place an order and inquire about wholesale carton pricing.`
   )}`;
 
-  // 5 Signature Category Highlights
-  const categoryHighlights = [
+  // Signature category cards
+  const signatureCategories = [
     {
-      title: language === 'sw' ? 'Counter Books' : 'Counter Books',
-      subtitle: language === 'sw' ? 'Q2, Q3, Q4 Majalada Magumu' : 'Hardcover Q2, Q3, Q4 Ledgers',
+      title: language === 'sw' ? 'Counter Books' : 'Hardcover Counter Books',
+      subtitle: language === 'sw' ? 'Q2, Q3, Q4 Jalada Gumu' : 'Q2, Q3, Q4 Folio Ledgers',
+      desc: language === 'sw' ? '198p hadi 384p, ushonaji wa nyuzi madhubuti' : '198 to 384 pages, double thread-bound spine',
       link: '/catalog?category=Counter+Books',
       image: '/omega-products/counter-book-q3-catalog.jpeg',
-      actionText: language === 'sw' ? 'NUNUA VITABU →' : 'SHOP BOOKS →',
+      tag: 'Accounting & Schools',
     },
     {
-      title: language === 'sw' ? 'Madaftari ya Mazoezi' : 'Exercise Books',
-      subtitle: language === 'sw' ? 'Kurasa 32, 80, 100, 200' : 'Notebooks, 32p to 200p',
+      title: language === 'sw' ? 'Madaftari ya Mazoezi' : 'School Exercise Books',
+      subtitle: language === 'sw' ? 'Kurasa 32, 80, 100, 200' : '32p, 80p, 100p & 200p',
+      desc: language === 'sw' ? 'Mistari mipana, mistari miwili na hesabu' : 'Single line, double line & mathematics squares',
       link: '/catalog?category=Exercise+Books',
       image: '/omega-products/exercise-book-200p-purple.jpeg',
-      actionText: language === 'sw' ? 'NUNUA MADAFTARI →' : 'SHOP STATIONERY →',
+      tag: 'Primary & Secondary',
     },
     {
-      title: language === 'sw' ? 'Bahasha za Kraft' : 'Bahasha & Envelopes',
-      subtitle: language === 'sw' ? 'Size A3, A4, A5, A6 Nzito' : 'A3, A4, A5, A6 Heavy Kraft',
+      title: language === 'sw' ? 'Bahasha za Kraft' : 'Heavy Kraft Bahasha',
+      subtitle: language === 'sw' ? 'Size A3, A4, A5, A6 Nzito' : 'A3, A4, A5, A6 Document Envelopes',
+      desc: language === 'sw' ? 'Karatasi ya kahawia isiyochanika kwa barua' : 'Tear-resistant kraft for official documents',
       link: '/catalog?category=Bahasha+%26+Envelopes',
       image: '/omega-products/bahasha-a4-catalog.png',
-      actionText: language === 'sw' ? 'NUNUA BAHASHA →' : 'SHOP BAHASHA →',
+      tag: 'Office Mailers',
     },
     {
-      title: language === 'sw' ? 'Mafaili & Ofisi' : 'Office & School Files',
-      subtitle: language === 'sw' ? 'PVC Spring Files & Manila' : 'PVC Spring Files & Manila',
+      title: language === 'sw' ? 'Mafaili & Ofisi' : 'Office & Filing Supplies',
+      subtitle: language === 'sw' ? 'Spring Files PVC & Manila' : 'PVC Spring Files & Manila Folders',
+      desc: language === 'sw' ? 'Uwekaji wa kumbukumbu na majarada ya ofisi' : 'Heavy-duty archival binders and record files',
       link: '/catalog?category=Office+Supplies',
       image: '/omega-products/plastic-file-pvc-catalog.jpeg',
-      actionText: language === 'sw' ? 'NUNUA MAFAILI →' : 'SHOP FILES →',
+      tag: 'Enterprise & Legal',
     },
     {
-      title: language === 'sw' ? 'Wapya 2026' : 'New Arrivals',
-      subtitle: language === 'sw' ? 'Katalogi mpya & bei za jumla' : '2026 PPTX catalogue items',
-      link: '/catalog?filter=new',
+      title: language === 'sw' ? 'Vifurushi vya Jumla' : 'Wholesale Carton Packs',
+      subtitle: language === 'sw' ? 'Katoni za Kiwanda & Zabuni' : 'Factory Sealed Cartons & Tenders',
+      desc: language === 'sw' ? 'Punguzo la bei ya moja kwa moja hadi 18%' : 'Volume tier discounts for schools & wholesale shops',
+      link: '/wholesale',
       image: '/omega-products/omega-carton-box-branded.jpeg',
-      actionText: language === 'sw' ? 'GUNDUA SASA →' : 'EXPLORE NOW →',
+      tag: 'B2B Tenders',
     },
   ];
 
@@ -161,224 +187,220 @@ export const HomePage: React.FC = () => {
   const calcFinalTotal = calcGrossTotal - calcSavings;
 
   return (
-    <div className="bg-[#FBF8F1] min-h-screen font-sans text-[#1B1F2A]">
+    <div className="bg-[#fafafa] min-h-screen font-sans text-[#3b352f]">
       <SEOHead
         title="OMEGA Writing Notebooks & Stationery | Premium Quality | Tanzania"
-        description="Premium Tanzanian Counter Books (Q2, Q3, Q4), Exercise Books (32-200p), Bahasha envelopes, registers, and school essentials. Factory-direct wholesale and retail delivery."
+        description="Tanzania's benchmark in Counter Books (Q2, Q3, Q4), Exercise Books, Kraft Bahasha, and Office Files. Factory-direct wholesale and upcountry bus parcel delivery."
       />
 
-      {/* ==================== 1. INK & PAPER ATELIER HERO (#1E2A5E) ==================== */}
-      <section className="relative overflow-hidden w-full bg-[#1E2A5E] text-white border-b border-[#E6E0D2]/20 py-16 lg:py-24">
-        {/* Ambient atmospheric glows */}
-        <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[#F5A623]/10 rounded-full blur-[140px] pointer-events-none" />
-        <div className="absolute bottom-0 left-10 w-[450px] h-[450px] bg-[#2A9D8F]/10 rounded-full blur-[120px] pointer-events-none" />
+      {/* ========================================================================= */}
+      {/* 1. HERO SECTION: LUXURY EDITORIAL SHOWCASE (LEDUP #4B423B + COPPER ACCENTS) */}
+      {/* ========================================================================= */}
+      <section className="relative overflow-hidden w-full bg-[#4b423b] text-white py-14 lg:py-20 border-b border-[#3b352f] shadow-2xl">
+        {/* Ambient atmospheric lighting glows */}
+        <div className="absolute -top-32 -right-32 w-[600px] h-[600px] bg-[#c49b7c]/18 rounded-full blur-[150px] pointer-events-none" />
+        <div className="absolute -bottom-32 -left-32 w-[550px] h-[550px] bg-[#a46b44]/15 rounded-full blur-[140px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-            {/* Left Column: Headline & Value Proposition */}
-            <div className="lg:col-span-6 flex flex-col justify-center space-y-7">
+            {/* Left Column: Brand Hallmark & Value Proposition */}
+            <div className="lg:col-span-6 flex flex-col justify-center space-y-6">
               {/* Brand Hallmark Pill */}
               <div className="flex flex-wrap items-center gap-3">
-                <div className="bg-white px-3.5 py-1.5 rounded-[12px] shadow-sm border border-[#E6E0D2]">
+                <div className="bg-white px-3 py-1.5 rounded-[12px] shadow-sm border border-[#e2dedb] flex items-center">
                   <img
                     src="/omega-logo.png"
                     alt="OMEGA Logo"
-                    className="h-7 sm:h-8 w-auto object-contain"
+                    className="h-7 w-auto object-contain"
                   />
                 </div>
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wider text-[#F5A623] bg-white/10 border border-[#F5A623]/30">
-                  <Sparkles className="w-3.5 h-3.5 text-[#F5A623]" />
-                  <span className="uppercase text-[10px]">
-                    {language === 'sw' ? 'EST. 1998 • DAR ES SALAAM' : 'EST. 1998 • DAR ES SALAAM'}
-                  </span>
+                <div className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-[#c49b7c] bg-white/10 border border-[#c49b7c]/30 backdrop-blur-md flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#c49b7c] animate-pulse" />
+                  <span>Tanzania’s Benchmark Notebooks · Est. 1998</span>
                 </div>
               </div>
 
-              {/* Majestic Fraunces Headline */}
+              {/* Bold Editorial Headline */}
               <div className="space-y-3">
-                <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.08] tracking-tight">
-                  {language === 'sw' ? 'UBORA HALISI.' : 'CRAFTED FOR'} <br />
-                  <span className="text-[#F5A623]">
-                    {language === 'sw' ? 'KWA KILA UKURASA.' : 'ENDURING RECORD.'}
+                <h1 className="font-heading text-3xl sm:text-5xl lg:text-5xl font-light text-white leading-[1.12] tracking-tight">
+                  {language === 'sw' ? 'UBORA HALISI WA UANDISHI.' : 'Crafted for Enduring Thoughts &'} <br />
+                  <span className="font-bold text-[#c49b7c] bg-gradient-to-r from-[#c49b7c] via-white to-[#c49b7c] bg-clip-text text-transparent">
+                    {language === 'sw' ? 'KUMBUKUMBU ZINAZODUMU.' : 'Permanent Records.'}
                   </span>
                 </h1>
-                <p className="text-base sm:text-lg text-stone-200 leading-relaxed font-normal max-w-xl font-sans">
+                <p className="text-sm sm:text-base text-stone-200 leading-relaxed font-normal max-w-xl">
                   {language === 'sw'
-                    ? 'Mkusanyiko rasmi wa madaftari ya OMEGA: Hardcover Counter Books (Q2, Q3, Q4), madaftari ya shule kurasa 32–200, na bahasha nzito za kraft. Usafirishaji wa haraka nchi nzima.'
-                    : 'Tanzania’s premier stationery house. Engineered with 70 GSM acid-free bleed-proof paper and reinforced thread-sewn hardcovers for schools, accountants, and enterprises.'}
+                    ? 'Mkusanyiko rasmi wa madaftari ya OMEGA: Hardcover Counter Books (Q2, Q3, Q4), madaftari ya shule kurasa 32–200, na bahasha nzito za kraft. Zimeundwa kwa karatasi ya 70 GSM isiyopenyeza wino na ushonaji wa nyuzi madhubuti.'
+                    : 'Double thread-sewn hardcovers, 70 GSM bleed-proof bond paper, and precision indigo ruling. Engineered in Tanzania for schools, certified accountants, and corporate enterprises.'}
                 </p>
               </div>
 
-              {/* Action Buttons: Yellow CTA Button with Dark-Blue Text */}
+              {/* Action Buttons */}
               <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-1">
                 <Link
                   to="/catalog"
-                  className="px-8 py-4 rounded-[12px] btn-cta-yellow text-xs sm:text-sm uppercase tracking-wider font-bold inline-flex items-center gap-2 group shrink-0"
+                  className="btn-ledup-copper px-7 py-3.5 rounded-full text-xs sm:text-sm uppercase tracking-wider font-bold inline-flex items-center gap-2 group shrink-0 min-h-[48px] shadow-lg"
                 >
-                  <ShoppingBag className="w-4 h-4 text-[#1E2A5E]" />
-                  <span className="text-[#1E2A5E]">{language === 'sw' ? 'NUNUA SASA' : 'EXPLORE CATALOGUE'}</span>
-                  <ArrowRight className="w-4 h-4 text-[#1E2A5E] transition-transform group-hover:translate-x-1" />
+                  <ShoppingBag className="w-4 h-4 text-white" />
+                  <span className="text-white">{language === 'sw' ? 'NUNUA BIDHAA' : 'EXPLORE COLLECTION'}</span>
+                  <ArrowRight className="w-4 h-4 text-white ledup-arrow-icon" />
+                </Link>
+
+                <Link
+                  to="/wholesale"
+                  className="px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/25 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all inline-flex items-center gap-2 shrink-0 min-h-[48px] group"
+                >
+                  <Package className="w-4 h-4 text-[#c49b7c]" />
+                  <span>{language === 'sw' ? 'BEI ZA JUMLA' : 'WHOLESALE CARTONS'}</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 text-[#c49b7c] ledup-arrow-icon" />
                 </Link>
 
                 <a
                   href={whatsappGreetingUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-7 py-4 rounded-[12px] bg-[#2A9D8F] hover:bg-[#238276] text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-md inline-flex items-center gap-2 shrink-0 active:scale-95"
+                  className="px-5 py-3.5 rounded-full bg-[#25D366]/20 hover:bg-[#25D366]/30 text-emerald-300 border border-[#25D366]/40 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all inline-flex items-center gap-2 shrink-0 min-h-[48px]"
                 >
-                  <MessageCircle className="w-4 h-4 fill-white" />
-                  <span>{t.orderOnWhatsApp}</span>
+                  <MessageCircle className="w-4 h-4 fill-[#25D366] text-[#25D366]" />
+                  <span>WhatsApp</span>
                 </a>
-
-                <button
-                  type="button"
-                  onClick={() => setIsTrackingModalOpen(true)}
-                  className="px-6 py-4 rounded-[12px] bg-white/10 hover:bg-white/20 text-white border border-[#E6E0D2]/30 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors inline-flex items-center gap-2 shrink-0"
-                >
-                  <Truck className="w-4 h-4 text-[#F5A623]" />
-                  <span>{language === 'sw' ? 'FUATILIA ODA' : 'TRACK PARCEL'}</span>
-                </button>
               </div>
 
-              {/* Core Quality Highlights */}
-              <div className="pt-6 border-t border-[#E6E0D2]/20 grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 text-[#F5A623]">
-                    <Layers className="w-4 h-4" />
-                    <span className="font-heading text-xs font-bold uppercase tracking-wider text-white">
-                      QUIRE 2, 3, 4
-                    </span>
-                  </div>
-                  <span className="text-[11px] text-stone-300">198p, 288p, 384p</span>
-                </div>
-
-                <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 text-[#F5A623]">
+              {/* 4 Technical Quality Badges */}
+              <div className="pt-4 border-t border-white/15 grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="p-3 bg-white/5 border border-white/10 rounded-[12px]">
+                  <div className="flex items-center gap-1.5 text-[#c49b7c] mb-1">
                     <ShieldCheck className="w-4 h-4" />
-                    <span className="font-heading text-xs font-bold uppercase tracking-wider text-white">
-                      THREAD-SEWN
-                    </span>
+                    <span className="text-[11px] font-bold uppercase text-white">Smyth Binding</span>
                   </div>
-                  <span className="text-[11px] text-stone-300">Reinforced spine</span>
+                  <span className="text-[11px] text-stone-300 block">Opens 180° flat</span>
                 </div>
 
-                <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 text-[#F5A623]">
+                <div className="p-3 bg-white/5 border border-white/10 rounded-[12px]">
+                  <div className="flex items-center gap-1.5 text-[#c49b7c] mb-1">
                     <Feather className="w-4 h-4" />
-                    <span className="font-heading text-xs font-bold uppercase tracking-wider text-white">
-                      70 GSM BOND
-                    </span>
+                    <span className="text-[11px] font-bold uppercase text-white">70 GSM Paper</span>
                   </div>
-                  <span className="text-[11px] text-stone-300">Bleed-proof paper</span>
+                  <span className="text-[11px] text-stone-300 block">Zero ink bleed</span>
                 </div>
 
-                <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 text-[#F5A623]">
-                    <Package className="w-4 h-4" />
-                    <span className="font-heading text-xs font-bold uppercase tracking-wider text-white">
-                      60 PCS / CARTON
-                    </span>
+                <div className="p-3 bg-white/5 border border-white/10 rounded-[12px]">
+                  <div className="flex items-center gap-1.5 text-[#c49b7c] mb-1">
+                    <Truck className="w-4 h-4" />
+                    <span className="text-[11px] font-bold uppercase text-white">Bus Parcel</span>
                   </div>
-                  <span className="text-[11px] text-stone-300">Wholesale boxes</span>
+                  <span className="text-[11px] text-stone-300 block">All 31 regions</span>
+                </div>
+
+                <div className="p-3 bg-white/5 border border-white/10 rounded-[12px]">
+                  <div className="flex items-center gap-1.5 text-[#c49b7c] mb-1">
+                    <Percent className="w-4 h-4" />
+                    <span className="text-[11px] font-bold uppercase text-white">Factory Direct</span>
+                  </div>
+                  <span className="text-[11px] text-stone-300 block">Carton bulk savings</span>
                 </div>
               </div>
             </div>
 
-            {/* Right Column: Interactive Luxury Book Spotlight Studio */}
+            {/* Right Column: Interactive Benchmark Product Studio */}
             <div className="lg:col-span-6 w-full">
-              <div className="bg-[#162047] rounded-[12px] p-6 sm:p-8 shadow-xl border border-[#E6E0D2]/20 relative overflow-hidden flex flex-col justify-between">
-                {/* Header Switcher */}
-                <div className="flex items-center justify-between pb-5 border-b border-white/15 gap-2">
+              <div className="bg-[#3b352f] rounded-[24px] p-5 sm:p-7 shadow-2xl border border-white/15 relative overflow-hidden flex flex-col justify-between">
+                {/* Studio Header & Tab Switcher */}
+                <div className="flex flex-wrap items-center justify-between pb-4 border-b border-white/15 gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#2A9D8F] animate-pulse" />
-                    <span className="font-heading text-xs font-bold tracking-wider text-[#F5A623] uppercase">
-                      Signature Edition
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="font-heading text-xs font-bold tracking-wider text-[#c49b7c] uppercase">
+                      Featured Benchmark
                     </span>
                   </div>
 
                   {/* Quire Tabs */}
-                  <div className="flex items-center gap-1 p-1 bg-[#121B3D] rounded-[8px] border border-white/15">
-                    {(['q2', 'q3', 'q4'] as const).map((qKey) => (
+                  <div className="flex items-center gap-1 p-1 bg-[#292420] rounded-full border border-white/15">
+                    {[
+                      { key: 'q2', label: 'Quire 2' },
+                      { key: 'q3', label: 'Quire 3' },
+                      { key: 'q4', label: 'Quire 4' },
+                      { key: 'ex200', label: 'Exercise 200p' },
+                    ].map((tab) => (
                       <button
-                        key={qKey}
+                        key={tab.key}
                         type="button"
-                        onClick={() => setSpotlightQuire(qKey)}
-                        className={`px-3.5 py-1 rounded-[6px] text-xs font-bold uppercase transition-all ${
-                          spotlightQuire === qKey
-                            ? 'btn-cta-yellow shadow-sm'
+                        onClick={() => setSpotlightKey(tab.key as any)}
+                        className={`px-3 py-1 rounded-full text-xs font-bold uppercase transition-all ${
+                          spotlightKey === tab.key
+                            ? 'btn-ledup-copper shadow-sm'
                             : 'text-stone-300 hover:text-white'
                         }`}
                       >
-                        {qKey.toUpperCase()}
+                        {tab.label}
                       </button>
                     ))}
                   </div>
                 </div>
 
                 {/* Spotlight Display Content */}
-                <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center py-6">
-                  {/* Photo with frame */}
-                  <div className="sm:col-span-6 relative aspect-square bg-[#1E2A5E] rounded-[8px] p-4 flex items-center justify-center border border-[#E6E0D2]/20 group overflow-hidden">
-                    <span className="absolute top-3 left-3 badge-clear-sale z-10">
-                      {currentSpotlight.badge}
-                    </span>
-
+                <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center py-5">
+                  {/* Image Container with 3D perspective */}
+                  <div className="sm:col-span-6 relative aspect-square bg-[#4b423b] rounded-[16px] p-4 flex items-center justify-center border border-white/15 group overflow-hidden aardvark-book-stage shadow-inner">
                     <img
                       src={currentSpotlight.image}
                       alt={currentSpotlight.title}
-                      className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
+                      className="aardvark-book-3d max-h-full max-w-full object-contain"
                     />
+                    <div className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#292420]/80 text-[#c49b7c] border border-[#c49b7c]/40 backdrop-blur-xs">
+                      {currentSpotlight.badge}
+                    </div>
                   </div>
 
                   {/* Details & Pricing */}
-                  <div className="sm:col-span-6 space-y-4">
-                    <div className="flex items-center gap-1 text-[#F5A623] text-xs">
+                  <div className="sm:col-span-6 space-y-3.5">
+                    <div className="flex items-center gap-1 text-[#c49b7c] text-xs">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3.5 h-3.5 fill-[#F5A623] stroke-[#F5A623]" />
+                        <Star key={i} className="w-3.5 h-3.5 fill-[#c49b7c] stroke-[#c49b7c]" />
                       ))}
-                      <span className="text-white font-bold ml-1 text-xs">4.9 / 5.0</span>
+                      <span className="text-white font-bold ml-1 text-xs">5.0 · Verified Quality</span>
                     </div>
 
-                    <h3 className="text-2xl font-bold font-heading text-white leading-tight">
-                      {language === 'sw' ? currentSpotlight.titleSw : currentSpotlight.title}
-                    </h3>
-
-                    <div className="space-y-1 text-xs text-stone-200">
-                      <p className="font-semibold text-[#F5A623]">
-                        ● {currentSpotlight.pages} • {currentSpotlight.size}
-                      </p>
-                      <p className="text-stone-300 text-[11px] leading-relaxed line-clamp-2">
-                        {language === 'sw' ? currentSpotlight.descSw : currentSpotlight.desc}
+                    <div>
+                      <h3 className="text-xl font-bold font-heading text-white leading-tight">
+                        {currentSpotlight.title}
+                      </h3>
+                      <p className="text-xs text-[#c49b7c] font-medium mt-0.5">
+                        {currentSpotlight.subtitle}
                       </p>
                     </div>
+
+                    <p className="text-stone-300 text-xs leading-relaxed line-clamp-2">
+                      {currentSpotlight.desc}
+                    </p>
 
                     {/* Pricing Box */}
-                    <div className="p-3.5 rounded-[8px] bg-[#121B3D] border border-white/15 space-y-1">
+                    <div className="p-3 rounded-[12px] bg-[#292420] border border-white/15 space-y-1">
                       <div className="flex items-baseline justify-between">
                         <span className="text-[10px] uppercase font-bold text-stone-300">
-                          Carton (60 Pcs)
+                          Carton ({currentSpotlight.packaging})
                         </span>
-                        <span className="text-lg font-black text-[#F5A623] font-mono">
+                        <span className="text-base font-black text-[#c49b7c] font-mono">
                           {formatPrice(currentSpotlight.cartonPrice, currency)}
                         </span>
                       </div>
                       <div className="flex items-baseline justify-between text-xs">
-                        <span className="text-[10px] text-stone-300">Unit Retail</span>
+                        <span className="text-[10px] text-stone-300">Unit Retail Price</span>
                         <span className="text-stone-100 font-mono font-bold">
                           {formatPrice(currentSpotlight.unitPrice, currency)}
                         </span>
                       </div>
                     </div>
 
-                    {/* Actions: Yellow CTA Button */}
+                    {/* Actions */}
                     <div className="grid grid-cols-2 gap-2 pt-1">
                       <button
                         type="button"
                         onClick={() => addToCart(currentSpotlight.id, 1, true)}
-                        className="py-3 px-3 rounded-[8px] btn-cta-yellow text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 active:scale-95"
+                        className="py-2.5 px-3 rounded-full btn-ledup-copper text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 active:scale-95 shadow-md"
                       >
-                        <ShoppingBag className="w-3.5 h-3.5 text-[#1E2A5E]" />
-                        <span className="text-[#1E2A5E]">Add to Bag</span>
+                        <ShoppingBag className="w-3.5 h-3.5 text-white" />
+                        <span className="text-white">Add to Bag</span>
                       </button>
 
                       <button
@@ -387,7 +409,7 @@ export const HomePage: React.FC = () => {
                           const p = products.find((x) => x.id === currentSpotlight.id);
                           if (p) setQuickViewProduct(p);
                         }}
-                        className="py-3 px-3 rounded-[8px] bg-white/10 hover:bg-white/20 text-[#F5A623] border border-[#F5A623]/40 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all"
+                        className="py-2.5 px-3 rounded-full bg-white/10 hover:bg-white/20 text-[#c49b7c] border border-[#c49b7c]/40 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all"
                       >
                         <Eye className="w-3.5 h-3.5" />
                         <span>Quick View</span>
@@ -398,11 +420,11 @@ export const HomePage: React.FC = () => {
 
                 {/* Footer Micro-Guarantee */}
                 <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-stone-300">
-                  <span className="flex items-center gap-1 text-[#2A9D8F]">
-                    <CheckCircle2 className="w-3.5 h-3.5" /> Kariakoo Central Warehouse In-Stock
+                  <span className="flex items-center gap-1 text-emerald-400">
+                    <CheckCircle2 className="w-3.5 h-3.5" /> Ready for Immediate Dispatch
                   </span>
-                  <span className="text-[#F5A623] font-bold">
-                    Official 2026 Batch
+                  <span className="text-[#c49b7c] font-semibold">
+                    Soweto SIDO &amp; Kariakoo
                   </span>
                 </div>
               </div>
@@ -411,107 +433,107 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* ==================== 2. PILLARS OF OMEGA EXCELLENCE (Trust Bar) ==================== */}
-      <section className="bg-white border-b border-[#E6E0D2] py-8">
+      {/* ========================================================================= */}
+      {/* 2. TRUST & SCALE METRICS (Indra Notebook Inspired) */}
+      {/* ========================================================================= */}
+      <section className="bg-white border-b border-[#e2dedb] py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            <div className="flex items-center gap-4 p-4 rounded-[12px] bg-[#FBF8F1] border border-[#E6E0D2] hover:border-[#1E2A5E] transition-all shadow-xs">
-              <div className="w-12 h-12 rounded-[8px] bg-[#1E2A5E] text-[#F5A623] flex items-center justify-center shrink-0 shadow-sm">
-                <Truck className="w-6 h-6" />
-              </div>
-              <div>
-                <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-[#1B1F2A]">
-                  {language === 'sw' ? 'Usafirishaji Nchi Nzima' : 'Nationwide Dispatch'}
-                </h4>
-                <p className="text-[11px] text-[#6B7280] mt-0.5">Dar es Salaam &amp; Upcountry bus parcels</p>
-              </div>
+            <div className="p-4 rounded-[16px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all">
+              <span className="text-2xl sm:text-3xl font-extrabold text-[#4b423b] font-heading block">
+                500,000+
+              </span>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#3b352f] mt-1">
+                Books Distributed
+              </h4>
+              <p className="text-[11px] text-[#736c67] mt-0.5">Annual supply to schools &amp; firms</p>
             </div>
 
-            <div className="flex items-center gap-4 p-4 rounded-[12px] bg-[#FBF8F1] border border-[#E6E0D2] hover:border-[#1E2A5E] transition-all shadow-xs">
-              <div className="w-12 h-12 rounded-[8px] bg-[#1E2A5E] text-[#F5A623] flex items-center justify-center shrink-0 shadow-sm">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <div>
-                <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-[#1B1F2A]">
-                  {language === 'sw' ? 'Ubora Halisi wa OMEGA' : '100% Genuine OMEGA'}
-                </h4>
-                <p className="text-[11px] text-[#6B7280] mt-0.5">Thread-sewn &amp; 70 GSM paper guarantee</p>
-              </div>
+            <div className="p-4 rounded-[16px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all">
+              <span className="text-2xl sm:text-3xl font-extrabold text-[#4b423b] font-heading block">
+                31 Regions
+              </span>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#3b352f] mt-1">
+                Nationwide Bus Parcel
+              </h4>
+              <p className="text-[11px] text-[#736c67] mt-0.5">Reliable waybills to all towns</p>
             </div>
 
-            <div className="flex items-center gap-4 p-4 rounded-[12px] bg-[#FBF8F1] border border-[#E6E0D2] hover:border-[#1E2A5E] transition-all shadow-xs">
-              <div className="w-12 h-12 rounded-[8px] bg-[#F5A623] text-[#1E2A5E] flex items-center justify-center shrink-0 shadow-sm font-bold">
-                <Percent className="w-6 h-6" />
-              </div>
-              <div>
-                <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-[#1B1F2A]">
-                  {language === 'sw' ? 'Bei za Jumla & Zabuni' : 'Wholesale Tier Pricing'}
-                </h4>
-                <p className="text-[11px] text-[#6B7280] mt-0.5">Direct carton savings for schools &amp; shops</p>
-              </div>
+            <div className="p-4 rounded-[16px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all">
+              <span className="text-2xl sm:text-3xl font-extrabold text-[#c49b7c] font-heading block">
+                70 GSM
+              </span>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#3b352f] mt-1">
+                Bleed-Proof Paper
+              </h4>
+              <p className="text-[11px] text-[#736c67] mt-0.5">Zero feathering with fountain ink</p>
             </div>
 
-            <div className="flex items-center gap-4 p-4 rounded-[12px] bg-[#FBF8F1] border border-[#E6E0D2] hover:border-[#1E2A5E] transition-all shadow-xs">
-              <div className="w-12 h-12 rounded-[8px] bg-[#2A9D8F] text-white flex items-center justify-center shrink-0 shadow-sm">
-                <MessageCircle className="w-6 h-6 fill-white" />
-              </div>
-              <div>
-                <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-[#1B1F2A]">
-                  {language === 'sw' ? 'Msaada wa WhatsApp' : '3 WhatsApp Hotlines'}
-                </h4>
-                <p className="text-[11px] text-[#6B7280] mt-0.5">Instant order assistance anytime</p>
-              </div>
+            <div className="p-4 rounded-[16px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all">
+              <span className="text-2xl sm:text-3xl font-extrabold text-[#2A9D8F] font-heading block">
+                100%
+              </span>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#3b352f] mt-1">
+                Thread-Sewn Guarantee
+              </h4>
+              <p className="text-[11px] text-[#736c67] mt-0.5">Pages never loosen or fall out</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ==================== 3. SIGNATURE COLLECTIONS (Category Highlights) ==================== */}
-      <section className="py-16 lg:py-24 bg-[#FBF8F1] border-b border-[#E6E0D2]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          {/* Header */}
-          <div className="text-center space-y-3">
-            <span className="font-heading text-xs font-bold tracking-[0.2em] text-[#1E2A5E] uppercase block">
-              CURATED EDITIONS
+      {/* ========================================================================= */}
+      {/* 3. SIGNATURE CATEGORIES SHOWCASE (Indra Notebook & LEDUP Cards) */}
+      {/* ========================================================================= */}
+      <section className="py-14 lg:py-20 bg-[#fafafa] border-b border-[#e2dedb]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+          <div className="text-center space-y-2">
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#c49b7c] font-heading block">
+              Curated Collections
             </span>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1B1F2A] tracking-tight">
-              {language === 'sw' ? 'Mkusanyiko Rasmi wa Vitabu' : 'Shop by Category'}
+            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#3b352f] tracking-tight">
+              {language === 'sw' ? 'Mkusanyiko Rasmi wa Vitabu' : 'Explore by Category'}
             </h2>
-            <p className="text-xs sm:text-sm text-[#6B7280] max-w-lg mx-auto">
+            <p className="text-xs sm:text-sm text-[#736c67] max-w-lg mx-auto">
               {language === 'sw'
-                ? 'Madaftari bora ya OMEGA, bahasha nzito za kraft, na vifaa vya kiofisi vilivyoundwa kwa uimara na ubora nchini Tanzania.'
-                : 'From durable hardcover counter books to reinforced kraft envelopes, manufactured for Tanzanian scholars and enterprises.'}
+                ? 'Kila daftari linatengenezwa kwa viwango vikali vya kudumu kwa miaka mingi bila kuchanika.'
+                : 'From durable hardcover counter books to reinforced kraft envelopes, precision manufactured in Tanzania.'}
             </p>
           </div>
 
-          {/* 5 Distinct Category Cards */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
-            {categoryHighlights.map((cat, idx) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+            {signatureCategories.map((cat, idx) => (
               <Link
                 key={idx}
                 to={cat.link}
-                className="group flex flex-col bg-white border border-[#E6E0D2] rounded-[12px] overflow-hidden hover-lift hover:border-[#1E2A5E] p-5 text-center items-center shadow-xs"
+                className="group flex flex-col bg-white border border-[#e2dedb] rounded-[20px] overflow-hidden hover:border-[#c49b7c] p-4 text-center items-center shadow-xs transition-all hover:shadow-md"
               >
+                {/* Tag */}
+                <div className="w-full flex items-center justify-between pb-2 mb-2 border-b border-[#e2dedb] text-[10px] font-semibold text-[#8c847e]">
+                  <span className="text-[#c49b7c] font-bold">{cat.tag}</span>
+                  <span className="text-stone-400">0{idx + 1}</span>
+                </div>
+
                 {/* Photo container */}
-                <div className="aspect-square w-full bg-[#FBF8F1] rounded-[8px] p-4 overflow-hidden flex items-center justify-center relative mb-4 border border-[#E6E0D2]/60">
+                <div className="aspect-square w-full bg-[#f5f4f4] rounded-[14px] p-3 overflow-hidden flex items-center justify-center relative mb-3 border border-[#e2dedb]/60 group-hover:bg-[#faf9f8] transition-colors">
                   <img
                     src={cat.image}
                     alt={cat.title}
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
 
-                {/* Card Text */}
-                <h3 className="font-heading font-bold text-sm text-[#1B1F2A] group-hover:text-[#1E2A5E] transition-colors">
+                {/* Details */}
+                <h3 className="font-heading font-bold text-sm text-[#3b352f] group-hover:text-[#c49b7c] transition-colors leading-tight">
                   {cat.title}
                 </h3>
-                <p className="text-[11px] text-[#6B7280] mt-1 line-clamp-1">
+                <p className="text-[11px] text-[#736c67] mt-1 line-clamp-1">
                   {cat.subtitle}
                 </p>
 
-                <span className="mt-3 text-[10px] font-bold tracking-wider uppercase text-[#1E2A5E] group-hover:text-[#F5A623] inline-flex items-center gap-1">
-                  <span>{cat.actionText}</span>
+                <span className="mt-3 text-[11px] font-bold tracking-wider uppercase text-[#c49b7c] group-hover:text-[#a46b44] inline-flex items-center gap-1">
+                  <span>View Details</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 ledup-arrow-icon" />
                 </span>
               </Link>
             ))}
@@ -519,44 +541,197 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* ==================== 4. B2B WHOLESALE CARTON CALCULATOR (#1E2A5E) ==================== */}
-      <section className="py-16 lg:py-20 bg-[#1E2A5E] text-white border-b border-[#E6E0D2]/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ========================================================================= */}
+      {/* 4. THE ANATOMY OF AN OMEGA NOTEBOOK (Interactive Quality Dissection) */}
+      {/* ========================================================================= */}
+      <section className="py-14 lg:py-20 bg-white border-b border-[#e2dedb]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <div className="text-center space-y-2">
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#c49b7c] font-heading block">
+              The Engineering Standard
+            </span>
+            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#3b352f] tracking-tight">
+              {language === 'sw' ? 'Sayansi ya Daftari Bora la OMEGA' : 'The Anatomy of an OMEGA Notebook'}
+            </h2>
+            <p className="text-xs sm:text-sm text-[#736c67] max-w-xl mx-auto">
+              {language === 'sw'
+                ? 'Kwanini shule, wahasibu, na ofisi kubwa wanachagua OMEGA badala ya madaftari ya kawaida.'
+                : 'Every single component is selected to ensure lasting endurance, effortless writing, and complete ink resistance.'}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Pillar 1 */}
+            <div className="p-6 rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-3">
+              <div className="w-12 h-12 rounded-[14px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold shadow-sm">
+                <BookOpen className="w-6 h-6" />
+              </div>
+              <h3 className="font-heading font-bold text-base text-[#3b352f]">
+                1. Smyth Thread-Sewn Spine
+              </h3>
+              <p className="text-xs text-[#736c67] leading-relaxed">
+                Pages are double-stitched with high-tensile cotton-linen thread that never loosens. The book opens completely flat at 180° for effortless two-page writing.
+              </p>
+              <div className="text-[11px] font-semibold text-[#c49b7c] flex items-center gap-1 pt-1">
+                <Check className="w-3.5 h-3.5" /> 180° Lay-Flat Ergonomics
+              </div>
+            </div>
+
+            {/* Pillar 2 */}
+            <div className="p-6 rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-3">
+              <div className="w-12 h-12 rounded-[14px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold shadow-sm">
+                <Feather className="w-6 h-6" />
+              </div>
+              <h3 className="font-heading font-bold text-base text-[#3b352f]">
+                2. 70 GSM Bleed-Proof Bond
+              </h3>
+              <p className="text-xs text-[#736c67] leading-relaxed">
+                High-density virgin wood-pulp paper prevents ink ghosting and feathering from rollerballs, gel pens, and heavy fountain pen inks.
+              </p>
+              <div className="text-[11px] font-semibold text-[#c49b7c] flex items-center gap-1 pt-1">
+                <Check className="w-3.5 h-3.5" /> Zero Ink Bleed-Through
+              </div>
+            </div>
+
+            {/* Pillar 3 */}
+            <div className="p-6 rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-3">
+              <div className="w-12 h-12 rounded-[14px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold shadow-sm">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <h3 className="font-heading font-bold text-base text-[#3b352f]">
+                3. 1.8mm Laminated Hardcover
+              </h3>
+              <p className="text-xs text-[#736c67] leading-relaxed">
+                Heavy-duty greyboard wrapped in a water-resistant matt laminated cover. Protects records against humidity, spills, and rough transport.
+              </p>
+              <div className="text-[11px] font-semibold text-[#c49b7c] flex items-center gap-1 pt-1">
+                <Check className="w-3.5 h-3.5" /> Multi-Year Cover Durability
+              </div>
+            </div>
+
+            {/* Pillar 4 */}
+            <div className="p-6 rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-3">
+              <div className="w-12 h-12 rounded-[14px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold shadow-sm">
+                <Compass className="w-6 h-6" />
+              </div>
+              <h3 className="font-heading font-bold text-base text-[#3b352f]">
+                4. Precision Indigo Ruling
+              </h3>
+              <p className="text-xs text-[#736c67] leading-relaxed">
+                Uniform 8mm feint lines with soft red margin guides calibrated strictly to Tanzanian National Examination Council (NECTA) standards.
+              </p>
+              <div className="text-[11px] font-semibold text-[#c49b7c] flex items-center gap-1 pt-1">
+                <Check className="w-3.5 h-3.5" /> NECTA Syllabus Standard
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 5. FEATURED BENCHMARK PRODUCTS (Tabbed Catalog Grid) */}
+      {/* ========================================================================= */}
+      <section className="py-14 lg:py-20 bg-[#fafafa] border-b border-[#e2dedb]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#e2dedb] pb-5">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#c49b7c] font-heading block">
+                Official 2026 Batch
+              </span>
+              <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#3b352f] tracking-tight mt-1">
+                {language === 'sw' ? 'Bidhaa Zinazoongoza kwa Mauzo' : 'Benchmark Stationery Picks'}
+              </h2>
+              <p className="text-xs sm:text-sm text-[#736c67] mt-1">
+                {language === 'sw'
+                  ? 'Madaftari maarufu yaliyopo stoo tayari kwa oda za jumla na rejareja.'
+                  : 'In-stock factory lines ready for instant retail dispatch and wholesale carton delivery.'}
+              </p>
+            </div>
+
+            <Link
+              to="/catalog"
+              className="font-mono text-xs font-bold tracking-wider uppercase text-[#4b423b] hover:text-[#c49b7c] inline-flex items-center gap-1.5 border-b border-[#4b423b] hover:border-[#c49b7c] pb-0.5 transition-colors"
+            >
+              <span>{language === 'sw' ? 'TAZAMA ZOTE' : 'VIEW COMPLETE CATALOGUE'}</span>
+              <ArrowUpRight className="w-3.5 h-3.5 ledup-arrow-icon" />
+            </Link>
+          </div>
+
+          {/* Segmented Filter Pills */}
+          <div className="flex flex-wrap items-center gap-2 p-1.5 bg-white rounded-full max-w-fit border border-[#e2dedb] shadow-xs">
+            {[
+              { id: 'all', label: t.allProducts },
+              { id: 'counter', label: 'Counter Books' },
+              { id: 'exercise', label: 'Exercise Books' },
+              { id: 'bahasha', label: 'Bahasha & Envelopes' },
+              { id: 'registers', label: 'Registers & Paper' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`px-4 py-1.5 text-xs font-semibold rounded-full transition-all ${
+                  activeTab === tab.id
+                    ? 'bg-[#4b423b] text-white shadow-xs'
+                    : 'text-[#736c67] hover:text-[#3b352f] hover:bg-[#efeded]'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Product Cards Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {displayedProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 6. WHOLESALE CARTON CALCULATOR (Interactive B2B Hub) */}
+      {/* ========================================================================= */}
+      <section className="py-14 lg:py-20 bg-[#4b423b] text-white border-b border-[#3b352f] relative overflow-hidden">
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#c49b7c]/15 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             {/* Left Content */}
-            <div className="lg:col-span-5 space-y-5">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold text-[#F5A623] bg-white/10 border border-[#F5A623]/30">
-                <Package className="w-3.5 h-3.5 text-[#F5A623]" />
+            <div className="lg:col-span-5 space-y-4">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold text-[#c49b7c] bg-white/10 border border-[#c49b7c]/30">
+                <Package className="w-3.5 h-3.5 text-[#c49b7c]" />
                 <span>B2B WHOLESALE &amp; SCHOOL TENDERS</span>
               </div>
-              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-white leading-tight">
+              <h2 className="font-heading text-2xl sm:text-4xl font-bold text-white leading-tight">
                 {language === 'sw'
                   ? 'Kikokotoo cha Bei za Jumla (Carton Pricing)'
                   : 'Calculate Your Wholesale Carton Savings'}
               </h2>
-              <p className="text-xs sm:text-sm text-stone-200 leading-relaxed font-sans">
+              <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
                 {language === 'sw'
                   ? 'Chagua aina ya daftari na idadi ya katoni unazohitaji ili upate punguzo la moja kwa moja la hadi 18% kutoka kiwandani.'
                   : 'Select your preferred ledger quire and order quantity to see instant volume discount savings. We pack in branded OMEGA reinforced cartons with bus parcel waybills.'}
               </p>
 
-              <div className="space-y-2.5 pt-2 text-xs text-stone-200 font-medium">
+              <div className="space-y-2 pt-2 text-xs text-stone-200">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#2A9D8F]" />
+                  <CheckCircle2 className="w-4 h-4 text-[#c49b7c]" />
                   <span>5–19 Cartons: Save 10% on factory price</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#2A9D8F]" />
+                  <CheckCircle2 className="w-4 h-4 text-[#c49b7c]" />
                   <span>20+ Cartons: Save 18% + Priority Upcountry dispatch</span>
                 </div>
               </div>
             </div>
 
-            {/* Right Calculator Studio: 12px rounded */}
-            <div className="lg:col-span-7 bg-[#162047] border border-[#E6E0D2]/20 p-6 sm:p-8 rounded-[12px] shadow-xl space-y-6">
+            {/* Right Calculator Studio */}
+            <div className="lg:col-span-7 bg-[#3b352f] border border-white/15 p-6 sm:p-8 rounded-[24px] shadow-2xl space-y-5">
               {/* Step 1: Book Model */}
-              <div className="space-y-2.5">
-                <label className="text-xs font-bold uppercase tracking-wider text-[#F5A623] font-heading block">
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-wider text-[#c49b7c] block">
                   1. Select Notebook Model:
                 </label>
                 <div className="grid grid-cols-3 gap-3">
@@ -569,24 +744,28 @@ export const HomePage: React.FC = () => {
                       key={item.key}
                       type="button"
                       onClick={() => setCalcBookType(item.key as any)}
-                      className={`p-3.5 rounded-[8px] border text-center transition-all ${
+                      className={`p-3 rounded-[12px] border text-center transition-all ${
                         calcBookType === item.key
-                          ? 'btn-cta-yellow border-transparent shadow-sm'
-                          : 'bg-[#1E2A5E] text-stone-200 border-[#E6E0D2]/20 hover:border-[#F5A623]'
+                          ? 'btn-ledup-copper text-[#23201d] font-bold border-transparent shadow-md'
+                          : 'bg-[#4b423b] text-stone-200 border-white/15 hover:border-[#c49b7c]'
                       }`}
                     >
                       <div className="text-xs font-bold">{item.label}</div>
-                      <div className="text-[11px] text-[#F5A623] mt-1 font-mono">{item.rate}</div>
+                      <div className={`text-[11px] mt-0.5 font-mono ${calcBookType === item.key ? 'text-[#23201d]' : 'text-[#c49b7c]'}`}>{item.rate}</div>
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* Step 2: Quantity of Cartons */}
-              <div className="space-y-2.5">
+              {/* Step 2: Quantity */}
+              <div className="space-y-2">
                 <div className="flex justify-between items-center text-xs font-bold uppercase tracking-wider">
-                  <label className="text-[#F5A623] font-heading">2. Select Cartons (60 Pcs / Carton):</label>
-                  <span className="text-white font-mono text-sm">{calcQuantity} Cartons ({calcQuantity * 60} Books)</span>
+                  <label className="text-[#c49b7c]">
+                    2. Select Cartons ({calcBookType === 'q2' ? 48 : calcBookType === 'q3' ? 36 : 24} Pcs / Box):
+                  </label>
+                  <span className="text-white font-mono text-xs">
+                    {calcQuantity} Cartons ({calcQuantity * (calcBookType === 'q2' ? 48 : calcBookType === 'q3' ? 36 : 24)} Books)
+                  </span>
                 </div>
                 <div className="flex gap-2">
                   {[1, 5, 10, 20, 50].map((qty) => (
@@ -594,10 +773,10 @@ export const HomePage: React.FC = () => {
                       key={qty}
                       type="button"
                       onClick={() => setCalcQuantity(qty)}
-                      className={`flex-1 py-2.5 text-xs font-bold rounded-[8px] border transition-all font-mono ${
+                      className={`flex-1 py-2.5 text-xs font-bold rounded-[10px] border transition-all font-mono ${
                         calcQuantity === qty
-                          ? 'btn-cta-yellow border-transparent shadow-sm'
-                          : 'bg-[#1E2A5E] text-stone-300 border-[#E6E0D2]/20 hover:border-white/40'
+                          ? 'btn-ledup-copper text-[#23201d] border-transparent shadow-md'
+                          : 'bg-[#4b423b] text-stone-300 border-white/15 hover:border-white/40'
                       }`}
                     >
                       {qty} {qty === 1 ? 'Box' : 'Boxes'}
@@ -607,277 +786,178 @@ export const HomePage: React.FC = () => {
               </div>
 
               {/* Price Calculation Output */}
-              <div className="p-4 rounded-[8px] bg-[#121B3D] border border-white/10 space-y-2 font-mono">
+              <div className="p-4 rounded-[14px] bg-[#292420] border border-white/10 space-y-1.5 font-mono">
                 <div className="flex justify-between text-xs text-stone-300">
                   <span>Regular Total:</span>
                   <span className="line-through">{formatPrice(calcGrossTotal, currency)}</span>
                 </div>
-                <div className="flex justify-between text-xs text-[#2A9D8F] font-bold">
+                <div className="flex justify-between text-xs text-emerald-400 font-bold">
                   <span>Volume Savings ({Math.round(discountRate * 100)}%):</span>
                   <span>- {formatPrice(calcSavings, currency)}</span>
                 </div>
                 <div className="flex justify-between text-base font-extrabold text-white pt-2 border-t border-white/10">
                   <span>Calculated Net Price:</span>
-                  <span className="text-[#F5A623] text-lg font-black">{formatPrice(calcFinalTotal, currency)}</span>
+                  <span className="text-[#c49b7c] text-lg font-black">{formatPrice(calcFinalTotal, currency)}</span>
                 </div>
               </div>
 
-              {/* Yellow CTA Button with Dark-Blue Text */}
+              {/* Copper CTA Button */}
               <a
                 href={`https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
                   `*OMEGA WHOLESALE PROFORMA INQUIRY*\n` +
-                    `Product: Counter Book ${calcBookType.toUpperCase()}\n` +
-                    `Quantity: ${calcQuantity} Cartons (${calcQuantity * 60} Units)\n` +
-                    `Calculated Total: ${currency} ${calcFinalTotal.toLocaleString()}\n\n` +
-                    `Please share formal invoice and dispatch schedule.`
+                  `Product: Counter Book ${calcBookType.toUpperCase()}\n` +
+                  `Quantity: ${calcQuantity} Cartons (${calcQuantity * (calcBookType === 'q2' ? 48 : calcBookType === 'q3' ? 36 : 24)} Units)\n` +
+                  `Calculated Total: ${currency} ${calcFinalTotal.toLocaleString()}\n\n` +
+                  `Please share formal proforma invoice and dispatch waybill schedule.`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-4 px-4 rounded-[8px] btn-cta-yellow text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all active:scale-95"
+                className="w-full py-3.5 px-4 rounded-[12px] btn-ledup-copper text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 group"
               >
-                <MessageCircle className="w-4 h-4 fill-[#1E2A5E]" />
-                <span className="text-[#1E2A5E]">Request Proforma Invoice on WhatsApp</span>
+                <MessageCircle className="w-4 h-4 text-white" />
+                <span className="text-white">Request Proforma Invoice on WhatsApp</span>
+                <ArrowUpRight className="w-4 h-4 text-white ledup-arrow-icon" />
               </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ==================== 5. FEATURED PICKS SECTION ==================== */}
-      <section className="py-16 lg:py-24 bg-white border-b border-[#E6E0D2]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div>
-              <span className="font-heading text-xs font-bold tracking-[0.2em] text-[#1E2A5E] uppercase block">
-                TOP EDITIONS
-              </span>
-              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1B1F2A] tracking-tight mt-1">
-                {language === 'sw' ? 'Bidhaa Teule' : 'Featured Catalog Picks'}
-              </h2>
-              <p className="text-xs sm:text-sm text-[#6B7280] mt-1">
-                {language === 'sw'
-                  ? 'Madaftari maarufu yaliyopo stoo tayari kwa oda za jumla na rejareja'
-                  : 'Tanzania’s most trusted notebooks and writing ledger editions'}
-              </p>
-            </div>
-
-            <Link
-              to="/catalog"
-              className="text-xs sm:text-sm font-bold tracking-wider uppercase text-[#1E2A5E] hover:text-[#F5A623] inline-flex items-center gap-1.5 underline"
-            >
-              <span>{language === 'sw' ? 'TAZAMA ZOTE →' : 'VIEW ALL PRODUCTS →'}</span>
-            </Link>
-          </div>
-
-          {/* Segmented Category Filter Tabs */}
-          <div className="flex flex-wrap items-center gap-2 p-1.5 bg-[#FBF8F1] rounded-[12px] max-w-fit border border-[#E6E0D2]">
-            {[
-              { id: 'all', label: t.allProducts },
-              { id: 'counter', label: 'Counter Books' },
-              { id: 'exercise', label: 'Exercise Books' },
-              { id: 'bahasha', label: 'Bahasha' },
-              { id: 'registers', label: 'Registers & Paper' },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`px-4 py-2 text-xs font-bold rounded-[8px] transition-all ${
-                  activeTab === tab.id
-                    ? 'bg-[#1E2A5E] text-white shadow-xs'
-                    : 'text-[#1B1F2A] hover:text-[#1E2A5E]'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Product Cards Grid with 12px rounded cards & hover-lift */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {displayedProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ==================== 6. THE ART OF WRITING (Editorial Thought & Heritage ✍🏻) ==================== */}
-      <section className="py-16 lg:py-20 bg-[#FBF8F1] border-b border-[#E6E0D2]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      {/* ========================================================================= */}
+      {/* 7. NATIONWIDE DISPATCH & LOGISTICS (Upcountry Bus Parcel Hub) */}
+      {/* ========================================================================= */}
+      <section className="py-14 lg:py-20 bg-white border-b border-[#e2dedb]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           <div className="text-center space-y-2">
-            <span className="font-heading text-xs font-bold tracking-[0.2em] text-[#1E2A5E] uppercase block">
-              POSITIVE THINKING ✍🏻
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#c49b7c] font-heading block">
+              Logistics &amp; Delivery
             </span>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1B1F2A] tracking-tight">
-              {language === 'sw' ? 'Mawazo na Uongozi wa Uandishi' : 'Ideas &amp; Leadership Inspiration'}
+            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#3b352f] tracking-tight">
+              {language === 'sw' ? 'Usafirishaji wa Uhakika Mikoani Kote' : 'Reliable Nationwide Bus Parcel Delivery'}
             </h2>
-            <p className="text-xs sm:text-sm text-[#6B7280] max-w-lg mx-auto">
+            <p className="text-xs sm:text-sm text-[#736c67] max-w-xl mx-auto">
               {language === 'sw'
-                ? 'Mawazo mazuri huanza kwa kalamu na ukurasa safi wa daftari'
-                : 'Great thoughts begin on clean pages. Writing by hand sharpens intellect and cements vision.'}
+                ? 'Tunafikisha mzigo wako mkoa wowote Tanzania kupitia mabasi ya kuaminika ndani ya saa 24–48.'
+                : 'Direct carton delivery from our Central Warehouse in Soweto SIDO Mbeya and Kariakoo Dispatch Hub to your local bus terminal.'}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Editorial 1 */}
-            <div className="bg-white border border-[#E6E0D2] rounded-[12px] overflow-hidden shadow-xs hover-lift flex flex-col justify-between">
-              <div className="aspect-[16/10] bg-stone-100 overflow-hidden relative">
-                <img
-                  src="/omega-products/counter-book-q3-catalog.jpeg"
-                  alt="Journaling with OMEGA"
-                  className="w-full h-full object-cover"
-                />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-6 rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-3">
+              <div className="w-11 h-11 rounded-[12px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold">
+                <Truck className="w-5 h-5" />
               </div>
-              <div className="p-6 space-y-3 flex-1 flex flex-col justify-between">
-                <div>
-                  <h3 className="font-heading font-bold text-base sm:text-lg text-[#1B1F2A] leading-snug">
-                    {language === 'sw'
-                      ? 'Njia za Kuandika Kumbukumbu Zinazojenga Mafanikio'
-                      : 'The Cognitive Power of Handwriting in High School'}
-                  </h3>
-                  <p className="text-xs text-[#6B7280] mt-2 leading-relaxed">
-                    {language === 'sw'
-                      ? 'Kuandika kila siku kwa mkono kunanoa akili, kunaratibu ndoto, na huleta mwanga kwa viongozi.'
-                      : 'Handwriting sharpens conceptual retention, clarifies strategic thinking, and preserves vital commitments.'}
-                  </p>
-                </div>
-                <Link
-                  to="/about"
-                  className="text-xs font-bold uppercase tracking-wider text-[#1E2A5E] hover:text-[#F5A623] inline-flex items-center gap-1 pt-2"
-                >
-                  <span>{language === 'sw' ? 'SOMA MAKALA →' : 'READ EDITORIAL →'}</span>
-                </Link>
-              </div>
+              <h3 className="font-heading font-bold text-base text-[#3b352f]">
+                Daily Regional Bus Waybills
+              </h3>
+              <p className="text-xs text-[#736c67] leading-relaxed">
+                We partner with Shabiby, BM Coach, Abood, New Force, and Saibaba to ensure same-day parcel drop-off with SMS waybill tracking numbers.
+              </p>
             </div>
 
-            {/* Editorial 2 */}
-            <div className="bg-white border border-[#E6E0D2] rounded-[12px] overflow-hidden shadow-xs hover-lift flex flex-col justify-between">
-              <div className="aspect-[16/10] bg-stone-100 overflow-hidden relative">
-                <img
-                  src="/omega-products/exercise-book-200p-purple.jpeg"
-                  alt="Bleed-proof paper quality"
-                  className="w-full h-full object-cover"
-                />
+            <div className="p-6 rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-3">
+              <div className="w-11 h-11 rounded-[12px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold">
+                <Package className="w-5 h-5" />
               </div>
-              <div className="p-6 space-y-3 flex-1 flex flex-col justify-between">
-                <div>
-                  <h3 className="font-heading font-bold text-base sm:text-lg text-[#1B1F2A] leading-snug">
-                    {language === 'sw'
-                      ? 'Karatasi ya 70 GSM Isiyopenyeza Wino: Sayansi ya OMEGA'
-                      : 'Bleed-Proof High-GSM Paper: Why Fiber Density Matters'}
-                  </h3>
-                  <p className="text-xs text-[#6B7280] mt-2 leading-relaxed">
-                    {language === 'sw'
-                      ? 'Kwanini madaftari ya OMEGA yanadumu miaka mingi bila karatasi kuchanika au wino kupenya upande wa pili.'
-                      : 'High-density fiber formation prevents gel and fountain ink feathering for flawless record keeping.'}
-                  </p>
-                </div>
-                <Link
-                  to="/about"
-                  className="text-xs font-bold uppercase tracking-wider text-[#1E2A5E] hover:text-[#F5A623] inline-flex items-center gap-1 pt-2"
-                >
-                  <span>{language === 'sw' ? 'GUNDUA ZAIDI →' : 'DISCOVER MORE →'}</span>
-                </Link>
-              </div>
+              <h3 className="font-heading font-bold text-base text-[#3b352f]">
+                Heavy Branded Packaging
+              </h3>
+              <p className="text-xs text-[#736c67] leading-relaxed">
+                Cartons are double-strapped with water-resistant protective tape and official OMEGA branding to prevent transit damage or pilferage.
+              </p>
             </div>
 
-            {/* Editorial 3 */}
-            <div className="bg-white border border-[#E6E0D2] rounded-[12px] overflow-hidden shadow-xs hover-lift flex flex-col justify-between">
-              <div className="aspect-[16/10] bg-stone-100 overflow-hidden relative">
-                <img
-                  src="/omega-products/omega-carton-box-branded.jpeg"
-                  alt="Wholesale tender distribution"
-                  className="w-full h-full object-cover"
-                />
+            <div className="p-6 rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-3">
+              <div className="w-11 h-11 rounded-[12px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold">
+                <PhoneCall className="w-5 h-5" />
               </div>
-              <div className="p-6 space-y-3 flex-1 flex flex-col justify-between">
-                <div>
-                  <h3 className="font-heading font-bold text-base sm:text-lg text-[#1B1F2A] leading-snug">
-                    {language === 'sw'
-                      ? 'Usambazaji wa Katoni na Zabuni za Shule Tanzania Nzima'
-                      : 'Tanzanian Wholesale Tenders & Regional Bus Parcel Delivery'}
-                  </h3>
-                  <p className="text-xs text-[#6B7280] mt-2 leading-relaxed">
-                    {language === 'sw'
-                      ? 'Mizigo inafungashwa vizuri kwa katoni zilizochapwa chapa ya OMEGA na kusafirishwa mikoani kote.'
-                      : 'Securely bundled in branded OMEGA cartons with fast bus parcel dispatch to all upcountry regions.'}
-                  </p>
-                </div>
-                <Link
-                  to="/contact"
-                  className="text-xs font-bold uppercase tracking-wider text-[#1E2A5E] hover:text-[#F5A623] inline-flex items-center gap-1 pt-2"
-                >
-                  <span>{language === 'sw' ? 'WASILIANA NASI →' : 'CONNECT WITH DISPATCH →'}</span>
-                </Link>
-              </div>
+              <h3 className="font-heading font-bold text-base text-[#3b352f]">
+                Live Dispatch Confirmation
+              </h3>
+              <p className="text-xs text-[#736c67] leading-relaxed">
+                Receive instant photo proof of your loaded carton, bus receipt, and driver contact directly on WhatsApp before bus departure.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ==================== 7. TESTIMONIALS (#1E2A5E) ==================== */}
-      <section className="py-16 lg:py-24 bg-[#1E2A5E] text-white border-b border-[#E6E0D2]/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      {/* ========================================================================= */}
+      {/* 8. CLIENT TESTIMONIALS */}
+      {/* ========================================================================= */}
+      <section className="py-14 lg:py-20 bg-[#4b423b] text-white border-b border-[#3b352f]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           <div className="text-center space-y-2">
-            <span className="font-heading text-xs font-bold tracking-[0.2em] text-[#F5A623] uppercase block">
-              CLIENT TESTIMONIALS
+            <span className="text-xs font-bold tracking-[0.2em] text-[#c49b7c] uppercase block font-heading">
+              TESTIMONIALS
             </span>
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-white tracking-tight">
-              {language === 'sw' ? 'Kutoka kwa Wateja Wetu' : 'Trusted by Schools &amp; Enterprises'}
+            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-white tracking-tight">
+              {language === 'sw' ? 'Wateja Wetu Wanasemaje' : 'Trusted by Schools & Enterprises'}
             </h2>
             <p className="text-xs sm:text-sm text-stone-300 max-w-lg mx-auto">
               {language === 'sw'
-                ? 'Walimu, wahasibu na wanafunzi wanaamini ubora wa madaftari ya OMEGA'
-                : 'Loved by school headmasters, certified accountants, and stationery wholesalers across Tanzania'}
+                ? 'Walimu wakuu, wahasibu, na wamiliki wa maduka ya vifaa vya shule kote nchini wanaamini OMEGA.'
+                : 'Loved by headmasters, corporate accountants, and stationery wholesalers across Tanzania.'}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-7 rounded-[12px] bg-[#162047] border border-[#E6E0D2]/20 space-y-4 shadow-sm">
-              <div className="flex text-[#F5A623] text-sm">★★★★★</div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-6 rounded-[20px] bg-[#3b352f] border border-white/15 space-y-3 shadow-lg">
+              <div className="flex gap-1 text-[#c49b7c]">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-[#c49b7c] text-[#c49b7c]" />
+                ))}
+              </div>
               <p className="text-xs sm:text-sm text-stone-200 italic leading-relaxed">
-                “Daftari la OMEGA Quire 3 lina karatasi ngumu sana na jalada lisilopinda. Linanisaidia sana kwenye mahesabu ya kila mwezi.”
+                “Daftari la OMEGA Quire 3 lina karatasi ngumu sana na jalada lisilopinda. Linanisaidia sana kwenye mahesabu ya kila mwezi bila wino kupenya.”
               </p>
               <div className="pt-3 border-t border-white/10 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#F5A623] text-[#1E2A5E] font-bold flex items-center justify-center text-sm">
+                <div className="w-9 h-9 rounded-full bg-[#c49b7c] text-[#3b352f] font-bold flex items-center justify-center text-xs shadow-sm">
                   EK
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-white">Emanuel Kiwanga</h4>
-                  <p className="text-[11px] text-stone-300">Chief Accountant · Dar es Salaam</p>
+                  <p className="text-[11px] text-stone-400">Chief Accountant · Dar es Salaam</p>
                 </div>
               </div>
             </div>
 
-            <div className="p-7 rounded-[12px] bg-[#162047] border border-[#E6E0D2]/20 space-y-4 shadow-sm">
-              <div className="flex text-[#F5A623] text-sm">★★★★★</div>
+            <div className="p-6 rounded-[20px] bg-[#3b352f] border border-white/15 space-y-3 shadow-lg">
+              <div className="flex gap-1 text-[#c49b7c]">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-[#c49b7c] text-[#c49b7c]" />
+                ))}
+              </div>
               <p className="text-xs sm:text-sm text-stone-200 italic leading-relaxed">
-                “The quality of OMEGA stationery is top-notch. Our school orders 200-page single line exercise books every term without fail.”
+                “The quality of OMEGA stationery is unmatched. Our secondary school orders 200-page single line exercise books every term without fail.”
               </p>
               <div className="pt-3 border-t border-white/10 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#F5A623] text-[#1E2A5E] font-bold flex items-center justify-center text-sm">
+                <div className="w-9 h-9 rounded-full bg-[#c49b7c] text-[#3b352f] font-bold flex items-center justify-center text-xs shadow-sm">
                   GM
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-white">Grace Mhando</h4>
-                  <p className="text-[11px] text-stone-300">Head of Academics · Arusha</p>
+                  <p className="text-[11px] text-stone-400">Head of Academics · Arusha</p>
                 </div>
               </div>
             </div>
 
-            <div className="p-7 rounded-[12px] bg-[#162047] border border-[#E6E0D2]/20 space-y-4 shadow-sm">
-              <div className="flex text-[#F5A623] text-sm">★★★★★</div>
+            <div className="p-6 rounded-[20px] bg-[#3b352f] border border-white/15 space-y-3 shadow-lg">
+              <div className="flex gap-1 text-[#c49b7c]">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-[#c49b7c] text-[#c49b7c]" />
+                ))}
+              </div>
               <p className="text-xs sm:text-sm text-stone-200 italic leading-relaxed">
-                “Fast bus parcel dispatch to Mwanza! The kraft envelopes and ruled reams arrived safely packed in OMEGA branded cartons.”
+                “Fast bus parcel dispatch to Mwanza! The kraft envelopes and ruled reams arrived safely packed in OMEGA branded cartons within 24 hours.”
               </p>
               <div className="pt-3 border-t border-white/10 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#F5A623] text-[#1E2A5E] font-bold flex items-center justify-center text-sm">
+                <div className="w-9 h-9 rounded-full bg-[#c49b7c] text-[#3b352f] font-bold flex items-center justify-center text-xs shadow-sm">
                   JM
                 </div>
                 <div>
                   <h4 className="text-xs font-bold text-white">Joseph Mollel</h4>
-                  <p className="text-[11px] text-stone-300">Stationery Store Owner · Mwanza</p>
+                  <p className="text-[11px] text-stone-400">Stationery Store Owner · Mwanza</p>
                 </div>
               </div>
             </div>
@@ -885,44 +965,47 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* ==================== 8. STAY CONNECTED BANNER (#F5A623) ==================== */}
-      <section className="py-14 bg-[#F5A623] text-[#1E2A5E]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <div className="space-y-2">
-            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#1E2A5E] tracking-tight flex items-center justify-center gap-2">
-              <span>{language === 'sw' ? 'Tujumuike Pamoja' : "Let's stay in touch"}</span>
-              <Sparkles className="w-5 h-5 text-[#1E2A5E]" />
+      {/* ========================================================================= */}
+      {/* 9. STAY CONNECTED BANNER (LEDUP Warm Copper Gradient) */}
+      {/* ========================================================================= */}
+      <section className="py-12 bg-gradient-to-r from-[#a46b44] via-[#c49b7c] to-[#a46b44] text-[#23201d]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-5">
+          <div className="space-y-1.5">
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#23201d] tracking-tight flex items-center justify-center gap-2">
+              <span>{language === 'sw' ? 'Jiunge na OMEGA Stationery' : 'Connect with OMEGA Stationery'}</span>
+              <Sparkles className="w-5 h-5 text-[#23201d]" />
             </h2>
-            <p className="text-xs sm:text-sm text-[#1E2A5E]/90 font-medium max-w-lg mx-auto">
+            <p className="text-xs sm:text-sm text-[#3b352f] font-medium max-w-lg mx-auto">
               {language === 'sw'
                 ? 'Pata taarifa za bei mpya za jumla, katalogi ya 2026 na ofa maalum za vifaa vya shule na ofisi.'
-                : 'Get bookish catalog picks, wholesale tender offers, and 2026 price lists delivered directly to you.'}
+                : 'Get 2026 catalog updates, wholesale tender offers, and direct factory price lists.'}
             </p>
           </div>
 
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              alert(language === 'sw' ? 'Asante! Tumepokea ombi lako.' : 'Thank you! We received your enquiry.');
+              alert(language === 'sw' ? 'Asante! Tumepokea mawasiliano yako.' : 'Thank you! We received your details.');
             }}
             className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto"
           >
             <input
               type="text"
               required
-              placeholder={language === 'sw' ? 'Weka namba ya simu au email...' : 'Enter your email or phone number...'}
-              className="w-full px-5 py-3.5 rounded-[8px] text-xs sm:text-sm bg-white text-[#1B1F2A] placeholder:text-[#6B7280] border border-[#E6E0D2] focus:outline-none focus:border-[#1E2A5E]"
+              placeholder={language === 'sw' ? 'Namba ya simu au email...' : 'Enter your email or phone number...'}
+              className="w-full px-5 py-3 rounded-full text-xs sm:text-sm bg-white text-[#3b352f] placeholder:text-[#8c847e] border border-white/40 focus:outline-none focus:ring-2 focus:ring-[#4b423b] shadow-sm"
             />
             <button
               type="submit"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-[8px] btn-ink-primary text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors shadow-sm shrink-0"
+              className="w-full sm:w-auto px-7 py-3 rounded-full btn-ledup-mocha text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-md shrink-0 flex items-center justify-center gap-2 group"
             >
-              {language === 'sw' ? 'WASILIANA' : 'SUBSCRIBE'}
+              <span>{language === 'sw' ? 'WASILIANA' : 'SUBSCRIBE'}</span>
+              <ArrowUpRight className="w-4 h-4 ledup-arrow-icon" />
             </button>
           </form>
 
-          <p className="text-xs text-[#1E2A5E] font-medium">
-            Hotlines: +255 715 268 391 | +255 624 265 480 | +255 699 032 777
+          <p className="text-xs text-[#3b352f] font-semibold">
+            Dedicated Hotlines: +255 746 268 391 | +255 624 265 480 | +255 699 032 777
           </p>
         </div>
       </section>

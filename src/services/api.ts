@@ -1,8 +1,8 @@
 import { Product, CustomerOrderInput, DemoOrderRecord } from '../types/store';
 
 // Reads backend URL from environment (e.g. Render Web Service URL)
-// Default fallback to local development port 8080
-const RAW_URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+// Default fallback to MongoDB API server on port 5000
+const RAW_URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 export const BACKEND_URL = RAW_URL.replace(/\/+$/, '');
 
 export interface BackendHealthData {
@@ -41,7 +41,7 @@ export interface BackendApiResponse<T> {
 }
 
 /**
- * Check connectivity and status of the Java Spring Boot + MongoDB backend
+ * Check connectivity and status of the Node.js + MongoDB Atlas backend
  */
 export async function checkBackendHealth(): Promise<{ online: boolean; data?: BackendHealthData; error?: string }> {
   try {
@@ -90,8 +90,37 @@ export async function flushRedisCache(): Promise<boolean> {
     const res = await fetch(`${BACKEND_URL}/api/cache/flush`, { method: 'POST' });
     return res.ok;
   } catch {
-    // If running with standard Spring Boot without Redis, return simulated ok
     return true;
+  }
+}
+
+/**
+ * Synchronize all 33 products into MongoDB collection
+ */
+export async function syncDatabaseProducts(): Promise<{ success: boolean; message: string; count?: number }> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/products/seed`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    const json = await res.json();
+    return json;
+  } catch (err: any) {
+    return { success: false, message: err.message || 'Could not connect to MongoDB server' };
+  }
+}
+
+/**
+ * Fetch detailed database management statistics from MongoDB
+ */
+export async function fetchDatabaseStats(): Promise<any | null> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/database/stats`);
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json.success ? json.data : null;
+  } catch {
+    return null;
   }
 }
 
@@ -99,7 +128,7 @@ export async function flushRedisCache(): Promise<boolean> {
 const clientProductCache = new Map<string, { data: Product[]; expiresAt: number }>();
 
 /**
- * Fetch products from the Java Spring Boot + MongoDB backend (Optimized with In-Memory Query Cache)
+ * Fetch products from the Node.js + MongoDB backend (Optimized with In-Memory Query Cache)
  */
 export async function fetchLiveProducts(options?: {
   category?: string;
@@ -139,13 +168,13 @@ export async function fetchLiveProducts(options?: {
     }
     return null;
   } catch (err) {
-    console.info('Java Backend not reachable, using localized catalog fallback:', err);
+    console.info('Node.js Backend not reachable, using localized catalog fallback:', err);
     return null;
   }
 }
 
 /**
- * Record a customer order in MongoDB via Java Spring Boot backend
+ * Record a customer order in MongoDB via Node.js backend
  */
 export async function submitOrderToBackend(input: CustomerOrderInput & {
   items: DemoOrderRecord['items'];
@@ -171,7 +200,7 @@ export async function submitOrderToBackend(input: CustomerOrderInput & {
     const json = await res.json();
     return { success: true, order: json.data };
   } catch (err: any) {
-    console.warn('Could not sync order to Java MongoDB backend:', err.message);
+    console.warn('Could not sync order to MongoDB backend:', err.message);
     return { success: false, error: err.message };
   }
 }
@@ -208,7 +237,7 @@ export interface BackendAuthResponse {
 }
 
 /**
- * Sign in using Java Spring Boot + MongoDB backend
+ * Sign in using Node.js + MongoDB backend
  */
 export async function loginUserWithBackend(credentials: {
   email: string;
@@ -244,7 +273,7 @@ export async function loginUserWithBackend(credentials: {
 }
 
 /**
- * Register new user in MongoDB via Java Spring Boot backend
+ * Register new user in MongoDB via Node.js backend
  */
 export async function registerUserWithBackend(userData: {
   name: string;
@@ -280,6 +309,73 @@ export async function registerUserWithBackend(userData: {
     clearTimeout(timeoutId);
     console.info('Backend register unreachable or timed out, falling back to local storage:', err.message);
     return null;
+  }
+}
+
+/**
+ * Ask OMEGA AI Stationery Advisor (Powered by MongoDB AI Model)
+ */
+export async function askStationeryAI(
+  message: string,
+  history: Array<{ role: 'user' | 'assistant'; content: string }> = []
+): Promise<{ success: boolean; reply: string; source?: string; recommendedProducts?: Product[] }> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/ai/chat`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({ message, history }),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      return data;
+    }
+    return {
+      success: false,
+      reply: 'Apologies, our AI Stationery service is currently unavailable. Please reach our direct sales hotlines (+255 746 268 391) for immediate quotes.',
+    };
+  } catch (err: any) {
+    return {
+      success: false,
+      reply: 'Connection timed out. Our team is always on standby on WhatsApp (+255 746 268 391) to help with orders.',
+    };
+  }
+}
+
+/**
+ * Parse raw school booklist or tender requirements into matched OMEGA products
+ */
+export async function parseSchoolBooklist(text: string): Promise<{
+  success: boolean;
+  parsedCount: number;
+  estimatedTotal: number;
+  items: Array<{
+    rawLine: string;
+    quantity: number;
+    product: Product;
+    unitPrice: number;
+    subtotal: number;
+  }>;
+}> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/ai/parse-booklist`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({ text }),
+    });
+
+    if (res.ok) {
+      return await res.json();
+    }
+    return { success: false, parsedCount: 0, estimatedTotal: 0, items: [] };
+  } catch (err) {
+    return { success: false, parsedCount: 0, estimatedTotal: 0, items: [] };
   }
 }
 

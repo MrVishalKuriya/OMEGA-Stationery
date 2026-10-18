@@ -113,7 +113,7 @@ export interface StoreContextType {
   updateStoreConfig: (partial: Partial<StoreConfig>) => void;
   resetStoreConfigToDefault: () => void;
   recordDemoOrder: (input: CustomerOrderInput) => DemoOrderRecord;
-  // Java Spring Boot + MongoDB Backend
+  // High-Performance Node.js + MongoDB Backend
   backendUrl: string;
   isBackendOnline: boolean;
   backendHealth: BackendHealthData | null;
@@ -204,7 +204,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [activePhoneIndex, setActivePhoneIndex] = useState<number>(0);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  // Java Spring Boot + MongoDB Connection State
+  // High-Performance Node.js + MongoDB Connection State
   const [isBackendOnline, setIsBackendOnline] = useState<boolean>(false);
   const [backendHealth, setBackendHealth] = useState<BackendHealthData | null>(null);
 
@@ -378,7 +378,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       return { success: false, error: 'Please enter your email or phone number.' };
     }
 
-    // 1. Primary: Try Java Spring Boot + MongoDB Authentication
+    // 1. Primary: Try High-Performance Node.js + MongoDB Authentication
     try {
       if (password) {
         const backendRes = await loginUserWithBackend({ email: trimmedEmail, password, rememberMe });
@@ -550,7 +550,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(profileToActivate));
       closeAuthModal();
 
-      // Synchronize to Java Spring Boot + MongoDB backend asynchronously
+      // Synchronize to Node.js + MongoDB backend asynchronously
       registerUserWithBackend({
         name: trimmedName,
         email: trimmedEmail,
@@ -648,7 +648,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         showToast(`Removed "${product ? product.name : 'Item'}" from wishlist`);
         return prev.filter((id) => id !== productId);
       } else {
-        showToast(`Added "${product ? product.name : 'Item'}" to your wishlist ❤️`);
+        showToast(`Added "${product ? product.name : 'Item'}" to your wishlist`);
         return [...prev, productId];
       }
     });
@@ -844,7 +844,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
     setDemoOrders((prev) => [record, ...prev]);
 
-    // Asynchronously synchronize order to MongoDB via Java Spring Boot Backend
+    // Asynchronously synchronize order to MongoDB via Node.js Backend
     submitOrderToBackend({
       ...input,
       items: record.items,
@@ -853,7 +853,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       totalAmount: record.totalAmount,
     }).then((res) => {
       if (res.success) {
-        console.log('✅ Order successfully saved to MongoDB:', res.order?.orderReference || record.orderReference);
+        console.log('[MongoDB Sync] Order successfully saved to database:', res.order?.orderReference || record.orderReference);
       }
     }).catch((err) => {
       console.warn('MongoDB sync notice:', err);

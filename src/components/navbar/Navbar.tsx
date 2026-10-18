@@ -1,13 +1,26 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { Search, Heart, User, ShoppingBag, Menu, Sparkles, ChevronDown, Globe, X, ArrowRight } from 'lucide-react';
+import {
+  Search,
+  Heart,
+  User,
+  ShoppingBag,
+  Menu,
+  Sparkles,
+  ChevronDown,
+  Globe,
+  X,
+  ArrowRight,
+  Truck,
+  Package,
+  Layers,
+} from 'lucide-react';
 import { useStore } from '../../context/StoreContext';
 import { AnnouncementBar } from './AnnouncementBar';
-import { MegaMenu, MEGA_MENU_DATA } from './MegaMenu';
+import { MegaMenu } from './MegaMenu';
 import { SearchOverlay } from './SearchOverlay';
 import { AccountDropdown } from './AccountDropdown';
 import { MobileMenu } from './MobileMenu';
-import { MobileBottomBar } from './MobileBottomBar';
 
 export const Navbar: React.FC = () => {
   const {
@@ -24,7 +37,6 @@ export const Navbar: React.FC = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const isHomePage = location.pathname === '/';
 
   // Navigation & Interactive states
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -77,9 +89,9 @@ export const Navbar: React.FC = () => {
   const [isCartBouncing, setIsCartBouncing] = useState(false);
   const prevCountRef = useRef(cartItemCount);
 
-  // Dynamic Header Height measurement to prevent content overlap or jumps
+  // Dynamic Header Height measurement to prevent content overlap
   const headerRef = useRef<HTMLElement>(null);
-  const [headerHeight, setHeaderHeight] = useState<number>(148);
+  const [headerHeight, setHeaderHeight] = useState<number>(115);
 
   useEffect(() => {
     if (!headerRef.current) return;
@@ -98,15 +110,14 @@ export const Navbar: React.FC = () => {
     };
   }, []);
 
-  // Scroll states for sticky hide on scroll down / reveal on scroll up
+  // Sticky navbar state
   const [isVisible, setIsVisible] = useState(true);
-  const [isScrolled, setIsScrolled] = useState(false);
   const lastScrollYRef = useRef(0);
 
-  // Mega menu open delay ref (150ms delay)
+  // Mega menu open delay ref
   const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Detect count changes and trigger bounce
+  // Detect cart count changes and trigger bounce
   useEffect(() => {
     if (cartItemCount !== prevCountRef.current) {
       setIsCartBouncing(true);
@@ -116,7 +127,7 @@ export const Navbar: React.FC = () => {
     }
   }, [cartItemCount]);
 
-  // Global shortcut "/" to open search overlay
+  // Global shortcut "/" to focus search
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === '/' && !isSearchOpen) {
@@ -130,22 +141,16 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isSearchOpen]);
 
-  // Scroll handler: hide on scroll down, reappear on scroll up, transition transparent to solid
+  // Scroll handler: hide on scroll down, reveal on scroll up
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Solid background threshold
-      setIsScrolled(currentScrollY > 40);
-
-      // Scroll direction behavior
       if (currentScrollY > 120 && currentScrollY > lastScrollYRef.current + 10) {
-        // Scrolling down -> hide navbar
         setIsVisible(false);
         setActiveMegaCategory(null);
         setIsAccountOpen(false);
       } else if (currentScrollY < lastScrollYRef.current - 5 || currentScrollY <= 80) {
-        // Scrolling up -> show navbar
         setIsVisible(true);
       }
 
@@ -156,7 +161,7 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Hover handlers with 150ms delay
+  // Hover handlers for mega-menu
   const handleNavMouseEnter = (catId: string) => {
     if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
     hoverTimeoutRef.current = setTimeout(() => {
@@ -171,30 +176,25 @@ export const Navbar: React.FC = () => {
     }, 200);
   };
 
-  // Nav Items definition
-  const NAV_ITEMS = [
-    { id: 'notebooks', label: 'Notebooks', href: '/catalog?category=Counter+Books' },
-    { id: 'pens-pencils', label: 'Pens & Pencils', href: '/catalog?category=School+Stationery' },
-    { id: 'art-craft', label: 'Art & Craft', href: '/catalog?category=Art+%26+Craft' },
-    { id: 'office', label: 'Office', href: '/catalog?category=Files+%26+Folders' },
-    { id: 'school-kits', label: 'School Kits', href: '/catalog?category=School+Stationery' },
-    { id: 'books', label: 'Books', href: '/catalog?category=Exercise+Books' },
-    { id: 'offers', label: 'Offers', href: '/catalog', badge: 'SALE' },
+  // Dedicated Category Navigation Items
+  const CATEGORY_NAV_ITEMS = [
+    { id: 'all-catalog', label: language === 'sw' ? 'Bidhaa Zote' : 'All Products', href: '/catalog' },
+    { id: 'counter-books', label: 'Counter Books (Q2–Q4)', href: '/catalog?category=Counter+Books' },
+    { id: 'exercise-books', label: language === 'sw' ? 'Madaftari ya Mazoezi' : 'Exercise Books', href: '/catalog?category=Exercise+Books' },
+    { id: 'bahasha', label: 'Bahasha & Envelopes', href: '/catalog?category=Bahasha+%26+Envelopes' },
+    { id: 'school-tenders', label: language === 'sw' ? 'Zabuni za Shule' : 'School Tenders', href: '/school-tenders', badge: 'CALCULATOR' },
+    { id: 'wholesale', label: language === 'sw' ? 'Bei za Jumla' : 'Wholesale Cartons', href: '/wholesale', badge: 'UP TO 18% OFF' },
+    { id: 'shipping-guide', label: language === 'sw' ? 'Usafirishaji Mikoani' : 'Shipping Guide', href: '/shipping-guide' },
+    { id: 'about', label: language === 'sw' ? 'Kuhusu Sisi' : 'About OMEGA', href: '/about' },
+    { id: 'contact', label: language === 'sw' ? 'Wasiliana Nasi' : 'Contact & Desks', href: '/contact' },
   ];
-
-  // Header dynamic classes:
-  // If at top of home page -> transparent; else -> solid boutique paper background
-  const isSolid = !isHomePage || isScrolled;
-  const headerBgClass = isSolid
-    ? 'bg-[#FAF7F0] border-b border-[#E4DDCC] shadow-boutique-soft text-[#14182B]'
-    : 'bg-[#FAF7F0]/90 backdrop-blur-md border-b border-[#E4DDCC]/50 text-[#14182B]';
 
   return (
     <>
       {/* Skip to Content for Accessibility */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#1E2A5E] focus:text-[#FAF7F0] focus:rounded-[8px] focus:font-bold focus:shadow-xl focus-ring-gold"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#4b423b] focus:text-white focus:rounded-[8px] focus:font-bold focus:shadow-xl focus-ring-gold"
       >
         Skip to main content
       </a>
@@ -203,120 +203,183 @@ export const Navbar: React.FC = () => {
       <header
         ref={headerRef}
         role="banner"
-        className={`fixed top-0 left-0 right-0 z-40 w-full max-w-full overflow-visible transition-transform duration-200 ease-out ${
+        className={`fixed top-0 left-0 right-0 z-40 w-full transition-transform duration-200 ease-out shadow-sm ${
           isVisible ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
-        {/* A) Announcement Bar (36px, #1E2A5E) */}
+        {/* ================= TIER 0: ANNOUNCEMENT BAR (34px, #4b423b) ================= */}
         <AnnouncementBar />
 
-        {/* B) Main Header (60px mobile, 68px desktop) */}
-        <div className={`relative z-30 w-full max-w-full overflow-visible transition-colors duration-200 ease-out ${headerBgClass}`}>
-          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 w-full">
-            <div className="flex items-center justify-between h-[56px] sm:h-[60px] lg:h-[68px] gap-2 sm:gap-4 lg:gap-6 w-full">
-              {/* ================= LEFT: MOBILE HAMBURGER & LOGO ================= */}
-              <div className="flex items-center gap-1.5 sm:gap-3 shrink-0 min-w-0">
-                {/* Mobile / Tablet Hamburger (Visible under 1280px to prevent center nav collision) */}
+        {/* ================= TIER 1: BRAND LOGO + SEARCH + ACTIONS (64px) ================= */}
+        <div className="bg-[#fafafa] border-b border-[#e2dedb] text-[#3b352f]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-[62px] sm:h-[68px] gap-3 sm:gap-6">
+              
+              {/* LEFT: Mobile Hamburger & OMEGA Brand Hallmark */}
+              <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+                {/* Mobile / Tablet Menu Button */}
                 <button
                   type="button"
                   onClick={() => setIsMobileMenuOpen(true)}
                   aria-label="Open navigation menu"
-                  className="xl:hidden p-2 rounded-full text-[#14182B] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[40px] min-h-[40px] flex items-center justify-center shrink-0"
+                  className="lg:hidden p-2 rounded-full text-[#3b352f] hover:bg-[#f5f4f4] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] flex items-center justify-center shrink-0"
                 >
                   <Menu className="w-5 h-5 stroke-[1.5]" />
                 </button>
 
-                {/* Logo linking to Home */}
+                {/* Brand Logo & Name */}
                 <Link
                   to="/"
-                  className="flex items-center gap-2 sm:gap-2.5 group focus-ring-gold rounded-[8px] p-0.5 min-w-0"
-                  aria-label="OMEGA Stationery &amp; Books Home"
+                  className="flex items-center gap-2.5 group focus-ring-gold rounded-[8px] p-0.5 shrink-0"
+                  aria-label="OMEGA Stationery & Books Home"
                 >
-                  <div className="bg-white px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-[8px] border border-[#E4DDCC] shadow-2xs group-hover:border-[#F5A623] transition-all shrink-0">
+                  <div className="bg-white p-1.5 rounded-[10px] border border-[#e2dedb] shadow-2xs group-hover:border-[#c49b7c] transition-all shrink-0 flex items-center justify-center">
                     <img
                       src="/omega-logo.png"
                       alt="OMEGA Logo"
-                      className="h-6 sm:h-8 w-auto object-contain"
+                      className="h-7 sm:h-8 w-auto object-contain"
                     />
                   </div>
-                  <div className="flex flex-col min-w-0">
-                    <span className="font-heading text-xs sm:text-base font-bold tracking-tight text-[#1E2A5E] leading-none group-hover:text-[#F5A623] transition-colors truncate">
+                  <div className="flex flex-col shrink-0">
+                    <span className="font-heading text-sm sm:text-base font-extrabold tracking-tight text-[#4b423b] leading-tight group-hover:text-[#c49b7c] transition-colors">
                       OMEGA
                     </span>
-                    <span className="text-[8px] sm:text-[10px] tracking-wider sm:tracking-widest font-semibold uppercase text-[#6B7280] mt-0.5 truncate hidden min-[360px]:block">
-                      Stationery &amp; Books
+                    <span className="text-[9px] sm:text-[10px] tracking-wider font-semibold uppercase text-[#736c67] mt-0.5 hidden min-[340px]:block">
+                      STATIONERY &amp; BOOKS
                     </span>
                   </div>
                 </Link>
               </div>
 
-              {/* ================= CENTER: PRIMARY NAV LINKS (Desktop XL only, compact and responsive) ================= */}
-              <nav
-                role="navigation"
-                aria-label="Primary Navigation"
-                className="hidden xl:flex items-center justify-center gap-0.5 2xl:gap-1.5 h-full flex-1 min-w-0 px-2"
-                onMouseLeave={handleNavMouseLeave}
+              {/* CENTER: Prominent Instant Search Bar (Desktop) */}
+              <div
+                ref={inlineSearchRef}
+                className="relative hidden md:flex flex-1 max-w-xl lg:max-w-2xl mx-2 lg:mx-6"
               >
-                {NAV_ITEMS.map((item) => {
-                  const isMegaActive = activeMegaCategory === item.id;
-                  return (
-                    <div
-                      key={item.id}
-                      className="relative h-full flex items-center shrink-0"
-                      onMouseEnter={() => handleNavMouseEnter(item.id)}
+                <form onSubmit={handleDesktopSearchSubmit} className="relative w-full flex items-center">
+                  <Search className="w-4 h-4 text-[#8c847e] absolute left-3.5 pointer-events-none" />
+                  <input
+                    type="search"
+                    value={desktopSearchQuery}
+                    onChange={(e) => {
+                      setDesktopSearchQuery(e.target.value);
+                      setIsInlineSearchFocused(true);
+                    }}
+                    onFocus={() => setIsInlineSearchFocused(true)}
+                    placeholder={
+                      language === 'sw'
+                        ? 'Tafuta madaftari, counter books, bahasha, rejesta...'
+                        : 'Search notebooks, counter books, bahasha, registers...'
+                    }
+                    className="w-full pl-10 pr-10 py-2 sm:py-2.5 text-xs sm:text-sm bg-white rounded-full border border-[#e2dedb] hover:border-[#c49b7c] focus:border-[#4b423b] text-[#3b352f] placeholder:text-[#8c847e] transition-all shadow-2xs focus:outline-none focus:ring-1 focus:ring-[#4b423b]"
+                  />
+                  {desktopSearchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setDesktopSearchQuery('');
+                        setIsInlineSearchFocused(false);
+                      }}
+                      className="absolute right-3 p-1 text-[#8c847e] hover:text-[#3b352f]"
+                      aria-label="Clear search"
                     >
-                      <NavLink
-                        to={item.href}
-                        className={({ isActive }) =>
-                          `nav-link-ink px-2 2xl:px-2.5 py-1.5 text-[13px] 2xl:text-[14px] font-medium tracking-tight text-[#14182B] hover:text-[#1E2A5E] focus-ring-gold rounded-[4px] flex items-center gap-1 transition-colors whitespace-nowrap ${
-                            isActive || isMegaActive ? 'text-[#1E2A5E] active' : ''
-                          }`
-                        }
-                        aria-expanded={isMegaActive}
-                        aria-haspopup="true"
-                      >
-                        <span>{item.label}</span>
-                        {item.badge ? (
-                          <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-[#F5A623] text-[#1E2A5E] leading-none shadow-2xs">
-                            {item.badge}
-                          </span>
-                        ) : (
-                          <ChevronDown
-                            className={`w-3 h-3 opacity-50 hidden 2xl:inline-block transition-transform duration-150 ${
-                              isMegaActive ? 'rotate-180 text-[#1E2A5E] opacity-100' : ''
-                            }`}
-                          />
-                        )}
-                      </NavLink>
-                    </div>
-                  );
-                })}
-              </nav>
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </form>
 
-              {/* ================= RIGHT: TOOLS (Always Anchored Inside Viewport) ================= */}
-              <div className="flex items-center gap-1 sm:gap-2 shrink-0 ml-auto">
-                {/* 1. Visible Language Switcher Pill (EN ⇄ SW) */}
+                {/* Instant Live Search Dropdown */}
+                {isInlineSearchFocused && inlineMatches.length > 0 && (
+                  <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-[16px] border border-[#e2dedb] shadow-2xl overflow-hidden z-50">
+                    <div className="px-4 py-2.5 bg-[#fafafa] border-b border-[#e2dedb] flex items-center justify-between text-xs font-bold text-[#736c67]">
+                      <span>{language === 'sw' ? 'Bidhaa Zinazolingana' : 'Matching Products'}</span>
+                      <button
+                        type="button"
+                        onClick={handleDesktopSearchSubmit}
+                        className="text-[#4b423b] hover:text-[#c49b7c] flex items-center gap-1 font-semibold"
+                      >
+                        {language === 'sw' ? 'Tazama zote' : 'View all'} ({inlineMatches.length}) <ArrowRight className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                    <div className="max-h-72 overflow-y-auto divide-y divide-[#e2dedb]/50">
+                      {inlineMatches.map((item) => (
+                        <button
+                          key={item.id}
+                          type="button"
+                          onClick={() => {
+                            navigate(`/product/${item.id}`);
+                            setIsInlineSearchFocused(false);
+                            setDesktopSearchQuery('');
+                          }}
+                          className="w-full p-3 flex items-center gap-3 hover:bg-[#fafafa] text-left transition-colors cursor-pointer group"
+                        >
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-10 h-10 object-contain rounded bg-white p-0.5 border border-[#e2dedb] shrink-0"
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs sm:text-sm font-semibold text-[#3b352f] group-hover:text-[#c49b7c] truncate">
+                              {language === 'sw' && item.nameSw ? item.nameSw : item.name}
+                            </p>
+                            <p className="text-[11px] text-[#736c67] truncate font-mono">
+                              {item.category} · {item.quire || item.pageCount || item.size || 'Stationery'}
+                            </p>
+                          </div>
+                          <span className="text-xs sm:text-sm font-mono font-bold text-[#4b423b] shrink-0">
+                            TZS {(item.discountPrice || item.price).toLocaleString()}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* RIGHT: High-Conversion B2B CTA + Tools */}
+              <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0 ml-auto">
+                {/* 1. B2B Wholesale Quote Pill Button */}
+                <Link
+                  to="/wholesale"
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#a46b44] via-[#c49b7c] to-[#a46b44] text-[#23201d] text-xs font-bold uppercase tracking-wider shadow-xs hover:shadow-md transition-all active:scale-95 group shrink-0"
+                >
+                  <span>B2B Wholesale</span>
+                  <ArrowRight className="w-3.5 h-3.5 ledup-arrow-icon" />
+                </Link>
+
+                {/* 2. Track Order Quick Trigger */}
+                <button
+                  type="button"
+                  onClick={() => setIsTrackingModalOpen(true)}
+                  className="hidden xl:flex items-center gap-1 px-3 py-1.5 rounded-full border border-[#e2dedb] hover:border-[#c49b7c] bg-white text-xs font-semibold text-[#4b423b] transition-all hover:bg-[#fafafa] shrink-0"
+                  title="Track Parcel Delivery"
+                >
+                  <Truck className="w-3.5 h-3.5 text-[#c49b7c]" />
+                  <span>{language === 'sw' ? 'Fuatilia Oda' : 'Track Order'}</span>
+                </button>
+
+                {/* 3. Language Switcher Pill (EN ⇄ SW) */}
                 <button
                   type="button"
                   onClick={toggleLanguage}
-                  className="flex items-center gap-1 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-full border border-[#E4DDCC] hover:border-[#1E2A5E] bg-[#FAF7F0] hover:bg-white text-[10px] sm:text-xs font-bold text-[#1E2A5E] transition-all min-h-[30px] sm:min-h-[34px] focus-ring-gold shadow-2xs shrink-0"
+                  className="flex items-center gap-1 px-2.5 py-1.5 rounded-full border border-[#e2dedb] hover:border-[#c49b7c] bg-white hover:bg-[#fafafa] text-xs font-bold text-[#4b423b] transition-all min-h-[34px] focus-ring-gold shadow-2xs shrink-0"
                   title={language === 'en' ? 'Badili lugha kuwa Kiswahili' : 'Switch to English'}
                   aria-label="Toggle language between English and Swahili"
                 >
-                  <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#F5A623]" />
-                  <span className="font-mono uppercase text-[10px] sm:text-[11px]">{language === 'en' ? 'SW' : 'EN'}</span>
+                  <Globe className="w-3.5 h-3.5 text-[#c49b7c]" />
+                  <span className="font-mono uppercase text-[11px]">{language === 'en' ? 'SW' : 'EN'}</span>
                 </button>
 
-                {/* 2. Wishlist Icon (Heart) - Visible on sm+ screens */}
+                {/* 4. Wishlist Icon (Heart) */}
                 <button
                   type="button"
                   onClick={() => setIsWishlistModalOpen(true)}
                   aria-label={`Wishlist (${wishlistCount} saved items)`}
-                  className="hidden sm:flex p-2 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[36px] min-h-[36px] sm:min-w-[40px] sm:min-h-[40px] items-center justify-center relative shrink-0"
+                  className="p-2 rounded-full text-[#3b352f] hover:text-[#4b423b] hover:bg-[#f5f4f4] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] flex items-center justify-center relative shrink-0"
                   title="Wishlist"
                 >
                   <Heart
-                    className={`w-[18px] h-[18px] sm:w-[19px] sm:h-[19px] stroke-[1.5] ${
+                    className={`w-[19px] h-[19px] stroke-[1.5] ${
                       wishlistCount > 0 ? 'fill-[#D64545] text-[#D64545]' : ''
                     }`}
                   />
@@ -327,22 +390,22 @@ export const Navbar: React.FC = () => {
                   )}
                 </button>
 
-                {/* 3. Account Icon (User) - Visible on sm+ screens */}
-                <div className="relative z-50 hidden sm:block shrink-0">
+                {/* 5. Account Icon (User) */}
+                <div className="relative z-50 shrink-0">
                   <button
                     type="button"
                     onClick={() => setIsAccountOpen(!isAccountOpen)}
                     aria-label={currentUser ? `Account: ${currentUser.name}` : 'Account and Orders'}
                     aria-expanded={isAccountOpen}
-                    className="p-1.5 sm:p-2 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[36px] min-h-[36px] sm:min-w-[40px] sm:min-h-[40px] flex items-center justify-center"
+                    className="p-2 rounded-full text-[#3b352f] hover:text-[#4b423b] hover:bg-[#f5f4f4] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] flex items-center justify-center"
                     title={currentUser ? currentUser.name : 'Account'}
                   >
                     {currentUser ? (
-                      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#1E2A5E] text-[#F5A623] font-bold text-[10px] sm:text-xs flex items-center justify-center font-mono shadow-2xs">
+                      <div className="w-7 h-7 rounded-full bg-[#4b423b] text-[#c49b7c] font-bold text-xs flex items-center justify-center font-mono shadow-2xs">
                         {currentUser.initials}
                       </div>
                     ) : (
-                      <User className="w-[18px] h-[18px] sm:w-[19px] sm:h-[19px] stroke-[1.5]" />
+                      <User className="w-[19px] h-[19px] stroke-[1.5]" />
                     )}
                   </button>
 
@@ -354,19 +417,17 @@ export const Navbar: React.FC = () => {
                   />
                 </div>
 
-                {/* 4. Cart Icon (Bag) - Always Visible with Gold Badge */}
+                {/* 6. Shopping Bag Icon */}
                 <button
                   type="button"
                   onClick={() => setIsCartDrawerOpen(true)}
                   aria-label={`Shopping bag (${cartItemCount} items)`}
-                  className="p-1.5 sm:p-2 rounded-full text-[#14182B] hover:text-[#1E2A5E] hover:bg-[#F3EEE2] transition-colors focus-ring-gold min-w-[36px] min-h-[36px] sm:min-w-[40px] sm:min-h-[40px] flex items-center justify-center relative group shrink-0"
+                  className="p-2 rounded-full text-[#3b352f] hover:text-[#4b423b] hover:bg-[#f5f4f4] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] flex items-center justify-center relative group shrink-0"
                   title="Shopping Bag"
                 >
-                  <ShoppingBag className="w-[20px] h-[20px] stroke-[1.5] text-[#1E2A5E]" />
-
-                  {/* Gold count badge: 18px circle, background #F5A623, dark text #1E2A5E */}
+                  <ShoppingBag className="w-[20px] h-[20px] stroke-[1.5] text-[#4b423b]" />
                   <span
-                    className={`absolute top-0.5 right-0.5 w-[17px] h-[17px] sm:w-[18px] sm:h-[18px] rounded-full bg-[#F5A623] text-[#1E2A5E] text-[9px] sm:text-[10px] font-black flex items-center justify-center font-mono leading-none shadow-xs ${
+                    className={`absolute top-0.5 right-0.5 w-[18px] h-[18px] rounded-full bg-[#c49b7c] text-[#4b423b] text-[10px] font-black flex items-center justify-center font-mono leading-none shadow-xs ${
                       isCartBouncing ? 'animate-cart-bounce' : ''
                     }`}
                   >
@@ -375,118 +436,65 @@ export const Navbar: React.FC = () => {
                 </button>
               </div>
             </div>
-          </div>
 
-          {/* ================= C) NAVBAR BOTTOM: Dedicated Search Bar Row ================= */}
-          <div className="relative z-20 w-full max-w-full bg-[#FAF7F0] border-t border-[#E4DDCC]/70 px-3 sm:px-6 lg:px-8 py-2">
-            <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4 lg:gap-6 w-full">
-              {/* Prominent Search Bar */}
-              <div ref={inlineSearchRef} className="relative flex-1 min-w-0 max-w-2xl lg:max-w-3xl">
-                <form onSubmit={handleDesktopSearchSubmit} className="relative flex items-center">
-                  <Search className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#1E2A5E] absolute left-3.5 pointer-events-none" />
-                  <input
-                    type="search"
-                    value={desktopSearchQuery}
-                    onChange={(e) => {
-                      setDesktopSearchQuery(e.target.value);
-                      setIsInlineSearchFocused(true);
-                    }}
-                    onFocus={() => setIsInlineSearchFocused(true)}
-                    placeholder={
-                      language === 'sw'
-                        ? 'Tafuta madaftari ya OMEGA, counter books, bahasha, kalamu...'
-                        : 'Search OMEGA notebooks, counter books, bahasha, stationery...'
-                    }
-                    className="w-full pl-10 sm:pl-11 pr-10 py-2 sm:py-2.5 text-xs sm:text-sm bg-white hover:bg-white focus:bg-white rounded-[10px] border border-[#E4DDCC] focus:border-[#1E2A5E] text-[#14182B] placeholder:text-[#6B7280] transition-all shadow-xs focus:outline-none focus:ring-1 focus:ring-[#1E2A5E]"
-                  />
-                  {desktopSearchQuery && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setDesktopSearchQuery('');
-                        setIsInlineSearchFocused(false);
-                      }}
-                      className="absolute right-3 p-1 text-[#6B7280] hover:text-[#14182B]"
-                      aria-label="Clear search"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  )}
-                </form>
-
-                {/* Suggestions Dropdown */}
-                {isInlineSearchFocused && inlineMatches.length > 0 && (
-                  <div className="absolute left-0 right-0 top-full mt-1.5 bg-white rounded-[12px] border border-[#E4DDCC] shadow-2xl overflow-hidden z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                    <div className="px-3.5 py-2 bg-[#FAF7F0] border-b border-[#E4DDCC]/60 flex items-center justify-between text-xs font-bold text-[#6B7280]">
-                      <span>{language === 'sw' ? 'Bidhaa Zinazolingana' : 'Matching Products'}</span>
-                      <button
-                        type="button"
-                        onClick={handleDesktopSearchSubmit}
-                        className="text-[#1E2A5E] hover:text-[#F5A623] cursor-pointer flex items-center gap-1 font-semibold"
-                      >
-                        {language === 'sw' ? 'Tazama zote' : 'View all'} ({inlineMatches.length}) <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                    <div className="max-h-72 overflow-y-auto divide-y divide-[#E4DDCC]/40">
-                      {inlineMatches.map((item) => (
-                        <button
-                          key={item.id}
-                          type="button"
-                          onClick={() => {
-                            navigate(`/product/${item.id}`);
-                            setIsInlineSearchFocused(false);
-                            setDesktopSearchQuery('');
-                          }}
-                          className="w-full p-2.5 sm:p-3 flex items-center gap-3 hover:bg-[#FAF7F0] text-left transition-colors cursor-pointer group"
-                        >
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-10 h-10 object-contain rounded bg-white p-0.5 border border-[#E4DDCC]/60 shrink-0"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs sm:text-sm font-semibold text-[#14182B] group-hover:text-[#1E2A5E] truncate">
-                              {language === 'sw' && item.nameSw ? item.nameSw : item.name}
-                            </p>
-                            <p className="text-[11px] text-[#6B7280] truncate font-mono">
-                              {item.category} · {item.quire || item.pageCount || item.size || 'Stationery'}
-                            </p>
-                          </div>
-                          <span className="text-xs sm:text-sm font-mono font-bold text-[#1E2A5E] shrink-0">
-                            TZS {(item.discountPrice || item.price).toLocaleString()}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Quick Popular Categories / Tags */}
-              <div className="hidden lg:flex items-center gap-1.5 shrink-0 text-xs text-[#6B7280]">
-                <span className="font-semibold text-[#1E2A5E] whitespace-nowrap">
-                  {language === 'sw' ? 'Maarufu:' : 'Popular:'}
-                </span>
-                {['Counter Books', 'Bahasha A4', 'Exercise 200p', 'Math Set'].map((tag) => (
-                  <button
-                    key={tag}
-                    type="button"
-                    onClick={() => {
-                      navigate(`/catalog?q=${encodeURIComponent(tag)}`);
-                    }}
-                    className="px-2.5 py-1 rounded-full bg-white hover:bg-[#F3EEE2] border border-[#E4DDCC] text-xs font-medium text-[#14182B] hover:text-[#1E2A5E] transition-colors whitespace-nowrap shadow-2xs"
-                  >
-                    {tag}
-                  </button>
-                ))}
-              </div>
+            {/* Mobile Inline Search Bar (Visible on mobile screens < md) */}
+            <div className="md:hidden pb-2.5 pt-1">
+              <form onSubmit={handleDesktopSearchSubmit} className="relative flex items-center">
+                <Search className="w-4 h-4 text-[#8c847e] absolute left-3.5 pointer-events-none" />
+                <input
+                  type="search"
+                  value={desktopSearchQuery}
+                  onChange={(e) => setDesktopSearchQuery(e.target.value)}
+                  placeholder={
+                    language === 'sw'
+                      ? 'Tafuta madaftari, counter books, bahasha...'
+                      : 'Search notebooks, counter books, bahasha...'
+                  }
+                  className="w-full pl-9 pr-8 py-2 text-xs bg-white rounded-full border border-[#e2dedb] text-[#3b352f] placeholder:text-[#8c847e] shadow-2xs focus:outline-none focus:ring-1 focus:ring-[#4b423b]"
+                />
+              </form>
             </div>
           </div>
+        </div>
 
-          {/* D) Mega Menu (Desktop full-width panel below header) */}
-          <div onMouseEnter={() => {
-            if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-          }}>
+        {/* ================= TIER 2: HORIZONTAL CATEGORY NAVIGATION BAR (Desktop lg+) ================= */}
+        <div className="hidden lg:block bg-white border-b border-[#e2dedb] py-2">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav
+              role="navigation"
+              aria-label="Category Navigation"
+              className="flex items-center justify-between gap-1 xl:gap-2 overflow-x-auto no-scrollbar"
+              onMouseLeave={handleNavMouseLeave}
+            >
+              {CATEGORY_NAV_ITEMS.map((item) => (
+                <NavLink
+                  key={item.id}
+                  to={item.href}
+                  className={({ isActive }) =>
+                    `px-3 py-1.5 text-xs font-semibold tracking-tight rounded-full transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                      isActive
+                        ? 'bg-[#4b423b] text-white shadow-xs'
+                        : 'text-[#3b352f] hover:text-[#4b423b] hover:bg-[#f5f4f4]'
+                    }`
+                  }
+                >
+                  <span>{item.label}</span>
+                  {item.badge && (
+                    <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-[#c49b7c] text-[#23201d] leading-none">
+                      {item.badge}
+                    </span>
+                  )}
+                </NavLink>
+              ))}
+            </nav>
+          </div>
+
+          {/* Mega Menu Dropdown */}
+          <div
+            onMouseEnter={() => {
+              if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+            }}
+          >
             <MegaMenu
               activeId={activeMegaCategory}
               onClose={() => setActiveMegaCategory(null)}
@@ -495,41 +503,23 @@ export const Navbar: React.FC = () => {
         </div>
       </header>
 
-      {/* Reserve exact header height dynamically to prevent content jump or overlap */}
+      {/* Dynamic Header Spacer to prevent page content overlap */}
       <div style={{ height: `${headerHeight}px` }} className="w-full shrink-0" aria-hidden="true" />
 
-      {/* Search Overlay */}
+      {/* Global Search Overlay for "/" shortcut */}
       <SearchOverlay
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
       />
 
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Drawer Menu */}
       <MobileMenu
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
-        onOpenSearch={() => {
-          setIsMobileMenuOpen(false);
-          setIsSearchOpen(true);
-        }}
-        onOpenWishlist={() => {
-          setIsMobileMenuOpen(false);
-          setIsWishlistModalOpen(true);
-        }}
-        onOpenTracking={() => {
-          setIsMobileMenuOpen(false);
-          setIsTrackingModalOpen(true);
-        }}
-      />
-
-      {/* Sticky Mobile Bottom Bar (Under 1024px) */}
-      <MobileBottomBar
-        onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
         onOpenSearch={() => setIsSearchOpen(true)}
         onOpenWishlist={() => setIsWishlistModalOpen(true)}
-        onOpenCart={() => setIsCartDrawerOpen(true)}
+        onOpenTracking={() => setIsTrackingModalOpen(true)}
       />
     </>
   );
 };
-

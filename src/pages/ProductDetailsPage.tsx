@@ -7,6 +7,7 @@ import {
   ShoppingBag,
   MessageCircle,
   Check,
+  CheckCircle2,
   BookOpen,
   Layers,
   ShieldCheck,
@@ -30,7 +31,7 @@ export const ProductDetailsPage: React.FC = () => {
   const [selectedImageIdx, setSelectedImageIdx] = useState<number>(0);
   const [justAdded, setJustAdded] = useState<boolean>(false);
   const [imgError, setImgError] = useState<boolean>(false);
-  const [selectedPhoneDesk, setSelectedPhoneDesk] = useState<string>('255715268391');
+  const [selectedPhoneDesk, setSelectedPhoneDesk] = useState<string>('255746268391');
 
   useEffect(() => {
     setQuantity(1);
@@ -143,36 +144,42 @@ export const ProductDetailsPage: React.FC = () => {
 
       {/* Main PDP Split */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-        {/* Left Column: Gallery */}
+        {/* Left Column: Gallery with Aardvark 3D Perspective */}
         <div className="lg:col-span-6 space-y-4 lg:sticky lg:top-24">
-          <div className="aspect-[4/3] w-full rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 shadow-inner flex items-center justify-center p-4">
+          <div className="aspect-[4/3] w-full rounded-2xl overflow-hidden border border-[#e2dedb] bg-white shadow-sm flex items-center justify-center p-6 relative aardvark-book-stage">
             {selectedImageIdx < galleryImages.length && !imgError ? (
-              <img
-                src={galleryImages[selectedImageIdx]}
-                alt={`${product.name} - View ${selectedImageIdx + 1}`}
-                referrerPolicy="no-referrer"
-                onError={() => setImgError(true)}
-                className="w-full h-full object-contain"
-              />
+              <div className="relative w-full h-full flex items-center justify-center aardvark-book-3d">
+                {/* Book Spine shadow line */}
+                <div className="aardvark-book-spine" />
+                {/* Sheen effect */}
+                <div className="aardvark-sheen" />
+                <img
+                  src={galleryImages[selectedImageIdx]}
+                  alt={`${product.name} - View ${selectedImageIdx + 1}`}
+                  referrerPolicy="no-referrer"
+                  onError={() => setImgError(true)}
+                  className="w-full h-full object-contain filter drop-shadow-md select-none"
+                />
+              </div>
             ) : (
               /* Specification Label Preview Card */
-              <div className="w-full h-full p-6 bg-slate-100 flex items-center justify-center">
-                <div className="w-full max-w-sm border-2 border-[#0f2342] bg-white p-6 space-y-4 shadow-sm rounded-xl">
-                  <div className="text-center border-b-2 border-[#0f2342] pb-3">
-                    <p className="text-xl font-bold tracking-widest text-[#0f2342] font-serif-luxury">
+              <div className="w-full h-full p-6 bg-[#fafafa] flex items-center justify-center">
+                <div className="w-full max-w-sm border-2 border-[#4b423b] bg-white p-6 space-y-4 shadow-sm rounded-xl">
+                  <div className="text-center border-b-2 border-[#4b423b] pb-3">
+                    <p className="text-xl font-bold tracking-widest text-[#4b423b] font-heading">
                       OMEGA NOTEBOOKS
                     </p>
                     <p className="text-xs font-semibold uppercase tracking-wider text-slate-700 mt-0.5">
                       {product.category} Specification Sheet
                     </p>
                   </div>
-                  <div className="space-y-2 text-xs text-slate-700 font-mono-tabular">
+                  <div className="space-y-2 text-xs text-slate-700 font-mono">
                     <div className="flex justify-between border-b border-slate-100 pb-1">
-                      <span className="font-semibold text-[#0f2342]">ITEM:</span>
+                      <span className="font-semibold text-[#4b423b]">ITEM:</span>
                       <span className="truncate max-w-[200px]">{product.name}</span>
                     </div>
                     <div className="flex justify-between border-b border-slate-100 pb-1">
-                      <span className="font-semibold text-[#0f2342]">SKU:</span>
+                      <span className="font-semibold text-[#4b423b]">SKU:</span>
                       <span>{product.sku}</span>
                     </div>
                     {product.specifications.slice(0, 3).map((spec) => (
@@ -180,7 +187,7 @@ export const ProductDetailsPage: React.FC = () => {
                         key={spec.label}
                         className="flex justify-between border-b border-slate-100 pb-1"
                       >
-                        <span className="font-semibold text-[#0f2342] uppercase">
+                        <span className="font-semibold text-[#4b423b] uppercase">
                           {spec.label}:
                         </span>
                         <span className="truncate max-w-[180px]">{spec.value}</span>
@@ -202,10 +209,10 @@ export const ProductDetailsPage: React.FC = () => {
                   setImgError(false);
                   setSelectedImageIdx(index);
                 }}
-                className={`w-20 h-16 rounded-xl overflow-hidden border-2 shrink-0 transition-colors bg-stone-50 p-1 ${
+                className={`w-20 h-16 rounded-xl overflow-hidden border-2 shrink-0 transition-all bg-white p-1 ${
                   selectedImageIdx === index
-                    ? 'border-red-600 shadow-sm'
-                    : 'border-stone-200 hover:border-stone-400'
+                    ? 'border-[#4b423b] ring-2 ring-[#c49b7c] shadow-sm'
+                    : 'border-[#e2dedb] hover:border-stone-400'
                 }`}
               >
                 <img
@@ -220,13 +227,13 @@ export const ProductDetailsPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setSelectedImageIdx(galleryImages.length)}
-              className={`h-16 px-3 rounded-xl border-2 shrink-0 flex flex-col items-center justify-center bg-stone-50 text-[11px] font-bold transition-colors ${
+              className={`h-16 px-3 rounded-xl border-2 shrink-0 flex flex-col items-center justify-center bg-[#fafafa] text-[11px] font-bold transition-all ${
                 selectedImageIdx === galleryImages.length
-                  ? 'border-red-600 text-red-700'
-                  : 'border-stone-200 text-stone-700 hover:border-stone-400'
+                  ? 'border-[#4b423b] text-[#4b423b] ring-2 ring-[#c49b7c]'
+                  : 'border-[#e2dedb] text-stone-700 hover:border-stone-400'
               }`}
             >
-              <BookOpen className="w-4 h-4 mb-0.5 text-red-600" />
+              <BookOpen className="w-4 h-4 mb-0.5 text-[#4b423b]" />
               <span>Specs Sheet</span>
             </button>
           </div>
@@ -234,68 +241,78 @@ export const ProductDetailsPage: React.FC = () => {
 
         {/* Right Column: Information, Pricing, Quantity & WhatsApp Order */}
         <div className="lg:col-span-6 space-y-6">
-          <div className="space-y-3 border-b border-stone-200 pb-5">
-            <div className="flex items-center gap-2 text-xs text-stone-500 flex-wrap">
-              <span className="font-bold text-red-700 uppercase tracking-wider">{product.category}</span>
-              <span aria-hidden="true">·</span>
-              <span className="font-mono text-stone-700">SKU: {product.sku}</span>
+          <div className="space-y-3 border-b border-[#e2dedb] pb-5">
+            {/* Heimplanet Technical Metadata */}
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="heimplanet-tag">[ SPEC // 2026 OFFICIAL ]</span>
+              <span className="heimplanet-tag">[ SKU // {product.sku} ]</span>
               {product.quire && (
-                <>
-                  <span aria-hidden="true">·</span>
-                  <span className="font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
-                    {product.quire}
-                  </span>
-                </>
+                <span className="heimplanet-tag text-[#4b423b] font-bold">[ {product.quire} ]</span>
               )}
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-black text-stone-900 leading-tight">
+            <div className="flex items-center gap-2 pt-1">
+              {/* OMEGA Assured Verified Badge */}
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#4b423b]/10 border border-[#4b423b]/20 text-[11px] font-bold text-[#4b423b]">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#2A9D8F]" />
+                <span>OMEGA Assured</span>
+              </div>
+              <span className="text-xs text-[#6B7280]">·</span>
+              <span className="text-xs font-semibold text-[#4b423b]">{product.category}</span>
+            </div>
+
+            <h1 className="font-heading text-2xl sm:text-3xl font-black text-[#14182B] leading-tight">
               {language === 'sw' && product.nameSw ? product.nameSw : product.name}
             </h1>
 
             {/* Price & Stock Display */}
             <div className="pt-2 flex flex-wrap items-baseline justify-between gap-4">
               <div className="space-y-1">
-                <span className="text-xs uppercase tracking-wider text-slate-400 font-semibold block">
+                <span className="text-xs uppercase tracking-wider text-[#6B7280] font-semibold block">
                   {t.retailPrice}
                 </span>
                 <div className="flex items-baseline gap-3">
-                  <span className="text-3xl font-black text-slate-900 font-mono-tabular">
+                  <span className="text-3xl font-black text-[#4b423b] font-mono">
                     {currency} {effectivePrice.toLocaleString()}
                   </span>
                   {hasDiscount && (
-                    <span className="text-base text-slate-400 line-through font-mono-tabular">
+                    <span className="text-base text-[#6B7280] line-through font-mono">
                       {currency} {product.price.toLocaleString()}
+                    </span>
+                  )}
+                  {hasDiscount && (
+                    <span className="badge-clear-sale">
+                      {Math.round(((product.price - effectivePrice) / product.price) * 100)}% OFF
                     </span>
                   )}
                 </div>
               </div>
 
               {product.wholesalePrice && (
-                <div className="text-right p-3 rounded-xl bg-emerald-50 border border-emerald-200">
-                  <span className="text-[11px] font-bold text-emerald-800 uppercase tracking-wider block">
+                <div className="text-right p-3 rounded-xl bg-[#2A9D8F]/10 border border-[#2A9D8F]/30">
+                  <span className="text-[11px] font-bold text-[#2A9D8F] uppercase tracking-wider block">
                     {t.wholesalePrice}
                   </span>
-                  <span className="text-base font-black text-emerald-700 font-mono-tabular">
+                  <span className="text-base font-black text-[#4b423b] font-mono">
                     {currency} {product.wholesalePrice.toLocaleString()}
                   </span>
-                  <span className="text-[10px] text-emerald-600 block mt-0.5">
+                  <span className="text-[10px] text-[#6B7280] block mt-0.5">
                     Min Carton MOQ: {product.wholesaleMinQty ?? 10} pcs
                   </span>
                 </div>
               )}
             </div>
 
-            <div className="text-xs font-semibold pt-1">
-              <span className="text-slate-600">Stock Availability: </span>
+            <div className="text-xs font-semibold pt-1 flex items-center gap-2">
+              <span className="text-[#6B7280]">Stock Status:</span>
               <span
-                className={
+                className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold ${
                   product.stockStatus === 'In Stock'
-                    ? 'text-emerald-700 font-bold'
+                    ? 'bg-[#2A9D8F]/15 text-[#2A9D8F]'
                     : product.stockStatus === 'Low Stock'
-                    ? 'text-amber-700 font-bold'
-                    : 'text-red-700 font-bold'
-                }
+                    ? 'bg-[#c49b7c]/20 text-[#4b423b]'
+                    : 'bg-[#D64545]/15 text-[#D64545]'
+                }`}
               >
                 {product.stockStatus === 'In Stock'
                   ? t.inStock
@@ -308,31 +325,31 @@ export const ProductDetailsPage: React.FC = () => {
 
           {/* Product Description */}
           <div className="space-y-2">
-            <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
+            <h2 className="text-xs font-bold text-[#4b423b] uppercase tracking-wider">
               {t.productDescription}
             </h2>
-            <p className="text-sm text-slate-600 leading-relaxed">
+            <p className="text-sm text-[#6B7280] leading-relaxed">
               {language === 'sw' && product.descriptionSw ? product.descriptionSw : product.description}
             </p>
           </div>
 
           {/* Quantity Selector & WhatsApp Sales Desk Chooser */}
-          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-4">
+          <div className="bg-[#fafafa] border border-[#e2dedb] rounded-2xl p-5 space-y-4">
             <div className="flex flex-wrap items-center justify-between gap-4">
               <div className="space-y-1">
                 <label
                   htmlFor="pdp-quantity"
-                  className="block text-xs font-bold text-slate-700 uppercase tracking-wider"
+                  className="block text-xs font-bold text-[#4b423b] uppercase tracking-wider"
                 >
                   {t.quantity}
                 </label>
-                <div className="inline-flex items-center border border-slate-300 rounded-xl bg-white shadow-xs">
+                <div className="inline-flex items-center border border-[#e2dedb] rounded-xl bg-white shadow-2xs">
                   <button
                     type="button"
                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                     disabled={isOutOfStock || quantity <= 1}
                     aria-label="Decrease quantity"
-                    className="p-2.5 text-slate-600 hover:text-slate-900 disabled:opacity-40"
+                    className="p-2.5 text-stone-600 hover:text-stone-900 disabled:opacity-40"
                   >
                     <Minus className="w-3.5 h-3.5" />
                   </button>
@@ -349,14 +366,14 @@ export const ProductDetailsPage: React.FC = () => {
                       }
                     }}
                     disabled={isOutOfStock}
-                    className="w-16 text-center text-sm font-bold text-slate-900 font-mono-tabular focus:outline-none"
+                    className="w-16 text-center text-sm font-bold text-[#14182B] font-mono focus:outline-none"
                   />
                   <button
                     type="button"
                     onClick={() => setQuantity((q) => Math.min(999, q + 1))}
                     disabled={isOutOfStock}
                     aria-label="Increase quantity"
-                    className="p-2.5 text-slate-600 hover:text-slate-900 disabled:opacity-40"
+                    className="p-2.5 text-stone-600 hover:text-stone-900 disabled:opacity-40"
                   >
                     <Plus className="w-3.5 h-3.5" />
                   </button>
@@ -364,21 +381,21 @@ export const ProductDetailsPage: React.FC = () => {
               </div>
 
               <div className="text-right">
-                <p className="text-xs text-slate-500 font-medium">{t.subtotal}</p>
-                <p className="text-xl font-black text-slate-900 font-mono-tabular">
+                <p className="text-xs text-[#6B7280] font-medium">{t.subtotal}</p>
+                <p className="text-xl font-black text-[#4b423b] font-mono">
                   {currency} {(effectivePrice * quantity).toLocaleString()}
                 </p>
               </div>
             </div>
 
             {/* Sales Desk Phone Chooser */}
-            <div className="pt-2 border-t border-slate-200/80 space-y-1.5">
-              <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 block">
+            <div className="pt-2 border-t border-[#e2dedb]/70 space-y-1.5">
+              <label className="text-[11px] font-bold uppercase tracking-wider text-[#6B7280] block">
                 {t.choosePhone}
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
                 {[
-                  { label: 'Desk 1 (Orders)', digits: '255715268391', number: '+255 715 268 391' },
+                  { label: 'Desk 1 (Orders)', digits: '255746268391', number: '+255 746 268 391' },
                   { label: 'Desk 2 (Wholesale)', digits: '255624265480', number: '+255 624 265 480' },
                   { label: 'Desk 3 (Support)', digits: '255699032777', number: '+255 699 032 777' },
                 ].map((d) => (
@@ -388,11 +405,11 @@ export const ProductDetailsPage: React.FC = () => {
                     onClick={() => setSelectedPhoneDesk(d.digits)}
                     className={`p-2 rounded-xl text-left border transition-all ${
                       selectedPhoneDesk === d.digits
-                        ? 'bg-blue-50 border-blue-600 text-blue-900 font-bold shadow-xs'
-                        : 'bg-white border-slate-200 text-slate-600 hover:border-slate-400'
+                        ? 'bg-white border-[#4b423b] ring-2 ring-[#c49b7c] text-[#4b423b] font-bold shadow-xs'
+                        : 'bg-white border-[#e2dedb] text-stone-600 hover:border-stone-400'
                     }`}
                   >
-                    <p className="text-[10px] text-slate-500">{d.label}</p>
+                    <p className="text-[10px] text-stone-500">{d.label}</p>
                     <p className="font-mono text-xs">{d.number}</p>
                   </button>
                 ))}
@@ -405,24 +422,24 @@ export const ProductDetailsPage: React.FC = () => {
                 type="button"
                 onClick={handleAdd}
                 disabled={isOutOfStock}
-                className={`w-full py-3 px-5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm ${
+                className={`w-full py-3.5 px-5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm aardvark-btn-spring ${
                   isOutOfStock
                     ? 'bg-stone-200 text-stone-500 cursor-not-allowed'
                     : justAdded
-                    ? 'bg-stone-900 text-white'
-                    : 'bg-gradient-to-r from-red-600 via-red-700 to-red-800 hover:from-red-500 hover:to-red-700 text-white active:scale-[0.98]'
+                    ? 'bg-[#4b423b] text-white'
+                    : 'btn-indra-primary'
                 }`}
               >
                 {isOutOfStock ? (
                   t.outOfStock
                 ) : justAdded ? (
                   <>
-                    <Check className="w-4 h-4 text-emerald-400" />
+                    <Check className="w-4 h-4 text-[#2A9D8F]" />
                     <span>{t.addedToOrder}</span>
                   </>
                 ) : (
                   <>
-                    <ShoppingBag className="w-4 h-4 text-amber-300" />
+                    <ShoppingBag className="w-4 h-4 text-[#4b423b]" />
                     <span>{t.addToOrder}</span>
                   </>
                 )}
@@ -432,7 +449,7 @@ export const ProductDetailsPage: React.FC = () => {
                 href={directWhatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3 px-5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-sm"
+                className="w-full py-3.5 px-5 bg-[#2A9D8F] hover:bg-[#238276] text-white rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-sm aardvark-btn-spring"
               >
                 <MessageCircle className="w-4 h-4 fill-white" />
                 <span>{t.buyViaWhatsApp}</span>
@@ -443,25 +460,25 @@ export const ProductDetailsPage: React.FC = () => {
           {/* Specifications Table */}
           {product.specifications && product.specifications.length > 0 && (
             <div className="space-y-3 pt-2">
-              <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
+              <h2 className="text-xs font-bold text-[#4b423b] uppercase tracking-wider">
                 {t.specifications}
               </h2>
-              <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
+              <div className="border border-[#e2dedb] rounded-2xl overflow-hidden bg-white shadow-2xs">
                 <table className="w-full text-left border-collapse text-xs sm:text-sm">
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody className="divide-y divide-[#e2dedb]">
                     {product.quire && (
                       <tr className="bg-white">
-                        <th className="py-2.5 px-4 font-semibold text-slate-600 bg-slate-50 w-2/5">
+                        <th className="py-2.5 px-4 font-semibold text-stone-600 bg-[#fafafa] w-2/5">
                           Quire Rating
                         </th>
-                        <td className="py-2.5 px-4 text-slate-900 font-bold text-blue-700">
+                        <td className="py-2.5 px-4 text-[#4b423b] font-bold">
                           {product.quire}
                         </td>
                       </tr>
                     )}
                     {product.pageCount && (
                       <tr className="bg-white">
-                        <th className="py-2.5 px-4 font-semibold text-slate-600 bg-slate-50 w-2/5">
+                        <th className="py-2.5 px-4 font-semibold text-stone-600 bg-[#fafafa] w-2/5">
                           {t.pages}
                         </th>
                         <td className="py-2.5 px-4 text-slate-900 font-medium">
