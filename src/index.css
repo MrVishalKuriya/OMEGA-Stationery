@@ -556,3 +556,65 @@ p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
   border-top-right-radius: 3.125rem;
 }
 
+/* ==================== OMEGA SIGNATURE LOGO & PRODUCT ANIMATIONS ==================== */
+@keyframes omega-spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes omega-spin-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes omega-pulse-halo {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.55;
+    filter: drop-shadow(0 0 16px rgba(196, 155, 124, 0.4));
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.95;
+    filter: drop-shadow(0 0 32px rgba(214, 69, 69, 0.6));
+  }
+}
+
+@keyframes omega-float-hero {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0.8deg);
+  }
+}
+
+@keyframes omega-logo-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(196, 155, 124, 0.35), 0 0 45px rgba(214, 69, 69, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 35px rgba(196, 155, 124, 0.7), 0 0 70px rgba(214, 69, 69, 0.45);
+  }
+}
+
+.animate-omega-spin {
+  animation: omega-spin-slow 40s linear infinite;
+}
+
+.animate-omega-spin-reverse {
+  animation: omega-spin-reverse 28s linear infinite;
+}
+
+.animate-omega-pulse-halo {
+  animation: omega-pulse-halo 4s ease-in-out infinite;
+}
+
+.animate-omega-float {
+  animation: omega-float-hero 5s ease-in-out infinite;
+}
+
+.animate-omega-logo-glow {
+  animation: omega-logo-glow 3s ease-in-out infinite alternate;
+}
+

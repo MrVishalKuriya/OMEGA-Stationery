@@ -27,6 +27,7 @@ import {
 } from 'lucide-react';
 import { useStore } from '../context/StoreContext';
 import { ProductCard } from '../components/ProductCard';
+import { HeroGraphicAnimation } from '../components/HeroGraphicAnimation';
 import { SEOHead } from '../components/SEOHead';
 import { TRANSLATIONS } from '../data/translations';
 import { formatPrice } from '../types/store';
@@ -47,102 +48,10 @@ export const HomePage: React.FC = () => {
     'all' | 'counter' | 'exercise' | 'bahasha' | 'registers'
   >('all');
 
-  // Spotlight active product in Hero
-  const [spotlightKey, setSpotlightKey] = useState<'q2' | 'q3' | 'q4' | 'ex200' | 'carton'>('q2');
-
   // Wholesale calculator state
   const [calcQuantity, setCalcQuantity] = useState<number>(5);
   const [calcBookType, setCalcBookType] = useState<'q2' | 'q3' | 'q4'>('q2');
 
-  const spotlightData = {
-    q2: {
-      id: 'prod-omega-cb-q2',
-      sku: 'OMG-CB-Q2',
-      title: 'Counter Book 2 Quire',
-      subtitle: '198 Pages · A4 Folio Hardcover',
-      cartonPrice: 56000,
-      unitPrice: 5800,
-      packaging: '48 Pcs / Carton',
-      boxPcs: 48,
-      image: '/omega-products/counter-book-q2-catalog.jpeg',
-      badge: 'Best-Seller 2026',
-      desc: 'Double-sewn Smyth binding with 70 GSM feint-ruled bleed-proof paper. Built for high-frequency daily store ledgers and school notes.',
-      highlights: ['Smyth Thread Bound (180° Lay-Flat)', '70 GSM Bleed-Proof Woodfree Paper', '198 Numbered Ruled Ledger Pages'],
-      spineGauge: '14mm Smyth Spine · 198 Pages',
-      cartonYield: 278400,
-      dealerProfit: 222400,
-    },
-    q3: {
-      id: 'prod-omega-cb-q3',
-      sku: 'OMG-CB-Q3',
-      title: 'Counter Book 3 Quire',
-      subtitle: '288 Pages · A4 Folio Hardcover',
-      cartonPrice: 57000,
-      unitPrice: 7500,
-      packaging: '36 Pcs / Carton',
-      boxPcs: 36,
-      image: '/omega-products/counter-book-q3-catalog.jpeg',
-      badge: 'Corporate Standard',
-      desc: 'The corporate accounting and school standard across Tanzania. 288 numbered ruled pages encased in a moisture-resistant laminated hardcover.',
-      highlights: ['Full Academic Year Commercial Ledger', 'Laminated Moisture-Resistant Cover', 'Precision Indigo Millimeter Ruling'],
-      spineGauge: '21mm Smyth Spine · 288 Pages',
-      cartonYield: 270000,
-      dealerProfit: 213000,
-    },
-    q4: {
-      id: 'prod-omega-cb-q4',
-      sku: 'OMG-CB-Q4',
-      title: 'Counter Book 4 Quire',
-      subtitle: '384 Pages · A4 Folio Hardcover',
-      cartonPrice: 60000,
-      unitPrice: 9500,
-      packaging: '24 Pcs / Carton',
-      boxPcs: 24,
-      image: '/omega-products/counter-book-q4-catalog.jpeg',
-      badge: 'Heavy-Duty Archive',
-      desc: '384 heavy-duty pages crafted for permanent multi-year legal archives, auditing records, and rigorous university degree notes.',
-      highlights: ['Heavyweight 384 Acid-Free Pages', 'Reinforced Heavy-Gauge Spine Cloth', 'Legal & Financial Multi-Year Archive'],
-      spineGauge: '28mm Smyth Spine · 384 Pages',
-      cartonYield: 228000,
-      dealerProfit: 168000,
-    },
-    ex200: {
-      id: 'prod-omega-ex-200p-sl',
-      sku: 'OMG-EX-200-SL',
-      title: 'Exercise Book 200 Pages',
-      subtitle: 'Single Line · Stiff Cover',
-      cartonPrice: 48000,
-      unitPrice: 2200,
-      packaging: '120 Pcs / Carton',
-      boxPcs: 120,
-      image: '/omega-products/exercise-book-200p-purple.jpeg',
-      badge: 'School Benchmark',
-      desc: 'The benchmark primary and secondary school exercise book in Tanzania. Heavyweight cover with standard syllabus margin lines.',
-      highlights: ['Strong Stapled Centerfold Binding', 'Bright White 60 GSM Woodfree Pages', 'Tanzania National Curriculum Standard'],
-      spineGauge: '9mm Stiff Spine · 200 Pages',
-      cartonYield: 264000,
-      dealerProfit: 216000,
-    },
-    carton: {
-      id: 'prod-carton-bundle-q2',
-      sku: 'OMG-CRTN-48',
-      title: 'Factory Sealed Wholesale Carton',
-      subtitle: '48 Pcs Strapped Corrugated Master Case',
-      cartonPrice: 56000,
-      unitPrice: 1166,
-      packaging: '48 Pcs Master Case',
-      boxPcs: 48,
-      image: '/omega-products/omega-carton-box-branded.jpeg',
-      badge: 'B2B Wholesale Master',
-      desc: 'Heavy-duty 5-ply export grade corrugated box strapped with polypropylene security banding. Designed to survive long-distance transit across all Tanzanian bus parcel networks.',
-      highlights: ['5-Ply Export Grade Corrugated Box', 'Polypropylene Strapped Security Bands', 'Ready for Upcountry Bus Parcel Transit'],
-      spineGauge: '340mm Box Height · 22.5 kg Case',
-      cartonYield: 278400,
-      dealerProfit: 222400,
-    },
-  };
-
-  const currentSpotlight = spotlightData[spotlightKey];
   const currency = storeConfig.currencySymbol || 'TSh';
 
   // Filter products for the featured section
@@ -355,163 +264,9 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Column: Interactive Porcelain Studio Benchmark Showcase */}
-            <div className="lg:col-span-6 w-full">
-              <div className="relative group">
-                {/* Glowing ambient backlight halo */}
-                <div className="absolute -inset-2 bg-linear-to-r from-[#c49b7c]/25 via-amber-500/15 to-[#c49b7c]/30 rounded-[32px] blur-xl opacity-75 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-
-                {/* Main Porcelain / Alabaster Studio Card */}
-                <div className="relative bg-linear-to-b from-[#ffffff] via-[#faf8f6] to-[#f4efe8] rounded-[28px] p-5 sm:p-7 shadow-2xl border border-white/80 overflow-hidden text-[#2b2520]">
-                  {/* Studio Header & Tab Switcher */}
-                  <div className="flex flex-wrap items-center justify-between pb-3.5 border-b border-[#e8dfd5] gap-2">
-                    <div className="flex items-center gap-2">
-                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                      <span className="text-[11px] font-black uppercase tracking-wider text-[#4b423b]">
-                        Studio Benchmark
-                      </span>
-                    </div>
-
-                    {/* Interactive Tab Switcher */}
-                    <div className="flex items-center gap-1 p-1 bg-[#eae3d9]/70 rounded-full border border-[#ded4c8] overflow-x-auto no-scrollbar max-w-full">
-                      {[
-                        { key: 'q2', label: 'Quire 2' },
-                        { key: 'q3', label: 'Quire 3' },
-                        { key: 'q4', label: 'Quire 4' },
-                        { key: 'ex200', label: 'Exercise 200P' },
-                        { key: 'carton', label: 'Carton Box' },
-                      ].map((tab) => (
-                        <button
-                          key={tab.key}
-                          type="button"
-                          onClick={() => setSpotlightKey(tab.key as any)}
-                          className={`px-2.5 py-1 rounded-full text-xs font-bold transition-all shrink-0 ${
-                            spotlightKey === tab.key
-                              ? 'bg-[#4b423b] text-white shadow-xs'
-                              : 'text-stone-600 hover:text-black hover:bg-white/60'
-                          }`}
-                        >
-                          {tab.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Stage Layout: Product Image & Details */}
-                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 items-center py-4">
-                    {/* Seamless Porcelain Pedestal Image Stage */}
-                    <div className="sm:col-span-6 relative aspect-square bg-linear-to-b from-[#fdfbf9] to-[#f1ece5] rounded-2xl p-4 flex items-center justify-center border border-[#e5ddd3] shadow-inner group/stage overflow-hidden">
-                      {/* Floating Badge */}
-                      <div className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#4b423b] text-[#f4cca1] shadow-xs z-10">
-                        {currentSpotlight.badge}
-                      </div>
-
-                      {/* Spine Gauge Badge */}
-                      <div className="absolute bottom-2.5 left-2.5 right-2.5 px-2 py-1 rounded-lg text-[10px] font-mono font-bold text-[#4b423b] bg-white/95 backdrop-blur-xs border border-[#ded5cb] shadow-xs text-center z-10 truncate">
-                        {currentSpotlight.spineGauge}
-                      </div>
-
-                      {/* The Book Image on pristine background */}
-                      <img
-                        key={currentSpotlight.id}
-                        src={currentSpotlight.image}
-                        alt={currentSpotlight.title}
-                        className="max-h-[82%] max-w-[85%] object-contain drop-shadow-[0_20px_25px_rgba(43,37,32,0.22)] transition-transform duration-500 group-hover/stage:scale-105"
-                      />
-                    </div>
-
-                    {/* Details & Commercial Yield */}
-                    <div className="sm:col-span-6 space-y-3">
-                      <div className="flex items-center gap-1 text-amber-500 text-xs">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-3.5 h-3.5 fill-amber-500 stroke-amber-500" />
-                        ))}
-                        <span className="text-[#4b423b] font-bold ml-1 text-xs">5.0 · TBS Certified</span>
-                      </div>
-
-                      <div>
-                        <h3 className="text-xl font-black font-heading text-[#241f1c] leading-tight">
-                          {currentSpotlight.title}
-                        </h3>
-                        <p className="text-xs text-[#a06f47] font-bold mt-0.5">
-                          {currentSpotlight.subtitle}
-                        </p>
-                      </div>
-
-                      {/* Craft Highlights */}
-                      <div className="space-y-1">
-                        {currentSpotlight.highlights.map((h, i) => (
-                          <div key={i} className="flex items-center gap-1.5 text-xs text-stone-700 font-medium">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                            <span className="truncate">{h}</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Dual Pricing & Yield Card */}
-                      <div className="p-3 rounded-xl bg-white border border-[#e0d6cb] shadow-2xs space-y-1">
-                        <div className="flex items-baseline justify-between">
-                          <span className="text-[10px] uppercase font-bold text-stone-500">
-                            Carton ({currentSpotlight.packaging})
-                          </span>
-                          <span className="text-base font-black text-[#87552e] font-mono">
-                            {formatPrice(currentSpotlight.cartonPrice, currency)}
-                          </span>
-                        </div>
-
-                        <div className="flex items-baseline justify-between text-xs pt-1 border-t border-stone-100">
-                          <span className="text-[10px] text-stone-500">Retail Unit Rate</span>
-                          <span className="text-stone-800 font-mono font-bold">
-                            {formatPrice(currentSpotlight.unitPrice, currency)}
-                          </span>
-                        </div>
-
-                        <div className="flex items-baseline justify-between text-xs pt-0.5">
-                          <span className="text-[10px] font-bold text-emerald-700 uppercase">Dealer Yield / Case</span>
-                          <span className="text-emerald-700 font-mono font-black">
-                            +{formatPrice(currentSpotlight.dealerProfit, currency)}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* CTA Buttons */}
-                      <div className="grid grid-cols-2 gap-2 pt-1">
-                        <button
-                          type="button"
-                          onClick={() => addToCart(currentSpotlight.id, 1, true)}
-                          className="py-2.5 px-3 rounded-xl bg-[#4b423b] hover:bg-[#38312b] text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 active:scale-95 shadow-md transition-all"
-                        >
-                          <ShoppingBag className="w-3.5 h-3.5 text-[#c49b7c]" />
-                          <span>Add to Bag</span>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const p = products.find((x) => x.id === currentSpotlight.id);
-                            if (p) setQuickViewProduct(p);
-                          }}
-                          className="py-2.5 px-3 rounded-xl bg-white hover:bg-stone-50 text-[#4b423b] border border-[#d5cbbf] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-2xs"
-                        >
-                          <Eye className="w-3.5 h-3.5 text-[#a06f47]" />
-                          <span>Quick View</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Stage Bottom Guarantee Pill */}
-                  <div className="pt-2.5 border-t border-[#e8dfd5] flex items-center justify-between text-[11px] text-stone-600 font-medium">
-                    <span className="flex items-center gap-1 text-emerald-700 font-bold">
-                      <Truck className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>Ready for Same-Day Bus Parcel Dispatch</span>
-                    </span>
-                    <span className="text-stone-500 font-mono text-[10px]">
-                      SKU: {currentSpotlight.sku}
-                    </span>
-                  </div>
-                </div>
-              </div>
+            {/* Right Column: Unique 3D Graphical Product & Company Logo Animation */}
+            <div className="lg:col-span-6 w-full flex items-center justify-center">
+              <HeroGraphicAnimation />
             </div>
           </div>
         </div>
