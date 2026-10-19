@@ -146,7 +146,18 @@ export const LoginPage: React.FC = () => {
                 <Sparkles className="w-4 h-4 text-[#c49b7c]" />
                 <span>Quick Test Accounts (1-Click Fill)</span>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleDemoFill('admin@omega.co.tz', 'admin123')}
+                  className="p-2 rounded-[6px] bg-[#4b423b]/5 border-2 border-[#c49b7c] hover:bg-[#4b423b]/10 text-left transition-colors text-xs"
+                >
+                  <div className="font-bold text-[#4b423b] flex items-center gap-1">
+                    <span>HQ Admin</span>
+                    <span className="text-[9px] bg-[#c49b7c] text-white px-1.5 py-0.2 rounded font-bold">PORTAL</span>
+                  </div>
+                  <div className="text-[10px] text-[#4b423b] font-medium">admin@omega.co.tz</div>
+                </button>
                 <button
                   type="button"
                   onClick={() => handleDemoFill('mussa.juma@omega.co.tz', 'password123')}
@@ -161,7 +172,7 @@ export const LoginPage: React.FC = () => {
                   className="p-2 rounded-[6px] bg-white border border-[#e2dedb] hover:border-[#4b423b] text-left transition-colors text-xs"
                 >
                   <div className="font-bold text-[#4b423b]">Dar Academy</div>
-                  <div className="text-[10px] text-[#6B7280]">School / Institutional</div>
+                  <div className="text-[10px] text-[#6B7280]">School / Tender</div>
                 </button>
               </div>
             </div>

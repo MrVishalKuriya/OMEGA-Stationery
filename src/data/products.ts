@@ -28,16 +28,16 @@ export const INITIAL_STORE_CONFIG: StoreConfig = {
     'UBORA KWA KILA UKURASA | ODA ZA JUMLA NA REJAREJA TANZANIA NZIMA | MSAMBAZAJI HALISI WA OMEGA',
   phoneNumber: '+255 746 268 391',
   secondaryPhone: '+255 624 265 480',
-  thirdPhone: '+255 699 032 777',
-  phoneNumbers: ['+255 746 268 391', '+255 624 265 480', '+255 699 032 777'],
+  thirdPhone: '+255 689 032 777',
+  phoneNumbers: ['+255 746 268 391', '+255 624 265 480', '+255 689 032 777'],
   whatsappNumber: '255746268391',
   whatsappNumbers: [
     { label: 'Sales & Orders 1', number: '+255 746 268 391', digits: '255746268391' },
     { label: 'Wholesale Desk 2', number: '+255 624 265 480', digits: '255624265480' },
-    { label: 'Customer Support 3', number: '+255 699 032 777', digits: '255699032777' },
+    { label: 'Logistics Desk 3', number: '+255 689 032 777', digits: '255689032777' },
   ],
-  shopAddress: 'Soweto SIDO Viwandani, Mbeya, Tanzania',
-  shopAddressSw: 'Soweto SIDO Viwandani, Mbeya, Tanzania',
+  shopAddress: 'Soweto SIDO Viwandani (Mbeya), Tanzania',
+  shopAddressSw: 'Soweto SIDO Viwandani (Mbeya), Tanzania',
   businessHours: 'Monday – Saturday: 8:00 AM – 6:30 PM · Sunday: Closed',
   businessHoursSw: 'Jumatatu – Jumamosi: Saa 2:00 Asubuhi – Saa 12:30 Jioni · Jumapili: Tumefungwa',
   googleMapsUrl: 'https://maps.google.com/?q=Soweto+SIDO+Viwandani+Mbeya',
@@ -54,9 +54,9 @@ export const INITIAL_STORE_CONFIG: StoreConfig = {
   aboutProductRangeSw:
     'Mkusanyiko wetu unajumuisha Counter Books za jalada gumu (Q2, Q3, Q4), Madaftari ya OMEGA (Kurasa 32, 80, 100, 200 Single Line, Double Line, Square), Bahasha nzito (A3, A4, A5, A6), Mafaili ya PVC na Manila, Karatasi za mitihani na vifaa vya kijiometri.',
   aboutCustomerService:
-    'We provide prompt sales and logistics service for retailers, schools, colleges, and bulk wholesale tenders. Direct instant ordering via WhatsApp on any of our official numbers: +255 746 268 391, +255 624 265 480, or +255 699 032 777.',
+    'We provide prompt sales and logistics service for retailers, schools, colleges, and bulk wholesale tenders. Direct instant ordering via WhatsApp on any of our official numbers: +255 746 268 391, +255 624 265 480, or +255 689 032 777.',
   aboutCustomerServiceSw:
-    'Tunatoa huduma ya haraka kwa wauzaji wa rejareja, shule, vyuo, na zabuni za jumla. Agiza mara moja kupitia WhatsApp kwa namba zetu rasmi: +255 746 268 391, +255 624 265 480, au +255 699 032 777.',
+    'Tunatoa huduma ya haraka kwa wauzaji wa rejareja, shule, vyuo, na zabuni za jumla. Agiza mara moja kupitia WhatsApp kwa namba zetu rasmi: +255 746 268 391, +255 624 265 480, au +255 689 032 777.',
   aboutValues: [
     'High-GSM Bleed-Proof Paper: Rigid opacity that resists fountain pen & gel ink bleed.',
     'Stiff & Rigid Hardcovers: Thread-sewn binding built to withstand daily handling for years.',

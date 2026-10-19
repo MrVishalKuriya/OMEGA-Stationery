@@ -79,8 +79,8 @@ export const ContactPage: React.FC = () => {
     {
       id: 'desk-3',
       title: language === 'sw' ? 'Dawati 3: Zabuni za Shule & Taasisi' : 'Desk 3: Institutional & School Tenders',
-      phone: '+255 699 032 777',
-      numberDigits: '255699032777',
+      phone: '+255 689 032 777',
+      numberDigits: '255689032777',
       tag: 'School Contracts',
       desc: language === 'sw'
         ? 'Utoaji wa proforma invoice rasmi za manunuzi ya shule, orodha za vitabu (booklists), na majalada ya ofisi.'
@@ -119,7 +119,7 @@ export const ContactPage: React.FC = () => {
     <div className="bg-[#fafafa] min-h-screen text-[#3b352f]">
       <SEOHead
         title="Contact Us & Official Sales Desks — OMEGA Stationery Tanzania"
-        description="Official contact numbers (+255 746 268 391, +255 624 265 480, +255 699 032 777), WhatsApp ordering desks, factory depots in Mbeya and Kariakoo."
+        description="Official contact numbers (+255 746 268 391, +255 624 265 480, +255 689 032 777), WhatsApp ordering desks, factory depots in Mbeya and Kariakoo."
       />
 
       {/* ==================== 1. HERO HEADER ==================== */}
@@ -291,7 +291,7 @@ export const ContactPage: React.FC = () => {
                     >
                       <option value="255746268391">Sales Desk 1 (+255 746 268 391)</option>
                       <option value="255624265480">Wholesale Desk 2 (+255 624 265 480)</option>
-                      <option value="255699032777">Institutional Tender Desk 3 (+255 699 032 777)</option>
+                      <option value="255689032777">Institutional Tender Desk 3 (+255 689 032 777)</option>
                     </select>
                   </div>
                 </div>

@@ -107,7 +107,7 @@ export const Notebook3D: React.FC<Notebook3DProps> = () => {
     setIsDragging(false);
   };
 
-  const cleanWhatsappDigits = (storeConfig.whatsappNumber || '255715268391').replace(/\D/g, '');
+  const cleanWhatsappDigits = (storeConfig.whatsappNumber || '255746268391').replace(/\D/g, '');
   const directWhatsAppUrl = `https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
     `Hello OMEGA Tanzania, I would like to order: ${currentBook.title} (${currentBook.pages}) - SKU: ${currentBook.sku}. Price: TSh ${currentBook.price.toLocaleString()}. Official Catalog 2026.`
   )}`;

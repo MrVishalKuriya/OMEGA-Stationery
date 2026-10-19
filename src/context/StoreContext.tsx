@@ -25,6 +25,14 @@ import {
   registerUserWithBackend,
   BACKEND_URL,
   BackendHealthData,
+  createProductInDb,
+  updateProductInDb,
+  updateProductPriceInDb,
+  updateProductStockInDb,
+  deleteProductFromDb,
+  fetchStoreConfigFromDb,
+  saveStoreConfigToDb,
+  bulkUpdateProductsInDb,
 } from '../services/api';
 
 const STORAGE_KEYS = {
@@ -107,8 +115,8 @@ export interface StoreContextType {
   addProduct: (product: Omit<Product, 'id'>) => Product;
   updateProduct: (product: Product) => void;
   deleteProduct: (productId: string) => void;
-  updateProductPrice: (productId: string, price: number, discountPrice?: number) => void;
-  updateProductStock: (productId: string, stockStatus: StockStatus) => void;
+  updateProductPrice: (productId: string, price: number, discountPrice?: number, wholesalePrice?: number) => void;
+  updateProductStock: (productId: string, stockStatus: StockStatus, stockQuantity?: number) => void;
   resetProductsToDefault: () => void;
   updateStoreConfig: (partial: Partial<StoreConfig>) => void;
   resetStoreConfigToDefault: () => void;
@@ -118,6 +126,15 @@ export interface StoreContextType {
   isBackendOnline: boolean;
   backendHealth: BackendHealthData | null;
   refreshBackendHealth: () => Promise<void>;
+  reloadCatalogFromDb: () => Promise<void>;
+  reloadConfigFromDb: () => Promise<void>;
+  bulkUpdateProducts: (payload: {
+    action: 'adjust_price' | 'set_stock';
+    ids?: string[];
+    percentage?: number;
+    stockStatus?: string;
+  }) => Promise<boolean>;
+  isCatalogLoading: boolean;
 }
 
 
@@ -207,6 +224,33 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // High-Performance Node.js + MongoDB Connection State
   const [isBackendOnline, setIsBackendOnline] = useState<boolean>(false);
   const [backendHealth, setBackendHealth] = useState<BackendHealthData | null>(null);
+  const [isCatalogLoading, setIsCatalogLoading] = useState<boolean>(true);
+
+  const reloadCatalogFromDb = async () => {
+    try {
+      const live = await fetchLiveProducts({ forceRefresh: true });
+      if (live && live.length > 0) {
+        setProducts(live);
+        localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(live));
+        showToast(`Loaded ${live.length} live products directly from MongoDB Atlas.`);
+      }
+    } catch (err) {
+      console.warn('Failed to reload catalog from DB:', err);
+    }
+  };
+
+  const reloadConfigFromDb = async () => {
+    try {
+      const cfg = await fetchStoreConfigFromDb();
+      if (cfg) {
+        setStoreConfig((prev) => ({ ...prev, ...cfg }));
+        localStorage.setItem(STORAGE_KEYS.CONFIG, JSON.stringify(cfg));
+        showToast('Store handles & web content synchronized from MongoDB Atlas.');
+      }
+    } catch (err) {
+      console.warn('Failed to reload config from DB:', err);
+    }
+  };
 
   const refreshBackendHealth = async () => {
     try {
@@ -214,10 +258,17 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       setIsBackendOnline(res.online);
       if (res.data) setBackendHealth(res.data);
       if (res.online) {
-        const live = await fetchLiveProducts();
+        const [live, cfg] = await Promise.all([
+          fetchLiveProducts({ forceRefresh: true }),
+          fetchStoreConfigFromDb(),
+        ]);
         if (live && live.length > 0) {
           setProducts(live);
           localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(live));
+        }
+        if (cfg) {
+          setStoreConfig((prev) => ({ ...prev, ...cfg }));
+          localStorage.setItem(STORAGE_KEYS.CONFIG, JSON.stringify(cfg));
         }
       }
     } catch {
@@ -227,19 +278,34 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     let isMounted = true;
+    setIsCatalogLoading(true);
+
     checkBackendHealth().then((res) => {
       if (!isMounted) return;
       setIsBackendOnline(res.online);
       if (res.data) setBackendHealth(res.data);
-      if (res.online) {
-        fetchLiveProducts().then((live) => {
-          if (isMounted && live && live.length > 0) {
-            setProducts(live);
-            localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(live));
-          }
-        });
-      }
+
+      Promise.all([
+        fetchLiveProducts({ forceRefresh: true }),
+        fetchStoreConfigFromDb(),
+      ]).then(([live, cfg]) => {
+        if (!isMounted) return;
+        if (live && live.length > 0) {
+          setProducts(live);
+          localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(live));
+        }
+        if (cfg) {
+          setStoreConfig((prev) => ({ ...prev, ...cfg }));
+          localStorage.setItem(STORAGE_KEYS.CONFIG, JSON.stringify(cfg));
+        }
+        setIsCatalogLoading(false);
+      }).catch(() => {
+        if (isMounted) setIsCatalogLoading(false);
+      });
+    }).catch(() => {
+      if (isMounted) setIsCatalogLoading(false);
     });
+
     return () => {
       isMounted = false;
     };
@@ -755,13 +821,32 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       id: `prod-custom-${Date.now()}`,
     };
     setProducts((prev) => [created, ...prev]);
-    showToast(`Added product "${created.name}" to demo catalog.`);
+    showToast(`Added product "${created.name}".`);
+
+    // Direct MongoDB Database CRUD Persist
+    createProductInDb(created)
+      .then((res) => {
+        if (res.success) {
+          console.log('[Direct DB Sync] Product persisted to MongoDB Atlas:', created.id);
+        }
+      })
+      .catch((err) => console.warn('MongoDB sync notice:', err));
+
     return created;
   };
 
   const updateProduct = (updated: Product) => {
     setProducts((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
     showToast(`Updated "${updated.name}".`);
+
+    // Direct MongoDB Database CRUD Persist
+    updateProductInDb(updated.id, updated)
+      .then((res) => {
+        if (res.success) {
+          console.log('[Direct DB Sync] Product updated in MongoDB Atlas:', updated.id);
+        }
+      })
+      .catch((err) => console.warn('MongoDB sync notice:', err));
   };
 
   const deleteProduct = (productId: string) => {
@@ -770,11 +855,25 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setCart((prev) => prev.filter((c) => c.productId !== productId));
     setWishlist((prev) => prev.filter((id) => id !== productId));
     if (target) {
-      showToast(`Removed "${target.name}" from demo catalog.`);
+      showToast(`Removed "${target.name}".`);
     }
+
+    // Direct MongoDB Database CRUD Persist
+    deleteProductFromDb(productId)
+      .then((res) => {
+        if (res.success) {
+          console.log('[Direct DB Sync] Product deleted from MongoDB Atlas:', productId);
+        }
+      })
+      .catch((err) => console.warn('MongoDB sync notice:', err));
   };
 
-  const updateProductPrice = (productId: string, price: number, discountPrice?: number) => {
+  const updateProductPrice = (
+    productId: string,
+    price: number,
+    discountPrice?: number,
+    wholesalePrice?: number
+  ) => {
     setProducts((prev) =>
       prev.map((p) =>
         p.id === productId
@@ -785,38 +884,96 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 discountPrice && discountPrice > 0 && discountPrice < price
                   ? discountPrice
                   : undefined,
+              ...(wholesalePrice !== undefined && wholesalePrice > 0
+                ? { wholesalePrice: Math.round(wholesalePrice) }
+                : {}),
             }
           : p
       )
     );
-    showToast('Updated product price in demo catalog.');
+    showToast('Updated product price.');
+
+    // Direct MongoDB Database CRUD Persist
+    updateProductPriceInDb(productId, price, discountPrice, wholesalePrice).catch((err) => {
+      console.warn('MongoDB sync notice:', err);
+    });
   };
 
-  const updateProductStock = (productId: string, stockStatus: StockStatus) => {
+  const updateProductStock = (
+    productId: string,
+    stockStatus: StockStatus,
+    stockQuantity?: number
+  ) => {
     setProducts((prev) =>
-      prev.map((p) => (p.id === productId ? { ...p, stockStatus } : p))
+      prev.map((p) =>
+        p.id === productId
+          ? {
+              ...p,
+              stockStatus,
+              ...(stockQuantity !== undefined ? { stockQuantity: Math.max(0, stockQuantity) } : {}),
+            }
+          : p
+      )
     );
     showToast(`Stock status updated to "${stockStatus}".`);
+
+    // Direct MongoDB Database CRUD Persist
+    updateProductStockInDb(productId, stockStatus, stockQuantity).catch((err) => {
+      console.warn('MongoDB sync notice:', err);
+    });
+  };
+
+  const bulkUpdateProducts = async (payload: {
+    action: 'adjust_price' | 'set_stock';
+    ids?: string[];
+    percentage?: number;
+    stockStatus?: string;
+  }): Promise<boolean> => {
+    const res = await bulkUpdateProductsInDb(payload);
+    if (res.success) {
+      await reloadCatalogFromDb();
+      showToast(res.message || 'Bulk product update applied successfully.');
+      return true;
+    } else {
+      showToast(`Bulk update notice: ${res.message || 'Operation failed'}`);
+      return false;
+    }
   };
 
   const resetProductsToDefault = () => {
-    setProducts(INITIAL_PRODUCTS);
-    localStorage.removeItem(STORAGE_KEYS.PRODUCTS);
-    showToast('Reset all 35 products to initial demo catalog.');
+    reloadCatalogFromDb()
+      .then(() => {
+        showToast('Catalog reloaded directly from MongoDB Atlas database.');
+      })
+      .catch(() => {
+        setProducts(INITIAL_PRODUCTS);
+        localStorage.removeItem(STORAGE_KEYS.PRODUCTS);
+        showToast('Reset catalog in browser view.');
+      });
   };
 
   const updateStoreConfig = (partial: Partial<StoreConfig>) => {
-    setStoreConfig((prev) => ({
-      ...prev,
-      ...partial,
-    }));
-    showToast('Store configuration updated in local browser storage.');
+    setStoreConfig((prev) => {
+      const next = {
+        ...prev,
+        ...partial,
+      };
+      // Direct MongoDB Database CRUD Persist
+      saveStoreConfigToDb(next).catch((err) => {
+        console.warn('MongoDB config sync notice:', err);
+      });
+      return next;
+    });
+    showToast('Web content & store handles synchronized to MongoDB.');
   };
 
   const resetStoreConfigToDefault = () => {
     setStoreConfig(INITIAL_STORE_CONFIG);
     localStorage.removeItem(STORAGE_KEYS.CONFIG);
-    showToast('Store branding and contact placeholders reset to defaults.');
+    saveStoreConfigToDb(INITIAL_STORE_CONFIG).catch((err) => {
+      console.warn('MongoDB config reset notice:', err);
+    });
+    showToast('Store branding and web handles reset to defaults.');
   };
 
   const recordDemoOrder = (input: CustomerOrderInput): DemoOrderRecord => {
@@ -924,6 +1081,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         isBackendOnline,
         backendHealth,
         refreshBackendHealth,
+        reloadCatalogFromDb,
+        reloadConfigFromDb,
+        bulkUpdateProducts,
+        isCatalogLoading,
       }}
     >
       {children}

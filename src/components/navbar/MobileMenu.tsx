@@ -97,13 +97,15 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
       <div className="relative w-full max-w-xs sm:max-w-sm h-full bg-[#fafafa] text-[#14182B] flex flex-col shadow-2xl z-10 animate-in slide-in-from-left duration-250 border-r border-[#e2dedb]">
         {/* Drawer Header */}
         <div className="flex items-center justify-between p-4 border-b border-[#e2dedb] bg-white">
-          <Link to="/" onClick={onClose} className="flex items-center gap-2">
-            <img
-              src="/omega-logo.png"
-              alt="OMEGA Logo"
-              className="h-8 w-auto object-contain"
-            />
-            <span className="font-heading text-sm font-bold tracking-wider text-[#4b423b]">
+          <Link to="/" onClick={onClose} className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-white border border-[#e2dedb] p-1 flex items-center justify-center shadow-2xs shrink-0">
+              <img
+                src="/logo-icon.png"
+                alt="OMEGA Icon"
+                className="w-full h-full object-contain"
+              />
+            </div>
+            <span className="font-heading text-base font-bold tracking-wider text-[#4b423b]">
               OMEGA
             </span>
           </Link>

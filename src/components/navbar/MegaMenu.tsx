@@ -366,7 +366,7 @@ export const MEGA_MENU_DATA: Record<string, MegaMenuCategoryData> = {
         items: [
           { label: 'Sales Desk 1: +255 746 268 391', href: 'https://wa.me/255746268391' },
           { label: 'Wholesale Desk 2: +255 624 265 480', href: 'https://wa.me/255624265480' },
-          { label: 'Logistics Desk 3: +255 699 032 777', href: 'https://wa.me/255699032777' },
+          { label: 'Logistics Desk 3: +255 689 032 777', href: 'https://wa.me/255689032777' },
           { label: 'Download Full Price Sheet (Excel)', href: '/sheet/Indigo_Printed_Price_List.xlsx' },
         ],
       },

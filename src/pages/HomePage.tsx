@@ -48,7 +48,7 @@ export const HomePage: React.FC = () => {
   >('all');
 
   // Spotlight active product in Hero
-  const [spotlightKey, setSpotlightKey] = useState<'q2' | 'q3' | 'q4' | 'ex200'>('q2');
+  const [spotlightKey, setSpotlightKey] = useState<'q2' | 'q3' | 'q4' | 'ex200' | 'carton'>('q2');
 
   // Wholesale calculator state
   const [calcQuantity, setCalcQuantity] = useState<number>(5);
@@ -67,7 +67,10 @@ export const HomePage: React.FC = () => {
       image: '/omega-products/counter-book-q2-catalog.jpeg',
       badge: 'Best-Seller 2026',
       desc: 'Double-sewn Smyth binding with 70 GSM feint-ruled bleed-proof paper. Built for high-frequency daily store ledgers and school notes.',
-      highlights: ['Double thread-sewn spine', '70 GSM bleed-proof bond', '198 numbered ruled pages'],
+      highlights: ['Smyth Thread Bound (180° Lay-Flat)', '70 GSM Bleed-Proof Woodfree Paper', '198 Numbered Ruled Ledger Pages'],
+      spineGauge: '14mm Smyth Spine · 198 Pages',
+      cartonYield: 278400,
+      dealerProfit: 222400,
     },
     q3: {
       id: 'prod-omega-cb-q3',
@@ -81,7 +84,10 @@ export const HomePage: React.FC = () => {
       image: '/omega-products/counter-book-q3-catalog.jpeg',
       badge: 'Corporate Standard',
       desc: 'The corporate accounting and school standard across Tanzania. 288 numbered ruled pages encased in a moisture-resistant laminated hardcover.',
-      highlights: ['Full academic year ledger', 'Laminated water-resistant cover', 'Indigo feint ruling with margins'],
+      highlights: ['Full Academic Year Commercial Ledger', 'Laminated Moisture-Resistant Cover', 'Precision Indigo Millimeter Ruling'],
+      spineGauge: '21mm Smyth Spine · 288 Pages',
+      cartonYield: 270000,
+      dealerProfit: 213000,
     },
     q4: {
       id: 'prod-omega-cb-q4',
@@ -95,7 +101,10 @@ export const HomePage: React.FC = () => {
       image: '/omega-products/counter-book-q4-catalog.jpeg',
       badge: 'Heavy-Duty Archive',
       desc: '384 heavy-duty pages crafted for permanent multi-year legal archives, auditing records, and rigorous university degree notes.',
-      highlights: ['Heavyweight 384 pages', 'Reinforced spine cloth', 'Archival grade acid-free paper'],
+      highlights: ['Heavyweight 384 Acid-Free Pages', 'Reinforced Heavy-Gauge Spine Cloth', 'Legal & Financial Multi-Year Archive'],
+      spineGauge: '28mm Smyth Spine · 384 Pages',
+      cartonYield: 228000,
+      dealerProfit: 168000,
     },
     ex200: {
       id: 'prod-omega-ex-200p-sl',
@@ -107,9 +116,29 @@ export const HomePage: React.FC = () => {
       packaging: '120 Pcs / Carton',
       boxPcs: 120,
       image: '/omega-products/exercise-book-200p-purple.jpeg',
-      badge: 'School Favorite',
+      badge: 'School Benchmark',
       desc: 'The benchmark primary and secondary school exercise book in Tanzania. Heavyweight cover with standard syllabus margin lines.',
-      highlights: ['Strong stapled centerfold', 'Bright white 60 GSM pages', 'Tanzania curriculum standard'],
+      highlights: ['Strong Stapled Centerfold Binding', 'Bright White 60 GSM Woodfree Pages', 'Tanzania National Curriculum Standard'],
+      spineGauge: '9mm Stiff Spine · 200 Pages',
+      cartonYield: 264000,
+      dealerProfit: 216000,
+    },
+    carton: {
+      id: 'prod-carton-bundle-q2',
+      sku: 'OMG-CRTN-48',
+      title: 'Factory Sealed Wholesale Carton',
+      subtitle: '48 Pcs Strapped Corrugated Master Case',
+      cartonPrice: 56000,
+      unitPrice: 1166,
+      packaging: '48 Pcs Master Case',
+      boxPcs: 48,
+      image: '/omega-products/omega-carton-box-branded.jpeg',
+      badge: 'B2B Wholesale Master',
+      desc: 'Heavy-duty 5-ply export grade corrugated box strapped with polypropylene security banding. Designed to survive long-distance transit across all Tanzanian bus parcel networks.',
+      highlights: ['5-Ply Export Grade Corrugated Box', 'Polypropylene Strapped Security Bands', 'Ready for Upcountry Bus Parcel Transit'],
+      spineGauge: '340mm Box Height · 22.5 kg Case',
+      cartonYield: 278400,
+      dealerProfit: 222400,
     },
   };
 
@@ -194,61 +223,85 @@ export const HomePage: React.FC = () => {
       />
 
       {/* ========================================================================= */}
-      {/* 1. HERO SECTION: LUXURY EDITORIAL SHOWCASE (LEDUP #4B423B + COPPER ACCENTS) */}
+      {/* 1. HERO SECTION: ARCHITECTURAL LUXURY STUDIO SHOWCASE */}
       {/* ========================================================================= */}
-      <section className="relative overflow-hidden w-full bg-[#4b423b] text-white py-14 lg:py-20 border-b border-[#3b352f] shadow-2xl">
-        {/* Ambient atmospheric lighting glows */}
-        <div className="absolute -top-32 -right-32 w-[600px] h-[600px] bg-[#c49b7c]/18 rounded-full blur-[150px] pointer-events-none" />
-        <div className="absolute -bottom-32 -left-32 w-[550px] h-[550px] bg-[#a46b44]/15 rounded-full blur-[140px] pointer-events-none" />
+      <section className="relative overflow-hidden w-full bg-linear-to-br from-[#161311] via-[#1f1a17] to-[#13100f] text-white py-12 lg:py-18 border-b border-[#2e2621] shadow-2xl">
+        {/* Ambient atmospheric glows */}
+        <div className="absolute top-0 right-1/4 w-[650px] h-[650px] bg-[#c49b7c]/14 rounded-full blur-[160px] pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-[500px] h-[500px] bg-[#a46b44]/12 rounded-full blur-[140px] pointer-events-none" />
+
+        {/* Delicate architectural grid pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.04] pointer-events-none"
+          style={{
+            backgroundImage: 'radial-gradient(rgba(255,255,255,0.7) 1px, transparent 1px)',
+            backgroundSize: '32px 32px',
+          }}
+        />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left Column: Brand Hallmark & Value Proposition */}
-            <div className="lg:col-span-6 flex flex-col justify-center space-y-6">
-              {/* Brand Hallmark Pill */}
-              <div className="flex flex-wrap items-center gap-3">
-                <div className="bg-white px-3 py-1.5 rounded-[12px] shadow-sm border border-[#e2dedb] flex items-center">
+            <div className="lg:col-span-6 flex flex-col justify-center space-y-5">
+              {/* Brand Hallmark Badges */}
+              <div className="flex flex-wrap items-center gap-2.5">
+                <div className="bg-white px-3 py-1.5 rounded-xl shadow-xs border border-white/20 flex items-center">
                   <img
                     src="/omega-logo.png"
                     alt="OMEGA Logo"
-                    className="h-7 w-auto object-contain"
+                    className="h-6 w-auto object-contain"
                   />
                 </div>
-                <div className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-[#c49b7c] bg-white/10 border border-[#c49b7c]/30 backdrop-blur-md flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#c49b7c] animate-pulse" />
-                  <span>Tanzania’s Benchmark Notebooks · Est. 1998</span>
+                <div className="px-3.5 py-1.5 rounded-full text-[11px] font-bold tracking-wider uppercase text-[#c49b7c] bg-white/[0.07] border border-[#c49b7c]/30 backdrop-blur-md flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>Factory Direct · Mbeya &amp; Kariakoo Hubs</span>
                 </div>
               </div>
 
               {/* Bold Editorial Headline */}
               <div className="space-y-3">
-                <h1 className="font-heading text-3xl sm:text-5xl lg:text-5xl font-light text-white leading-[1.12] tracking-tight">
-                  {language === 'sw' ? 'UBORA HALISI WA UANDISHI.' : 'Crafted for Enduring Thoughts &'} <br />
-                  <span className="font-bold text-[#c49b7c] bg-gradient-to-r from-[#c49b7c] via-white to-[#c49b7c] bg-clip-text text-transparent">
-                    {language === 'sw' ? 'KUMBUKUMBU ZINAZODUMU.' : 'Permanent Records.'}
-                  </span>
+                <p className="text-xs font-mono font-bold tracking-widest uppercase text-[#c49b7c]">
+                  {language === 'sw' ? 'KIWANGO RASMI CHA TAIFA LA TANZANIA' : 'THE NATIONAL BENCHMARK FOR RECORDS'}
+                </p>
+                <h1 className="font-heading text-3xl sm:text-5xl lg:text-[3.25rem] font-light text-white leading-[1.08] tracking-tight">
+                  {language === 'sw' ? (
+                    <>
+                      Uadilifu wa Uandishi &amp; <br />
+                      <span className="font-serif italic font-bold bg-linear-to-r from-[#fce3c7] via-[#c49b7c] to-[#e8c099] bg-clip-text text-transparent">
+                        Kumbukumbu Zinazodumu.
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      The Benchmark in <br />
+                      <span className="font-serif italic font-bold bg-linear-to-r from-[#fce3c7] via-[#c49b7c] to-[#e8c099] bg-clip-text text-transparent">
+                        Precision Books &amp;
+                      </span> <br />
+                      <span className="font-bold text-white">Permanent Records.</span>
+                    </>
+                  )}
                 </h1>
-                <p className="text-sm sm:text-base text-stone-200 leading-relaxed font-normal max-w-xl">
+                <p className="text-sm sm:text-base text-stone-300 leading-relaxed font-normal max-w-xl">
                   {language === 'sw'
-                    ? 'Mkusanyiko rasmi wa madaftari ya OMEGA: Hardcover Counter Books (Q2, Q3, Q4), madaftari ya shule kurasa 32–200, na bahasha nzito za kraft. Zimeundwa kwa karatasi ya 70 GSM isiyopenyeza wino na ushonaji wa nyuzi madhubuti.'
-                    : 'Double thread-sewn hardcovers, 70 GSM bleed-proof bond paper, and precision indigo ruling. Engineered in Tanzania for schools, certified accountants, and corporate enterprises.'}
+                    ? 'Madaftari rasmi ya OMEGA: Jalada gumu lililoshonwa kwa nyuzi mbili za Smyth (Q2, Q3, Q4), karatasi ya 70 GSM isiyopenyeza wino, na vifurushi vya jumla kwa shule na maduka kote nchini.'
+                    : 'Crafted with double thread-sewn Smyth binding, 70 GSM bleed-proof woodfree bond, and precision indigo ruling. Engineered in Tanzania for schools, certified accountants, and corporate enterprises.'}
                 </p>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-1">
+              <div className="flex flex-wrap items-center gap-3 pt-1">
                 <Link
                   to="/catalog"
-                  className="btn-ledup-copper px-7 py-3.5 rounded-full text-xs sm:text-sm uppercase tracking-wider font-bold inline-flex items-center gap-2 group shrink-0 min-h-[48px] shadow-lg"
+                  className="btn-ledup-copper px-7 py-3 rounded-full text-xs sm:text-sm uppercase tracking-wider font-bold inline-flex items-center gap-2 group shrink-0 min-h-[46px] shadow-lg active:scale-95 transition-all text-white"
                 >
                   <ShoppingBag className="w-4 h-4 text-white" />
-                  <span className="text-white">{language === 'sw' ? 'NUNUA BIDHAA' : 'EXPLORE COLLECTION'}</span>
+                  <span>{language === 'sw' ? 'NUNUA BIDHAA' : 'EXPLORE COLLECTION'}</span>
                   <ArrowRight className="w-4 h-4 text-white ledup-arrow-icon" />
                 </Link>
 
                 <Link
                   to="/wholesale"
-                  className="px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/25 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all inline-flex items-center gap-2 shrink-0 min-h-[48px] group"
+                  className="px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all inline-flex items-center gap-2 shrink-0 min-h-[46px] group active:scale-95"
                 >
                   <Package className="w-4 h-4 text-[#c49b7c]" />
                   <span>{language === 'sw' ? 'BEI ZA JUMLA' : 'WHOLESALE CARTONS'}</span>
@@ -259,7 +312,7 @@ export const HomePage: React.FC = () => {
                   href={whatsappGreetingUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-5 py-3.5 rounded-full bg-[#25D366]/20 hover:bg-[#25D366]/30 text-emerald-300 border border-[#25D366]/40 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all inline-flex items-center gap-2 shrink-0 min-h-[48px]"
+                  className="px-5 py-3 rounded-full bg-[#25D366]/20 hover:bg-[#25D366]/30 text-emerald-300 border border-[#25D366]/40 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all inline-flex items-center gap-2 shrink-0 min-h-[46px]"
                 >
                   <MessageCircle className="w-4 h-4 fill-[#25D366] text-[#25D366]" />
                   <span>WhatsApp</span>
@@ -267,165 +320,196 @@ export const HomePage: React.FC = () => {
               </div>
 
               {/* 4 Technical Quality Badges */}
-              <div className="pt-4 border-t border-white/15 grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div className="p-3 bg-white/5 border border-white/10 rounded-[12px]">
-                  <div className="flex items-center gap-1.5 text-[#c49b7c] mb-1">
-                    <ShieldCheck className="w-4 h-4" />
-                    <span className="text-[11px] font-bold uppercase text-white">Smyth Binding</span>
+              <div className="pt-3 border-t border-white/15 grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                <div className="p-3 bg-white/[0.04] border border-white/10 rounded-xl hover:border-[#c49b7c]/40 transition-colors">
+                  <div className="flex items-center gap-1.5 text-[#c49b7c] mb-0.5">
+                    <ShieldCheck className="w-4 h-4 shrink-0" />
+                    <span className="text-[11px] font-bold uppercase text-white truncate">Smyth Bound</span>
                   </div>
                   <span className="text-[11px] text-stone-300 block">Opens 180° flat</span>
                 </div>
 
-                <div className="p-3 bg-white/5 border border-white/10 rounded-[12px]">
-                  <div className="flex items-center gap-1.5 text-[#c49b7c] mb-1">
-                    <Feather className="w-4 h-4" />
-                    <span className="text-[11px] font-bold uppercase text-white">70 GSM Paper</span>
+                <div className="p-3 bg-white/[0.04] border border-white/10 rounded-xl hover:border-[#c49b7c]/40 transition-colors">
+                  <div className="flex items-center gap-1.5 text-[#c49b7c] mb-0.5">
+                    <Feather className="w-4 h-4 shrink-0" />
+                    <span className="text-[11px] font-bold uppercase text-white truncate">70 GSM Paper</span>
                   </div>
                   <span className="text-[11px] text-stone-300 block">Zero ink bleed</span>
                 </div>
 
-                <div className="p-3 bg-white/5 border border-white/10 rounded-[12px]">
-                  <div className="flex items-center gap-1.5 text-[#c49b7c] mb-1">
-                    <Truck className="w-4 h-4" />
-                    <span className="text-[11px] font-bold uppercase text-white">Bus Parcel</span>
+                <div className="p-3 bg-white/[0.04] border border-white/10 rounded-xl hover:border-[#c49b7c]/40 transition-colors">
+                  <div className="flex items-center gap-1.5 text-[#c49b7c] mb-0.5">
+                    <Truck className="w-4 h-4 shrink-0" />
+                    <span className="text-[11px] font-bold uppercase text-white truncate">Bus Parcel</span>
                   </div>
                   <span className="text-[11px] text-stone-300 block">All 31 regions</span>
                 </div>
 
-                <div className="p-3 bg-white/5 border border-white/10 rounded-[12px]">
-                  <div className="flex items-center gap-1.5 text-[#c49b7c] mb-1">
-                    <Percent className="w-4 h-4" />
-                    <span className="text-[11px] font-bold uppercase text-white">Factory Direct</span>
+                <div className="p-3 bg-white/[0.04] border border-white/10 rounded-xl hover:border-[#c49b7c]/40 transition-colors">
+                  <div className="flex items-center gap-1.5 text-[#c49b7c] mb-0.5">
+                    <Percent className="w-4 h-4 shrink-0" />
+                    <span className="text-[11px] font-bold uppercase text-white truncate">Factory Bulk</span>
                   </div>
-                  <span className="text-[11px] text-stone-300 block">Carton bulk savings</span>
+                  <span className="text-[11px] text-stone-300 block">Carton savings</span>
                 </div>
               </div>
             </div>
 
-            {/* Right Column: Interactive Benchmark Product Studio */}
+            {/* Right Column: Interactive Porcelain Studio Benchmark Showcase */}
             <div className="lg:col-span-6 w-full">
-              <div className="bg-[#3b352f] rounded-[24px] p-5 sm:p-7 shadow-2xl border border-white/15 relative overflow-hidden flex flex-col justify-between">
-                {/* Studio Header & Tab Switcher */}
-                <div className="flex flex-wrap items-center justify-between pb-4 border-b border-white/15 gap-2">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="font-heading text-xs font-bold tracking-wider text-[#c49b7c] uppercase">
-                      Featured Benchmark
+              <div className="relative group">
+                {/* Glowing ambient backlight halo */}
+                <div className="absolute -inset-2 bg-linear-to-r from-[#c49b7c]/25 via-amber-500/15 to-[#c49b7c]/30 rounded-[32px] blur-xl opacity-75 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+
+                {/* Main Porcelain / Alabaster Studio Card */}
+                <div className="relative bg-linear-to-b from-[#ffffff] via-[#faf8f6] to-[#f4efe8] rounded-[28px] p-5 sm:p-7 shadow-2xl border border-white/80 overflow-hidden text-[#2b2520]">
+                  {/* Studio Header & Tab Switcher */}
+                  <div className="flex flex-wrap items-center justify-between pb-3.5 border-b border-[#e8dfd5] gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                      <span className="text-[11px] font-black uppercase tracking-wider text-[#4b423b]">
+                        Studio Benchmark
+                      </span>
+                    </div>
+
+                    {/* Interactive Tab Switcher */}
+                    <div className="flex items-center gap-1 p-1 bg-[#eae3d9]/70 rounded-full border border-[#ded4c8] overflow-x-auto no-scrollbar max-w-full">
+                      {[
+                        { key: 'q2', label: 'Quire 2' },
+                        { key: 'q3', label: 'Quire 3' },
+                        { key: 'q4', label: 'Quire 4' },
+                        { key: 'ex200', label: 'Exercise 200P' },
+                        { key: 'carton', label: 'Carton Box' },
+                      ].map((tab) => (
+                        <button
+                          key={tab.key}
+                          type="button"
+                          onClick={() => setSpotlightKey(tab.key as any)}
+                          className={`px-2.5 py-1 rounded-full text-xs font-bold transition-all shrink-0 ${
+                            spotlightKey === tab.key
+                              ? 'bg-[#4b423b] text-white shadow-xs'
+                              : 'text-stone-600 hover:text-black hover:bg-white/60'
+                          }`}
+                        >
+                          {tab.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Stage Layout: Product Image & Details */}
+                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 items-center py-4">
+                    {/* Seamless Porcelain Pedestal Image Stage */}
+                    <div className="sm:col-span-6 relative aspect-square bg-linear-to-b from-[#fdfbf9] to-[#f1ece5] rounded-2xl p-4 flex items-center justify-center border border-[#e5ddd3] shadow-inner group/stage overflow-hidden">
+                      {/* Floating Badge */}
+                      <div className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#4b423b] text-[#f4cca1] shadow-xs z-10">
+                        {currentSpotlight.badge}
+                      </div>
+
+                      {/* Spine Gauge Badge */}
+                      <div className="absolute bottom-2.5 left-2.5 right-2.5 px-2 py-1 rounded-lg text-[10px] font-mono font-bold text-[#4b423b] bg-white/95 backdrop-blur-xs border border-[#ded5cb] shadow-xs text-center z-10 truncate">
+                        {currentSpotlight.spineGauge}
+                      </div>
+
+                      {/* The Book Image on pristine background */}
+                      <img
+                        key={currentSpotlight.id}
+                        src={currentSpotlight.image}
+                        alt={currentSpotlight.title}
+                        className="max-h-[82%] max-w-[85%] object-contain drop-shadow-[0_20px_25px_rgba(43,37,32,0.22)] transition-transform duration-500 group-hover/stage:scale-105"
+                      />
+                    </div>
+
+                    {/* Details & Commercial Yield */}
+                    <div className="sm:col-span-6 space-y-3">
+                      <div className="flex items-center gap-1 text-amber-500 text-xs">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="w-3.5 h-3.5 fill-amber-500 stroke-amber-500" />
+                        ))}
+                        <span className="text-[#4b423b] font-bold ml-1 text-xs">5.0 · TBS Certified</span>
+                      </div>
+
+                      <div>
+                        <h3 className="text-xl font-black font-heading text-[#241f1c] leading-tight">
+                          {currentSpotlight.title}
+                        </h3>
+                        <p className="text-xs text-[#a06f47] font-bold mt-0.5">
+                          {currentSpotlight.subtitle}
+                        </p>
+                      </div>
+
+                      {/* Craft Highlights */}
+                      <div className="space-y-1">
+                        {currentSpotlight.highlights.map((h, i) => (
+                          <div key={i} className="flex items-center gap-1.5 text-xs text-stone-700 font-medium">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                            <span className="truncate">{h}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Dual Pricing & Yield Card */}
+                      <div className="p-3 rounded-xl bg-white border border-[#e0d6cb] shadow-2xs space-y-1">
+                        <div className="flex items-baseline justify-between">
+                          <span className="text-[10px] uppercase font-bold text-stone-500">
+                            Carton ({currentSpotlight.packaging})
+                          </span>
+                          <span className="text-base font-black text-[#87552e] font-mono">
+                            {formatPrice(currentSpotlight.cartonPrice, currency)}
+                          </span>
+                        </div>
+
+                        <div className="flex items-baseline justify-between text-xs pt-1 border-t border-stone-100">
+                          <span className="text-[10px] text-stone-500">Retail Unit Rate</span>
+                          <span className="text-stone-800 font-mono font-bold">
+                            {formatPrice(currentSpotlight.unitPrice, currency)}
+                          </span>
+                        </div>
+
+                        <div className="flex items-baseline justify-between text-xs pt-0.5">
+                          <span className="text-[10px] font-bold text-emerald-700 uppercase">Dealer Yield / Case</span>
+                          <span className="text-emerald-700 font-mono font-black">
+                            +{formatPrice(currentSpotlight.dealerProfit, currency)}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* CTA Buttons */}
+                      <div className="grid grid-cols-2 gap-2 pt-1">
+                        <button
+                          type="button"
+                          onClick={() => addToCart(currentSpotlight.id, 1, true)}
+                          className="py-2.5 px-3 rounded-xl bg-[#4b423b] hover:bg-[#38312b] text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 active:scale-95 shadow-md transition-all"
+                        >
+                          <ShoppingBag className="w-3.5 h-3.5 text-[#c49b7c]" />
+                          <span>Add to Bag</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const p = products.find((x) => x.id === currentSpotlight.id);
+                            if (p) setQuickViewProduct(p);
+                          }}
+                          className="py-2.5 px-3 rounded-xl bg-white hover:bg-stone-50 text-[#4b423b] border border-[#d5cbbf] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-2xs"
+                        >
+                          <Eye className="w-3.5 h-3.5 text-[#a06f47]" />
+                          <span>Quick View</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Stage Bottom Guarantee Pill */}
+                  <div className="pt-2.5 border-t border-[#e8dfd5] flex items-center justify-between text-[11px] text-stone-600 font-medium">
+                    <span className="flex items-center gap-1 text-emerald-700 font-bold">
+                      <Truck className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>Ready for Same-Day Bus Parcel Dispatch</span>
+                    </span>
+                    <span className="text-stone-500 font-mono text-[10px]">
+                      SKU: {currentSpotlight.sku}
                     </span>
                   </div>
-
-                  {/* Quire Tabs */}
-                  <div className="flex items-center gap-1 p-1 bg-[#292420] rounded-full border border-white/15 overflow-x-auto no-scrollbar max-w-full">
-                    {[
-                      { key: 'q2', label: 'Quire 2' },
-                      { key: 'q3', label: 'Quire 3' },
-                      { key: 'q4', label: 'Quire 4' },
-                      { key: 'ex200', label: 'Exercise 200p' },
-                    ].map((tab) => (
-                      <button
-                        key={tab.key}
-                        type="button"
-                        onClick={() => setSpotlightKey(tab.key as any)}
-                        className={`px-3 py-1 rounded-full text-xs font-bold uppercase transition-all ${
-                          spotlightKey === tab.key
-                            ? 'btn-ledup-copper shadow-sm'
-                            : 'text-stone-300 hover:text-white'
-                        }`}
-                      >
-                        {tab.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Spotlight Display Content */}
-                <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center py-5">
-                  {/* Image Container with 3D perspective */}
-                  <div className="sm:col-span-6 relative aspect-square bg-[#4b423b] rounded-[16px] p-4 flex items-center justify-center border border-white/15 group overflow-hidden aardvark-book-stage shadow-inner">
-                    <img
-                      src={currentSpotlight.image}
-                      alt={currentSpotlight.title}
-                      className="aardvark-book-3d max-h-full max-w-full object-contain"
-                    />
-                    <div className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#292420]/80 text-[#c49b7c] border border-[#c49b7c]/40 backdrop-blur-xs">
-                      {currentSpotlight.badge}
-                    </div>
-                  </div>
-
-                  {/* Details & Pricing */}
-                  <div className="sm:col-span-6 space-y-3.5">
-                    <div className="flex items-center gap-1 text-[#c49b7c] text-xs">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-3.5 h-3.5 fill-[#c49b7c] stroke-[#c49b7c]" />
-                      ))}
-                      <span className="text-white font-bold ml-1 text-xs">5.0 · Verified Quality</span>
-                    </div>
-
-                    <div>
-                      <h3 className="text-xl font-bold font-heading text-white leading-tight">
-                        {currentSpotlight.title}
-                      </h3>
-                      <p className="text-xs text-[#c49b7c] font-medium mt-0.5">
-                        {currentSpotlight.subtitle}
-                      </p>
-                    </div>
-
-                    <p className="text-stone-300 text-xs leading-relaxed line-clamp-2">
-                      {currentSpotlight.desc}
-                    </p>
-
-                    {/* Pricing Box */}
-                    <div className="p-3 rounded-[12px] bg-[#292420] border border-white/15 space-y-1">
-                      <div className="flex items-baseline justify-between">
-                        <span className="text-[10px] uppercase font-bold text-stone-300">
-                          Carton ({currentSpotlight.packaging})
-                        </span>
-                        <span className="text-base font-black text-[#c49b7c] font-mono">
-                          {formatPrice(currentSpotlight.cartonPrice, currency)}
-                        </span>
-                      </div>
-                      <div className="flex items-baseline justify-between text-xs">
-                        <span className="text-[10px] text-stone-300">Unit Retail Price</span>
-                        <span className="text-stone-100 font-mono font-bold">
-                          {formatPrice(currentSpotlight.unitPrice, currency)}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="grid grid-cols-2 gap-2 pt-1">
-                      <button
-                        type="button"
-                        onClick={() => addToCart(currentSpotlight.id, 1, true)}
-                        className="py-2.5 px-3 rounded-full btn-ledup-copper text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 active:scale-95 shadow-md"
-                      >
-                        <ShoppingBag className="w-3.5 h-3.5 text-white" />
-                        <span className="text-white">Add to Bag</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const p = products.find((x) => x.id === currentSpotlight.id);
-                          if (p) setQuickViewProduct(p);
-                        }}
-                        className="py-2.5 px-3 rounded-full bg-white/10 hover:bg-white/20 text-[#c49b7c] border border-[#c49b7c]/40 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all"
-                      >
-                        <Eye className="w-3.5 h-3.5" />
-                        <span>Quick View</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Footer Micro-Guarantee */}
-                <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-stone-300">
-                  <span className="flex items-center gap-1 text-emerald-400">
-                    <CheckCircle2 className="w-3.5 h-3.5" /> Ready for Immediate Dispatch
-                  </span>
-                  <span className="text-[#c49b7c] font-semibold">
-                    Soweto SIDO &amp; Kariakoo
-                  </span>
                 </div>
               </div>
             </div>
@@ -501,7 +585,7 @@ export const HomePage: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-5">
             {signatureCategories.map((cat, idx) => (
               <Link
                 key={idx}
@@ -560,68 +644,80 @@ export const HomePage: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6">
             {/* Pillar 1 */}
-            <div className="p-6 rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-3">
-              <div className="w-12 h-12 rounded-[14px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold shadow-sm">
-                <BookOpen className="w-6 h-6" />
+            <div className="p-3.5 sm:p-6 rounded-2xl sm:rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-2 sm:space-y-3 flex flex-col justify-between">
+              <div className="space-y-2 sm:space-y-3">
+                <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-[14px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold shadow-xs">
+                  <BookOpen className="w-4 h-4 sm:w-6 sm:h-6" />
+                </div>
+                <h3 className="font-heading font-bold text-xs sm:text-base text-[#3b352f] leading-snug">
+                  1. Smyth Thread-Sewn Spine
+                </h3>
+                <p className="text-[11px] sm:text-xs text-[#736c67] leading-relaxed">
+                  Pages are double-stitched with high-tensile cotton-linen thread that never loosens. The book opens completely flat at 180° for effortless two-page writing.
+                </p>
               </div>
-              <h3 className="font-heading font-bold text-base text-[#3b352f]">
-                1. Smyth Thread-Sewn Spine
-              </h3>
-              <p className="text-xs text-[#736c67] leading-relaxed">
-                Pages are double-stitched with high-tensile cotton-linen thread that never loosens. The book opens completely flat at 180° for effortless two-page writing.
-              </p>
-              <div className="text-[11px] font-semibold text-[#c49b7c] flex items-center gap-1 pt-1">
-                <Check className="w-3.5 h-3.5" /> 180° Lay-Flat Ergonomics
+              <div className="text-[10px] sm:text-[11px] font-semibold text-[#c49b7c] flex items-center gap-1 pt-1 border-t border-stone-200/60">
+                <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+                <span className="truncate">180° Lay-Flat Ergonomics</span>
               </div>
             </div>
 
             {/* Pillar 2 */}
-            <div className="p-6 rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-3">
-              <div className="w-12 h-12 rounded-[14px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold shadow-sm">
-                <Feather className="w-6 h-6" />
+            <div className="p-3.5 sm:p-6 rounded-2xl sm:rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-2 sm:space-y-3 flex flex-col justify-between">
+              <div className="space-y-2 sm:space-y-3">
+                <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-[14px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold shadow-xs">
+                  <Feather className="w-4 h-4 sm:w-6 sm:h-6" />
+                </div>
+                <h3 className="font-heading font-bold text-xs sm:text-base text-[#3b352f] leading-snug">
+                  2. 70 GSM Bleed-Proof Bond
+                </h3>
+                <p className="text-[11px] sm:text-xs text-[#736c67] leading-relaxed">
+                  High-density virgin wood-pulp paper prevents ink ghosting and feathering from rollerballs, gel pens, and heavy fountain pen inks.
+                </p>
               </div>
-              <h3 className="font-heading font-bold text-base text-[#3b352f]">
-                2. 70 GSM Bleed-Proof Bond
-              </h3>
-              <p className="text-xs text-[#736c67] leading-relaxed">
-                High-density virgin wood-pulp paper prevents ink ghosting and feathering from rollerballs, gel pens, and heavy fountain pen inks.
-              </p>
-              <div className="text-[11px] font-semibold text-[#c49b7c] flex items-center gap-1 pt-1">
-                <Check className="w-3.5 h-3.5" /> Zero Ink Bleed-Through
+              <div className="text-[10px] sm:text-[11px] font-semibold text-[#c49b7c] flex items-center gap-1 pt-1 border-t border-stone-200/60">
+                <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+                <span className="truncate">Zero Ink Bleed-Through</span>
               </div>
             </div>
 
             {/* Pillar 3 */}
-            <div className="p-6 rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-3">
-              <div className="w-12 h-12 rounded-[14px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold shadow-sm">
-                <ShieldCheck className="w-6 h-6" />
+            <div className="p-3.5 sm:p-6 rounded-2xl sm:rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-2 sm:space-y-3 flex flex-col justify-between">
+              <div className="space-y-2 sm:space-y-3">
+                <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-[14px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold shadow-xs">
+                  <ShieldCheck className="w-4 h-4 sm:w-6 sm:h-6" />
+                </div>
+                <h3 className="font-heading font-bold text-xs sm:text-base text-[#3b352f] leading-snug">
+                  3. 1.8mm Laminated Hardcover
+                </h3>
+                <p className="text-[11px] sm:text-xs text-[#736c67] leading-relaxed">
+                  Heavy-duty greyboard wrapped in a water-resistant matt laminated cover. Protects records against humidity, spills, and rough transport.
+                </p>
               </div>
-              <h3 className="font-heading font-bold text-base text-[#3b352f]">
-                3. 1.8mm Laminated Hardcover
-              </h3>
-              <p className="text-xs text-[#736c67] leading-relaxed">
-                Heavy-duty greyboard wrapped in a water-resistant matt laminated cover. Protects records against humidity, spills, and rough transport.
-              </p>
-              <div className="text-[11px] font-semibold text-[#c49b7c] flex items-center gap-1 pt-1">
-                <Check className="w-3.5 h-3.5" /> Multi-Year Cover Durability
+              <div className="text-[10px] sm:text-[11px] font-semibold text-[#c49b7c] flex items-center gap-1 pt-1 border-t border-stone-200/60">
+                <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+                <span className="truncate">Multi-Year Durability</span>
               </div>
             </div>
 
             {/* Pillar 4 */}
-            <div className="p-6 rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-3">
-              <div className="w-12 h-12 rounded-[14px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold shadow-sm">
-                <Compass className="w-6 h-6" />
+            <div className="p-3.5 sm:p-6 rounded-2xl sm:rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-2 sm:space-y-3 flex flex-col justify-between">
+              <div className="space-y-2 sm:space-y-3">
+                <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-[14px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold shadow-xs">
+                  <Compass className="w-4 h-4 sm:w-6 sm:h-6" />
+                </div>
+                <h3 className="font-heading font-bold text-xs sm:text-base text-[#3b352f] leading-snug">
+                  4. Precision Indigo Ruling
+                </h3>
+                <p className="text-[11px] sm:text-xs text-[#736c67] leading-relaxed">
+                  Uniform 8mm feint lines with soft red margin guides calibrated strictly to Tanzanian National Examination Council (NECTA) standards.
+                </p>
               </div>
-              <h3 className="font-heading font-bold text-base text-[#3b352f]">
-                4. Precision Indigo Ruling
-              </h3>
-              <p className="text-xs text-[#736c67] leading-relaxed">
-                Uniform 8mm feint lines with soft red margin guides calibrated strictly to Tanzanian National Examination Council (NECTA) standards.
-              </p>
-              <div className="text-[11px] font-semibold text-[#c49b7c] flex items-center gap-1 pt-1">
-                <Check className="w-3.5 h-3.5" /> NECTA Syllabus Standard
+              <div className="text-[10px] sm:text-[11px] font-semibold text-[#c49b7c] flex items-center gap-1 pt-1 border-t border-stone-200/60">
+                <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+                <span className="truncate">NECTA Syllabus Standard</span>
               </div>
             </div>
           </div>
@@ -657,32 +753,34 @@ export const HomePage: React.FC = () => {
             </Link>
           </div>
 
-          {/* Segmented Filter Pills */}
-          <div className="flex flex-wrap items-center gap-2 p-1.5 bg-white rounded-full max-w-fit border border-[#e2dedb] shadow-xs">
-            {[
-              { id: 'all', label: t.allProducts },
-              { id: 'counter', label: 'Counter Books' },
-              { id: 'exercise', label: 'Exercise Books' },
-              { id: 'bahasha', label: 'Bahasha & Envelopes' },
-              { id: 'registers', label: 'Registers & Paper' },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`px-4 py-1.5 text-xs font-semibold rounded-full transition-all ${
-                  activeTab === tab.id
-                    ? 'bg-[#4b423b] text-white shadow-xs'
-                    : 'text-[#736c67] hover:text-[#3b352f] hover:bg-[#efeded]'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+          {/* Segmented Filter Pills (Horizontal scroll on mobile, preventing deformed bubble) */}
+          <div className="w-full overflow-x-auto no-scrollbar py-1">
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 p-1 sm:p-1.5 bg-white rounded-2xl sm:rounded-full border border-[#e2dedb] shadow-xs">
+              {[
+                { id: 'all', label: t.allProducts },
+                { id: 'counter', label: 'Counter Books' },
+                { id: 'exercise', label: 'Exercise Books' },
+                { id: 'bahasha', label: 'Bahasha & Envelopes' },
+                { id: 'registers', label: 'Registers & Paper' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveTab(tab.id as any)}
+                  className={`px-3.5 sm:px-4 py-1.5 text-xs font-semibold rounded-xl sm:rounded-full whitespace-nowrap shrink-0 transition-all ${
+                    activeTab === tab.id
+                      ? 'bg-[#4b423b] text-white shadow-xs'
+                      : 'text-[#736c67] hover:text-[#3b352f] hover:bg-[#efeded]'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* Product Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Product Cards Grid (2 cols on mobile, 4 on desktop) */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
             {displayedProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -843,41 +941,47 @@ export const HomePage: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-3">
-              <div className="w-11 h-11 rounded-[12px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold">
-                <Truck className="w-5 h-5" />
+          <div className="grid grid-cols-3 gap-2 sm:gap-6">
+            <div className="p-3 sm:p-6 rounded-2xl sm:rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-2 sm:space-y-3 flex flex-col justify-between">
+              <div className="space-y-1.5 sm:space-y-3">
+                <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-[10px] sm:rounded-[12px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold">
+                  <Truck className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <h3 className="font-heading font-bold text-xs sm:text-base text-[#3b352f] leading-snug">
+                  Daily Regional Bus Waybills
+                </h3>
+                <p className="text-[10px] sm:text-xs text-[#736c67] leading-relaxed">
+                  We partner with Shabiby, BM Coach, Abood, New Force, and Saibaba to ensure same-day parcel drop-off with SMS waybill tracking numbers.
+                </p>
               </div>
-              <h3 className="font-heading font-bold text-base text-[#3b352f]">
-                Daily Regional Bus Waybills
-              </h3>
-              <p className="text-xs text-[#736c67] leading-relaxed">
-                We partner with Shabiby, BM Coach, Abood, New Force, and Saibaba to ensure same-day parcel drop-off with SMS waybill tracking numbers.
-              </p>
             </div>
 
-            <div className="p-6 rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-3">
-              <div className="w-11 h-11 rounded-[12px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold">
-                <Package className="w-5 h-5" />
+            <div className="p-3 sm:p-6 rounded-2xl sm:rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-2 sm:space-y-3 flex flex-col justify-between">
+              <div className="space-y-1.5 sm:space-y-3">
+                <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-[10px] sm:rounded-[12px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold">
+                  <Package className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <h3 className="font-heading font-bold text-xs sm:text-base text-[#3b352f] leading-snug">
+                  Heavy Branded Packaging
+                </h3>
+                <p className="text-[10px] sm:text-xs text-[#736c67] leading-relaxed">
+                  Cartons are double-strapped with water-resistant protective tape and official OMEGA branding to prevent transit damage or pilferage.
+                </p>
               </div>
-              <h3 className="font-heading font-bold text-base text-[#3b352f]">
-                Heavy Branded Packaging
-              </h3>
-              <p className="text-xs text-[#736c67] leading-relaxed">
-                Cartons are double-strapped with water-resistant protective tape and official OMEGA branding to prevent transit damage or pilferage.
-              </p>
             </div>
 
-            <div className="p-6 rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-3">
-              <div className="w-11 h-11 rounded-[12px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold">
-                <PhoneCall className="w-5 h-5" />
+            <div className="p-3 sm:p-6 rounded-2xl sm:rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-2 sm:space-y-3 flex flex-col justify-between">
+              <div className="space-y-1.5 sm:space-y-3">
+                <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-[10px] sm:rounded-[12px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold">
+                  <PhoneCall className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <h3 className="font-heading font-bold text-xs sm:text-base text-[#3b352f] leading-snug">
+                  Live Dispatch Confirmation
+                </h3>
+                <p className="text-[10px] sm:text-xs text-[#736c67] leading-relaxed">
+                  Receive instant photo proof of your loaded carton, bus receipt, and driver contact directly on WhatsApp before bus departure.
+                </p>
               </div>
-              <h3 className="font-heading font-bold text-base text-[#3b352f]">
-                Live Dispatch Confirmation
-              </h3>
-              <p className="text-xs text-[#736c67] leading-relaxed">
-                Receive instant photo proof of your loaded carton, bus receipt, and driver contact directly on WhatsApp before bus departure.
-              </p>
             </div>
           </div>
         </div>
@@ -902,63 +1006,69 @@ export const HomePage: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-[20px] bg-[#3b352f] border border-white/15 space-y-3 shadow-lg">
-              <div className="flex gap-1 text-[#c49b7c]">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-[#c49b7c] text-[#c49b7c]" />
-                ))}
+          <div className="grid grid-cols-3 gap-2 sm:gap-6">
+            <div className="p-3 sm:p-6 rounded-[16px] sm:rounded-[20px] bg-[#3b352f] border border-white/15 space-y-2 sm:space-y-3 shadow-lg flex flex-col justify-between">
+              <div className="space-y-2">
+                <div className="flex gap-0.5 sm:gap-1 text-[#c49b7c]">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 fill-[#c49b7c] text-[#c49b7c]" />
+                  ))}
+                </div>
+                <p className="text-[10px] sm:text-xs md:text-sm text-stone-200 italic leading-relaxed line-clamp-4 sm:line-clamp-none">
+                  “Daftari la OMEGA Quire 3 lina karatasi ngumu sana na jalada lisilopinda. Linanisaidia sana kwenye mahesabu ya kila mwezi bila wino kupenya.”
+                </p>
               </div>
-              <p className="text-xs sm:text-sm text-stone-200 italic leading-relaxed">
-                “Daftari la OMEGA Quire 3 lina karatasi ngumu sana na jalada lisilopinda. Linanisaidia sana kwenye mahesabu ya kila mwezi bila wino kupenya.”
-              </p>
-              <div className="pt-3 border-t border-white/10 flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-[#c49b7c] text-[#3b352f] font-bold flex items-center justify-center text-xs shadow-sm">
+              <div className="pt-2 sm:pt-3 border-t border-white/10 flex items-center gap-2 sm:gap-3">
+                <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#c49b7c] text-[#3b352f] font-bold flex items-center justify-center text-[10px] sm:text-xs shadow-xs shrink-0">
                   EK
                 </div>
-                <div>
-                  <h4 className="text-xs font-bold text-white">Emanuel Kiwanga</h4>
-                  <p className="text-[11px] text-stone-400">Chief Accountant · Dar es Salaam</p>
+                <div className="min-w-0">
+                  <h4 className="text-[10px] sm:text-xs font-bold text-white truncate">Emanuel Kiwanga</h4>
+                  <p className="text-[9px] sm:text-[11px] text-stone-400 truncate">Chief Accountant · Dar</p>
                 </div>
               </div>
             </div>
 
-            <div className="p-6 rounded-[20px] bg-[#3b352f] border border-white/15 space-y-3 shadow-lg">
-              <div className="flex gap-1 text-[#c49b7c]">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-[#c49b7c] text-[#c49b7c]" />
-                ))}
+            <div className="p-3 sm:p-6 rounded-[16px] sm:rounded-[20px] bg-[#3b352f] border border-white/15 space-y-2 sm:space-y-3 shadow-lg flex flex-col justify-between">
+              <div className="space-y-2">
+                <div className="flex gap-0.5 sm:gap-1 text-[#c49b7c]">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 fill-[#c49b7c] text-[#c49b7c]" />
+                  ))}
+                </div>
+                <p className="text-[10px] sm:text-xs md:text-sm text-stone-200 italic leading-relaxed line-clamp-4 sm:line-clamp-none">
+                  “The quality of OMEGA stationery is unmatched. Our secondary school orders 200-page single line exercise books every term without fail.”
+                </p>
               </div>
-              <p className="text-xs sm:text-sm text-stone-200 italic leading-relaxed">
-                “The quality of OMEGA stationery is unmatched. Our secondary school orders 200-page single line exercise books every term without fail.”
-              </p>
-              <div className="pt-3 border-t border-white/10 flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-[#c49b7c] text-[#3b352f] font-bold flex items-center justify-center text-xs shadow-sm">
+              <div className="pt-2 sm:pt-3 border-t border-white/10 flex items-center gap-2 sm:gap-3">
+                <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#c49b7c] text-[#3b352f] font-bold flex items-center justify-center text-[10px] sm:text-xs shadow-xs shrink-0">
                   GM
                 </div>
-                <div>
-                  <h4 className="text-xs font-bold text-white">Grace Mhando</h4>
-                  <p className="text-[11px] text-stone-400">Head of Academics · Arusha</p>
+                <div className="min-w-0">
+                  <h4 className="text-[10px] sm:text-xs font-bold text-white truncate">Grace Mhando</h4>
+                  <p className="text-[9px] sm:text-[11px] text-stone-400 truncate">Head of Academics · Arusha</p>
                 </div>
               </div>
             </div>
 
-            <div className="p-6 rounded-[20px] bg-[#3b352f] border border-white/15 space-y-3 shadow-lg">
-              <div className="flex gap-1 text-[#c49b7c]">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-[#c49b7c] text-[#c49b7c]" />
-                ))}
+            <div className="p-3 sm:p-6 rounded-[16px] sm:rounded-[20px] bg-[#3b352f] border border-white/15 space-y-2 sm:space-y-3 shadow-lg flex flex-col justify-between">
+              <div className="space-y-2">
+                <div className="flex gap-0.5 sm:gap-1 text-[#c49b7c]">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 fill-[#c49b7c] text-[#c49b7c]" />
+                  ))}
+                </div>
+                <p className="text-[10px] sm:text-xs md:text-sm text-stone-200 italic leading-relaxed line-clamp-4 sm:line-clamp-none">
+                  “Fast bus parcel dispatch to Mwanza! The kraft envelopes and ruled reams arrived safely packed in OMEGA branded cartons within 24 hours.”
+                </p>
               </div>
-              <p className="text-xs sm:text-sm text-stone-200 italic leading-relaxed">
-                “Fast bus parcel dispatch to Mwanza! The kraft envelopes and ruled reams arrived safely packed in OMEGA branded cartons within 24 hours.”
-              </p>
-              <div className="pt-3 border-t border-white/10 flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-[#c49b7c] text-[#3b352f] font-bold flex items-center justify-center text-xs shadow-sm">
+              <div className="pt-2 sm:pt-3 border-t border-white/10 flex items-center gap-2 sm:gap-3">
+                <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#c49b7c] text-[#3b352f] font-bold flex items-center justify-center text-[10px] sm:text-xs shadow-xs shrink-0">
                   JM
                 </div>
-                <div>
-                  <h4 className="text-xs font-bold text-white">Joseph Mollel</h4>
-                  <p className="text-[11px] text-stone-400">Stationery Store Owner · Mwanza</p>
+                <div className="min-w-0">
+                  <h4 className="text-[10px] sm:text-xs font-bold text-white truncate">Joseph Mollel</h4>
+                  <p className="text-[9px] sm:text-[11px] text-stone-400 truncate">Stationery Store · Mwanza</p>
                 </div>
               </div>
             </div>
@@ -1005,8 +1115,8 @@ export const HomePage: React.FC = () => {
             </button>
           </form>
 
-          <p className="text-xs text-[#3b352f] font-semibold">
-            Dedicated Hotlines: +255 746 268 391 | +255 624 265 480 | +255 699 032 777
+          <p className="text-xs text-[#3b352f] font-semibold font-mono">
+            Dedicated Hotlines: +255 746 268 391 | +255 624 265 480 | +255 689 032 777
           </p>
         </div>
       </section>

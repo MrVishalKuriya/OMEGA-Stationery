@@ -8,7 +8,7 @@ import compression from 'compression';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
 import { z } from 'zod';
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
@@ -19,6 +19,17 @@ const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Configurable Uploads Directory (Shared with Vite public folder)
+const UPLOADS_DIR = join(__dirname, '..', 'public', 'uploads');
+try {
+  if (!existsSync(UPLOADS_DIR)) {
+    mkdirSync(UPLOADS_DIR, { recursive: true });
+    console.log(`📁 [Uploads] Created static uploads directory at: ${UPLOADS_DIR}`);
+  }
+} catch (e) {
+  console.warn('Notice on uploads directory creation:', e.message);
+}
 
 // Configurable MongoDB URIs
 const ATLAS_URI = 'mongodb+srv://indigoprinteromega07_db_user:OMEGA%407016@omega.ccgcbcy.mongodb.net/omega_stationery?retryWrites=true&w=majority';
@@ -32,7 +43,11 @@ app.use(helmet({ crossOriginResourcePolicy: false }));
 app.use(compression());
 app.use(morgan('short'));
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+// Serve uploaded images statically
+app.use('/uploads', express.static(UPLOADS_DIR));
 
 // API Rate Limiting (300 requests per minute per IP)
 const apiLimiter = rateLimit({
@@ -135,21 +150,88 @@ const orderSchema = new mongoose.Schema(
     deliveryFee: Number,
     totalAmount: Number,
     notes: String,
-    status: { type: String, default: 'Pending Confirmation' }
+    status: { type: String, default: 'Pending Confirmation' },
+    trackingNumber: String,
+    adminNotes: String
   },
   { collection: 'orders', timestamps: true }
 );
 
+const configSchema = new mongoose.Schema(
+  {
+    key: { type: String, default: 'global_config', unique: true },
+    businessName: { type: String, default: 'OMEGA Writing Notebooks & Stationery' },
+    logoText: { type: String, default: 'OMEGA' },
+    tagline: { type: String, default: 'Quality for Every Page' },
+    taglineSw: { type: String, default: 'Ubora kwa Kila Ukurasa' },
+    brandSubtitle: { type: String, default: 'PREMIER TANZANIAN WRITING NOTEBOOKS · EST. 1998' },
+    brandSubtitleSw: { type: String, default: 'MADAFTARI BORA YA UANDISHI TANZANIA · TANGU 1998' },
+    announcementText: { type: String, default: 'QUALITY FOR EVERY PAGE | WHOLESALE & RETAIL ORDERS ACROSS TANZANIA | OFFICIAL OMEGA DISTRIBUTOR' },
+    announcementTextSw: { type: String, default: 'UBORA KWA KILA UKURASA | ODA ZA JUMLA NA REJAREJA TANZANIA NZIMA | MSAMBAZAJI HALISI WA OMEGA' },
+    phoneNumber: { type: String, default: '+255 746 268 391' },
+    secondaryPhone: { type: String, default: '+255 624 265 480' },
+    thirdPhone: { type: String, default: '+255 689 032 777' },
+    phoneNumbers: [String],
+    whatsappNumber: { type: String, default: '255746268391' },
+    shopAddress: { type: String, default: 'Soweto SIDO Viwandani, Mbeya, Tanzania' },
+    shopAddressSw: { type: String, default: 'Soweto SIDO Viwandani, Mbeya, Tanzania' },
+    businessHours: { type: String, default: 'Monday – Saturday: 8:00 AM – 6:30 PM · Sunday: Closed' },
+    businessHoursSw: { type: String, default: 'Jumatatu – Jumamosi: Saa 2:00 Asubuhi – Saa 12:30 Jioni · Jumapili: Tumefungwa' },
+    googleMapsUrl: { type: String, default: 'https://maps.google.com/?q=Soweto+SIDO+Viwandani+Mbeya' },
+    emailAddress: { type: String, default: 'indigoprinter06423@gmail.com' },
+    currencySymbol: { type: String, default: 'TSh' },
+    freeDeliveryThreshold: { type: Number, default: 150000 },
+    standardDeliveryFee: { type: Number, default: 5000 },
+    aboutIntro: String,
+    aboutIntroSw: String,
+    aboutProductRange: String,
+    aboutProductRangeSw: String,
+    aboutCustomerService: String,
+    aboutCustomerServiceSw: String,
+    aboutValues: [String],
+    aboutValuesSw: [String],
+  },
+  { collection: 'store_config', timestamps: true }
+);
+
 let ProductModel;
 let OrderModel;
+let ConfigModel;
 
 try {
   ProductModel = mongoose.model('Product', productSchema);
   OrderModel = mongoose.model('Order', orderSchema);
+  ConfigModel = mongoose.model('StoreConfig', configSchema);
 } catch (e) {
   ProductModel = mongoose.models.Product;
   OrderModel = mongoose.models.Order;
+  ConfigModel = mongoose.models.StoreConfig;
 }
+
+let inMemoryConfig = {
+  businessName: 'OMEGA Writing Notebooks & Stationery',
+  logoText: 'OMEGA',
+  tagline: 'Quality for Every Page',
+  taglineSw: 'Ubora kwa Kila Ukurasa',
+  brandSubtitle: 'PREMIER TANZANIAN WRITING NOTEBOOKS · EST. 1998',
+  brandSubtitleSw: 'MADAFTARI BORA YA UANDISHI TANZANIA · TANGU 1998',
+  announcementText: 'QUALITY FOR EVERY PAGE | WHOLESALE & RETAIL ORDERS ACROSS TANZANIA | OFFICIAL OMEGA DISTRIBUTOR',
+  announcementTextSw: 'UBORA KWA KILA UKURASA | ODA ZA JUMLA NA REJAREJA TANZANIA NZIMA | MSAMBAZAJI HALISI WA OMEGA',
+  phoneNumber: '+255 746 268 391',
+  secondaryPhone: '+255 624 265 480',
+  thirdPhone: '+255 689 032 777',
+  phoneNumbers: ['+255 746 268 391', '+255 624 265 480', '+255 689 032 777'],
+  whatsappNumber: '255746268391',
+  shopAddress: 'Soweto SIDO Viwandani, Mbeya, Tanzania',
+  shopAddressSw: 'Soweto SIDO Viwandani, Mbeya, Tanzania',
+  businessHours: 'Monday – Saturday: 8:00 AM – 6:30 PM · Sunday: Closed',
+  businessHoursSw: 'Jumatatu – Jumamosi: Saa 2:00 Asubuhi – Saa 12:30 Jioni · Jumapili: Tumefungwa',
+  googleMapsUrl: 'https://maps.google.com/?q=Soweto+SIDO+Viwandani+Mbeya',
+  emailAddress: 'indigoprinter06423@gmail.com',
+  currencySymbol: 'TSh',
+  freeDeliveryThreshold: 150000,
+  standardDeliveryFee: 5000,
+};
 
 // Database state tracker
 let mongoConnected = false;
@@ -446,6 +528,57 @@ app.get('/api/products/:id', async (req, res) => {
   res.json({ success: true, data: product });
 });
 
+// POST /api/upload - Direct Image Upload for Product Catalog
+app.post('/api/upload', async (req, res) => {
+  try {
+    const { image, filename } = req.body;
+    if (!image) {
+      return res.status(400).json({ success: false, message: 'No image data provided' });
+    }
+
+    let buffer;
+    let extension = 'jpg';
+
+    if (image.startsWith('data:')) {
+      const matches = image.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+      if (matches && matches.length === 3) {
+        const mimeType = matches[1];
+        buffer = Buffer.from(matches[2], 'base64');
+        if (mimeType.includes('png')) extension = 'png';
+        else if (mimeType.includes('webp')) extension = 'webp';
+        else if (mimeType.includes('svg')) extension = 'svg';
+        else extension = 'jpg';
+      } else {
+        return res.status(400).json({ success: false, message: 'Invalid data URI image format' });
+      }
+    } else {
+      buffer = Buffer.from(image, 'base64');
+    }
+
+    const cleanName = filename
+      ? filename.replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 30)
+      : 'product';
+    const uniqueFilename = `omega_${cleanName}_${Date.now()}.${extension}`;
+    const targetPath = join(UPLOADS_DIR, uniqueFilename);
+
+    writeFileSync(targetPath, buffer);
+    console.log(`📸 [Upload] Saved product image: ${uniqueFilename} (${buffer.length} bytes)`);
+
+    const publicUrl = `/uploads/${uniqueFilename}`;
+
+    res.json({
+      success: true,
+      message: 'Image successfully uploaded and stored',
+      url: publicUrl,
+      filename: uniqueFilename,
+      sizeBytes: buffer.length
+    });
+  } catch (err) {
+    console.error('Upload error:', err);
+    res.status(500).json({ success: false, message: err.message || 'Image upload failed' });
+  }
+});
+
 // POST /api/products - Create or Upsert Product in MongoDB
 app.post('/api/products', async (req, res) => {
   const productData = req.body;
@@ -510,15 +643,17 @@ app.put('/api/products/:id', async (req, res) => {
 // PATCH /api/products/:id/price - Fast inline price update
 app.patch('/api/products/:id/price', async (req, res) => {
   const { id } = req.params;
-  const { price, discountPrice } = req.body;
+  const { price, discountPrice, wholesalePrice } = req.body;
 
-  if (price === undefined) {
-    return res.status(400).json({ success: false, message: 'Price is required' });
+  if (price === undefined && wholesalePrice === undefined) {
+    return res.status(400).json({ success: false, message: 'Price or wholesalePrice is required' });
   }
 
   try {
-    const updateObj = { price: Number(price) };
+    const updateObj = {};
+    if (price !== undefined) updateObj.price = Number(price);
     if (discountPrice !== undefined) updateObj.discountPrice = Number(discountPrice);
+    if (wholesalePrice !== undefined) updateObj.wholesalePrice = Number(wholesalePrice);
 
     if (mongoConnected && ProductModel) {
       await ProductModel.findOneAndUpdate({ id }, { $set: updateObj });
@@ -526,8 +661,9 @@ app.patch('/api/products/:id/price', async (req, res) => {
 
     const idx = inMemoryProducts.findIndex((p) => p.id === id);
     if (idx >= 0) {
-      inMemoryProducts[idx].price = Number(price);
+      if (price !== undefined) inMemoryProducts[idx].price = Number(price);
       if (discountPrice !== undefined) inMemoryProducts[idx].discountPrice = Number(discountPrice);
+      if (wholesalePrice !== undefined) inMemoryProducts[idx].wholesalePrice = Number(wholesalePrice);
     }
 
     cacheMetrics.inMemoryCache.clear();
@@ -574,7 +710,58 @@ app.delete('/api/products/:id', async (req, res) => {
     inMemoryProducts = inMemoryProducts.filter((p) => p.id !== id);
     cacheMetrics.inMemoryCache.clear();
 
-    res.json({ success: true, message: `Product ${id} deleted successfully` });
+    res.json({ success: true, message: `Product ${id} deleted successfully from MongoDB` });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/products/bulk - ERP Bulk product operations (adjust price %, set stock status, etc.)
+app.post('/api/products/bulk', async (req, res) => {
+  const { action, ids, percentage, stockStatus } = req.body;
+  try {
+    if (!action) return res.status(400).json({ success: false, message: 'Action is required' });
+
+    if (action === 'adjust_price' && percentage) {
+      const multiplier = 1 + Number(percentage) / 100;
+      const filter = ids && ids.length > 0 ? { id: { $in: ids } } : {};
+
+      if (mongoConnected && ProductModel) {
+        const prods = await ProductModel.find(filter);
+        for (const p of prods) {
+          p.price = Math.round(p.price * multiplier);
+          if (p.discountPrice) p.discountPrice = Math.round(p.discountPrice * multiplier);
+          if (p.wholesalePrice) p.wholesalePrice = Math.round(p.wholesalePrice * multiplier);
+          await p.save();
+        }
+      }
+
+      inMemoryProducts.forEach((p) => {
+        if (!ids || ids.length === 0 || ids.includes(p.id)) {
+          p.price = Math.round(p.price * multiplier);
+          if (p.discountPrice) p.discountPrice = Math.round(p.discountPrice * multiplier);
+          if (p.wholesalePrice) p.wholesalePrice = Math.round(p.wholesalePrice * multiplier);
+        }
+      });
+      cacheMetrics.inMemoryCache.clear();
+      return res.json({ success: true, message: `Prices adjusted by ${percentage}% across ${ids?.length || 'all'} products in MongoDB` });
+    }
+
+    if (action === 'set_stock' && stockStatus) {
+      const filter = ids && ids.length > 0 ? { id: { $in: ids } } : {};
+      if (mongoConnected && ProductModel) {
+        await ProductModel.updateMany(filter, { $set: { stockStatus } });
+      }
+      inMemoryProducts.forEach((p) => {
+        if (!ids || ids.length === 0 || ids.includes(p.id)) {
+          p.stockStatus = stockStatus;
+        }
+      });
+      cacheMetrics.inMemoryCache.clear();
+      return res.json({ success: true, message: `Stock status updated to "${stockStatus}" in MongoDB` });
+    }
+
+    res.status(400).json({ success: false, message: 'Invalid bulk action specified' });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
@@ -652,6 +839,92 @@ app.get('/api/orders', async (req, res) => {
       orders = await OrderModel.find().sort({ createdAt: -1 }).lean();
     }
     res.json({ success: true, count: orders.length, data: orders });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// PATCH /api/orders/:id - Update order status, tracking waybill, and admin notes
+app.patch('/api/orders/:id', async (req, res) => {
+  const { id } = req.params;
+  const { status, adminNotes, trackingNumber } = req.body;
+  try {
+    const updateObj = {};
+    if (status) updateObj.status = status;
+    if (adminNotes !== undefined) updateObj.adminNotes = adminNotes;
+    if (trackingNumber !== undefined) updateObj.trackingNumber = trackingNumber;
+
+    let updated = null;
+    if (mongoConnected && OrderModel) {
+      updated = await OrderModel.findOneAndUpdate(
+        { $or: [{ orderReference: id }, { _id: mongoose.Types.ObjectId.isValid(id) ? id : null }] },
+        { $set: updateObj },
+        { new: true }
+      ).lean();
+    }
+
+    const idx = inMemoryOrders.findIndex((o) => o.orderReference === id || o._id === id);
+    if (idx >= 0) {
+      inMemoryOrders[idx] = { ...inMemoryOrders[idx], ...updateObj };
+      if (!updated) updated = inMemoryOrders[idx];
+    }
+
+    res.json({ success: true, message: 'Order updated in MongoDB database', data: updated });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// DELETE /api/orders/:id - Remove order from MongoDB
+app.delete('/api/orders/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    if (mongoConnected && OrderModel) {
+      await OrderModel.deleteOne({
+        $or: [{ orderReference: id }, { _id: mongoose.Types.ObjectId.isValid(id) ? id : null }]
+      });
+    }
+    inMemoryOrders = inMemoryOrders.filter((o) => o.orderReference !== id && o._id !== id);
+    res.json({ success: true, message: `Order ${id} deleted successfully from MongoDB` });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/config - Retrieve live store configuration & web content handles
+app.get('/api/config', async (req, res) => {
+  try {
+    let config = null;
+    if (mongoConnected && ConfigModel) {
+      config = await ConfigModel.findOne({ key: 'global_config' }).lean();
+    }
+    if (!config) config = inMemoryConfig;
+    res.json({ success: true, data: config });
+  } catch (err) {
+    res.json({ success: true, data: inMemoryConfig });
+  }
+});
+
+// PUT /api/config - Direct ERP update of all Web Content, Announcements, and Store Handles
+app.put('/api/config', async (req, res) => {
+  const updateData = req.body;
+  try {
+    let saved = updateData;
+    if (mongoConnected && ConfigModel) {
+      saved = await ConfigModel.findOneAndUpdate(
+        { key: 'global_config' },
+        { ...updateData, key: 'global_config' },
+        { upsert: true, new: true }
+      ).lean();
+    }
+
+    inMemoryConfig = { ...inMemoryConfig, ...updateData };
+    cacheMetrics.inMemoryCache.clear();
+    res.json({
+      success: true,
+      message: 'Web content and store configuration updated directly in MongoDB database',
+      data: saved
+    });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
@@ -744,7 +1017,7 @@ Manufactured from high-tensile brown kraft paper that resists tears during trans
 We deliver wholesale cartons across all Tanzanian regions (Dar es Salaam, Arusha, Mwanza, Dodoma, Morogoro, Iringa) via reliable bus freight & cargo carriers! You can also contact our official hotlines:
 • Desk 1 (General Orders): **+255 746 268 391**
 • Desk 2 (Wholesale & Tenders): **+255 624 265 480**
-• Desk 3 (Logistics & Upcountry): **+255 699 032 777**`,
+• Desk 3 (Logistics & Upcountry): **+255 689 032 777**`,
       recommendedProducts: []
     };
   }

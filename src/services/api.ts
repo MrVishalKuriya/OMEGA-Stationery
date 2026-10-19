@@ -379,3 +379,198 @@ export async function parseSchoolBooklist(text: string): Promise<{
   }
 }
 
+// =========================================================================
+// DIRECT DATABASE CRUD OPERATIONS (ERP SYSTEM ENGINE)
+// =========================================================================
+
+/**
+ * Create or Upsert Product directly in MongoDB Database
+ */
+export async function createProductInDb(product: Product): Promise<{ success: boolean; data?: Product; message?: string }> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/products`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(product),
+    });
+    const json = await res.json();
+    return json;
+  } catch (err: any) {
+    return { success: false, message: err.message || 'Database unreachable' };
+  }
+}
+
+/**
+ * Update Product directly in MongoDB Database
+ */
+export async function updateProductInDb(id: string, product: Partial<Product>): Promise<{ success: boolean; data?: Product; message?: string }> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/products/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(product),
+    });
+    const json = await res.json();
+    return json;
+  } catch (err: any) {
+    return { success: false, message: err.message || 'Database unreachable' };
+  }
+}
+
+/**
+ * Fast inline price update directly in MongoDB
+ */
+export async function updateProductPriceInDb(id: string, price: number, discountPrice?: number, wholesalePrice?: number): Promise<{ success: boolean; message?: string }> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/products/${id}/price`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ price, discountPrice, wholesalePrice }),
+    });
+    const json = await res.json();
+    return json;
+  } catch (err: any) {
+    return { success: false, message: err.message || 'Database unreachable' };
+  }
+}
+
+/**
+ * Update stock status & quantity directly in MongoDB
+ */
+export async function updateProductStockInDb(id: string, stockStatus: string, stockQuantity?: number): Promise<{ success: boolean; message?: string }> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/products/${id}/stock`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ stockStatus, stockQuantity }),
+    });
+    const json = await res.json();
+    return json;
+  } catch (err: any) {
+    return { success: false, message: err.message || 'Database unreachable' };
+  }
+}
+
+/**
+ * Delete product directly from MongoDB
+ */
+export async function deleteProductFromDb(id: string): Promise<{ success: boolean; message?: string }> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/products/${id}`, {
+      method: 'DELETE',
+      headers: { 'Accept': 'application/json' },
+    });
+    const json = await res.json();
+    return json;
+  } catch (err: any) {
+    return { success: false, message: err.message || 'Database unreachable' };
+  }
+}
+
+/**
+ * ERP Bulk Product Operations (adjust price percentage, change stock status)
+ */
+export async function bulkUpdateProductsInDb(payload: {
+  action: 'adjust_price' | 'set_stock';
+  ids?: string[];
+  percentage?: number;
+  stockStatus?: string;
+}): Promise<{ success: boolean; message?: string }> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/products/bulk`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const json = await res.json();
+    return json;
+  } catch (err: any) {
+    return { success: false, message: err.message || 'Database unreachable' };
+  }
+}
+
+/**
+ * Fetch live store configuration & web content handles from MongoDB
+ */
+export async function fetchStoreConfigFromDb(): Promise<any | null> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/config`);
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json.success ? json.data : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Update Web Content & Store Handles directly in MongoDB Database
+ */
+export async function saveStoreConfigToDb(config: any): Promise<{ success: boolean; message?: string; data?: any }> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/config`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(config),
+    });
+    const json = await res.json();
+    return json;
+  } catch (err: any) {
+    return { success: false, message: err.message || 'Database unreachable' };
+  }
+}
+
+/**
+ * Update order status, tracking waybill, and admin notes directly in MongoDB
+ */
+export async function updateOrderStatusInDb(id: string, update: { status?: string; trackingNumber?: string; adminNotes?: string }): Promise<{ success: boolean; message?: string }> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/orders/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(update),
+    });
+    const json = await res.json();
+    return json;
+  } catch (err: any) {
+    return { success: false, message: err.message || 'Database unreachable' };
+  }
+}
+
+/**
+ * Delete order record directly from MongoDB
+ */
+export async function deleteOrderFromDb(id: string): Promise<{ success: boolean; message?: string }> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/orders/${id}`, {
+      method: 'DELETE',
+      headers: { 'Accept': 'application/json' },
+    });
+    const json = await res.json();
+    return json;
+  } catch (err: any) {
+    return { success: false, message: err.message || 'Database unreachable' };
+  }
+}
+
+/**
+ * Upload Product Image directly to Server & Database
+ */
+export async function uploadProductImage(
+  dataUriOrBase64: string,
+  filename?: string
+): Promise<{ success: boolean; url?: string; filename?: string; message?: string }> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/upload`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ image: dataUriOrBase64, filename }),
+    });
+    const json = await res.json();
+    return json;
+  } catch (err: any) {
+    return { success: false, message: err.message || 'Image upload failed' };
+  }
+}
+
+

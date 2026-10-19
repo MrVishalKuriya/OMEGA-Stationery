@@ -21,7 +21,6 @@ import { MegaMenu } from './MegaMenu';
 import { SearchOverlay } from './SearchOverlay';
 import { AccountDropdown } from './AccountDropdown';
 import { MobileMenu } from './MobileMenu';
-import { MobileBottomBar } from './MobileBottomBar';
 
 export const Navbar: React.FC = () => {
   const {
@@ -234,11 +233,11 @@ export const Navbar: React.FC = () => {
                   className="flex items-center gap-2.5 group focus-ring-gold rounded-[8px] p-0.5 shrink-0"
                   aria-label="OMEGA Stationery & Books Home"
                 >
-                  <div className="bg-white p-1.5 rounded-[10px] border border-[#e2dedb] shadow-2xs group-hover:border-[#c49b7c] transition-all shrink-0 flex items-center justify-center">
+                  <div className="bg-white p-1 rounded-[10px] border border-[#e2dedb] shadow-2xs group-hover:border-[#c49b7c] transition-all shrink-0 flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9">
                     <img
-                      src="/omega-logo.png"
-                      alt="OMEGA Logo"
-                      className="h-7 sm:h-8 w-auto object-contain"
+                      src="/logo-icon.png"
+                      alt="OMEGA Icon"
+                      className="w-full h-full object-contain"
                     />
                   </div>
                   <div className="flex flex-col shrink-0">
@@ -575,14 +574,6 @@ export const Navbar: React.FC = () => {
         onOpenSearch={() => setIsSearchOpen(true)}
         onOpenWishlist={() => setIsWishlistModalOpen(true)}
         onOpenTracking={() => setIsTrackingModalOpen(true)}
-      />
-
-      {/* Mobile Bottom Navigation Bar (Android & iOS Ergonomic Bottom Nav) */}
-      <MobileBottomBar
-        onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
-        onOpenSearch={() => setIsSearchOpen(true)}
-        onOpenWishlist={() => setIsWishlistModalOpen(true)}
-        onOpenCart={() => setIsCartDrawerOpen(true)}
       />
     </>
   );

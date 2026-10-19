@@ -55,7 +55,7 @@ export const SchoolTendersPage: React.FC = () => {
   const savings = Math.round(totalGross * discountRate);
   const netEstimatedTotal = totalGross - savings;
 
-  const tenderWhatsappUrl = `https://wa.me/255699032777?text=${encodeURIComponent(
+  const tenderWhatsappUrl = `https://wa.me/255689032777?text=${encodeURIComponent(
     `*OMEGA OFFICIAL SCHOOL TENDER INQUIRY*\n` +
     `----------------------------------------\n` +
     `School: ${schoolName.trim() || 'School Procurement Board'}\n` +
@@ -274,7 +274,7 @@ export const SchoolTendersPage: React.FC = () => {
               </div>
 
               <p className="text-[11px] text-stone-300 text-center">
-                Dedicated Institutional Desk: +255 699 032 777 · EFD Stamped Invoices Issued
+                Dedicated Institutional Desk: +255 689 032 777 · EFD Stamped Invoices Issued
               </p>
             </div>
           </div>

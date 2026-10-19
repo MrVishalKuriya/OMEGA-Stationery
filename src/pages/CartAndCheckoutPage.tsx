@@ -322,8 +322,8 @@ export const CartAndCheckoutPage: React.FC = () => {
                     desc: 'Wholesale Cartons & School Supplies',
                   },
                   {
-                    digits: '255699032777',
-                    label: 'Desk 3: +255 699 032 777',
+                    digits: '255689032777',
+                    label: 'Desk 3: +255 689 032 777',
                     desc: 'Logistics, Stoo & Upcountry Mikoani',
                   },
                 ].map((d) => (

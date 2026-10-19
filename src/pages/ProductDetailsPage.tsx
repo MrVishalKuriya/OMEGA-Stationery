@@ -146,19 +146,15 @@ export const ProductDetailsPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
         {/* Left Column: Gallery with Aardvark 3D Perspective */}
         <div className="lg:col-span-6 space-y-4 lg:sticky lg:top-24">
-          <div className="aspect-[4/3] w-full rounded-2xl overflow-hidden border border-[#e2dedb] bg-white shadow-sm flex items-center justify-center p-6 relative aardvark-book-stage">
+          <div className="aspect-square w-full rounded-2xl overflow-hidden border border-[#e2dedb] bg-gradient-to-b from-[#faf9f8] to-[#f4f1ed] shadow-sm flex items-center justify-center p-6 sm:p-8 relative">
             {selectedImageIdx < galleryImages.length && !imgError ? (
-              <div className="relative w-full h-full flex items-center justify-center aardvark-book-3d">
-                {/* Book Spine shadow line */}
-                <div className="aardvark-book-spine" />
-                {/* Sheen effect */}
-                <div className="aardvark-sheen" />
+              <div className="relative w-full h-full flex items-center justify-center">
                 <img
                   src={galleryImages[selectedImageIdx]}
                   alt={`${product.name} - View ${selectedImageIdx + 1}`}
                   referrerPolicy="no-referrer"
                   onError={() => setImgError(true)}
-                  className="w-full h-full object-contain filter drop-shadow-md select-none"
+                  className="w-full h-full object-contain filter drop-shadow-md select-none transition-transform duration-500 ease-out hover:scale-105"
                 />
               </div>
             ) : (
@@ -397,7 +393,7 @@ export const ProductDetailsPage: React.FC = () => {
                 {[
                   { label: 'Desk 1 (Orders)', digits: '255746268391', number: '+255 746 268 391' },
                   { label: 'Desk 2 (Wholesale)', digits: '255624265480', number: '+255 624 265 480' },
-                  { label: 'Desk 3 (Support)', digits: '255699032777', number: '+255 699 032 777' },
+                  { label: 'Desk 3 (Support)', digits: '255689032777', number: '+255 689 032 777' },
                 ].map((d) => (
                   <button
                     key={d.digits}

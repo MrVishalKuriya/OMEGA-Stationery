@@ -60,7 +60,9 @@ export interface Product {
   paperType?: string;
   binding?: string;
   stockStatus: StockStatus;
+  stockQuantity?: number; // Warehouse stock level in units
   sku: string;
+  barcode?: string; // EAN-13 / UPC Barcode string
   featured?: boolean;
   bestSeller?: boolean;
   isDemoData: boolean;
@@ -94,7 +96,7 @@ export interface StoreConfig {
   announcementTextSw: string;
   phoneNumber: string; // Primary: +255 746 268 391
   secondaryPhone: string; // +255 624 265 480
-  thirdPhone: string; // +255 699 032 777
+  thirdPhone: string; // +255 689 032 777
   phoneNumbers: string[];
   whatsappNumber: string; // 255746268391
   whatsappNumbers: { label: string; number: string; digits: string }[];

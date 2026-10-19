@@ -157,11 +157,11 @@ export const AuthModal: React.FC = () => {
           </button>
 
           <div className="flex items-center gap-3 mb-2">
-            <div className="bg-white px-2.5 py-1 rounded-[8px] border border-[#e2dedb] shadow-xs">
+            <div className="bg-white p-1 rounded-[10px] border border-white/20 shadow-xs w-9 h-9 flex items-center justify-center shrink-0">
               <img
-                src="/omega-logo.png"
-                alt="OMEGA Logo"
-                className="h-7 w-auto object-contain"
+                src="/logo-icon.png"
+                alt="OMEGA Icon"
+                className="w-full h-full object-contain"
               />
             </div>
             <div>

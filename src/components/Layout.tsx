@@ -75,7 +75,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       )}
 
       {/* ==================== 4. MAIN PAGE CONTENT ==================== */}
-      <main className="flex-1 w-full max-w-full overflow-x-hidden pb-16 lg:pb-0">
+      <main className="flex-1 w-full max-w-full overflow-x-hidden">
         {children}
       </main>
 
@@ -87,68 +87,69 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
           {/* A) Top Feature Trust Ticker (4 Architectural Cards) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pb-12 border-b border-white/10">
-            <div className="p-4 rounded-[18px] bg-[#3b352f]/80 border border-[#e2dedb]/15 flex items-center gap-3.5 hover:border-[#c49b7c] transition-all group">
-              <div className="w-11 h-11 rounded-[12px] bg-[#4b423b] border border-[#c49b7c]/40 text-[#c49b7c] flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
-                <Truck className="w-5 h-5 text-[#c49b7c]" />
+          {/* Top 4 Trust Signals Banner */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 pb-8 sm:pb-12 border-b border-white/10">
+            <div className="p-3 sm:p-4 rounded-[14px] sm:rounded-[18px] bg-[#3b352f]/80 border border-[#e2dedb]/15 flex items-center gap-2.5 sm:gap-3.5 hover:border-[#c49b7c] transition-all group">
+              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-[10px] sm:rounded-[12px] bg-[#4b423b] border border-[#c49b7c]/40 text-[#c49b7c] flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                <Truck className="w-4 h-4 sm:w-5 sm:h-5 text-[#c49b7c]" />
               </div>
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-white font-heading">
+              <div className="min-w-0">
+                <h4 className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-white font-heading truncate">
                   Nationwide Dispatch
                 </h4>
-                <p className="text-[11px] text-[#beb5ae] mt-0.5">
+                <p className="text-[10px] sm:text-[11px] text-[#beb5ae] mt-0.5 line-clamp-1 sm:line-clamp-none">
                   Kariakoo Dar &amp; Upcountry bus parcels
                 </p>
               </div>
             </div>
 
-            <div className="p-4 rounded-[18px] bg-[#3b352f]/80 border border-[#e2dedb]/15 flex items-center gap-3.5 hover:border-[#c49b7c] transition-all group">
-              <div className="w-11 h-11 rounded-[12px] bg-[#4b423b] border border-[#c49b7c]/40 text-[#c49b7c] flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
-                <ShieldCheck className="w-5 h-5 text-[#2A9D8F]" />
+            <div className="p-3 sm:p-4 rounded-[14px] sm:rounded-[18px] bg-[#3b352f]/80 border border-[#e2dedb]/15 flex items-center gap-2.5 sm:gap-3.5 hover:border-[#c49b7c] transition-all group">
+              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-[10px] sm:rounded-[12px] bg-[#4b423b] border border-[#c49b7c]/40 text-[#c49b7c] flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 text-[#2A9D8F]" />
               </div>
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-white font-heading">
+              <div className="min-w-0">
+                <h4 className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-white font-heading truncate">
                   100% Genuine OMEGA
                 </h4>
-                <p className="text-[11px] text-[#beb5ae] mt-0.5">
+                <p className="text-[10px] sm:text-[11px] text-[#beb5ae] mt-0.5 line-clamp-1 sm:line-clamp-none">
                   Thread-sewn hardcovers &amp; 70 GSM paper
                 </p>
               </div>
             </div>
 
-            <div className="p-4 rounded-[18px] bg-[#3b352f]/80 border border-[#e2dedb]/15 flex items-center gap-3.5 hover:border-[#c49b7c] transition-all group">
-              <div className="w-11 h-11 rounded-[12px] bg-[#c49b7c] text-[#23201d] flex items-center justify-center shrink-0 shadow-sm font-bold group-hover:scale-105 transition-transform">
-                <Percent className="w-5 h-5" />
+            <div className="p-3 sm:p-4 rounded-[14px] sm:rounded-[18px] bg-[#3b352f]/80 border border-[#e2dedb]/15 flex items-center gap-2.5 sm:gap-3.5 hover:border-[#c49b7c] transition-all group">
+              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-[10px] sm:rounded-[12px] bg-[#c49b7c] text-[#23201d] flex items-center justify-center shrink-0 shadow-sm font-bold group-hover:scale-105 transition-transform">
+                <Percent className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-white font-heading">
+              <div className="min-w-0">
+                <h4 className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-white font-heading truncate">
                   Wholesale Carton Tiers
                 </h4>
-                <p className="text-[11px] text-[#beb5ae] mt-0.5">
+                <p className="text-[10px] sm:text-[11px] text-[#beb5ae] mt-0.5 line-clamp-1 sm:line-clamp-none">
                   Direct volume savings up to 40% OFF
                 </p>
               </div>
             </div>
 
-            <div className="p-4 rounded-[18px] bg-[#3b352f]/80 border border-[#e2dedb]/15 flex items-center gap-3.5 hover:border-[#c49b7c] transition-all group">
-              <div className="w-11 h-11 rounded-[12px] bg-[#2A9D8F] text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
-                <MessageCircle className="w-5 h-5 fill-white" />
+            <div className="p-3 sm:p-4 rounded-[14px] sm:rounded-[18px] bg-[#3b352f]/80 border border-[#e2dedb]/15 flex items-center gap-2.5 sm:gap-3.5 hover:border-[#c49b7c] transition-all group">
+              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-[10px] sm:rounded-[12px] bg-[#2A9D8F] text-white flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5 fill-white" />
               </div>
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-white font-heading">
+              <div className="min-w-0">
+                <h4 className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-white font-heading truncate">
                   3 WhatsApp Hotlines
                 </h4>
-                <p className="text-[11px] text-[#beb5ae] mt-0.5">
+                <p className="text-[10px] sm:text-[11px] text-[#beb5ae] mt-0.5 line-clamp-1 sm:line-clamp-none">
                   Instant live order assistance anytime
                 </p>
               </div>
             </div>
           </div>
 
-          {/* B) 5-Column Master Architectural Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 pb-12 border-b border-white/10">
-            {/* Column 1: Brand Hallmark & Factory Origin (4 cols) */}
-            <div className="lg:col-span-4 space-y-4">
+          {/* B) 4-Column Master Architectural Grid (2 cols on mobile, 12 cols on desktop) */}
+          <div className="grid grid-cols-2 lg:grid-cols-12 gap-5 sm:gap-8 lg:gap-10 pb-12 border-b border-white/10">
+            {/* Column 1: Brand Hallmark & Factory Origin (col-span-1 on mobile, 4 on desktop) */}
+            <div className="col-span-1 lg:col-span-4 space-y-4">
               <Link to="/" className="inline-block">
                 <OmegaLogo variant="badge" size="md" showSubtitle={true} />
               </Link>
@@ -166,17 +167,17 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-[#beb5ae]">
                   <Building2 className="w-4 h-4 text-[#c49b7c] shrink-0" />
-                  <span>Soweto SIDO Viwandani · Mbeya, Tanzania</span>
+                  <span>Soweto SIDO Viwandani (Mbeya), Tanzania</span>
                 </div>
               </div>
             </div>
 
-            {/* Column 2: Collections (2 cols) */}
-            <div className="lg:col-span-2 space-y-3">
+            {/* Column 2: Collections (col-span-1 on mobile, 2 on desktop) */}
+            <div className="col-span-1 lg:col-span-2 space-y-3">
               <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-white border-b border-white/10 pb-1.5">
                 Collections
               </h4>
-              <ul className="space-y-2 text-xs text-stone-300">
+              <ul className="space-y-2 text-[11px] sm:text-xs text-stone-300">
                 <li>
                   <Link to="/wholesale" className="hover:text-white transition-colors font-bold text-[#c49b7c] flex items-center gap-1.5">
                     <span>Wholesale &amp; Bulk</span>
@@ -211,12 +212,12 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               </ul>
             </div>
 
-            {/* Column 3: Wholesale & B2B Tenders (2 cols) */}
-            <div className="lg:col-span-2 space-y-3">
+            {/* Column 3: Wholesale & B2B Tenders (col-span-1 on mobile, 2 on desktop) */}
+            <div className="col-span-1 lg:col-span-2 space-y-3">
               <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-white border-b border-white/10 pb-1.5">
                 Wholesale &amp; Tenders
               </h4>
-              <ul className="space-y-2 text-xs text-stone-300">
+              <ul className="space-y-2 text-[11px] sm:text-xs text-stone-300">
                 <li>
                   <Link to="/school-tenders" className="hover:text-[#c49b7c] transition-colors flex items-center gap-1 font-bold text-[#c49b7c]">
                     <span>School Tender Portal</span>
@@ -246,15 +247,15 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               </ul>
             </div>
 
-            {/* Column 4: 3 Dedicated WhatsApp Hotlines (4 cols) */}
-            <div className="lg:col-span-4 space-y-3">
+            {/* Column 4: 3 Dedicated WhatsApp Hotlines (col-span-1 on mobile, 4 on desktop) */}
+            <div className="col-span-1 lg:col-span-4 space-y-3">
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/10 text-[#c49b7c] border border-[#c49b7c]/40 font-mono">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-white/10 text-[#c49b7c] border border-[#c49b7c]/40 font-mono">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   <span>3 HOTLINES LIVE NOW</span>
                 </span>
               </div>
-              <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-white">
+              <h4 className="font-heading text-[11px] sm:text-xs font-bold uppercase tracking-wider text-white">
                 Sales &amp; Dispatch Hotlines
               </h4>
               <ul className="space-y-2 text-xs">
@@ -263,13 +264,13 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                     href="https://wa.me/255746268391"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2.5 rounded-[12px] bg-[#3b352f]/90 border border-white/10 hover:border-[#c49b7c] flex items-center justify-between text-white hover:text-[#c49b7c] transition-all group"
+                    className="p-2 sm:p-2.5 rounded-[12px] bg-[#3b352f]/90 border border-white/10 hover:border-[#c49b7c] flex items-center justify-between text-white hover:text-[#c49b7c] transition-all group"
                   >
-                    <div className="flex items-center gap-2">
-                      <MessageCircle className="w-4 h-4 fill-emerald-400 text-emerald-400" />
-                      <span className="font-mono font-bold">+255 746 268 391</span>
+                    <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                      <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-emerald-400 text-emerald-400 shrink-0" />
+                      <span className="font-mono font-bold text-[10px] sm:text-xs truncate">+255 746 268 391</span>
                     </div>
-                    <span className="text-[11px] text-[#beb5ae] font-sans">Desk 1 · General</span>
+                    <span className="text-[9px] sm:text-[11px] text-[#beb5ae] font-sans shrink-0">Desk 1 · General</span>
                   </a>
                 </li>
                 <li>
@@ -277,27 +278,27 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                     href="https://wa.me/255624265480"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2.5 rounded-[12px] bg-[#3b352f]/90 border border-white/10 hover:border-[#c49b7c] flex items-center justify-between text-white hover:text-[#c49b7c] transition-all group"
+                    className="p-2 sm:p-2.5 rounded-[12px] bg-[#3b352f]/90 border border-white/10 hover:border-[#c49b7c] flex items-center justify-between text-white hover:text-[#c49b7c] transition-all group"
                   >
-                    <div className="flex items-center gap-2">
-                      <MessageCircle className="w-4 h-4 fill-emerald-400 text-emerald-400" />
-                      <span className="font-mono font-bold">+255 624 265 480</span>
+                    <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                      <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-emerald-400 text-emerald-400 shrink-0" />
+                      <span className="font-mono font-bold text-[10px] sm:text-xs truncate">+255 624 265 480</span>
                     </div>
-                    <span className="text-[11px] text-[#beb5ae] font-sans">Desk 2 · Wholesale</span>
+                    <span className="text-[9px] sm:text-[11px] text-[#beb5ae] font-sans shrink-0">Desk 2 · Wholesale</span>
                   </a>
                 </li>
                 <li>
                   <a
-                    href="https://wa.me/255699032777"
+                    href="https://wa.me/255689032777"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2.5 rounded-[12px] bg-[#3b352f]/90 border border-white/10 hover:border-[#c49b7c] flex items-center justify-between text-white hover:text-[#c49b7c] transition-all group"
+                    className="p-2 sm:p-2.5 rounded-[12px] bg-[#3b352f]/90 border border-white/10 hover:border-[#c49b7c] flex items-center justify-between text-white hover:text-[#c49b7c] transition-all group"
                   >
-                    <div className="flex items-center gap-2">
-                      <MessageCircle className="w-4 h-4 fill-emerald-400 text-emerald-400" />
-                      <span className="font-mono font-bold">+255 699 032 777</span>
+                    <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                      <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-emerald-400 text-emerald-400 shrink-0" />
+                      <span className="font-mono font-bold text-[10px] sm:text-xs truncate">+255 689 032 777</span>
                     </div>
-                    <span className="text-[11px] text-[#beb5ae] font-sans">Desk 3 · Logistics</span>
+                    <span className="text-[9px] sm:text-[11px] text-[#beb5ae] font-sans shrink-0">Desk 3 · Logistics</span>
                   </a>
                 </li>
               </ul>
@@ -306,10 +307,10 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               <div className="pt-1">
                 <a
                   href="mailto:indigoprinter06423@gmail.com"
-                  className="text-xs text-stone-300 hover:text-[#c49b7c] flex items-center gap-2 transition-colors font-mono"
+                  className="text-[10px] sm:text-xs text-stone-300 hover:text-[#c49b7c] flex items-center gap-1.5 sm:gap-2 transition-colors font-mono truncate"
                 >
-                  <Mail className="w-3.5 h-3.5 text-[#c49b7c]" />
-                  <span>indigoprinter06423@gmail.com</span>
+                  <Mail className="w-3.5 h-3.5 text-[#c49b7c] shrink-0" />
+                  <span className="truncate">indigoprinter06423@gmail.com</span>
                 </a>
               </div>
             </div>
@@ -395,30 +396,30 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         </div>
       </footer>
 
-      {/* Floating High-Contrast Quick Action Dock (Indra Notebooks Style) */}
-      <div className="fixed bottom-20 right-3 sm:bottom-24 sm:right-6 lg:bottom-6 lg:right-6 z-30 flex flex-col items-end gap-2 pointer-events-none">
-        <div className="flex flex-col items-end gap-2 pointer-events-auto">
+      {/* Floating High-Contrast Quick Action Dock */}
+      <div className="fixed bottom-4 right-3 sm:bottom-5 sm:right-5 z-40 flex items-center gap-2 pointer-events-none">
+        <div className="flex items-center gap-2 pointer-events-auto bg-[#1e1b18]/90 backdrop-blur-md p-1.5 rounded-full border border-[#c49b7c]/40 shadow-2xl">
           {/* Direct WhatsApp Orders Quick Pill */}
           <a
             href="https://wa.me/255746268391?text=Hello%20OMEGA%20Stationery%20Tanzania,%20I%20would%20like%20to%20place%20an%20order."
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#2D8F5E] hover:bg-[#25764d] text-white text-xs font-bold shadow-lg transition-all hover:scale-105"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold shadow-md transition-all hover:scale-105"
             title="Chat with Sales Desk on WhatsApp"
           >
-            <MessageCircle className="w-4 h-4 fill-white" />
-            <span>WhatsApp Orders</span>
+            <MessageCircle className="w-3.5 h-3.5 fill-white" />
+            <span className="hidden sm:inline">WhatsApp Orders</span>
           </a>
 
           {/* Wholesale Carton Calculator (LEDUP Copper Gradient) */}
           <button
             type="button"
             onClick={() => setIsWholesaleModalOpen(true)}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full btn-ledup-copper text-xs sm:text-sm font-semibold shadow-xl hover:scale-105 transition-all group focus-ring-gold active:scale-95"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full btn-ledup-copper text-xs font-bold shadow-md hover:scale-105 transition-all group active:scale-95 text-white"
             aria-label="Open Wholesale Carton & Tender Calculator"
           >
-            <Calculator className="w-4 h-4 text-white" />
-            <span>Wholesale &amp; Carton Rates</span>
+            <Calculator className="w-3.5 h-3.5 text-white" />
+            <span>Wholesale Rates</span>
           </button>
         </div>
       </div>
