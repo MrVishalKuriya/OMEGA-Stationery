@@ -316,6 +316,8 @@ setInterval(() => {
   }
 }, 60000);
 
+let hasLoggedRedisFallback = false;
+
 async function initRedis() {
   return await tryReconnectRedis(false);
 }
@@ -352,7 +354,8 @@ async function tryReconnectRedis(isManual = false) {
     redisConnectionError = err.message || 'Connection refused on ' + REDIS_URL;
     if (isManual) {
       console.warn(`⚠️ [Redis Error Handler] Reconnection failed: ${redisConnectionError}`);
-    } else {
+    } else if (!hasLoggedRedisFallback) {
+      hasLoggedRedisFallback = true;
       console.log(`⚡ [Redis Fallback Engaged] Local Redis daemon is offline (${redisConnectionError}).`);
       console.log(`⚡ [Live Cache Layer] High-speed In-Memory Sub-millisecond Cache is ACTIVE (<0.5ms).`);
     }
@@ -1234,8 +1237,8 @@ Manufactured from high-tensile brown kraft paper that resists tears during trans
     return {
       reply: `🏭 **OMEGA Stationery & Indigo Printers** operates from **Soweto SIDO Viwandani (Mbeya)** and **Mwanza Branch**, Tanzania.
 We deliver wholesale cartons across all Tanzanian regions (Dar es Salaam, Arusha, Mwanza, Dodoma, Morogoro, Mbeya, Iringa) via reliable bus freight & cargo carriers! You can contact any of our 4 official hotlines:
-• Boss 1 (Executive Desk): **+255 715 268 391**
-• Boss 2 (Management & Wholesale): **+255 624 265 480**
+• Co-Founder & MD (Desk 1): **+255 715 268 391**
+• VIJESH K. HALAI (Co-Founder & MD): **+255 624 265 480**
 • Branch 1 (Mbeya SIDO Factory): **+255 746 268 391**
 • Branch 2 (Mwanza Lake Zone): **+255 699 032 777**`,
       recommendedProducts: []

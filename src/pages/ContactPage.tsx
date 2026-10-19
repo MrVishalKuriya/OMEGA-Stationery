@@ -58,23 +58,23 @@ export const ContactPage: React.FC = () => {
   const salesDesks = [
     {
       id: 'desk-boss-1',
-      title: language === 'sw' ? 'Dawati 1 (Boss 1): Uongozi Mkuu & Oda Maalum' : 'Desk 1 (Boss 1): Executive & Priority Orders',
+      title: language === 'sw' ? 'Dawati 1: Co-Founder & Managing Director' : 'Desk 1: Co-Founder & Managing Director',
       phone: '+255 715 268 391',
       numberDigits: '255715268391',
-      tag: 'Boss 1 Desk',
+      tag: 'Executive Desk',
       desc: language === 'sw'
         ? 'Mawasiliano ya moja kwa moja ya uongozi mkuu kwa oda maalum, maswali ya mikataba na oda za haraka.'
         : 'Direct line to Executive Leadership for priority purchasing, special contract terms, and escalated service.',
     },
     {
       id: 'desk-boss-2',
-      title: language === 'sw' ? 'Dawati 2 (Boss 2): Usimamizi & Katoni za Kiwanda (B2B)' : 'Desk 2 (Boss 2): Management & B2B Wholesale',
+      title: language === 'sw' ? 'VIJESH K. HALAI: Co-Founder & Managing Director' : 'VIJESH K. HALAI: Co-Founder & Managing Director',
       phone: '+255 624 265 480',
       numberDigits: '255624265480',
-      tag: 'Boss 2 Desk',
+      tag: 'VIJESH K. HALAI',
       desc: language === 'sw'
-        ? 'Bei za punguzo za katoni (5 hadi 50+ katoni) kwa maduka ya jumla na wasambazaji wa mikoani.'
-        : 'Tiered volume carton orders, distributor contracts, and direct factory waybill dispatches.',
+        ? 'Mkurugenzi Mtendaji na Mwanzilishi Mwenza anayesimamia uzalishaji, bei za katoni na mikataba mikubwa ya B2B.'
+        : 'Co-Founder & Managing Director overseeing factory production dispatches, volume carton pricing, and distributor supply.',
     },
     {
       id: 'desk-branch-mbeya',
@@ -299,8 +299,8 @@ export const ContactPage: React.FC = () => {
                       onChange={(e) => setSelectedDesk(e.target.value)}
                       className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#e2dedb] text-xs focus:ring-1 focus:ring-[#4b423b] focus:outline-none bg-white"
                     >
-                      <option value="255715268391">Boss 1 Desk (+255 715 268 391) — Executive</option>
-                      <option value="255624265480">Boss 2 Desk (+255 624 265 480) — Wholesale</option>
+                      <option value="255715268391">Co-Founder &amp; MD Desk 1 (+255 715 268 391) — Executive</option>
+                      <option value="255624265480">VIJESH K. HALAI (+255 624 265 480) — Co-Founder &amp; MD</option>
                       <option value="255746268391">Mbeya Branch (+255 746 268 391) — SIDO Factory</option>
                       <option value="255699032777">Mwanza Branch (+255 699 032 777) — Lake Zone</option>
                     </select>

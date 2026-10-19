@@ -890,8 +890,8 @@ export const AdminDashboardPage: React.FC = () => {
         brandingForm.branchMwanza || '+255 699 032 777',
       ],
       whatsappNumbers: [
-        { label: 'Boss 1 (Executive Desk)', number: brandingForm.phoneNumber || '+255 715 268 391', digits: boss1Digits, role: 'Executive' },
-        { label: 'Boss 2 (Management Desk)', number: brandingForm.secondaryPhone || '+255 624 265 480', digits: boss2Digits, role: 'Management' },
+        { label: 'Co-Founder & MD (Desk 1)', number: brandingForm.phoneNumber || '+255 715 268 391', digits: boss1Digits, role: 'Co-Founder & Managing Director' },
+        { label: 'VIJESH K. HALAI (Co-Founder & MD)', number: brandingForm.secondaryPhone || '+255 624 265 480', digits: boss2Digits, role: 'Co-Founder & Managing Director' },
         { label: 'Mbeya Branch (Soweto SIDO)', number: brandingForm.branchMbeya || '+255 746 268 391', digits: mbeyaDigits, role: 'Mbeya Branch' },
         { label: 'Mwanza Branch Desk', number: brandingForm.branchMwanza || '+255 699 032 777', digits: mwanzaDigits, role: 'Mwanza Branch' },
       ],

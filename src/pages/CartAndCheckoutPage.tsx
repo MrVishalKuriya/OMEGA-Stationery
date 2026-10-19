@@ -313,13 +313,13 @@ export const CartAndCheckoutPage: React.FC = () => {
                 {[
                   {
                     digits: '255715268391',
-                    label: 'Boss 1 Desk: +255 715 268 391',
-                    desc: 'Executive & Direct Orders (Boss 1)',
+                    label: 'Co-Founder & MD: +255 715 268 391',
+                    desc: 'Founder Desk 01 (Executive & Priority Orders)',
                   },
                   {
                     digits: '255624265480',
-                    label: 'Boss 2 Desk: +255 624 265 480',
-                    desc: 'Management & Wholesale Desk (Boss 2)',
+                    label: 'VIJESH K. HALAI: +255 624 265 480',
+                    desc: 'Co-Founder & Managing Director (Wholesale Desk 02)',
                   },
                   {
                     digits: '255746268391',

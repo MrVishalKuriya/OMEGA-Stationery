@@ -40,8 +40,8 @@ export const INITIAL_STORE_CONFIG: StoreConfig = {
   ],
   whatsappNumber: '255715268391',
   whatsappNumbers: [
-    { label: 'Boss 1 (Executive Desk)', number: '+255 715 268 391', digits: '255715268391', role: 'Executive' },
-    { label: 'Boss 2 (Management Desk)', number: '+255 624 265 480', digits: '255624265480', role: 'Management' },
+    { label: 'Co-Founder & MD (Desk 1)', number: '+255 715 268 391', digits: '255715268391', role: 'Co-Founder & Managing Director' },
+    { label: 'VIJESH K. HALAI (Co-Founder & MD)', number: '+255 624 265 480', digits: '255624265480', role: 'Co-Founder & Managing Director' },
     { label: 'Mbeya Branch (Soweto SIDO)', number: '+255 746 268 391', digits: '255746268391', role: 'Mbeya Branch' },
     { label: 'Mwanza Branch Desk', number: '+255 699 032 777', digits: '255699032777', role: 'Mwanza Branch' },
   ],

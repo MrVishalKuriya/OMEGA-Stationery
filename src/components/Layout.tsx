@@ -146,10 +146,10 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             </div>
           </div>
 
-          {/* B) 4-Column Master Architectural Grid (2 cols on mobile, 12 cols on desktop) */}
-          <div className="grid grid-cols-2 lg:grid-cols-12 gap-5 sm:gap-8 lg:gap-10 pb-12 border-b border-white/10">
-            {/* Column 1: Brand Hallmark & Factory Origin (col-span-1 on mobile, 4 on desktop) */}
-            <div className="col-span-1 lg:col-span-4 space-y-4">
+          {/* B) 4-Column Master Architectural Grid (responsive stacking) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10 pb-12 border-b border-white/10">
+            {/* Column 1: Brand Hallmark & Factory Origin */}
+            <div className="col-span-1 sm:col-span-2 lg:col-span-4 space-y-4">
               <Link to="/" className="inline-block">
                 <OmegaLogo variant="badge" size="md" showSubtitle={true} />
               </Link>
@@ -176,8 +176,8 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               </div>
             </div>
 
-            {/* Column 2: Collections (col-span-1 on mobile, 2 on desktop) */}
-            <div className="col-span-1 lg:col-span-2 space-y-3">
+            {/* Column 2: Collections */}
+            <div className="col-span-1 sm:col-span-1 lg:col-span-2 space-y-3">
               <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-white border-b border-white/10 pb-1.5">
                 Collections
               </h4>
@@ -216,8 +216,8 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               </ul>
             </div>
 
-            {/* Column 3: Wholesale & B2B Tenders (col-span-1 on mobile, 2 on desktop) */}
-            <div className="col-span-1 lg:col-span-2 space-y-3">
+            {/* Column 3: Wholesale & B2B Tenders */}
+            <div className="col-span-1 sm:col-span-1 lg:col-span-2 space-y-3">
               <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-white border-b border-white/10 pb-1.5">
                 Wholesale &amp; Tenders
               </h4>
@@ -251,83 +251,148 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               </ul>
             </div>
 
-            {/* Column 4: 4 Dedicated WhatsApp Hotlines (2 Boss + 2 Branches) */}
-            <div className="col-span-1 lg:col-span-4 space-y-3">
-              <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-white/10 text-[#c49b7c] border border-[#c49b7c]/40 font-mono">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>4 HOTLINES LIVE NOW</span>
-                </span>
+            {/* Column 4: Executive Leadership & Regional Branches */}
+            <div className="col-span-1 sm:col-span-2 lg:col-span-4 space-y-4">
+              {/* Executive Leadership Card (Styled per OMEGA Leadership Spec) */}
+              <div className="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-br from-[#1c1815] via-[#241f1a] to-[#171412] border border-[#c49b7c]/35 shadow-xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-[#c49b7c]/5 rounded-full blur-2xl pointer-events-none" />
+
+                <div className="flex items-center justify-between gap-2 mb-2.5 pb-2 border-b border-white/10">
+                  <div>
+                    <span className="text-[10px] font-mono tracking-widest text-[#c49b7c] uppercase font-bold block">
+                      OMEGA
+                    </span>
+                    <h4 className="font-heading text-xs sm:text-sm font-bold tracking-wide text-white uppercase">
+                      Our Leadership
+                    </h4>
+                  </div>
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 shrink-0">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span>DIRECT DESKS</span>
+                  </span>
+                </div>
+
+                <div className="space-y-2.5">
+                  {/* Co-Founder 01 */}
+                  <a
+                    href="https://wa.me/255715268391?text=Hello%20OMEGA%20Executive%20Office,%20inquiry%20from%20website"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 sm:p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/5 hover:border-[#c49b7c]/50 transition-all flex items-center justify-between group"
+                  >
+                    <div className="min-w-0 flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                        <MessageCircle className="w-3.5 h-3.5 fill-emerald-400 text-emerald-400" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="font-mono font-bold text-xs text-white group-hover:text-[#c49b7c] transition-colors">
+                          +255 715 268 391
+                        </div>
+                        <div className="text-[10px] text-stone-300 font-semibold truncate">
+                          Founder &amp; Executive Desk
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right shrink-0 pl-2">
+                      <span className="text-[10px] sm:text-[11px] font-bold text-[#c49b7c] block">
+                        Co-Founder &amp; MD
+                      </span>
+                      <span className="text-[9px] text-stone-400 font-medium block">
+                        Managing Director
+                      </span>
+                    </div>
+                  </a>
+
+                  {/* Co-Founder 02: VIJESH K. HALAI */}
+                  <a
+                    href="https://wa.me/255624265480?text=Hello%20VIJESH%20K.%20HALAI,%20inquiry%20from%20website"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 sm:p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/5 hover:border-[#c49b7c]/50 transition-all flex items-center justify-between group"
+                  >
+                    <div className="min-w-0 flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                        <MessageCircle className="w-3.5 h-3.5 fill-emerald-400 text-emerald-400" />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="font-mono font-bold text-xs text-white group-hover:text-[#c49b7c] transition-colors">
+                          +255 624 265 480
+                        </div>
+                        <div className="text-[10px] text-stone-200 font-bold truncate">
+                          VIJESH K. HALAI
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right shrink-0 pl-2">
+                      <span className="text-[10px] sm:text-[11px] font-bold text-[#c49b7c] block">
+                        Co-Founder &amp; MD
+                      </span>
+                      <span className="text-[9px] text-stone-400 font-medium block">
+                        Managing Director
+                      </span>
+                    </div>
+                  </a>
+                </div>
               </div>
-              <h4 className="font-heading text-[11px] sm:text-xs font-bold uppercase tracking-wider text-white">
-                Executive &amp; Branch Desks
-              </h4>
-              <ul className="space-y-1.5 text-xs">
-                <li>
+
+              {/* Regional Branch Desks */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <h5 className="text-[11px] font-bold uppercase tracking-wider text-stone-300">
+                    Regional Branches
+                  </h5>
+                  <span className="text-[10px] text-stone-400 font-mono">Factory &amp; Hubs</span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2">
+                  {/* Mbeya Branch */}
                   <a
-                    href="https://wa.me/255715268391"
+                    href="https://wa.me/255746268391?text=Hello%20Mbeya%20Branch,%20inquiry%20from%20website"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 sm:p-2.5 rounded-[12px] bg-[#3b352f]/90 border border-white/10 hover:border-[#c49b7c] flex items-center justify-between text-white hover:text-[#c49b7c] transition-all group"
+                    className="p-2 rounded-xl bg-[#2a241f]/80 border border-white/10 hover:border-[#c49b7c] flex items-center justify-between text-white hover:text-[#c49b7c] transition-all group"
                   >
-                    <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                      <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-emerald-400 text-emerald-400 shrink-0" />
-                      <span className="font-mono font-bold text-[10px] sm:text-xs truncate">+255 715 268 391</span>
+                    <div className="flex items-center gap-2 min-w-0">
+                      <MessageCircle className="w-3.5 h-3.5 fill-emerald-400 text-emerald-400 shrink-0" />
+                      <div className="min-w-0">
+                        <div className="font-mono font-bold text-[11px] text-white">+255 746 268 391</div>
+                        <div className="text-[10px] text-stone-400 truncate">Soweto SIDO Viwandani</div>
+                      </div>
                     </div>
-                    <span className="text-[9px] sm:text-[11px] text-[#c49b7c] font-sans shrink-0 font-bold">Boss 1 · Executive</span>
+                    <div className="text-right shrink-0 pl-1">
+                      <span className="text-[10px] text-[#beb5ae] font-bold block">Mbeya</span>
+                      <span className="text-[9px] text-stone-400 block">Factory</span>
+                    </div>
                   </a>
-                </li>
-                <li>
+
+                  {/* Mwanza Branch */}
                   <a
-                    href="https://wa.me/255624265480"
+                    href="https://wa.me/255699032777?text=Hello%20Mwanza%20Branch,%20inquiry%20from%20website"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2 sm:p-2.5 rounded-[12px] bg-[#3b352f]/90 border border-white/10 hover:border-[#c49b7c] flex items-center justify-between text-white hover:text-[#c49b7c] transition-all group"
+                    className="p-2 rounded-xl bg-[#2a241f]/80 border border-white/10 hover:border-[#c49b7c] flex items-center justify-between text-white hover:text-[#c49b7c] transition-all group"
                   >
-                    <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                      <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-emerald-400 text-emerald-400 shrink-0" />
-                      <span className="font-mono font-bold text-[10px] sm:text-xs truncate">+255 624 265 480</span>
+                    <div className="flex items-center gap-2 min-w-0">
+                      <MessageCircle className="w-3.5 h-3.5 fill-emerald-400 text-emerald-400 shrink-0" />
+                      <div className="min-w-0">
+                        <div className="font-mono font-bold text-[11px] text-white">+255 699 032 777</div>
+                        <div className="text-[10px] text-stone-400 truncate">Lake Zone Regional</div>
+                      </div>
                     </div>
-                    <span className="text-[9px] sm:text-[11px] text-[#c49b7c] font-sans shrink-0 font-bold">Boss 2 · Management</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://wa.me/255746268391"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 sm:p-2.5 rounded-[12px] bg-[#3b352f]/90 border border-white/10 hover:border-[#c49b7c] flex items-center justify-between text-white hover:text-[#c49b7c] transition-all group"
-                  >
-                    <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                      <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-emerald-400 text-emerald-400 shrink-0" />
-                      <span className="font-mono font-bold text-[10px] sm:text-xs truncate">+255 746 268 391</span>
+                    <div className="text-right shrink-0 pl-1">
+                      <span className="text-[10px] text-[#beb5ae] font-bold block">Mwanza</span>
+                      <span className="text-[9px] text-stone-400 block">Regional</span>
                     </div>
-                    <span className="text-[9px] sm:text-[11px] text-[#beb5ae] font-sans shrink-0">Mbeya Branch</span>
                   </a>
-                </li>
-                <li>
-                  <a
-                    href="https://wa.me/255699032777"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 sm:p-2.5 rounded-[12px] bg-[#3b352f]/90 border border-white/10 hover:border-[#c49b7c] flex items-center justify-between text-white hover:text-[#c49b7c] transition-all group"
-                  >
-                    <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                      <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-emerald-400 text-emerald-400 shrink-0" />
-                      <span className="font-mono font-bold text-[10px] sm:text-xs truncate">+255 699 032 777</span>
-                    </div>
-                    <span className="text-[9px] sm:text-[11px] text-[#beb5ae] font-sans shrink-0">Mwanza Branch</span>
-                  </a>
-                </li>
-              </ul>
+                </div>
+              </div>
 
               {/* Official Email */}
               <div className="pt-1">
                 <a
                   href="mailto:indigoprinter06423@gmail.com"
-                  className="text-[10px] sm:text-xs text-stone-300 hover:text-[#c49b7c] flex items-center gap-1.5 sm:gap-2 transition-colors font-mono truncate"
+                  className="text-[11px] sm:text-xs text-stone-300 hover:text-[#c49b7c] flex items-center gap-2 transition-colors font-mono truncate bg-white/5 p-2 rounded-xl border border-white/5"
                 >
-                  <Mail className="w-3.5 h-3.5 text-[#c49b7c]" />
+                  <Mail className="w-3.5 h-3.5 text-[#c49b7c] shrink-0" />
                   <span className="truncate">indigoprinter06423@gmail.com</span>
                 </a>
               </div>

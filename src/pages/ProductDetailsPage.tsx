@@ -391,8 +391,8 @@ export const ProductDetailsPage: React.FC = () => {
               </label>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
                 {[
-                  { label: 'Boss 1 (Executive)', digits: '255715268391', number: '+255 715 268 391' },
-                  { label: 'Boss 2 (Wholesale)', digits: '255624265480', number: '+255 624 265 480' },
+                  { label: 'Co-Founder & MD 1', digits: '255715268391', number: '+255 715 268 391' },
+                  { label: 'VIJESH K. HALAI', digits: '255624265480', number: '+255 624 265 480' },
                   { label: 'Mbeya Branch', digits: '255746268391', number: '+255 746 268 391' },
                   { label: 'Mwanza Branch', digits: '255699032777', number: '+255 699 032 777' },
                 ].map((d) => (
