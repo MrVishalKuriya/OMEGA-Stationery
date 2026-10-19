@@ -824,9 +824,32 @@ export const AdminDashboardPage: React.FC = () => {
   // Save Store Branding & Handles directly to MongoDB Atlas
   const handleSaveBranding = async (e: React.FormEvent) => {
     e.preventDefault();
+    const boss1Digits = (brandingForm.phoneNumber || '255715268391').replace(/\D/g, '');
+    const boss2Digits = (brandingForm.secondaryPhone || '255624265480').replace(/\D/g, '');
+    const mbeyaDigits = (brandingForm.branchMbeya || brandingForm.thirdPhone || '255746268391').replace(/\D/g, '');
+    const mwanzaDigits = (brandingForm.branchMwanza || brandingForm.fourthPhone || '255699032777').replace(/\D/g, '');
+
     const updated = {
       ...brandingForm,
-      whatsappNumber: brandingForm.whatsappNumber.replace(/\D/g, '') || '255746268391',
+      phoneNumber: brandingForm.phoneNumber || '+255 715 268 391',
+      secondaryPhone: brandingForm.secondaryPhone || '+255 624 265 480',
+      branchMbeya: brandingForm.branchMbeya || '+255 746 268 391',
+      branchMwanza: brandingForm.branchMwanza || '+255 699 032 777',
+      thirdPhone: brandingForm.branchMbeya || '+255 746 268 391',
+      fourthPhone: brandingForm.branchMwanza || '+255 699 032 777',
+      whatsappNumber: boss1Digits || '255715268391',
+      phoneNumbers: [
+        brandingForm.phoneNumber || '+255 715 268 391',
+        brandingForm.secondaryPhone || '+255 624 265 480',
+        brandingForm.branchMbeya || '+255 746 268 391',
+        brandingForm.branchMwanza || '+255 699 032 777',
+      ],
+      whatsappNumbers: [
+        { label: 'Boss 1 (Executive Desk)', number: brandingForm.phoneNumber || '+255 715 268 391', digits: boss1Digits, role: 'Executive' },
+        { label: 'Boss 2 (Management Desk)', number: brandingForm.secondaryPhone || '+255 624 265 480', digits: boss2Digits, role: 'Management' },
+        { label: 'Mbeya Branch (Soweto SIDO)', number: brandingForm.branchMbeya || '+255 746 268 391', digits: mbeyaDigits, role: 'Mbeya Branch' },
+        { label: 'Mwanza Branch Desk', number: brandingForm.branchMwanza || '+255 699 032 777', digits: mwanzaDigits, role: 'Mwanza Branch' },
+      ],
       freeDeliveryThreshold: Math.max(0, Number(brandingForm.freeDeliveryThreshold) || 0),
       standardDeliveryFee: Math.max(0, Number(brandingForm.standardDeliveryFee) || 0),
       isPlaceholderConfig: false,
@@ -2098,44 +2121,73 @@ export const AdminDashboardPage: React.FC = () => {
           {/* SubTab 3: WhatsApp & Contacts */}
           {cmsActiveSubTab === 'contacts' && (
             <div className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="space-y-1">
                   <label className="block text-xs font-bold uppercase tracking-wider text-stone-700">
-                    Primary WhatsApp (Desk 1)
+                    Boss 1 (Executive Desk)
                   </label>
                   <input
                     type="text"
-                    value={brandingForm.whatsappNumber}
-                    onChange={(e) => setBrandingForm({ ...brandingForm, whatsappNumber: e.target.value })}
+                    value={brandingForm.phoneNumber || ''}
+                    onChange={(e) => setBrandingForm({ ...brandingForm, phoneNumber: e.target.value })}
                     className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs font-mono focus:outline-none focus:border-[#4b423b]"
+                    placeholder="+255 715 268 391"
                   />
-                  <span className="text-[10px] text-stone-400">e.g. 255746268391</span>
+                  <span className="text-[10px] text-stone-400">e.g. +255 715 268 391</span>
                 </div>
 
                 <div className="space-y-1">
                   <label className="block text-xs font-bold uppercase tracking-wider text-stone-700">
-                    Wholesale WhatsApp (Desk 2)
+                    Boss 2 (Management Desk)
                   </label>
                   <input
                     type="text"
-                    value={brandingForm.secondaryPhone}
+                    value={brandingForm.secondaryPhone || ''}
                     onChange={(e) => setBrandingForm({ ...brandingForm, secondaryPhone: e.target.value })}
                     className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs font-mono focus:outline-none focus:border-[#4b423b]"
+                    placeholder="+255 624 265 480"
                   />
                   <span className="text-[10px] text-stone-400">e.g. +255 624 265 480</span>
                 </div>
 
                 <div className="space-y-1">
                   <label className="block text-xs font-bold uppercase tracking-wider text-stone-700">
-                    Support WhatsApp (Desk 3)
+                    Mbeya Branch (Soweto SIDO)
                   </label>
                   <input
                     type="text"
-                    value={brandingForm.thirdPhone}
-                    onChange={(e) => setBrandingForm({ ...brandingForm, thirdPhone: e.target.value })}
+                    value={brandingForm.branchMbeya || brandingForm.thirdPhone || ''}
+                    onChange={(e) =>
+                      setBrandingForm({
+                        ...brandingForm,
+                        branchMbeya: e.target.value,
+                        thirdPhone: e.target.value,
+                      })
+                    }
                     className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs font-mono focus:outline-none focus:border-[#4b423b]"
+                    placeholder="+255 746 268 391"
                   />
-                  <span className="text-[10px] text-stone-400">e.g. +255 689 032 777</span>
+                  <span className="text-[10px] text-stone-400">e.g. +255 746 268 391</span>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-stone-700">
+                    Mwanza Branch Desk
+                  </label>
+                  <input
+                    type="text"
+                    value={brandingForm.branchMwanza || brandingForm.fourthPhone || ''}
+                    onChange={(e) =>
+                      setBrandingForm({
+                        ...brandingForm,
+                        branchMwanza: e.target.value,
+                        fourthPhone: e.target.value,
+                      })
+                    }
+                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs font-mono focus:outline-none focus:border-[#4b423b]"
+                    placeholder="+255 699 032 777"
+                  />
+                  <span className="text-[10px] text-stone-400">e.g. +255 699 032 777</span>
                 </div>
               </div>
 

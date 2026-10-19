@@ -31,7 +31,7 @@ export const ProductDetailsPage: React.FC = () => {
   const [selectedImageIdx, setSelectedImageIdx] = useState<number>(0);
   const [justAdded, setJustAdded] = useState<boolean>(false);
   const [imgError, setImgError] = useState<boolean>(false);
-  const [selectedPhoneDesk, setSelectedPhoneDesk] = useState<string>('255746268391');
+  const [selectedPhoneDesk, setSelectedPhoneDesk] = useState<string>('255715268391');
 
   useEffect(() => {
     setQuantity(1);
@@ -389,11 +389,12 @@ export const ProductDetailsPage: React.FC = () => {
               <label className="text-[11px] font-bold uppercase tracking-wider text-[#6B7280] block">
                 {t.choosePhone}
               </label>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
                 {[
-                  { label: 'Desk 1 (Orders)', digits: '255746268391', number: '+255 746 268 391' },
-                  { label: 'Desk 2 (Wholesale)', digits: '255624265480', number: '+255 624 265 480' },
-                  { label: 'Desk 3 (Support)', digits: '255689032777', number: '+255 689 032 777' },
+                  { label: 'Boss 1 (Executive)', digits: '255715268391', number: '+255 715 268 391' },
+                  { label: 'Boss 2 (Wholesale)', digits: '255624265480', number: '+255 624 265 480' },
+                  { label: 'Mbeya Branch', digits: '255746268391', number: '+255 746 268 391' },
+                  { label: 'Mwanza Branch', digits: '255699032777', number: '+255 699 032 777' },
                 ].map((d) => (
                   <button
                     key={d.digits}

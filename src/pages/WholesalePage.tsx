@@ -1206,9 +1206,10 @@ export const WholesalePage: React.FC = () => {
                 <div className="pt-3 border-t border-white/10">
                   <div className="text-[11px] text-stone-400">Direct Wholesale Hotlines:</div>
                   <div className="text-xs font-mono font-bold text-[#c49b7c] mt-1 space-y-0.5">
-                    <div>+255 746 268 391 (Sales Desk 1)</div>
-                    <div>+255 624 265 480 (Wholesale Desk 2)</div>
-                    <div>+255 689 032 777 (Institutional Tenders)</div>
+                    <div>Boss 1: +255 715 268 391 (Executive Desk)</div>
+                    <div>Boss 2: +255 624 265 480 (Wholesale Desk)</div>
+                    <div>Branch: +255 746 268 391 (Mbeya SIDO Depot)</div>
+                    <div>Branch: +255 699 032 777 (Mwanza Regional)</div>
                   </div>
                 </div>
               </div>
@@ -1260,9 +1261,9 @@ export const WholesalePage: React.FC = () => {
 
             <div className="p-5 rounded-2xl bg-white border border-stone-200 shadow-xs space-y-2">
               <Phone className="w-6 h-6 text-[#4b423b] mx-auto" />
-              <h4 className="font-heading text-sm font-bold text-[#2b2520]">3 Dedicated Desks</h4>
-              <p className="text-xs text-stone-600 font-mono">
-                +255 746 268 391 · +255 624 265 480 · +255 689 032 777
+              <h4 className="font-heading text-sm font-bold text-[#2b2520]">4 Dedicated Desks (2 Boss &amp; 2 Branches)</h4>
+              <p className="text-[11px] text-stone-600 font-mono">
+                +255 715 268 391 · +255 624 265 480 · +255 746 268 391 · +255 699 032 777
               </p>
             </div>
 

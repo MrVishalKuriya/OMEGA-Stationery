@@ -1116,7 +1116,7 @@ export const HomePage: React.FC = () => {
           </form>
 
           <p className="text-xs text-[#3b352f] font-semibold font-mono">
-            Dedicated Hotlines: +255 746 268 391 | +255 624 265 480 | +255 689 032 777
+            Dedicated Hotlines: Boss 1: +255 715 268 391 | Boss 2: +255 624 265 480 | Mbeya: +255 746 268 391 | Mwanza: +255 699 032 777
           </p>
         </div>
       </section>

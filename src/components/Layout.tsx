@@ -137,10 +137,10 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               </div>
               <div className="min-w-0">
                 <h4 className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-white font-heading truncate">
-                  3 WhatsApp Hotlines
+                  4 WhatsApp Hotlines
                 </h4>
                 <p className="text-[10px] sm:text-[11px] text-[#beb5ae] mt-0.5 line-clamp-1 sm:line-clamp-none">
-                  Instant live order assistance anytime
+                  2 Boss Desks &amp; 2 Regional Branches
                 </p>
               </div>
             </div>
@@ -162,12 +162,16 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   <span>Double Thread-Sewn Binding Guarantee</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-[#beb5ae]">
-                  <MapPin className="w-4 h-4 text-[#c49b7c] shrink-0" />
-                  <span>Kariakoo Central Warehouse · Dar es Salaam</span>
+                  <Building2 className="w-4 h-4 text-[#c49b7c] shrink-0" />
+                  <span>Soweto SIDO Viwandani (Mbeya Branch &amp; Factory)</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-[#beb5ae]">
                   <Building2 className="w-4 h-4 text-[#c49b7c] shrink-0" />
-                  <span>Soweto SIDO Viwandani (Mbeya), Tanzania</span>
+                  <span>Mwanza Regional Branch &amp; Distribution Hub</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-[#beb5ae]">
+                  <MapPin className="w-4 h-4 text-[#c49b7c] shrink-0" />
+                  <span>Kariakoo Central Warehouse · Dar es Salaam</span>
                 </div>
               </div>
             </div>
@@ -247,30 +251,30 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               </ul>
             </div>
 
-            {/* Column 4: 3 Dedicated WhatsApp Hotlines (col-span-1 on mobile, 4 on desktop) */}
+            {/* Column 4: 4 Dedicated WhatsApp Hotlines (2 Boss + 2 Branches) */}
             <div className="col-span-1 lg:col-span-4 space-y-3">
               <div className="flex items-center gap-2">
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-white/10 text-[#c49b7c] border border-[#c49b7c]/40 font-mono">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>3 HOTLINES LIVE NOW</span>
+                  <span>4 HOTLINES LIVE NOW</span>
                 </span>
               </div>
               <h4 className="font-heading text-[11px] sm:text-xs font-bold uppercase tracking-wider text-white">
-                Sales &amp; Dispatch Hotlines
+                Executive &amp; Branch Desks
               </h4>
-              <ul className="space-y-2 text-xs">
+              <ul className="space-y-1.5 text-xs">
                 <li>
                   <a
-                    href="https://wa.me/255746268391"
+                    href="https://wa.me/255715268391"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-2 sm:p-2.5 rounded-[12px] bg-[#3b352f]/90 border border-white/10 hover:border-[#c49b7c] flex items-center justify-between text-white hover:text-[#c49b7c] transition-all group"
                   >
                     <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                       <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-emerald-400 text-emerald-400 shrink-0" />
-                      <span className="font-mono font-bold text-[10px] sm:text-xs truncate">+255 746 268 391</span>
+                      <span className="font-mono font-bold text-[10px] sm:text-xs truncate">+255 715 268 391</span>
                     </div>
-                    <span className="text-[9px] sm:text-[11px] text-[#beb5ae] font-sans shrink-0">Desk 1 · General</span>
+                    <span className="text-[9px] sm:text-[11px] text-[#c49b7c] font-sans shrink-0 font-bold">Boss 1 · Executive</span>
                   </a>
                 </li>
                 <li>
@@ -284,21 +288,35 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                       <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-emerald-400 text-emerald-400 shrink-0" />
                       <span className="font-mono font-bold text-[10px] sm:text-xs truncate">+255 624 265 480</span>
                     </div>
-                    <span className="text-[9px] sm:text-[11px] text-[#beb5ae] font-sans shrink-0">Desk 2 · Wholesale</span>
+                    <span className="text-[9px] sm:text-[11px] text-[#c49b7c] font-sans shrink-0 font-bold">Boss 2 · Management</span>
                   </a>
                 </li>
                 <li>
                   <a
-                    href="https://wa.me/255689032777"
+                    href="https://wa.me/255746268391"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-2 sm:p-2.5 rounded-[12px] bg-[#3b352f]/90 border border-white/10 hover:border-[#c49b7c] flex items-center justify-between text-white hover:text-[#c49b7c] transition-all group"
                   >
                     <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
                       <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-emerald-400 text-emerald-400 shrink-0" />
-                      <span className="font-mono font-bold text-[10px] sm:text-xs truncate">+255 689 032 777</span>
+                      <span className="font-mono font-bold text-[10px] sm:text-xs truncate">+255 746 268 391</span>
                     </div>
-                    <span className="text-[9px] sm:text-[11px] text-[#beb5ae] font-sans shrink-0">Desk 3 · Logistics</span>
+                    <span className="text-[9px] sm:text-[11px] text-[#beb5ae] font-sans shrink-0">Mbeya Branch</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://wa.me/255699032777"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 sm:p-2.5 rounded-[12px] bg-[#3b352f]/90 border border-white/10 hover:border-[#c49b7c] flex items-center justify-between text-white hover:text-[#c49b7c] transition-all group"
+                  >
+                    <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                      <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-emerald-400 text-emerald-400 shrink-0" />
+                      <span className="font-mono font-bold text-[10px] sm:text-xs truncate">+255 699 032 777</span>
+                    </div>
+                    <span className="text-[9px] sm:text-[11px] text-[#beb5ae] font-sans shrink-0">Mwanza Branch</span>
                   </a>
                 </li>
               </ul>
@@ -309,7 +327,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   href="mailto:indigoprinter06423@gmail.com"
                   className="text-[10px] sm:text-xs text-stone-300 hover:text-[#c49b7c] flex items-center gap-1.5 sm:gap-2 transition-colors font-mono truncate"
                 >
-                  <Mail className="w-3.5 h-3.5 text-[#c49b7c] shrink-0" />
+                  <Mail className="w-3.5 h-3.5 text-[#c49b7c]" />
                   <span className="truncate">indigoprinter06423@gmail.com</span>
                 </a>
               </div>
@@ -401,7 +419,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         <div className="flex items-center gap-2 pointer-events-auto bg-[#1e1b18]/90 backdrop-blur-md p-1.5 rounded-full border border-[#c49b7c]/40 shadow-2xl">
           {/* Direct WhatsApp Orders Quick Pill */}
           <a
-            href="https://wa.me/255746268391?text=Hello%20OMEGA%20Stationery%20Tanzania,%20I%20would%20like%20to%20place%20an%20order."
+            href="https://wa.me/255715268391?text=Hello%20OMEGA%20Stationery%20Tanzania,%20I%20would%20like%20to%20place%20an%20order."
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold shadow-md transition-all hover:scale-105"

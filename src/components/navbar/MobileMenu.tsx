@@ -403,11 +403,11 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
           </a>
 
           <a
-            href="tel:+255746268391"
+            href={`tel:${(storeConfig.phoneNumber || '+255715268391').replace(/\s+/g, '')}`}
             className="flex items-center justify-center gap-2 w-full py-2 rounded-[8px] bg-[#fafafa] border border-[#e2dedb] text-xs font-mono font-bold text-[#4b423b] hover:bg-[#f5f4f4] transition-colors"
           >
             <Phone className="w-3.5 h-3.5 text-[#4b423b]" />
-            <span>+255 746 268 391</span>
+            <span>{storeConfig.phoneNumber || '+255 715 268 391'}</span>
           </a>
         </div>
       </div>

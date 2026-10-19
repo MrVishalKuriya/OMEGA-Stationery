@@ -94,12 +94,15 @@ export interface StoreConfig {
   brandSubtitleSw: string;
   announcementText: string;
   announcementTextSw: string;
-  phoneNumber: string; // Primary: +255 746 268 391
-  secondaryPhone: string; // +255 624 265 480
-  thirdPhone: string; // +255 689 032 777
+  phoneNumber: string; // Boss 1 (Executive): +255 715 268 391
+  secondaryPhone: string; // Boss 2 (Management): +255 624 265 480
+  branchMbeya: string; // Mbeya Branch: +255 746 268 391
+  branchMwanza: string; // Mwanza Branch: +255 699 032 777
+  thirdPhone: string; // +255 746 268 391 (Mbeya Branch)
+  fourthPhone?: string; // +255 699 032 777 (Mwanza Branch)
   phoneNumbers: string[];
-  whatsappNumber: string; // 255746268391
-  whatsappNumbers: { label: string; number: string; digits: string }[];
+  whatsappNumber: string; // Primary WhatsApp: 255715268391
+  whatsappNumbers: { label: string; number: string; digits: string; role?: string }[];
   shopAddress: string;
   shopAddressSw: string;
   businessHours: string;

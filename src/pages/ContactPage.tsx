@@ -27,7 +27,7 @@ export const ContactPage: React.FC = () => {
   const [inquiryPhone, setInquiryPhone] = useState('');
   const [inquirySubject, setInquirySubject] = useState('B2B Wholesale Carton Pricing');
   const [inquiryMessage, setInquiryMessage] = useState('');
-  const [selectedDesk, setSelectedDesk] = useState<string>('255746268391');
+  const [selectedDesk, setSelectedDesk] = useState<string>('255715268391');
 
   // FAQ accordion state
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -57,34 +57,44 @@ export const ContactPage: React.FC = () => {
 
   const salesDesks = [
     {
-      id: 'desk-1',
-      title: language === 'sw' ? 'Dawati 1: Mauzo ya Jumla & Rejareja' : 'Desk 1: General & Retail Inquiries',
-      phone: '+255 746 268 391',
-      numberDigits: '255746268391',
-      tag: 'General Sales',
+      id: 'desk-boss-1',
+      title: language === 'sw' ? 'Dawati 1 (Boss 1): Uongozi Mkuu & Oda Maalum' : 'Desk 1 (Boss 1): Executive & Priority Orders',
+      phone: '+255 715 268 391',
+      numberDigits: '255715268391',
+      tag: 'Boss 1 Desk',
       desc: language === 'sw'
-        ? 'Oda za vitabu vya Counter Books na vifaa vya shule kwa maduka ya rejareja na watu binafsi.'
-        : 'Assistance with single orders, retail counter books, student sets, and catalogue downloads.',
+        ? 'Mawasiliano ya moja kwa moja ya uongozi mkuu kwa oda maalum, maswali ya mikataba na oda za haraka.'
+        : 'Direct line to Executive Leadership for priority purchasing, special contract terms, and escalated service.',
     },
     {
-      id: 'desk-2',
-      title: language === 'sw' ? 'Dawati 2: Katoni za Kiwanda (B2B)' : 'Desk 2: B2B Wholesale & Cartons',
+      id: 'desk-boss-2',
+      title: language === 'sw' ? 'Dawati 2 (Boss 2): Usimamizi & Katoni za Kiwanda (B2B)' : 'Desk 2 (Boss 2): Management & B2B Wholesale',
       phone: '+255 624 265 480',
       numberDigits: '255624265480',
-      tag: 'Wholesale Tenders',
+      tag: 'Boss 2 Desk',
       desc: language === 'sw'
         ? 'Bei za punguzo za katoni (5 hadi 50+ katoni) kwa maduka ya jumla na wasambazaji wa mikoani.'
         : 'Tiered volume carton orders, distributor contracts, and direct factory waybill dispatches.',
     },
     {
-      id: 'desk-3',
-      title: language === 'sw' ? 'Dawati 3: Zabuni za Shule & Taasisi' : 'Desk 3: Institutional & School Tenders',
-      phone: '+255 689 032 777',
-      numberDigits: '255689032777',
-      tag: 'School Contracts',
+      id: 'desk-branch-mbeya',
+      title: language === 'sw' ? 'Tawi la Mbeya: Kiwanda cha Soweto SIDO' : 'Mbeya Branch: Soweto SIDO Factory Depot',
+      phone: '+255 746 268 391',
+      numberDigits: '255746268391',
+      tag: 'Mbeya Branch',
       desc: language === 'sw'
-        ? 'Utoaji wa proforma invoice rasmi za manunuzi ya shule, orodha za vitabu (booklists), na majalada ya ofisi.'
-        : 'Official government/private school tenders, syllabi booklists, stamped invoices, and board quotations.',
+        ? 'Ofisi ya kiwandani Soweto SIDO Viwandani Mbeya. Mauzo ya rejareja, stoo kuu, na vifurushi vya mabasi mikoani.'
+        : 'Main production facility depot in Soweto SIDO Viwandani, Mbeya. Retail walk-ins, stock checks, and regional bus dispatch.',
+    },
+    {
+      id: 'desk-branch-mwanza',
+      title: language === 'sw' ? 'Tawi la Mwanza: Usambazaji Kanda ya Ziwa' : 'Mwanza Branch: Lake Zone Regional Desk',
+      phone: '+255 699 032 777',
+      numberDigits: '255699032777',
+      tag: 'Mwanza Branch',
+      desc: language === 'sw'
+        ? 'Tawi letu la Mwanza linalohudumia mikoa ya Ziwa (Mwanza, Geita, Mara, Kagera, Simiyu, Shinyanga).'
+        : 'Dedicated regional branch hub for Lake Zone fulfillment across Mwanza, Geita, Mara, Kagera, and Shinyanga.',
     },
   ];
 
@@ -119,7 +129,7 @@ export const ContactPage: React.FC = () => {
     <div className="bg-[#fafafa] min-h-screen text-[#3b352f]">
       <SEOHead
         title="Contact Us & Official Sales Desks — OMEGA Stationery Tanzania"
-        description="Official contact numbers (+255 746 268 391, +255 624 265 480, +255 689 032 777), WhatsApp ordering desks, factory depots in Mbeya and Kariakoo."
+        description="Official contact numbers: Boss 1 (+255 715 268 391), Boss 2 (+255 624 265 480), Mbeya Branch (+255 746 268 391), Mwanza Branch (+255 699 032 777), WhatsApp ordering desks, factory depots in Mbeya and Kariakoo."
       />
 
       {/* ==================== 1. HERO HEADER ==================== */}
@@ -289,9 +299,10 @@ export const ContactPage: React.FC = () => {
                       onChange={(e) => setSelectedDesk(e.target.value)}
                       className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#e2dedb] text-xs focus:ring-1 focus:ring-[#4b423b] focus:outline-none bg-white"
                     >
-                      <option value="255746268391">Sales Desk 1 (+255 746 268 391)</option>
-                      <option value="255624265480">Wholesale Desk 2 (+255 624 265 480)</option>
-                      <option value="255689032777">Institutional Tender Desk 3 (+255 689 032 777)</option>
+                      <option value="255715268391">Boss 1 Desk (+255 715 268 391) — Executive</option>
+                      <option value="255624265480">Boss 2 Desk (+255 624 265 480) — Wholesale</option>
+                      <option value="255746268391">Mbeya Branch (+255 746 268 391) — SIDO Factory</option>
+                      <option value="255699032777">Mwanza Branch (+255 699 032 777) — Lake Zone</option>
                     </select>
                   </div>
                 </div>

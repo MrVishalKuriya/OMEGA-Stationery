@@ -168,13 +168,16 @@ const configSchema = new mongoose.Schema(
     brandSubtitleSw: { type: String, default: 'MADAFTARI BORA YA UANDISHI TANZANIA · TANGU 1998' },
     announcementText: { type: String, default: 'QUALITY FOR EVERY PAGE | WHOLESALE & RETAIL ORDERS ACROSS TANZANIA | OFFICIAL OMEGA DISTRIBUTOR' },
     announcementTextSw: { type: String, default: 'UBORA KWA KILA UKURASA | ODA ZA JUMLA NA REJAREJA TANZANIA NZIMA | MSAMBAZAJI HALISI WA OMEGA' },
-    phoneNumber: { type: String, default: '+255 746 268 391' },
+    phoneNumber: { type: String, default: '+255 715 268 391' },
     secondaryPhone: { type: String, default: '+255 624 265 480' },
-    thirdPhone: { type: String, default: '+255 689 032 777' },
+    branchMbeya: { type: String, default: '+255 746 268 391' },
+    branchMwanza: { type: String, default: '+255 699 032 777' },
+    thirdPhone: { type: String, default: '+255 746 268 391' },
+    fourthPhone: { type: String, default: '+255 699 032 777' },
     phoneNumbers: [String],
-    whatsappNumber: { type: String, default: '255746268391' },
-    shopAddress: { type: String, default: 'Soweto SIDO Viwandani, Mbeya, Tanzania' },
-    shopAddressSw: { type: String, default: 'Soweto SIDO Viwandani, Mbeya, Tanzania' },
+    whatsappNumber: { type: String, default: '255715268391' },
+    shopAddress: { type: String, default: 'Soweto SIDO Viwandani (Mbeya) & Mwanza Branch, Tanzania' },
+    shopAddressSw: { type: String, default: 'Soweto SIDO Viwandani (Mbeya) & Tawi la Mwanza, Tanzania' },
     businessHours: { type: String, default: 'Monday – Saturday: 8:00 AM – 6:30 PM · Sunday: Closed' },
     businessHoursSw: { type: String, default: 'Jumatatu – Jumamosi: Saa 2:00 Asubuhi – Saa 12:30 Jioni · Jumapili: Tumefungwa' },
     googleMapsUrl: { type: String, default: 'https://maps.google.com/?q=Soweto+SIDO+Viwandani+Mbeya' },
@@ -217,13 +220,21 @@ let inMemoryConfig = {
   brandSubtitleSw: 'MADAFTARI BORA YA UANDISHI TANZANIA · TANGU 1998',
   announcementText: 'QUALITY FOR EVERY PAGE | WHOLESALE & RETAIL ORDERS ACROSS TANZANIA | OFFICIAL OMEGA DISTRIBUTOR',
   announcementTextSw: 'UBORA KWA KILA UKURASA | ODA ZA JUMLA NA REJAREJA TANZANIA NZIMA | MSAMBAZAJI HALISI WA OMEGA',
-  phoneNumber: '+255 746 268 391',
+  phoneNumber: '+255 715 268 391',
   secondaryPhone: '+255 624 265 480',
-  thirdPhone: '+255 689 032 777',
-  phoneNumbers: ['+255 746 268 391', '+255 624 265 480', '+255 689 032 777'],
-  whatsappNumber: '255746268391',
-  shopAddress: 'Soweto SIDO Viwandani, Mbeya, Tanzania',
-  shopAddressSw: 'Soweto SIDO Viwandani, Mbeya, Tanzania',
+  branchMbeya: '+255 746 268 391',
+  branchMwanza: '+255 699 032 777',
+  thirdPhone: '+255 746 268 391',
+  fourthPhone: '+255 699 032 777',
+  phoneNumbers: [
+    '+255 715 268 391',
+    '+255 624 265 480',
+    '+255 746 268 391',
+    '+255 699 032 777',
+  ],
+  whatsappNumber: '255715268391',
+  shopAddress: 'Soweto SIDO Viwandani (Mbeya) & Mwanza Branch, Tanzania',
+  shopAddressSw: 'Soweto SIDO Viwandani (Mbeya) & Tawi la Mwanza, Tanzania',
   businessHours: 'Monday – Saturday: 8:00 AM – 6:30 PM · Sunday: Closed',
   businessHoursSw: 'Jumatatu – Jumamosi: Saa 2:00 Asubuhi – Saa 12:30 Jioni · Jumapili: Tumefungwa',
   googleMapsUrl: 'https://maps.google.com/?q=Soweto+SIDO+Viwandani+Mbeya',
@@ -1013,11 +1024,12 @@ Manufactured from high-tensile brown kraft paper that resists tears during trans
   // Check for Location / Delivery
   if (lower.includes('location') || lower.includes('address') || lower.includes('where') || lower.includes('mbeya') || lower.includes('wapi')) {
     return {
-      reply: `🏭 **OMEGA Stationery & Indigo Printers** is located at **Soweto SIDO Viwandani, Mbeya, Tanzania**.
-We deliver wholesale cartons across all Tanzanian regions (Dar es Salaam, Arusha, Mwanza, Dodoma, Morogoro, Iringa) via reliable bus freight & cargo carriers! You can also contact our official hotlines:
-• Desk 1 (General Orders): **+255 746 268 391**
-• Desk 2 (Wholesale & Tenders): **+255 624 265 480**
-• Desk 3 (Logistics & Upcountry): **+255 689 032 777**`,
+      reply: `🏭 **OMEGA Stationery & Indigo Printers** operates from **Soweto SIDO Viwandani (Mbeya)** and **Mwanza Branch**, Tanzania.
+We deliver wholesale cartons across all Tanzanian regions (Dar es Salaam, Arusha, Mwanza, Dodoma, Morogoro, Mbeya, Iringa) via reliable bus freight & cargo carriers! You can contact any of our 4 official hotlines:
+• Boss 1 (Executive Desk): **+255 715 268 391**
+• Boss 2 (Management & Wholesale): **+255 624 265 480**
+• Branch 1 (Mbeya SIDO Factory): **+255 746 268 391**
+• Branch 2 (Mwanza Lake Zone): **+255 699 032 777**`,
       recommendedProducts: []
     };
   }

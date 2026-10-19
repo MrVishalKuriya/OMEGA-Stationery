@@ -33,7 +33,7 @@ export const CartAndCheckoutPage: React.FC = () => {
 
   const t = TRANSLATIONS[language];
 
-  const [selectedWhatsAppNumber, setSelectedWhatsAppNumber] = useState<string>('255746268391');
+  const [selectedWhatsAppNumber, setSelectedWhatsAppNumber] = useState<string>('255715268391');
 
   const [formData, setFormData] = useState<CustomerOrderInput>({
     customerName: '',
@@ -312,19 +312,24 @@ export const CartAndCheckoutPage: React.FC = () => {
               <div className="space-y-1.5">
                 {[
                   {
-                    digits: '255746268391',
-                    label: 'Desk 1: +255 746 268 391',
-                    desc: 'General Orders & Retail Enquiries',
+                    digits: '255715268391',
+                    label: 'Boss 1 Desk: +255 715 268 391',
+                    desc: 'Executive & Direct Orders (Boss 1)',
                   },
                   {
                     digits: '255624265480',
-                    label: 'Desk 2: +255 624 265 480',
-                    desc: 'Wholesale Cartons & School Supplies',
+                    label: 'Boss 2 Desk: +255 624 265 480',
+                    desc: 'Management & Wholesale Desk (Boss 2)',
                   },
                   {
-                    digits: '255689032777',
-                    label: 'Desk 3: +255 689 032 777',
-                    desc: 'Logistics, Stoo & Upcountry Mikoani',
+                    digits: '255746268391',
+                    label: 'Mbeya Branch: +255 746 268 391',
+                    desc: 'Mbeya Branch (Soweto SIDO Factory Depot)',
+                  },
+                  {
+                    digits: '255699032777',
+                    label: 'Mwanza Branch: +255 699 032 777',
+                    desc: 'Mwanza Branch & Lake Zone Regional Desk',
                   },
                 ].map((d) => (
                   <label
