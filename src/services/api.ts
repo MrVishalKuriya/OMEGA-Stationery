@@ -23,13 +23,25 @@ export interface BackendHealthData {
   };
   cache?: {
     engine?: string;
-    connected?: boolean;
     mode?: string;
+    connected?: boolean;
+    isLive?: boolean;
+    status?: 'ONLINE' | 'ACTIVE_FALLBACK' | 'ERROR';
+    redisUrl?: string;
+    redisError?: string | null;
+    cachedKeysCount?: number;
     totalRequests?: number;
     hits?: number;
     misses?: number;
     hitRatioPercent?: number;
     averageLatencyMs?: number;
+    lastHitTime?: string | null;
+    lastTestResult?: {
+      success: boolean;
+      latencyMs: number;
+      timestamp: string;
+      engine?: string;
+    };
   };
 }
 
@@ -85,12 +97,82 @@ export async function fetchHealth(): Promise<BackendHealthData | null> {
 /**
  * Trigger cache flush or sync
  */
-export async function flushRedisCache(): Promise<boolean> {
+export async function flushRedisCache(): Promise<{ success: boolean; message: string; details?: any }> {
   try {
     const res = await fetch(`${BACKEND_URL}/api/cache/flush`, { method: 'POST' });
-    return res.ok;
+    const json = await res.json();
+    return {
+      success: json.success ?? res.ok,
+      message: json.message || (res.ok ? 'Cache flushed successfully' : 'Failed to flush cache'),
+      details: json.details
+    };
+  } catch (err: any) {
+    return { success: false, message: err.message || 'Failed to connect to cache flush endpoint' };
+  }
+}
+
+/**
+ * Execute a live sub-millisecond cache benchmark test
+ */
+export async function testLiveCacheBenchmark(): Promise<{
+  success: boolean;
+  message: string;
+  data?: {
+    isLive: boolean;
+    latencyMs: number;
+    engine: string;
+    connectedToRedis: boolean;
+    redisUrl?: string;
+    redisError?: string | null;
+    cachedKeysCount: number;
+    timestamp: string;
+  };
+}> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/cache/test`, { method: 'POST' });
+    const json = await res.json();
+    return json;
+  } catch (err: any) {
+    return {
+      success: false,
+      message: err.message || 'Cache benchmark call failed',
+    };
+  }
+}
+
+/**
+ * Attempt Redis reconnection on demand
+ */
+export async function reconnectRedisServer(): Promise<{
+  success: boolean;
+  message: string;
+  connected?: boolean;
+  error?: string;
+  engine?: string;
+}> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/cache/reconnect`, { method: 'POST' });
+    const json = await res.json();
+    return json;
+  } catch (err: any) {
+    return {
+      success: false,
+      message: err.message || 'Failed to trigger Redis reconnect',
+    };
+  }
+}
+
+/**
+ * Fetch dedicated cache diagnostics & telemetry
+ */
+export async function fetchCacheStats(): Promise<any | null> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/cache/stats`);
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json.success ? json.data : null;
   } catch {
-    return true;
+    return null;
   }
 }
 
