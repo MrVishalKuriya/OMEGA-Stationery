@@ -785,6 +785,18 @@ export const HomePage: React.FC = () => {
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
+
+          {/* View All Products Button (Indra Notebook Benchmark) */}
+          <div className="pt-8 sm:pt-10 flex justify-center">
+            <Link
+              to="/catalog"
+              id="view-all-products-home-btn"
+              className="inline-flex items-center justify-center gap-2 px-8 sm:px-10 py-3.5 sm:py-4 rounded-full bg-[#0d4e48] hover:bg-[#083834] text-white text-sm sm:text-base font-bold tracking-wide shadow-md hover:shadow-lg transition-all active:scale-95 group"
+            >
+              <span>{language === 'sw' ? 'Tazama Bidhaa Zote' : 'View All Products'}</span>
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1.5" />
+            </Link>
+          </div>
         </div>
       </section>
 
