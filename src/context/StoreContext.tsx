@@ -9,7 +9,7 @@ import {
   Language,
   UserProfile,
 } from '../types/store';
-import { INITIAL_PRODUCTS, INITIAL_STORE_CONFIG } from '../data/products';
+import { INITIAL_STORE_CONFIG } from '../data/products';
 import { supabase } from '../lib/supabase';
 import {
   createSession,
@@ -153,7 +153,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     } catch {
       // Fallback
     }
-    return INITIAL_PRODUCTS;
+    return [];
   });
 
   const [storeConfig, setStoreConfig] = useState<StoreConfig>(() => {
@@ -1055,13 +1055,15 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const resetProductsToDefault = () => {
     reloadCatalogFromDb()
-      .then(() => {
-        showToast('Catalog reloaded directly from MongoDB Atlas database.');
+      .then((res) => {
+        if (res && res.success) {
+          showToast(`Catalog synchronized directly from MongoDB Atlas (${res.count} products).`);
+        } else {
+          showToast('Catalog reloaded from database.');
+        }
       })
       .catch(() => {
-        setProducts(INITIAL_PRODUCTS);
-        localStorage.removeItem(STORAGE_KEYS.PRODUCTS);
-        showToast('Reset catalog in browser view.');
+        showToast('Database connection notice: could not reload catalog.');
       });
   };
 
