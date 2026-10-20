@@ -72,57 +72,62 @@ export const HomePage: React.FC = () => {
       : `Hello OMEGA Stationery, I would like to place an order and inquire about wholesale carton pricing.`
   )}`;
 
-  // Signature category cards
+  // Signature category cards (6 Featured OMEGA Lines)
   const signatureCategories = [
     {
-      title: language === 'sw' ? 'Counter Books' : 'Hardcover Counter Books',
-      subtitle: language === 'sw' ? 'Q2, Q3, Q4 Jalada Gumu' : 'Q2, Q3, Q4 Folio Ledgers',
-      desc: language === 'sw' ? '198p hadi 384p, ushonaji wa nyuzi madhubuti' : '198 to 384 pages, double thread-bound spine',
-      link: '/catalog?category=Counter+Books',
-      image: '/omega-products/counter-book-q3-catalog.jpeg',
+      title: 'Counter Book Q2',
+      subtitle: language === 'sw' ? 'Q2 Jalada Gumu · Kurasa 192' : '192 Pages · Q2 Folio Ledgers',
+      desc: language === 'sw' ? '192p, ushonaji wa nyuzi madhubuti' : '192 pages, thread-sewn hardboard spine',
+      link: '/product/prod-omega-cb-q2',
+      image: '/omega-products/counter-book-q2-192p.jpeg',
       tag: 'Accounting & Schools',
     },
     {
-      title: language === 'sw' ? 'Madaftari ya Mazoezi' : 'School Exercise Books',
-      subtitle: language === 'sw' ? 'Kurasa 32, 80, 100, 200' : '32p, 80p, 100p & 200p',
+      title: '200 Pages Exercise',
+      subtitle: language === 'sw' ? 'Single Line, Double Line & Hesabu' : 'Single Line, Double Line & Square',
       desc: language === 'sw' ? 'Mistari mipana, mistari miwili na hesabu' : 'Single line, double line & mathematics squares',
-      link: '/catalog?category=Exercise+Books',
+      link: '/product/prod-omega-ex-200sl',
       image: '/omega-products/exercise-book-200p-purple.jpeg',
       tag: 'Primary & Secondary',
     },
     {
-      title: language === 'sw' ? 'Bahasha za Kraft' : 'Heavy Kraft Bahasha',
-      subtitle: language === 'sw' ? 'Size A3, A4, A5, A6 Nzito' : 'A3, A4, A5, A6 Document Envelopes',
-      desc: language === 'sw' ? 'Karatasi ya kahawia isiyochanika kwa barua' : 'Tear-resistant kraft for official documents',
-      link: '/catalog?category=Bahasha+%26+Envelopes',
+      title: 'Stiff Cover 200 Pages',
+      subtitle: language === 'sw' ? 'Jalada Ngumu ya Jiometri' : 'Geometric Semi-Rigid Edition',
+      desc: language === 'sw' ? 'Karatasi 70 GSM isiyopenyeza wino' : 'Bleed-proof 70 GSM with poly-faceted cover',
+      link: '/product/prod-omega-stiff-200',
+      image: '/omega-products/stiff-cover-200p-black.jpeg',
+      tag: 'Executive & Office',
+    },
+    {
+      title: '100 Pages',
+      subtitle: language === 'sw' ? 'Kurasa 100 · SL, DL & Square' : '100p · SL, DL, Square & Plain',
+      desc: language === 'sw' ? 'Madaftari ya wanafunzi shuleni' : 'Standard classroom exercise books',
+      link: '/product/prod-omega-ex-100sl',
+      image: '/omega-products/exercise-book-100p-pink.jpeg',
+      tag: 'Primary & Secondary',
+    },
+    {
+      title: '80 Pages',
+      subtitle: language === 'sw' ? 'Canary Yellow · Kurasa 80' : '80p Canary Yellow Notebook',
+      desc: language === 'sw' ? 'Uzito mwepesi, imara kwa marudio' : 'Lightweight and durable revision books',
+      link: '/product/prod-omega-ex-80',
+      image: '/omega-products/exercise-book-80p-yellow.jpeg',
+      tag: 'Semester & Revision',
+    },
+    {
+      title: 'Heavy Kraft Bahasha',
+      subtitle: language === 'sw' ? 'Size A3, A4, A5 · Peel & Seal' : 'A3, A4, A5, A6 Envelopes',
+      desc: language === 'sw' ? 'Karatasi ya kahawia isiyochanika kwa nyaraka' : 'Tear-resistant oversized document kraft',
+      link: '/product/prod-omega-bahasha-a4',
       image: '/omega-products/bahasha-a4-catalog.png',
       tag: 'Office Mailers',
     },
-    {
-      title: language === 'sw' ? 'Mafaili & Ofisi' : 'Office & Filing Supplies',
-      subtitle: language === 'sw' ? 'Spring Files PVC & Manila' : 'PVC Spring Files & Manila Folders',
-      desc: language === 'sw' ? 'Uwekaji wa kumbukumbu na majarada ya ofisi' : 'Heavy-duty archival binders and record files',
-      link: '/catalog?category=Office+Supplies',
-      image: '/omega-products/plastic-file-pvc-catalog.jpeg',
-      tag: 'Enterprise & Legal',
-    },
-    {
-      title: language === 'sw' ? 'Vifurushi vya Jumla' : 'Wholesale Carton Packs',
-      subtitle: language === 'sw' ? 'Katoni za Kiwanda & Zabuni' : 'Factory Sealed Cartons & Tenders',
-      desc: language === 'sw' ? 'Punguzo la bei ya moja kwa moja hadi 18%' : 'Volume tier discounts for schools & wholesale shops',
-      link: '/wholesale',
-      image: '/omega-products/omega-carton-box-branded.jpeg',
-      tag: 'B2B Tenders',
-    },
   ];
 
-  // Calculator price computation
+  // Calculator price computation (Direct Factory Pricing without discount)
   const calcBaseRate =
     calcBookType === 'q2' ? 56000 : calcBookType === 'q3' ? 57000 : 60000;
-  const discountRate = calcQuantity >= 20 ? 0.18 : calcQuantity >= 5 ? 0.1 : 0.05;
-  const calcGrossTotal = calcBaseRate * calcQuantity;
-  const calcSavings = Math.round(calcGrossTotal * discountRate);
-  const calcFinalTotal = calcGrossTotal - calcSavings;
+  const calcTotal = calcBaseRate * calcQuantity;
 
   return (
     <div className="bg-[#fafafa] min-h-screen font-sans text-[#3b352f]">
@@ -340,7 +345,7 @@ export const HomePage: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-5">
             {signatureCategories.map((cat, idx) => (
               <Link
                 key={idx}
@@ -572,22 +577,22 @@ export const HomePage: React.FC = () => {
               <h2 className="font-heading text-2xl sm:text-4xl font-bold text-white leading-tight">
                 {language === 'sw'
                   ? 'Kikokotoo cha Bei za Jumla (Carton Pricing)'
-                  : 'Calculate Your Wholesale Carton Savings'}
+                  : 'Wholesale Carton Pricing Calculator'}
               </h2>
               <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
                 {language === 'sw'
-                  ? 'Chagua aina ya daftari na idadi ya katoni unazohitaji ili upate punguzo la moja kwa moja la hadi 18% kutoka kiwandani.'
-                  : 'Select your preferred ledger quire and order quantity to see instant volume discount savings. We pack in branded OMEGA reinforced cartons with bus parcel waybills.'}
+                  ? 'Chagua aina ya daftari na idadi ya katoni unazohitaji ili upate hesabu kamili ya moja kwa moja kutoka kiwandani.'
+                  : 'Select your preferred ledger quire and order quantity to see instant factory carton rates. We pack in branded OMEGA reinforced cartons with bus parcel waybills.'}
               </p>
 
               <div className="space-y-2 pt-2 text-xs text-stone-200">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#c49b7c]" />
-                  <span>5–19 Cartons: Save 10% on factory price</span>
+                  <span>Transparent Factory Direct Pricing (Zero hidden markup)</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-[#c49b7c]" />
-                  <span>20+ Cartons: Save 18% + Priority Upcountry dispatch</span>
+                  <span>Nationwide Bus Parcel Dispatch to all 31 regions</span>
                 </div>
               </div>
             </div>
@@ -651,19 +656,21 @@ export const HomePage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Price Calculation Output */}
-              <div className="p-4 rounded-[14px] bg-[#292420] border border-white/10 space-y-1.5 font-mono">
+              {/* Price Calculation Output (No discount) */}
+              <div className="p-4 rounded-[14px] bg-[#292420] border border-white/10 space-y-2 font-mono">
                 <div className="flex justify-between text-xs text-stone-300">
-                  <span>Regular Total:</span>
-                  <span className="line-through">{formatPrice(calcGrossTotal, currency)}</span>
+                  <span>Rate per Carton:</span>
+                  <span className="text-white font-bold">{formatPrice(calcBaseRate, currency)}</span>
                 </div>
-                <div className="flex justify-between text-xs text-emerald-400 font-bold">
-                  <span>Volume Savings ({Math.round(discountRate * 100)}%):</span>
-                  <span>- {formatPrice(calcSavings, currency)}</span>
+                <div className="flex justify-between text-xs text-stone-300">
+                  <span>Selected Quantity:</span>
+                  <span className="text-white font-bold">
+                    {calcQuantity} {calcQuantity === 1 ? 'Carton' : 'Cartons'} ({calcQuantity * (calcBookType === 'q2' ? 48 : calcBookType === 'q3' ? 36 : 24)} Books)
+                  </span>
                 </div>
                 <div className="flex justify-between text-base font-extrabold text-white pt-2 border-t border-white/10">
-                  <span>Calculated Net Price:</span>
-                  <span className="text-[#c49b7c] text-lg font-black">{formatPrice(calcFinalTotal, currency)}</span>
+                  <span>Total Amount:</span>
+                  <span className="text-[#c49b7c] text-lg sm:text-xl font-black">{formatPrice(calcTotal, currency)}</span>
                 </div>
               </div>
 
@@ -673,7 +680,8 @@ export const HomePage: React.FC = () => {
                   `*OMEGA WHOLESALE PROFORMA INQUIRY*\n` +
                   `Product: Counter Book ${calcBookType.toUpperCase()}\n` +
                   `Quantity: ${calcQuantity} Cartons (${calcQuantity * (calcBookType === 'q2' ? 48 : calcBookType === 'q3' ? 36 : 24)} Units)\n` +
-                  `Calculated Total: ${currency} ${calcFinalTotal.toLocaleString()}\n\n` +
+                  `Rate per Carton: ${currency} ${calcBaseRate.toLocaleString()}\n` +
+                  `Total Amount: ${currency} ${calcTotal.toLocaleString()}\n\n` +
                   `Please share formal proforma invoice and dispatch waybill schedule.`
                 )}`}
                 target="_blank"
@@ -883,7 +891,7 @@ export const HomePage: React.FC = () => {
           </form>
 
           <p className="text-xs text-[#3b352f] font-semibold font-mono">
-            Dedicated Hotlines: Boss 1: +255 715 268 391 | Boss 2: +255 624 265 480 | Mbeya: +255 746 268 391 | Mwanza: +255 699 032 777
+            Dedicated Hotlines: Kanti Bhai K. Halai: +255 715 268 391 | Vijesh K. Halai: +255 624 265 480 | Mbeya: +255 746 268 391 | Mwanza: +255 699 032 777
           </p>
         </div>
       </section>

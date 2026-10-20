@@ -18,6 +18,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 5000;
 
 // Configurable Uploads Directory (Shared with Vite public folder)
@@ -38,11 +39,39 @@ const MONGODB_URI = process.env.MONGODB_URI || ATLAS_URI;
 const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
 const CACHE_TTL = parseInt(process.env.CACHE_TTL_SECONDS || '3600', 10);
 
+// Chrome Private Network Access (PNA) header support
+app.use((req, res, next) => {
+  if (req.headers['access-control-request-private-network']) {
+    res.setHeader('Access-Control-Allow-Private-Network', 'true');
+  }
+  next();
+});
+
 // Security & Performance Middlewares
 app.use(helmet({ crossOriginResourcePolicy: false }));
 app.use(compression());
 app.use(morgan('short'));
-app.use(cors());
+
+const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS 
+  ? process.env.CORS_ALLOWED_ORIGINS.split(',').map(s => s.trim())
+  : '*';
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins === '*' || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+      return callback(null, true);
+    }
+    if (origin.endsWith('.vercel.app') || origin.includes('localhost') || origin.includes('127.0.0.1')) {
+      return callback(null, true);
+    }
+    return callback(null, true);
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With', 'Access-Control-Request-Private-Network'],
+  credentials: true,
+}));
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
@@ -55,9 +84,41 @@ const apiLimiter = rateLimit({
   max: 300,
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { xForwardedForHeader: false },
   message: { success: false, message: 'Too many requests from this IP, please try again in a minute' }
 });
 app.use('/api/', apiLimiter);
+
+// Root & Discovery API Endpoints
+app.get('/', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    service: 'OMEGA Stationery & Books API Server',
+    version: '1.0.0',
+    documentation: '/api/health',
+    endpoints: {
+      health: '/api/health',
+      products: '/api/products',
+      orders: '/api/orders',
+      config: '/api/config',
+      databaseStats: '/api/database/stats'
+    }
+  });
+});
+
+app.get('/api', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    service: 'OMEGA Stationery API Gateway',
+    endpoints: {
+      health: '/api/health',
+      products: '/api/products',
+      orders: '/api/orders',
+      config: '/api/config',
+      cacheStats: '/api/cache/stats'
+    }
+  });
+});
 
 // ==========================================
 // 1. LOAD 33 OFFICIAL OMEGA PRODUCTS CATALOG
@@ -1237,7 +1298,7 @@ Manufactured from high-tensile brown kraft paper that resists tears during trans
     return {
       reply: `🏭 **OMEGA Stationery & Indigo Printers** operates from **Soweto SIDO Viwandani (Mbeya)** and **Mwanza Branch**, Tanzania.
 We deliver wholesale cartons across all Tanzanian regions (Dar es Salaam, Arusha, Mwanza, Dodoma, Morogoro, Mbeya, Iringa) via reliable bus freight & cargo carriers! You can contact any of our 4 official hotlines:
-• Co-Founder & MD (Desk 1): **+255 715 268 391**
+• KANTI BHAI K. HALAI (Co-Founder & MD): **+255 715 268 391**
 • VIJESH K. HALAI (Co-Founder & MD): **+255 624 265 480**
 • Branch 1 (Mbeya SIDO Factory): **+255 746 268 391**
 • Branch 2 (Mwanza Lake Zone): **+255 699 032 777**`,

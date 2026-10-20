@@ -1,9 +1,65 @@
 import { Product, CustomerOrderInput, DemoOrderRecord } from '../types/store';
 
-// Reads backend URL from environment (e.g. Render Web Service URL)
-// Default fallback to MongoDB API server on port 5000
-const RAW_URL = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
-export const BACKEND_URL = RAW_URL.replace(/\/+$/, '');
+/**
+ * Detects if the current environment is a public HTTPS origin trying to access a loopback address space.
+ * Chrome Private Network Access (PNA) and Mixed Content restrictions strictly forbid
+ * public HTTPS origins (such as https://omegastationery.vercel.app) from accessing http://localhost.
+ */
+export function isLoopbackRestricted(url: string = BACKEND_URL): boolean {
+  if (typeof window === 'undefined') return false;
+  const isHttps = window.location.protocol === 'https:';
+  const isNotLocalhostHost = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+  const isLoopbackTarget = url.includes('localhost') || url.includes('127.0.0.1') || url.startsWith('http://[::1]');
+  return isHttps && isNotLocalhostHost && isLoopbackTarget;
+}
+
+function resolveBackendUrl(): string {
+  if (typeof window !== 'undefined') {
+    const saved = localStorage.getItem('OMEGA_BACKEND_URL');
+    if (saved && saved.trim()) {
+      let clean = saved.trim().replace(/\/+$/, '');
+      if (clean.endsWith('/api')) clean = clean.slice(0, -4);
+      return clean;
+    }
+  }
+
+  const envUrl = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || '';
+  if (envUrl && envUrl.trim()) {
+    let clean = envUrl.trim().replace(/\/+$/, '');
+    if (clean.endsWith('/api')) clean = clean.slice(0, -4);
+    return clean;
+  }
+
+  // In browser on localhost (development), default to port 5000
+  if (typeof window !== 'undefined') {
+    const isLocalhostHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    if (isLocalhostHost) {
+      return 'http://localhost:5000';
+    }
+    // On public HTTPS domain (e.g. Vercel), default to the live Render cloud backend
+    return 'https://omega-stationery-backend.onrender.com';
+  }
+
+  return 'http://localhost:5000';
+}
+
+export let BACKEND_URL = resolveBackendUrl();
+
+export function setCustomBackendUrl(url: string): void {
+  const clean = url.trim().replace(/\/+$/, '');
+  BACKEND_URL = clean;
+  if (typeof window !== 'undefined') {
+    if (clean) {
+      localStorage.setItem('OMEGA_BACKEND_URL', clean);
+    } else {
+      localStorage.removeItem('OMEGA_BACKEND_URL');
+    }
+  }
+}
+
+export function isBackendConfigured(): boolean {
+  return Boolean(BACKEND_URL) && !isLoopbackRestricted(BACKEND_URL);
+}
 
 export interface BackendHealthData {
   status: 'UP' | 'DOWN';
@@ -56,6 +112,20 @@ export interface BackendApiResponse<T> {
  * Check connectivity and status of the Node.js + MongoDB Atlas backend
  */
 export async function checkBackendHealth(): Promise<{ online: boolean; data?: BackendHealthData; error?: string }> {
+  if (!BACKEND_URL) {
+    return {
+      online: false,
+      error: 'Backend URL is not configured. Set VITE_BACKEND_URL in Vercel to your deployed backend URL (e.g. Render).',
+    };
+  }
+
+  if (isLoopbackRestricted(BACKEND_URL)) {
+    return {
+      online: false,
+      error: 'Access to localhost:5000 is blocked from public HTTPS domains by browser Private Network Access policy. Deploy backend and set VITE_BACKEND_URL in Vercel.',
+    };
+  }
+
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 6000);
@@ -98,6 +168,9 @@ export async function fetchHealth(): Promise<BackendHealthData | null> {
  * Trigger cache flush or sync
  */
 export async function flushRedisCache(): Promise<{ success: boolean; message: string; details?: any }> {
+  if (!isBackendConfigured()) {
+    return { success: false, message: 'Backend not connected or loopback restricted on public domain' };
+  }
   try {
     const res = await fetch(`${BACKEND_URL}/api/cache/flush`, { method: 'POST' });
     const json = await res.json();
@@ -128,6 +201,9 @@ export async function testLiveCacheBenchmark(): Promise<{
     timestamp: string;
   };
 }> {
+  if (!isBackendConfigured()) {
+    return { success: false, message: 'Backend not connected or loopback restricted on public domain' };
+  }
   try {
     const res = await fetch(`${BACKEND_URL}/api/cache/test`, { method: 'POST' });
     const json = await res.json();
@@ -150,6 +226,9 @@ export async function reconnectRedisServer(): Promise<{
   error?: string;
   engine?: string;
 }> {
+  if (!isBackendConfigured()) {
+    return { success: false, message: 'Backend not connected or loopback restricted on public domain' };
+  }
   try {
     const res = await fetch(`${BACKEND_URL}/api/cache/reconnect`, { method: 'POST' });
     const json = await res.json();
@@ -166,6 +245,7 @@ export async function reconnectRedisServer(): Promise<{
  * Fetch dedicated cache diagnostics & telemetry
  */
 export async function fetchCacheStats(): Promise<any | null> {
+  if (!isBackendConfigured()) return null;
   try {
     const res = await fetch(`${BACKEND_URL}/api/cache/stats`);
     if (!res.ok) return null;
@@ -180,6 +260,9 @@ export async function fetchCacheStats(): Promise<any | null> {
  * Synchronize all 33 products into MongoDB collection
  */
 export async function syncDatabaseProducts(): Promise<{ success: boolean; message: string; count?: number }> {
+  if (!isBackendConfigured()) {
+    return { success: false, message: 'Cloud backend is not connected. Configure VITE_BACKEND_URL in Vercel settings.' };
+  }
   try {
     const res = await fetch(`${BACKEND_URL}/api/products/seed`, {
       method: 'POST',
@@ -196,6 +279,7 @@ export async function syncDatabaseProducts(): Promise<{ success: boolean; messag
  * Fetch detailed database management statistics from MongoDB
  */
 export async function fetchDatabaseStats(): Promise<any | null> {
+  if (!isBackendConfigured()) return null;
   try {
     const res = await fetch(`${BACKEND_URL}/api/database/stats`);
     if (!res.ok) return null;
@@ -218,6 +302,10 @@ export async function fetchLiveProducts(options?: {
   featured?: boolean;
   forceRefresh?: boolean;
 }): Promise<Product[] | null> {
+  if (!isBackendConfigured()) {
+    return null;
+  }
+
   const cacheKey = `cat=${options?.category || 'all'}&q=${options?.search || ''}&feat=${!!options?.featured}`;
   
   if (!options?.forceRefresh) {
@@ -264,6 +352,9 @@ export async function submitOrderToBackend(input: CustomerOrderInput & {
   deliveryFee: number;
   totalAmount: number;
 }): Promise<{ success: boolean; order?: any; error?: string }> {
+  if (!isBackendConfigured()) {
+    return { success: false, error: 'Live backend offline (Order saved in browser demo orders).' };
+  }
   try {
     const res = await fetch(`${BACKEND_URL}/api/orders`, {
       method: 'POST',
@@ -291,6 +382,7 @@ export async function submitOrderToBackend(input: CustomerOrderInput & {
  * Fetch all orders from MongoDB (used by Admin portal / Orders view)
  */
 export async function fetchLiveOrders(): Promise<any[] | null> {
+  if (!isBackendConfigured()) return null;
   try {
     const res = await fetch(`${BACKEND_URL}/api/orders`, {
       headers: { 'Accept': 'application/json' },
@@ -326,6 +418,7 @@ export async function loginUserWithBackend(credentials: {
   password?: string;
   rememberMe?: boolean;
 }): Promise<BackendAuthResponse | null> {
+  if (!isBackendConfigured()) return null;
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 2500);
 
@@ -364,6 +457,7 @@ export async function registerUserWithBackend(userData: {
   phone?: string;
   accountType?: 'individual' | 'wholesale' | 'school';
 }): Promise<BackendAuthResponse | null> {
+  if (!isBackendConfigured()) return null;
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 2500);
 
@@ -401,6 +495,12 @@ export async function askStationeryAI(
   message: string,
   history: Array<{ role: 'user' | 'assistant'; content: string }> = []
 ): Promise<{ success: boolean; reply: string; source?: string; recommendedProducts?: Product[] }> {
+  if (!isBackendConfigured()) {
+    return {
+      success: false,
+      reply: 'OMEGA AI assistant is offline (backend not connected). For instant assistance, please reach our sales team on WhatsApp: +255 746 268 391.',
+    };
+  }
   try {
     const res = await fetch(`${BACKEND_URL}/api/ai/chat`, {
       method: 'POST',
@@ -442,6 +542,9 @@ export async function parseSchoolBooklist(text: string): Promise<{
     subtotal: number;
   }>;
 }> {
+  if (!isBackendConfigured()) {
+    return { success: false, parsedCount: 0, estimatedTotal: 0, items: [] };
+  }
   try {
     const res = await fetch(`${BACKEND_URL}/api/ai/parse-booklist`, {
       method: 'POST',
@@ -469,6 +572,7 @@ export async function parseSchoolBooklist(text: string): Promise<{
  * Create or Upsert Product directly in MongoDB Database
  */
 export async function createProductInDb(product: Product): Promise<{ success: boolean; data?: Product; message?: string }> {
+  if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
     const res = await fetch(`${BACKEND_URL}/api/products`, {
       method: 'POST',
@@ -486,6 +590,7 @@ export async function createProductInDb(product: Product): Promise<{ success: bo
  * Update Product directly in MongoDB Database
  */
 export async function updateProductInDb(id: string, product: Partial<Product>): Promise<{ success: boolean; data?: Product; message?: string }> {
+  if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
     const res = await fetch(`${BACKEND_URL}/api/products/${id}`, {
       method: 'PUT',
@@ -503,6 +608,7 @@ export async function updateProductInDb(id: string, product: Partial<Product>): 
  * Fast inline price update directly in MongoDB
  */
 export async function updateProductPriceInDb(id: string, price: number, discountPrice?: number, wholesalePrice?: number): Promise<{ success: boolean; message?: string }> {
+  if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
     const res = await fetch(`${BACKEND_URL}/api/products/${id}/price`, {
       method: 'PATCH',
@@ -520,6 +626,7 @@ export async function updateProductPriceInDb(id: string, price: number, discount
  * Update stock status & quantity directly in MongoDB
  */
 export async function updateProductStockInDb(id: string, stockStatus: string, stockQuantity?: number): Promise<{ success: boolean; message?: string }> {
+  if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
     const res = await fetch(`${BACKEND_URL}/api/products/${id}/stock`, {
       method: 'PATCH',
@@ -537,6 +644,7 @@ export async function updateProductStockInDb(id: string, stockStatus: string, st
  * Delete product directly from MongoDB
  */
 export async function deleteProductFromDb(id: string): Promise<{ success: boolean; message?: string }> {
+  if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
     const res = await fetch(`${BACKEND_URL}/api/products/${id}`, {
       method: 'DELETE',
@@ -558,6 +666,7 @@ export async function bulkUpdateProductsInDb(payload: {
   percentage?: number;
   stockStatus?: string;
 }): Promise<{ success: boolean; message?: string }> {
+  if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
     const res = await fetch(`${BACKEND_URL}/api/products/bulk`, {
       method: 'POST',
@@ -575,6 +684,7 @@ export async function bulkUpdateProductsInDb(payload: {
  * Fetch live store configuration & web content handles from MongoDB
  */
 export async function fetchStoreConfigFromDb(): Promise<any | null> {
+  if (!isBackendConfigured()) return null;
   try {
     const res = await fetch(`${BACKEND_URL}/api/config`);
     if (!res.ok) return null;
@@ -589,6 +699,7 @@ export async function fetchStoreConfigFromDb(): Promise<any | null> {
  * Update Web Content & Store Handles directly in MongoDB Database
  */
 export async function saveStoreConfigToDb(config: any): Promise<{ success: boolean; message?: string; data?: any }> {
+  if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
     const res = await fetch(`${BACKEND_URL}/api/config`, {
       method: 'PUT',
@@ -606,6 +717,7 @@ export async function saveStoreConfigToDb(config: any): Promise<{ success: boole
  * Update order status, tracking waybill, and admin notes directly in MongoDB
  */
 export async function updateOrderStatusInDb(id: string, update: { status?: string; trackingNumber?: string; adminNotes?: string }): Promise<{ success: boolean; message?: string }> {
+  if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
     const res = await fetch(`${BACKEND_URL}/api/orders/${id}`, {
       method: 'PATCH',
@@ -623,6 +735,7 @@ export async function updateOrderStatusInDb(id: string, update: { status?: strin
  * Delete order record directly from MongoDB
  */
 export async function deleteOrderFromDb(id: string): Promise<{ success: boolean; message?: string }> {
+  if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
     const res = await fetch(`${BACKEND_URL}/api/orders/${id}`, {
       method: 'DELETE',
@@ -642,6 +755,7 @@ export async function uploadProductImage(
   dataUriOrBase64: string,
   filename?: string
 ): Promise<{ success: boolean; url?: string; filename?: string; message?: string }> {
+  if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
     const res = await fetch(`${BACKEND_URL}/api/upload`, {
       method: 'POST',

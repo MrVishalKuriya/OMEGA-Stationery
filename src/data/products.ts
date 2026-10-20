@@ -40,7 +40,7 @@ export const INITIAL_STORE_CONFIG: StoreConfig = {
   ],
   whatsappNumber: '255715268391',
   whatsappNumbers: [
-    { label: 'Co-Founder & MD (Desk 1)', number: '+255 715 268 391', digits: '255715268391', role: 'Co-Founder & Managing Director' },
+    { label: 'KANTI BHAI K. HALAI (Co-Founder & MD)', number: '+255 715 268 391', digits: '255715268391', role: 'Founder & Managing Director' },
     { label: 'VIJESH K. HALAI (Co-Founder & MD)', number: '+255 624 265 480', digits: '255624265480', role: 'Co-Founder & Managing Director' },
     { label: 'Mbeya Branch (Soweto SIDO)', number: '+255 746 268 391', digits: '255746268391', role: 'Mbeya Branch' },
     { label: 'Mwanza Branch Desk', number: '+255 699 032 777', digits: '255699032777', role: 'Mwanza Branch' },
@@ -63,9 +63,9 @@ export const INITIAL_STORE_CONFIG: StoreConfig = {
   aboutProductRangeSw:
     'Mkusanyiko wetu unajumuisha Counter Books za jalada gumu (Q2, Q3, Q4), Madaftari ya OMEGA (Kurasa 32, 80, 100, 200 Single Line, Double Line, Square), Bahasha nzito (A3, A4, A5, A6), Mafaili ya PVC na Manila, Karatasi za mitihani na vifaa vya kijiometri.',
   aboutCustomerService:
-    'Direct instant ordering via WhatsApp on our 4 official hotlines: Boss 1 (+255 715 268 391), Boss 2 (+255 624 265 480), Mbeya Branch (+255 746 268 391), and Mwanza Branch (+255 699 032 777).',
+    'Direct instant ordering via WhatsApp on our 4 official hotlines: Kanti Bhai K. Halai (+255 715 268 391), Vijesh K. Halai (+255 624 265 480), Mbeya Branch (+255 746 268 391), and Mwanza Branch (+255 699 032 777).',
   aboutCustomerServiceSw:
-    'Agiza mara moja kupitia WhatsApp kwa namba zetu 4 rasmi: Boss 1 (+255 715 268 391), Boss 2 (+255 624 265 480), Tawi la Mbeya (+255 746 268 391), na Tawi la Mwanza (+255 699 032 777).',
+    'Agiza mara moja kupitia WhatsApp kwa namba zetu 4 rasmi: Kanti Bhai K. Halai (+255 715 268 391), Vijesh K. Halai (+255 624 265 480), Tawi la Mbeya (+255 746 268 391), na Tawi la Mwanza (+255 699 032 777).',
   aboutValues: [
     'High-GSM Bleed-Proof Paper: Rigid opacity that resists fountain pen & gel ink bleed.',
     'Stiff & Rigid Hardcovers: Thread-sewn binding built to withstand daily handling for years.',

@@ -274,7 +274,7 @@ export const SchoolTendersPage: React.FC = () => {
               </div>
 
               <p className="text-[11px] text-stone-300 text-center">
-                Dedicated Desks: Boss 1: +255 715 268 391 · Boss 2: +255 624 265 480 · Mbeya: +255 746 268 391 · Mwanza: +255 699 032 777 · EFD Stamped Invoices Issued
+                Dedicated Desks: Kanti Bhai K. Halai: +255 715 268 391 · Vijesh K. Halai: +255 624 265 480 · Mbeya: +255 746 268 391 · Mwanza: +255 699 032 777 · EFD Stamped Invoices Issued
               </p>
             </div>
           </div>

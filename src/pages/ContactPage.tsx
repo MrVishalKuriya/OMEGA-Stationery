@@ -58,13 +58,13 @@ export const ContactPage: React.FC = () => {
   const salesDesks = [
     {
       id: 'desk-boss-1',
-      title: language === 'sw' ? 'Dawati 1: Co-Founder & Managing Director' : 'Desk 1: Co-Founder & Managing Director',
+      title: 'KANTI BHAI K. HALAI: Co-Founder & Managing Director',
       phone: '+255 715 268 391',
       numberDigits: '255715268391',
-      tag: 'Executive Desk',
+      tag: 'KANTI BHAI K. HALAI',
       desc: language === 'sw'
         ? 'Mawasiliano ya moja kwa moja ya uongozi mkuu kwa oda maalum, maswali ya mikataba na oda za haraka.'
-        : 'Direct line to Executive Leadership for priority purchasing, special contract terms, and escalated service.',
+        : 'Co-Founder & Managing Director - direct line for priority purchasing, special contract terms, and escalated service.',
     },
     {
       id: 'desk-boss-2',
@@ -129,7 +129,7 @@ export const ContactPage: React.FC = () => {
     <div className="bg-[#fafafa] min-h-screen text-[#3b352f]">
       <SEOHead
         title="Contact Us & Official Sales Desks — OMEGA Stationery Tanzania"
-        description="Official contact numbers: Boss 1 (+255 715 268 391), Boss 2 (+255 624 265 480), Mbeya Branch (+255 746 268 391), Mwanza Branch (+255 699 032 777), WhatsApp ordering desks, factory depots in Mbeya and Kariakoo."
+        description="Official contact numbers: Kanti Bhai K. Halai (+255 715 268 391), Vijesh K. Halai (+255 624 265 480), Mbeya Branch (+255 746 268 391), Mwanza Branch (+255 699 032 777), WhatsApp ordering desks, factory depots in Mbeya and Kariakoo."
       />
 
       {/* ==================== 1. HERO HEADER ==================== */}
@@ -299,7 +299,7 @@ export const ContactPage: React.FC = () => {
                       onChange={(e) => setSelectedDesk(e.target.value)}
                       className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#e2dedb] text-xs focus:ring-1 focus:ring-[#4b423b] focus:outline-none bg-white"
                     >
-                      <option value="255715268391">Co-Founder &amp; MD Desk 1 (+255 715 268 391) — Executive</option>
+                      <option value="255715268391">KANTI BHAI K. HALAI (+255 715 268 391) — Co-Founder &amp; MD</option>
                       <option value="255624265480">VIJESH K. HALAI (+255 624 265 480) — Co-Founder &amp; MD</option>
                       <option value="255746268391">Mbeya Branch (+255 746 268 391) — SIDO Factory</option>
                       <option value="255699032777">Mwanza Branch (+255 699 032 777) — Lake Zone</option>

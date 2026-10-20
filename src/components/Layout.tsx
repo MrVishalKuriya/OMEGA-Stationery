@@ -273,9 +273,9 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 </div>
 
                 <div className="space-y-2.5">
-                  {/* Co-Founder 01 */}
+                  {/* Co-Founder 01: KANTI BHAI K. HALAI */}
                   <a
-                    href="https://wa.me/255715268391?text=Hello%20OMEGA%20Executive%20Office,%20inquiry%20from%20website"
+                    href="https://wa.me/255715268391?text=Hello%20Kanti%20Bhai%20K.%20Halai,%20inquiry%20from%20website"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-2 sm:p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/5 hover:border-[#c49b7c]/50 transition-all flex items-center justify-between group"
@@ -289,13 +289,13 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                           +255 715 268 391
                         </div>
                         <div className="text-[10px] text-stone-300 font-semibold truncate">
-                          Founder &amp; Executive Desk
+                          KANTI BHAI K. HALAI
                         </div>
                       </div>
                     </div>
                     <div className="text-right shrink-0 pl-2">
                       <span className="text-[10px] sm:text-[11px] font-bold text-[#c49b7c] block">
-                        Co-Founder &amp; MD
+                        Founder &amp; MD
                       </span>
                       <span className="text-[9px] text-stone-400 font-medium block">
                         Managing Director

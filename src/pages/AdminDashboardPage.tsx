@@ -74,6 +74,10 @@ import {
   uploadProductImage,
   testLiveCacheBenchmark,
   reconnectRedisServer,
+  BACKEND_URL,
+  isBackendConfigured,
+  isLoopbackRestricted,
+  setCustomBackendUrl,
 } from '../services/api';
 
 // Official OMEGA Factory Product Photography Assets for 1-Click Preset Selection
@@ -259,6 +263,21 @@ export const AdminDashboardPage: React.FC = () => {
   const [editingOrderId, setEditingOrderId] = useState<string | null>(null);
   const [tempTrackingNumber, setTempTrackingNumber] = useState<string>('');
   const [tempAdminNotes, setTempAdminNotes] = useState<string>('');
+  const [customBackendInput, setCustomBackendInput] = useState(BACKEND_URL || '');
+  const [backendConfigNotice, setBackendConfigNotice] = useState<string | null>(null);
+
+  const handleSaveCustomBackend = async () => {
+    setCustomBackendUrl(customBackendInput);
+    setBackendConfigNotice('Testing connection to backend...');
+    const data = await fetchHealth();
+    if (data) {
+      setBackendHealth(data);
+      setBackendConfigNotice('Connected to live backend successfully!');
+    } else {
+      setBackendConfigNotice('Saved. Backend is starting up or not yet reachable.');
+    }
+    setTimeout(() => setBackendConfigNotice(null), 5000);
+  };
 
   // Backend Health poll
   useEffect(() => {
@@ -890,7 +909,7 @@ export const AdminDashboardPage: React.FC = () => {
         brandingForm.branchMwanza || '+255 699 032 777',
       ],
       whatsappNumbers: [
-        { label: 'Co-Founder & MD (Desk 1)', number: brandingForm.phoneNumber || '+255 715 268 391', digits: boss1Digits, role: 'Co-Founder & Managing Director' },
+        { label: 'KANTI BHAI K. HALAI (Co-Founder & MD)', number: brandingForm.phoneNumber || '+255 715 268 391', digits: boss1Digits, role: 'Co-Founder & Managing Director' },
         { label: 'VIJESH K. HALAI (Co-Founder & MD)', number: brandingForm.secondaryPhone || '+255 624 265 480', digits: boss2Digits, role: 'Co-Founder & Managing Director' },
         { label: 'Mbeya Branch (Soweto SIDO)', number: brandingForm.branchMbeya || '+255 746 268 391', digits: mbeyaDigits, role: 'Mbeya Branch' },
         { label: 'Mwanza Branch Desk', number: brandingForm.branchMwanza || '+255 699 032 777', digits: mwanzaDigits, role: 'Mwanza Branch' },
@@ -2169,7 +2188,7 @@ export const AdminDashboardPage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="space-y-1">
                   <label className="block text-xs font-bold uppercase tracking-wider text-stone-700">
-                    Boss 1 (Executive Desk)
+                    Kanti Bhai K. Halai (Co-Founder &amp; MD)
                   </label>
                   <input
                     type="text"
@@ -2183,7 +2202,7 @@ export const AdminDashboardPage: React.FC = () => {
 
                 <div className="space-y-1">
                   <label className="block text-xs font-bold uppercase tracking-wider text-stone-700">
-                    Boss 2 (Management Desk)
+                    Vijesh K. Halai (Co-Founder &amp; MD)
                   </label>
                   <input
                     type="text"
@@ -2434,6 +2453,96 @@ export const AdminDashboardPage: React.FC = () => {
       {/* ==================== TAB 4: MONGODB & REDIS CLOUD TELEMETRY ==================== */}
       {activeTab === 'architecture' && (
         <div className="space-y-6">
+          {/* Cloud API Gateway & Cross-Origin Configuration Card */}
+          <div className="bg-white border border-stone-200 rounded-2xl p-6 space-y-4 shadow-sm">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stone-100 pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className={`p-2.5 rounded-xl ${isBackendConfigured() ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'}`}>
+                  <Server className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="font-heading text-sm font-bold text-[#2b2520]">Cloud API Gateway &amp; Backend Origin</h3>
+                  <p className="text-[11px] text-stone-500">Cross-Origin Resource Sharing (CORS) &amp; Render Cloud Connection</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase border ${
+                  backendHealth && isBackendConfigured()
+                    ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                    : isLoopbackRestricted(BACKEND_URL)
+                    ? 'bg-rose-100 text-rose-800 border-rose-300'
+                    : 'bg-amber-100 text-amber-800 border-amber-300'
+                }`}>
+                  {backendHealth && isBackendConfigured() ? 'Cloud Live' : isLoopbackRestricted(BACKEND_URL) ? 'Loopback Blocked' : 'Local Standalone'}
+                </span>
+              </div>
+            </div>
+
+            {/* Loopback Restriction Banner if accessing localhost from Vercel */}
+            {isLoopbackRestricted(BACKEND_URL) && (
+              <div className="p-3.5 rounded-xl border border-rose-200 bg-rose-50/70 space-y-2">
+                <div className="flex items-center gap-2 text-rose-900 font-bold text-xs">
+                  <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+                  <span>Browser Private Network Access Block (Vercel &rarr; localhost)</span>
+                </div>
+                <p className="text-[11px] text-rose-800 leading-relaxed">
+                  You are accessing this app from a public HTTPS domain (<code className="px-1 py-0.5 bg-white/80 rounded font-mono text-[10px]">{typeof window !== 'undefined' ? window.location.origin : 'https://omegastationery.vercel.app'}</code>). Modern browsers forbid public websites from fetching <code className="px-1 py-0.5 bg-white/80 rounded font-mono text-[10px]">http://localhost:5000</code> due to <strong>Private Network Access (PNA)</strong> and <strong>Mixed Content</strong> security policies.
+                </p>
+                <div className="p-2.5 bg-white/90 rounded-lg text-[11px] text-stone-700 space-y-1">
+                  <div className="font-bold text-stone-800">Permanent Fix for Vercel Deployment:</div>
+                  <ol className="list-decimal list-inside space-y-0.5 text-stone-600 text-[10px]">
+                    <li>Deploy your backend to Render or Railway (e.g. <code className="font-mono">https://omega-stationery-backend.onrender.com</code>)</li>
+                    <li>In Vercel Dashboard &rarr; <strong>Settings</strong> &rarr; <strong>Environment Variables</strong>: Add <code className="font-mono">VITE_BACKEND_URL</code></li>
+                    <li>Click <strong>Deployments &rarr; Redeploy</strong> to bake in the cloud URL</li>
+                  </ol>
+                </div>
+              </div>
+            )}
+
+            {/* Backend URL Input & Runtime Overrider */}
+            <div className="space-y-2 pt-1">
+              <label className="text-stone-500 block text-xs font-bold">
+                Active Cloud Backend URL (e.g. Render Web Service):
+              </label>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <input
+                  type="url"
+                  value={customBackendInput}
+                  onChange={(e) => setCustomBackendInput(e.target.value)}
+                  placeholder="https://omega-stationery-backend.onrender.com"
+                  className="flex-1 px-3.5 py-2 text-xs font-mono bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:border-[#c49b7c] focus:bg-white"
+                />
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={handleSaveCustomBackend}
+                    className="px-4 py-2 bg-[#2b2520] hover:bg-black text-white text-xs font-bold rounded-xl transition-colors shrink-0"
+                  >
+                    Connect URL
+                  </button>
+                  {customBackendInput && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCustomBackendInput('');
+                        setCustomBackendUrl('');
+                        setBackendConfigNotice('Reset to default build environment.');
+                        setTimeout(() => setBackendConfigNotice(null), 3000);
+                      }}
+                      className="px-3 py-2 bg-stone-100 hover:bg-stone-200 text-stone-600 text-xs font-bold rounded-xl transition-colors shrink-0"
+                    >
+                      Reset
+                    </button>
+                  )}
+                </div>
+              </div>
+              {backendConfigNotice && (
+                <p className="text-[11px] font-bold text-amber-800 mt-1">{backendConfigNotice}</p>
+              )}
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* MongoDB Atlas Card */}
             <div className="bg-white border border-stone-200 rounded-2xl p-6 space-y-4 shadow-sm">

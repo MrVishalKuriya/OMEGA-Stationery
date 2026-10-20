@@ -1206,8 +1206,8 @@ export const WholesalePage: React.FC = () => {
                 <div className="pt-3 border-t border-white/10">
                   <div className="text-[11px] text-stone-400">Direct Wholesale Hotlines:</div>
                   <div className="text-xs font-mono font-bold text-[#c49b7c] mt-1 space-y-0.5">
-                    <div>Boss 1: +255 715 268 391 (Executive Desk)</div>
-                    <div>Boss 2: +255 624 265 480 (Wholesale Desk)</div>
+                    <div>Kanti Bhai K. Halai: +255 715 268 391 (Co-Founder &amp; MD)</div>
+                    <div>Vijesh K. Halai: +255 624 265 480 (Co-Founder &amp; MD)</div>
                     <div>Branch: +255 746 268 391 (Mbeya SIDO Depot)</div>
                     <div>Branch: +255 699 032 777 (Mwanza Regional)</div>
                   </div>

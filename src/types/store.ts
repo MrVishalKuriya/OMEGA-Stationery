@@ -94,8 +94,8 @@ export interface StoreConfig {
   brandSubtitleSw: string;
   announcementText: string;
   announcementTextSw: string;
-  phoneNumber: string; // Boss 1 (Executive): +255 715 268 391
-  secondaryPhone: string; // Boss 2 (Management): +255 624 265 480
+  phoneNumber: string; // Kanti Bhai K. Halai (Co-Founder & MD): +255 715 268 391
+  secondaryPhone: string; // Vijesh K. Halai (Co-Founder & MD): +255 624 265 480
   branchMbeya: string; // Mbeya Branch: +255 746 268 391
   branchMwanza: string; // Mwanza Branch: +255 699 032 777
   thirdPhone: string; // +255 746 268 391 (Mbeya Branch)

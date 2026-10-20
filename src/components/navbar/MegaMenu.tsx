@@ -364,7 +364,7 @@ export const MEGA_MENU_DATA: Record<string, MegaMenuCategoryData> = {
       {
         title: 'Direct Factory & Branch Contacts',
         items: [
-          { label: 'Co-Founder & MD: +255 715 268 391', href: 'https://wa.me/255715268391' },
+          { label: 'KANTI BHAI K. HALAI (Co-Founder & MD): +255 715 268 391', href: 'https://wa.me/255715268391' },
           { label: 'VIJESH K. HALAI (Co-Founder & MD): +255 624 265 480', href: 'https://wa.me/255624265480' },
           { label: 'Mbeya Branch: +255 746 268 391', href: 'https://wa.me/255746268391' },
           { label: 'Mwanza Branch: +255 699 032 777', href: 'https://wa.me/255699032777' },

@@ -176,6 +176,33 @@ export const Navbar: React.FC = () => {
     }, 200);
   };
 
+  // Helper to determine exact active category navigation item (accounting for URL search queries)
+  const isNavActive = (href: string) => {
+    const [targetPath, targetQuery] = href.split('?');
+    
+    // Pathnames must match exactly
+    if (location.pathname !== targetPath) {
+      return false;
+    }
+
+    // Special exact matching for /catalog routes with or without ?category=
+    if (targetPath === '/catalog') {
+      const currentParams = new URLSearchParams(location.search);
+      const currentCategory = currentParams.get('category');
+
+      if (!targetQuery) {
+        // "All Products" is active only when no category is specified (or category === 'All')
+        return !currentCategory || currentCategory === 'All';
+      }
+
+      const targetParams = new URLSearchParams(targetQuery);
+      const targetCategory = targetParams.get('category');
+      return currentCategory === targetCategory;
+    }
+
+    return true;
+  };
+
   // Dedicated Category Navigation Items
   const CATEGORY_NAV_ITEMS = [
     { id: 'all-catalog', label: language === 'sw' ? 'Bidhaa Zote' : 'All Products', href: '/catalog' },
@@ -521,26 +548,27 @@ export const Navbar: React.FC = () => {
               className="flex items-center justify-between gap-1 xl:gap-2 overflow-x-auto no-scrollbar"
               onMouseLeave={handleNavMouseLeave}
             >
-              {CATEGORY_NAV_ITEMS.map((item) => (
-                <NavLink
-                  key={item.id}
-                  to={item.href}
-                  className={({ isActive }) =>
-                    `px-3 py-1.5 text-xs font-semibold tracking-tight rounded-full transition-all whitespace-nowrap flex items-center gap-1.5 ${
-                      isActive
+              {CATEGORY_NAV_ITEMS.map((item) => {
+                const active = isNavActive(item.href);
+                return (
+                  <Link
+                    key={item.id}
+                    to={item.href}
+                    className={`px-3 py-1.5 text-xs font-semibold tracking-tight rounded-full transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                      active
                         ? 'bg-[#4b423b] text-white shadow-xs'
                         : 'text-[#3b352f] hover:text-[#4b423b] hover:bg-[#f5f4f4]'
-                    }`
-                  }
-                >
-                  <span>{item.label}</span>
-                  {item.badge && (
-                    <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-[#c49b7c] text-[#23201d] leading-none">
-                      {item.badge}
-                    </span>
-                  )}
-                </NavLink>
-              ))}
+                    }`}
+                  >
+                    <span>{item.label}</span>
+                    {item.badge && (
+                      <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-[#c49b7c] text-[#23201d] leading-none">
+                        {item.badge}
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
             </nav>
           </div>
 
