@@ -331,6 +331,8 @@ async function initMongoDB() {
       console.log(`✅ [MongoDB] Inserted ${SEED_PRODUCTS.length} products successfully.`);
     } else {
       console.log(`📊 [MongoDB] Collection 'products' has ${count} documents.`);
+      inMemoryProducts = await ProductModel.find().lean();
+      console.log(`⚡ [MongoDB Cache] Synchronized in-memory store with ${inMemoryProducts.length} live database documents.`);
     }
   } catch (err) {
     mongoConnected = false;
@@ -985,15 +987,17 @@ app.post('/api/products/seed', async (req, res) => {
         }
       }));
       await ProductModel.bulkWrite(ops);
+      inMemoryProducts = await ProductModel.find().lean();
+    } else {
+      inMemoryProducts = [...SEED_PRODUCTS];
     }
 
-    inMemoryProducts = [...SEED_PRODUCTS];
     cacheMetrics.inMemoryCache.clear();
 
     res.json({
       success: true,
-      message: `Successfully synchronized ${SEED_PRODUCTS.length} products to MongoDB`,
-      count: SEED_PRODUCTS.length
+      message: `Successfully synchronized ${inMemoryProducts.length} products to MongoDB`,
+      count: inMemoryProducts.length
     });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
