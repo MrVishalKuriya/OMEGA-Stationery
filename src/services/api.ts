@@ -830,10 +830,24 @@ export async function uploadProductImage(
       body: JSON.stringify({ image: dataUriOrBase64, filename }),
     });
     const json = await res.json();
+    if (json.success && json.url && json.url.startsWith('/')) {
+      json.url = `${BACKEND_URL}${json.url}`;
+    }
     return json;
   } catch (err: any) {
     return { success: false, message: err.message || 'Image upload failed' };
   }
+}
+
+/**
+ * Normalizes any product image URL to ensure cross-device and cloud accessibility
+ */
+export function resolveImageUrl(url?: string): string {
+  if (!url) return '';
+  if (url.startsWith('/uploads/')) {
+    return `${BACKEND_URL}${url}`;
+  }
+  return url;
 }
 
 

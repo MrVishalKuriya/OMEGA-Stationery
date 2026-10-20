@@ -22,10 +22,13 @@ import { TRANSLATIONS } from '../data/translations';
 export const ProductDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { products, addToCart, storeConfig, language } = useStore();
+  const { products, addToCart, storeConfig, language, isCatalogLoading } = useStore();
   const t = TRANSLATIONS[language];
 
-  const product = products.find((p) => p.id === id);
+  const [dbProduct, setDbProduct] = useState<Product | null>(null);
+  const [isLoadingDirect, setIsLoadingDirect] = useState<boolean>(false);
+
+  const product = products.find((p) => p.id === id) || dbProduct;
 
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedImageIdx, setSelectedImageIdx] = useState<number>(0);
@@ -41,6 +44,37 @@ export const ProductDetailsPage: React.FC = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [id]);
+
+  // Fetch directly from MongoDB if opened via direct link and not yet in store
+  useEffect(() => {
+    if (!product && id) {
+      setIsLoadingDirect(true);
+      fetch(`${BACKEND_URL}/api/products/${id}`)
+        .then((res) => res.json())
+        .then((json) => {
+          if (json.success && json.data) {
+            setDbProduct(json.data);
+          }
+        })
+        .catch(() => {})
+        .finally(() => setIsLoadingDirect(false));
+    }
+  }, [id, product]);
+
+  if ((isCatalogLoading && !product) || isLoadingDirect) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 animate-pulse">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="bg-stone-200 h-96 rounded-2xl" />
+          <div className="space-y-4">
+            <div className="h-8 bg-stone-200 rounded w-3/4" />
+            <div className="h-4 bg-stone-200 rounded w-1/2" />
+            <div className="h-24 bg-stone-200 rounded" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!product) {
     return (

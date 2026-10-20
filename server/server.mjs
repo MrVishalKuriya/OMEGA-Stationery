@@ -75,7 +75,33 @@ app.use(cors({
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// Serve uploaded images statically
+// Serve uploaded images with disk caching & MongoDB Atlas persistent fallback
+app.get('/uploads/:filename', async (req, res) => {
+  try {
+    const { filename } = req.params;
+    const localPath = join(UPLOADS_DIR, filename);
+
+    if (existsSync(localPath)) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      return res.sendFile(localPath);
+    }
+
+    if (mongoConnected && UploadedImageModel) {
+      const imgDoc = await UploadedImageModel.findOne({ filename });
+      if (imgDoc && imgDoc.data) {
+        try {
+          writeFileSync(localPath, imgDoc.data);
+        } catch (_) {}
+        res.setHeader('Content-Type', imgDoc.contentType || 'image/jpeg');
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        return res.send(imgDoc.data);
+      }
+    }
+    return res.status(404).send('Image not found');
+  } catch (err) {
+    return res.status(500).send('Error retrieving image');
+  }
+});
 app.use('/uploads', express.static(UPLOADS_DIR));
 
 // API Rate Limiting (1,000 requests per minute per IP, skips health & stats polling)
@@ -259,18 +285,31 @@ const configSchema = new mongoose.Schema(
   { collection: 'store_config', timestamps: true }
 );
 
+const uploadedImageSchema = new mongoose.Schema(
+  {
+    filename: { type: String, required: true, unique: true },
+    contentType: { type: String, default: 'image/jpeg' },
+    data: { type: Buffer, required: true },
+    size: Number,
+  },
+  { collection: 'uploaded_images', timestamps: true }
+);
+
 let ProductModel;
 let OrderModel;
 let ConfigModel;
+let UploadedImageModel;
 
 try {
   ProductModel = mongoose.model('Product', productSchema);
   OrderModel = mongoose.model('Order', orderSchema);
   ConfigModel = mongoose.model('StoreConfig', configSchema);
+  UploadedImageModel = mongoose.model('UploadedImage', uploadedImageSchema);
 } catch (e) {
   ProductModel = mongoose.models.Product;
   OrderModel = mongoose.models.Order;
   ConfigModel = mongoose.models.StoreConfig;
+  UploadedImageModel = mongoose.models.UploadedImage;
 }
 
 let inMemoryConfig = {
@@ -760,20 +799,43 @@ app.post('/api/upload', async (req, res) => {
     }
 
     const cleanName = filename
-      ? filename.replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 30)
+      ? filename.replace(/\.[^/.]+$/, '').replace(/[^a-zA-Z0-9_-]/g, '_').slice(0, 30)
       : 'product';
     const uniqueFilename = `omega_${cleanName}_${Date.now()}.${extension}`;
     const targetPath = join(UPLOADS_DIR, uniqueFilename);
 
     writeFileSync(targetPath, buffer);
-    console.log(`📸 [Upload] Saved product image: ${uniqueFilename} (${buffer.length} bytes)`);
+    console.log(`📸 [Upload] Saved product image to disk: ${uniqueFilename} (${buffer.length} bytes)`);
 
+    // Persist to MongoDB Atlas for durability across container restarts
+    if (mongoConnected && UploadedImageModel) {
+      try {
+        await UploadedImageModel.findOneAndUpdate(
+          { filename: uniqueFilename },
+          {
+            filename: uniqueFilename,
+            contentType: `image/${extension === 'svg' ? 'svg+xml' : extension}`,
+            data: buffer,
+            size: buffer.length,
+          },
+          { upsert: true, new: true }
+        );
+        console.log(`☁️ [MongoDB] Persisted uploaded image to MongoDB Atlas: ${uniqueFilename}`);
+      } catch (dbErr) {
+        console.warn('Could not persist image to MongoDB Atlas:', dbErr.message);
+      }
+    }
+
+    const host = req.get('host');
+    const protocol = req.protocol === 'https' || req.get('x-forwarded-proto') === 'https' ? 'https' : 'http';
+    const absoluteUrl = `${protocol}://${host}/uploads/${uniqueFilename}`;
     const publicUrl = `/uploads/${uniqueFilename}`;
 
     res.json({
       success: true,
       message: 'Image successfully uploaded and stored',
-      url: publicUrl,
+      url: absoluteUrl,
+      relativeUrl: publicUrl,
       filename: uniqueFilename,
       sizeBytes: buffer.length
     });
@@ -1004,6 +1066,7 @@ app.post('/api/products/seed', async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
 
 // POST /api/orders - Submit Order to MongoDB
 app.post('/api/orders', async (req, res) => {
