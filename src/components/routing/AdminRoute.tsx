@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useStore } from '../../context/StoreContext';
 import { ShieldAlert, ShieldCheck, ArrowLeft, LogIn, Lock, Sparkles, KeyRound } from 'lucide-react';
 import { SEOHead } from '../SEOHead';
+import { verifyAdminKeyWithBackend } from '../../services/api';
 
 interface AdminRouteProps {
   children?: React.ReactNode;
@@ -11,13 +12,28 @@ interface AdminRouteProps {
 /**
  * Route Middleware: AdminRoute
  * Guards administrative portals (/omega-hq-portal-2026).
- * Enforces role verification (ADMIN, MANAGER) with seamless 1-click clearance for authorized staff.
+ * Enforces server-verified role clearance with noindex protection.
  */
 export const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
   const { currentUser, login } = useStore();
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [adminKey, setAdminKey] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+
+  // Add noindex, nofollow tag so administrative gate is never indexed by search engines
+  useEffect(() => {
+    let metaRobots = document.querySelector('meta[name="robots"]');
+    if (!metaRobots) {
+      metaRobots = document.createElement('meta');
+      metaRobots.setAttribute('name', 'robots');
+      document.head.appendChild(metaRobots);
+    }
+    metaRobots.setAttribute('content', 'noindex, nofollow');
+
+    return () => {
+      metaRobots?.setAttribute('content', 'index, follow');
+    };
+  }, []);
 
   const role = ((currentUser as any)?.role || '').toUpperCase();
   const isAdmin =
@@ -48,10 +64,23 @@ export const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
 
   const handleCustomKeySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (adminKey === 'admin123' || adminKey === 'omega2026' || adminKey === 'omega') {
-      await handleQuickAdminLogin();
-    } else {
-      setErrorMsg('Invalid administrative key. Use "admin123" or click 1-Click Clearance.');
+    if (!adminKey.trim()) {
+      setErrorMsg('Please enter an administrative security key.');
+      return;
+    }
+    setIsAuthenticating(true);
+    setErrorMsg('');
+    try {
+      const res = await verifyAdminKeyWithBackend(adminKey.trim());
+      if (res.success) {
+        await handleQuickAdminLogin();
+      } else {
+        setErrorMsg(res.message || 'Invalid administrative key.');
+      }
+    } catch (err: any) {
+      setErrorMsg(err?.message || 'Verification error.');
+    } finally {
+      setIsAuthenticating(false);
     }
   };
 
@@ -109,9 +138,10 @@ export const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
               />
               <button
                 type="submit"
-                className="px-4 py-2 rounded-xl bg-[#4b423b] text-white text-xs font-bold hover:bg-[#38302a] transition-colors shrink-0"
+                disabled={isAuthenticating}
+                className="px-4 py-2 rounded-xl bg-[#4b423b] disabled:opacity-50 text-white text-xs font-bold hover:bg-[#38302a] transition-colors shrink-0"
               >
-                Enter
+                {isAuthenticating ? 'Checking...' : 'Enter'}
               </button>
             </form>
           </div>

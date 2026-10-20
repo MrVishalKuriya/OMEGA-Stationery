@@ -18,6 +18,7 @@ import { useStore } from '../context/StoreContext';
 import { ProductCard } from '../components/ProductCard';
 import { SEOHead } from '../components/SEOHead';
 import { TRANSLATIONS } from '../data/translations';
+import { fetchSingleProductFromDb } from '../services/api';
 
 export const ProductDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -48,16 +49,17 @@ export const ProductDetailsPage: React.FC = () => {
   // Fetch directly from MongoDB if opened via direct link and not yet in store
   useEffect(() => {
     if (!product && id) {
+      const controller = new AbortController();
       setIsLoadingDirect(true);
-      fetch(`${BACKEND_URL}/api/products/${id}`)
-        .then((res) => res.json())
-        .then((json) => {
-          if (json.success && json.data) {
-            setDbProduct(json.data);
+      fetchSingleProductFromDb(id, controller.signal)
+        .then((res) => {
+          if (res.success && res.data) {
+            setDbProduct(res.data);
           }
         })
-        .catch(() => {})
         .finally(() => setIsLoadingDirect(false));
+
+      return () => controller.abort();
     }
   }, [id, product]);
 

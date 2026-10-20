@@ -63,14 +63,31 @@ const NotFoundPage: React.FC = () => (
   </div>
 );
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 30,
+      gcTime: 1000 * 60 * 5,
+      retry: (failureCount, error: any) => {
+        if (error?.status === 401 || error?.status === 403 || error?.status === 404) return false;
+        return failureCount < 3;
+      },
+      refetchOnWindowFocus: true,
+    },
+  },
+});
+
 export default function App() {
   return (
     <ErrorBoundary>
-      <StoreProvider>
-        <BrowserRouter>
-          <ScrollToTop />
-          <Layout>
-            <Suspense fallback={<RouteLoader />}>
+      <QueryClientProvider client={queryClient}>
+        <StoreProvider>
+          <BrowserRouter>
+            <ScrollToTop />
+            <Layout>
+              <Suspense fallback={<RouteLoader />}>
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/catalog" element={<CatalogPage />} />
@@ -113,6 +130,7 @@ export default function App() {
           </Layout>
         </BrowserRouter>
       </StoreProvider>
-    </ErrorBoundary>
+    </QueryClientProvider>
+  </ErrorBoundary>
   );
 }

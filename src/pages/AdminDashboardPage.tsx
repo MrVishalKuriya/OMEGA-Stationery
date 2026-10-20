@@ -80,6 +80,14 @@ import {
   isLoopbackRestricted,
   setCustomBackendUrl,
 } from '../services/api';
+import { productFormSchema } from '../schemas/adminSchemas';
+import { ProductTableSkeleton, OrdersGridSkeleton } from '../components/admin/AdminSkeletons';
+import {
+  useAdminOrders,
+  useUpdateOrderStatusMutation,
+  useUpdateOrderTrackingMutation,
+  useDeleteOrderMutation,
+} from '../hooks/useAdminData';
 
 // Official OMEGA Factory Product Photography Assets for 1-Click Preset Selection
 const OMEGA_IMAGE_PRESETS = [
@@ -119,8 +127,10 @@ export const AdminDashboardPage: React.FC = () => {
     reloadConfigFromDb,
     bulkUpdateProducts,
     showToast,
+    isCatalogLoading,
   } = useStore();
 
+  const [isSavingProduct, setIsSavingProduct] = useState(false);
   const currency = storeConfig.currencySymbol || 'TSh';
 
   // Backend Health & Cloud Telemetry State
@@ -295,17 +305,40 @@ export const AdminDashboardPage: React.FC = () => {
     };
   }, []);
 
-  // Live Orders state & Intelligent Real-time Polling
+  // Live Orders state & Intelligent Real-time Polling with TanStack Query
+  const { data: reactQueryOrders, isLoading: isQueryOrdersLoading, refetch: refetchLiveOrders } = useAdminOrders();
   const [liveOrders, setLiveOrders] = useState<any[]>([]);
   const [isLoadingOrders, setIsLoadingOrders] = useState<boolean>(false);
   const [lastOrdersSyncTime, setLastOrdersSyncTime] = useState<Date | null>(null);
   const [ordersSearchQuery, setOrdersSearchQuery] = useState<string>('');
   const [isOrdersAutoRefresh, setIsOrdersAutoRefresh] = useState<boolean>(true);
 
+  // Sync React Query cache into local orders state for instant optimistic updates
+  useEffect(() => {
+    if (reactQueryOrders && Array.isArray(reactQueryOrders)) {
+      setLiveOrders(reactQueryOrders);
+      setLastOrdersSyncTime(new Date());
+    }
+  }, [reactQueryOrders]);
+
+  // Search Debouncing (300ms) to ensure smooth typing and eliminate stutter
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(searchQuery);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearchQuery(searchQuery), 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  const [debouncedOrdersSearch, setDebouncedOrdersSearch] = useState(ordersSearchQuery);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedOrdersSearch(ordersSearchQuery), 300);
+    return () => clearTimeout(timer);
+  }, [ordersSearchQuery]);
+
   // Fetch live orders directly from MongoDB Atlas with silent/active modes
   const loadLiveOrders = async (silent = false) => {
     if (!silent) setIsLoadingOrders(true);
     try {
+      await refetchLiveOrders();
       const ords = await fetchLiveOrders();
       if (ords && Array.isArray(ords)) {
         setLiveOrders(ords);
@@ -476,7 +509,7 @@ export const AdminDashboardPage: React.FC = () => {
 
   // Filtered & Sorted Inventory
   const filteredInventory = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
+    const q = debouncedSearchQuery.trim().toLowerCase();
     const result = products.filter((p) => {
       if (categoryFilter !== 'All' && p.category !== categoryFilter) return false;
       if (stockStatusFilter !== 'All' && p.stockStatus !== stockStatusFilter) return false;
@@ -521,7 +554,7 @@ export const AdminDashboardPage: React.FC = () => {
           return 0;
       }
     });
-  }, [products, searchQuery, categoryFilter, stockStatusFilter, sortBy]);
+  }, [products, debouncedSearchQuery, categoryFilter, stockStatusFilter, sortBy]);
 
   // Multi-select helpers
   const handleToggleSelectAll = () => {
@@ -909,107 +942,135 @@ export const AdminDashboardPage: React.FC = () => {
 
   const handleProductFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!productForm.name.trim()) {
-      setFormError('Product title is required.');
-      return;
-    }
-    if (!productForm.sku.trim()) {
-      setFormError('SKU code is required.');
-      return;
-    }
-    const priceNum = Math.round(Number(productForm.price));
-    if (Number.isNaN(priceNum) || priceNum <= 0) {
-      setFormError('Please enter a valid retail price in Tanzanian Shillings (TSh).');
-      return;
-    }
+    if (isSavingProduct) return;
 
+    const priceNum = Math.round(Number(productForm.price));
     const discountNum = productForm.discountPrice.trim()
       ? Math.round(Number(productForm.discountPrice))
       : undefined;
-
     const wholesaleNum = productForm.wholesalePrice.trim()
       ? Math.round(Number(productForm.wholesalePrice))
       : Math.round(priceNum * 0.7);
-
     const minQtyNum = productForm.wholesaleMinQty.trim()
       ? Math.round(Number(productForm.wholesaleMinQty))
       : 48;
-
     const stockQtyNum = productForm.stockQuantity.trim()
       ? Math.max(0, parseInt(productForm.stockQuantity, 10))
       : 100;
 
-    const specsArray = [
-      { label: 'Category', value: productForm.category },
-      { label: 'SKU', value: productForm.sku.trim().toUpperCase() },
-      { label: 'Packaging', value: productForm.packaging.trim() },
-      { label: 'Ruling', value: productForm.rulingType },
-      { label: 'Paper Quality', value: productForm.paperQuality },
-      { label: 'Binding', value: productForm.bindingType },
-    ];
+    // Strict Zod Form Validation
+    const validationResult = productFormSchema.safeParse({
+      name: productForm.name.trim(),
+      category: productForm.category,
+      sku: productForm.sku.trim().toUpperCase(),
+      barcode: productForm.barcode.trim(),
+      price: priceNum,
+      discountPrice: discountNum,
+      wholesalePrice: wholesaleNum,
+      wholesaleMinQty: minQtyNum,
+      packaging: productForm.packaging.trim() || '48 Pcs / Strapped Corrugated Box',
+      quire: productForm.quire.trim() || '2 Quire',
+      pageCount: productForm.pageCount.trim() || '192 Pages',
+      rulingType: productForm.rulingType,
+      paperQuality: productForm.paperQuality,
+      bindingType: productForm.bindingType,
+      dispatchTime: productForm.dispatchTime,
+      stockStatus: productForm.stockStatus,
+      stockQuantity: stockQtyNum,
+      image: productForm.image.trim(),
+      description: productForm.description.trim(),
+      featured: productForm.featured,
+      bestSeller: productForm.bestSeller,
+      freeDelivery: productForm.freeDelivery,
+    });
 
-    if (modalMode === 'edit' && editingProductId) {
-      const existing = products.find((p) => p.id === editingProductId);
-      if (existing) {
-        const updatedObj: Product = {
-          ...existing,
-          name: productForm.name.trim(),
-          category: productForm.category,
-          sku: productForm.sku.trim().toUpperCase(),
-          barcode: productForm.barcode.trim(),
-          price: priceNum,
-          discountPrice: discountNum,
-          wholesalePrice: wholesaleNum,
-          wholesaleMinQty: minQtyNum,
-          packaging: productForm.packaging.trim(),
-          quire: productForm.quire.trim(),
-          pageCount: productForm.pageCount.trim(),
-          stockStatus: productForm.stockStatus,
-          stockQuantity: stockQtyNum,
-          image: productForm.image.trim(),
-          description: productForm.description.trim(),
-          specifications: specsArray,
-          featured: productForm.featured,
-          bestSeller: productForm.bestSeller,
-          freeDelivery: productForm.freeDelivery,
-          dispatchTime: productForm.dispatchTime,
-        };
-        updateProduct(updatedObj);
-        setDbSaveSuccessMessage(`Updated in MongoDB Atlas! Document ID: ${updatedObj.id}`);
-      }
-    } else {
-      // Add or Clone Mode
-      const createdObj = addProduct({
-        name: productForm.name.trim(),
-        category: productForm.category,
-        sku: productForm.sku.trim().toUpperCase(),
-        barcode: productForm.barcode.trim(),
-        price: priceNum,
-        discountPrice: discountNum,
-        wholesalePrice: wholesaleNum,
-        wholesaleMinQty: minQtyNum,
-        packaging: productForm.packaging.trim(),
-        quire: productForm.quire.trim(),
-        pageCount: productForm.pageCount.trim(),
-        stockStatus: productForm.stockStatus,
-        stockQuantity: stockQtyNum,
-        image: productForm.image.trim(),
-        gallery: [productForm.image.trim()],
-        description: productForm.description.trim(),
-        specifications: specsArray,
-        featured: productForm.featured,
-        bestSeller: productForm.bestSeller,
-        freeDelivery: productForm.freeDelivery,
-        dispatchTime: productForm.dispatchTime,
-        isDemoData: false,
-      });
-      setDbSaveSuccessMessage(`Persisted to MongoDB Atlas! New SKU: ${createdObj.sku}`);
+    if (!validationResult.success) {
+      const firstIssue = validationResult.error.issues[0];
+      setFormError(firstIssue.message);
+      return;
     }
 
-    setTimeout(() => {
-      setIsProductModalOpen(false);
-      setDbSaveSuccessMessage(null);
-    }, 1200);
+    setIsSavingProduct(true);
+    setFormError('');
+
+    try {
+      const validated = validationResult.data;
+      const specsArray = [
+        { label: 'Category', value: validated.category },
+        { label: 'SKU', value: validated.sku },
+        { label: 'Packaging', value: validated.packaging },
+        { label: 'Ruling', value: validated.rulingType },
+        { label: 'Paper Quality', value: validated.paperQuality },
+        { label: 'Binding', value: validated.bindingType },
+      ];
+
+      if (modalMode === 'edit' && editingProductId) {
+        const existing = products.find((p) => p.id === editingProductId);
+        if (existing) {
+          const updatedObj: Product = {
+            ...existing,
+            name: validated.name,
+            category: validated.category,
+            sku: validated.sku,
+            barcode: validated.barcode,
+            price: validated.price,
+            discountPrice: validated.discountPrice,
+            wholesalePrice: validated.wholesalePrice,
+            wholesaleMinQty: validated.wholesaleMinQty,
+            packaging: validated.packaging,
+            quire: validated.quire,
+            pageCount: validated.pageCount,
+            stockStatus: validated.stockStatus,
+            stockQuantity: validated.stockQuantity,
+            image: validated.image,
+            description: validated.description,
+            specifications: specsArray,
+            featured: validated.featured,
+            bestSeller: validated.bestSeller,
+            freeDelivery: validated.freeDelivery,
+            dispatchTime: validated.dispatchTime,
+          };
+          updateProduct(updatedObj);
+          setDbSaveSuccessMessage(`Updated in MongoDB Atlas! Document ID: ${updatedObj.id}`);
+        }
+      } else {
+        // Add or Clone Mode
+        const createdObj = addProduct({
+          name: validated.name,
+          category: validated.category,
+          sku: validated.sku,
+          barcode: validated.barcode,
+          price: validated.price,
+          discountPrice: validated.discountPrice,
+          wholesalePrice: validated.wholesalePrice,
+          wholesaleMinQty: validated.wholesaleMinQty,
+          packaging: validated.packaging,
+          quire: validated.quire,
+          pageCount: validated.pageCount,
+          stockStatus: validated.stockStatus,
+          stockQuantity: validated.stockQuantity,
+          image: validated.image,
+          gallery: [validated.image],
+          description: validated.description,
+          specifications: specsArray,
+          featured: validated.featured,
+          bestSeller: validated.bestSeller,
+          freeDelivery: validated.freeDelivery,
+          dispatchTime: validated.dispatchTime,
+          isDemoData: false,
+        });
+        setDbSaveSuccessMessage(`Persisted to MongoDB Atlas! New SKU: ${createdObj.sku}`);
+      }
+
+      setTimeout(() => {
+        setIsProductModalOpen(false);
+        setDbSaveSuccessMessage(null);
+        setIsSavingProduct(false);
+      }, 1000);
+    } catch (err: any) {
+      setFormError(err?.message || 'Failed to save product to database');
+      setIsSavingProduct(false);
+    }
   };
 
   // Save Store Branding & Handles directly to MongoDB Atlas
@@ -1164,8 +1225,8 @@ export const AdminDashboardPage: React.FC = () => {
       }
 
       // 2. Search Query Filter
-      if (ordersSearchQuery.trim()) {
-        const q = ordersSearchQuery.trim().toLowerCase();
+      if (debouncedOrdersSearch.trim()) {
+        const q = debouncedOrdersSearch.trim().toLowerCase();
         const refMatch = (ord.orderReference || ord.orderId || ord._id || '').toLowerCase().includes(q);
         const nameMatch = (ord.customerName || '').toLowerCase().includes(q);
         const phoneMatch = (ord.phoneNumber || ord.phone || '').toLowerCase().includes(q);
@@ -1183,7 +1244,7 @@ export const AdminDashboardPage: React.FC = () => {
 
       return true;
     });
-  }, [liveOrders, demoOrders, orderFilter, ordersSearchQuery]);
+  }, [liveOrders, demoOrders, orderFilter, debouncedOrdersSearch]);
 
   // Real-time Order Analytics KPIs
   const orderAnalytics = useMemo(() => {
@@ -1695,7 +1756,33 @@ export const AdminDashboardPage: React.FC = () => {
             </div>
           )}
 
-          {/* Master Inventory Table with Direct DB CRUD */}
+          {/* Master Inventory Table with Direct DB CRUD & Skeleton Loading */}
+          {isCatalogLoading && products.length === 0 ? (
+            <ProductTableSkeleton />
+          ) : filteredInventory.length === 0 ? (
+            <div className="p-12 text-center bg-white border border-stone-200 rounded-2xl shadow-xs space-y-3">
+              <Package className="w-10 h-10 text-stone-300 mx-auto" />
+              <h3 className="text-sm font-bold text-[#2b2520]">No Products Found</h3>
+              <p className="text-xs text-stone-500 max-w-sm mx-auto">
+                {debouncedSearchQuery
+                  ? `No product matches "${debouncedSearchQuery}". Try adjusting your keywords or category filters.`
+                  : 'Your product catalog is empty or being synchronized with MongoDB Atlas.'}
+              </p>
+              {(debouncedSearchQuery || categoryFilter !== 'All' || stockStatusFilter !== 'All') && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery('');
+                    setCategoryFilter('All');
+                    setStockStatusFilter('All');
+                  }}
+                  className="px-3.5 py-1.5 bg-stone-100 text-stone-700 text-xs font-bold rounded-lg hover:bg-stone-200 transition-colors"
+                >
+                  Clear All Filters
+                </button>
+              )}
+            </div>
+          ) : (
           <div className="border border-stone-200 rounded-2xl overflow-hidden bg-white shadow-sm">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
@@ -1971,6 +2058,7 @@ export const AdminDashboardPage: React.FC = () => {
               </table>
             </div>
           </div>
+          )}
         </div>
       )}
 
@@ -2141,7 +2229,9 @@ export const AdminDashboardPage: React.FC = () => {
             </div>
           </div>
 
-          {allOrdersCombined.length === 0 ? (
+          {(isLoadingOrders || isQueryOrdersLoading) && allOrdersCombined.length === 0 ? (
+            <OrdersGridSkeleton />
+          ) : allOrdersCombined.length === 0 ? (
             <div className="bg-white p-12 text-center rounded-2xl border border-stone-200 shadow-xs space-y-3">
               <ShoppingBag className="w-10 h-10 text-stone-300 mx-auto" />
               <h3 className="text-sm font-bold text-[#2b2520]">No Orders Matching Filters</h3>
@@ -3859,11 +3949,20 @@ export const AdminDashboardPage: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <button
                     type="submit"
-                    className="px-6 py-2.5 btn-ledup-copper text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5"
+                    disabled={isSavingProduct}
+                    className={`px-6 py-2.5 btn-ledup-copper text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 ${
+                      isSavingProduct ? 'opacity-70 cursor-not-allowed' : ''
+                    }`}
                   >
-                    <Check className="w-4 h-4" />
+                    {isSavingProduct ? (
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Check className="w-4 h-4" />
+                    )}
                     <span>
-                      {modalMode === 'add'
+                      {isSavingProduct
+                        ? 'Saving to MongoDB Atlas...'
+                        : modalMode === 'add'
                         ? 'Create Product in MongoDB Atlas'
                         : modalMode === 'clone'
                         ? 'Save Cloned Variant to Database'
