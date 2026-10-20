@@ -14,11 +14,12 @@ function isLoopbackTarget(url: string): boolean {
  * Chrome Private Network Access (PNA) and Mixed Content restrictions strictly forbid
  * public HTTPS origins (such as https://omegastationery.vercel.app) from accessing http://localhost.
  */
-export function isLoopbackRestricted(url: string = BACKEND_URL): boolean {
+export function isLoopbackRestricted(url?: string): boolean {
   if (typeof window === 'undefined') return false;
   const isHttps = window.location.protocol === 'https:';
   const isNotLocalhostHost = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-  return isHttps && isNotLocalhostHost && isLoopbackTarget(url);
+  const target = url || (typeof BACKEND_URL !== 'undefined' ? BACKEND_URL : '');
+  return isHttps && isNotLocalhostHost && isLoopbackTarget(target);
 }
 
 function resolveBackendUrl(): string {
@@ -320,6 +321,7 @@ export async function fetchLiveProducts(options?: {
   search?: string;
   featured?: boolean;
   forceRefresh?: boolean;
+  retries?: number;
 }): Promise<Product[] | null> {
   if (!isBackendConfigured()) {
     return null;
@@ -336,38 +338,66 @@ export async function fetchLiveProducts(options?: {
     }
   }
 
-  try {
-    const params = new URLSearchParams();
-    if (options?.category && options.category !== 'All') params.append('category', options.category);
-    if (options?.search) params.append('search', options.search);
-    if (options?.featured) params.append('featured', 'true');
-    if (options?.forceRefresh) params.append('force', 'true');
-    params.append('_t', String(Date.now()));
+  const maxRetries = options?.retries ?? 2;
+  let attempt = 0;
 
-    const query = `?${params.toString()}`;
-    const res = await fetch(`${BACKEND_URL}/api/products${query}`, {
-      headers: {
-        'Accept': 'application/json',
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache',
-      },
-    });
+  while (attempt <= maxRetries) {
+    try {
+      const params = new URLSearchParams();
+      if (options?.category && options.category !== 'All') params.append('category', options.category);
+      if (options?.search) params.append('search', options.search);
+      if (options?.featured) params.append('featured', 'true');
+      if (options?.forceRefresh) params.append('force', 'true');
+      params.append('_t', String(Date.now()));
 
-    if (!res.ok) return null;
+      const query = `?${params.toString()}`;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 12000);
 
-    const json: BackendApiResponse<Product[]> = await res.json();
-    if (json.success && Array.isArray(json.data) && json.data.length > 0) {
-      clientProductCache.set(cacheKey, {
-        data: json.data,
-        expiresAt: Date.now() + 15_000,
+      const res = await fetch(`${BACKEND_URL}/api/products${query}`, {
+        headers: {
+          'Accept': 'application/json',
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+        },
+        signal: controller.signal,
       });
-      return json.data;
+
+      clearTimeout(timeoutId);
+
+      if (res.ok) {
+        const json: BackendApiResponse<Product[]> = await res.json();
+        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
+          clientProductCache.set(cacheKey, {
+            data: json.data,
+            expiresAt: Date.now() + 15_000,
+          });
+          return json.data;
+        }
+      }
+
+      // Retry on cold-start (502, 503, 504) or rate limiting (429)
+      if (res.status === 429 || (res.status >= 502 && res.status <= 504)) {
+        if (attempt < maxRetries) {
+          attempt++;
+          await new Promise((resolve) => setTimeout(resolve, attempt * 1200));
+          continue;
+        }
+      }
+
+      return null;
+    } catch (err: any) {
+      if (attempt < maxRetries) {
+        attempt++;
+        await new Promise((resolve) => setTimeout(resolve, attempt * 1200));
+        continue;
+      }
+      console.info('Node.js Backend not reachable:', err?.message);
+      return null;
     }
-    return null;
-  } catch (err) {
-    console.info('Node.js Backend not reachable, using localized catalog fallback:', err);
-    return null;
   }
+
+  return null;
 }
 
 /**

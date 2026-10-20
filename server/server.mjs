@@ -78,13 +78,14 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 // Serve uploaded images statically
 app.use('/uploads', express.static(UPLOADS_DIR));
 
-// API Rate Limiting (300 requests per minute per IP)
+// API Rate Limiting (1,000 requests per minute per IP, skips health & stats polling)
 const apiLimiter = rateLimit({
   windowMs: 60 * 1000,
-  max: 300,
+  max: 1000,
   standardHeaders: true,
   legacyHeaders: false,
   validate: { xForwardedForHeader: false },
+  skip: (req) => req.path === '/health' || req.path === '/cache/stats' || req.path === '/database/stats',
   message: { success: false, message: 'Too many requests from this IP, please try again in a minute' }
 });
 app.use('/api/', apiLimiter);

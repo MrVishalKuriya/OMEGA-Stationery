@@ -289,7 +289,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     let isMounted = true;
     setIsCatalogLoading(true);
 
-    const syncData = async () => {
+    const syncData = async (isRetry = false) => {
       try {
         const [live, cfg] = await Promise.all([
           fetchLiveProducts({ forceRefresh: true }),
@@ -301,6 +301,11 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           try {
             localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(live));
           } catch {}
+        } else if (!isRetry) {
+          // If server was cold-starting, auto-retry once after 3 seconds
+          setTimeout(() => {
+            if (isMounted) syncData(true);
+          }, 3000);
         }
         if (cfg) {
           setStoreConfig((prev) => {
@@ -313,6 +318,11 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
       } catch (err) {
         console.warn('Real-time sync notice:', err);
+        if (!isRetry) {
+          setTimeout(() => {
+            if (isMounted) syncData(true);
+          }, 3000);
+        }
       } finally {
         if (isMounted) setIsCatalogLoading(false);
       }
