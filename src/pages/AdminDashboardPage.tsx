@@ -259,8 +259,7 @@ export const AdminDashboardPage: React.FC = () => {
   const [brandingSaved, setBrandingSaved] = useState(false);
   const [cmsActiveSubTab, setCmsActiveSubTab] = useState<'identity' | 'hero' | 'contacts' | 'about' | 'logistics'>('identity');
 
-  // Live Orders state from MongoDB API & local demo
-  const [liveOrders, setLiveOrders] = useState<any[]>([]);
+  // Live Orders filtering & editing state
   const [orderFilter, setOrderFilter] = useState<'all' | 'wholesale' | 'retail' | 'dispatched'>('all');
   const [editingOrderId, setEditingOrderId] = useState<string | null>(null);
   const [tempTrackingNumber, setTempTrackingNumber] = useState<string>('');
@@ -296,17 +295,52 @@ export const AdminDashboardPage: React.FC = () => {
     };
   }, []);
 
-  // Fetch live orders directly from MongoDB
-  const loadLiveOrders = async () => {
-    const ords = await fetchLiveOrders();
-    if (ords && Array.isArray(ords)) {
-      setLiveOrders(ords);
+  // Live Orders state & Intelligent Real-time Polling
+  const [liveOrders, setLiveOrders] = useState<any[]>([]);
+  const [isLoadingOrders, setIsLoadingOrders] = useState<boolean>(false);
+  const [lastOrdersSyncTime, setLastOrdersSyncTime] = useState<Date | null>(null);
+  const [ordersSearchQuery, setOrdersSearchQuery] = useState<string>('');
+  const [isOrdersAutoRefresh, setIsOrdersAutoRefresh] = useState<boolean>(true);
+
+  // Fetch live orders directly from MongoDB Atlas with silent/active modes
+  const loadLiveOrders = async (silent = false) => {
+    if (!silent) setIsLoadingOrders(true);
+    try {
+      const ords = await fetchLiveOrders();
+      if (ords && Array.isArray(ords)) {
+        setLiveOrders(ords);
+        setLastOrdersSyncTime(new Date());
+      }
+    } catch (e) {
+      console.warn('Orders fetch notice:', e);
+    } finally {
+      if (!silent) setIsLoadingOrders(false);
     }
   };
 
+  // Adaptive Auto-polling for live orders (every 10s when active)
   useEffect(() => {
     loadLiveOrders();
-  }, []);
+    const interval = setInterval(() => {
+      if (isOrdersAutoRefresh && typeof document !== 'undefined' && document.visibilityState === 'visible') {
+        loadLiveOrders(true);
+      }
+    }, 10000);
+
+    const handleFocus = () => {
+      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
+        loadLiveOrders(true);
+      }
+    };
+    window.addEventListener('focus', handleFocus);
+    window.addEventListener('visibilitychange', handleFocus);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('focus', handleFocus);
+      window.removeEventListener('visibilitychange', handleFocus);
+    };
+  }, [isOrdersAutoRefresh]);
 
   // Sync StoreConfig state to branding form whenever storeConfig changes
   useEffect(() => {
@@ -1016,36 +1050,61 @@ export const AdminDashboardPage: React.FC = () => {
     setTimeout(() => setBrandingSaved(false), 3500);
   };
 
-  // Order Lifecycle Handlers
+  // Order Lifecycle Handlers with Optimistic UI & Database Sync
   const handleUpdateOrderStatus = async (orderId: string, newStatus: string) => {
-    const res = await updateOrderStatusInDb(orderId, { status: newStatus });
-    if (res.success) {
-      setLiveOrders((prev) =>
-        prev.map((o) =>
-          o.orderId === orderId || o._id === orderId ? { ...o, status: newStatus } : o
-        )
-      );
-      showToast(`Order #${orderId} marked as ${newStatus}`);
-    } else {
-      showToast(`Notice: ${res.message || 'Updated locally'}`);
+    // 1. Snapshot previous state for rollback
+    const previousOrders = [...liveOrders];
+
+    // 2. Optimistic UI update (0ms immediate response)
+    setLiveOrders((prev) =>
+      prev.map((o) => {
+        const matches = o.orderId === orderId || o._id === orderId || o.orderReference === orderId;
+        return matches ? { ...o, status: newStatus } : o;
+      })
+    );
+    showToast(`Order #${orderId} marked as ${newStatus}`);
+
+    // 3. Persist to MongoDB Atlas
+    try {
+      const res = await updateOrderStatusInDb(orderId, { status: newStatus });
+      if (!res.success) {
+        setLiveOrders(previousOrders);
+        showToast(`Could not persist status: ${res.message || 'Reverted'}`);
+      }
+    } catch (err: any) {
+      setLiveOrders(previousOrders);
+      showToast(`Network error: ${err?.message || 'Reverted to previous state'}`);
     }
   };
 
   const handleSaveOrderTracking = async (orderId: string) => {
-    const res = await updateOrderStatusInDb(orderId, {
-      trackingNumber: tempTrackingNumber,
-      adminNotes: tempAdminNotes,
-    });
-    if (res.success) {
-      setLiveOrders((prev) =>
-        prev.map((o) =>
-          o.orderId === orderId || o._id === orderId
-            ? { ...o, trackingNumber: tempTrackingNumber, adminNotes: tempAdminNotes }
-            : o
-        )
-      );
-      showToast(`Waybill tracking updated for #${orderId}`);
-      setEditingOrderId(null);
+    const previousOrders = [...liveOrders];
+
+    // Optimistic UI update
+    setLiveOrders((prev) =>
+      prev.map((o) => {
+        const matches = o.orderId === orderId || o._id === orderId || o.orderReference === orderId;
+        return matches
+          ? { ...o, trackingNumber: tempTrackingNumber, adminNotes: tempAdminNotes }
+          : o;
+      })
+    );
+    showToast(`Waybill tracking saved for #${orderId}`);
+    setEditingOrderId(null);
+
+    // Persist to MongoDB Atlas
+    try {
+      const res = await updateOrderStatusInDb(orderId, {
+        trackingNumber: tempTrackingNumber,
+        adminNotes: tempAdminNotes,
+      });
+      if (!res.success) {
+        setLiveOrders(previousOrders);
+        showToast(`Could not save tracking to database: ${res.message}`);
+      }
+    } catch (err: any) {
+      setLiveOrders(previousOrders);
+      showToast(`Network error: ${err?.message || 'Reverted'}`);
     }
   };
 
@@ -1057,44 +1116,155 @@ export const AdminDashboardPage: React.FC = () => {
     ) {
       return;
     }
-    const res = await deleteOrderFromDb(orderId);
-    if (res.success) {
-      setLiveOrders((prev) =>
-        prev.filter((o) => o.orderId !== orderId && o._id !== orderId)
-      );
-      showToast(`Order #${orderId} deleted from database.`);
-    } else {
-      showToast(`Notice: ${res.message || 'Removed from display'}`);
+
+    const previousOrders = [...liveOrders];
+    // Optimistic removal
+    setLiveOrders((prev) =>
+      prev.filter((o) => !(o.orderId === orderId || o._id === orderId || o.orderReference === orderId))
+    );
+    showToast(`Order #${orderId} deleted.`);
+
+    try {
+      const res = await deleteOrderFromDb(orderId);
+      if (!res.success) {
+        setLiveOrders(previousOrders);
+        showToast(`Could not delete from database: ${res.message}`);
+      }
+    } catch (err: any) {
+      setLiveOrders(previousOrders);
+      showToast(`Delete failed: ${err?.message || 'Restored'}`);
     }
   };
 
-  // Filtered Orders
+  // Filtered & Searchable Orders from Live MongoDB Database
   const allOrdersCombined = useMemo(() => {
     const map = new Map<string, any>();
-    liveOrders.forEach((o) => map.set(o.orderId || o._id, o));
+    liveOrders.forEach((o) => map.set(o.orderId || o._id || o.orderReference, o));
     demoOrders.forEach((o) => {
-      if (!map.has(o.orderReference)) {
-        map.set(o.orderReference, o);
+      const ref = o.orderReference || o.orderId || o._id;
+      if (ref && !map.has(ref)) {
+        map.set(ref, o);
       }
     });
     const list = Array.from(map.values());
+
     return list.filter((ord) => {
-      if (orderFilter === 'all') return true;
+      // 1. Category / Status Filter
       if (orderFilter === 'wholesale') {
-        return (
+        const isWholesale =
           ord.fulfillmentType === 'Upcountry Bus Parcel (Mikoani)' ||
-          (ord.totalAmount && ord.totalAmount >= 200000)
-        );
+          (ord.totalAmount && ord.totalAmount >= 200000);
+        if (!isWholesale) return false;
+      } else if (orderFilter === 'retail') {
+        const isRetail = ord.totalAmount && ord.totalAmount < 200000;
+        if (!isRetail) return false;
+      } else if (orderFilter === 'dispatched') {
+        const isDispatched = ord.status === 'Dispatched' || ord.status === 'Delivered';
+        if (!isDispatched) return false;
       }
-      if (orderFilter === 'retail') {
-        return ord.totalAmount && ord.totalAmount < 200000;
+
+      // 2. Search Query Filter
+      if (ordersSearchQuery.trim()) {
+        const q = ordersSearchQuery.trim().toLowerCase();
+        const refMatch = (ord.orderReference || ord.orderId || ord._id || '').toLowerCase().includes(q);
+        const nameMatch = (ord.customerName || '').toLowerCase().includes(q);
+        const phoneMatch = (ord.phoneNumber || ord.phone || '').toLowerCase().includes(q);
+        const trackingMatch = (ord.trackingNumber || '').toLowerCase().includes(q);
+        const addrMatch = (ord.deliveryAddress || '').toLowerCase().includes(q);
+        const itemMatch =
+          ord.items &&
+          Array.isArray(ord.items) &&
+          ord.items.some((it: any) => (it.name || it.productId || '').toLowerCase().includes(q));
+
+        if (!refMatch && !nameMatch && !phoneMatch && !trackingMatch && !addrMatch && !itemMatch) {
+          return false;
+        }
       }
-      if (orderFilter === 'dispatched') {
-        return ord.status === 'Dispatched' || ord.status === 'Delivered';
-      }
+
       return true;
     });
-  }, [liveOrders, demoOrders, orderFilter]);
+  }, [liveOrders, demoOrders, orderFilter, ordersSearchQuery]);
+
+  // Real-time Order Analytics KPIs
+  const orderAnalytics = useMemo(() => {
+    const totalCount = allOrdersCombined.length;
+    let revenue = 0;
+    let pendingCount = 0;
+    let dispatchedCount = 0;
+    let deliveredCount = 0;
+
+    allOrdersCombined.forEach((o) => {
+      revenue += Number(o.totalAmount || o.subtotal || 0);
+      const s = (o.status || '').toLowerCase();
+      if (s.includes('pending')) pendingCount++;
+      else if (s.includes('dispatch') || s.includes('transit')) dispatchedCount++;
+      else if (s.includes('deliver')) deliveredCount++;
+    });
+
+    return { totalCount, revenue, pendingCount, dispatchedCount, deliveredCount };
+  }, [allOrdersCombined]);
+
+  // Export Orders CSV Spreadsheet
+  const handleExportOrdersCSV = () => {
+    if (allOrdersCombined.length === 0) {
+      showToast('No orders available to export.');
+      return;
+    }
+    const headers = [
+      'Order Reference',
+      'Date',
+      'Customer Name',
+      'Phone Number',
+      'Delivery Address',
+      'Fulfillment Method',
+      'Status',
+      'Waybill Tracking',
+      'Admin Notes',
+      'Total Amount (TSh)',
+      'Items Breakdown',
+    ];
+
+    const rows = allOrdersCombined.map((ord) => {
+      const ref = ord.orderReference || ord.orderId || ord._id || '';
+      const date = ord.createdAt ? new Date(ord.createdAt).toLocaleDateString() : 'Today';
+      const name = (ord.customerName || 'Customer').replace(/"/g, '""');
+      const phone = ord.phoneNumber || ord.phone || '';
+      const address = (ord.deliveryAddress || '').replace(/"/g, '""');
+      const fulfill = (ord.fulfillmentType || '').replace(/"/g, '""');
+      const status = ord.status || 'Pending Confirmation';
+      const tracking = ord.trackingNumber || '';
+      const notes = (ord.adminNotes || '').replace(/"/g, '""');
+      const total = ord.totalAmount || ord.subtotal || 0;
+      const itemsStr =
+        ord.items && Array.isArray(ord.items)
+          ? ord.items.map((i: any) => `${i.quantity}x ${i.name || i.productId}`).join('; ')
+          : '';
+
+      return [
+        `"${ref}"`,
+        `"${date}"`,
+        `"${name}"`,
+        `"${phone}"`,
+        `"${address}"`,
+        `"${fulfill}"`,
+        `"${status}"`,
+        `"${tracking}"`,
+        `"${notes}"`,
+        total,
+        `"${itemsStr.replace(/"/g, '""')}"`,
+      ].join(',');
+    });
+
+    const csvContent = 'data:text/csv;charset=utf-8,\uFEFF' + [headers.join(','), ...rows].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `omega_orders_export_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast(`Exported ${allOrdersCombined.length} orders to CSV spreadsheet.`);
+  };
 
   // Live Dealer Margin Computation in Modal
   const modalRetailNum = Number(productForm.price) || 0;
@@ -1804,9 +1974,10 @@ export const AdminDashboardPage: React.FC = () => {
         </div>
       )}
 
-      {/* ==================== TAB 2: ORDERS & LOGISTICS (DIRECT MONGODB CRUD) ==================== */}
+      {/* ==================== TAB 2: ORDERS & LOGISTICS (DIRECT MONGODB CRUD & TELEMETRY) ==================== */}
       {activeTab === 'orders' && (
         <div className="space-y-6">
+          {/* Header & Description */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <h2 className="font-heading text-xl font-bold text-[#2b2520]">
@@ -1817,25 +1988,141 @@ export const AdminDashboardPage: React.FC = () => {
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleExportOrdersCSV}
+                className="px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-[#4b423b] rounded-xl text-xs font-bold inline-flex items-center gap-1.5 transition-colors border border-stone-200"
+                title="Download CSV spreadsheet of all filtered customer consignments"
+              >
+                <FileSpreadsheet className="w-3.5 h-3.5 text-[#c49b7c]" />
+                <span>Export CSV</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => loadLiveOrders(false)}
+                disabled={isLoadingOrders}
+                className="px-3.5 py-1.5 bg-[#4b423b] hover:bg-black text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5 transition-colors shadow-2xs active:scale-95"
+                title="Pull latest live orders directly from MongoDB Atlas"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 text-[#c49b7c] ${isLoadingOrders ? 'animate-spin' : ''}`} />
+                <span>{isLoadingOrders ? 'Syncing...' : 'Refresh Orders'}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Real-time Order KPI Analytics Cards */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">Total Consignments</span>
+              <p className="text-2xl font-black text-[#2b2520] font-mono mt-1">{orderAnalytics.totalCount}</p>
+              <span className="text-[11px] text-stone-500">Live MongoDB documents</span>
+            </div>
+
+            <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">Total Pipeline Value</span>
+              <p className="text-lg font-black text-emerald-700 font-mono mt-1 truncate">
+                {formatPrice(orderAnalytics.revenue, currency)}
+              </p>
+              <span className="text-[11px] text-emerald-700 font-semibold">Consignment order total</span>
+            </div>
+
+            <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">Pending Actions</span>
+              <p className="text-2xl font-black text-amber-700 font-mono mt-1">{orderAnalytics.pendingCount}</p>
+              <span className="text-[11px] text-amber-700 font-semibold">Awaiting confirmation</span>
+            </div>
+
+            <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">Dispatched &amp; Delivered</span>
+              <p className="text-2xl font-black text-sky-700 font-mono mt-1">
+                {orderAnalytics.dispatchedCount + orderAnalytics.deliveredCount}
+              </p>
+              <span className="text-[11px] text-sky-700 font-semibold">Active in transit &amp; fulfilled</span>
+            </div>
+          </div>
+
+          {/* Real-Time Database Polling Indicator & Auto-Sync Bar */}
+          <div className="bg-linear-to-r from-[#1c2e24] via-[#242b26] to-[#2b2520] text-white p-3.5 rounded-2xl border border-emerald-700/40 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+            <div className="flex items-center gap-3">
+              <div className="relative flex items-center justify-center">
+                <div className="w-3 h-3 rounded-full bg-emerald-400" />
+                <div className="absolute w-5 h-5 rounded-full bg-emerald-400/30 animate-ping" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-black tracking-wider uppercase text-emerald-300">
+                    Live Order Stream (MongoDB Atlas)
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-900/80 text-emerald-200 border border-emerald-600/50">
+                    omega_stationery.orders
+                  </span>
+                </div>
+                <p className="text-[11px] text-stone-300 mt-0.5">
+                  {lastOrdersSyncTime
+                    ? `Authoritative sync at ${lastOrdersSyncTime.toLocaleTimeString()} · Continuous 10s cloud heartbeat`
+                    : 'Actively synchronized with cloud database'}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 text-xs">
+              <label className="flex items-center gap-2 cursor-pointer select-none text-stone-300 text-[11px] font-bold">
+                <input
+                  type="checkbox"
+                  checked={isOrdersAutoRefresh}
+                  onChange={(e) => setIsOrdersAutoRefresh(e.target.checked)}
+                  className="rounded text-emerald-600 focus:ring-0"
+                />
+                <span>Auto-Sync (10s)</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Search & Category Filter Controls */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3 border border-stone-200 rounded-xl shadow-2xs">
+            {/* Search Input */}
+            <div className="relative flex-1 min-w-[240px]">
+              <Search className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={ordersSearchQuery}
+                onChange={(e) => setOrdersSearchQuery(e.target.value)}
+                placeholder="Search orders by customer, phone, reference, tracking, or items..."
+                className="w-full pl-9 pr-8 py-2 text-xs bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:border-[#4b423b] focus:bg-white"
+              />
+              {ordersSearchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setOrdersSearchQuery('')}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-black"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
+            </div>
+
+            {/* Filter Status Buttons */}
+            <div className="flex flex-wrap items-center gap-1.5">
               <button
                 type="button"
                 onClick={() => setOrderFilter('all')}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold ${
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
                   orderFilter === 'all'
-                    ? 'bg-[#4b423b] text-white'
-                    : 'bg-white border border-stone-200 text-stone-600'
+                    ? 'bg-[#4b423b] text-white shadow-2xs'
+                    : 'bg-stone-50 border border-stone-200 text-stone-600 hover:bg-stone-100'
                 }`}
               >
-                All Orders ({allOrdersCombined.length})
+                All ({allOrdersCombined.length})
               </button>
               <button
                 type="button"
                 onClick={() => setOrderFilter('wholesale')}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold ${
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
                   orderFilter === 'wholesale'
-                    ? 'bg-[#4b423b] text-white'
-                    : 'bg-white border border-stone-200 text-stone-600'
+                    ? 'bg-[#4b423b] text-white shadow-2xs'
+                    : 'bg-stone-50 border border-stone-200 text-stone-600 hover:bg-stone-100'
                 }`}
               >
                 Wholesale Consignments
@@ -1843,10 +2130,10 @@ export const AdminDashboardPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setOrderFilter('dispatched')}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold ${
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
                   orderFilter === 'dispatched'
-                    ? 'bg-[#4b423b] text-white'
-                    : 'bg-white border border-stone-200 text-stone-600'
+                    ? 'bg-[#4b423b] text-white shadow-2xs'
+                    : 'bg-stone-50 border border-stone-200 text-stone-600 hover:bg-stone-100'
                 }`}
               >
                 In Transit / Dispatched
@@ -1857,10 +2144,21 @@ export const AdminDashboardPage: React.FC = () => {
           {allOrdersCombined.length === 0 ? (
             <div className="bg-white p-12 text-center rounded-2xl border border-stone-200 shadow-xs space-y-3">
               <ShoppingBag className="w-10 h-10 text-stone-300 mx-auto" />
-              <h3 className="text-sm font-bold text-[#2b2520]">No Orders In Pipeline Yet</h3>
+              <h3 className="text-sm font-bold text-[#2b2520]">No Orders Matching Filters</h3>
               <p className="text-xs text-stone-500 max-w-sm mx-auto">
-                Orders created via the shopping cart, wholesale calculator, or tender forms will show here in real-time.
+                {ordersSearchQuery
+                  ? `No orders match "${ordersSearchQuery}". Try clearing search keywords.`
+                  : 'Orders created via the shopping cart, wholesale calculator, or tender forms will show here in real-time.'}
               </p>
+              {ordersSearchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setOrdersSearchQuery('')}
+                  className="px-3 py-1.5 bg-stone-100 text-stone-700 text-xs font-bold rounded-lg hover:bg-stone-200"
+                >
+                  Clear Search
+                </button>
+              )}
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
