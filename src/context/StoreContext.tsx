@@ -115,7 +115,8 @@ export interface StoreContextType {
 
   addProduct: (product: Omit<Product, 'id'>) => Product;
   updateProduct: (product: Product) => void;
-  deleteProduct: (productId: string) => void;
+  deleteProduct: (productId: string, options?: { skipDb?: boolean }) => void;
+  restoreProduct: (product: Product, targetIndex?: number) => void;
   updateProductPrice: (productId: string, price: number, discountPrice?: number, wholesalePrice?: number) => void;
   updateProductStock: (productId: string, stockStatus: StockStatus, stockQuantity?: number) => void;
   resetProductsToDefault: () => void;
@@ -127,7 +128,7 @@ export interface StoreContextType {
   isBackendOnline: boolean;
   backendHealth: BackendHealthData | null;
   refreshBackendHealth: () => Promise<void>;
-  reloadCatalogFromDb: () => Promise<void>;
+  reloadCatalogFromDb: () => Promise<{ success: boolean; count: number }>;
   reloadConfigFromDb: () => Promise<void>;
   bulkUpdateProducts: (payload: {
     action: 'adjust_price' | 'set_stock';
@@ -215,6 +216,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       if (saved === 'en' || saved === 'sw') return saved;
     } catch {
       // Fallback
+      
     }
     return 'en';
   });
@@ -227,16 +229,22 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [backendHealth, setBackendHealth] = useState<BackendHealthData | null>(null);
   const [isCatalogLoading, setIsCatalogLoading] = useState<boolean>(true);
 
-  const reloadCatalogFromDb = async () => {
+  const reloadCatalogFromDb = async (): Promise<{ success: boolean; count: number }> => {
     try {
+      clearClientProductCache();
       const live = await fetchLiveProducts({ forceRefresh: true });
       if (live && live.length > 0) {
         setProducts(live);
-        localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(live));
+        try {
+          localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(live));
+        } catch {}
         showToast(`Loaded ${live.length} live products directly from MongoDB Atlas.`);
+        return { success: true, count: live.length };
       }
+      return { success: false, count: 0 };
     } catch (err) {
       console.warn('Failed to reload catalog from DB:', err);
+      return { success: false, count: 0 };
     }
   };
 
@@ -337,14 +345,34 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       }
     };
 
+    // 4. Instant multi-tab / multi-window sync via storage event
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === STORAGE_KEYS.PRODUCTS && e.newValue) {
+        try {
+          const parsed = JSON.parse(e.newValue);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setProducts(parsed);
+          }
+        } catch {}
+      }
+      if (e.key === STORAGE_KEYS.CONFIG && e.newValue) {
+        try {
+          const parsed = JSON.parse(e.newValue);
+          setStoreConfig((prev) => ({ ...prev, ...parsed }));
+        } catch {}
+      }
+    };
+
     window.addEventListener('visibilitychange', handleVisibilityOrFocus);
     window.addEventListener('focus', handleVisibilityOrFocus);
+    window.addEventListener('storage', handleStorageChange);
 
     return () => {
       isMounted = false;
       clearInterval(syncInterval);
       window.removeEventListener('visibilitychange', handleVisibilityOrFocus);
       window.removeEventListener('focus', handleVisibilityOrFocus);
+      window.removeEventListener('storage', handleStorageChange);
     };
   }, []);
 
@@ -896,7 +924,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       .catch((err) => console.warn('MongoDB sync notice:', err));
   };
 
-  const deleteProduct = (productId: string) => {
+  const deleteProduct = (productId: string, options?: { skipDb?: boolean }) => {
     clearClientProductCache();
     const target = products.find((p) => p.id === productId);
     setProducts((prev) => {
@@ -910,14 +938,41 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       showToast(`Removed "${target.name}".`);
     }
 
-    // Direct MongoDB Database CRUD Persist
-    deleteProductFromDb(productId)
+    if (!options?.skipDb) {
+      // Direct MongoDB Database CRUD Persist
+      deleteProductFromDb(productId)
+        .then((res) => {
+          if (res.success) {
+            console.log('[Direct DB Sync] Product deleted from MongoDB Atlas:', productId);
+          }
+        })
+        .catch((err) => console.warn('MongoDB sync notice:', err));
+    }
+  };
+
+  const restoreProduct = (product: Product, targetIndex?: number) => {
+    clearClientProductCache();
+    setProducts((prev) => {
+      if (prev.some((p) => p.id === product.id)) return prev;
+      const next = [...prev];
+      if (typeof targetIndex === 'number' && targetIndex >= 0 && targetIndex <= next.length) {
+        next.splice(targetIndex, 0, product);
+      } else {
+        next.unshift(product);
+      }
+      try { localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(next)); } catch {}
+      return next;
+    });
+    showToast(`Restored "${product.name}".`);
+
+    // Ensure it is saved back to MongoDB Atlas
+    createProductInDb(product)
       .then((res) => {
         if (res.success) {
-          console.log('[Direct DB Sync] Product deleted from MongoDB Atlas:', productId);
+          console.log('[Direct DB Sync] Restored product in MongoDB Atlas:', product.id);
         }
       })
-      .catch((err) => console.warn('MongoDB sync notice:', err));
+      .catch((err) => console.warn('MongoDB restore sync notice:', err));
   };
 
   const updateProductPrice = (
@@ -1130,6 +1185,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         addProduct,
         updateProduct,
         deleteProduct,
+        restoreProduct,
         updateProductPrice,
         updateProductStock,
         resetProductsToDefault,

@@ -206,7 +206,7 @@ const ALL_OMEGA_PRODUCTS = [
     bestSeller: true,
     rating: 4.8,
     reviewCount: 310,
-    image: '/omega-products/exercise-book-100p-blue.jpeg',
+    image: '/omega-products/exercise-book-100p-catalog.jpeg',
     description: 'Standard 100-page notebook available in Single Line, Double Line and Square Grid for mathematics and English composition.',
     descriptionSw: 'Daftari la kurasa 100 kwa shule za msingi na sekondari.',
     specifications: [
@@ -234,7 +234,7 @@ const ALL_OMEGA_PRODUCTS = [
     bestSeller: false,
     rating: 4.7,
     reviewCount: 190,
-    image: '/omega-products/exercise-book-80p-green.jpeg',
+    image: '/omega-products/exercise-book-80p-yellow.jpeg',
     description: 'Everyday school exercise book with printed multiplication tables and metric conversion charts on rear cover.',
     descriptionSw: 'Daftari la kawaida la masomo ya kila siku lenye ratiba na majedwali.',
     specifications: [
@@ -262,7 +262,7 @@ const ALL_OMEGA_PRODUCTS = [
     bestSeller: false,
     rating: 4.65,
     reviewCount: 95,
-    image: '/omega-products/exercise-book-32p-orange.jpeg',
+    image: '/omega-products/exercise-book-32p-kraft.jpeg',
     description: 'Slim lightweight exercise book for kindergarten and early primary grades. Easy for small children to handle.',
     descriptionSw: 'Daftari la kurasa 32 kwa wanafunzi wa awali na shule za chekechea.',
     specifications: [
@@ -316,7 +316,7 @@ const ALL_OMEGA_PRODUCTS = [
     bestSeller: false,
     rating: 4.85,
     reviewCount: 88,
-    image: '/omega-products/bahasha-a3-large.jpeg',
+    image: '/omega-products/bahasha-a3-catalog.jpeg',
     description: 'Spacious A3 architectural and engineering drawing envelopes. Perfect for blueprints, posters, and unfolded contracts.',
     descriptionSw: 'Bahasha kubwa za ramani, michoro na nyaraka kubwa bila kukunjwa.',
     specifications: [
@@ -343,7 +343,7 @@ const ALL_OMEGA_PRODUCTS = [
     bestSeller: false,
     rating: 4.75,
     reviewCount: 110,
-    image: '/omega-products/bahasha-a5-medium.jpeg',
+    image: '/omega-products/bahasha-a5-catalog.jpeg',
     description: 'Versatile envelope for financial receipts, certificates, passports, and official correspondence.',
     descriptionSw: 'Bahasha za kiofisi za ukubwa wa kati kwa risiti na barua.',
     specifications: [
@@ -369,7 +369,7 @@ const ALL_OMEGA_PRODUCTS = [
     bestSeller: false,
     rating: 4.7,
     reviewCount: 75,
-    image: '/omega-products/bahasha-a6-small.jpeg',
+    image: '/omega-products/bahasha-a6-catalog.jpeg',
     description: 'Compact envelopes suitable for wage payment slips, utility bills, business gift vouchers, and small notes.',
     descriptionSw: 'Bahasha ndogo za mishahara, risiti na vipeperushi.',
     specifications: [
@@ -395,7 +395,7 @@ const ALL_OMEGA_PRODUCTS = [
     bestSeller: true,
     rating: 4.95,
     reviewCount: 215,
-    image: '/omega-products/school-attendance-register.jpeg',
+    image: '/omega-products/printer-jaradio-cover.jpeg',
     description: 'Standardized attendance ledger with pre-printed 31-day columns, term totals, summary analytics and student biodata sections.',
     descriptionSw: 'Rejesta rasmi ya mahudhurio ya shule kwa muhula na mwaka mzima.',
     specifications: [
@@ -422,7 +422,7 @@ const ALL_OMEGA_PRODUCTS = [
     bestSeller: false,
     rating: 4.88,
     reviewCount: 140,
-    image: '/omega-products/gate-visitors-register.jpeg',
+    image: '/omega-products/printer-jaradio-isolated.jpeg',
     description: 'Professional entrance logbook recording date, time in/out, visitor name, vehicle plate number, person visited, and signature.',
     descriptionSw: 'Kitabu cha wageni kwa ajili ya ofisi, mageti na hoteli.',
     specifications: [
@@ -448,7 +448,7 @@ const ALL_OMEGA_PRODUCTS = [
     bestSeller: true,
     rating: 4.9,
     reviewCount: 430,
-    image: '/omega-products/ruled-exam-paper-ream.jpeg',
+    image: '/omega-products/ruled-paper-catalog.jpeg',
     description: 'Precision ruled paper with red left margin, pre-punched binder holes, and header for candidate number, subject, and date.',
     descriptionSw: 'Karatasi rasmi za mitihani na majaribio ya shule na vyuo.',
     specifications: [
@@ -474,7 +474,7 @@ const ALL_OMEGA_PRODUCTS = [
     bestSeller: false,
     rating: 4.8,
     reviewCount: 160,
-    image: '/omega-products/graph-paper-pad.jpeg',
+    image: '/omega-products/ruled-paper-pack.jpeg',
     description: '1mm, 5mm, and 10mm high-accuracy grid lines for physics, chemistry, engineering diagrams, and geography cartography.',
     descriptionSw: 'Karatasi za grafu zenye mistari sahihi ya vipimo vya milimita.',
     specifications: [

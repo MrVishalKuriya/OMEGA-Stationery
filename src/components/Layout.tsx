@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   X,
   CheckCircle2,
@@ -36,6 +36,11 @@ import { OmegaLogo } from './OmegaLogo';
 import { Navbar } from './navbar';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const location = useLocation();
+  const isAdminPage =
+    location.pathname.startsWith('/omega-hq-portal') ||
+    location.pathname.startsWith('/admin');
+
   const {
     wishlistCount,
     setIsWishlistModalOpen,
@@ -479,33 +484,35 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         </div>
       </footer>
 
-      {/* Floating High-Contrast Quick Action Dock */}
-      <div className="fixed bottom-4 right-3 sm:bottom-5 sm:right-5 z-40 flex items-center gap-2 pointer-events-none">
-        <div className="flex items-center gap-2 pointer-events-auto bg-[#1e1b18]/90 backdrop-blur-md p-1.5 rounded-full border border-[#c49b7c]/40 shadow-2xl">
-          {/* Direct WhatsApp Orders Quick Pill */}
-          <a
-            href="https://wa.me/255715268391?text=Hello%20OMEGA%20Stationery%20Tanzania,%20I%20would%20like%20to%20place%20an%20order."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold shadow-md transition-all hover:scale-105"
-            title="Chat with Sales Desk on WhatsApp"
-          >
-            <MessageCircle className="w-3.5 h-3.5 fill-white" />
-            <span className="hidden sm:inline">WhatsApp Orders</span>
-          </a>
+      {/* Floating High-Contrast Quick Action Dock (Hidden on Admin Portal) */}
+      {!isAdminPage && (
+        <div className="fixed bottom-4 right-3 sm:bottom-5 sm:right-5 z-40 flex items-center gap-2 pointer-events-none">
+          <div className="flex items-center gap-2 pointer-events-auto bg-[#1e1b18]/90 backdrop-blur-md p-1.5 rounded-full border border-[#c49b7c]/40 shadow-2xl">
+            {/* Direct WhatsApp Orders Quick Pill */}
+            <a
+              href="https://wa.me/255715268391?text=Hello%20OMEGA%20Stationery%20Tanzania,%20I%20would%20like%20to%20place%20an%20order."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold shadow-md transition-all hover:scale-105"
+              title="Chat with Sales Desk on WhatsApp"
+            >
+              <MessageCircle className="w-3.5 h-3.5 fill-white" />
+              <span className="hidden sm:inline">WhatsApp Orders</span>
+            </a>
 
-          {/* Wholesale Carton Calculator (LEDUP Copper Gradient) */}
-          <button
-            type="button"
-            onClick={() => setIsWholesaleModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full btn-ledup-copper text-xs font-bold shadow-md hover:scale-105 transition-all group active:scale-95 text-white"
-            aria-label="Open Wholesale Carton & Tender Calculator"
-          >
-            <Calculator className="w-3.5 h-3.5 text-white" />
-            <span>Wholesale Rates</span>
-          </button>
+            {/* Wholesale Carton Calculator (LEDUP Copper Gradient) */}
+            <button
+              type="button"
+              onClick={() => setIsWholesaleModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full btn-ledup-copper text-xs font-bold shadow-md hover:scale-105 transition-all group active:scale-95 text-white"
+              aria-label="Open Wholesale Carton & Tender Calculator"
+            >
+              <Calculator className="w-3.5 h-3.5 text-white" />
+              <span>Wholesale Rates</span>
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Global E-Commerce Modals */}
       <QuickViewModal />

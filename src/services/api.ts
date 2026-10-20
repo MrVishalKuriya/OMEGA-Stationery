@@ -5,21 +5,36 @@ import { Product, CustomerOrderInput, DemoOrderRecord } from '../types/store';
  * Chrome Private Network Access (PNA) and Mixed Content restrictions strictly forbid
  * public HTTPS origins (such as https://omegastationery.vercel.app) from accessing http://localhost.
  */
+function isLoopbackTarget(url: string): boolean {
+  return url.includes('localhost') || url.includes('127.0.0.1') || url.startsWith('http://[::1]');
+}
+
+/**
+ * Detects if the current environment is a public HTTPS origin trying to access a loopback address space.
+ * Chrome Private Network Access (PNA) and Mixed Content restrictions strictly forbid
+ * public HTTPS origins (such as https://omegastationery.vercel.app) from accessing http://localhost.
+ */
 export function isLoopbackRestricted(url: string = BACKEND_URL): boolean {
   if (typeof window === 'undefined') return false;
   const isHttps = window.location.protocol === 'https:';
   const isNotLocalhostHost = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-  const isLoopbackTarget = url.includes('localhost') || url.includes('127.0.0.1') || url.startsWith('http://[::1]');
-  return isHttps && isNotLocalhostHost && isLoopbackTarget;
+  return isHttps && isNotLocalhostHost && isLoopbackTarget(url);
 }
 
 function resolveBackendUrl(): string {
-  if (typeof window !== 'undefined') {
+  const isBrowser = typeof window !== 'undefined';
+  const isRemoteHttps = isBrowser && window.location.protocol === 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+
+  if (isBrowser) {
     const saved = localStorage.getItem('OMEGA_BACKEND_URL');
     if (saved && saved.trim()) {
       let clean = saved.trim().replace(/\/+$/, '');
       if (clean.endsWith('/api')) clean = clean.slice(0, -4);
-      return clean;
+      if (isRemoteHttps && isLoopbackTarget(clean)) {
+        try { localStorage.removeItem('OMEGA_BACKEND_URL'); } catch {}
+      } else {
+        return clean;
+      }
     }
   }
 
@@ -27,20 +42,20 @@ function resolveBackendUrl(): string {
   if (envUrl && envUrl.trim()) {
     let clean = envUrl.trim().replace(/\/+$/, '');
     if (clean.endsWith('/api')) clean = clean.slice(0, -4);
-    return clean;
+    if (!(isRemoteHttps && isLoopbackTarget(clean))) {
+      return clean;
+    }
   }
 
-  // In browser on localhost (development), default to port 5000
-  if (typeof window !== 'undefined') {
+  if (isBrowser) {
     const isLocalhostHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
     if (isLocalhostHost) {
       return 'http://localhost:5000';
     }
-    // On public HTTPS domain (e.g. Vercel), default to the live Render cloud backend
     return 'https://omega-stationery-backend.onrender.com';
   }
 
-  return 'http://localhost:5000';
+  return 'https://omega-stationery-backend.onrender.com';
 }
 
 export let BACKEND_URL = resolveBackendUrl();
@@ -312,7 +327,9 @@ export async function fetchLiveProducts(options?: {
 
   const cacheKey = `cat=${options?.category || 'all'}&q=${options?.search || ''}&feat=${!!options?.featured}`;
   
-  if (!options?.forceRefresh) {
+  if (options?.forceRefresh) {
+    clientProductCache.clear();
+  } else {
     const cached = clientProductCache.get(cacheKey);
     if (cached && cached.expiresAt > Date.now()) {
       return cached.data;

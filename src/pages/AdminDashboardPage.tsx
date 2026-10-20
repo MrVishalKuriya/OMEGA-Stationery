@@ -70,6 +70,7 @@ import {
   fetchLiveOrders,
   updateOrderStatusInDb,
   deleteOrderFromDb,
+  deleteProductFromDb,
   saveStoreConfigToDb,
   uploadProductImage,
   testLiveCacheBenchmark,
@@ -108,6 +109,7 @@ export const AdminDashboardPage: React.FC = () => {
     addProduct,
     updateProduct,
     deleteProduct,
+    restoreProduct,
     updateProductPrice,
     updateProductStock,
     resetProductsToDefault,
@@ -311,27 +313,44 @@ export const AdminDashboardPage: React.FC = () => {
     setBrandingForm({ ...storeConfig });
   }, [storeConfig]);
 
-  // Synchronize Database Handler
+  // Synchronize Database Handler - Always pulls fresh live catalog from MongoDB Atlas
   const handleSyncDatabase = async () => {
     setSyncingDb(true);
     setDbSyncMessage(null);
-    const res = await syncDatabaseProducts();
-    if (res.success) {
+    try {
+      const res = await reloadCatalogFromDb();
+      if (res && res.success) {
+        setDbSyncMessage({
+          text: `Synchronized ${res.count} live products directly from MongoDB Atlas!`,
+          success: true,
+        });
+        const data = await fetchHealth();
+        if (data) setBackendHealth(data);
+      } else {
+        // Fallback: seed database if empty
+        const seedRes = await syncDatabaseProducts();
+        if (seedRes.success) {
+          const fresh = await reloadCatalogFromDb();
+          setDbSyncMessage({
+            text: seedRes.message || `All ${fresh?.count || 44} products synchronized to MongoDB Atlas!`,
+            success: true,
+          });
+        } else {
+          setDbSyncMessage({
+            text: `Sync note: ${seedRes.message}`,
+            success: false,
+          });
+        }
+      }
+    } catch (err: any) {
       setDbSyncMessage({
-        text: res.message || 'All official catalog products synchronized to MongoDB Atlas successfully!',
-        success: true,
-      });
-      await reloadCatalogFromDb();
-      const data = await fetchHealth();
-      if (data) setBackendHealth(data);
-    } else {
-      setDbSyncMessage({
-        text: `Sync note: ${res.message}`,
+        text: `Sync note: ${err?.message || 'Database not reachable'}`,
         success: false,
       });
+    } finally {
+      setSyncingDb(false);
+      setTimeout(() => setDbSyncMessage(null), 6000);
     }
-    setSyncingDb(false);
-    setTimeout(() => setDbSyncMessage(null), 6000);
   };
 
   // Reload Catalog from DB Handler
@@ -622,6 +641,80 @@ export const AdminDashboardPage: React.FC = () => {
       updateProductStock(productId, tempStockStatus, parsedStockQty);
     }
     setEditingRowId(null);
+  };
+
+  // 60-Second (1-Minute) Undo Feature for Deleted Products
+  interface PendingDeletion {
+    product: Product;
+    originalIndex: number;
+    expiresAt: number;
+    secondsRemaining: number;
+  }
+  const [pendingDeletions, setPendingDeletions] = useState<PendingDeletion[]>([]);
+
+  useEffect(() => {
+    if (pendingDeletions.length === 0) return;
+
+    const interval = setInterval(() => {
+      const now = Date.now();
+      setPendingDeletions((prev) => {
+        const next: PendingDeletion[] = [];
+        for (const item of prev) {
+          const diff = Math.max(0, Math.ceil((item.expiresAt - now) / 1000));
+          if (diff > 0) {
+            next.push({ ...item, secondsRemaining: diff });
+          } else {
+            // 1 minute expired! Commit permanent deletion to MongoDB Atlas
+            deleteProductFromDb(item.product.id)
+              .then((res) => {
+                if (res.success) {
+                  console.log('[Direct DB Sync] 1-minute expired: Permanently deleted from MongoDB Atlas:', item.product.id);
+                }
+              })
+              .catch((err) => console.warn('Permanent delete error:', err));
+            showToast(`Product "${item.product.name}" was permanently deleted.`);
+          }
+        }
+        return next;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [pendingDeletions.length, showToast]);
+
+  const handleInitiateDelete = (product: Product) => {
+    const idx = products.findIndex((p) => p.id === product.id);
+    deleteProduct(product.id, { skipDb: true });
+
+    const item: PendingDeletion = {
+      product,
+      originalIndex: idx >= 0 ? idx : 0,
+      expiresAt: Date.now() + 60_000, // 60 seconds (1 minute)
+      secondsRemaining: 60,
+    };
+    setPendingDeletions((prev) => [item, ...prev.filter((p) => p.product.id !== product.id)]);
+    showToast(`"${product.name}" moved to trash. You have 1 minute to Undo!`);
+  };
+
+  const handleUndoDelete = (productId: string) => {
+    const item = pendingDeletions.find((p) => p.product.id === productId);
+    if (!item) return;
+
+    setPendingDeletions((prev) => prev.filter((p) => p.product.id !== productId));
+    restoreProduct(item.product, item.originalIndex);
+    showToast(`Restored "${item.product.name}" successfully!`);
+  };
+
+  const handlePermanentDeleteNow = (productId: string) => {
+    const item = pendingDeletions.find((p) => p.product.id === productId);
+    if (!item) return;
+
+    setPendingDeletions((prev) => prev.filter((p) => p.product.id !== productId));
+    deleteProductFromDb(productId)
+      .then(() => {
+        showToast(`Permanently deleted "${item.product.name}".`);
+      })
+      .catch((err) => console.warn('Permanent delete notice:', err));
   };
 
   // Automatic Generators for SKU and Barcode
@@ -1499,9 +1592,12 @@ export const AdminDashboardPage: React.FC = () => {
                               title="Click to view full ERP specification sheet"
                             >
                               <img
-                                src={product.image}
+                                src={product.image || '/omega-products/counter-book-q3-288p.jpeg'}
                                 alt={product.name}
                                 loading="lazy"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).src = '/omega-products/counter-book-q3-288p.jpeg';
+                                }}
                                 className="w-12 h-12 rounded-lg object-contain bg-stone-50 p-1 border border-stone-200 group-hover:border-[#c49b7c] transition-colors"
                               />
                               <div className="absolute inset-0 bg-black/30 rounded-lg opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
@@ -1689,8 +1785,8 @@ export const AdminDashboardPage: React.FC = () => {
                               </button>
                               <button
                                 type="button"
-                                onClick={() => deleteProduct(product.id)}
-                                title="Delete product permanently from MongoDB Atlas"
+                                onClick={() => handleInitiateDelete(product)}
+                                title="Delete product (1-minute Undo window)"
                                 className="p-1.5 text-stone-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
@@ -3507,8 +3603,11 @@ export const AdminDashboardPage: React.FC = () => {
 
             <div className="flex items-center gap-4 bg-stone-50 p-3 rounded-xl border border-stone-200">
               <img
-                src={inspectingProduct.image}
+                src={inspectingProduct.image || '/omega-products/counter-book-q3-288p.jpeg'}
                 alt={inspectingProduct.name}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/omega-products/counter-book-q3-288p.jpeg';
+                }}
                 className="w-20 h-20 rounded-lg object-contain bg-white p-1 border border-stone-300"
               />
               <div className="space-y-1 text-xs">
@@ -3594,6 +3693,87 @@ export const AdminDashboardPage: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* ==================== 1-MINUTE UNDO FLOATING NOTIFICATION WIDGET ==================== */}
+      {pendingDeletions.length > 0 && (
+        <aside
+          aria-label="Pending product deletions"
+          className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 max-w-md w-[calc(100vw-3rem)] sm:w-[420px] pointer-events-none"
+        >
+          {pendingDeletions.map((item) => {
+            const percentRemaining = Math.max(0, Math.min(100, (item.secondsRemaining / 60) * 100));
+            return (
+              <div
+                key={item.product.id}
+                className="pointer-events-auto bg-[#2b2520] border-2 border-[#c49b7c]/70 text-white rounded-2xl p-4 shadow-2xl backdrop-blur-xl animate-in slide-in-from-bottom-4 duration-300 space-y-3"
+              >
+                {/* Header Info & Countdown */}
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-8 h-8 rounded-xl bg-red-500/20 border border-red-500/30 flex items-center justify-center shrink-0">
+                      <Trash2 className="w-4 h-4 text-red-400" />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400">
+                          Product Deleted
+                        </span>
+                        <span className="text-[9px] font-mono bg-white/10 px-1.5 py-0.5 rounded text-stone-300">
+                          {item.product.sku}
+                        </span>
+                      </div>
+                      <h5 className="text-xs font-bold text-white truncate max-w-[210px] sm:max-w-[230px]">
+                        {item.product.name}
+                      </h5>
+                    </div>
+                  </div>
+
+                  {/* Countdown Digital Badge */}
+                  <div className="shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-400/15 border border-amber-400/30 text-amber-300 font-mono font-bold text-xs">
+                    <Clock className="w-3.5 h-3.5 animate-pulse" />
+                    <span>00:{item.secondsRemaining < 10 ? `0${item.secondsRemaining}` : item.secondsRemaining}</span>
+                  </div>
+                </div>
+
+                {/* Smooth 60-Second Depletion Progress Bar */}
+                <div className="space-y-1">
+                  <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-amber-400 via-[#c49b7c] to-emerald-400 rounded-full transition-all duration-1000 ease-linear"
+                      style={{ width: `${percentRemaining}%` }}
+                    />
+                  </div>
+                  <div className="flex items-center justify-between text-[10px] text-stone-400 font-medium">
+                    <span>Undo available for 1 minute</span>
+                    <span className="font-mono text-amber-300">{item.secondsRemaining}s left</span>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center justify-between pt-1">
+                  <button
+                    type="button"
+                    onClick={() => handlePermanentDeleteNow(item.product.id)}
+                    className="text-[11px] text-stone-400 hover:text-red-400 hover:bg-white/5 px-2.5 py-1.5 rounded-lg transition-colors font-medium"
+                    title="Delete permanently right now"
+                  >
+                    Delete Permanently
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleUndoDelete(item.product.id)}
+                    className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold rounded-xl text-xs uppercase tracking-wider inline-flex items-center gap-1.5 shadow-lg active:scale-95 transition-all"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>UNDO DELETION</span>
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </aside>
       )}
     </div>
   );
