@@ -56,21 +56,42 @@ const allowedOrigins = process.env.CORS_ALLOWED_ORIGINS
   ? process.env.CORS_ALLOWED_ORIGINS.split(',').map(s => s.trim())
   : '*';
 
-app.use(cors({
+const corsOptions = {
   origin: (origin, callback) => {
     if (!origin) return callback(null, true);
-    if (allowedOrigins === '*' || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
+    if (
+      origin === 'https://omegastationery.vercel.app' ||
+      origin === 'https://www.omegastationery.vercel.app' ||
+      origin.endsWith('.vercel.app') ||
+      origin.includes('localhost') ||
+      origin.includes('127.0.0.1')
+    ) {
       return callback(null, true);
     }
-    if (origin.endsWith('.vercel.app') || origin.includes('localhost') || origin.includes('127.0.0.1')) {
+    if (allowedOrigins === '*' || allowedOrigins.includes(origin) || allowedOrigins.includes('*')) {
       return callback(null, true);
     }
     return callback(null, true);
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With', 'Access-Control-Request-Private-Network'],
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'Accept',
+    'Cache-Control',
+    'Pragma',
+    'Expires',
+    'X-Requested-With',
+    'Access-Control-Request-Private-Network',
+    'Origin'
+  ],
+  exposedHeaders: ['Content-Range', 'X-Content-Range', 'ETag'],
   credentials: true,
-}));
+  maxAge: 86400,
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
@@ -582,8 +603,8 @@ async function testLiveCache() {
 // 4. REST API ROUTES
 // ==========================================
 
-// GET /api/health - System Health & Database Diagnostics
-app.get('/api/health', async (req, res) => {
+// GET /api/health & /health - System Health & Database Diagnostics
+const healthHandler = async (req, res) => {
   let dbProductsCount = inMemoryProducts.length;
   let dbOrdersCount = inMemoryOrders.length;
 
@@ -634,7 +655,9 @@ app.get('/api/health', async (req, res) => {
       }
     }
   });
-});
+};
+app.get('/api/health', healthHandler);
+app.get('/health', healthHandler);
 
 // GET /api/database/stats - Detailed MongoDB Analytics & Management Stats
 app.get('/api/database/stats', async (req, res) => {

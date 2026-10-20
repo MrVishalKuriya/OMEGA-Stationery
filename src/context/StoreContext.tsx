@@ -34,6 +34,8 @@ import {
   saveStoreConfigToDb,
   bulkUpdateProductsInDb,
   clearClientProductCache,
+  subscribeServerWaking,
+  getIsServerWaking,
 } from '../services/api';
 
 const STORAGE_KEYS = {
@@ -137,6 +139,8 @@ export interface StoreContextType {
     stockStatus?: string;
   }) => Promise<boolean>;
   isCatalogLoading: boolean;
+  isServerWakingUp: boolean;
+  retryConnection: () => Promise<void>;
 }
 
 
@@ -228,6 +232,20 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [isBackendOnline, setIsBackendOnline] = useState<boolean>(false);
   const [backendHealth, setBackendHealth] = useState<BackendHealthData | null>(null);
   const [isCatalogLoading, setIsCatalogLoading] = useState<boolean>(true);
+  const [isServerWakingUp, setIsServerWakingUp] = useState<boolean>(getIsServerWaking());
+
+  // Subscribe to Render cold-start detection events
+  useEffect(() => {
+    return subscribeServerWaking((waking) => {
+      setIsServerWakingUp(waking);
+    });
+  }, []);
+
+  const retryConnection = async () => {
+    setIsCatalogLoading(true);
+    await refreshBackendHealth();
+    setIsCatalogLoading(false);
+  };
 
   const reloadCatalogFromDb = async (): Promise<{ success: boolean; count: number }> => {
     try {
@@ -268,7 +286,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       if (res.data) setBackendHealth(res.data);
       if (res.online) {
         const [live, cfg] = await Promise.all([
-          fetchLiveProducts({ forceRefresh: true }),
+          fetchLiveProducts(),
           fetchStoreConfigFromDb(),
         ]);
         if (live && live.length > 0) {
@@ -292,7 +310,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const syncData = async (isRetry = false) => {
       try {
         const [live, cfg] = await Promise.all([
-          fetchLiveProducts({ forceRefresh: true }),
+          fetchLiveProducts(),
           fetchStoreConfigFromDb(),
         ]);
         if (!isMounted) return;
@@ -1212,6 +1230,8 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         reloadConfigFromDb,
         bulkUpdateProducts,
         isCatalogLoading,
+        isServerWakingUp,
+        retryConnection,
       }}
     >
       {children}

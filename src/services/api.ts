@@ -39,7 +39,7 @@ function resolveBackendUrl(): string {
     }
   }
 
-  const envUrl = import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || '';
+  const envUrl = import.meta.env.VITE_API_URL || import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_API_BASE_URL || '';
   if (envUrl && envUrl.trim()) {
     let clean = envUrl.trim().replace(/\/+$/, '');
     if (clean.endsWith('/api')) clean = clean.slice(0, -4);
@@ -123,6 +123,183 @@ export interface BackendApiResponse<T> {
   data: T;
   timestamp?: string;
 }
+export type BackendHealth = BackendHealthData;
+
+export interface ApiFetchOptions extends RequestInit {
+  timeoutMs?: number;
+  retries?: number;
+  skipDedup?: boolean;
+}
+
+// Global Server Waking State & Event Listeners
+type WakingListener = (isWaking: boolean) => void;
+const wakingListeners = new Set<WakingListener>();
+let isServerWakingState = false;
+
+export function getIsServerWaking(): boolean {
+  return isServerWakingState;
+}
+
+export function subscribeServerWaking(listener: WakingListener): () => void {
+  wakingListeners.add(listener);
+  listener(isServerWakingState);
+  return () => {
+    wakingListeners.delete(listener);
+  };
+}
+
+function setServerWaking(val: boolean) {
+  if (isServerWakingState !== val) {
+    isServerWakingState = val;
+    wakingListeners.forEach((fn) => fn(val));
+  }
+}
+
+// In-Flight Request De-duplication Map
+const inFlightRequests = new Map<string, Promise<{ ok: boolean; status: number; data?: any; error?: string }>>();
+
+/**
+ * Robust Central API Fetcher:
+ * - Strips preflight-triggering custom cache headers (uses native cache: 'no-store' if needed)
+ * - In-flight Promise de-duplication for parallel GET requests
+ * - Automatic timeout with AbortController (default 15s)
+ * - Exponential backoff retry (up to 4 attempts) on Render cold-start (502, 503, 504) or network errors
+ * - Automatically detects & broadcasts Render cold-start status
+ */
+export async function apiFetch<T = any>(
+  endpoint: string,
+  options: ApiFetchOptions = {}
+): Promise<{ ok: boolean; status: number; data?: T; error?: string }> {
+  if (!isBackendConfigured()) {
+    return { ok: false, status: 0, error: 'Cloud backend is not configured or loopback restricted on public domain' };
+  }
+
+  const method = (options.method || 'GET').toUpperCase();
+  const url = endpoint.startsWith('http') ? endpoint : `${BACKEND_URL}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
+  
+  // Deduplicate in-flight GET requests
+  const dedupKey = method === 'GET' && !options.skipDedup ? `${method}:${url}` : null;
+  if (dedupKey && inFlightRequests.has(dedupKey)) {
+    return inFlightRequests.get(dedupKey)! as Promise<{ ok: boolean; status: number; data?: T; error?: string }>;
+  }
+
+  const promise = (async () => {
+    const maxRetries = options.retries ?? (method === 'GET' ? 3 : 1);
+    const timeoutMs = options.timeoutMs ?? 15000;
+    let attempt = 0;
+
+    // Filter out forbidden headers that fail CORS preflight
+    const cleanHeaders: Record<string, string> = {
+      'Accept': 'application/json',
+      ...(options.headers as Record<string, string> || {}),
+    };
+    delete cleanHeaders['Cache-Control'];
+    delete cleanHeaders['cache-control'];
+    delete cleanHeaders['Pragma'];
+    delete cleanHeaders['pragma'];
+    delete cleanHeaders['Expires'];
+    delete cleanHeaders['expires'];
+
+    while (attempt <= maxRetries) {
+      const controller = new AbortController();
+      const parentSignal = options.signal;
+      let parentAbortListener: (() => void) | null = null;
+      if (parentSignal) {
+        if (parentSignal.aborted) {
+          return { ok: false, status: 0, error: 'Request aborted' };
+        }
+        parentAbortListener = () => controller.abort();
+        parentSignal.addEventListener('abort', parentAbortListener);
+      }
+
+      const timeoutId = setTimeout(() => {
+        controller.abort();
+      }, timeoutMs);
+
+      try {
+        const response = await fetch(url, {
+          ...options,
+          method,
+          headers: cleanHeaders,
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+        if (parentSignal && parentAbortListener) {
+          parentSignal.removeEventListener('abort', parentAbortListener);
+        }
+
+        // Render cold start status codes (502, 503, 504)
+        if (response.status >= 502 && response.status <= 504) {
+          setServerWaking(true);
+          if (attempt < maxRetries) {
+            attempt++;
+            const delay = Math.min(8000, Math.pow(2, attempt) * 1000);
+            await new Promise((r) => setTimeout(r, delay));
+            continue;
+          }
+        } else if (response.status === 429) {
+          if (attempt < maxRetries) {
+            attempt++;
+            await new Promise((r) => setTimeout(r, attempt * 2000));
+            continue;
+          }
+        }
+
+        setServerWaking(false);
+        const isJson = response.headers.get('content-type')?.includes('application/json');
+        const body = isJson ? await response.json() : await response.text();
+
+        return {
+          ok: response.ok,
+          status: response.status,
+          data: body as T,
+          error: response.ok
+            ? undefined
+            : typeof body === 'object' && body?.message
+            ? body.message
+            : `HTTP ${response.status}`,
+        };
+      } catch (err: any) {
+        clearTimeout(timeoutId);
+        if (parentSignal && parentAbortListener) {
+          parentSignal.removeEventListener('abort', parentAbortListener);
+        }
+
+        const isTimeout = err.name === 'AbortError' && !parentSignal?.aborted;
+        if (isTimeout) {
+          setServerWaking(true);
+        }
+
+        if (attempt < maxRetries && !parentSignal?.aborted) {
+          attempt++;
+          const delay = Math.min(8000, Math.pow(2, attempt) * 1000);
+          await new Promise((r) => setTimeout(r, delay));
+          continue;
+        }
+
+        return {
+          ok: false,
+          status: 0,
+          error: isTimeout
+            ? 'Cloud server is waking up (Render cold-start). Please wait a moment...'
+            : err.message || 'Network request failed',
+        };
+      }
+    }
+
+    return { ok: false, status: 0, error: 'Max connection retries exceeded' };
+  })();
+
+  if (dedupKey) {
+    inFlightRequests.set(dedupKey, promise);
+    promise.finally(() => {
+      inFlightRequests.delete(dedupKey);
+    });
+  }
+
+  return promise;
+}
 
 /**
  * Check connectivity and status of the Node.js + MongoDB Atlas backend
@@ -131,46 +308,36 @@ export async function checkBackendHealth(): Promise<{ online: boolean; data?: Ba
   if (!BACKEND_URL) {
     return {
       online: false,
-      error: 'Backend URL is not configured. Set VITE_BACKEND_URL in Vercel to your deployed backend URL (e.g. Render).',
+      error: 'Backend URL is not configured. Set VITE_API_URL in Vercel to your deployed backend URL (e.g. Render).',
     };
   }
 
   if (isLoopbackRestricted(BACKEND_URL)) {
     return {
       online: false,
-      error: 'Access to localhost:5000 is blocked from public HTTPS domains by browser Private Network Access policy. Deploy backend and set VITE_BACKEND_URL in Vercel.',
+      error: 'Access to localhost:5000 is blocked from public HTTPS domains by browser Private Network Access policy. Deploy backend and set VITE_API_URL in Vercel.',
     };
   }
 
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 12000);
+  const res = await apiFetch<BackendApiResponse<BackendHealthData>>('/api/health', {
+    method: 'GET',
+    timeoutMs: 15000,
+    retries: 2,
+  });
 
-    const res = await fetch(`${BACKEND_URL}/api/health`, {
-      method: 'GET',
-      headers: { 'Accept': 'application/json' },
-      signal: controller.signal,
-    });
-    clearTimeout(timeoutId);
-
-    if (!res.ok) {
-      return { online: false, error: `Backend responded with HTTP status ${res.status}` };
-    }
-
-    const json: BackendApiResponse<BackendHealthData> = await res.json();
+  if (res.ok && res.data) {
+    const health = res.data.data || (res.data as any);
     return {
-      online: json.success && json.data.status === 'UP',
-      data: json.data,
-    };
-  } catch (err: any) {
-    return {
-      online: false,
-      error: err.name === 'AbortError' ? 'Backend connection timed out (service may be waking up on Render free tier)' : err.message,
+      online: res.data.success !== false && (health?.status === 'UP' || health?.status === 'ok'),
+      data: health,
     };
   }
+
+  return {
+    online: false,
+    error: res.error || 'Backend not reachable',
+  };
 }
-
-export type BackendHealth = BackendHealthData;
 
 /**
  * Fetch health data for Admin Dashboard
@@ -338,62 +505,26 @@ export async function fetchLiveProducts(options?: {
     }
   }
 
-  const maxRetries = options?.retries ?? 2;
-  let attempt = 0;
+  const params = new URLSearchParams();
+  if (options?.category && options.category !== 'All') params.append('category', options.category);
+  if (options?.search) params.append('search', options.search);
+  if (options?.featured) params.append('featured', 'true');
+  if (options?.forceRefresh) params.append('force', 'true');
+  params.append('_t', String(Date.now()));
 
-  while (attempt <= maxRetries) {
-    try {
-      const params = new URLSearchParams();
-      if (options?.category && options.category !== 'All') params.append('category', options.category);
-      if (options?.search) params.append('search', options.search);
-      if (options?.featured) params.append('featured', 'true');
-      if (options?.forceRefresh) params.append('force', 'true');
-      params.append('_t', String(Date.now()));
+  const res = await apiFetch<BackendApiResponse<Product[]>>(`/api/products?${params.toString()}`, {
+    method: 'GET',
+    retries: options?.retries ?? 3,
+  });
 
-      const query = `?${params.toString()}`;
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 12000);
-
-      const res = await fetch(`${BACKEND_URL}/api/products${query}`, {
-        headers: {
-          'Accept': 'application/json',
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache',
-        },
-        signal: controller.signal,
+  if (res.ok && res.data) {
+    const products = Array.isArray(res.data) ? res.data : (res.data.data || []);
+    if (Array.isArray(products) && products.length > 0) {
+      clientProductCache.set(cacheKey, {
+        data: products,
+        expiresAt: Date.now() + 15_000,
       });
-
-      clearTimeout(timeoutId);
-
-      if (res.ok) {
-        const json: BackendApiResponse<Product[]> = await res.json();
-        if (json.success && Array.isArray(json.data) && json.data.length > 0) {
-          clientProductCache.set(cacheKey, {
-            data: json.data,
-            expiresAt: Date.now() + 15_000,
-          });
-          return json.data;
-        }
-      }
-
-      // Retry on cold-start (502, 503, 504) or rate limiting (429)
-      if (res.status === 429 || (res.status >= 502 && res.status <= 504)) {
-        if (attempt < maxRetries) {
-          attempt++;
-          await new Promise((resolve) => setTimeout(resolve, attempt * 1200));
-          continue;
-        }
-      }
-
-      return null;
-    } catch (err: any) {
-      if (attempt < maxRetries) {
-        attempt++;
-        await new Promise((resolve) => setTimeout(resolve, attempt * 1200));
-        continue;
-      }
-      console.info('Node.js Backend not reachable:', err?.message);
-      return null;
+      return products;
     }
   }
 
@@ -440,22 +571,15 @@ export async function submitOrderToBackend(input: CustomerOrderInput & {
  */
 export async function fetchLiveOrders(signal?: AbortSignal): Promise<any[] | null> {
   if (!isBackendConfigured()) return null;
-  try {
-    const res = await fetch(`${BACKEND_URL}/api/orders?_t=${Date.now()}`, {
-      headers: {
-        'Accept': 'application/json',
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache',
-      },
-      signal,
-    });
-    if (!res.ok) return null;
-    const json = await res.json();
-    return json.success ? json.data : null;
-  } catch (err: any) {
-    if (err?.name === 'AbortError') return null;
-    return null;
+  const res = await apiFetch<BackendApiResponse<any[]>>(`/api/orders?_t=${Date.now()}`, {
+    method: 'GET',
+    signal,
+  });
+  if (res.ok && res.data) {
+    const list = Array.isArray(res.data) ? res.data : (res.data.data || []);
+    return Array.isArray(list) ? list : null;
   }
+  return null;
 }
 
 export interface BackendAuthResponse {
@@ -654,17 +778,21 @@ export async function createProductInDb(product: Product): Promise<{ success: bo
  */
 export async function fetchSingleProductFromDb(id: string, signal?: AbortSignal): Promise<{ success: boolean; data?: Product; message?: string }> {
   if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
-  try {
-    const res = await fetch(`${BACKEND_URL}/api/products/${id}`, {
-      headers: { 'Accept': 'application/json' },
-      signal,
-    });
-    const json = await res.json();
-    return json;
-  } catch (err: any) {
-    if (err?.name === 'AbortError') return { success: false, message: 'Request aborted' };
-    return { success: false, message: err.message || 'Database unreachable' };
+  const res = await apiFetch<BackendApiResponse<Product>>(`/api/products/${id}`, {
+    method: 'GET',
+    signal,
+  });
+  if (res.ok && res.data) {
+    return {
+      success: true,
+      data: res.data.data || (res.data as any),
+      message: res.data.message,
+    };
   }
+  return {
+    success: false,
+    message: res.error || 'Product not found or database unreachable',
+  };
 }
 
 /**
@@ -815,20 +943,13 @@ export async function bulkUpdateProductsInDb(payload: {
  */
 export async function fetchStoreConfigFromDb(): Promise<any | null> {
   if (!isBackendConfigured()) return null;
-  try {
-    const res = await fetch(`${BACKEND_URL}/api/config?_t=${Date.now()}`, {
-      headers: {
-        'Accept': 'application/json',
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache',
-      },
-    });
-    if (!res.ok) return null;
-    const json = await res.json();
-    return json.success ? json.data : null;
-  } catch {
-    return null;
+  const res = await apiFetch<BackendApiResponse<any>>(`/api/config?_t=${Date.now()}`, {
+    method: 'GET',
+  });
+  if (res.ok && res.data) {
+    return res.data.data !== undefined ? res.data.data : res.data;
   }
+  return null;
 }
 
 /**

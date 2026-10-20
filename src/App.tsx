@@ -4,6 +4,7 @@ import { StoreProvider } from './context/StoreContext';
 import { Layout } from './components/Layout';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { RouteLoader } from './components/RouteLoader';
+import { ServerWakingBanner } from './components/common/ServerWakingBanner';
 
 // Eager load Home Page for instant above-the-fold paint
 import { HomePage } from './pages/HomePage';
@@ -84,6 +85,7 @@ export default function App() {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <StoreProvider>
+          <ServerWakingBanner />
           <BrowserRouter>
             <ScrollToTop />
             <Layout>
