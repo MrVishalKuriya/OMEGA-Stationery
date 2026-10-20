@@ -128,7 +128,7 @@ export async function checkBackendHealth(): Promise<{ online: boolean; data?: Ba
 
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 6000);
+    const timeoutId = setTimeout(() => controller.abort(), 12000);
 
     const res = await fetch(`${BACKEND_URL}/api/health`, {
       method: 'GET',
@@ -290,8 +290,12 @@ export async function fetchDatabaseStats(): Promise<any | null> {
   }
 }
 
-// Client-side in-memory query cache for fast e-commerce navigation (TTL: 45s)
+// Client-side in-memory query cache for fast e-commerce navigation (TTL: 15s)
 const clientProductCache = new Map<string, { data: Product[]; expiresAt: number }>();
+
+export function clearClientProductCache(): void {
+  clientProductCache.clear();
+}
 
 /**
  * Fetch products from the Node.js + MongoDB backend (Optimized with In-Memory Query Cache)
@@ -320,10 +324,16 @@ export async function fetchLiveProducts(options?: {
     if (options?.category && options.category !== 'All') params.append('category', options.category);
     if (options?.search) params.append('search', options.search);
     if (options?.featured) params.append('featured', 'true');
+    if (options?.forceRefresh) params.append('force', 'true');
+    params.append('_t', String(Date.now()));
 
-    const query = params.toString() ? `?${params.toString()}` : '';
+    const query = `?${params.toString()}`;
     const res = await fetch(`${BACKEND_URL}/api/products${query}`, {
-      headers: { 'Accept': 'application/json' },
+      headers: {
+        'Accept': 'application/json',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+      },
     });
 
     if (!res.ok) return null;
@@ -332,7 +342,7 @@ export async function fetchLiveProducts(options?: {
     if (json.success && Array.isArray(json.data) && json.data.length > 0) {
       clientProductCache.set(cacheKey, {
         data: json.data,
-        expiresAt: Date.now() + 45_000,
+        expiresAt: Date.now() + 15_000,
       });
       return json.data;
     }
@@ -384,8 +394,12 @@ export async function submitOrderToBackend(input: CustomerOrderInput & {
 export async function fetchLiveOrders(): Promise<any[] | null> {
   if (!isBackendConfigured()) return null;
   try {
-    const res = await fetch(`${BACKEND_URL}/api/orders`, {
-      headers: { 'Accept': 'application/json' },
+    const res = await fetch(`${BACKEND_URL}/api/orders?_t=${Date.now()}`, {
+      headers: {
+        'Accept': 'application/json',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+      },
     });
     if (!res.ok) return null;
     const json = await res.json();
@@ -686,7 +700,13 @@ export async function bulkUpdateProductsInDb(payload: {
 export async function fetchStoreConfigFromDb(): Promise<any | null> {
   if (!isBackendConfigured()) return null;
   try {
-    const res = await fetch(`${BACKEND_URL}/api/config`);
+    const res = await fetch(`${BACKEND_URL}/api/config?_t=${Date.now()}`, {
+      headers: {
+        'Accept': 'application/json',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+      },
+    });
     if (!res.ok) return null;
     const json = await res.json();
     return json.success ? json.data : null;

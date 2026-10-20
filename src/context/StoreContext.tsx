@@ -33,6 +33,7 @@ import {
   fetchStoreConfigFromDb,
   saveStoreConfigToDb,
   bulkUpdateProductsInDb,
+  clearClientProductCache,
 } from '../services/api';
 
 const STORAGE_KEYS = {
@@ -280,34 +281,70 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     let isMounted = true;
     setIsCatalogLoading(true);
 
-    checkBackendHealth().then((res) => {
-      if (!isMounted) return;
-      setIsBackendOnline(res.online);
-      if (res.data) setBackendHealth(res.data);
-
-      Promise.all([
-        fetchLiveProducts({ forceRefresh: true }),
-        fetchStoreConfigFromDb(),
-      ]).then(([live, cfg]) => {
+    const syncData = async () => {
+      try {
+        const [live, cfg] = await Promise.all([
+          fetchLiveProducts({ forceRefresh: true }),
+          fetchStoreConfigFromDb(),
+        ]);
         if (!isMounted) return;
         if (live && live.length > 0) {
           setProducts(live);
-          localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(live));
+          try {
+            localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(live));
+          } catch {}
         }
         if (cfg) {
-          setStoreConfig((prev) => ({ ...prev, ...cfg }));
-          localStorage.setItem(STORAGE_KEYS.CONFIG, JSON.stringify(cfg));
+          setStoreConfig((prev) => {
+            const merged = { ...prev, ...cfg };
+            try {
+              localStorage.setItem(STORAGE_KEYS.CONFIG, JSON.stringify(merged));
+            } catch {}
+            return merged;
+          });
         }
-        setIsCatalogLoading(false);
-      }).catch(() => {
+      } catch (err) {
+        console.warn('Real-time sync notice:', err);
+      } finally {
         if (isMounted) setIsCatalogLoading(false);
-      });
-    }).catch(() => {
-      if (isMounted) setIsCatalogLoading(false);
+      }
+    };
+
+    // 1. Immediate initial sync from live database
+    syncData();
+
+    checkBackendHealth().then((res) => {
+      if (isMounted) {
+        setIsBackendOnline(res.online);
+        if (res.data) setBackendHealth(res.data);
+      }
     });
+
+    // 2. Continuous real-time cross-device sync interval (every 12 seconds when active)
+    const syncInterval = setInterval(() => {
+      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
+        syncData();
+      }
+    }, 12000);
+
+    // 3. Instant sync whenever user switches to this tab or unlocks mobile screen
+    const handleVisibilityOrFocus = () => {
+      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
+        syncData();
+        checkBackendHealth().then((res) => {
+          if (isMounted) setIsBackendOnline(res.online);
+        });
+      }
+    };
+
+    window.addEventListener('visibilitychange', handleVisibilityOrFocus);
+    window.addEventListener('focus', handleVisibilityOrFocus);
 
     return () => {
       isMounted = false;
+      clearInterval(syncInterval);
+      window.removeEventListener('visibilitychange', handleVisibilityOrFocus);
+      window.removeEventListener('focus', handleVisibilityOrFocus);
     };
   }, []);
 
@@ -816,11 +853,16 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const addProduct = (newProd: Omit<Product, 'id'>): Product => {
+    clearClientProductCache();
     const created: Product = {
       ...newProd,
       id: `prod-custom-${Date.now()}`,
     };
-    setProducts((prev) => [created, ...prev]);
+    setProducts((prev) => {
+      const next = [created, ...prev];
+      try { localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(next)); } catch {}
+      return next;
+    });
     showToast(`Added product "${created.name}".`);
 
     // Direct MongoDB Database CRUD Persist
@@ -836,7 +878,12 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const updateProduct = (updated: Product) => {
-    setProducts((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
+    clearClientProductCache();
+    setProducts((prev) => {
+      const next = prev.map((p) => (p.id === updated.id ? updated : p));
+      try { localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(next)); } catch {}
+      return next;
+    });
     showToast(`Updated "${updated.name}".`);
 
     // Direct MongoDB Database CRUD Persist
@@ -850,8 +897,13 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const deleteProduct = (productId: string) => {
+    clearClientProductCache();
     const target = products.find((p) => p.id === productId);
-    setProducts((prev) => prev.filter((p) => p.id !== productId));
+    setProducts((prev) => {
+      const next = prev.filter((p) => p.id !== productId);
+      try { localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(next)); } catch {}
+      return next;
+    });
     setCart((prev) => prev.filter((c) => c.productId !== productId));
     setWishlist((prev) => prev.filter((id) => id !== productId));
     if (target) {
@@ -874,8 +926,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     discountPrice?: number,
     wholesalePrice?: number
   ) => {
-    setProducts((prev) =>
-      prev.map((p) =>
+    clearClientProductCache();
+    setProducts((prev) => {
+      const next = prev.map((p) =>
         p.id === productId
           ? {
               ...p,
@@ -889,8 +942,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
                 : {}),
             }
           : p
-      )
-    );
+      );
+      try { localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(next)); } catch {}
+      return next;
+    });
     showToast('Updated product price.');
 
     // Direct MongoDB Database CRUD Persist
@@ -904,8 +959,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     stockStatus: StockStatus,
     stockQuantity?: number
   ) => {
-    setProducts((prev) =>
-      prev.map((p) =>
+    clearClientProductCache();
+    setProducts((prev) => {
+      const next = prev.map((p) =>
         p.id === productId
           ? {
               ...p,
@@ -913,8 +969,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
               ...(stockQuantity !== undefined ? { stockQuantity: Math.max(0, stockQuantity) } : {}),
             }
           : p
-      )
-    );
+      );
+      try { localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(next)); } catch {}
+      return next;
+    });
     showToast(`Stock status updated to "${stockStatus}".`);
 
     // Direct MongoDB Database CRUD Persist
@@ -958,6 +1016,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         ...prev,
         ...partial,
       };
+      try { localStorage.setItem(STORAGE_KEYS.CONFIG, JSON.stringify(next)); } catch {}
       // Direct MongoDB Database CRUD Persist
       saveStoreConfigToDb(next).catch((err) => {
         console.warn('MongoDB config sync notice:', err);

@@ -499,6 +499,17 @@ async function invalidateCache(key) {
   cacheMetrics.inMemoryCache.delete(key);
 }
 
+async function clearAllServerCache() {
+  cacheMetrics.inMemoryCache.clear();
+  if (redisConnected && redisClient) {
+    try {
+      await redisClient.flushAll();
+    } catch (e) {
+      redisConnected = false;
+    }
+  }
+}
+
 async function testLiveCache() {
   const testKey = `omega:cache_test:${Date.now()}`;
   const testPayload = { status: 'LIVE_OK', timestamp: Date.now() };
@@ -627,18 +638,25 @@ app.get('/api/database/stats', async (req, res) => {
 
 // GET /api/products - List products with optional search, category, and featured filters
 app.get('/api/products', async (req, res) => {
-  const { category, search, featured, bestSeller } = req.query;
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+
+  const { category, search, featured, bestSeller, force, _t } = req.query;
+  const isBypass = force === 'true' || Boolean(_t);
   const cacheKey = `omega:products:cat=${category || 'all'}&q=${search || ''}&f=${featured || ''}&b=${bestSeller || ''}`;
 
-  // 1. Try cache
-  const cached = await getCache(cacheKey);
-  if (cached.isHit) {
-    res.setHeader('X-Cache', 'HIT');
-    return res.json({
-      success: true,
-      source: 'Cache',
-      data: cached.value
-    });
+  // 1. Try cache if not explicitly bypassed
+  if (!isBypass) {
+    const cached = await getCache(cacheKey);
+    if (cached.isHit) {
+      res.setHeader('X-Cache', 'HIT');
+      return res.json({
+        success: true,
+        source: 'Cache',
+        data: cached.value
+      });
+    }
   }
 
   // 2. Query MongoDB or In-Memory
@@ -816,7 +834,7 @@ app.put('/api/products/:id', async (req, res) => {
       if (!updated) updated = inMemoryProducts[idx];
     }
 
-    cacheMetrics.inMemoryCache.clear();
+    await clearAllServerCache();
     res.json({ success: true, message: 'Product updated', data: updated });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -849,7 +867,7 @@ app.patch('/api/products/:id/price', async (req, res) => {
       if (wholesalePrice !== undefined) inMemoryProducts[idx].wholesalePrice = Number(wholesalePrice);
     }
 
-    cacheMetrics.inMemoryCache.clear();
+    await clearAllServerCache();
     res.json({ success: true, message: 'Price updated successfully in MongoDB' });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -876,7 +894,7 @@ app.patch('/api/products/:id/stock', async (req, res) => {
       if (stockQuantity !== undefined) inMemoryProducts[idx].stockQuantity = Number(stockQuantity);
     }
 
-    cacheMetrics.inMemoryCache.clear();
+    await clearAllServerCache();
     res.json({ success: true, message: 'Stock status updated in MongoDB' });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -891,7 +909,7 @@ app.delete('/api/products/:id', async (req, res) => {
       await ProductModel.deleteOne({ id });
     }
     inMemoryProducts = inMemoryProducts.filter((p) => p.id !== id);
-    cacheMetrics.inMemoryCache.clear();
+    await clearAllServerCache();
 
     res.json({ success: true, message: `Product ${id} deleted successfully from MongoDB` });
   } catch (err) {
@@ -926,7 +944,7 @@ app.post('/api/products/bulk', async (req, res) => {
           if (p.wholesalePrice) p.wholesalePrice = Math.round(p.wholesalePrice * multiplier);
         }
       });
-      cacheMetrics.inMemoryCache.clear();
+      await clearAllServerCache();
       return res.json({ success: true, message: `Prices adjusted by ${percentage}% across ${ids?.length || 'all'} products in MongoDB` });
     }
 
@@ -940,7 +958,7 @@ app.post('/api/products/bulk', async (req, res) => {
           p.stockStatus = stockStatus;
         }
       });
-      cacheMetrics.inMemoryCache.clear();
+      await clearAllServerCache();
       return res.json({ success: true, message: `Stock status updated to "${stockStatus}" in MongoDB` });
     }
 
@@ -1076,6 +1094,26 @@ app.delete('/api/orders/:id', async (req, res) => {
 
 // GET /api/config - Retrieve live store configuration & web content handles
 app.get('/api/config', async (req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  try {
+    let config = null;
+    if (mongoConnected && ConfigModel) {
+      config = await ConfigModel.findOne({ key: 'global_config' }).lean();
+    }
+    if (!config) config = inMemoryConfig;
+    res.json({ success: true, data: config });
+  } catch (err) {
+    res.json({ success: true, data: inMemoryConfig });
+  }
+});
+
+// Alias for /api/store-config
+app.get('/api/store-config', async (req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
   try {
     let config = null;
     if (mongoConnected && ConfigModel) {
@@ -1102,7 +1140,31 @@ app.put('/api/config', async (req, res) => {
     }
 
     inMemoryConfig = { ...inMemoryConfig, ...updateData };
-    cacheMetrics.inMemoryCache.clear();
+    await clearAllServerCache();
+    res.json({
+      success: true,
+      message: 'Web content and store configuration updated directly in MongoDB database',
+      data: saved
+    });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+app.put('/api/store-config', async (req, res) => {
+  const updateData = req.body;
+  try {
+    let saved = updateData;
+    if (mongoConnected && ConfigModel) {
+      saved = await ConfigModel.findOneAndUpdate(
+        { key: 'global_config' },
+        { ...updateData, key: 'global_config' },
+        { upsert: true, new: true }
+      ).lean();
+    }
+
+    inMemoryConfig = { ...inMemoryConfig, ...updateData };
+    await clearAllServerCache();
     res.json({
       success: true,
       message: 'Web content and store configuration updated directly in MongoDB database',
