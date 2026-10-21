@@ -22,7 +22,8 @@
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.2.0",
     "tailwindcss": "^4.0.9",
-    "zod": "^4.6.7"
+    "zod": "^4.6.7",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@types/node": "^22.13.4",

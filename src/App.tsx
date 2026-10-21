@@ -1,32 +1,59 @@
 import React, { useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, useLocation, Link } from 'react-router-dom';
-import { StoreProvider } from './context/StoreContext';
-import { Layout } from './components/Layout';
-import { ErrorBoundary } from './components/ErrorBoundary';
-import { RouteLoader } from './components/RouteLoader';
-import { ServerWakingBanner } from './components/common/ServerWakingBanner';
+import { StoreProvider } from './application';
+import {
+  Layout,
+  ErrorBoundary,
+  RouteLoader,
+  ServerWakingBanner,
+  ProtectedRoute,
+  AdminRoute,
+  GuestRoute,
+} from './presentation/common';
 
-// Eager load Home Page for instant above-the-fold paint
-import { HomePage } from './pages/HomePage';
+// Eager load Home Page from Marketing Feature
+import { HomePage } from './presentation/features/marketing';
 
-// Lazy-load other routes for optimal performance and instant initial bundle
-const CatalogPage = lazy(() => import('./pages/CatalogPage').then((m) => ({ default: m.CatalogPage })));
-const ProductDetailsPage = lazy(() => import('./pages/ProductDetailsPage').then((m) => ({ default: m.ProductDetailsPage })));
-const CartAndCheckoutPage = lazy(() => import('./pages/CartAndCheckoutPage').then((m) => ({ default: m.CartAndCheckoutPage })));
-const AboutPage = lazy(() => import('./pages/AboutPage').then((m) => ({ default: m.AboutPage })));
-const ContactPage = lazy(() => import('./pages/ContactPage').then((m) => ({ default: m.ContactPage })));
-const WishlistPage = lazy(() => import('./pages/WishlistPage').then((m) => ({ default: m.WishlistPage })));
-const WholesalePage = lazy(() => import('./pages/WholesalePage').then((m) => ({ default: m.WholesalePage })));
-const SchoolTendersPage = lazy(() => import('./pages/SchoolTendersPage').then((m) => ({ default: m.SchoolTendersPage })));
-const ShippingGuidePage = lazy(() => import('./pages/ShippingGuidePage').then((m) => ({ default: m.ShippingGuidePage })));
-const AdminDashboardPage = lazy(() => import('./pages/AdminDashboardPage').then((m) => ({ default: m.AdminDashboardPage })));
-const LoginPage = lazy(() => import('./pages/LoginPage').then((m) => ({ default: m.LoginPage })));
-const RegisterPage = lazy(() => import('./pages/RegisterPage').then((m) => ({ default: m.RegisterPage })));
-const AccountPage = lazy(() => import('./pages/AccountPage').then((m) => ({ default: m.AccountPage })));
-
-import { ProtectedRoute } from './components/routing/ProtectedRoute';
-import { AdminRoute } from './components/routing/AdminRoute';
-import { GuestRoute } from './components/routing/GuestRoute';
+// Lazy-load other routes from their respective Domain Features
+const CatalogPage = lazy(() =>
+  import('./presentation/features/products').then((m) => ({ default: m.CatalogPage }))
+);
+const ProductDetailsPage = lazy(() =>
+  import('./presentation/features/products').then((m) => ({ default: m.ProductDetailsPage }))
+);
+const CartAndCheckoutPage = lazy(() =>
+  import('./presentation/features/cart').then((m) => ({ default: m.CartAndCheckoutPage }))
+);
+const AboutPage = lazy(() =>
+  import('./presentation/features/marketing').then((m) => ({ default: m.AboutPage }))
+);
+const ContactPage = lazy(() =>
+  import('./presentation/features/marketing').then((m) => ({ default: m.ContactPage }))
+);
+const WishlistPage = lazy(() =>
+  import('./presentation/features/wishlist').then((m) => ({ default: m.WishlistPage }))
+);
+const WholesalePage = lazy(() =>
+  import('./presentation/features/wholesale').then((m) => ({ default: m.WholesalePage }))
+);
+const SchoolTendersPage = lazy(() =>
+  import('./presentation/features/wholesale').then((m) => ({ default: m.SchoolTendersPage }))
+);
+const ShippingGuidePage = lazy(() =>
+  import('./presentation/features/marketing').then((m) => ({ default: m.ShippingGuidePage }))
+);
+const AdminDashboardPage = lazy(() =>
+  import('./presentation/features/admin').then((m) => ({ default: m.AdminDashboardPage }))
+);
+const LoginPage = lazy(() =>
+  import('./presentation/features/auth').then((m) => ({ default: m.LoginPage }))
+);
+const RegisterPage = lazy(() =>
+  import('./presentation/features/auth').then((m) => ({ default: m.RegisterPage }))
+);
+const AccountPage = lazy(() =>
+  import('./presentation/features/auth').then((m) => ({ default: m.AccountPage }))
+);
 
 const ScrollToTop: React.FC = () => {
   const { pathname } = useLocation();

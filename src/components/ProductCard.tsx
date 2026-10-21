@@ -6,7 +6,6 @@ import {
   Check,
   Heart,
   Star,
-  MessageCircle,
   Eye,
   Sparkles,
   Package,
@@ -99,17 +98,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     e.preventDefault();
     e.stopPropagation();
     setQuickViewProduct(product);
-  };
+  }; 
 
-  const cleanWhatsappDigits = storeConfig.whatsappNumber.replace(/\D/g, '');
-  const directWhatsappUrl = `https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
-    `Hello OMEGA Tanzania, I would like to order: ${product.name} (SKU: ${product.sku}) - Price: ${currency} ${effectivePrice.toLocaleString()}. Please confirm availability and delivery.`
-  )}`;
+
 
   return (
     <article className="group flex flex-col h-full rounded-[22px] overflow-hidden border border-[#e2dedb] hover:border-[#c49b7c] bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl relative">
-      {/* ================= REGION 1: PRODUCT SHOWCASE (Warm Studio Pedestal) ================= */}
-      <div className="relative block aspect-square w-full bg-gradient-to-b from-[#faf9f8] to-[#f4f1ed] overflow-hidden border-b border-[#e2dedb] p-2.5 sm:p-4">
+      {/* ================= REGION 1: PRODUCT SHOWCASE (Edge-to-Edge Border Fill) ================= */}
+      <div className="relative block aspect-square w-full bg-[#f8f7f5] overflow-hidden border-b border-[#e2dedb]">
         {/* Top Badges (Pill Badges) */}
         <div className="absolute top-2 left-2 z-10 flex flex-col gap-1 items-start max-w-[70%]">
           {hasDiscount && (
@@ -147,7 +143,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           />
         </button>
 
-        {/* Quick View Button Hover Overlay (hidden on small touch screens, shows on hover) */}
+        {/* Quick View Button Hover Overlay */}
         <button
           type="button"
           onClick={handleQuickView}
@@ -157,10 +153,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <span>Peek Inside</span>
         </button>
 
-        {/* Clickable Image with Clean Studio Framing & Subtle Lift */}
+        {/* Clickable Image: Adaptive for both Photos with Background and Cutouts without Background */}
         <Link
           to={`/product/${product.id}`}
-          className="w-full h-full flex items-center justify-center relative overflow-hidden"
+          className={`w-full h-full block relative overflow-hidden ${
+            product.imageFit === 'contain' ? 'p-3.5 sm:p-4 flex items-center justify-center' : ''
+          }`}
+          style={product.imageBackground ? { backgroundColor: product.imageBackground } : undefined}
         >
           {!imgError && product.image ? (
             <img
@@ -170,10 +169,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               loading="lazy"
               decoding="async"
               onError={() => setImgError(true)}
-              className="w-full h-full object-contain scale-[1.3] sm:scale-105 p-0.5 drop-shadow-sm transition-transform duration-500 ease-out group-hover:scale-[1.38] sm:group-hover:scale-110 group-hover:drop-shadow-md"
+              className={`w-full h-full transition-transform duration-500 ease-out group-hover:scale-105 ${
+                product.imageFit === 'contain'
+                  ? 'object-contain filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.14)]'
+                  : 'object-cover'
+              }`}
             />
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center p-4 bg-[#EFEBE9] text-center rounded-[8px]">
+            <div className="w-full h-full flex flex-col items-center justify-center p-4 bg-[#EFEBE9] text-center">
               <div className="w-16 h-22 sm:w-20 sm:h-28 border-2 border-[#6D4C41] bg-white p-2 flex flex-col items-center justify-between shadow-xs rounded-[6px]">
                 <span className="text-[9px] sm:text-[10px] font-bold tracking-widest text-[#6D4C41]">OMEGA</span>
                 <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-[#6D4C41] stroke-[1.5]" />
@@ -282,45 +285,34 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </div>
         </div>
 
-        {/* ================= REGION 3: ACTION BUTTONS (LEDUP Copper Gradient + Mocha) ================= */}
-        <div className="grid grid-cols-2 gap-1 sm:gap-2 pt-1 font-sans">
+        {/* ================= REGION 3: ACTION BUTTON (Single Full-Width Add to Cart) ================= */}
+        <div className="pt-1.5 font-sans">
           <button
             type="button"
             onClick={handleQuickAdd}
             disabled={isOutOfStock}
-            className={`py-1.5 sm:py-2 px-1 sm:px-3 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1 sm:gap-1.5 min-h-[36px] sm:min-h-[44px] transition-all duration-200 active:scale-95 shadow-sm ${
+            className={`w-full py-2 sm:py-2.5 px-3 rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 min-h-[40px] sm:min-h-[44px] transition-all duration-200 active:scale-95 shadow-sm ${
               isOutOfStock
                 ? 'bg-stone-100 text-stone-400 cursor-not-allowed border border-[#e2dedb]'
                 : justAdded
-                ? 'bg-[#4b423b] text-white shadow-md'
-                : 'btn-ledup-copper'
+                ? 'bg-[#2A9D8F] text-white shadow-md'
+                : 'btn-ledup-copper text-white hover:shadow-md'
             }`}
           >
             {isOutOfStock ? (
-              'Out'
+              <span>{language === 'sw' ? 'Imeisha kwa Sasa' : 'Out of Stock'}</span>
             ) : justAdded ? (
               <>
-                <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
-                <span>{language === 'sw' ? 'Ipo!' : 'Added'}</span>
+                <Check className="w-4 h-4 text-white" />
+                <span>{language === 'sw' ? 'Imewekwa Kwenye Oda!' : 'Added to Cart!'}</span>
               </>
             ) : (
               <>
-                <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white shrink-0" />
-                <span className="text-white truncate">{language === 'sw' ? 'Weka' : 'Add'}</span>
+                <ShoppingBag className="w-4 h-4 text-white shrink-0" />
+                <span className="text-white font-bold">{language === 'sw' ? 'Weka Kwenye Oda' : 'Add to Cart'}</span>
               </>
             )}
           </button>
-
-          <a
-            href={directWhatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            title="Direct WhatsApp Order"
-            className="py-1.5 sm:py-2 px-1 sm:px-3 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider btn-ledup-mocha text-white flex items-center justify-center gap-1 sm:gap-1.5 min-h-[36px] sm:min-h-[44px] transition-all duration-200 active:scale-95 shadow-sm group"
-          >
-            <MessageCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-white shrink-0" />
-            <span className="truncate">WhatsApp</span>
-          </a>
         </div>
       </div>
     </article>

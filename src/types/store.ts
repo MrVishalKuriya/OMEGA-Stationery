@@ -74,6 +74,8 @@ export interface Product {
   freeDelivery?: boolean; // Eligible for free delivery / dispatch
   dispatchTime?: string; // Dispatch time estimate e.g. "Same-day dispatch"
   colorOptions?: ProductColorOption[];
+  imageFit?: 'cover' | 'contain'; // 'cover' for full photo background, 'contain' for transparent cutouts/isolated items
+  imageBackground?: string; // Optional background color or styling
 }
 
 export const formatPrice = (amount: number, currency = 'TZS'): string => {

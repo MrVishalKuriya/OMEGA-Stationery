@@ -519,10 +519,10 @@ export async function fetchLiveProducts(options?: {
 
   if (res.ok && res.data) {
     const products = Array.isArray(res.data) ? res.data : (res.data.data || []);
-    if (Array.isArray(products) && products.length > 0) {
+    if (Array.isArray(products)) {
       clientProductCache.set(cacheKey, {
         data: products,
-        expiresAt: Date.now() + 15_000,
+        expiresAt: Date.now() + 5_000,
       });
       return products;
     }
@@ -756,17 +756,37 @@ export async function parseSchoolBooklist(text: string): Promise<{
 // =========================================================================
 
 /**
+ * Purge Server-side & Client-side Product Cache immediately
+ */
+export async function purgeProductCacheInDb(): Promise<{ success: boolean; message?: string }> {
+  clearClientProductCache();
+  if (!isBackendConfigured()) return { success: true };
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/products/cache/clear`, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+    });
+    return await res.json();
+  } catch {
+    return { success: false };
+  }
+}
+
+/**
  * Create or Upsert Product directly in MongoDB Database
  */
 export async function createProductInDb(product: Product): Promise<{ success: boolean; data?: Product; message?: string }> {
+  clearClientProductCache();
   if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
+    const { _id, ...cleanProduct } = product as any;
     const res = await fetch(`${BACKEND_URL}/api/products`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(product),
+      body: JSON.stringify(cleanProduct),
     });
     const json = await res.json();
+    clearClientProductCache();
     return json;
   } catch (err: any) {
     return { success: false, message: err.message || 'Database unreachable' };
@@ -778,7 +798,7 @@ export async function createProductInDb(product: Product): Promise<{ success: bo
  */
 export async function fetchSingleProductFromDb(id: string, signal?: AbortSignal): Promise<{ success: boolean; data?: Product; message?: string }> {
   if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
-  const res = await apiFetch<BackendApiResponse<Product>>(`/api/products/${id}`, {
+  const res = await apiFetch<BackendApiResponse<Product>>(`/api/products/${id}?_t=${Date.now()}`, {
     method: 'GET',
     signal,
   });
@@ -848,14 +868,17 @@ export async function verifyAdminKeyWithBackend(key: string): Promise<{ success:
  * Update Product directly in MongoDB Database
  */
 export async function updateProductInDb(id: string, product: Partial<Product>): Promise<{ success: boolean; data?: Product; message?: string }> {
+  clearClientProductCache();
   if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
+    const { _id, ...cleanProduct } = product as any;
     const res = await fetch(`${BACKEND_URL}/api/products/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(product),
+      body: JSON.stringify(cleanProduct),
     });
     const json = await res.json();
+    clearClientProductCache();
     return json;
   } catch (err: any) {
     return { success: false, message: err.message || 'Database unreachable' };
@@ -866,6 +889,7 @@ export async function updateProductInDb(id: string, product: Partial<Product>): 
  * Fast inline price update directly in MongoDB
  */
 export async function updateProductPriceInDb(id: string, price: number, discountPrice?: number, wholesalePrice?: number): Promise<{ success: boolean; message?: string }> {
+  clearClientProductCache();
   if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
     const res = await fetch(`${BACKEND_URL}/api/products/${id}/price`, {
@@ -874,6 +898,7 @@ export async function updateProductPriceInDb(id: string, price: number, discount
       body: JSON.stringify({ price, discountPrice, wholesalePrice }),
     });
     const json = await res.json();
+    clearClientProductCache();
     return json;
   } catch (err: any) {
     return { success: false, message: err.message || 'Database unreachable' };
@@ -884,6 +909,7 @@ export async function updateProductPriceInDb(id: string, price: number, discount
  * Update stock status & quantity directly in MongoDB
  */
 export async function updateProductStockInDb(id: string, stockStatus: string, stockQuantity?: number): Promise<{ success: boolean; message?: string }> {
+  clearClientProductCache();
   if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
     const res = await fetch(`${BACKEND_URL}/api/products/${id}/stock`, {
@@ -892,6 +918,7 @@ export async function updateProductStockInDb(id: string, stockStatus: string, st
       body: JSON.stringify({ stockStatus, stockQuantity }),
     });
     const json = await res.json();
+    clearClientProductCache();
     return json;
   } catch (err: any) {
     return { success: false, message: err.message || 'Database unreachable' };
@@ -902,6 +929,7 @@ export async function updateProductStockInDb(id: string, stockStatus: string, st
  * Delete product directly from MongoDB
  */
 export async function deleteProductFromDb(id: string): Promise<{ success: boolean; message?: string }> {
+  clearClientProductCache();
   if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
     const res = await fetch(`${BACKEND_URL}/api/products/${id}`, {
@@ -909,6 +937,7 @@ export async function deleteProductFromDb(id: string): Promise<{ success: boolea
       headers: { 'Accept': 'application/json' },
     });
     const json = await res.json();
+    clearClientProductCache();
     return json;
   } catch (err: any) {
     return { success: false, message: err.message || 'Database unreachable' };
@@ -924,6 +953,7 @@ export async function bulkUpdateProductsInDb(payload: {
   percentage?: number;
   stockStatus?: string;
 }): Promise<{ success: boolean; message?: string }> {
+  clearClientProductCache();
   if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
     const res = await fetch(`${BACKEND_URL}/api/products/bulk`, {
@@ -932,6 +962,7 @@ export async function bulkUpdateProductsInDb(payload: {
       body: JSON.stringify(payload),
     });
     const json = await res.json();
+    clearClientProductCache();
     return json;
   } catch (err: any) {
     return { success: false, message: err.message || 'Database unreachable' };

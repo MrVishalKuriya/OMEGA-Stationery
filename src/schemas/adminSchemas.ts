@@ -31,14 +31,14 @@ export const productFormSchema = z.object({
     .regex(/^[A-Za-z0-9-_]+$/, 'SKU may only contain letters, numbers, dashes, and underscores'),
   barcode: z.string().optional().default(''),
   price: z
-    .number({ invalid_type_error: 'Retail MSRP price must be a valid number' })
+    .number({ message: 'Retail MSRP price must be a valid number' })
     .positive('Retail price must be greater than 0 TSh'),
   discountPrice: z
     .number()
     .positive('Promotional price must be greater than 0 TSh')
     .optional(),
   wholesalePrice: z
-    .number({ invalid_type_error: 'Wholesale price must be a valid number' })
+    .number({ message: 'Wholesale price must be a valid number' })
     .positive('Wholesale unit price must be greater than 0 TSh'),
   wholesaleMinQty: z
     .number()

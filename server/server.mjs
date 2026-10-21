@@ -37,7 +37,7 @@ const ATLAS_URI = 'mongodb+srv://indigoprinteromega07_db_user:OMEGA%407016@omega
 const LOCAL_URI = 'mongodb://127.0.0.1:27017/omega_stationery';
 const MONGODB_URI = process.env.MONGODB_URI || ATLAS_URI;
 const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
-const CACHE_TTL = parseInt(process.env.CACHE_TTL_SECONDS || '3600', 10);
+const CACHE_TTL = parseInt(process.env.CACHE_TTL_SECONDS || '5', 10);
 
 // Chrome Private Network Access (PNA) header support
 app.use((req, res, next) => {
@@ -708,7 +708,7 @@ app.get('/api/products', async (req, res) => {
   res.setHeader('Expires', '0');
 
   const { category, search, featured, bestSeller, force, _t } = req.query;
-  const isBypass = force === 'true' || Boolean(_t);
+  const isBypass = force === 'true' || Boolean(_t) || req.headers['x-bypass-cache'] === 'true';
   const cacheKey = `omega:products:cat=${category || 'all'}&q=${search || ''}&f=${featured || ''}&b=${bestSeller || ''}`;
 
   // 1. Try cache if not explicitly bypassed
@@ -719,6 +719,7 @@ app.get('/api/products', async (req, res) => {
       return res.json({
         success: true,
         source: 'Cache',
+        count: Array.isArray(cached.value) ? cached.value.length : 0,
         data: cached.value
       });
     }
@@ -739,7 +740,10 @@ app.get('/api/products', async (req, res) => {
           { description: { $regex: search, $options: 'i' } }
         ];
       }
-      results = await ProductModel.find(query).lean();
+      results = await ProductModel.find(query).sort({ updatedAt: -1, createdAt: -1 }).lean();
+      if (!category && !search && !featured && !bestSeller) {
+        inMemoryProducts = results;
+      }
     } catch (e) {
       results = inMemoryProducts;
     }
@@ -760,7 +764,7 @@ app.get('/api/products', async (req, res) => {
     });
   }
 
-  // 3. Cache response
+  // 3. Cache response (short TTL: 5s)
   await setCache(cacheKey, results, CACHE_TTL);
 
   res.setHeader('X-Cache', 'MISS');
@@ -870,7 +874,9 @@ app.post('/api/upload', async (req, res) => {
 
 // POST /api/products - Create or Upsert Product in MongoDB
 app.post('/api/products', async (req, res) => {
-  const productData = req.body;
+  const productData = { ...req.body };
+  delete productData._id;
+
   if (!productData.id || !productData.name || !productData.price) {
     return res.status(400).json({ success: false, message: 'Missing required fields (id, name, price)' });
   }
@@ -879,21 +885,18 @@ app.post('/api/products', async (req, res) => {
     let savedProduct = productData;
 
     if (mongoConnected && ProductModel) {
-      savedProduct = await ProductModel.findOneAndUpdate({ id: productData.id }, productData, {
+      savedProduct = await ProductModel.findOneAndUpdate({ id: productData.id }, { $set: productData }, {
         upsert: true,
         new: true
       }).lean();
     }
 
-    const idx = inMemoryProducts.findIndex((p) => p.id === productData.id);
-    if (idx >= 0) inMemoryProducts[idx] = productData;
-    else inMemoryProducts.unshift(productData);
+    const idx = inMemoryProducts.findIndex((p) => p.id === productData.id || (p._id && String(p._id) === productData.id));
+    if (idx >= 0) inMemoryProducts[idx] = savedProduct;
+    else inMemoryProducts.unshift(savedProduct);
 
-    // Invalidate caches
-    cacheMetrics.inMemoryCache.clear();
-    if (redisConnected && redisClient) {
-      try { await redisClient.flushAll(); } catch (e) {}
-    }
+    // Invalidate all caches
+    await clearAllServerCache();
 
     res.status(201).json({
       success: true,
@@ -908,18 +911,23 @@ app.post('/api/products', async (req, res) => {
 // PUT /api/products/:id - Update product
 app.put('/api/products/:id', async (req, res) => {
   const { id } = req.params;
-  const updateData = req.body;
+  const updateData = { ...req.body };
+  delete updateData._id;
 
   try {
     let updated = null;
+    const query = mongoose.isValidObjectId(id) ? { $or: [{ id }, { _id: id }] } : { id };
+
     if (mongoConnected && ProductModel) {
-      updated = await ProductModel.findOneAndUpdate({ id }, updateData, { new: true }).lean();
+      updated = await ProductModel.findOneAndUpdate(query, { $set: updateData }, { new: true }).lean();
     }
 
-    const idx = inMemoryProducts.findIndex((p) => p.id === id);
+    const idx = inMemoryProducts.findIndex((p) => p.id === id || (p._id && String(p._id) === id));
     if (idx >= 0) {
       inMemoryProducts[idx] = { ...inMemoryProducts[idx], ...updateData };
       if (!updated) updated = inMemoryProducts[idx];
+    } else if (updated) {
+      inMemoryProducts.unshift(updated);
     }
 
     await clearAllServerCache();
@@ -944,11 +952,13 @@ app.patch('/api/products/:id/price', async (req, res) => {
     if (discountPrice !== undefined) updateObj.discountPrice = Number(discountPrice);
     if (wholesalePrice !== undefined) updateObj.wholesalePrice = Number(wholesalePrice);
 
+    const query = mongoose.isValidObjectId(id) ? { $or: [{ id }, { _id: id }] } : { id };
+
     if (mongoConnected && ProductModel) {
-      await ProductModel.findOneAndUpdate({ id }, { $set: updateObj });
+      await ProductModel.findOneAndUpdate(query, { $set: updateObj });
     }
 
-    const idx = inMemoryProducts.findIndex((p) => p.id === id);
+    const idx = inMemoryProducts.findIndex((p) => p.id === id || (p._id && String(p._id) === id));
     if (idx >= 0) {
       if (price !== undefined) inMemoryProducts[idx].price = Number(price);
       if (discountPrice !== undefined) inMemoryProducts[idx].discountPrice = Number(discountPrice);
@@ -972,11 +982,13 @@ app.patch('/api/products/:id/stock', async (req, res) => {
     if (stockStatus) updateObj.stockStatus = stockStatus;
     if (stockQuantity !== undefined) updateObj.stockQuantity = Number(stockQuantity);
 
+    const query = mongoose.isValidObjectId(id) ? { $or: [{ id }, { _id: id }] } : { id };
+
     if (mongoConnected && ProductModel) {
-      await ProductModel.findOneAndUpdate({ id }, { $set: updateObj });
+      await ProductModel.findOneAndUpdate(query, { $set: updateObj });
     }
 
-    const idx = inMemoryProducts.findIndex((p) => p.id === id);
+    const idx = inMemoryProducts.findIndex((p) => p.id === id || (p._id && String(p._id) === id));
     if (idx >= 0) {
       if (stockStatus) inMemoryProducts[idx].stockStatus = stockStatus;
       if (stockQuantity !== undefined) inMemoryProducts[idx].stockQuantity = Number(stockQuantity);
@@ -993,13 +1005,31 @@ app.patch('/api/products/:id/stock', async (req, res) => {
 app.delete('/api/products/:id', async (req, res) => {
   const { id } = req.params;
   try {
+    const query = mongoose.isValidObjectId(id) ? { $or: [{ id }, { _id: id }] } : { id };
     if (mongoConnected && ProductModel) {
-      await ProductModel.deleteOne({ id });
+      await ProductModel.deleteOne(query);
     }
-    inMemoryProducts = inMemoryProducts.filter((p) => p.id !== id);
+    inMemoryProducts = inMemoryProducts.filter((p) => p.id !== id && (!p._id || String(p._id) !== id));
     await clearAllServerCache();
 
     res.json({ success: true, message: `Product ${id} deleted successfully from MongoDB` });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// POST /api/products/cache/clear - Manually flush all product caches and refresh from MongoDB
+app.post('/api/products/cache/clear', async (req, res) => {
+  try {
+    await clearAllServerCache();
+    if (mongoConnected && ProductModel) {
+      inMemoryProducts = await ProductModel.find().sort({ updatedAt: -1, createdAt: -1 }).lean();
+    }
+    res.json({
+      success: true,
+      message: 'All product cache purged and live store refreshed from MongoDB Atlas',
+      count: inMemoryProducts.length
+    });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
