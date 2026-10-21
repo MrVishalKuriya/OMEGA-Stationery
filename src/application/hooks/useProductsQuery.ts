@@ -18,22 +18,56 @@ export const useProductsQuery = () => {
   const query = useQuery<Product[]>({
     queryKey: PRODUCTS_QUERY_KEY,
     queryFn: async () => {
-      const res = await fetchLiveProducts();
+      const res = await fetchLiveProducts({ forceRefresh: true });
       if (res && res.length > 0) {
+        try {
+          localStorage.setItem('omega_products_v2', JSON.stringify(res));
+        } catch {}
         return res;
       }
       return INITIAL_PRODUCTS;
     },
-    initialData: () => {
+    placeholderData: () => {
       try {
         const saved = localStorage.getItem('omega_products_v2');
         if (saved) return JSON.parse(saved);
       } catch {}
-      return INITIAL_PRODUCTS;
+      return undefined;
     },
-    staleTime: 1000 * 60, // 1 Minute cache freshness
-    gcTime: 1000 * 60 * 15, // 15 Minutes in background memory
+    staleTime: 5000, // 5 seconds fresh, then always refetch from MongoDB
+    gcTime: 1000 * 60 * 15, // 15 Minutes cache
+    refetchOnMount: true,
     refetchOnWindowFocus: true,
+  });
+
+  // Optimistic Product Create Mutation
+  const createProductMutation = useMutation({
+    mutationFn: async (product: Product) => {
+      return await createProductInDb(product);
+    },
+    onMutate: async (newProduct) => {
+      await queryClient.cancelQueries({ queryKey: PRODUCTS_QUERY_KEY });
+      const previousProducts = queryClient.getQueryData<Product[]>(PRODUCTS_QUERY_KEY) || [];
+
+      const next = [newProduct, ...previousProducts.filter((p) => p.id !== newProduct.id)];
+      queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, next);
+      try {
+        localStorage.setItem('omega_products_v2', JSON.stringify(next));
+      } catch {}
+
+      return { previousProducts };
+    },
+    onError: (_err, _newProduct, context) => {
+      if (context?.previousProducts) {
+        queryClient.setQueryData(PRODUCTS_QUERY_KEY, context.previousProducts);
+        try {
+          localStorage.setItem('omega_products_v2', JSON.stringify(context.previousProducts));
+        } catch {}
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: PRODUCTS_QUERY_KEY });
+    },
   });
 
   // Optimistic Product Update Mutation
@@ -43,18 +77,23 @@ export const useProductsQuery = () => {
     },
     onMutate: async (updatedProduct) => {
       await queryClient.cancelQueries({ queryKey: PRODUCTS_QUERY_KEY });
-      const previousProducts = queryClient.getQueryData<Product[]>(PRODUCTS_QUERY_KEY);
+      const previousProducts = queryClient.getQueryData<Product[]>(PRODUCTS_QUERY_KEY) || [];
 
       // Optimistically update cache instantly
-      queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, (old = []) =>
-        old.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-      );
+      const next = previousProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p));
+      queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, next);
+      try {
+        localStorage.setItem('omega_products_v2', JSON.stringify(next));
+      } catch {}
 
       return { previousProducts };
     },
     onError: (_err, _newProduct, context) => {
       if (context?.previousProducts) {
         queryClient.setQueryData(PRODUCTS_QUERY_KEY, context.previousProducts);
+        try {
+          localStorage.setItem('omega_products_v2', JSON.stringify(context.previousProducts));
+        } catch {}
       }
     },
     onSettled: () => {
@@ -77,25 +116,30 @@ export const useProductsQuery = () => {
     },
     onMutate: async ({ id, stockStatus, stockQuantity }) => {
       await queryClient.cancelQueries({ queryKey: PRODUCTS_QUERY_KEY });
-      const previousProducts = queryClient.getQueryData<Product[]>(PRODUCTS_QUERY_KEY);
+      const previousProducts = queryClient.getQueryData<Product[]>(PRODUCTS_QUERY_KEY) || [];
 
-      queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, (old = []) =>
-        old.map((p) =>
-          p.id === id
-            ? {
-                ...p,
-                stockStatus,
-                ...(stockQuantity !== undefined ? { stockQuantity } : {}),
-              }
-            : p
-        )
+      const next = previousProducts.map((p) =>
+        p.id === id
+          ? {
+              ...p,
+              stockStatus,
+              ...(stockQuantity !== undefined ? { stockQuantity } : {}),
+            }
+          : p
       );
+      queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, next);
+      try {
+        localStorage.setItem('omega_products_v2', JSON.stringify(next));
+      } catch {}
 
       return { previousProducts };
     },
     onError: (_err, _vars, context) => {
       if (context?.previousProducts) {
         queryClient.setQueryData(PRODUCTS_QUERY_KEY, context.previousProducts);
+        try {
+          localStorage.setItem('omega_products_v2', JSON.stringify(context.previousProducts));
+        } catch {}
       }
     },
     onSettled: () => {
@@ -120,26 +164,31 @@ export const useProductsQuery = () => {
     },
     onMutate: async ({ id, price, discountPrice, wholesalePrice }) => {
       await queryClient.cancelQueries({ queryKey: PRODUCTS_QUERY_KEY });
-      const previousProducts = queryClient.getQueryData<Product[]>(PRODUCTS_QUERY_KEY);
+      const previousProducts = queryClient.getQueryData<Product[]>(PRODUCTS_QUERY_KEY) || [];
 
-      queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, (old = []) =>
-        old.map((p) =>
-          p.id === id
-            ? {
-                ...p,
-                price,
-                ...(discountPrice !== undefined ? { discountPrice } : {}),
-                ...(wholesalePrice !== undefined ? { wholesalePrice } : {}),
-              }
-            : p
-        )
+      const next = previousProducts.map((p) =>
+        p.id === id
+          ? {
+              ...p,
+              price,
+              ...(discountPrice !== undefined ? { discountPrice } : {}),
+              ...(wholesalePrice !== undefined ? { wholesalePrice } : {}),
+            }
+          : p
       );
+      queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, next);
+      try {
+        localStorage.setItem('omega_products_v2', JSON.stringify(next));
+      } catch {}
 
       return { previousProducts };
     },
     onError: (_err, _vars, context) => {
       if (context?.previousProducts) {
         queryClient.setQueryData(PRODUCTS_QUERY_KEY, context.previousProducts);
+        try {
+          localStorage.setItem('omega_products_v2', JSON.stringify(context.previousProducts));
+        } catch {}
       }
     },
     onSettled: () => {
@@ -154,17 +203,22 @@ export const useProductsQuery = () => {
     },
     onMutate: async (id) => {
       await queryClient.cancelQueries({ queryKey: PRODUCTS_QUERY_KEY });
-      const previousProducts = queryClient.getQueryData<Product[]>(PRODUCTS_QUERY_KEY);
+      const previousProducts = queryClient.getQueryData<Product[]>(PRODUCTS_QUERY_KEY) || [];
 
-      queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, (old = []) =>
-        old.filter((p) => p.id !== id)
-      );
+      const next = previousProducts.filter((p) => p.id !== id);
+      queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, next);
+      try {
+        localStorage.setItem('omega_products_v2', JSON.stringify(next));
+      } catch {}
 
       return { previousProducts };
     },
     onError: (_err, _id, context) => {
       if (context?.previousProducts) {
         queryClient.setQueryData(PRODUCTS_QUERY_KEY, context.previousProducts);
+        try {
+          localStorage.setItem('omega_products_v2', JSON.stringify(context.previousProducts));
+        } catch {}
       }
     },
     onSettled: () => {
@@ -178,6 +232,7 @@ export const useProductsQuery = () => {
     isFetching: query.isFetching,
     error: query.error,
     refetch: query.refetch,
+    createProduct: createProductMutation.mutateAsync,
     updateProduct: updateProductMutation.mutateAsync,
     updateStock: updateStockMutation.mutateAsync,
     updatePrice: updatePriceMutation.mutateAsync,

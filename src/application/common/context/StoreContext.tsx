@@ -125,6 +125,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const {
     products,
     isLoading: isCatalogLoading,
+    createProduct: createProductInQuery,
     updateProduct: updateProductInQuery,
     updateStock: updateStockInQuery,
     updatePrice: updatePriceInQuery,
@@ -292,7 +293,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       ...newProd,
       id: `prod-custom-${Date.now()}`,
     };
-    updateProductInQuery(created);
+    createProductInQuery(created);
     showToast(`Added product "${created.name}".`);
     return created;
   };

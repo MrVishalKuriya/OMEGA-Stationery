@@ -522,8 +522,13 @@ export async function fetchLiveProducts(options?: {
   });
 
   if (res.ok && res.data) {
-    const products = Array.isArray(res.data) ? res.data : (res.data.data || []);
-    if (Array.isArray(products)) {
+    const rawList = Array.isArray(res.data) ? res.data : (res.data.data || []);
+    if (Array.isArray(rawList)) {
+      const products: Product[] = rawList.map((p) => ({
+        ...p,
+        image: resolveImageUrl(p.image),
+        gallery: Array.isArray(p.gallery) ? p.gallery.map((g: string) => resolveImageUrl(g)) : p.gallery,
+      }));
       clientProductCache.set(cacheKey, {
         data: products,
         expiresAt: Date.now() + 5_000,
@@ -1071,6 +1076,9 @@ export function resolveImageUrl(url?: string): string {
   if (!url) return '';
   if (url.startsWith('/uploads/')) {
     return `${BACKEND_URL}${url}`;
+  }
+  if (typeof window !== 'undefined' && window.location.protocol === 'https:' && url.startsWith('http://localhost:5000/uploads/')) {
+    return url.replace('http://localhost:5000', BACKEND_URL);
   }
   return url;
 }

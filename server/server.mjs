@@ -915,11 +915,10 @@ app.put('/api/products/:id', async (req, res) => {
   delete updateData._id;
 
   try {
-    let updated = null;
-    const query = mongoose.isValidObjectId(id) ? { $or: [{ id }, { _id: id }] } : { id };
+    const updatePayload = { ...updateData, id: updateData.id || id };
 
     if (mongoConnected && ProductModel) {
-      updated = await ProductModel.findOneAndUpdate(query, { $set: updateData }, { new: true }).lean();
+      updated = await ProductModel.findOneAndUpdate(query, { $set: updatePayload }, { new: true, upsert: true }).lean();
     }
 
     const idx = inMemoryProducts.findIndex((p) => p.id === id || (p._id && String(p._id) === id));
