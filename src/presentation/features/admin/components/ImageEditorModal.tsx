@@ -998,36 +998,36 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="bg-[#121212] text-white w-full max-w-5xl max-h-[96vh] rounded-[26px] shadow-2xl flex flex-col overflow-hidden border border-[#262626]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-3 md:p-5 bg-black/90 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="bg-[#121212] text-white w-full max-w-5xl h-full sm:h-auto max-h-full sm:max-h-[94vh] rounded-none sm:rounded-[26px] shadow-2xl flex flex-col overflow-hidden border-0 sm:border border-[#262626]">
         {/* ================= INSTAGRAM TOP APP BAR ================= */}
-        <div className="px-5 py-3.5 bg-[#1a1a1a] flex items-center justify-between border-b border-[#262626] shrink-0">
-          <div className="flex items-center gap-3">
+        <div className="px-3 sm:px-5 py-2.5 sm:py-3.5 bg-[#1a1a1a] flex items-center justify-between border-b border-[#262626] shrink-0 gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <button
               type="button"
               onClick={onClose}
               disabled={isProcessing}
-              className="text-stone-400 hover:text-white p-1 rounded-full transition-colors"
+              className="text-stone-400 hover:text-white p-1 rounded-full transition-colors shrink-0"
               title="Cancel"
             >
               <X className="w-5 h-5" />
             </button>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-sm tracking-tight text-white">
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="font-bold text-xs sm:text-sm tracking-tight text-white truncate">
                   OMEGA Product Studio
                 </span>
-                <span className="text-[10px] uppercase font-mono tracking-wider bg-gradient-to-r from-purple-500 via-pink-500 to-amber-500 text-white font-black px-2 py-0.5 rounded-full shadow-xs">
+                <span className="text-[9px] sm:text-[10px] uppercase font-mono tracking-wider bg-gradient-to-r from-purple-500 via-pink-500 to-amber-500 text-white font-black px-1.5 sm:px-2 py-0.5 rounded-full shadow-xs shrink-0">
                   Pro Studio
                 </span>
               </div>
-              <p className="text-[11px] text-stone-400 font-mono truncate max-w-[200px] sm:max-w-sm">
+              <p className="text-[10px] sm:text-[11px] text-stone-400 font-mono truncate max-w-[140px] xs:max-w-[220px] sm:max-w-sm">
                 {fileName} {sourceImg ? `· ${sourceImg.width}×${sourceImg.height}px` : ''}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <button
               type="button"
               onClick={handleResetAll}
@@ -1040,17 +1040,17 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               type="button"
               onClick={handleApplyExport}
               disabled={isProcessing || !sourceImg}
-              className="px-5 py-1.5 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[#c49b7c] to-[#a46b44] hover:brightness-110 shadow-md active:scale-95 transition-all flex items-center gap-1.5 disabled:opacity-50"
+              className="px-3.5 sm:px-5 py-1.5 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[#c49b7c] to-[#a46b44] hover:brightness-110 shadow-md active:scale-95 transition-all flex items-center gap-1.5 disabled:opacity-50"
             >
               {isProcessing ? (
                 <>
                   <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                  <span>Uploading...</span>
+                  <span className="hidden xs:inline">Uploading...</span>
                 </>
               ) : (
                 <>
-                  <Check className="w-4 h-4 text-white" />
-                  <span>Done / Apply</span>
+                  <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                  <span className="whitespace-nowrap">Done / Apply</span>
                 </>
               )}
             </button>
@@ -1060,10 +1060,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
         {/* ================= MAIN STUDIO VIEWPORT & CONTROLS ================= */}
         <div className="flex-1 overflow-y-auto grid grid-cols-1 lg:grid-cols-12 min-h-0 bg-[#0a0a0a]">
           {/* LEFT: Viewport with checkered transparency background (7 Cols) */}
-          <div className="lg:col-span-7 p-3 sm:p-5 flex flex-col items-center justify-center border-r border-[#262626] relative bg-[#000000]">
+          <div className="lg:col-span-7 p-2.5 sm:p-4 md:p-5 flex flex-col items-center justify-center border-b lg:border-b-0 lg:border-r border-[#262626] relative bg-[#000000] shrink-0">
             <div
               ref={containerRef}
-              className={`relative w-full aspect-square max-h-[380px] sm:max-h-[440px] rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center select-none ${
+              className={`relative w-full aspect-square max-h-[220px] xs:max-h-[270px] sm:max-h-[340px] lg:max-h-[460px] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center select-none ${
                 bgPreset === 'transparent'
                   ? 'bg-[linear-gradient(45deg,#1f1f1f_25%,transparent_25%),linear-gradient(-45deg,#1f1f1f_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#1f1f1f_75%),linear-gradient(-45deg,transparent_75%,#1f1f1f_75%)] bg-[size:20px_20px] bg-[position:0_0,0_10px,10px_-10px,-10px_0px] bg-[#141414]'
                   : 'bg-[#1a1a1a]'
@@ -1783,25 +1783,25 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
         </div>
 
         {/* ================= INSTAGRAM BOTTOM STATUS BAR ================= */}
-        <div className="px-5 py-3 bg-[#1a1a1a] border-t border-[#262626] flex items-center justify-between text-xs text-stone-400 shrink-0">
-          <div className="flex items-center gap-3">
-            <span>
-              Mode: <strong className="text-white">{storeImageFit === 'contain' ? 'Studio Pedestal' : 'Edge Cover'}</strong>
+        <div className="px-3 sm:px-5 py-2 sm:py-3 bg-[#1a1a1a] border-t border-[#262626] flex items-center justify-between gap-2 text-xs text-stone-400 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 text-[10px] sm:text-xs min-w-0 truncate">
+            <span className="truncate">
+              Mode: <strong className="text-white">{storeImageFit === 'contain' ? 'Studio' : 'Edge Cover'}</strong>
             </span>
-            <span>·</span>
-            <span>
+            <span className="text-stone-600">·</span>
+            <span className="truncate">
               Canvas: <strong className="text-white">{bgPreset.toUpperCase()}</strong>
             </span>
-            <span>·</span>
-            <span className="hidden sm:inline">1200×1200 High-Res Export</span>
+            <span className="hidden md:inline text-stone-600">·</span>
+            <span className="hidden md:inline text-stone-500 text-[11px]">1200×1200 Export</span>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0 ml-auto">
             <button
               type="button"
               onClick={onClose}
               disabled={isProcessing}
-              className="px-3.5 py-1.5 text-xs font-bold text-stone-400 hover:text-white transition-colors"
+              className="px-2.5 sm:px-3.5 py-1.5 text-xs font-bold text-stone-400 hover:text-white transition-colors"
             >
               Cancel
             </button>
@@ -1810,17 +1810,17 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               type="button"
               onClick={handleApplyExport}
               disabled={isProcessing || !sourceImg}
-              className="px-5 py-1.5 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[#c49b7c] to-[#a46b44] hover:brightness-110 shadow-md active:scale-95 transition-all flex items-center gap-1.5 disabled:opacity-50"
+              className="px-3.5 sm:px-5 py-1.5 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[#c49b7c] to-[#a46b44] hover:brightness-110 shadow-md active:scale-95 transition-all flex items-center gap-1.5 disabled:opacity-50"
             >
               {isProcessing ? (
                 <>
                   <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                  <span>Saving to DB...</span>
+                  <span>Saving...</span>
                 </>
               ) : (
                 <>
-                  <Check className="w-4 h-4 text-white" />
-                  <span>Done / Apply</span>
+                  <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
+                  <span className="whitespace-nowrap">Done / Apply</span>
                 </>
               )}
             </button>

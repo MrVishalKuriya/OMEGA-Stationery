@@ -3297,8 +3297,8 @@ export const AdminDashboardPage: React.FC = () => {
 
       {/* ==================== ADD / EDIT / CLONE MASTER PRODUCT MODAL (DIRECT MONGODB CRUD) ==================== */}
       {isProductModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-2xl w-full p-5 sm:p-6 space-y-4 shadow-2xl border border-stone-200 animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+          <div className="bg-white rounded-xl sm:rounded-2xl max-w-2xl w-full p-3.5 sm:p-6 space-y-4 shadow-2xl border border-stone-200 animate-in fade-in zoom-in-95 duration-200 max-h-[94vh] sm:max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-stone-200 pb-3">
               <div>
