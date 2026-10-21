@@ -169,7 +169,7 @@ export const MEGA_MENU_DATA: Record<string, MegaMenuCategoryData> = {
     featured: {
       title: 'Heavyweight Flipchart & Manila Sets',
       subtitle: '50-sheet conference flipchart pads and high-bulk assorted manila sheets.',
-      image: '/omega-products/flipchart-paper-pad.jpeg',
+      image: '/omega-products/flipchart-catalog.jpeg',
       badge: 'Workshop Grade',
       href: '/catalog?category=Flipcharts',
       ctaText: 'Browse Presentation Pads',

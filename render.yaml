@@ -5,8 +5,9 @@ services:
   - type: web
     name: omega-stationery-backend
     runtime: node
-    buildCommand: cd server && npm install
-    startCommand: node server/server.mjs
+    rootDir: server
+    buildCommand: npm install
+    startCommand: node server.mjs
     plan: free
     region: frankfurt
     envVars:

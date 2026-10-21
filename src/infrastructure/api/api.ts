@@ -25,6 +25,7 @@ export function isLoopbackRestricted(url?: string): boolean {
 function resolveBackendUrl(): string {
   const isBrowser = typeof window !== 'undefined';
   const isRemoteHttps = isBrowser && window.location.protocol === 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+  const isLocalhostHost = isBrowser && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 
   if (isBrowser) {
     const saved = localStorage.getItem('OMEGA_BACKEND_URL');
@@ -39,6 +40,17 @@ function resolveBackendUrl(): string {
     }
   }
 
+  // When developing locally on localhost, directly connect to local port 5000
+  if (isLocalhostHost) {
+    const localEnv = import.meta.env.VITE_LOCAL_API_URL || '';
+    if (localEnv && isLoopbackTarget(localEnv)) {
+      let clean = localEnv.trim().replace(/\/+$/, '');
+      if (clean.endsWith('/api')) clean = clean.slice(0, -4);
+      return clean;
+    }
+    return 'http://localhost:5000';
+  }
+
   const envUrl = import.meta.env.VITE_API_URL || import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_API_BASE_URL || '';
   if (envUrl && envUrl.trim()) {
     let clean = envUrl.trim().replace(/\/+$/, '');
@@ -46,14 +58,6 @@ function resolveBackendUrl(): string {
     if (!(isRemoteHttps && isLoopbackTarget(clean))) {
       return clean;
     }
-  }
-
-  if (isBrowser) {
-    const isLocalhostHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-    if (isLocalhostHost) {
-      return 'http://localhost:5000';
-    }
-    return 'https://omega-stationery-backend.onrender.com';
   }
 
   return 'https://omega-stationery-backend.onrender.com';

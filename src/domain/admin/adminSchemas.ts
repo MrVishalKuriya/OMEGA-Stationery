@@ -1,17 +1,28 @@
 import { z } from 'zod';
 
-export const productCategoryEnum = z.enum([
+export const ALL_PRODUCT_CATEGORIES = [
   'Counter Books',
   'Exercise Books',
-  'Envelopes (Bahasha)',
+  'Registers',
+  'Bahasha & Envelopes',
+  'Ruled Paper',
+  'Manila & Folders',
+  'Flipcharts',
+  'School Stationery',
+  'Office Supplies',
+  'Packaging & Cartons',
   'Files & Folders',
+  'Bulk & Wholesale Paper',
+  'Envelopes (Bahasha)',
   'Examination Paper',
   'Mathematical Sets',
   'Notepads & Shorthand',
   'Drawing & Registers',
   'Office Stationery',
   'Wholesale Bundles',
-]);
+] as const;
+
+export const productCategoryEnum = z.string().min(1, 'Product category is required');
 
 export const stockStatusEnum = z.enum(['In Stock', 'Low Stock', 'Out of Stock']);
 
