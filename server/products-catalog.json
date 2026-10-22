@@ -1499,25 +1499,39 @@
     "sku": "OMG-JAR-ORG",
     "specifications": [
       {
-        "label": "Format",
-        "value": "Protective Film Continuous Roll",
-        "_id": "6ad70aea76b381509a5e7e03"
+        "label": "Product Format",
+        "value": "Protective Film Continuous Roll"
       },
       {
-        "label": "Color",
-        "value": "Vivid Tangerine Orange",
-        "_id": "6ad70aea76b381509a5e7e04"
+        "label": "Color / Tint",
+        "value": "Vivid Tangerine Orange"
       },
       {
-        "label": "Protection",
-        "value": "Moisture, Dust and Tear Resistant",
-        "_id": "6ad70aea76b381509a5e7e05"
+        "label": "Roll Dimensions",
+        "value": "Heavy Gauge Protective Length"
+      },
+      {
+        "label": "Durability & Shield",
+        "value": "Waterproof, Dust-Proof & Tear-Resistant Vinyl"
+      },
+      {
+        "label": "Recommended Use",
+        "value": "School Exercise Books, Hardcover Counter Books (Q2/Q3/Q4), Accounting Ledgers"
+      },
+      {
+        "label": "Packaging Unit",
+        "value": "Heavy Protective Shrink-Wrapped Continuous Roll"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
     "subtitle": "Protective Roll · Water-Resistant Vinyl Shield",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "nameSw": "Jalada Nzito la OMEGA Orange Jaradio (Roli)",
+    "subtitleSw": "Roli ya Jalada · Kinga Imara Isiyopenya Maji",
+    "wholesalePrice": 195000,
+    "wholesaleMinQty": 5,
+    "descriptionSw": "Roli ya jalada nzito la plastiki ya rangi ya chungwa isiyopenya maji. Hukinga madaftari ya shule na majalada ya ofisi dhidi ya unyevu, vumbi na mikwaruzo mwaka mzima wa masomo."
   },
   {
     "_id": "6ad6471f5d01c6a7959eebc5",

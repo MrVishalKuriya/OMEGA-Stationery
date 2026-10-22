@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -13,6 +13,21 @@ import {
   ShieldCheck,
   Truck,
   Phone,
+  ChevronDown,
+  ChevronUp,
+  Star,
+  Maximize2,
+  X,
+  FileText,
+  Sparkles,
+  Clock,
+  MapPin,
+  Tag,
+  HelpCircle,
+  CheckCircle,
+  Scissors,
+  Droplets,
+  Package,
 } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { ProductCard } from '@/components/ProductCard';
@@ -38,17 +53,38 @@ export const ProductDetailsPage: React.FC = () => {
   const [justAdded, setJustAdded] = useState<boolean>(false);
   const [imgError, setImgError] = useState<boolean>(false);
   const [selectedPhoneDesk, setSelectedPhoneDesk] = useState<string>('255715268391');
+  const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
+
+  // Interactive Accordion States (Open by default: overview & specs)
+  const [accordionState, setAccordionState] = useState<{
+    overview: boolean;
+    specs: boolean;
+    wholesale: boolean;
+    delivery: boolean;
+    guide: boolean;
+  }>({
+    overview: true,
+    specs: true,
+    wholesale: true,
+    delivery: false,
+    guide: false,
+  });
+
+  const toggleAccordion = (key: keyof typeof accordionState) => {
+    setAccordionState((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
 
   useEffect(() => {
     setQuantity(1);
     setSelectedImageIdx(0);
     setImgError(false);
+    setIsLightboxOpen(false);
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [id]);
 
-  // Fetch directly from MongoDB to guarantee 100% dynamic live prices, specs, and stock
+  // Fetch directly from MongoDB for live prices/stock
   useEffect(() => {
     if (id) {
       const controller = new AbortController();
@@ -100,7 +136,7 @@ export const ProductDetailsPage: React.FC = () => {
         <div className="pt-2">
           <Link
             to="/catalog"
-            className="px-6 py-3 bg-[#0f2342] text-white text-sm font-semibold rounded-xl hover:bg-[#1e3a8a] transition-colors inline-flex items-center gap-2"
+            className="px-6 py-3 bg-[#4b423b] text-white text-sm font-semibold rounded-xl hover:bg-[#38312b] transition-colors inline-flex items-center gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>{t.exploreCatalog}</span>
@@ -117,11 +153,27 @@ export const ProductDetailsPage: React.FC = () => {
   const hasDiscount = effectivePrice < product.price;
   const isOutOfStock = product.stockStatus === 'Out of Stock';
 
+  // Dynamic Tier Pricing Calculator
+  const wholesaleMinMoq = product.wholesaleMinQty || 5;
+  const wholesaleRate = product.wholesalePrice || Math.round(effectivePrice * 0.92);
+
+  const getTierPrice = (qty: number) => {
+    if (qty >= 10) return Math.min(wholesaleRate, Math.round(effectivePrice * 0.88));
+    if (qty >= wholesaleMinMoq) return wholesaleRate;
+    return effectivePrice;
+  };
+
+  const unitPrice = getTierPrice(quantity);
+  const subtotal = unitPrice * quantity;
+  const regularTotal = effectivePrice * quantity;
+  const savings = regularTotal - subtotal;
+
   const galleryImages =
     product.gallery && product.gallery.length > 0 ? product.gallery : [product.image];
 
+  // Intelligently choose related products (same category or complementary stationery items)
   const relatedProducts = products
-    .filter((p) => p.category === product.category && p.id !== product.id)
+    .filter((p) => p.id !== product.id && (p.category === product.category || p.featured || p.bestSeller))
     .slice(0, 3);
 
   const handleAdd = () => {
@@ -133,19 +185,22 @@ export const ProductDetailsPage: React.FC = () => {
 
   const currency = storeConfig.currencySymbol || 'TSh';
 
-  // Format WhatsApp Message with full details
+  // Direct WhatsApp formatted message with quote
   const directWhatsappText = [
-    `*${storeConfig.businessName} — Order Enquiry*`,
-    `----------------------------------------`,
+    `*${storeConfig.businessName} — Official Order Enquiry*`,
+    `========================================`,
     `Product: ${product.name}`,
     `SKU Code: ${product.sku}`,
-    product.quire ? `Quire: ${product.quire}` : null,
-    product.pageCount ? `Pages: ${product.pageCount}` : null,
-    `Quantity Requested: ${quantity}`,
-    `Unit Price: ${currency} ${effectivePrice.toLocaleString()}`,
-    `Estimated Total: ${currency} ${(effectivePrice * quantity).toLocaleString()}`,
+    product.category ? `Category: ${product.category}` : null,
+    product.packaging ? `Packaging: ${product.packaging}` : null,
+    `Quantity: ${quantity} ${quantity > 1 ? 'Units' : 'Unit'}`,
+    `Applied Unit Price: ${currency} ${unitPrice.toLocaleString()}`,
+    `Estimated Total: ${currency} ${subtotal.toLocaleString()}`,
+    savings > 0 ? `Bulk Savings Applied: ${currency} ${savings.toLocaleString()}` : null,
     `----------------------------------------`,
-    `Please confirm stock availability and delivery timeline.`,
+    `Selected Delivery Destination: Please advise (Dar es Salaam / Upcountry Bus Parcel)`,
+    `TRA Fiscal EFD Invoicing: Requested`,
+    `Please confirm immediate dispatch readiness and bus waybill cargo options.`,
   ]
     .filter(Boolean)
     .join('\n');
@@ -155,427 +210,856 @@ export const ProductDetailsPage: React.FC = () => {
   )}`;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16 w-full max-w-full overflow-hidden">
+    <div className="bg-[#fafafa] min-h-screen text-[#3b352f]">
       <SEOHead
-        title={`${product.name} (${currency} ${effectivePrice.toLocaleString()}) — OMEGA`}
+        title={`${product.name} (${currency} ${effectivePrice.toLocaleString()}) — OMEGA Stationery`}
         description={product.description}
         product={product}
       />
 
-      {/* Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs text-slate-500 flex-wrap">
-        <Link to="/" className="hover:text-slate-900 font-semibold">
-          {t.home}
-        </Link>
-        <span aria-hidden="true">/</span>
-        <Link to="/catalog" className="hover:text-slate-900 font-semibold">
-          {t.catalog}
-        </Link>
-        <span aria-hidden="true">/</span>
-        <Link
-          to={`/catalog?category=${encodeURIComponent(product.category)}`}
-          className="hover:text-slate-900 font-semibold"
-        >
-          {product.category}
-        </Link>
-        <span aria-hidden="true">/</span>
-        <span className="text-slate-900 font-bold truncate max-w-xs">{product.name}</span>
-      </nav>
-
-      {/* Main PDP Split */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-        {/* Left Column: Gallery with Aardvark 3D Perspective */}
-        <div className="lg:col-span-6 space-y-4 lg:sticky lg:top-24">
-          <div className="aspect-square w-full rounded-2xl overflow-hidden border border-[#e2dedb] bg-gradient-to-b from-[#faf9f8] to-[#f4f1ed] shadow-sm flex items-center justify-center p-6 sm:p-8 relative">
-            {selectedImageIdx < galleryImages.length && !imgError ? (
-              <div className="relative w-full h-full flex items-center justify-center">
-                <img
-                  src={galleryImages[selectedImageIdx]}
-                  alt={`${product.name} - View ${selectedImageIdx + 1}`}
-                  referrerPolicy="no-referrer"
-                  onError={() => setImgError(true)}
-                  className="w-full h-full object-contain filter drop-shadow-md select-none transition-transform duration-500 ease-out hover:scale-105"
-                />
-              </div>
-            ) : (
-              /* Specification Label Preview Card */
-              <div className="w-full h-full p-6 bg-[#fafafa] flex items-center justify-center">
-                <div className="w-full max-w-sm border-2 border-[#4b423b] bg-white p-6 space-y-4 shadow-sm rounded-xl">
-                  <div className="text-center border-b-2 border-[#4b423b] pb-3">
-                    <p className="text-xl font-bold tracking-widest text-[#4b423b] font-heading">
-                      OMEGA NOTEBOOKS
-                    </p>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-slate-700 mt-0.5">
-                      {product.category} Specification Sheet
-                    </p>
-                  </div>
-                  <div className="space-y-2 text-xs text-slate-700 font-mono">
-                    <div className="flex justify-between border-b border-slate-100 pb-1">
-                      <span className="font-semibold text-[#4b423b]">ITEM:</span>
-                      <span className="truncate max-w-[200px]">{product.name}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-slate-100 pb-1">
-                      <span className="font-semibold text-[#4b423b]">SKU:</span>
-                      <span>{product.sku}</span>
-                    </div>
-                    {product.specifications.slice(0, 3).map((spec) => (
-                      <div
-                        key={spec.label}
-                        className="flex justify-between border-b border-slate-100 pb-1"
-                      >
-                        <span className="font-semibold text-[#4b423b] uppercase">
-                          {spec.label}:
-                        </span>
-                        <span className="truncate max-w-[180px]">{spec.value}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
+      {/* Top Value Strip */}
+      <div className="bg-[#4b423b] text-white/90 text-xs py-2 px-4 border-b border-[#3b342e]">
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 font-medium">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#e5a962] animate-pulse" />
+            <span>
+              {language === 'sw'
+                ? 'Kiwandani moja kwa moja: Uwasilishaji nchi nzima Tanzania kwa njia ya mabasi'
+                : 'Factory-Direct Supply: Reliable nationwide bus parcel dispatch across all 31 regions'}
+            </span>
           </div>
-
-          {/* Thumbnails */}
-          <div className="flex items-center gap-3 overflow-x-auto pb-1">
-            {galleryImages.map((imgUrl, index) => (
-              <button
-                key={`${imgUrl}-${index}`}
-                type="button"
-                onClick={() => {
-                  setImgError(false);
-                  setSelectedImageIdx(index);
-                }}
-                className={`w-20 h-16 rounded-xl overflow-hidden border-2 shrink-0 transition-all bg-white p-1 ${
-                  selectedImageIdx === index
-                    ? 'border-[#4b423b] ring-2 ring-[#c49b7c] shadow-sm'
-                    : 'border-[#e2dedb] hover:border-stone-400'
-                }`}
-              >
-                <img
-                  src={imgUrl}
-                  alt={`Thumbnail ${index + 1}`}
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-contain"
-                />
-              </button>
-            ))}
-
-            <button
-              type="button"
-              onClick={() => setSelectedImageIdx(galleryImages.length)}
-              className={`h-16 px-3 rounded-xl border-2 shrink-0 flex flex-col items-center justify-center bg-[#fafafa] text-[11px] font-bold transition-all ${
-                selectedImageIdx === galleryImages.length
-                  ? 'border-[#4b423b] text-[#4b423b] ring-2 ring-[#c49b7c]'
-                  : 'border-[#e2dedb] text-stone-700 hover:border-stone-400'
-              }`}
-            >
-              <BookOpen className="w-4 h-4 mb-0.5 text-[#4b423b]" />
-              <span>Specs Sheet</span>
-            </button>
+          <div className="flex items-center gap-4 text-[11px] text-stone-300">
+            <span className="inline-flex items-center gap-1">
+              <CheckCircle className="w-3.5 h-3.5 text-[#2A9D8F]" />
+              <span>TRA Tax Invoicing</span>
+            </span>
+            <span className="inline-flex items-center gap-1">
+              <Truck className="w-3.5 h-3.5 text-[#e5a962]" />
+              <span>Upcountry Waybills</span>
+            </span>
           </div>
-        </div>
-
-        {/* Right Column: Information, Pricing, Quantity & WhatsApp Order */}
-        <div className="lg:col-span-6 space-y-6">
-          <div className="space-y-3 border-b border-[#e2dedb] pb-5">
-            {/* Heimplanet Technical Metadata */}
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="heimplanet-tag">[ SPEC // 2026 OFFICIAL ]</span>
-              <span className="heimplanet-tag">[ SKU // {product.sku} ]</span>
-              {product.quire && (
-                <span className="heimplanet-tag text-[#4b423b] font-bold">[ {product.quire} ]</span>
-              )}
-            </div>
-
-            <div className="flex items-center gap-2 pt-1">
-              {/* OMEGA Assured Verified Badge */}
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#4b423b]/10 border border-[#4b423b]/20 text-[11px] font-bold text-[#4b423b]">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#2A9D8F]" />
-                <span>OMEGA Assured</span>
-              </div>
-              <span className="text-xs text-[#6B7280]">·</span>
-              <span className="text-xs font-semibold text-[#4b423b]">{product.category}</span>
-            </div>
-
-            <h1 className="font-heading text-2xl sm:text-3xl font-black text-[#14182B] leading-tight">
-              {language === 'sw' && product.nameSw ? product.nameSw : product.name}
-            </h1>
-
-            {/* Price & Stock Display */}
-            <div className="pt-2 flex flex-wrap items-baseline justify-between gap-4">
-              <div className="space-y-1">
-                <span className="text-xs uppercase tracking-wider text-[#6B7280] font-semibold block">
-                  {t.retailPrice}
-                </span>
-                <div className="flex items-baseline gap-3">
-                  <span className="text-3xl font-black text-[#4b423b] font-mono">
-                    {currency} {effectivePrice.toLocaleString()}
-                  </span>
-                  {hasDiscount && (
-                    <span className="text-base text-[#6B7280] line-through font-mono">
-                      {currency} {product.price.toLocaleString()}
-                    </span>
-                  )}
-                  {hasDiscount && (
-                    <span className="badge-clear-sale">
-                      {Math.round(((product.price - effectivePrice) / product.price) * 100)}% OFF
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {product.wholesalePrice && (
-                <div className="text-right p-3 rounded-xl bg-[#2A9D8F]/10 border border-[#2A9D8F]/30">
-                  <span className="text-[11px] font-bold text-[#2A9D8F] uppercase tracking-wider block">
-                    {t.wholesalePrice}
-                  </span>
-                  <span className="text-base font-black text-[#4b423b] font-mono">
-                    {currency} {product.wholesalePrice.toLocaleString()}
-                  </span>
-                  <span className="text-[10px] text-[#6B7280] block mt-0.5">
-                    Min Carton MOQ: {product.wholesaleMinQty ?? 10} pcs
-                  </span>
-                </div>
-              )}
-            </div>
-
-            <div className="text-xs font-semibold pt-1 flex items-center gap-2">
-              <span className="text-[#6B7280]">Stock Status:</span>
-              <span
-                className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold ${
-                  product.stockStatus === 'In Stock'
-                    ? 'bg-[#2A9D8F]/15 text-[#2A9D8F]'
-                    : product.stockStatus === 'Low Stock'
-                    ? 'bg-[#c49b7c]/20 text-[#4b423b]'
-                    : 'bg-[#D64545]/15 text-[#D64545]'
-                }`}
-              >
-                {product.stockStatus === 'In Stock'
-                  ? t.inStock
-                  : product.stockStatus === 'Low Stock'
-                  ? t.lowStock
-                  : t.outOfStock}
-              </span>
-            </div>
-          </div>
-
-          {/* Product Description */}
-          <div className="space-y-2">
-            <h2 className="text-xs font-bold text-[#4b423b] uppercase tracking-wider">
-              {t.productDescription}
-            </h2>
-            <p className="text-sm text-[#6B7280] leading-relaxed">
-              {language === 'sw' && product.descriptionSw ? product.descriptionSw : product.description}
-            </p>
-          </div>
-
-          {/* Quantity Selector & WhatsApp Sales Desk Chooser */}
-          <div className="bg-[#fafafa] border border-[#e2dedb] rounded-2xl p-5 space-y-4">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="space-y-1">
-                <label
-                  htmlFor="pdp-quantity"
-                  className="block text-xs font-bold text-[#4b423b] uppercase tracking-wider"
-                >
-                  {t.quantity}
-                </label>
-                <div className="inline-flex items-center border border-[#e2dedb] rounded-xl bg-white shadow-2xs">
-                  <button
-                    type="button"
-                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    disabled={isOutOfStock || quantity <= 1}
-                    aria-label="Decrease quantity"
-                    className="p-2.5 text-stone-600 hover:text-stone-900 disabled:opacity-40"
-                  >
-                    <Minus className="w-3.5 h-3.5" />
-                  </button>
-                  <input
-                    id="pdp-quantity"
-                    type="number"
-                    min={1}
-                    max={999}
-                    value={quantity}
-                    onChange={(e) => {
-                      const val = parseInt(e.target.value, 10);
-                      if (!Number.isNaN(val)) {
-                        setQuantity(Math.max(1, Math.min(999, val)));
-                      }
-                    }}
-                    disabled={isOutOfStock}
-                    className="w-16 text-center text-sm font-bold text-[#14182B] font-mono focus:outline-none"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setQuantity((q) => Math.min(999, q + 1))}
-                    disabled={isOutOfStock}
-                    aria-label="Increase quantity"
-                    className="p-2.5 text-stone-600 hover:text-stone-900 disabled:opacity-40"
-                  >
-                    <Plus className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
-
-              <div className="text-right">
-                <p className="text-xs text-[#6B7280] font-medium">{t.subtotal}</p>
-                <p className="text-xl font-black text-[#4b423b] font-mono">
-                  {currency} {(effectivePrice * quantity).toLocaleString()}
-                </p>
-              </div>
-            </div>
-
-            {/* Sales Desk Phone Chooser */}
-            <div className="pt-2 border-t border-[#e2dedb]/70 space-y-1.5">
-              <label className="text-[11px] font-bold uppercase tracking-wider text-[#6B7280] block">
-                {t.choosePhone}
-              </label>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                {[
-                  { label: 'KANTI BHAI K. HALAI', digits: '255715268391', number: '+255 715 268 391' },
-                  { label: 'VIJESH K. HALAI', digits: '255624265480', number: '+255 624 265 480' },
-                  { label: 'Mbeya Branch', digits: '255746268391', number: '+255 746 268 391' },
-                  { label: 'Mwanza Branch', digits: '255699032777', number: '+255 699 032 777' },
-                ].map((d) => (
-                  <button
-                    key={d.digits}
-                    type="button"
-                    onClick={() => setSelectedPhoneDesk(d.digits)}
-                    className={`p-2 rounded-xl text-left border transition-all ${
-                      selectedPhoneDesk === d.digits
-                        ? 'bg-white border-[#4b423b] ring-2 ring-[#c49b7c] text-[#4b423b] font-bold shadow-xs'
-                        : 'bg-white border-[#e2dedb] text-stone-600 hover:border-stone-400'
-                    }`}
-                  >
-                    <p className="text-[10px] text-stone-500">{d.label}</p>
-                    <p className="font-mono text-xs">{d.number}</p>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Buy and WhatsApp Order Actions */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-              <button
-                type="button"
-                onClick={handleAdd}
-                disabled={isOutOfStock}
-                className={`w-full py-3.5 px-5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm aardvark-btn-spring ${
-                  isOutOfStock
-                    ? 'bg-stone-200 text-stone-500 cursor-not-allowed'
-                    : justAdded
-                    ? 'bg-[#4b423b] text-white'
-                    : 'btn-indra-primary'
-                }`}
-              >
-                {isOutOfStock ? (
-                  t.outOfStock
-                ) : justAdded ? (
-                  <>
-                    <Check className="w-4 h-4 text-[#2A9D8F]" />
-                    <span>{t.addedToOrder}</span>
-                  </>
-                ) : (
-                  <>
-                    <ShoppingBag className="w-4 h-4 text-[#4b423b]" />
-                    <span>{t.addToOrder}</span>
-                  </>
-                )}
-              </button>
-
-              <a
-                href={directWhatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-3.5 px-5 bg-[#2A9D8F] hover:bg-[#238276] text-white rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 shadow-sm aardvark-btn-spring"
-              >
-                <MessageCircle className="w-4 h-4 fill-white" />
-                <span>{t.buyViaWhatsApp}</span>
-              </a>
-            </div>
-          </div>
-
-          {/* Specifications Table */}
-          {product.specifications && product.specifications.length > 0 && (
-            <div className="space-y-3 pt-2">
-              <h2 className="text-xs font-bold text-[#4b423b] uppercase tracking-wider">
-                {t.specifications}
-              </h2>
-              <div className="border border-[#e2dedb] rounded-2xl overflow-hidden bg-white shadow-2xs">
-                <table className="w-full text-left border-collapse text-xs sm:text-sm">
-                  <tbody className="divide-y divide-[#e2dedb]">
-                    {product.quire && (
-                      <tr className="bg-white">
-                        <th className="py-2.5 px-4 font-semibold text-stone-600 bg-[#fafafa] w-2/5">
-                          Quire Rating
-                        </th>
-                        <td className="py-2.5 px-4 text-[#4b423b] font-bold">
-                          {product.quire}
-                        </td>
-                      </tr>
-                    )}
-                    {product.pageCount && (
-                      <tr className="bg-white">
-                        <th className="py-2.5 px-4 font-semibold text-stone-600 bg-[#fafafa] w-2/5">
-                          {t.pages}
-                        </th>
-                        <td className="py-2.5 px-4 text-slate-900 font-medium">
-                          {product.pageCount}
-                        </td>
-                      </tr>
-                    )}
-                    {product.specifications.map((spec) => (
-                      <tr key={spec.label} className="bg-white">
-                        <th className="py-2.5 px-4 font-semibold text-slate-600 bg-slate-50 w-2/5">
-                          {spec.label}
-                        </th>
-                        <td className="py-2.5 px-4 text-slate-900 font-mono-tabular">
-                          {spec.value}
-                        </td>
-                      </tr>
-                    ))}
-                    <tr className="bg-white">
-                      <th className="py-2.5 px-4 font-semibold text-slate-600 bg-slate-50 w-2/5">
-                        Product SKU
-                      </th>
-                      <td className="py-2.5 px-4 text-slate-900 font-mono">
-                        {product.sku}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
         </div>
       </div>
 
-      {/* Related Products Section */}
-      {relatedProducts.length > 0 && (
-        <section className="pt-10 border-t border-slate-200 space-y-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-2xl font-black text-slate-900">
-                {language === 'sw' ? `Bidhaa Nyingine za ${product.category}` : `Related in ${product.category}`}
-              </h2>
-              <p className="text-sm text-slate-600 mt-0.5">
-                {language === 'sw' ? 'Madaftari na vifaa vingine vinavyoagizwa mara kwa mara.' : 'Frequently purchased together for schools and offices.'}
-              </p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+        {/* Breadcrumb Navigation */}
+        <nav
+          aria-label="Breadcrumb"
+          className="flex items-center gap-2 text-xs text-[#736c67] flex-wrap"
+        >
+          <Link to="/" className="hover:text-[#4b423b] font-semibold transition-colors">
+            {t.home}
+          </Link>
+          <span aria-hidden="true" className="text-stone-300">/</span>
+          <Link to="/catalog" className="hover:text-[#4b423b] font-semibold transition-colors">
+            {t.catalog}
+          </Link>
+          <span aria-hidden="true" className="text-stone-300">/</span>
+          <Link
+            to={`/catalog?category=${encodeURIComponent(product.category)}`}
+            className="hover:text-[#4b423b] font-semibold transition-colors"
+          >
+            {product.category}
+          </Link>
+          <span aria-hidden="true" className="text-stone-300">/</span>
+          <span className="text-[#3b352f] font-bold truncate max-w-sm">
+            {language === 'sw' && product.nameSw ? product.nameSw : product.name}
+          </span>
+        </nav>
+
+        {/* Main Product Showcase Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          
+          {/* ===================================================================== */}
+          {/* LEFT COLUMN: HIGH-RES GALLERY, LIGHTBOX & QUALITY BADGES */}
+          {/* ===================================================================== */}
+          <div className="lg:col-span-6 space-y-5 lg:sticky lg:top-24">
+            
+            {/* Primary Visual Display Box */}
+            <div className="w-full aspect-square bg-white rounded-2xl border border-[#e2dedb] shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex items-center justify-center p-6 sm:p-10 group">
+              
+              {/* Badges on Visual */}
+              <div className="absolute top-4 left-4 z-10 flex flex-col gap-1.5 items-start">
+                {product.badge && (
+                  <span className="px-3 py-1 rounded-full bg-[#4b423b] text-[#e5a962] text-[11px] font-bold uppercase tracking-wider shadow-sm flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-[#e5a962]" />
+                    <span>{product.badge}</span>
+                  </span>
+                )}
+                {product.freeDelivery && (
+                  <span className="px-2.5 py-0.5 rounded-full bg-[#2A9D8F]/10 text-[#2A9D8F] border border-[#2A9D8F]/25 text-[10px] font-bold uppercase tracking-wider">
+                    Free Bus Parcel Elig.
+                  </span>
+                )}
+              </div>
+
+              <div className="absolute top-4 right-4 z-10 flex flex-col gap-1.5 items-end">
+                {hasDiscount && (
+                  <span className="px-2.5 py-1 rounded-full bg-[#d9534f] text-white text-xs font-black shadow-sm tracking-wide">
+                    {Math.round(((product.price - effectivePrice) / product.price) * 100)}% OFF
+                  </span>
+                )}
+                <span className="px-2.5 py-0.5 rounded-md bg-stone-100 text-stone-700 text-[10px] font-mono font-bold border border-stone-200">
+                  {product.sku}
+                </span>
+              </div>
+
+              {/* Main Image Rendering */}
+              {selectedImageIdx < galleryImages.length && !imgError ? (
+                <div
+                  className="w-full h-full flex items-center justify-center cursor-zoom-in"
+                  onClick={() => setIsLightboxOpen(true)}
+                  title="Click to view full resolution"
+                >
+                  <img
+                    src={galleryImages[selectedImageIdx]}
+                    alt={`${product.name} - View ${selectedImageIdx + 1}`}
+                    referrerPolicy="no-referrer"
+                    onError={() => setImgError(true)}
+                    className="max-h-full max-w-full object-contain filter drop-shadow-lg transition-transform duration-500 ease-out group-hover:scale-105"
+                  />
+                </div>
+              ) : (
+                /* Specification Sheet Preview fallback */
+                <div className="w-full h-full p-4 flex items-center justify-center">
+                  <div className="w-full max-w-sm border-2 border-[#4b423b] bg-[#fafafa] p-5 space-y-3 rounded-xl shadow-xs">
+                    <div className="text-center border-b border-stone-300 pb-2">
+                      <p className="text-lg font-bold tracking-widest text-[#4b423b] font-heading">
+                        OMEGA STATIONERY
+                      </p>
+                      <p className="text-[11px] font-semibold uppercase text-stone-600">
+                        {product.category} · Official Specification
+                      </p>
+                    </div>
+                    <div className="space-y-1.5 text-xs text-stone-700 font-mono">
+                      <div className="flex justify-between border-b border-stone-200 pb-1">
+                        <span className="font-bold text-[#4b423b]">Item:</span>
+                        <span className="truncate max-w-[180px]">{product.name}</span>
+                      </div>
+                      <div className="flex justify-between border-b border-stone-200 pb-1">
+                        <span className="font-bold text-[#4b423b]">SKU:</span>
+                        <span>{product.sku}</span>
+                      </div>
+                      {product.specifications.slice(0, 4).map((spec) => (
+                        <div key={spec.label} className="flex justify-between border-b border-stone-200 pb-1">
+                          <span className="font-bold text-[#4b423b]">{spec.label}:</span>
+                          <span className="truncate max-w-[170px]">{spec.value}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Bottom Expand Prompt */}
+              <button
+                type="button"
+                onClick={() => setIsLightboxOpen(true)}
+                className="absolute bottom-4 right-4 p-2 rounded-xl bg-white/90 hover:bg-white text-stone-700 hover:text-[#4b423b] border border-stone-200 shadow-xs transition-all flex items-center gap-1.5 text-xs font-semibold"
+                aria-label="Expand image"
+              >
+                <Maximize2 className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Zoom Full-Res</span>
+              </button>
             </div>
-            <Link
-              to={`/catalog?category=${encodeURIComponent(product.category)}`}
-              className="text-xs sm:text-sm font-bold text-blue-700 hover:text-blue-900 inline-flex items-center gap-1"
-            >
-              <span>{language === 'sw' ? `Tazama Zote →` : `View All →`}</span>
-            </Link>
+
+            {/* Thumbnail Navigation Row */}
+            <div className="flex items-center gap-3 overflow-x-auto pb-1">
+              {galleryImages.map((imgUrl, index) => (
+                <button
+                  key={`${imgUrl}-${index}`}
+                  type="button"
+                  onClick={() => {
+                    setImgError(false);
+                    setSelectedImageIdx(index);
+                  }}
+                  className={`w-20 h-16 rounded-xl overflow-hidden border-2 shrink-0 transition-all bg-white p-1 flex items-center justify-center ${
+                    selectedImageIdx === index
+                      ? 'border-[#4b423b] ring-2 ring-[#c49b7c] shadow-sm'
+                      : 'border-[#e2dedb] hover:border-stone-400'
+                  }`}
+                >
+                  <img
+                    src={imgUrl}
+                    alt={`Thumbnail ${index + 1}`}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-contain"
+                  />
+                </button>
+              ))}
+
+              <button
+                type="button"
+                onClick={() => setSelectedImageIdx(galleryImages.length)}
+                className={`h-16 px-3.5 rounded-xl border-2 shrink-0 flex flex-col items-center justify-center bg-white text-[11px] font-bold transition-all ${
+                  selectedImageIdx === galleryImages.length
+                    ? 'border-[#4b423b] text-[#4b423b] ring-2 ring-[#c49b7c]'
+                    : 'border-[#e2dedb] text-stone-600 hover:border-stone-400'
+                }`}
+              >
+                <FileText className="w-4 h-4 mb-0.5 text-[#c49b7c]" />
+                <span>Specs Sheet</span>
+              </button>
+            </div>
+
+            {/* 4 Feature Pills under Visual */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 text-center">
+              <div className="p-2.5 rounded-xl bg-white border border-[#e2dedb] shadow-2xs">
+                <Droplets className="w-4 h-4 text-[#2A9D8F] mx-auto mb-1" />
+                <span className="text-[11px] font-bold text-[#4b423b] block">Waterproof</span>
+                <span className="text-[10px] text-stone-500">100% moisture shield</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-white border border-[#e2dedb] shadow-2xs">
+                <Scissors className="w-4 h-4 text-[#c49b7c] mx-auto mb-1" />
+                <span className="text-[11px] font-bold text-[#4b423b] block">Continuous</span>
+                <span className="text-[10px] text-stone-500">Cut to any size</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-white border border-[#e2dedb] shadow-2xs">
+                <Package className="w-4 h-4 text-[#4b423b] mx-auto mb-1" />
+                <span className="text-[11px] font-bold text-[#4b423b] block">Wholesale</span>
+                <span className="text-[10px] text-stone-500">Bulk carton crates</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-white border border-[#e2dedb] shadow-2xs">
+                <ShieldCheck className="w-4 h-4 text-[#2A9D8F] mx-auto mb-1" />
+                <span className="text-[11px] font-bold text-[#4b423b] block">Genuine</span>
+                <span className="text-[10px] text-stone-500">Direct from factory</span>
+              </div>
+            </div>
+
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {relatedProducts.map((rel) => (
-              <ProductCard key={rel.id} product={rel} />
-            ))}
+          {/* ===================================================================== */}
+          {/* RIGHT COLUMN: INFORMATION, DYNAMIC PRICING, HOTLINES & ACCORDIONS */}
+          {/* ===================================================================== */}
+          <div className="lg:col-span-6 space-y-6">
+            
+            {/* Header, Title & Tags */}
+            <div className="space-y-3 border-b border-[#e2dedb] pb-5">
+              <div className="flex items-center gap-2 flex-wrap text-xs">
+                <span className="px-2.5 py-1 rounded-md bg-[#4b423b] text-white font-mono font-bold">
+                  OFFICIAL FACTORY
+                </span>
+                <span className="px-2.5 py-1 rounded-md bg-stone-200 text-stone-800 font-mono font-semibold">
+                  SKU: {product.sku}
+                </span>
+                <span className="px-2.5 py-1 rounded-md bg-[#c49b7c]/15 text-[#4b423b] font-bold">
+                  {product.category}
+                </span>
+              </div>
+
+              <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#3b352f] leading-tight">
+                {language === 'sw' && product.nameSw ? product.nameSw : product.name}
+              </h1>
+
+              {product.subtitle && (
+                <p className="text-sm sm:text-base font-medium text-[#c49b7c]">
+                  {language === 'sw' && product.subtitleSw ? product.subtitleSw : product.subtitle}
+                </p>
+              )}
+
+              {/* Rating & Stock Badges */}
+              <div className="flex items-center gap-4 text-xs pt-1 flex-wrap">
+                <div className="flex items-center gap-1.5">
+                  <div className="flex text-amber-500">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
+                  <span className="font-bold text-stone-800">{product.rating || 4.8}</span>
+                  <span className="text-stone-500">({product.reviewCount || 160} reviews)</span>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="text-stone-400">·</span>
+                  <span
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold ${
+                      product.stockStatus === 'In Stock'
+                        ? 'bg-[#2A9D8F]/15 text-[#2A9D8F]'
+                        : product.stockStatus === 'Low Stock'
+                        ? 'bg-[#c49b7c]/20 text-[#4b423b]'
+                        : 'bg-[#d9534f]/15 text-[#d9534f]'
+                    }`}
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-current" />
+                    {product.stockStatus === 'In Stock'
+                      ? 'In Stock · Ready for Bus Dispatch'
+                      : product.stockStatus === 'Low Stock'
+                      ? 'Low Stock (Limited Rolls)'
+                      : 'Out of Stock'}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Price Box with Wholesale Tier Indicator */}
+            <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#e2dedb] shadow-xs space-y-4">
+              <div className="flex flex-wrap items-baseline justify-between gap-4">
+                <div>
+                  <span className="text-xs uppercase tracking-wider text-stone-500 font-bold block mb-1">
+                    {t.retailPrice}
+                  </span>
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-3xl sm:text-4xl font-extrabold text-[#4b423b] font-mono tracking-tight">
+                      {currency} {unitPrice.toLocaleString()}
+                    </span>
+                    {hasDiscount && (
+                      <span className="text-base text-stone-400 line-through font-mono">
+                        {currency} {product.price.toLocaleString()}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {product.wholesalePrice && (
+                  <div className="text-right p-3 rounded-xl bg-[#2A9D8F]/10 border border-[#2A9D8F]/25">
+                    <span className="text-[11px] font-bold text-[#2A9D8F] uppercase tracking-wider block">
+                      Wholesale Rate (5+ Rolls)
+                    </span>
+                    <span className="text-base font-black text-[#4b423b] font-mono">
+                      {currency} {wholesaleRate.toLocaleString()}
+                    </span>
+                    <span className="text-[10px] text-stone-500 block mt-0.5">
+                      Save {currency} {(effectivePrice - wholesaleRate).toLocaleString()} per roll
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Volume Discount Tiers Strip */}
+              <div className="pt-2 border-t border-stone-200/80">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500 block mb-2">
+                  Volume Pricing Tiers:
+                </span>
+                <div className="grid grid-cols-3 gap-2 text-xs">
+                  <div
+                    onClick={() => setQuantity(1)}
+                    className={`p-2 rounded-xl text-center border cursor-pointer transition-all ${
+                      quantity < wholesaleMinMoq
+                        ? 'bg-[#4b423b] text-white border-[#4b423b] shadow-xs'
+                        : 'bg-stone-50 text-stone-700 border-stone-200 hover:border-stone-400'
+                    }`}
+                  >
+                    <span className="block font-bold">1 – 4 Rolls</span>
+                    <span className="text-[11px] font-mono">{currency} {effectivePrice.toLocaleString()}</span>
+                  </div>
+
+                  <div
+                    onClick={() => setQuantity(5)}
+                    className={`p-2 rounded-xl text-center border cursor-pointer transition-all ${
+                      quantity >= wholesaleMinMoq && quantity < 10
+                        ? 'bg-[#4b423b] text-white border-[#4b423b] shadow-xs'
+                        : 'bg-stone-50 text-stone-700 border-stone-200 hover:border-stone-400'
+                    }`}
+                  >
+                    <span className="block font-bold">5 – 9 Rolls</span>
+                    <span className="text-[11px] font-mono">{currency} {wholesaleRate.toLocaleString()}</span>
+                    <span className="text-[9px] text-[#e5a962] block font-bold">Bulk Tier</span>
+                  </div>
+
+                  <div
+                    onClick={() => setQuantity(10)}
+                    className={`p-2 rounded-xl text-center border cursor-pointer transition-all ${
+                      quantity >= 10
+                        ? 'bg-[#4b423b] text-white border-[#4b423b] shadow-xs'
+                        : 'bg-stone-50 text-stone-700 border-stone-200 hover:border-stone-400'
+                    }`}
+                  >
+                    <span className="block font-bold">10+ Rolls</span>
+                    <span className="text-[11px] font-mono">
+                      {currency} {getTierPrice(10).toLocaleString()}
+                    </span>
+                    <span className="text-[9px] text-[#2A9D8F] block font-bold">Carton Rate</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Quantity Selector, Subtotal & Live Order Action Box */}
+            <div className="bg-white border border-[#e2dedb] rounded-2xl p-5 space-y-4 shadow-xs">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <label
+                    htmlFor="pdp-quantity"
+                    className="block text-xs font-bold text-[#4b423b] uppercase tracking-wider"
+                  >
+                    Select Quantity (Rolls)
+                  </label>
+                  <div className="inline-flex items-center border border-[#e2dedb] rounded-xl bg-[#fafafa]">
+                    <button
+                      type="button"
+                      onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                      disabled={isOutOfStock || quantity <= 1}
+                      aria-label="Decrease quantity"
+                      className="p-2.5 text-stone-600 hover:text-stone-900 disabled:opacity-40"
+                    >
+                      <Minus className="w-3.5 h-3.5" />
+                    </button>
+                    <input
+                      id="pdp-quantity"
+                      type="number"
+                      min={1}
+                      max={999}
+                      value={quantity}
+                      onChange={(e) => {
+                        const val = parseInt(e.target.value, 10);
+                        if (!Number.isNaN(val)) {
+                          setQuantity(Math.max(1, Math.min(999, val)));
+                        }
+                      }}
+                      disabled={isOutOfStock}
+                      className="w-16 text-center text-sm font-bold text-[#3b352f] font-mono focus:outline-none bg-transparent"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setQuantity((q) => Math.min(999, q + 1))}
+                      disabled={isOutOfStock}
+                      aria-label="Increase quantity"
+                      className="p-2.5 text-stone-600 hover:text-stone-900 disabled:opacity-40"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="text-right">
+                  <p className="text-xs text-stone-500 font-medium">Order Subtotal</p>
+                  <p className="text-2xl font-black text-[#4b423b] font-mono">
+                    {currency} {subtotal.toLocaleString()}
+                  </p>
+                  {savings > 0 && (
+                    <span className="text-[11px] font-bold text-[#2A9D8F] block">
+                      You save {currency} {savings.toLocaleString()}!
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Quick Preset Buttons */}
+              <div className="flex items-center gap-2 pt-1 flex-wrap">
+                <span className="text-[10px] font-bold uppercase text-stone-500">Quick Pick:</span>
+                {[1, 5, 10, 20, 50].map((preset) => (
+                  <button
+                    key={preset}
+                    type="button"
+                    onClick={() => setQuantity(preset)}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                      quantity === preset
+                        ? 'bg-[#4b423b] text-white shadow-xs'
+                        : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
+                    }`}
+                  >
+                    +{preset} {preset === 1 ? 'Roll' : 'Rolls'}
+                  </button>
+                ))}
+              </div>
+
+              {/* Official Sales Desk Hotline Chooser */}
+              <div className="pt-3 border-t border-stone-200/80 space-y-2">
+                <label className="text-[11px] font-bold uppercase tracking-wider text-stone-600 block">
+                  Select Order Hotline Desk:
+                </label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                  {[
+                    { label: 'KANTI BHAI K. HALAI', role: 'Managing Director', digits: '255715268391', number: '+255 715 268 391' },
+                    { label: 'VIJESH K. HALAI', role: 'Managing Director', digits: '255624265480', number: '+255 624 265 480' },
+                    { label: 'Mbeya Hub', role: 'Soweto SIDO', digits: '255746268391', number: '+255 746 268 391' },
+                    { label: 'Mwanza Hub', role: 'Lake Zone Branch', digits: '255699032777', number: '+255 699 032 777' },
+                  ].map((d) => (
+                    <button
+                      key={d.digits}
+                      type="button"
+                      onClick={() => setSelectedPhoneDesk(d.digits)}
+                      className={`p-2.5 rounded-xl text-left border transition-all ${
+                        selectedPhoneDesk === d.digits
+                          ? 'bg-white border-[#4b423b] ring-2 ring-[#c49b7c] font-bold shadow-xs'
+                          : 'bg-stone-50 border-stone-200 text-stone-600 hover:border-stone-400'
+                      }`}
+                    >
+                      <p className="text-[10px] text-[#c49b7c] font-bold truncate">{d.label}</p>
+                      <p className="font-mono text-xs text-stone-900 mt-0.5">{d.number}</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Action Buttons: Add to Order & Order via WhatsApp */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={handleAdd}
+                  disabled={isOutOfStock}
+                  className={`w-full py-4 px-5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm ${
+                    isOutOfStock
+                      ? 'bg-stone-200 text-stone-500 cursor-not-allowed'
+                      : justAdded
+                      ? 'bg-[#2A9D8F] text-white'
+                      : 'bg-[#4b423b] hover:bg-[#38312b] text-white active:scale-[0.98]'
+                  }`}
+                >
+                  {isOutOfStock ? (
+                    t.outOfStock
+                  ) : justAdded ? (
+                    <>
+                      <Check className="w-4 h-4 text-white" />
+                      <span>{t.addedToOrder}</span>
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingBag className="w-4 h-4" />
+                      <span>{t.addToOrder}</span>
+                    </>
+                  )}
+                </button>
+
+                <a
+                  href={directWhatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-4 px-5 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm active:scale-[0.98]"
+                >
+                  <MessageCircle className="w-4 h-4 fill-white" />
+                  <span>Order on WhatsApp</span>
+                </a>
+              </div>
+            </div>
+
+            {/* ================================================================= */}
+            {/* INTERACTIVE ACCORDION DETAILS SECTION (ACORDING DETAILS DISPLAY) */}
+            {/* ================================================================= */}
+            <div className="space-y-3 pt-4">
+              <div className="flex items-center justify-between pb-1">
+                <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-[#c49b7c] font-heading">
+                  Product Details &amp; Specifications
+                </h2>
+                <span className="text-[11px] text-stone-500">Tap sections to expand</span>
+              </div>
+
+              {/* 1. OVERVIEW & PROTECTION BENEFITS */}
+              <div className="border border-[#e2dedb] rounded-2xl bg-white overflow-hidden shadow-2xs">
+                <button
+                  type="button"
+                  onClick={() => toggleAccordion('overview')}
+                  className="w-full p-4 text-left flex items-center justify-between font-bold text-sm text-[#4b423b] hover:bg-stone-50 transition-colors"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Droplets className="w-4 h-4 text-[#2A9D8F]" />
+                    <span>Product Overview &amp; Shield Features</span>
+                  </div>
+                  {accordionState.overview ? (
+                    <ChevronUp className="w-4 h-4 text-stone-400" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-stone-400" />
+                  )}
+                </button>
+                {accordionState.overview && (
+                  <div className="px-5 pb-5 pt-1 space-y-4 text-xs sm:text-sm text-stone-700 leading-relaxed border-t border-stone-100">
+                    <p>
+                      {language === 'sw' && product.descriptionSw
+                        ? product.descriptionSw
+                        : product.description}
+                    </p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                      <div className="p-3 rounded-xl bg-[#fafafa] border border-stone-200/80 flex items-start gap-2.5">
+                        <CheckCircle2 className="w-4 h-4 text-[#2A9D8F] shrink-0 mt-0.5" />
+                        <div>
+                          <strong className="block text-[#4b423b]">100% Waterproof Vinyl</strong>
+                          <span className="text-[11px] text-stone-600">Shields notebooks from heavy rain and spills.</span>
+                        </div>
+                      </div>
+
+                      <div className="p-3 rounded-xl bg-[#fafafa] border border-stone-200/80 flex items-start gap-2.5">
+                        <CheckCircle2 className="w-4 h-4 text-[#2A9D8F] shrink-0 mt-0.5" />
+                        <div>
+                          <strong className="block text-[#4b423b]">Continuous Roll Format</strong>
+                          <span className="text-[11px] text-stone-600">Cut to any size: Exercise, Q2, Q3, Q4 books.</span>
+                        </div>
+                      </div>
+
+                      <div className="p-3 rounded-xl bg-[#fafafa] border border-stone-200/80 flex items-start gap-2.5">
+                        <CheckCircle2 className="w-4 h-4 text-[#2A9D8F] shrink-0 mt-0.5" />
+                        <div>
+                          <strong className="block text-[#4b423b]">Friction &amp; Tear Guard</strong>
+                          <span className="text-[11px] text-stone-600">Prevents corner fraying in student school bags.</span>
+                        </div>
+                      </div>
+
+                      <div className="p-3 rounded-xl bg-[#fafafa] border border-stone-200/80 flex items-start gap-2.5">
+                        <CheckCircle2 className="w-4 h-4 text-[#2A9D8F] shrink-0 mt-0.5" />
+                        <div>
+                          <strong className="block text-[#4b423b]">Vibrant Tangerine Orange</strong>
+                          <span className="text-[11px] text-stone-600">Easy student identification and neat appearance.</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* 2. COMPLETE TECHNICAL SPECIFICATIONS ACCORDION */}
+              <div className="border border-[#e2dedb] rounded-2xl bg-white overflow-hidden shadow-2xs">
+                <button
+                  type="button"
+                  onClick={() => toggleAccordion('specs')}
+                  className="w-full p-4 text-left flex items-center justify-between font-bold text-sm text-[#4b423b] hover:bg-stone-50 transition-colors"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Layers className="w-4 h-4 text-[#c49b7c]" />
+                    <span>Technical Specifications &amp; Parameters</span>
+                  </div>
+                  {accordionState.specs ? (
+                    <ChevronUp className="w-4 h-4 text-stone-400" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-stone-400" />
+                  )}
+                </button>
+                {accordionState.specs && (
+                  <div className="px-5 pb-5 pt-1 space-y-3 border-t border-stone-100">
+                    <table className="w-full text-left border-collapse text-xs sm:text-sm">
+                      <tbody className="divide-y divide-stone-200">
+                        <tr className="bg-white">
+                          <th className="py-2.5 px-3 font-semibold text-stone-600 bg-stone-50 w-2/5">
+                            Product SKU
+                          </th>
+                          <td className="py-2.5 px-3 font-mono font-bold text-[#4b423b]">
+                            {product.sku}
+                          </td>
+                        </tr>
+                        <tr className="bg-white">
+                          <th className="py-2.5 px-3 font-semibold text-stone-600 bg-stone-50">
+                            Category
+                          </th>
+                          <td className="py-2.5 px-3 text-[#3b352f]">
+                            {product.category}
+                          </td>
+                        </tr>
+                        {product.packaging && (
+                          <tr className="bg-white">
+                            <th className="py-2.5 px-3 font-semibold text-stone-600 bg-stone-50">
+                              Packaging Unit
+                            </th>
+                            <td className="py-2.5 px-3 text-[#3b352f]">
+                              {product.packaging}
+                            </td>
+                          </tr>
+                        )}
+                        {product.specifications.map((spec) => (
+                          <tr key={spec.label} className="bg-white">
+                            <th className="py-2.5 px-3 font-semibold text-stone-600 bg-stone-50">
+                              {spec.label}
+                            </th>
+                            <td className="py-2.5 px-3 font-medium text-[#3b352f]">
+                              {spec.value}
+                            </td>
+                          </tr>
+                        ))}
+                        <tr className="bg-white">
+                          <th className="py-2.5 px-3 font-semibold text-stone-600 bg-stone-50">
+                            Factory Origin
+                          </th>
+                          <td className="py-2.5 px-3 text-[#3b352f]">
+                            OMEGA Book Products · Tanzania
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+
+              {/* 3. WHOLESALE, SCHOOL TENDERS & TRA INVOICING */}
+              <div className="border border-[#e2dedb] rounded-2xl bg-white overflow-hidden shadow-2xs">
+                <button
+                  type="button"
+                  onClick={() => toggleAccordion('wholesale')}
+                  className="w-full p-4 text-left flex items-center justify-between font-bold text-sm text-[#4b423b] hover:bg-stone-50 transition-colors"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <FileText className="w-4 h-4 text-[#e5a962]" />
+                    <span>Wholesale, School Tenders &amp; TRA Tax Invoicing</span>
+                  </div>
+                  {accordionState.wholesale ? (
+                    <ChevronUp className="w-4 h-4 text-stone-400" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-stone-400" />
+                  )}
+                </button>
+                {accordionState.wholesale && (
+                  <div className="px-5 pb-5 pt-1 space-y-3 text-xs sm:text-sm text-stone-700 leading-relaxed border-t border-stone-100">
+                    <p>
+                      OMEGA Stationery is an authorized manufacturing partner supplying wholesale book covers and writing stationery across Tanzania:
+                    </p>
+                    <ul className="space-y-1.5 list-disc list-inside text-stone-600">
+                      <li><strong>TRA Fiscal EFD Invoices:</strong> Issued with all corporate, school, and government tender consignments.</li>
+                      <li><strong>Carton Crate Savings:</strong> Special discounted rates for wholesale carton orders (10+ rolls).</li>
+                      <li><strong>School Supplies:</strong> Trusted by primary and secondary academies in Mbeya, Dar es Salaam, Mwanza, Arusha, and Dodoma.</li>
+                      <li><strong>Direct Payment Options:</strong> CRDB, NMB, M-Pesa Till, Airtel Money, or Cash on Pickup at Soweto SIDO Viwandani.</li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+
+              {/* 4. BUS CARGO & UPCOUNTRY REGIONAL DISPATCH */}
+              <div className="border border-[#e2dedb] rounded-2xl bg-white overflow-hidden shadow-2xs">
+                <button
+                  type="button"
+                  onClick={() => toggleAccordion('delivery')}
+                  className="w-full p-4 text-left flex items-center justify-between font-bold text-sm text-[#4b423b] hover:bg-stone-50 transition-colors"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Truck className="w-4 h-4 text-[#2A9D8F]" />
+                    <span>Upcountry Bus Parcel Delivery (All 31 Regions)</span>
+                  </div>
+                  {accordionState.delivery ? (
+                    <ChevronUp className="w-4 h-4 text-stone-400" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-stone-400" />
+                  )}
+                </button>
+                {accordionState.delivery && (
+                  <div className="px-5 pb-5 pt-1 space-y-3 text-xs sm:text-sm text-stone-700 leading-relaxed border-t border-stone-100">
+                    <p>
+                      We deliver daily consignments via reliable scheduled bus companies:
+                    </p>
+                    <div className="grid grid-cols-2 gap-2 text-xs pt-1">
+                      <div className="p-2.5 rounded-lg bg-stone-50 border border-stone-200">
+                        <strong className="block text-[#4b423b]">Dar es Salaam</strong>
+                        <span>Same-day or next-day direct van drop-off.</span>
+                      </div>
+                      <div className="p-2.5 rounded-lg bg-stone-50 border border-stone-200">
+                        <strong className="block text-[#4b423b]">Upcountry Regions</strong>
+                        <span>BM Coach, Shabiby, Dar Express, New Force parcel tracking.</span>
+                      </div>
+                    </div>
+                    <p className="text-[11px] text-stone-500 pt-1">
+                      Waybill numbers are forwarded instantly via WhatsApp as soon as parcels are dispatched.
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* 5. APPLICATION & COVERING GUIDE */}
+              <div className="border border-[#e2dedb] rounded-2xl bg-white overflow-hidden shadow-2xs">
+                <button
+                  type="button"
+                  onClick={() => toggleAccordion('guide')}
+                  className="w-full p-4 text-left flex items-center justify-between font-bold text-sm text-[#4b423b] hover:bg-stone-50 transition-colors"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <HelpCircle className="w-4 h-4 text-[#c49b7c]" />
+                    <span>How to Wrap &amp; Cover Books (Application Guide)</span>
+                  </div>
+                  {accordionState.guide ? (
+                    <ChevronUp className="w-4 h-4 text-stone-400" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-stone-400" />
+                  )}
+                </button>
+                {accordionState.guide && (
+                  <div className="px-5 pb-5 pt-1 space-y-2 text-xs sm:text-sm text-stone-700 leading-relaxed border-t border-stone-100">
+                    <ol className="list-decimal list-inside space-y-1.5 text-stone-600">
+                      <li><strong>Measure:</strong> Open the counter book or exercise book flat on the roll.</li>
+                      <li><strong>Cut:</strong> Leave 3 cm margin on top, bottom, and side flaps. Cut with scissors.</li>
+                      <li><strong>Fold Spine:</strong> Make small cuts at the top and bottom of the spine fold.</li>
+                      <li><strong>Secure:</strong> Fold side flaps neatly inside the cover and secure with clear tape.</li>
+                    </ol>
+                  </div>
+                )}
+              </div>
+
+            </div>
+
           </div>
-        </section>
+
+        </div>
+
+        {/* ===================================================================== */}
+        {/* RELATED COMPLEMENTARY PRODUCTS SECTION */}
+        {/* ===================================================================== */}
+        {relatedProducts.length > 0 && (
+          <section className="pt-12 border-t border-[#e2dedb] space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#c49b7c] font-heading block">
+                  Frequently Purchased Together
+                </span>
+                <h2 className="font-heading text-xl sm:text-2xl font-bold text-[#3b352f] tracking-tight">
+                  Complementary Books &amp; Stationery
+                </h2>
+              </div>
+              <Link
+                to={`/catalog?category=${encodeURIComponent(product.category)}`}
+                className="text-xs sm:text-sm font-bold text-[#c49b7c] hover:text-[#a46b44] inline-flex items-center gap-1"
+              >
+                <span>View Full Catalog →</span>
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {relatedProducts.map((rel) => (
+                <ProductCard key={rel.id} product={rel} />
+              ))}
+            </div>
+          </section>
+        )}
+
+      </div>
+
+      {/* ======================================================================= */}
+      {/* HIGH-RES IMAGE LIGHTBOX MODAL */}
+      {/* ======================================================================= */}
+      {isLightboxOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8 animate-fadeIn"
+          onClick={() => setIsLightboxOpen(false)}
+        >
+          <div
+            className="relative max-w-4xl max-h-[90vh] w-full flex flex-col items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              type="button"
+              onClick={() => setIsLightboxOpen(false)}
+              className="absolute -top-12 right-0 p-2 text-white hover:text-[#e5a962] transition-colors focus:outline-none"
+              aria-label="Close lightbox"
+            >
+              <X className="w-8 h-8" />
+            </button>
+
+            {/* Expanded Image */}
+            <div className="w-full max-h-[75vh] flex items-center justify-center p-2">
+              <img
+                src={galleryImages[selectedImageIdx]}
+                alt={product.name}
+                className="max-h-[70vh] max-w-full object-contain rounded-xl shadow-2xl"
+              />
+            </div>
+
+            {/* Bottom Thumbnail Strip inside Lightbox */}
+            {galleryImages.length > 1 && (
+              <div className="flex items-center gap-2 mt-4 overflow-x-auto p-2 bg-black/40 rounded-xl">
+                {galleryImages.map((img, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setSelectedImageIdx(idx)}
+                    className={`w-16 h-14 rounded-lg overflow-hidden border-2 transition-all p-0.5 ${
+                      selectedImageIdx === idx ? 'border-[#e5a962] scale-105' : 'border-white/30 opacity-70'
+                    }`}
+                  >
+                    <img src={img} alt="" className="w-full h-full object-contain" />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
       )}
     </div>
   );
 };
+
+export default ProductDetailsPage;

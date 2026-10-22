@@ -81,5 +81,8 @@ export const INITIAL_STORE_CONFIG: StoreConfig = {
   isPlaceholderConfig: false,
 };
 
-// All products are dynamically loaded and managed exclusively from MongoDB Atlas Database
-export const INITIAL_PRODUCTS: Product[] = [];
+import initialProductsJson from './initialProducts.json';
+
+// 44 authentic factory products pre-loaded as offline fallback and optimistic store data
+export const INITIAL_PRODUCTS: Product[] = initialProductsJson as unknown as Product[];
+

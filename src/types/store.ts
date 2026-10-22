@@ -69,6 +69,7 @@ export interface Product {
   rating?: number;
   reviewCount?: number;
   subtitle?: string;
+  subtitleSw?: string;
   badge?: string;
   packaging?: string; // Box/bundle packaging specification e.g. "48 Pcs / Box"
   freeDelivery?: boolean; // Eligible for free delivery / dispatch
