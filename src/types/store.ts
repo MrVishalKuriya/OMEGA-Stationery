@@ -28,7 +28,7 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
 ];
 
 export type StockStatus = 'In Stock' | 'Low Stock' | 'Out of Stock';
-export type Language = 'en' | 'sw';
+export type Language = 'en' | 'sw' | 'gu';
 
 export interface ProductSpecification {
   label: string;

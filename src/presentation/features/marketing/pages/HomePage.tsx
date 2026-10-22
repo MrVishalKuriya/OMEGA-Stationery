@@ -27,7 +27,7 @@ import {
 } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { ProductCard } from '@/components/ProductCard';
-import { HeroGraphicAnimation } from '@/components/HeroGraphicAnimation';
+import { Hero } from '../components/Hero';
 import { SEOHead } from '@/components/SEOHead';
 import { TRANSLATIONS } from '@/data/translations';
 import { formatPrice } from '@/types/store';
@@ -93,7 +93,7 @@ export const HomePage: React.FC = () => {
       subtitle: language === 'sw' ? 'Q2 Jalada Gumu · Kurasa 192' : '192 Pages · Q2 Folio Ledgers',
       desc: language === 'sw' ? '192p, ushonaji wa nyuzi madhubuti' : '192 pages, thread-sewn hardboard spine',
       link: q2Prod ? `/product/${q2Prod.id}` : '/product/prod-omega-cb-q2',
-      image: q2Prod?.image || '/omega-products/counter-book-q2-192p.jpeg',
+      image: '/omega-products/counter-book-q2-catalog.jpeg',
       tag: 'Accounting & Schools',
     },
     {
@@ -101,7 +101,7 @@ export const HomePage: React.FC = () => {
       subtitle: language === 'sw' ? 'Single Line, Double Line & Hesabu' : 'Single Line, Double Line & Square',
       desc: language === 'sw' ? 'Mistari mipana, mistari miwili na hesabu' : 'Single line, double line & mathematics squares',
       link: ex200Prod ? `/product/${ex200Prod.id}` : '/product/prod-omega-ex-200sl',
-      image: ex200Prod?.image || '/omega-products/exercise-book-200p-purple.jpeg',
+      image: '/omega-products/exercise-book-200p-sl-catalog.jpeg',
       tag: 'Primary & Secondary',
     },
     {
@@ -109,7 +109,7 @@ export const HomePage: React.FC = () => {
       subtitle: language === 'sw' ? 'Jalada Ngumu ya Jiometri' : 'Geometric Semi-Rigid Edition',
       desc: language === 'sw' ? 'Karatasi 70 GSM isiyopenyeza wino' : 'Bleed-proof 70 GSM with poly-faceted cover',
       link: stiffProd ? `/product/${stiffProd.id}` : '/product/prod-omega-stiff-200',
-      image: stiffProd?.image || '/omega-products/stiff-cover-200p-black.jpeg',
+      image: '/omega-products/stiff-cover-200-catalog.jpeg',
       tag: 'Executive & Office',
     },
     {
@@ -117,7 +117,7 @@ export const HomePage: React.FC = () => {
       subtitle: language === 'sw' ? 'Kurasa 100 · SL, DL & Square' : '100p · SL, DL, Square & Plain',
       desc: language === 'sw' ? 'Madaftari ya wanafunzi shuleni' : 'Standard classroom exercise books',
       link: ex100Prod ? `/product/${ex100Prod.id}` : '/product/prod-omega-ex-100sl',
-      image: ex100Prod?.image || '/omega-products/exercise-book-100p-pink.jpeg',
+      image: '/omega-products/exercise-book-100p-catalog.jpeg',
       tag: 'Primary & Secondary',
     },
     {
@@ -125,7 +125,7 @@ export const HomePage: React.FC = () => {
       subtitle: language === 'sw' ? 'Canary Yellow · Kurasa 80' : '80p Canary Yellow Notebook',
       desc: language === 'sw' ? 'Uzito mwepesi, imara kwa marudio' : 'Lightweight and durable revision books',
       link: ex80Prod ? `/product/${ex80Prod.id}` : '/product/prod-omega-ex-80',
-      image: ex80Prod?.image || '/omega-products/exercise-book-80p-yellow.jpeg',
+      image: '/omega-products/exercise-book-80p-catalog.jpeg',
       tag: 'Semester & Revision',
     },
     {
@@ -133,7 +133,7 @@ export const HomePage: React.FC = () => {
       subtitle: language === 'sw' ? 'Size A3, A4, A5 · Peel & Seal' : 'A3, A4, A5, A6 Envelopes',
       desc: language === 'sw' ? 'Karatasi ya kahawia isiyochanika kwa nyaraka' : 'Tear-resistant oversized document kraft',
       link: bahashaProd ? `/product/${bahashaProd.id}` : '/product/prod-omega-bahasha-a4',
-      image: bahashaProd?.image || '/omega-products/bahasha-a4-catalog.png',
+      image: '/omega-products/bahasha-a4-catalog.png',
       tag: 'Office Mailers',
     },
   ], [q2Prod, ex200Prod, stiffProd, ex100Prod, ex80Prod, bahashaProd, language]);
@@ -155,145 +155,9 @@ export const HomePage: React.FC = () => {
       />
 
       {/* ========================================================================= */}
-      {/* 1. HERO SECTION: ARCHITECTURAL LUXURY STUDIO SHOWCASE */}
+      {/* 1. HERO SECTION: 3-COLUMN SHOWCASE & NAVIGATION */}
       {/* ========================================================================= */}
-      <section className="relative overflow-hidden w-full bg-linear-to-br from-[#161311] via-[#1f1a17] to-[#13100f] text-white py-12 lg:py-18 border-b border-[#2e2621] shadow-2xl">
-        {/* Ambient atmospheric glows */}
-        <div className="absolute top-0 right-1/4 w-[650px] h-[650px] bg-[#c49b7c]/14 rounded-full blur-[160px] pointer-events-none" />
-        <div className="absolute -bottom-24 -left-24 w-[500px] h-[500px] bg-[#a46b44]/12 rounded-full blur-[140px] pointer-events-none" />
-
-        {/* Delicate architectural grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.04] pointer-events-none"
-          style={{
-            backgroundImage: 'radial-gradient(rgba(255,255,255,0.7) 1px, transparent 1px)',
-            backgroundSize: '32px 32px',
-          }}
-        />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Left Column: Brand Hallmark & Value Proposition */}
-            <div className="lg:col-span-6 flex flex-col justify-center space-y-5">
-              {/* Brand Hallmark Badges */}
-              <div className="flex flex-wrap items-center gap-2.5">
-                <div className="bg-white px-3 py-1.5 rounded-xl shadow-xs border border-white/20 flex items-center">
-                  <img
-                    src="/omega-logo.png"
-                    alt="OMEGA Logo"
-                    className="h-6 w-auto object-contain"
-                  />
-                </div>
-                <div className="px-3.5 py-1.5 rounded-full text-[11px] font-bold tracking-wider uppercase text-[#c49b7c] bg-white/[0.07] border border-[#c49b7c]/30 backdrop-blur-md flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>Factory Direct · Mbeya &amp; Kariakoo Hubs</span>
-                </div>
-              </div>
-
-              {/* Bold Editorial Headline */}
-              <div className="space-y-3">
-                <p className="text-xs font-mono font-bold tracking-widest uppercase text-[#c49b7c]">
-                  {language === 'sw' ? 'KIWANGO RASMI CHA TAIFA LA TANZANIA' : 'THE NATIONAL BENCHMARK FOR RECORDS'}
-                </p>
-                <h1 className="font-heading text-3xl sm:text-5xl lg:text-[3.25rem] font-light text-white leading-[1.08] tracking-tight">
-                  {language === 'sw' ? (
-                    <>
-                      Uadilifu wa Uandishi &amp; <br />
-                      <span className="font-serif italic font-bold bg-linear-to-r from-[#fce3c7] via-[#c49b7c] to-[#e8c099] bg-clip-text text-transparent">
-                        Kumbukumbu Zinazodumu.
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      The Benchmark in <br />
-                      <span className="font-serif italic font-bold bg-linear-to-r from-[#fce3c7] via-[#c49b7c] to-[#e8c099] bg-clip-text text-transparent">
-                        Precision Books &amp;
-                      </span> <br />
-                      <span className="font-bold text-white">Permanent Records.</span>
-                    </>
-                  )}
-                </h1>
-                <p className="text-sm sm:text-base text-stone-300 leading-relaxed font-normal max-w-xl">
-                  {language === 'sw'
-                    ? 'Madaftari rasmi ya OMEGA: Jalada gumu lililoshonwa kwa nyuzi mbili za Smyth (Q2, Q3, Q4), karatasi ya 70 GSM isiyopenyeza wino, na vifurushi vya jumla kwa shule na maduka kote nchini.'
-                    : 'Crafted with double thread-sewn Smyth binding, 70 GSM bleed-proof woodfree bond, and precision indigo ruling. Engineered in Tanzania for schools, certified accountants, and corporate enterprises.'}
-                </p>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 pt-1">
-                <Link
-                  to="/catalog"
-                  className="btn-ledup-copper px-7 py-3 rounded-full text-xs sm:text-sm uppercase tracking-wider font-bold inline-flex items-center gap-2 group shrink-0 min-h-[46px] shadow-lg active:scale-95 transition-all text-white"
-                >
-                  <ShoppingBag className="w-4 h-4 text-white" />
-                  <span>{language === 'sw' ? 'NUNUA BIDHAA' : 'EXPLORE COLLECTION'}</span>
-                  <ArrowRight className="w-4 h-4 text-white ledup-arrow-icon" />
-                </Link>
-
-                <Link
-                  to="/wholesale"
-                  className="px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all inline-flex items-center gap-2 shrink-0 min-h-[46px] group active:scale-95"
-                >
-                  <Package className="w-4 h-4 text-[#c49b7c]" />
-                  <span>{language === 'sw' ? 'BEI ZA JUMLA' : 'WHOLESALE CARTONS'}</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 text-[#c49b7c] ledup-arrow-icon" />
-                </Link>
-
-                <a
-                  href={whatsappGreetingUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-5 py-3 rounded-full bg-[#25D366]/20 hover:bg-[#25D366]/30 text-emerald-300 border border-[#25D366]/40 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all inline-flex items-center gap-2 shrink-0 min-h-[46px]"
-                >
-                  <MessageCircle className="w-4 h-4 fill-[#25D366] text-[#25D366]" />
-                  <span>WhatsApp</span>
-                </a>
-              </div>
-
-              {/* 4 Technical Quality Badges */}
-              <div className="pt-3 border-t border-white/15 grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                <div className="p-3 bg-white/[0.04] border border-white/10 rounded-xl hover:border-[#c49b7c]/40 transition-colors">
-                  <div className="flex items-center gap-1.5 text-[#c49b7c] mb-0.5">
-                    <ShieldCheck className="w-4 h-4 shrink-0" />
-                    <span className="text-[11px] font-bold uppercase text-white truncate">Smyth Bound</span>
-                  </div>
-                  <span className="text-[11px] text-stone-300 block">Opens 180° flat</span>
-                </div>
-
-                <div className="p-3 bg-white/[0.04] border border-white/10 rounded-xl hover:border-[#c49b7c]/40 transition-colors">
-                  <div className="flex items-center gap-1.5 text-[#c49b7c] mb-0.5">
-                    <Feather className="w-4 h-4 shrink-0" />
-                    <span className="text-[11px] font-bold uppercase text-white truncate">70 GSM Paper</span>
-                  </div>
-                  <span className="text-[11px] text-stone-300 block">Zero ink bleed</span>
-                </div>
-
-                <div className="p-3 bg-white/[0.04] border border-white/10 rounded-xl hover:border-[#c49b7c]/40 transition-colors">
-                  <div className="flex items-center gap-1.5 text-[#c49b7c] mb-0.5">
-                    <Truck className="w-4 h-4 shrink-0" />
-                    <span className="text-[11px] font-bold uppercase text-white truncate">Bus Parcel</span>
-                  </div>
-                  <span className="text-[11px] text-stone-300 block">All 31 regions</span>
-                </div>
-
-                <div className="p-3 bg-white/[0.04] border border-white/10 rounded-xl hover:border-[#c49b7c]/40 transition-colors">
-                  <div className="flex items-center gap-1.5 text-[#c49b7c] mb-0.5">
-                    <Percent className="w-4 h-4 shrink-0" />
-                    <span className="text-[11px] font-bold uppercase text-white truncate">Factory Bulk</span>
-                  </div>
-                  <span className="text-[11px] text-stone-300 block">Carton savings</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column: Unique 3D Graphical Product & Company Logo Animation */}
-            <div className="lg:col-span-6 w-full flex items-center justify-center">
-              <HeroGraphicAnimation />
-            </div>
-          </div>
-        </div>
-      </section>
+      <Hero whatsappGreetingUrl={whatsappGreetingUrl} />
 
       {/* ========================================================================= */}
       {/* 2. TRUST & SCALE METRICS (Indra Notebook Inspired) */}
@@ -377,11 +241,12 @@ export const HomePage: React.FC = () => {
                 </div>
 
                 {/* Photo container */}
-                <div className="aspect-square w-full bg-[#f5f4f4] rounded-[14px] p-3 overflow-hidden flex items-center justify-center relative mb-3 border border-[#e2dedb]/60 group-hover:bg-[#faf9f8] transition-colors">
+                <div className="aspect-square w-full bg-white rounded-[16px] p-2.5 overflow-hidden flex items-center justify-center relative mb-3 border border-[#e2dedb] group-hover:border-[#c49b7c] transition-all shadow-2xs">
                   <img
                     src={cat.image}
                     alt={cat.title}
-                    className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+                    className="w-full h-full object-contain mix-blend-multiply scale-110 group-hover:scale-125 transition-transform duration-300"
+                    loading="lazy"
                   />
                 </div>
 
