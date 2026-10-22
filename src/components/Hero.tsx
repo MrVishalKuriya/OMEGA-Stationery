@@ -1,2 +1,3 @@
-export { Hero } from '@/presentation/features/marketing/components/Hero';
+import { Hero } from '@/presentation/features/marketing/components/Hero';
+export { Hero };
 export default Hero;
