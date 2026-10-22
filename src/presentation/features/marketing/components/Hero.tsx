@@ -13,6 +13,11 @@ import {
   FileText,
   Boxes,
   FolderOpen,
+  RefreshCw,
+  RotateCcw,
+  Check,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { TRANSLATIONS } from '@/data/translations';
@@ -44,6 +49,11 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
     spineText: 'OMEGA · Q3 · 288 PAGES · TANZANIA',
   };
 
+  // 3D Flip Card state ("update like Flipcard")
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [activeInsidePage, setActiveInsidePage] = useState<1 | 2>(1);
+  const [isFlipping, setIsFlipping] = useState(false);
+
   // Small, subtle interactive 3D mouse parallax tilt ("smal animetion")
   const stageRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
@@ -56,9 +66,9 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    // Delicate, subtle parallax tilt (-8deg to +8deg)
-    const rotateY = ((x - centerX) / centerX) * 8;
-    const rotateX = -((y - centerY) / centerY) * 8;
+    // Delicate, subtle parallax tilt (-7deg to +7deg)
+    const rotateY = ((x - centerX) / centerX) * 7;
+    const rotateX = -((y - centerY) / centerY) * 7;
     setTilt({ x: rotateX, y: rotateY });
   };
 
@@ -68,11 +78,23 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
     setTilt({ x: 0, y: 0 });
   };
 
-  // Base luxury 3D posture matching user reference image:
-  // Tilted 3/4 isometric floating angle showing front cover, thick right paper block & bottom edge
-  const rotX = -13 + tilt.x;
-  const rotY = 28 + tilt.y;
-  const rotZ = 10;
+  // Flip trigger with smooth micro-animation lock
+  const handleFlip = () => {
+    setIsFlipping(true);
+    setIsFlipped((prev) => !prev);
+    setTimeout(() => setIsFlipping(false), 700);
+  };
+
+  // Base luxury 3D posture:
+  // When front is active: 3/4 isometric tilt showing front cover & spine
+  // When flipped: 180deg flip revealing authentic inside ruled stationery pages
+  const baseRotX = isFlipped ? -6 : -13;
+  const baseRotY = isFlipped ? 180 + 10 : 26;
+  const baseRotZ = isFlipped ? -6 : 8;
+
+  const rotX = baseRotX + tilt.x;
+  const rotY = baseRotY + tilt.y;
+  const rotZ = baseRotZ;
 
   // Minimal refined trust highlights
   const trustHighlights = [
@@ -246,7 +268,7 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
           </div>
 
           {/* ===================================================================== */}
-          {/* RIGHT COLUMN: SINGLE 3D FLOATING LUXURY BOOK (MATCHING REFERENCE IMAGE) */}
+          {/* RIGHT COLUMN: INTERACTIVE 3D FLIPCARD LUXURY BOOK */}
           {/* ===================================================================== */}
           <div className="lg:col-span-5 flex flex-col items-center justify-center relative select-none">
             
@@ -255,38 +277,65 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
               onMouseMove={handleMouseMove}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className="relative w-full max-w-[340px] sm:max-w-[380px] flex flex-col items-center justify-center py-4 cursor-grab active:cursor-grabbing group/bookstage"
+              className="relative w-full max-w-[340px] sm:max-w-[390px] flex flex-col items-center justify-center py-2 group/bookstage"
             >
               {/* Floating Depth Chip (Top Right) */}
               <div
                 style={{
                   transform: 'translateZ(45px)',
                 }}
-                className="absolute -top-1 right-2 z-20 px-3 py-1 rounded-full bg-[#1c1815]/90 border border-[#c49b7c]/40 text-[10px] font-mono text-[#e5a962] shadow-xl backdrop-blur-md flex items-center gap-1.5 pointer-events-none"
+                className="absolute -top-2 right-2 z-20 px-3 py-1 rounded-full bg-[#1c1815]/90 border border-[#c49b7c]/40 text-[10px] font-mono text-[#e5a962] shadow-xl backdrop-blur-md flex items-center gap-1.5 pointer-events-none transition-all duration-300"
               >
-                <Sparkles className="w-3 h-3 text-[#e5a962] animate-pulse" />
-                <span>Official Q3 · 288 Pages</span>
+                {isFlipped ? (
+                  <>
+                    <Check className="w-3 h-3 text-emerald-400" />
+                    <span className="text-emerald-300 font-semibold">
+                      {language === 'sw' ? 'Kurasa za Ndani · 70 GSM' : 'Inside Ruled Folio · 70 GSM'}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-3 h-3 text-[#e5a962] animate-pulse" />
+                    <span>Official Q3 · 288 Pages · Hardcover</span>
+                  </>
+                )}
               </div>
 
-              {/* The 3D Floating Book (Breathing float animation + subtle parallax tilt) */}
+              {/* The 3D Floating Flipcard Book (Breathing float + smooth 180° flip) */}
               <div
-                className="relative z-10 w-full flex items-center justify-center py-4 animate-omega-float"
+                className="relative z-10 w-full flex items-center justify-center py-3 animate-omega-float"
                 style={{
                   perspective: '1350px',
                   perspectiveOrigin: '50% 50%',
                 }}
               >
                 <div
+                  onClick={handleFlip}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleFlip();
+                    }
+                  }}
+                  title={isFlipped ? 'Click to flip back to Cover' : 'Click to flip open inside pages'}
                   style={{
                     transformStyle: 'preserve-3d',
                     transform: `rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(${rotZ}deg) scale3d(1.02, 1.02, 1.02)`,
-                    transition: isHovered ? 'transform 0.08s ease-out' : 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                    width: '230px',
-                    height: '335px',
+                    transition: isFlipping
+                      ? 'transform 0.75s cubic-bezier(0.34, 1.25, 0.64, 1)'
+                      : isHovered
+                      ? 'transform 0.1s ease-out'
+                      : 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                    width: '235px',
+                    height: '340px',
                   }}
-                  className="relative rounded-r-xl shadow-2xl transition-transform"
+                  className="relative rounded-r-xl shadow-2xl transition-transform cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#e5a962]"
                 >
-                  {/* 1. FRONT HARDCOVER FACE (Matches Reference Floating Book) */}
+                  {/* ========================================================= */}
+                  {/* FACE 1: FRONT HARDCOVER (Visible when isFlipped is FALSE) */}
+                  {/* ========================================================= */}
                   <div
                     style={{
                       transform: 'translateZ(18px)',
@@ -351,9 +400,151 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
 
                     {/* Diagonal Specular Sheen */}
                     <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/12 to-transparent pointer-events-none" />
+
+                    {/* Flip Card Corner Ribbon (Prompt) */}
+                    <div className="absolute bottom-2 right-2 z-20 px-2 py-0.5 rounded-full bg-[#1c1815]/85 border border-[#e5a962]/50 text-[9px] font-mono text-[#e5a962] flex items-center gap-1 shadow-md">
+                      <RefreshCw className="w-2.5 h-2.5 animate-spin" style={{ animationDuration: '6s' }} />
+                      <span>{language === 'sw' ? 'Geuza Kadi' : 'Flip Card'}</span>
+                    </div>
                   </div>
 
+                  {/* ========================================================= */}
+                  {/* FACE 2: INSIDE RULED SPREAD (Visible when isFlipped is TRUE) */}
+                  {/* ========================================================= */}
+                  <div
+                    style={{
+                      transform: 'translateZ(-18px) rotateY(180deg)',
+                      backfaceVisibility: 'hidden',
+                    }}
+                    className="absolute inset-0 rounded-l-xl bg-[#fcfbf8] text-[#1c1917] border-2 border-stone-400 overflow-hidden flex flex-col justify-between p-4 shadow-2xl"
+                  >
+                    {/* Authentic Cream Paper Texture */}
+                    <div
+                      className="absolute inset-0 opacity-20 pointer-events-none"
+                      style={{
+                        backgroundImage:
+                          'radial-gradient(#d6cebe 1px, transparent 1px), radial-gradient(#d6cebe 1px, #fcfbf8 1px)',
+                        backgroundSize: '20px 20px',
+                        backgroundPosition: '0 0, 10px 10px',
+                      }}
+                    />
+
+                    {/* Top Inside Register Header */}
+                    <div className="relative z-10 border-b border-red-500/80 pb-1.5 flex items-center justify-between text-[9px] font-mono font-bold text-stone-700">
+                      <span className="text-red-700 uppercase tracking-wider">OMEGA · Q3 (288P)</span>
+                      <span>DATE: ___/___/2026</span>
+                      <span className="px-1.5 py-0.2 rounded bg-stone-200 text-stone-800 text-[8px]">
+                        PG 0{activeInsidePage}
+                      </span>
+                    </div>
+
+                    {/* Inside Ruled Page Content with Vertical Red Margin */}
+                    <div className="relative z-10 my-auto py-1 space-y-2.5">
+                      {/* Red Left Margin Line */}
+                      <div className="absolute top-0 bottom-0 left-7 w-[1.5px] bg-red-500/70 pointer-events-none" />
+
+                      {activeInsidePage === 1 ? (
+                        <>
+                          <div className="border-b border-blue-200/80 pb-0.5 pl-9">
+                            <p className="font-serif italic text-xs font-semibold text-stone-900 leading-tight">
+                              {language === 'sw'
+                                ? 'OMEGA – Kiwango cha Juu cha Uandishi.'
+                                : 'OMEGA – The Benchmark of Writing.'}
+                            </p>
+                          </div>
+                          <div className="border-b border-blue-200/80 pb-0.5 pl-9">
+                            <p className="text-[10px] text-stone-700 leading-tight">
+                              {language === 'sw'
+                                ? 'Karatasi ya 70 GSM isiyopenyeza wino wa kalamu zote.'
+                                : 'Bleed-proof 70 GSM archival paper for fountain & gel pens.'}
+                            </p>
+                          </div>
+                          <div className="border-b border-blue-200/80 pb-0.5 pl-9">
+                            <p className="text-[10px] text-stone-700 leading-tight">
+                              {language === 'sw'
+                                ? 'Ushonaji imara wa nyuzi (Smyth-sewn) usioachia kurasa.'
+                                : 'Reinforced Smyth-sewn stitching — stays flat 180°.'}
+                            </p>
+                          </div>
+                          <div className="border-b border-blue-200/80 pb-0.5 pl-9">
+                            <p className="text-[10px] text-stone-700 leading-tight">
+                              {language === 'sw'
+                                ? 'Inayotumiwa na shule, vyuo na ofisi kote Tanzania.'
+                                : 'Trusted across schools, universities & offices in Tanzania.'}
+                            </p>
+                          </div>
+                          <div className="border-b border-blue-200/80 pb-0.5 pl-9">
+                            <p className="text-[9px] font-mono text-stone-500">
+                              ✓ Kariakoo Wholesale Hub · Countrywide Bus Cargo
+                            </p>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="border-b border-blue-200/80 pb-0.5 pl-9">
+                            <p className="font-mono text-[10px] font-bold text-stone-800">
+                              SPECIFICATION ARCHIVE:
+                            </p>
+                          </div>
+                          <div className="border-b border-blue-200/80 pb-0.5 pl-9">
+                            <p className="text-[9px] text-stone-700 font-mono">
+                              • Binding: 16-Fold Smyth Thread Sewn
+                            </p>
+                          </div>
+                          <div className="border-b border-blue-200/80 pb-0.5 pl-9">
+                            <p className="text-[9px] text-stone-700 font-mono">
+                              • Paper: 70 GSM Bleed-Proof Archival
+                            </p>
+                          </div>
+                          <div className="border-b border-blue-200/80 pb-0.5 pl-9">
+                            <p className="text-[9px] text-stone-700 font-mono">
+                              • Cover: 1.8mm High-Density Hardboard
+                            </p>
+                          </div>
+                          <div className="border-b border-blue-200/80 pb-0.5 pl-9">
+                            <p className="text-[9px] text-stone-700 font-mono">
+                              • Ruling: Indigo 8mm Feint + Red Margin
+                            </p>
+                          </div>
+                        </>
+                      )}
+                    </div>
+
+                    {/* Inside Page Footer with Inspection Seal & Page Turn Buttons */}
+                    <div className="relative z-10 pt-2 border-t border-stone-300 flex items-center justify-between text-[9px]">
+                      <div className="flex items-center gap-1 font-mono text-emerald-800 font-bold">
+                        <Check className="w-3 h-3 text-emerald-600" />
+                        <span>100% BLEED-PROOF</span>
+                      </div>
+
+                      {/* Mini Page Toggle inside book */}
+                      <div className="flex items-center gap-1 bg-stone-200/80 rounded-md px-1 py-0.5">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveInsidePage((prev) => (prev === 1 ? 2 : 1));
+                          }}
+                          className="px-1 font-bold hover:text-red-700 transition-colors"
+                          title="Toggle Page"
+                        >
+                          {activeInsidePage === 1 ? 'Page 2 →' : '← Page 1'}
+                        </button>
+                      </div>
+
+                      {/* Flip Back Prompt */}
+                      <div className="text-[8px] font-mono text-stone-600 hover:text-red-700 font-bold">
+                        <span>{language === 'sw' ? 'Rudi Jalada ↻' : 'To Cover ↻'}</span>
+                      </div>
+                    </div>
+
+                    {/* Right Crease Shadow (Flipped Book Spine Shadow) */}
+                    <div className="absolute right-0 top-0 bottom-0 w-5 bg-gradient-to-l from-stone-400/40 via-stone-300/20 to-transparent pointer-events-none" />
+                  </div>
+
+                  {/* ========================================================= */}
                   {/* 2. REINFORCED CLOTH SPINE (Left Face) */}
+                  {/* ========================================================= */}
                   <div
                     style={{
                       width: '36px',
@@ -372,11 +563,13 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
                     <div className="text-amber-400 text-xs">★</div>
                   </div>
 
-                  {/* 3. PAPER BLOCK EDGE (Right Face - Prominently visible in reference image) */}
+                  {/* ========================================================= */}
+                  {/* 3. PAPER BLOCK EDGE (Right Face) */}
+                  {/* ========================================================= */}
                   <div
                     style={{
                       width: '34px',
-                      height: '327px',
+                      height: '332px',
                       top: '4px',
                       right: '2px',
                       transform: 'rotateY(90deg) translateZ(17px)',
@@ -388,15 +581,18 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
                     <div
                       className="w-full h-full opacity-35"
                       style={{
-                        backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 1.5px, rgba(0,0,0,0.18) 1.5px, rgba(0,0,0,0.18) 2.5px)',
+                        backgroundImage:
+                          'repeating-linear-gradient(0deg, transparent, transparent 1.5px, rgba(0,0,0,0.18) 1.5px, rgba(0,0,0,0.18) 2.5px)',
                       }}
                     />
                   </div>
 
-                  {/* 4. PAPER BLOCK BOTTOM (Underneath - Prominently visible in reference image) */}
+                  {/* ========================================================= */}
+                  {/* 4. PAPER BLOCK BOTTOM (Underneath) */}
+                  {/* ========================================================= */}
                   <div
                     style={{
-                      width: '224px',
+                      width: '229px',
                       height: '34px',
                       bottom: '2px',
                       left: '0px',
@@ -409,15 +605,18 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
                     <div
                       className="w-full h-full opacity-30"
                       style={{
-                        backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 1.5px, rgba(0,0,0,0.14) 1.5px, rgba(0,0,0,0.14) 2.5px)',
+                        backgroundImage:
+                          'repeating-linear-gradient(90deg, transparent, transparent 1.5px, rgba(0,0,0,0.14) 1.5px, rgba(0,0,0,0.14) 2.5px)',
                       }}
                     />
                   </div>
 
+                  {/* ========================================================= */}
                   {/* 5. TOP PAPER EDGE */}
+                  {/* ========================================================= */}
                   <div
                     style={{
-                      width: '224px',
+                      width: '229px',
                       height: '34px',
                       top: '2px',
                       left: '0px',
@@ -427,16 +626,6 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
                     }}
                     className="absolute"
                   />
-
-                  {/* 6. BACK COVER BOARD (True 3D closure) */}
-                  <div
-                    style={{
-                      transform: 'translateZ(-18px) rotateY(180deg)',
-                      backfaceVisibility: 'hidden',
-                    }}
-                    className="absolute inset-0 rounded-l-xl bg-[#09121d] border border-stone-800"
-                    aria-hidden="true"
-                  />
                 </div>
               </div>
 
@@ -444,15 +633,69 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
               <div
                 className="w-52 sm:w-64 h-5 bg-black/85 rounded-full blur-lg transition-transform duration-300 pointer-events-none mt-2"
                 style={{
-                  transform: `translateX(${tilt.y * 1.5}px) translateY(${-tilt.x * 0.4}px) scale(${1 - Math.abs(tilt.x) * 0.015})`,
+                  transform: `translateX(${tilt.y * 1.5}px) translateY(${-tilt.x * 0.4}px) scale(${
+                    1 - Math.abs(tilt.x) * 0.015
+                  })`,
                 }}
                 aria-hidden="true"
               />
 
-              {/* Minimal Luxury Interactive Hint */}
-              <div className="mt-3 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 border border-white/10 text-[10px] font-mono tracking-wider uppercase text-stone-300 backdrop-blur-xs">
-                <Sparkles className="w-3 h-3 text-[#e5a962]" />
-                <span>{language === 'sw' ? 'Sogeza kipanya kutazama daftari' : 'Hover / Move to Inspect 3D Book'}</span>
+              {/* ========================================================= */}
+              {/* FLIPCARD CONTROL BUTTONS & INTERACTION HINT */}
+              {/* ========================================================= */}
+              <div className="mt-3 flex flex-col items-center gap-2">
+                {/* 3-Button Flip Controls */}
+                <div className="inline-flex items-center p-1 rounded-xl bg-black/50 border border-white/15 backdrop-blur-md shadow-lg">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (isFlipped) handleFlip();
+                    }}
+                    className={`px-3 py-1 rounded-lg text-xs font-semibold tracking-wide transition-all ${
+                      !isFlipped
+                        ? 'bg-[#c49b7c] text-[#161311] shadow-xs'
+                        : 'text-stone-300 hover:text-white'
+                    }`}
+                  >
+                    {language === 'sw' ? 'Jalada (Cover)' : 'Front Cover'}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!isFlipped) handleFlip();
+                    }}
+                    className={`px-3 py-1 rounded-lg text-xs font-semibold tracking-wide transition-all ${
+                      isFlipped
+                        ? 'bg-[#c49b7c] text-[#161311] shadow-xs'
+                        : 'text-stone-300 hover:text-white'
+                    }`}
+                  >
+                    {language === 'sw' ? 'Kurasa za Ndani' : 'Inside Pages'}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleFlip}
+                    title="Flip Card"
+                    className="p-1.5 ml-1 rounded-lg text-[#e5a962] hover:bg-white/10 transition-colors flex items-center gap-1 text-xs font-mono"
+                  >
+                    <RefreshCw
+                      className={`w-3.5 h-3.5 ${isFlipping ? 'animate-spin' : ''}`}
+                    />
+                    <span className="hidden sm:inline">Flip</span>
+                  </button>
+                </div>
+
+                {/* Micro-interaction hint */}
+                <div className="flex items-center gap-1.5 text-[10px] font-mono tracking-wider uppercase text-stone-300">
+                  <Sparkles className="w-3 h-3 text-[#e5a962]" />
+                  <span>
+                    {language === 'sw'
+                      ? 'Gusa daftari au vibonyezo kugeuza kadi'
+                      : 'Click notebook or buttons to flip in 3D'}
+                  </span>
+                </div>
               </div>
 
             </div>
