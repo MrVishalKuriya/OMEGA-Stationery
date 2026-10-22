@@ -16,6 +16,10 @@ import {
   Pause,
   Film,
   Star,
+  Volume2,
+  VolumeX,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { TRANSLATIONS } from '@/data/translations';
@@ -55,6 +59,63 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
   const [isVideoAutoPlaying, setIsVideoAutoPlaying] = useState(false);
   const videoIntervalRef = useRef<number | null>(null);
 
+  // DearFlip-Style 3D Flipbook Engine (dearflip.com)
+  const [flipStep, setFlipStep] = useState<0 | 1 | 2>(0);
+  const [isSoundEnabled, setIsSoundEnabled] = useState(true);
+
+  // Synthesized realistic paper turn sound (Web Audio API - instant & zero network latency)
+  const playPageTurnSound = () => {
+    if (!isSoundEnabled) return;
+    try {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const dur = 0.14;
+      const buf = ctx.createBuffer(1, ctx.sampleRate * dur, ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i = 0; i < data.length; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (data.length * 0.35));
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buf;
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.value = 1000;
+      filter.Q.value = 1.6;
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.22, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.005, ctx.currentTime + dur);
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+      noise.start();
+    } catch (e) {
+      // safe fallback for browser autoplay policies
+    }
+  };
+
+  const handleNextPage = () => {
+    if (flipStep < 2) {
+      playPageTurnSound();
+      const next = (flipStep + 1) as 0 | 1 | 2;
+      setFlipStep(next);
+      const targetProg = next === 1 ? 0.45 : 0.85;
+      setScrollProgress(targetProg);
+      setCurrentFrame(Math.round(targetProg * (TOTAL_FRAMES - 1)) + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (flipStep > 0) {
+      playPageTurnSound();
+      const prev = (flipStep - 1) as 0 | 1 | 2;
+      setFlipStep(prev);
+      const targetProg = prev === 1 ? 0.45 : 0.0;
+      setScrollProgress(targetProg);
+      setCurrentFrame(Math.round(targetProg * (TOTAL_FRAMES - 1)) + 1);
+    }
+  };
+
   // Mouse & Touch 3D Tilt Movement ("3D ma book movement hova joiye")
   const stageRef = useRef<HTMLDivElement>(null);
   const [mouseTilt, setMouseTilt] = useState({ x: 0, y: 0 });
@@ -85,6 +146,13 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
               TOTAL_FRAMES
             );
             setCurrentFrame(frame);
+
+            // Automatically sync flipStep based on scroll runway
+            const autoStep = progress < 0.25 ? 0 : progress < 0.70 ? 1 : 2;
+            setFlipStep((old) => {
+              if (old !== autoStep) playPageTurnSound();
+              return autoStep;
+            });
           }
           ticking = false;
         });
@@ -95,7 +163,7 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isVideoAutoPlaying]);
+  }, [isVideoAutoPlaying, isSoundEnabled]);
 
   // Video Auto-Play mode: continuously loops through frames like a video
   useEffect(() => {
@@ -115,13 +183,19 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
         dir = 1;
       }
       setCurrentFrame(frame);
-      setScrollProgress((frame - 1) / (TOTAL_FRAMES - 1));
-    }, 42);
+      const prog = (frame - 1) / (TOTAL_FRAMES - 1);
+      setScrollProgress(prog);
+      const autoStep = prog < 0.25 ? 0 : prog < 0.70 ? 1 : 2;
+      setFlipStep((old) => {
+        if (old !== autoStep) playPageTurnSound();
+        return autoStep;
+      });
+    }, 45);
 
     return () => {
       if (videoIntervalRef.current) clearInterval(videoIntervalRef.current);
     };
-  }, [isVideoAutoPlaying]);
+  }, [isVideoAutoPlaying, isSoundEnabled]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!stageRef.current) return;
@@ -142,15 +216,15 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
     setMouseTilt({ x: 0, y: 0 });
   };
 
-  // Derive 3D Book Angles and Coordinates strictly from Frame/Scroll Position:
-  // Frame 1: Resting 3/4 beauty perspective (rotY: -14deg, rotX: 8deg)
-  // Frame 60: Dynamically rotated & elevated perspective (rotY: +22deg, rotX: -7deg)
-  const rotY = -14 + scrollProgress * 36 + (isHovered ? mouseTilt.y : 0);
-  const rotX = 8 - scrollProgress * 15 + (isHovered ? mouseTilt.x : 0);
-  const rotZ = -1.5 + scrollProgress * 3.5;
-  const transY = -scrollProgress * 28;
-  const transZ = scrollProgress * 35;
-  const scaleVal = 1 + Math.sin(scrollProgress * Math.PI) * 0.05;
+  // Derive 3D Book Angles and Coordinates strictly matching user reference image:
+  // Base posture: Tilted isometric 3/4 angle showing front cover, thick right paper block, and bottom paper block from underneath!
+  // rotX: -14deg, rotY: 32deg, rotZ: 12deg
+  const rotY = 32 - scrollProgress * 22 + (isHovered ? mouseTilt.y : 0);
+  const rotX = -14 + scrollProgress * 10 + (isHovered ? mouseTilt.x : 0);
+  const rotZ = 12 - scrollProgress * 5;
+  const transY = -scrollProgress * 26;
+  const transZ = scrollProgress * 25;
+  const scaleVal = 1 + Math.sin(scrollProgress * Math.PI) * 0.04;
   const sheenPos = Math.round(scrollProgress * 100);
 
   // 4 Trust Badges from Reference Image
@@ -369,191 +443,398 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
                   aria-hidden="true"
                 />
 
-                {/* PROPER 3D Rotating Hardcover Book with True Physical Dimensions */}
+                {/* DEARFLIP 3D FLIPBOOK STAGE (dearflip.com) */}
                 <div
                   className="relative z-10 w-full flex items-center justify-center py-2"
                   style={{
-                    perspective: '1250px',
+                    perspective: '1350px',
                     perspectiveOrigin: '50% 50%',
                   }}
                 >
-                  <div
-                    style={{
-                      transformStyle: 'preserve-3d',
-                      transform: `translateY(${transY}px) translateZ(${transZ}px) rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(${rotZ}deg) scale3d(${scaleVal}, ${scaleVal}, ${scaleVal})`,
-                      transition: isHovered && !isVideoAutoPlaying ? 'transform 0.08s ease-out' : 'transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)',
-                      width: '235px',
-                      height: '335px',
-                    }}
-                    className="relative rounded-r-xl shadow-2xl"
-                  >
-                    {/* 1. FRONT HARDCOVER FACE (Authentic OMEGA Cover Design) */}
+                  {flipStep === 0 ? (
+                    /* ========================================================================= */
+                    /* MODE A: CLOSED 3D HARDCOVER BOOK (EXACT POSTURE FROM USER REFERENCE IMAGE) */
+                    /* ========================================================================= */
                     <div
                       style={{
-                        transform: 'translateZ(15px)',
-                        backfaceVisibility: 'hidden',
+                        transformStyle: 'preserve-3d',
+                        transform: `translateY(${transY}px) translateZ(${transZ}px) rotateX(${rotX}deg) rotateY(${rotY}deg) rotateZ(${rotZ}deg) scale3d(${scaleVal}, ${scaleVal}, ${scaleVal})`,
+                        transition: isHovered && !isVideoAutoPlaying ? 'transform 0.08s ease-out' : 'transform 0.24s cubic-bezier(0.16, 1, 0.3, 1)',
+                        width: '235px',
+                        height: '335px',
                       }}
-                      className="absolute inset-0 rounded-r-xl bg-[#0d1b2a] border border-stone-600/70 overflow-hidden flex flex-col justify-between p-4 sm:p-5 shadow-2xl"
+                      onClick={handleNextPage}
+                      className="relative rounded-r-xl shadow-2xl cursor-pointer group/book"
+                      title="Click book to Flip Open (DearFlip 3D)"
                     >
-                      {/* Real authentic catalog cover photo texture */}
+                      {/* 1. FRONT HARDCOVER FACE (Authentic OMEGA Cover Design) */}
                       <div
-                        className="absolute inset-0 bg-cover bg-center pointer-events-none opacity-40 mix-blend-luminosity scale-105"
-                        style={{ backgroundImage: `url(${singleHeroProduct.image})` }}
+                        style={{
+                          transform: 'translateZ(18px)',
+                          backfaceVisibility: 'hidden',
+                        }}
+                        className="absolute inset-0 rounded-r-xl bg-[#0d1b2a] border border-stone-600/70 overflow-hidden flex flex-col justify-between p-4 sm:p-5 shadow-2xl"
+                      >
+                        {/* Real authentic catalog cover photo texture */}
+                        <div
+                          className="absolute inset-0 bg-cover bg-center pointer-events-none opacity-40 mix-blend-luminosity scale-105"
+                          style={{ backgroundImage: `url(${singleHeroProduct.image})` }}
+                        />
+
+                        {/* Dark gradient gloss overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-stone-950 via-[#0d1b2a]/90 to-red-950/40 pointer-events-none" />
+
+                        {/* Gold foil classic double border */}
+                        <div className="absolute inset-2 border border-amber-400/60 rounded-lg pointer-events-none shadow-sm" />
+                        <div className="absolute inset-3 border border-amber-400/30 rounded-md pointer-events-none" />
+
+                        {/* Dynamic Specular Light Reflection (Sweeps across cover in sync with scroll frames) */}
+                        <div
+                          className="absolute inset-0 pointer-events-none transition-opacity duration-150"
+                          style={{
+                            background: `linear-gradient(${115 + scrollProgress * 30}deg, transparent ${Math.max(0, sheenPos - 35)}%, rgba(255,255,255,0.3) ${sheenPos}%, transparent ${Math.min(100, sheenPos + 35)}%)`,
+                            mixBlendMode: 'overlay',
+                          }}
+                          aria-hidden="true"
+                        />
+
+                        {/* Top Bar on Cover */}
+                        <div className="relative z-10 flex items-center justify-between">
+                          <span className="text-[9px] font-mono font-black tracking-widest text-amber-300 uppercase">
+                            TANZANIA STANDARD
+                          </span>
+                          <span className="px-2 py-0.5 text-[9px] font-black bg-amber-400/20 text-amber-300 border border-amber-400/60 rounded font-mono">
+                            Q3 · 288P
+                          </span>
+                        </div>
+
+                        {/* Center Emblem & OMEGA Logo */}
+                        <div className="relative z-10 text-center my-auto space-y-1">
+                          <div className="w-13 h-13 mx-auto rounded-full border-2 border-amber-400 flex items-center justify-center bg-stone-950/90 shadow-xl shadow-black/60 ring-2 ring-amber-400/20">
+                            <span className="font-serif-luxury text-2xl font-black text-amber-300">Ω</span>
+                          </div>
+                          <h4 className="font-serif-luxury text-2xl font-black tracking-widest text-white uppercase pt-1 drop-shadow-md">
+                            OMEGA
+                          </h4>
+                          <p className="text-[10px] tracking-[0.25em] font-extrabold uppercase text-amber-200">
+                            WRITING NOTEBOOK
+                          </p>
+                          <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto my-1" />
+                          <p className="text-xs font-bold text-stone-200 font-sans tracking-wide">
+                            {language === 'sw' ? 'Kurasa 288 · Quire 3' : '288 Pages · 3 Quire'}
+                          </p>
+                        </div>
+
+                        {/* Authentic White Index Label on Bottom */}
+                        <div className="relative z-10 bg-white/95 rounded-lg p-2 text-stone-900 shadow-lg border border-stone-300">
+                          <div className="border-b border-dashed border-stone-300 pb-1 flex justify-between text-[8px] font-bold uppercase tracking-wider text-stone-700">
+                            <span>NAME: ________________</span>
+                            <span>SUBJ: _________</span>
+                          </div>
+                          <div className="pt-1 flex justify-between text-[7px] text-stone-600 font-mono font-bold">
+                            <span>HARDCOVER REGISTER</span>
+                            <span className="text-red-700">HIGH-GSM BLEEDPROOF</span>
+                          </div>
+                        </div>
+
+                        {/* Left Spine Shadow Edge */}
+                        <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-black/70 via-red-950/40 to-transparent pointer-events-none" />
+
+                        {/* Diagonal Gloss Shine */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent pointer-events-none" />
+
+                        {/* Click to Flip Hover Hint */}
+                        <div className="absolute inset-x-4 bottom-14 py-1 rounded bg-[#e5a962]/90 text-[#161311] text-[10px] font-bold font-mono tracking-wider uppercase text-center opacity-0 group-hover/book:opacity-100 transition-opacity shadow-md pointer-events-none">
+                          📖 Click to Flip Open
+                        </div>
+                      </div>
+
+                      {/* 2. REINFORCED CLOTH SPINE (Left Face) */}
+                      <div
+                        style={{
+                          width: '36px',
+                          transform: 'rotateY(-90deg) translateZ(18px)',
+                          left: '-18px',
+                        }}
+                        className="absolute top-0 bottom-0 bg-[#2b080f] border-y border-l border-red-950 flex flex-col justify-between items-center py-4 shadow-inner"
+                      >
+                        <div className="text-amber-400 font-bold text-[9px] font-mono">Ω</div>
+                        <div
+                          style={{ writingMode: 'vertical-rl' }}
+                          className="text-amber-200 text-[10px] font-black tracking-widest uppercase transform rotate-180"
+                        >
+                          OMEGA · Q3 · 288 PAGES · TANZANIA
+                        </div>
+                        <div className="flex items-center justify-center">
+                          <Star className="w-2.5 h-2.5 text-amber-400 fill-amber-400" />
+                        </div>
+                      </div>
+
+                      {/* 3. PAPER BLOCK EDGE (Right Face - Prominently visible in reference image) */}
+                      <div
+                        style={{
+                          width: '34px',
+                          height: '327px',
+                          top: '4px',
+                          right: '2px',
+                          transform: 'rotateY(90deg) translateZ(17px)',
+                          transformOrigin: 'right center',
+                          background: 'linear-gradient(to right, #ded9ce, #fcfbf8 25%, #f7f4eb 75%, #ded9ce)',
+                        }}
+                        className="absolute shadow-sm"
+                      >
+                        <div
+                          className="w-full h-full opacity-35"
+                          style={{
+                            backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 1.5px, rgba(0,0,0,0.18) 1.5px, rgba(0,0,0,0.18) 2.5px)',
+                          }}
+                        />
+                      </div>
+
+                      {/* 4. PAPER BLOCK BOTTOM (Underneath - Prominently visible in reference image) */}
+                      <div
+                        style={{
+                          width: '228px',
+                          height: '34px',
+                          bottom: '2px',
+                          left: '0px',
+                          transform: 'rotateX(-90deg) translateZ(17px)',
+                          transformOrigin: 'center bottom',
+                          background: 'linear-gradient(to bottom, #d5cfc2, #fbfaf7 35%, #f1ece1 80%, #cdc7b9)',
+                        }}
+                        className="absolute shadow-md"
+                      >
+                        <div
+                          className="w-full h-full opacity-30"
+                          style={{
+                            backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 1.5px, rgba(0,0,0,0.14) 1.5px, rgba(0,0,0,0.14) 2.5px)',
+                          }}
+                        />
+                      </div>
+
+                      {/* 5. TOP PAPER EDGE */}
+                      <div
+                        style={{
+                          width: '228px',
+                          height: '34px',
+                          top: '2px',
+                          left: '0px',
+                          transform: 'rotateX(90deg) translateZ(17px)',
+                          transformOrigin: 'center top',
+                          background: 'linear-gradient(to top, #d5cfc2, #faf8f5 45%, #e5e0d4)',
+                        }}
+                        className="absolute"
                       />
 
-                      {/* Dark gradient gloss overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-tr from-stone-950 via-[#0d1b2a]/90 to-red-950/40 pointer-events-none" />
-
-                      {/* Gold foil classic double border */}
-                      <div className="absolute inset-2 border border-amber-400/60 rounded-lg pointer-events-none shadow-sm" />
-                      <div className="absolute inset-3 border border-amber-400/30 rounded-md pointer-events-none" />
-
-                      {/* Dynamic Specular Light Reflection (Sweeps across cover in sync with scroll frames) */}
+                      {/* 6. BACK COVER BOARD (True 3D closure) */}
                       <div
-                        className="absolute inset-0 pointer-events-none transition-opacity duration-150"
                         style={{
-                          background: `linear-gradient(${115 + scrollProgress * 30}deg, transparent ${Math.max(0, sheenPos - 35)}%, rgba(255,255,255,0.3) ${sheenPos}%, transparent ${Math.min(100, sheenPos + 35)}%)`,
-                          mixBlendMode: 'overlay',
+                          transform: 'translateZ(-18px) rotateY(180deg)',
+                          backfaceVisibility: 'hidden',
                         }}
+                        className="absolute inset-0 rounded-l-xl bg-[#0a121d] border border-stone-800"
                         aria-hidden="true"
                       />
-
-                      {/* Top Bar on Cover */}
-                      <div className="relative z-10 flex items-center justify-between">
-                        <span className="text-[9px] font-mono font-black tracking-widest text-amber-300 uppercase">
-                          TANZANIA STANDARD
-                        </span>
-                        <span className="px-2 py-0.5 text-[9px] font-black bg-amber-400/20 text-amber-300 border border-amber-400/60 rounded font-mono">
-                          Q3 · 288P
-                        </span>
-                      </div>
-
-                      {/* Center Emblem & OMEGA Logo */}
-                      <div className="relative z-10 text-center my-auto space-y-1">
-                        <div className="w-13 h-13 mx-auto rounded-full border-2 border-amber-400 flex items-center justify-center bg-stone-950/90 shadow-xl shadow-black/60 ring-2 ring-amber-400/20">
-                          <span className="font-serif-luxury text-2xl font-black text-amber-300">Ω</span>
-                        </div>
-                        <h4 className="font-serif-luxury text-2xl font-black tracking-widest text-white uppercase pt-1 drop-shadow-md">
-                          OMEGA
-                        </h4>
-                        <p className="text-[10px] tracking-[0.25em] font-extrabold uppercase text-amber-200">
-                          WRITING NOTEBOOK
-                        </p>
-                        <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto my-1" />
-                        <p className="text-xs font-bold text-stone-200 font-sans tracking-wide">
-                          {language === 'sw' ? 'Kurasa 288 · Quire 3' : '288 Pages · 3 Quire'}
-                        </p>
-                      </div>
-
-                      {/* Authentic White Index Label on Bottom */}
-                      <div className="relative z-10 bg-white/95 rounded-lg p-2 text-stone-900 shadow-lg border border-stone-300">
-                        <div className="border-b border-dashed border-stone-300 pb-1 flex justify-between text-[8px] font-bold uppercase tracking-wider text-stone-700">
-                          <span>NAME: ________________</span>
-                          <span>SUBJ: _________</span>
-                        </div>
-                        <div className="pt-1 flex justify-between text-[7px] text-stone-600 font-mono font-bold">
-                          <span>HARDCOVER REGISTER</span>
-                          <span className="text-red-700">HIGH-GSM BLEEDPROOF</span>
-                        </div>
-                      </div>
-
-                      {/* Left Spine Shadow Edge */}
-                      <div className="absolute left-0 top-0 bottom-0 w-6 bg-gradient-to-r from-black/70 via-red-950/40 to-transparent pointer-events-none" />
-
-                      {/* Diagonal Gloss Shine */}
-                      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent pointer-events-none" />
                     </div>
-
-                    {/* 2. REINFORCED CLOTH SPINE (Left Face) */}
+                  ) : (
+                    /* ========================================================================= */
+                    /* MODE B: DEARFLIP 3D OPEN FLIPBOOK SPREAD (FEINT RULED LEDGER PAGES) */
+                    /* ========================================================================= */
                     <div
                       style={{
-                        width: '30px',
-                        transform: 'rotateY(-90deg) translateZ(15px)',
-                        left: '-15px',
+                        transformStyle: 'preserve-3d',
+                        transform: `perspective(1200px) rotateX(${mouseTilt.x * 0.4}deg) rotateY(${mouseTilt.y * 0.4}deg) scale3d(1.02, 1.02, 1.02)`,
+                        transition: 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)',
+                        width: '440px',
+                        maxWidth: '92vw',
+                        height: '315px',
                       }}
-                      className="absolute top-0 bottom-0 bg-[#2b080f] border-y border-l border-red-950 flex flex-col justify-between items-center py-4 shadow-inner"
+                      className="relative flex rounded-xl shadow-2xl border border-stone-800 overflow-hidden select-none bg-[#fbfaf7]"
                     >
-                      <div className="text-amber-400 font-bold text-[9px] font-mono">Ω</div>
+                      {/* Left Page (Inside Cover or Page 2) */}
                       <div
-                        style={{ writingMode: 'vertical-rl' }}
-                        className="text-amber-200 text-[10px] font-black tracking-widest uppercase transform rotate-180"
+                        onClick={handlePrevPage}
+                        className="w-1/2 h-full p-3 sm:p-4 border-r border-stone-300/80 flex flex-col justify-between relative cursor-pointer group/left hover:bg-stone-50 transition-colors"
+                        title="Click to Flip Back"
                       >
-                        OMEGA · Q3 · 288 PAGES · TANZANIA
+                        {/* Center Spine Crease Shadow */}
+                        <div className="absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-stone-400/35 via-stone-300/15 to-transparent pointer-events-none" />
+
+                        {flipStep === 1 ? (
+                          /* Inside Front Cover Bookplate */
+                          <div className="h-full flex flex-col justify-between border-2 border-dashed border-[#c49b7c]/60 p-2.5 rounded-lg bg-[#141d2b] text-white">
+                            <div className="flex items-center justify-between text-[8px] font-mono text-amber-300">
+                              <span>TANZANIA SPECIFICATION</span>
+                              <span>REGISTER NO. OMG-2026</span>
+                            </div>
+                            <div className="text-center space-y-1 my-auto">
+                              <span className="font-serif-luxury text-2xl font-black text-amber-300 block">Ω</span>
+                              <h5 className="font-serif-luxury text-sm font-bold uppercase tracking-wider text-amber-200">
+                                Official Record Ledger
+                              </h5>
+                              <p className="text-[9px] text-stone-300 leading-tight">
+                                High-grade acid-free archival writing leaves.
+                              </p>
+                            </div>
+                            <div className="text-[8px] font-mono text-stone-400 border-t border-white/10 pt-1 flex justify-between">
+                              <span>Q3 · 288 PAGES</span>
+                              <span>SMYTH-SEWN BINDING</span>
+                            </div>
+                          </div>
+                        ) : (
+                          /* Page 2 Ruled Ledger Sheet */
+                          <div className="h-full flex flex-col justify-between text-stone-900">
+                            <div className="flex items-center justify-between border-b border-red-500 pb-1 text-[9px] font-mono font-bold text-stone-700">
+                              <span className="text-red-700">OMEGA LEDGER</span>
+                              <span>PAGE NO: 02</span>
+                            </div>
+                            <div className="relative py-1 space-y-2.5 flex-1">
+                              <div className="absolute top-0 bottom-0 left-8 w-px bg-red-500/70" />
+                              <div className="border-b border-blue-200 pb-0.5 pl-10 text-[10px] font-sans text-stone-700">
+                                1. Bulk orders packed in factory-sealed cartons
+                              </div>
+                              <div className="border-b border-blue-200 pb-0.5 pl-10 text-[10px] font-sans text-stone-700">
+                                2. Available across Kariakoo, Arusha, Mwanza & Dodoma
+                              </div>
+                              <div className="border-b border-blue-200 pb-0.5 pl-10 text-[10px] font-sans text-stone-700">
+                                3. Bus parcel freight dispatch daily
+                              </div>
+                            </div>
+                            <span className="text-[8px] font-mono text-stone-400">← Click to Flip Back</span>
+                          </div>
+                        )}
                       </div>
-                      <div className="flex items-center justify-center">
-                        <Star className="w-2.5 h-2.5 text-amber-400 fill-amber-400" />
+
+                      {/* Right Page (Page 1 or Page 3) */}
+                      <div
+                        onClick={handleNextPage}
+                        className="w-1/2 h-full p-3 sm:p-4 flex flex-col justify-between relative cursor-pointer group/right hover:bg-stone-50 transition-colors"
+                        title={flipStep < 2 ? 'Click to Flip Next Page' : 'Last Page'}
+                      >
+                        {/* Center Spine Crease Shadow (Left side) */}
+                        <div className="absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-stone-400/35 via-stone-300/15 to-transparent pointer-events-none" />
+
+                        {flipStep === 1 ? (
+                          /* Page 1 Feint Ruled Ledger Sheet */
+                          <div className="h-full flex flex-col justify-between text-stone-900">
+                            <div className="flex items-center justify-between border-b border-red-500 pb-1 text-[9px] font-mono font-bold text-stone-700">
+                              <span className="text-red-700">OMEGA COUNTER BOOK Q3</span>
+                              <span>PAGE NO: 01</span>
+                            </div>
+                            <div className="relative py-1 space-y-2.5 flex-1">
+                              <div className="absolute top-0 bottom-0 left-8 w-px bg-red-500/70" />
+                              <div className="border-b border-blue-200 pb-0.5 pl-10 text-[11px] font-serif italic text-stone-900 font-semibold">
+                                OMEGA – Ubora Unaouaminiwa.
+                              </div>
+                              <div className="border-b border-blue-200 pb-0.5 pl-10 text-[10px] font-sans text-stone-700">
+                                Inafaa kwa shule, ofisi na biashara.
+                              </div>
+                              <div className="border-b border-blue-200 pb-0.5 pl-10 text-[10px] font-sans text-stone-700">
+                                Kurasa 288 | Imara | Nadhifu | Rahisi kutumia.
+                              </div>
+                              <div className="border-b border-blue-200 pb-0.5 pl-10 text-[9px] font-mono text-stone-400">
+                                70 GSM Bleed-Proof Archival Paper
+                              </div>
+                            </div>
+                            <div className="flex items-center justify-between text-[8px] font-mono text-stone-400 pt-1 border-t border-stone-200">
+                              <span className="text-emerald-700 font-bold">✓ 100% Genuine</span>
+                              <span className="text-[#c49b7c] font-bold">Click to Turn Page →</span>
+                            </div>
+                          </div>
+                        ) : (
+                          /* Page 3 Mathematics / Grid Sheet */
+                          <div className="h-full flex flex-col justify-between text-stone-900">
+                            <div className="flex items-center justify-between border-b border-red-500 pb-1 text-[9px] font-mono font-bold text-stone-700">
+                              <span className="text-red-700">ACCOUNTING & SPECIFICATION</span>
+                              <span>PAGE NO: 03</span>
+                            </div>
+                            <div className="relative py-1 space-y-2 flex-1">
+                              <div className="grid grid-cols-3 gap-1 p-1 bg-stone-100 rounded text-[9px] font-mono text-center">
+                                <span className="font-bold">Q2 (198p)</span>
+                                <span className="font-bold">Q3 (288p)</span>
+                                <span className="font-bold">Q4 (384p)</span>
+                              </div>
+                              <p className="text-[10px] text-stone-700 leading-snug pt-1">
+                                Complete stationery range: Counter Books, Exercise Books (32p, 80p, 100p, 200p), Kraft Bahasha & Office Spring Files.
+                              </p>
+                            </div>
+                            <div className="text-[8px] font-mono text-stone-500 pt-1 border-t border-stone-200 flex justify-between">
+                              <span>OFFICIAL 2026 CATALOG</span>
+                              <span className="text-emerald-700 font-bold">✓ READY TO ORDER</span>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
-
-                    {/* 3. PAPER BLOCK EDGE (Right Face) */}
-                    <div
-                      style={{
-                        width: '30px',
-                        transform: 'rotateY(90deg) translateZ(220px)',
-                        right: '-15px',
-                      }}
-                      className="absolute top-0 bottom-0 bg-gradient-to-r from-amber-50 via-white to-stone-200 border-y border-stone-400 shadow-md overflow-hidden"
-                    >
-                      <div className="w-full h-full opacity-40 bg-[repeating-linear-gradient(0deg,#cbd5e1,#cbd5e1_1px,transparent_1px,transparent_3px)]" />
-                    </div>
-
-                    {/* 4. TOP & BOTTOM EDGES */}
-                    <div
-                      style={{
-                        height: '30px',
-                        transform: 'rotateX(90deg) translateZ(15px)',
-                        top: '-15px',
-                      }}
-                      className="absolute left-0 right-0 bg-stone-200 border border-stone-400"
-                    />
-                    <div
-                      style={{
-                        height: '30px',
-                        transform: 'rotateX(-90deg) translateZ(320px)',
-                        bottom: '-15px',
-                      }}
-                      className="absolute left-0 right-0 bg-stone-300 border border-stone-400 shadow-xl"
-                    />
-                  </div>
+                  )}
                 </div>
 
                 {/* Dynamic Responsive Floor Shadow */}
                 <div
-                  className="w-52 sm:w-64 h-6 bg-black/85 rounded-full blur-lg transition-transform duration-100 pointer-events-none mt-2"
+                  className="w-56 sm:w-68 h-6 bg-black/85 rounded-full blur-lg transition-transform duration-100 pointer-events-none mt-2"
                   style={{
-                    transform: `translateX(${rotY * 1.5}px) translateY(${-rotX * 0.35}px) scale(${1 - Math.abs(rotX) * 0.012})`,
+                    transform: `translateX(${rotY * 1.2}px) translateY(${-rotX * 0.3}px) scale(${1 - Math.abs(rotX) * 0.01})`,
                   }}
                   aria-hidden="true"
                 />
 
-                {/* Apple-Style Scroll-Scrubbed Frame HUD & Video Controls */}
-                <div className="mt-3 flex flex-col items-center gap-1.5 w-full max-w-[320px] px-3 py-2 bg-[#1a1614]/90 rounded-2xl border border-white/15 backdrop-blur-md shadow-xl">
-                  <div className="flex items-center justify-between w-full text-[11px] font-mono">
-                    <div className="flex items-center gap-1.5 text-stone-300">
-                      <span className={`w-2 h-2 rounded-full ${currentFrame === TOTAL_FRAMES ? 'bg-emerald-400' : 'bg-[#e5a962] animate-pulse'}`} />
-                      <span className="font-bold tracking-wider text-white">3D FRAME</span>
-                      <span className="text-[#e5a962] font-black">
-                        {String(currentFrame).padStart(2, '0')} / {TOTAL_FRAMES}
+                {/* DEARFLIP-STYLE INTERACTIVE 3D FLIPBOOK TOOLBAR (dearflip.com) */}
+                <div className="mt-3 flex flex-col items-center gap-1.5 w-full max-w-[340px] px-3 py-2 bg-[#1a1614]/90 rounded-2xl border border-white/15 backdrop-blur-md shadow-xl text-white">
+                  <div className="flex items-center justify-between w-full">
+                    {/* Previous Page Button */}
+                    <button
+                      type="button"
+                      onClick={handlePrevPage}
+                      disabled={flipStep === 0}
+                      className="p-1 rounded-lg bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[10px] font-bold"
+                      title="Previous Page"
+                    >
+                      <ChevronLeft className="w-3.5 h-3.5 text-[#e5a962]" />
+                      <span className="hidden sm:inline">Prev</span>
+                    </button>
+
+                    {/* Step / Page Indicator Badge */}
+                    <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/40 border border-white/10 text-[10px] font-mono">
+                      <span className={`w-2 h-2 rounded-full ${flipStep > 0 ? 'bg-emerald-400' : 'bg-[#e5a962] animate-pulse'}`} />
+                      <span className="font-bold tracking-wider text-white">
+                        {flipStep === 0 ? 'COVER (3D)' : flipStep === 1 ? 'PAGES 01-02' : 'PAGES 03-04'}
                       </span>
                     </div>
-                    
+
+                    {/* Next Page Button */}
+                    <button
+                      type="button"
+                      onClick={handleNextPage}
+                      disabled={flipStep === 2}
+                      className="p-1 rounded-lg bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:pointer-events-none transition-all flex items-center gap-1 text-[10px] font-bold"
+                      title="Next Page"
+                    >
+                      <span className="hidden sm:inline">Next</span>
+                      <ChevronRight className="w-3.5 h-3.5 text-[#e5a962]" />
+                    </button>
+
+                    {/* Sound Toggle */}
+                    <button
+                      type="button"
+                      onClick={() => setIsSoundEnabled(!isSoundEnabled)}
+                      className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-all text-stone-300 hover:text-white"
+                      title={isSoundEnabled ? 'Page Turn Sound: ON' : 'Page Turn Sound: OFF'}
+                    >
+                      {isSoundEnabled ? (
+                        <Volume2 className="w-3.5 h-3.5 text-emerald-400" />
+                      ) : (
+                        <VolumeX className="w-3.5 h-3.5 text-stone-400" />
+                      )}
+                    </button>
+
+                    {/* Auto Play / Pause Video Mode */}
                     <button
                       type="button"
                       onClick={() => setIsVideoAutoPlaying(!isVideoAutoPlaying)}
-                      className="flex items-center gap-1 px-2 py-0.5 rounded-lg bg-white/10 hover:bg-white/20 text-[10px] font-bold text-white transition-colors"
-                      title={isVideoAutoPlaying ? 'Pause Video Mode' : 'Play Video Loop'}
+                      className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-all text-[#e5a962]"
+                      title={isVideoAutoPlaying ? 'Pause Auto Play' : 'Start Auto Play'}
                     >
-                      {isVideoAutoPlaying ? (
-                        <>
-                          <Pause className="w-2.5 h-2.5 text-[#e5a962]" />
-                          <span>Pause</span>
-                        </>
-                      ) : (
-                        <>
-                          <Play className="w-2.5 h-2.5 text-[#e5a962]" />
-                          <span>Auto Play</span>
-                        </>
-                      )}
+                      {isVideoAutoPlaying ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
                     </button>
                   </div>
 
@@ -565,6 +846,11 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
                       const clickRatio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
                       setScrollProgress(clickRatio);
                       setCurrentFrame(Math.min(Math.max(Math.round(clickRatio * (TOTAL_FRAMES - 1)) + 1, 1), TOTAL_FRAMES));
+                      const autoStep = clickRatio < 0.25 ? 0 : clickRatio < 0.70 ? 1 : 2;
+                      setFlipStep((old) => {
+                        if (old !== autoStep) playPageTurnSound();
+                        return autoStep;
+                      });
                     }}
                     title="Click or drag to scrub frames"
                   >
@@ -577,7 +863,7 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
                   <div className="flex items-center justify-between w-full text-[9px] font-mono text-stone-400">
                     <span>{currentFrame < TOTAL_FRAMES ? '↑ SCROLL UP (REWIND)' : '↑ SCROLL UP'}</span>
                     <span className={currentFrame === TOTAL_FRAMES ? 'text-emerald-400 font-bold' : ''}>
-                      {currentFrame === TOTAL_FRAMES ? '✓ UNLOCKED (SCROLL DOWN ↓)' : '↓ SCROLL DOWN (STUCK TIL 60)'}
+                      {currentFrame === TOTAL_FRAMES ? '✓ UNLOCKED (SCROLL DOWN ↓)' : '↓ SCROLL (FLIP TO 60)'}
                     </span>
                   </div>
                 </div>
