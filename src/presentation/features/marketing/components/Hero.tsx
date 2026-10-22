@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ShieldCheck,
@@ -12,8 +12,6 @@ import {
   FolderOpen,
   ArrowRight,
   Sparkles,
-  Pencil,
-  RotateCw,
 } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { TRANSLATIONS } from '@/data/translations';
@@ -36,6 +34,61 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
         ? 'Habari OMEGA Stationery, ninahitaji kuagiza madaftari (Counter Books, Exercise Books na Bahasha).'
         : 'Hello OMEGA Stationery, I would like to place an order and inquire about wholesale pricing.'
     )}`;
+
+  // Flagship Models for Interactive Showcase (Smooth dynamic movement & switcher)
+  const featuredModels = [
+    {
+      id: 'spiral',
+      name: language === 'sw' ? 'Spiral 120p' : 'Blue Spiral 120p',
+      subtitle: 'Executive Twin-Wire Edition',
+      image: '/hero-spiral-notebook.jpg',
+      bgGlow: 'from-[#2563eb]/25 via-[#c49b7c]/20 to-transparent',
+    },
+    {
+      id: 'q4',
+      name: language === 'sw' ? 'Counter Q4' : 'Q4 Hardcover',
+      subtitle: '384p Smyth Sewn Folio',
+      image: '/omega-products/counter-book-q4-catalog.jpeg',
+      bgGlow: 'from-[#dc2626]/25 via-[#c49b7c]/20 to-transparent',
+    },
+    {
+      id: 'ex200',
+      name: language === 'sw' ? 'Daftari 200p' : '200p Exercise',
+      subtitle: 'Primary & Secondary School',
+      image: '/omega-products/exercise-book-200p-sl-catalog.jpeg',
+      bgGlow: 'from-[#9333ea]/25 via-[#c49b7c]/20 to-transparent',
+    },
+  ];
+
+  const [activeModelIndex, setActiveModelIndex] = useState(0);
+  const activeModel = featuredModels[activeModelIndex];
+
+  // 3D Tilt Movement state ("Thodi movement hova joiye bas 360 na hoye to chale")
+  const stageRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!stageRef.current) return;
+    const rect = stageRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    // Calculate rotation (-14deg to +14deg for smooth natural tilt)
+    const rotateY = ((x - centerX) / centerX) * 14;
+    const rotateX = -((y - centerY) / centerY) * 14;
+    setTilt({ x: rotateX, y: rotateY });
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setTilt({ x: 0, y: 0 });
+  };
 
   // 4 Trust Badges from Reference Image
   const trustBadges = [
@@ -223,26 +276,89 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
             </div>
 
             {/* =================================================================== */}
-            {/* CENTER COLUMN: 3D SPIRAL NOTEBOOK ON ILLUMINATED PODIUM */}
+            {/* CENTER COLUMN: INTERACTIVE DYNAMIC 3D MOVING PRODUCT SHOWCASE */}
             {/* =================================================================== */}
             <div className="lg:col-span-5 flex flex-col items-center justify-center order-2 my-2 lg:my-0 select-none">
-              <div className="relative w-full max-w-[360px] sm:max-w-[420px] flex items-center justify-center">
-                
-                {/* Center Visual: Standing Spiral Notebook with Podium & Curved Arrows */}
-                <div className="relative z-10 w-full flex items-center justify-center animate-aardvark-float">
+              <div
+                ref={stageRef}
+                onMouseMove={handleMouseMove}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                className="relative w-full max-w-[360px] sm:max-w-[420px] flex flex-col items-center justify-center py-2 cursor-grab active:cursor-grabbing group/stage"
+              >
+                {/* Dynamic Ambient Glow matching active book */}
+                <div
+                  className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 sm:w-80 h-64 sm:h-80 rounded-full bg-radial ${activeModel.bgGlow} blur-3xl transition-all duration-700 pointer-events-none`}
+                  aria-hidden="true"
+                />
+
+                {/* Subtle orbital dashed rotation ring */}
+                <div
+                  className="absolute w-56 h-56 sm:w-72 sm:h-72 rounded-full border border-[#c49b7c]/30 border-dashed animate-omega-spin pointer-events-none"
+                  aria-hidden="true"
+                />
+
+                {/* The 3D Moving Product Showcase (Smooth Natural Perspective Tilt) */}
+                <div
+                  className={`relative z-10 w-full flex items-center justify-center ${
+                    !isHovered ? 'animate-aardvark-float' : ''
+                  }`}
+                  style={{
+                    transform: isHovered
+                      ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale3d(1.05, 1.05, 1.05)`
+                      : undefined,
+                    transition: isHovered ? 'transform 0.08s ease-out' : 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                    transformStyle: 'preserve-3d',
+                  }}
+                >
                   <img
-                    src="/hero-spiral-notebook.jpg"
-                    alt="OMEGA Flagship Spiral Notebook on Illuminated 360 Podium"
-                    className="w-full max-h-[380px] sm:max-h-[440px] object-contain drop-shadow-[0_20px_35px_rgba(0,0,0,0.85)] rounded-2xl"
+                    key={activeModel.id}
+                    src={activeModel.image}
+                    alt={activeModel.name}
+                    className="w-full max-h-[350px] sm:max-h-[390px] object-contain drop-shadow-[0_22px_36px_rgba(0,0,0,0.85)] rounded-2xl transition-all duration-300"
                     loading="eager"
                   />
                 </div>
 
-                {/* Floor Pedestal Glow & Shadow */}
+                {/* Dynamic Responsive Floor Shadow */}
                 <div
-                  className="absolute bottom-4 w-3/4 h-8 bg-black/75 rounded-full blur-xl pointer-events-none"
+                  className="w-48 sm:w-60 h-6 bg-black/80 rounded-full blur-lg transition-transform duration-100 pointer-events-none mt-2"
+                  style={{
+                    transform: isHovered
+                      ? `translateX(${tilt.y * 1.8}px) translateY(${-tilt.x * 0.4}px) scale(${1 - Math.abs(tilt.x) * 0.015})`
+                      : undefined,
+                  }}
                   aria-hidden="true"
                 />
+
+                {/* Interactive Movement Hint Badge */}
+                <div className="mt-2.5 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/40 border border-white/10 text-[10px] font-mono tracking-wider uppercase text-stone-300 backdrop-blur-xs">
+                  <Sparkles className="w-3 h-3 text-[#e5a962]" />
+                  <span>{language === 'sw' ? 'Sogeza kipanya kutazama' : 'Hover / Move to Inspect'}</span>
+                </div>
+
+                {/* Interactive Flagship Model Selector (Nike-Style Pills) */}
+                <div className="mt-2.5 flex items-center gap-1.5 sm:gap-2 bg-[#1a1614]/85 p-1.5 rounded-2xl border border-white/15 backdrop-blur-md shadow-lg">
+                  {featuredModels.map((model, idx) => {
+                    const isActive = activeModelIndex === idx;
+                    return (
+                      <button
+                        key={model.id}
+                        type="button"
+                        onClick={() => setActiveModelIndex(idx)}
+                        className={`px-2.5 sm:px-3 py-1.5 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                          isActive
+                            ? 'bg-[#c49b7c] text-[#161311] font-bold shadow-xs'
+                            : 'text-stone-300 hover:text-white hover:bg-white/5'
+                        }`}
+                      >
+                        <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#161311]' : 'bg-[#c49b7c]'}`} />
+                        <span>{model.name}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
               </div>
             </div>
 
@@ -322,7 +438,7 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
               to="/wholesale"
               className="flex flex-col items-center gap-1.5 shrink-0 group min-w-[84px] sm:min-w-[100px] text-center"
             >
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-[#fafafa] border border-[#e2dedb] group-hover:border-[#c49b7c] group-hover:shadow-md transition-all p-1 flex items-center justify-center relative">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-white border border-[#e2dedb] group-hover:border-[#c49b7c] group-hover:shadow-md transition-all p-1 flex items-center justify-center relative">
                 {/* Tanzania Flag Circle */}
                 <div className="w-10 h-10 rounded-full overflow-hidden shadow-xs border border-stone-200 flex items-center justify-center relative group-hover:scale-105 transition-transform">
                   <svg viewBox="0 0 32 32" className="w-full h-full">
