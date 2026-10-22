@@ -221,15 +221,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   // Language toggle
   const toggleLanguage = () => {
-    const nextLang: Language = language === 'en' ? 'sw' : language === 'sw' ? 'gu' : 'en';
+    const nextLang: Language = language === 'en' ? 'sw' : 'en';
     setLanguage(nextLang);
-    showToast(
-      nextLang === 'sw'
-        ? 'Lugha imebadilishwa kuwa Kiswahili'
-        : nextLang === 'gu'
-        ? 'ભાષા ગુજરાતીમાં બદલાઈ ગઈ (Switched to Gujarati)'
-        : 'Language switched to English'
-    );
+    showToast(nextLang === 'sw' ? 'Lugha imebadilishwa kuwa Kiswahili' : 'Language switched to English');
   };
 
   // Detailed Cart Calculation with useMemo

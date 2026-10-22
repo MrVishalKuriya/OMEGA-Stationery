@@ -34,8 +34,6 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
     `https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
       language === 'sw'
         ? 'Habari OMEGA Stationery, ninahitaji kuagiza madaftari (Counter Books, Exercise Books na Bahasha).'
-        : language === 'gu'
-        ? 'નમસ્તે ઓમેગા સ્ટેશનરી, મારે નોટબુક્સ અને કાઉન્ટર બુક્સનો ઓર્ડર કરવો છે.'
         : 'Hello OMEGA Stationery, I would like to place an order and inquire about wholesale pricing.'
     )}`;
 
@@ -43,23 +41,23 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
   const trustBadges = [
     {
       icon: ShieldCheck,
-      line1: language === 'sw' ? 'Ubora wa' : language === 'gu' ? 'શ્રેષ્ઠ' : 'Premium',
-      line2: language === 'sw' ? 'Kiwango cha Juu' : language === 'gu' ? 'ગુણવત્તા' : 'Quality',
+      line1: language === 'sw' ? 'Ubora wa' : 'Premium',
+      line2: language === 'sw' ? 'Kiwango cha Juu' : 'Quality',
     },
     {
       icon: Truck,
-      line1: language === 'sw' ? 'Oda za Jumla' : language === 'gu' ? 'જથ્થાબંધ' : 'Bulk Orders',
-      line2: language === 'sw' ? 'Zinapatikana' : language === 'gu' ? 'ઓર્ડર ઉપલબ્ધ' : 'Available',
+      line1: language === 'sw' ? 'Oda za Jumla' : 'Bulk Orders',
+      line2: language === 'sw' ? 'Zinapatikana' : 'Available',
     },
     {
       icon: Handshake,
-      line1: language === 'sw' ? 'Msambazaji' : language === 'gu' ? 'વિશ્વાસપાત્ર' : 'Trusted',
-      line2: language === 'sw' ? 'Anayeaminika' : language === 'gu' ? 'સપ્લાયર' : 'Supplier',
+      line1: language === 'sw' ? 'Msambazaji' : 'Trusted',
+      line2: language === 'sw' ? 'Anayeaminika' : 'Supplier',
     },
     {
       icon: MapPin,
-      line1: language === 'sw' ? 'Kuhudumia' : language === 'gu' ? 'સમગ્ર ટાંઝાનિયા' : 'Serving',
-      line2: language === 'sw' ? 'Tanzania Nzima' : language === 'gu' ? 'સર્વિસ' : 'Tanzania',
+      line1: language === 'sw' ? 'Kuhudumia' : 'Serving',
+      line2: language === 'sw' ? 'Tanzania Nzima' : 'Tanzania',
     },
   ];
 
@@ -67,27 +65,27 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
   const rightFeatures = [
     {
       icon: BookOpen,
-      label: language === 'sw' ? 'Madaftari & Exercise Books' : language === 'gu' ? 'નોટબુક્સ અને એક્સરસાઇઝ બુક્સ' : 'Notebooks & Exercise Books',
+      label: language === 'sw' ? 'Madaftari & Exercise Books' : 'Notebooks & Exercise Books',
       href: '/catalog?category=Exercise+Books',
     },
     {
       icon: FileSpreadsheet,
-      label: language === 'sw' ? 'Counter Books (Q2, Q3, Q4)' : language === 'gu' ? 'કાઉન્ટર બુક્સ (Q2, Q3, Q4)' : 'Counter Books',
+      label: language === 'sw' ? 'Counter Books (Q2, Q3, Q4)' : 'Counter Books',
       href: '/catalog?category=Counter+Books',
     },
     {
       icon: FileText,
-      label: language === 'sw' ? 'Padi za Kuandikia' : language === 'gu' ? 'રાઇટિંગ પેડ્સ' : 'Writing Pads',
+      label: language === 'sw' ? 'Padi za Kuandikia' : 'Writing Pads',
       href: '/catalog?category=Ruled+Paper',
     },
     {
       icon: Boxes,
-      label: language === 'sw' ? 'Karatasi za Kopi (A4/A3)' : language === 'gu' ? 'કોપી પેપર (A4/A3)' : 'Copy Paper',
+      label: language === 'sw' ? 'Karatasi za Kopi (A4/A3)' : 'Copy Paper',
       href: '/catalog?category=Ruled+Paper',
     },
     {
       icon: FolderOpen,
-      label: language === 'sw' ? 'Faili, Bahasha & Vifaa' : language === 'gu' ? 'ફાઇલ્સ અને સ્ટેશનરી' : 'Files & Stationery',
+      label: language === 'sw' ? 'Faili, Bahasha & Vifaa' : 'Files & Stationery',
       href: '/catalog?category=Files+%26+Folders',
     },
   ];
@@ -177,8 +175,6 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
                 <span className="text-xs sm:text-[13px] font-bold tracking-[0.2em] uppercase text-[#e5a962] font-mono">
                   {language === 'sw'
                     ? 'VITABU BORA • MAISHA BORA'
-                    : language === 'gu'
-                    ? 'શ્રેષ્ઠ પુસ્તકો • ઉજ્જવળ ભવિષ્ય'
                     : 'QUALITY BOOKS • BETTER FUTURE'}
                 </span>
               </div>
@@ -188,24 +184,18 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
                 <h1 className="font-heading text-3xl sm:text-4xl lg:text-[2.65rem] font-black text-white leading-[1.1] tracking-tight">
                   {language === 'sw'
                     ? 'Madaftari ya OMEGA'
-                    : language === 'gu'
-                    ? 'ઓમેગા બુક પ્રોડક્ટ્સ'
                     : 'Omega Book Products'}
                 </h1>
 
                 <h2 className="text-base sm:text-lg lg:text-xl font-bold text-white/95 leading-snug">
                   {language === 'sw'
                     ? 'Mshirika Wako Anayeaminika Katika Vitabu & Stationery'
-                    : language === 'gu'
-                    ? 'સ્ટેશનરી અને નોટબુક્સમાં તમારો વિશ્વસનીય ભાગીદાર'
                     : 'Your Trusted Partner in Books & Stationery'}
                 </h2>
 
                 <p className="text-xs sm:text-sm text-stone-300 leading-relaxed font-normal max-w-md pt-1">
                   {language === 'sw'
                     ? 'Tunasambaza madaftari bora ya shule, counter books zenye jalada gumu, na vifaa vya stationery — vinavyoaminika kote Tanzania kwa shule, vyuo, ofisi na biashara.'
-                    : language === 'gu'
-                    ? 'અમે સમગ્ર ટાંઝાનિયામાં શાળાઓ, ઓફિસો અને વ્યવસાયો માટે ઉચ્ચ ગુણવત્તાવાળી નોટબુક્સ, કાઉન્ટર બુક્સ અને સ્ટેશનરી સપ્લાય કરીએ છીએ.'
                     : 'We supply high-quality notebooks, exercise books, counter books, and stationery products — trusted across Tanzania for schools, offices and businesses.'}
                 </p>
               </div>
@@ -267,7 +257,7 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
                   {language === 'sw' ? 'Ugavi wa Jumla kwa' : 'Wholesale Supply for a'}
                 </span>
                 <span className="font-serif italic font-bold text-[#e5a962] text-2xl sm:text-3xl block leading-tight drop-shadow-[0_2px_10px_rgba(229,169,98,0.35)]">
-                  {language === 'sw' ? 'Tanzania Yenye Nuru' : language === 'gu' ? 'ઉજ્જવળ ટાંઝાનિયા' : 'Brighter Tanzania'}
+                  {language === 'sw' ? 'Tanzania Yenye Nuru' : 'Brighter Tanzania'}
                 </span>
               </div>
 
