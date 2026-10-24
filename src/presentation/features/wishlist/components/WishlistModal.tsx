@@ -36,20 +36,20 @@ export const WishlistModal: React.FC = () => {
       onClick={() => setIsWishlistModalOpen(false)}
     >
       <div
-        className="relative w-full max-w-2xl bg-[#fafafa] rounded-[24px] overflow-hidden shadow-2xl border border-[#e2dedb] max-h-[85vh] flex flex-col"
+        className="relative w-full max-w-2xl bg-[#fafafa] rounded-[24px] overflow-hidden shadow-2xl border border-[#e4e4e7] max-h-[85vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header: Deep Mocha #4b423b */}
-        <div className="bg-[#4b423b] text-white px-6 py-4 flex items-center justify-between border-b border-[#e2dedb]/20">
+        {/* Header: Deep Mocha #111113 */}
+        <div className="bg-[#111113] text-white px-6 py-4 flex items-center justify-between border-b border-[#e4e4e7]/20">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-[10px] bg-[#c49b7c] flex items-center justify-center text-[#4b423b]">
-              <Heart className="w-4 h-4 fill-[#4b423b]" />
+            <div className="w-8 h-8 rounded-[10px] bg-[#dc2626] flex items-center justify-center text-[#111113]">
+              <Heart className="w-4 h-4 fill-[#111113]" />
             </div>
             <div>
               <h2 className="text-sm font-bold tracking-wide uppercase font-heading text-white">
                 My Saved Wishlist
               </h2>
-              <span className="text-xs text-[#c49b7c] font-mono">
+              <span className="text-xs text-[#dc2626] font-mono">
                 {wishlistedProducts.length} saved {wishlistedProducts.length === 1 ? 'item' : 'items'}
               </span>
             </div>
@@ -67,11 +67,11 @@ export const WishlistModal: React.FC = () => {
         <div className="p-6 overflow-y-auto flex-1 space-y-3">
           {wishlistedProducts.length === 0 ? (
             <div className="py-12 text-center space-y-3">
-              <div className="w-14 h-14 rounded-full bg-white border border-[#e2dedb] flex items-center justify-center mx-auto text-[#8c847e]">
+              <div className="w-14 h-14 rounded-full bg-white border border-[#e4e4e7] flex items-center justify-center mx-auto text-[#a1a1aa]">
                 <Heart className="w-6 h-6 stroke-[1.5]" />
               </div>
-              <p className="text-sm font-semibold text-[#3b352f] font-heading">Your wishlist is currently empty.</p>
-              <p className="text-xs text-[#8c847e] max-w-sm mx-auto">
+              <p className="text-sm font-semibold text-[#18181b] font-heading">Your wishlist is currently empty.</p>
+              <p className="text-xs text-[#a1a1aa] max-w-sm mx-auto">
                 Click the heart icon on any notebook or stationery product to save it here for future reference or bulk inquiries.
               </p>
             </div>
@@ -82,24 +82,24 @@ export const WishlistModal: React.FC = () => {
               return (
                 <div
                   key={p.id}
-                  className="flex items-center gap-4 p-3.5 rounded-[16px] bg-white border border-[#e2dedb] shadow-xs hover:border-[#c49b7c] transition-colors"
+                  className="flex items-center gap-4 p-3.5 rounded-[16px] bg-white border border-[#e4e4e7] shadow-xs hover:border-[#dc2626] transition-colors"
                 >
                   <img
                     src={p.image}
                     alt={p.name}
-                    className="w-16 h-16 object-contain rounded-[10px] bg-[#f5f4f4] p-1 border border-[#e2dedb] shrink-0"
+                    className="w-16 h-16 object-contain rounded-[10px] bg-[#f5f4f4] p-1 border border-[#e4e4e7] shrink-0"
                   />
                   <div className="flex-1 min-w-0">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#c49b7c] font-mono">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#dc2626] font-mono">
                       {p.category}
                     </span>
-                    <h3 className="text-xs font-bold text-[#3b352f] truncate">{p.name}</h3>
+                    <h3 className="text-xs font-bold text-[#18181b] truncate">{p.name}</h3>
                     <div className="flex items-baseline gap-2 mt-1">
-                      <span className="text-sm font-bold text-[#3b352f] font-mono">
+                      <span className="text-sm font-bold text-[#18181b] font-mono">
                         {formatPrice(effectivePrice, currency)}
                       </span>
                       {p.discountPrice && p.discountPrice < p.price && (
-                        <span className="text-xs text-[#8c847e] line-through font-mono">
+                        <span className="text-xs text-[#a1a1aa] line-through font-mono">
                           {formatPrice(p.price, currency)}
                         </span>
                       )}
@@ -122,7 +122,7 @@ export const WishlistModal: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => toggleWishlist(p.id)}
-                      className="p-2 text-[#8c847e] hover:text-[#D64545] rounded-lg transition-colors"
+                      className="p-2 text-[#a1a1aa] hover:text-[#D64545] rounded-lg transition-colors"
                       title="Remove"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -136,11 +136,11 @@ export const WishlistModal: React.FC = () => {
 
         {/* Footer */}
         {wishlistedProducts.length > 0 && (
-          <div className="p-4 bg-white border-t border-[#e2dedb] flex items-center justify-between">
+          <div className="p-4 bg-white border-t border-[#e4e4e7] flex items-center justify-between">
             <button
               type="button"
               onClick={clearWishlist}
-              className="text-xs text-[#8c847e] hover:text-[#D64545] font-semibold"
+              className="text-xs text-[#a1a1aa] hover:text-[#D64545] font-semibold"
             >
               Clear All Items
             </button>
@@ -148,7 +148,7 @@ export const WishlistModal: React.FC = () => {
               href={shareWhatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2 rounded-[12px] bg-[#4b423b] hover:bg-[#3b352f] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-xs transition-colors"
+              className="px-4 py-2 rounded-[12px] bg-[#111113] hover:bg-[#18181b] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-xs transition-colors"
             >
               <MessageCircle className="w-4 h-4 fill-white" />
               <span>Inquire via WhatsApp</span>

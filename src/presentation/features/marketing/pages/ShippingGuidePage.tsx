@@ -50,26 +50,26 @@ export const ShippingGuidePage: React.FC = () => {
   });
 
   return (
-    <div className="bg-[#fafafa] min-h-screen text-[#3b352f]">
+    <div className="bg-[#fafafa] min-h-screen text-[#18181b]">
       <SEOHead
         title="Nationwide Bus Parcel Shipping Guide & Waybill Tracking | OMEGA Tanzania"
         description="Comprehensive guide to OMEGA stationery bus parcel dispatch across all 31 regions of Tanzania via Shabiby, BM Coach, Abood, New Force, and Saibaba."
       />
 
       {/* ==================== 1. HERO HEADER ==================== */}
-      <section className="relative overflow-hidden w-full bg-[#4b423b] text-white py-14 lg:py-20 border-b border-[#3b352f]">
-        <div className="absolute -top-32 -right-32 w-[600px] h-[600px] bg-[#c49b7c]/18 rounded-full blur-[150px] pointer-events-none" />
+      <section className="relative overflow-hidden w-full bg-[#111113] text-white py-14 lg:py-20 border-b border-[#18181b]">
+        <div className="absolute -top-32 -right-32 w-[600px] h-[600px] bg-[#dc2626]/18 rounded-full blur-[150px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[#c49b7c] bg-white/10 border border-[#c49b7c]/30">
-              <Truck className="w-4 h-4 text-[#c49b7c]" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[#dc2626] bg-white/10 border border-[#dc2626]/30">
+              <Truck className="w-4 h-4 text-[#dc2626]" />
               <span>Nationwide Regional Logistics Directory</span>
             </div>
 
             <h1 className="font-heading text-3xl sm:text-5xl font-light text-white leading-tight">
               {language === 'sw' ? 'Mwongozo wa Usafirishaji wa' : 'Nationwide Bus Parcel Dispatch &'} <br />
-              <span className="font-bold text-[#c49b7c] bg-gradient-to-r from-[#c49b7c] via-white to-[#c49b7c] bg-clip-text text-transparent">
+              <span className="font-bold text-[#dc2626] bg-gradient-to-r from-[#dc2626] via-white to-[#dc2626] bg-clip-text text-transparent">
                 {language === 'sw' ? 'Mizigo Mikoani Tanzania.' : 'Waybill Logistics Directory.'}
               </span>
             </h1>
@@ -84,67 +84,67 @@ export const ShippingGuidePage: React.FC = () => {
       </section>
 
       {/* ==================== 2. 4-STEP DISPATCH WORKFLOW ==================== */}
-      <section className="py-12 bg-white border-b border-[#e2dedb]">
+      <section className="py-12 bg-white border-b border-[#e4e4e7]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <div className="text-center space-y-1">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#c49b7c] font-heading block">
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#dc2626] font-heading block">
               THE WAYBILL PROCEDURE
             </span>
-            <h2 className="font-heading text-xl sm:text-2xl font-bold text-[#3b352f]">
+            <h2 className="font-heading text-xl sm:text-2xl font-bold text-[#18181b]">
               How Your Order Moves from Factory to Your Hands
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="p-5 rounded-[16px] bg-[#fafafa] border border-[#e2dedb] space-y-2">
-              <span className="text-xs font-mono font-bold text-[#c49b7c]">STEP 01</span>
-              <h3 className="font-heading font-bold text-sm text-[#3b352f]">Packing &amp; Strapping</h3>
-              <p className="text-xs text-[#736c67]">Cartons are wrapped in waterproof protective tape with bold consignee labeling.</p>
+            <div className="p-5 rounded-[16px] bg-[#fafafa] border border-[#e4e4e7] space-y-2">
+              <span className="text-xs font-mono font-bold text-[#dc2626]">STEP 01</span>
+              <h3 className="font-heading font-bold text-sm text-[#18181b]">Packing &amp; Strapping</h3>
+              <p className="text-xs text-[#71717a]">Cartons are wrapped in waterproof protective tape with bold consignee labeling.</p>
             </div>
 
-            <div className="p-5 rounded-[16px] bg-[#fafafa] border border-[#e2dedb] space-y-2">
-              <span className="text-xs font-mono font-bold text-[#c49b7c]">STEP 02</span>
-              <h3 className="font-heading font-bold text-sm text-[#3b352f]">Bus Terminal Drop-off</h3>
-              <p className="text-xs text-[#736c67]">Delivered directly to Shabiby, BM Coach, Abood, or New Force dispatch offices.</p>
+            <div className="p-5 rounded-[16px] bg-[#fafafa] border border-[#e4e4e7] space-y-2">
+              <span className="text-xs font-mono font-bold text-[#dc2626]">STEP 02</span>
+              <h3 className="font-heading font-bold text-sm text-[#18181b]">Bus Terminal Drop-off</h3>
+              <p className="text-xs text-[#71717a]">Delivered directly to Shabiby, BM Coach, Abood, or New Force dispatch offices.</p>
             </div>
 
-            <div className="p-5 rounded-[16px] bg-[#fafafa] border border-[#e2dedb] space-y-2">
-              <span className="text-xs font-mono font-bold text-[#c49b7c]">STEP 03</span>
-              <h3 className="font-heading font-bold text-sm text-[#3b352f]">Waybill Photo on WhatsApp</h3>
-              <p className="text-xs text-[#736c67]">You receive instant photo proof of the bus parcel receipt and tracking code.</p>
+            <div className="p-5 rounded-[16px] bg-[#fafafa] border border-[#e4e4e7] space-y-2">
+              <span className="text-xs font-mono font-bold text-[#dc2626]">STEP 03</span>
+              <h3 className="font-heading font-bold text-sm text-[#18181b]">Waybill Photo on WhatsApp</h3>
+              <p className="text-xs text-[#71717a]">You receive instant photo proof of the bus parcel receipt and tracking code.</p>
             </div>
 
-            <div className="p-5 rounded-[16px] bg-[#fafafa] border border-[#e2dedb] space-y-2">
-              <span className="text-xs font-mono font-bold text-[#c49b7c]">STEP 04</span>
-              <h3 className="font-heading font-bold text-sm text-[#3b352f]">Collection at Terminal</h3>
-              <p className="text-xs text-[#736c67]">Present your ID and SMS tracking number at your town's bus office to claim your parcel.</p>
+            <div className="p-5 rounded-[16px] bg-[#fafafa] border border-[#e4e4e7] space-y-2">
+              <span className="text-xs font-mono font-bold text-[#dc2626]">STEP 04</span>
+              <h3 className="font-heading font-bold text-sm text-[#18181b]">Collection at Terminal</h3>
+              <p className="text-xs text-[#71717a]">Present your ID and SMS tracking number at your town's bus office to claim your parcel.</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* ==================== 3. REGIONAL TERMINAL DIRECTORY ==================== */}
-      <section className="py-14 bg-[#fafafa] border-b border-[#e2dedb]">
+      <section className="py-14 bg-[#fafafa] border-b border-[#e4e4e7]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#c49b7c] font-heading block">
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#dc2626] font-heading block">
                 31 REGIONS COVERED
               </span>
-              <h2 className="font-heading text-2xl font-bold text-[#3b352f]">
+              <h2 className="font-heading text-2xl font-bold text-[#18181b]">
                 Regional Transit Times &amp; Terminals
               </h2>
             </div>
 
             {/* Search Input */}
             <div className="relative w-full md:w-72">
-              <Search className="w-4 h-4 text-[#8c847e] absolute left-3.5 top-3 pointer-events-none" />
+              <Search className="w-4 h-4 text-[#a1a1aa] absolute left-3.5 top-3 pointer-events-none" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search region or town..."
-                className="w-full pl-9 pr-4 py-2 bg-white rounded-full border border-[#e2dedb] text-xs focus:ring-1 focus:ring-[#4b423b] focus:outline-none"
+                className="w-full pl-9 pr-4 py-2 bg-white rounded-full border border-[#e4e4e7] text-xs focus:ring-1 focus:ring-[#111113] focus:outline-none"
               />
             </div>
           </div>
@@ -167,8 +167,8 @@ export const ShippingGuidePage: React.FC = () => {
                 onClick={() => setSelectedZone(tab.id)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
                   selectedZone === tab.id
-                    ? 'bg-[#4b423b] text-white shadow-xs'
-                    : 'bg-white text-[#736c67] border border-[#e2dedb] hover:bg-[#f5f4f4]'
+                    ? 'bg-[#111113] text-white shadow-xs'
+                    : 'bg-white text-[#71717a] border border-[#e4e4e7] hover:bg-[#f5f4f4]'
                 }`}
               >
                 {tab.label}
@@ -181,24 +181,24 @@ export const ShippingGuidePage: React.FC = () => {
             {filteredRegions.map((region, idx) => (
               <div
                 key={idx}
-                className="p-5 rounded-[16px] bg-white border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-3 shadow-xs"
+                className="p-5 rounded-[16px] bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all space-y-3 shadow-xs"
               >
                 <div className="flex items-center justify-between">
-                  <h3 className="font-heading font-bold text-base text-[#3b352f]">
+                  <h3 className="font-heading font-bold text-base text-[#18181b]">
                     {region.name}
                   </h3>
-                  <span className="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-[#f5f4f4] text-[#4b423b] border border-[#e2dedb]">
+                  <span className="text-[10px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-[#f5f4f4] text-[#111113] border border-[#e4e4e7]">
                     {region.zone}
                   </span>
                 </div>
 
-                <div className="space-y-1.5 text-xs text-[#736c67]">
+                <div className="space-y-1.5 text-xs text-[#71717a]">
                   <div className="flex items-start gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-[#c49b7c] shrink-0 mt-0.5" />
+                    <MapPin className="w-3.5 h-3.5 text-[#dc2626] shrink-0 mt-0.5" />
                     <span className="leading-snug">{region.terminal}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <Truck className="w-3.5 h-3.5 text-[#4b423b] shrink-0" />
+                    <Truck className="w-3.5 h-3.5 text-[#111113] shrink-0" />
                     <span>{region.buses}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
@@ -213,7 +213,7 @@ export const ShippingGuidePage: React.FC = () => {
       </section>
 
       {/* ==================== 4. NEED HELP WITH DISPATCH? ==================== */}
-      <section className="py-12 bg-[#4b423b] text-white">
+      <section className="py-12 bg-[#111113] text-white">
         <div className="max-w-4xl mx-auto px-4 text-center space-y-4">
           <h2 className="font-heading text-2xl font-bold">Have a Custom Delivery Destination?</h2>
           <p className="text-xs sm:text-sm text-stone-200">

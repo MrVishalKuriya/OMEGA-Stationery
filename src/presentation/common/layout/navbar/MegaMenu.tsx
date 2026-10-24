@@ -412,18 +412,18 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({ activeId, onClose }) => {
       ref={containerRef}
       role="region"
       aria-label={`${category.name} Menu`}
-      className="absolute top-full left-0 w-full bg-[#fafafa] text-[#14182B] border-b border-[#e2dedb] shadow-boutique-soft z-40 transition-all duration-200 ease-out animate-in fade-in slide-in-from-top-1"
+      className="absolute top-full left-0 w-full bg-[#fafafa] text-[#14182B] border-b border-[#e4e4e7] shadow-boutique-soft z-40 transition-all duration-200 ease-out animate-in fade-in slide-in-from-top-1"
       onMouseLeave={onClose}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
         {/* Top subtle category banner */}
-        <div className="flex items-center justify-between pb-5 mb-6 border-b border-[#e2dedb]">
+        <div className="flex items-center justify-between pb-5 mb-6 border-b border-[#e4e4e7]">
           <div className="flex items-center gap-3">
-            <span className="font-heading text-lg font-bold text-[#4b423b]">
+            <span className="font-heading text-lg font-bold text-[#111113]">
               {category.name}
             </span>
             {category.badge && (
-              <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-[#c49b7c] text-[#4b423b]">
+              <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-[#dc2626] text-white">
                 {category.badge}
               </span>
             )}
@@ -435,7 +435,7 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({ activeId, onClose }) => {
           <Link
             to={`/catalog${activeId === 'offers' ? '' : `?category=${encodeURIComponent(category.name)}`}`}
             onClick={onClose}
-            className="text-xs font-semibold text-[#4b423b] hover:text-[#c49b7c] inline-flex items-center gap-1 transition-colors group focus-ring-gold rounded-sm px-1"
+            className="text-xs font-semibold text-[#111113] hover:text-[#dc2626] inline-flex items-center gap-1 transition-colors group focus-ring-gold rounded-sm px-1"
           >
             <span>View all in {category.name}</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
@@ -446,7 +446,7 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({ activeId, onClose }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-8">
           {category.columns.map((col, idx) => (
             <div key={idx} className="space-y-3">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#4b423b] border-b border-[#e2dedb]/60 pb-1.5">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#111113] border-b border-[#e4e4e7]/60 pb-1.5">
                 {col.title}
               </h4>
               <ul className="space-y-2 text-[13px]">
@@ -455,13 +455,13 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({ activeId, onClose }) => {
                     <Link
                       to={item.href}
                       onClick={onClose}
-                      className="group flex items-center justify-between text-[#6B7280] hover:text-[#4b423b] py-1 transition-colors focus-ring-gold rounded-sm"
+                      className="group flex items-center justify-between text-[#6B7280] hover:text-[#111113] py-1 transition-colors focus-ring-gold rounded-sm"
                     >
                       <span className="group-hover:translate-x-0.5 transition-transform">
                         {item.label}
                       </span>
                       {item.badge && (
-                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-[#c49b7c]/20 text-[#4b423b]">
+                        <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-[#dc2626]/20 text-[#111113]">
                           {item.badge}
                         </span>
                       )}
@@ -473,7 +473,7 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({ activeId, onClose }) => {
           ))}
 
           {/* 5th Column: Featured Boutique Card */}
-          <div className="bg-white rounded-[12px] p-4 border border-[#e2dedb] flex flex-col justify-between shadow-xs hover:border-[#c49b7c] transition-all group">
+          <div className="bg-white rounded-[12px] p-4 border border-[#e4e4e7] flex flex-col justify-between shadow-xs hover:border-[#dc2626] transition-all group">
             <div>
               <div className="relative aspect-4/3 rounded-[8px] overflow-hidden bg-[#fafafa] mb-3">
                 <img
@@ -481,11 +481,11 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({ activeId, onClose }) => {
                   alt={category.featured.title}
                   className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300"
                 />
-                <span className="absolute top-2 left-2 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#4b423b] text-[#fafafa]">
+                <span className="absolute top-2 left-2 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#111113] text-[#fafafa]">
                   {category.featured.badge}
                 </span>
               </div>
-              <h5 className="font-heading font-bold text-sm text-[#14182B] group-hover:text-[#4b423b] transition-colors leading-snug">
+              <h5 className="font-heading font-bold text-sm text-[#14182B] group-hover:text-[#111113] transition-colors leading-snug">
                 {category.featured.title}
               </h5>
               <p className="text-xs text-[#6B7280] mt-1 line-clamp-2 leading-relaxed">

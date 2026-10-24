@@ -269,7 +269,7 @@ export const CatalogPage: React.FC = () => {
   }, [filteredProducts, currentPage, ITEMS_PER_PAGE]);
 
   return (
-    <div className="bg-[#faf9f8] min-h-screen text-[#2b2520] pb-20">
+    <div className="bg-[#fafafa] min-h-screen text-[#18181b] pb-20">
       <SEOHead
         title="Official Catalog — OMEGA Tanzania Counter Books & Stationery"
         description="Browse all genuine OMEGA Counter Books, Exercise Books, and heavy kraft bahasha manufactured in Soweto SIDO, Mbeya."

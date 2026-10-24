@@ -26,10 +26,10 @@ export const BackendStatusModal: React.FC<BackendStatusModalProps> = ({ isOpen, 
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="bg-[#4b423b] text-white px-6 py-5 flex items-center justify-between">
+        <div className="bg-[#111113] text-white px-6 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-white/10 rounded-xl">
-              <Server className="w-5 h-5 text-[#c49b7c]" />
+              <Server className="w-5 h-5 text-[#dc2626]" />
             </div>
             <div>
               <h3 className="font-serif-luxury font-bold text-lg text-white">High-Performance Backend &amp; MongoDB</h3>
@@ -80,7 +80,7 @@ export const BackendStatusModal: React.FC<BackendStatusModalProps> = ({ isOpen, 
                 <ExternalLink className="w-3.5 h-3.5" />
                 Backend API URL:
               </span>
-              <span className="font-mono font-bold text-[#4b423b] truncate max-w-[240px]">
+              <span className="font-mono font-bold text-[#111113] truncate max-w-[240px]">
                 {backendUrl}
               </span>
             </div>
@@ -148,8 +148,8 @@ export const BackendStatusModal: React.FC<BackendStatusModalProps> = ({ isOpen, 
           {/* Quick Render Action */}
           <div className="p-3.5 bg-stone-50 rounded-xl border border-stone-200 text-xs space-y-1.5">
             <div className="flex items-center justify-between">
-              <span className="font-bold text-[#4b423b]">Render Native Node.js Service</span>
-              <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md bg-[#4b423b]/10 text-[#4b423b]">
+              <span className="font-bold text-[#111113]">Render Native Node.js Service</span>
+              <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-md bg-[#111113]/10 text-[#111113]">
                 Blueprint Ready
               </span>
             </div>
@@ -173,7 +173,7 @@ export const BackendStatusModal: React.FC<BackendStatusModalProps> = ({ isOpen, 
           <button
             type="button"
             onClick={onClose}
-            className="px-5 py-2 bg-[#4b423b] hover:bg-[#2A3B82] text-white text-xs font-bold rounded-xl transition-colors shadow-xs"
+            className="px-5 py-2 bg-[#111113] hover:bg-[#2A3B82] text-white text-xs font-bold rounded-xl transition-colors shadow-xs"
           >
             Close
           </button>

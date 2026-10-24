@@ -92,19 +92,19 @@ export const RegisterPage: React.FC = () => {
 
       <div className="max-w-xl w-full">
         {/* Main Registration Card */}
-        <div className="bg-white rounded-[16px] border border-[#e2dedb] shadow-boutique overflow-hidden">
+        <div className="bg-white rounded-[16px] border border-[#e4e4e7] shadow-boutique overflow-hidden">
           {/* Header */}
-          <div className="bg-[#4b423b] text-white p-6 sm:p-8">
+          <div className="bg-[#111113] text-white p-6 sm:p-8">
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-[11px] font-mono tracking-widest text-[#c49b7c] uppercase font-bold">
+                <span className="text-[11px] font-mono tracking-widest text-[#dc2626] uppercase font-bold">
                   New Customer Registration
                 </span>
                 <h1 className="text-2xl font-serif font-bold mt-1 text-white">
                   Join OMEGA Stationery
                 </h1>
               </div>
-              <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-[#c49b7c]">
+              <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-[#dc2626]">
                 <UserPlus className="w-6 h-6" />
               </div>
             </div>
@@ -132,11 +132,11 @@ export const RegisterPage: React.FC = () => {
                   onClick={() => setAccountType('individual')}
                   className={`p-3 rounded-[10px] border text-left transition-all ${
                     accountType === 'individual'
-                      ? 'border-[#4b423b] bg-[#4b423b]/5 shadow-xs ring-1 ring-[#4b423b]'
-                      : 'border-[#e2dedb] hover:border-stone-400 bg-white'
+                      ? 'border-[#111113] bg-[#111113]/5 shadow-xs ring-1 ring-[#111113]'
+                      : 'border-[#e4e4e7] hover:border-stone-400 bg-white'
                   }`}
                 >
-                  <ShoppingBag className={`w-5 h-5 mb-1.5 ${accountType === 'individual' ? 'text-[#4b423b]' : 'text-[#6B7280]'}`} />
+                  <ShoppingBag className={`w-5 h-5 mb-1.5 ${accountType === 'individual' ? 'text-[#111113]' : 'text-[#6B7280]'}`} />
                   <div className="font-bold text-xs text-[#14182B]">Individual</div>
                   <div className="text-[10px] text-[#6B7280] mt-0.5">Personal &amp; Retail</div>
                 </button>
@@ -147,11 +147,11 @@ export const RegisterPage: React.FC = () => {
                   onClick={() => setAccountType('wholesale')}
                   className={`p-3 rounded-[10px] border text-left transition-all ${
                     accountType === 'wholesale'
-                      ? 'border-[#4b423b] bg-[#4b423b]/5 shadow-xs ring-1 ring-[#4b423b]'
-                      : 'border-[#e2dedb] hover:border-stone-400 bg-white'
+                      ? 'border-[#111113] bg-[#111113]/5 shadow-xs ring-1 ring-[#111113]'
+                      : 'border-[#e4e4e7] hover:border-stone-400 bg-white'
                   }`}
                 >
-                  <Building2 className={`w-5 h-5 mb-1.5 ${accountType === 'wholesale' ? 'text-[#4b423b]' : 'text-[#6B7280]'}`} />
+                  <Building2 className={`w-5 h-5 mb-1.5 ${accountType === 'wholesale' ? 'text-[#111113]' : 'text-[#6B7280]'}`} />
                   <div className="font-bold text-xs text-[#14182B]">Wholesale</div>
                   <div className="text-[10px] text-[#6B7280] mt-0.5">Bulk / Corporate</div>
                 </button>
@@ -162,11 +162,11 @@ export const RegisterPage: React.FC = () => {
                   onClick={() => setAccountType('school')}
                   className={`p-3 rounded-[10px] border text-left transition-all ${
                     accountType === 'school'
-                      ? 'border-[#4b423b] bg-[#4b423b]/5 shadow-xs ring-1 ring-[#4b423b]'
-                      : 'border-[#e2dedb] hover:border-stone-400 bg-white'
+                      ? 'border-[#111113] bg-[#111113]/5 shadow-xs ring-1 ring-[#111113]'
+                      : 'border-[#e4e4e7] hover:border-stone-400 bg-white'
                   }`}
                 >
-                  <GraduationCap className={`w-5 h-5 mb-1.5 ${accountType === 'school' ? 'text-[#4b423b]' : 'text-[#6B7280]'}`} />
+                  <GraduationCap className={`w-5 h-5 mb-1.5 ${accountType === 'school' ? 'text-[#111113]' : 'text-[#6B7280]'}`} />
                   <div className="font-bold text-xs text-[#14182B]">School / Inst.</div>
                   <div className="text-[10px] text-[#6B7280] mt-0.5">Educational Quotas</div>
                 </button>
@@ -200,7 +200,7 @@ export const RegisterPage: React.FC = () => {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="e.g. Mussa Juma"
-                      className="w-full pl-9 pr-3 py-2.5 rounded-[8px] bg-white border border-[#e2dedb] text-xs focus:border-[#4b423b] focus:outline-none"
+                      className="w-full pl-9 pr-3 py-2.5 rounded-[8px] bg-white border border-[#e4e4e7] text-xs focus:border-[#111113] focus:outline-none"
                     />
                   </div>
                 </div>
@@ -220,7 +220,7 @@ export const RegisterPage: React.FC = () => {
                       value={organization}
                       onChange={(e) => setOrganization(e.target.value)}
                       placeholder={accountType === 'school' ? 'e.g. Dar Academy' : 'e.g. Dar es Salaam'}
-                      className="w-full pl-9 pr-3 py-2.5 rounded-[8px] bg-white border border-[#e2dedb] text-xs focus:border-[#4b423b] focus:outline-none"
+                      className="w-full pl-9 pr-3 py-2.5 rounded-[8px] bg-white border border-[#e4e4e7] text-xs focus:border-[#111113] focus:outline-none"
                     />
                   </div>
                 </div>
@@ -239,7 +239,7 @@ export const RegisterPage: React.FC = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="name@example.co.tz"
-                      className="w-full pl-9 pr-3 py-2.5 rounded-[8px] bg-white border border-[#e2dedb] text-xs focus:border-[#4b423b] focus:outline-none"
+                      className="w-full pl-9 pr-3 py-2.5 rounded-[8px] bg-white border border-[#e4e4e7] text-xs focus:border-[#111113] focus:outline-none"
                     />
                   </div>
                 </div>
@@ -255,7 +255,7 @@ export const RegisterPage: React.FC = () => {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="+255 715 268 391"
-                      className="w-full pl-9 pr-3 py-2.5 rounded-[8px] bg-white border border-[#e2dedb] text-xs focus:border-[#4b423b] focus:outline-none"
+                      className="w-full pl-9 pr-3 py-2.5 rounded-[8px] bg-white border border-[#e4e4e7] text-xs focus:border-[#111113] focus:outline-none"
                     />
                   </div>
                 </div>
@@ -274,7 +274,7 @@ export const RegisterPage: React.FC = () => {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="Min 4 characters"
-                      className="w-full pl-9 pr-10 py-2.5 rounded-[8px] bg-white border border-[#e2dedb] text-xs focus:border-[#4b423b] focus:outline-none"
+                      className="w-full pl-9 pr-10 py-2.5 rounded-[8px] bg-white border border-[#e4e4e7] text-xs focus:border-[#111113] focus:outline-none"
                     />
                     <button
                       type="button"
@@ -298,7 +298,7 @@ export const RegisterPage: React.FC = () => {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Re-enter password"
-                      className="w-full pl-9 pr-3 py-2.5 rounded-[8px] bg-white border border-[#e2dedb] text-xs focus:border-[#4b423b] focus:outline-none"
+                      className="w-full pl-9 pr-3 py-2.5 rounded-[8px] bg-white border border-[#e4e4e7] text-xs focus:border-[#111113] focus:outline-none"
                     />
                   </div>
                 </div>
@@ -311,7 +311,7 @@ export const RegisterPage: React.FC = () => {
                     type="checkbox"
                     checked={agreeTerms}
                     onChange={(e) => setAgreeTerms(e.target.checked)}
-                    className="mt-0.5 rounded border-[#e2dedb] text-[#4b423b] focus:ring-[#c49b7c]"
+                    className="mt-0.5 rounded border-[#e4e4e7] text-[#111113] focus:ring-[#dc2626]"
                   />
                   <span>
                     I agree to OMEGA Stationery terms of business, privacy policy, and commercial wholesale conditions.
@@ -341,9 +341,9 @@ export const RegisterPage: React.FC = () => {
             </form>
 
             {/* Footer */}
-            <div className="pt-4 border-t border-[#e2dedb] text-center text-xs text-[#6B7280]">
+            <div className="pt-4 border-t border-[#e4e4e7] text-center text-xs text-[#6B7280]">
               Already have an account?{' '}
-              <Link to="/login" className="font-bold text-[#4b423b] hover:underline">
+              <Link to="/login" className="font-bold text-[#111113] hover:underline">
                 Sign In here
               </Link>
             </div>

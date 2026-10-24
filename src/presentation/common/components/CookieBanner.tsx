@@ -88,11 +88,11 @@ export const CookieBanner: React.FC<CookieBannerProps> = ({ forceOpen, onClose }
         <aside
           role="region"
           aria-label="Cookie and Privacy Consent"
-          className="fixed bottom-0 left-0 right-0 z-50 p-4 sm:p-5 bg-[#4b423b] text-white border-t border-[#c49b7c]/30 shadow-2xl animate-in slide-in-from-bottom-5 font-sans"
+          className="fixed bottom-0 left-0 right-0 z-50 p-4 sm:p-5 bg-[#111113] text-white border-t border-[#dc2626]/30 shadow-2xl animate-in slide-in-from-bottom-5 font-sans"
         >
           <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
             <div className="flex items-start gap-3.5 max-w-3xl">
-              <div className="w-10 h-10 rounded-full bg-[#162047] border border-[#c49b7c]/40 flex items-center justify-center shrink-0 text-[#c49b7c]">
+              <div className="w-10 h-10 rounded-full bg-[#162047] border border-[#dc2626]/40 flex items-center justify-center shrink-0 text-[#dc2626]">
                 <Cookie className="w-5 h-5" />
               </div>
               <div className="space-y-1">
@@ -100,7 +100,7 @@ export const CookieBanner: React.FC<CookieBannerProps> = ({ forceOpen, onClose }
                   <h4 className="font-heading font-bold text-sm text-white">
                     Cookies &amp; Active Session Privacy
                   </h4>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#c49b7c] text-[#4b423b] uppercase tracking-wider">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#dc2626] text-white uppercase tracking-wider">
                     Privacy First
                   </span>
                 </div>
@@ -158,11 +158,11 @@ export const CookieBanner: React.FC<CookieBannerProps> = ({ forceOpen, onClose }
             aria-hidden="true"
           />
 
-          <div className="relative w-full max-w-xl bg-[#fafafa] text-[#14182B] rounded-[12px] border border-[#e2dedb] shadow-2xl overflow-hidden z-10 flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200 font-sans">
+          <div className="relative w-full max-w-xl bg-[#fafafa] text-[#14182B] rounded-[12px] border border-[#e4e4e7] shadow-2xl overflow-hidden z-10 flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200 font-sans">
             {/* Modal Header */}
-            <div className="bg-[#4b423b] text-white p-5 flex items-center justify-between">
+            <div className="bg-[#111113] text-white p-5 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <Cookie className="w-5 h-5 text-[#c49b7c]" />
+                <Cookie className="w-5 h-5 text-[#dc2626]" />
                 <h3 className="font-heading font-bold text-base sm:text-lg text-white">
                   Cookie &amp; Session Preferences Center
                 </h3>
@@ -188,13 +188,13 @@ export const CookieBanner: React.FC<CookieBannerProps> = ({ forceOpen, onClose }
 
               <div className="space-y-3 pt-2">
                 {/* 1. Necessary Cookies (Always On) */}
-                <div className="p-3.5 rounded-[8px] bg-white border border-[#e2dedb] flex items-start justify-between gap-3 shadow-2xs">
+                <div className="p-3.5 rounded-[8px] bg-white border border-[#e4e4e7] flex items-start justify-between gap-3 shadow-2xs">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-heading font-bold text-xs sm:text-sm text-[#14182B]">
                         Strictly Necessary &amp; Session Tokens
                       </span>
-                      <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#4b423b] text-white">
+                      <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#111113] text-white">
                         Required
                       </span>
                     </div>
@@ -212,7 +212,7 @@ export const CookieBanner: React.FC<CookieBannerProps> = ({ forceOpen, onClose }
                 </div>
 
                 {/* 2. Functional Cookies */}
-                <div className="p-3.5 rounded-[8px] bg-white border border-[#e2dedb] flex items-start justify-between gap-3 shadow-2xs">
+                <div className="p-3.5 rounded-[8px] bg-white border border-[#e4e4e7] flex items-start justify-between gap-3 shadow-2xs">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-heading font-bold text-xs sm:text-sm text-[#14182B]">
@@ -236,18 +236,18 @@ export const CookieBanner: React.FC<CookieBannerProps> = ({ forceOpen, onClose }
                       }
                       className="sr-only peer"
                     />
-                    <div className="w-10 h-5 bg-stone-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[6px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#4b423b]"></div>
+                    <div className="w-10 h-5 bg-stone-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[6px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#111113]"></div>
                   </label>
                 </div>
 
                 {/* 3. Analytics Cookies */}
-                <div className="p-3.5 rounded-[8px] bg-white border border-[#e2dedb] flex items-start justify-between gap-3 shadow-2xs">
+                <div className="p-3.5 rounded-[8px] bg-white border border-[#e4e4e7] flex items-start justify-between gap-3 shadow-2xs">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-heading font-bold text-xs sm:text-sm text-[#14182B]">
                         Catalog Analytics &amp; Inventory Metrics
                       </span>
-                      <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#c49b7c]/25 text-[#4b423b]">
+                      <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#dc2626]/25 text-[#111113]">
                         Performance
                       </span>
                     </div>
@@ -265,12 +265,12 @@ export const CookieBanner: React.FC<CookieBannerProps> = ({ forceOpen, onClose }
                       }
                       className="sr-only peer"
                     />
-                    <div className="w-10 h-5 bg-stone-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[6px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#4b423b]"></div>
+                    <div className="w-10 h-5 bg-stone-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[6px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#111113]"></div>
                   </label>
                 </div>
 
                 {/* 4. Marketing & B2B Tenders */}
-                <div className="p-3.5 rounded-[8px] bg-white border border-[#e2dedb] flex items-start justify-between gap-3 shadow-2xs">
+                <div className="p-3.5 rounded-[8px] bg-white border border-[#e4e4e7] flex items-start justify-between gap-3 shadow-2xs">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-heading font-bold text-xs sm:text-sm text-[#14182B]">
@@ -294,18 +294,18 @@ export const CookieBanner: React.FC<CookieBannerProps> = ({ forceOpen, onClose }
                       }
                       className="sr-only peer"
                     />
-                    <div className="w-10 h-5 bg-stone-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[6px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#4b423b]"></div>
+                    <div className="w-10 h-5 bg-stone-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[6px] after:left-[2px] after:bg-white after:border-stone-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-[#111113]"></div>
                   </label>
                 </div>
               </div>
             </div>
 
             {/* Modal Actions Footer */}
-            <div className="p-4 border-t border-[#e2dedb] bg-white flex items-center justify-between gap-3">
+            <div className="p-4 border-t border-[#e4e4e7] bg-white flex items-center justify-between gap-3">
               <button
                 type="button"
                 onClick={handleAcceptAll}
-                className="text-xs font-bold text-[#4b423b] hover:underline"
+                className="text-xs font-bold text-[#111113] hover:underline"
               >
                 Accept All
               </button>
@@ -317,7 +317,7 @@ export const CookieBanner: React.FC<CookieBannerProps> = ({ forceOpen, onClose }
                     setIsPreferencesOpen(false);
                     onClose?.();
                   }}
-                  className="px-3 py-2 rounded-[8px] bg-white border border-[#e2dedb] hover:bg-[#F3EEE2] text-xs font-bold text-[#14182B]"
+                  className="px-3 py-2 rounded-[8px] bg-white border border-[#e4e4e7] hover:bg-[#F3EEE2] text-xs font-bold text-[#14182B]"
                 >
                   Cancel
                 </button>

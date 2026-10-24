@@ -86,26 +86,26 @@ export const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
 
   if (!isAdmin) {
     return (
-      <div className="min-h-[80vh] flex items-center justify-center py-16 px-4 bg-[#faf9f8]">
+      <div className="min-h-[80vh] flex items-center justify-center py-16 px-4 bg-[#fafafa]">
         <SEOHead
           title="OMEGA HQ Administrative Clearance | Portal Gate"
           description="Access to the OMEGA HQ executive portal requires verified administrative clearance."
         />
         <div className="max-w-md w-full bg-white rounded-2xl border border-stone-200 shadow-xl p-7 sm:p-8 text-center space-y-6">
-          <div className="w-16 h-16 rounded-2xl bg-[#4b423b] text-[#c49b7c] flex items-center justify-center mx-auto shadow-md border border-[#c49b7c]/40">
+          <div className="w-16 h-16 rounded-2xl bg-[#111113] text-[#dc2626] flex items-center justify-center mx-auto shadow-md border border-[#dc2626]/40">
             <Lock className="w-8 h-8" />
           </div>
 
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#4b423b]/10 text-[#4b423b] text-xs font-bold mb-2">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#c49b7c]" />
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#111113]/10 text-[#111113] text-xs font-bold mb-2">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#dc2626]" />
               <span>HQ INTERNAL SYSTEM</span>
             </div>
-            <h1 className="text-2xl font-heading font-bold text-[#2b2520]">
+            <h1 className="text-2xl font-heading font-bold text-[#18181b]">
               Administrative Clearance Required
             </h1>
             <p className="text-xs text-stone-600 mt-2 leading-relaxed">
-              Route <code className="font-mono bg-stone-100 text-[#4b423b] px-1.5 py-0.5 rounded font-bold">/omega-hq-portal-2026</code> is reserved for store managers and inventory administrators.
+              Route <code className="font-mono bg-stone-100 text-[#111113] px-1.5 py-0.5 rounded font-bold">/omega-hq-portal-2026</code> is reserved for store managers and inventory administrators.
             </p>
           </div>
 
@@ -134,12 +134,12 @@ export const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
                 placeholder="Admin Passcode (admin123)"
                 value={adminKey}
                 onChange={(e) => setAdminKey(e.target.value)}
-                className="flex-1 px-3.5 py-2 text-xs rounded-xl bg-stone-50 border border-stone-200 focus:outline-none focus:border-[#4b423b]"
+                className="flex-1 px-3.5 py-2 text-xs rounded-xl bg-stone-50 border border-stone-200 focus:outline-none focus:border-[#111113]"
               />
               <button
                 type="submit"
                 disabled={isAuthenticating}
-                className="px-4 py-2 rounded-xl bg-[#4b423b] disabled:opacity-50 text-white text-xs font-bold hover:bg-[#38302a] transition-colors shrink-0"
+                className="px-4 py-2 rounded-xl bg-[#111113] disabled:opacity-50 text-white text-xs font-bold hover:bg-[#38302a] transition-colors shrink-0"
               >
                 {isAuthenticating ? 'Checking...' : 'Enter'}
               </button>

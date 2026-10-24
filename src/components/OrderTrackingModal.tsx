@@ -26,20 +26,20 @@ export const OrderTrackingModal: React.FC = () => {
       onClick={() => setIsTrackingModalOpen(false)}
     >
       <div
-        className="relative w-full max-w-lg bg-[#fafafa] rounded-[24px] overflow-hidden shadow-2xl border border-[#e2dedb] max-h-[90vh] flex flex-col"
+        className="relative w-full max-w-lg bg-[#fafafa] rounded-[24px] overflow-hidden shadow-2xl border border-[#e4e4e7] max-h-[90vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header: Deep Mocha #4b423b */}
-        <div className="bg-[#4b423b] text-white px-6 py-4 flex items-center justify-between border-b border-[#e2dedb]/20">
+        {/* Header: Deep Mocha #111113 */}
+        <div className="bg-[#111113] text-white px-6 py-4 flex items-center justify-between border-b border-[#e4e4e7]/20">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-[10px] bg-[#c49b7c] flex items-center justify-center text-[#4b423b]">
-              <Truck className="w-4 h-4 text-[#4b423b]" />
+            <div className="w-8 h-8 rounded-[10px] bg-[#dc2626] flex items-center justify-center text-[#111113]">
+              <Truck className="w-4 h-4 text-[#111113]" />
             </div>
             <div>
               <h2 className="text-sm font-bold tracking-wide uppercase font-heading text-white">
                 OMEGA Order Dispatch Tracker
               </h2>
-              <span className="text-xs text-[#c49b7c] font-mono">Tanzania Real-time Status</span>
+              <span className="text-xs text-[#dc2626] font-mono">Tanzania Real-time Status</span>
             </div>
           </div>
           <button
@@ -55,7 +55,7 @@ export const OrderTrackingModal: React.FC = () => {
         <div className="p-6 space-y-6 overflow-y-auto">
           {/* Tracking Input Form */}
           <form onSubmit={handleSearch} className="space-y-3">
-            <label className="text-xs font-bold text-[#3b352f] uppercase tracking-wider block font-heading">
+            <label className="text-xs font-bold text-[#18181b] uppercase tracking-wider block font-heading">
               Enter Order / Quotation Reference:
             </label>
             <div className="flex gap-2">
@@ -64,7 +64,7 @@ export const OrderTrackingModal: React.FC = () => {
                 value={orderRef}
                 onChange={(e) => setOrderRef(e.target.value)}
                 placeholder="e.g. OMG-DEMO-4891 or Phone Number"
-                className="flex-1 px-4 py-2.5 rounded-[12px] border border-[#e2dedb] bg-white focus:outline-none focus:border-[#c49b7c] font-mono text-sm uppercase text-[#3b352f]"
+                className="flex-1 px-4 py-2.5 rounded-[12px] border border-[#e4e4e7] bg-white focus:outline-none focus:border-[#dc2626] font-mono text-sm uppercase text-[#18181b]"
               />
               <button
                 type="submit"
@@ -74,18 +74,18 @@ export const OrderTrackingModal: React.FC = () => {
                 <span>Track</span>
               </button>
             </div>
-            <p className="text-[11px] text-[#8c847e]">
+            <p className="text-[11px] text-[#a1a1aa]">
               Tip: You can use your demo reference or contact number used on WhatsApp.
             </p>
           </form>
 
           {/* Timeline Demo Result */}
           {searched && (
-            <div className="p-5 rounded-[20px] bg-white border border-[#e2dedb] space-y-5 animate-in fade-in shadow-xs">
-              <div className="flex items-center justify-between pb-3 border-b border-[#e2dedb]">
+            <div className="p-5 rounded-[20px] bg-white border border-[#e4e4e7] space-y-5 animate-in fade-in shadow-xs">
+              <div className="flex items-center justify-between pb-3 border-b border-[#e4e4e7]">
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-[#8c847e] font-mono">Reference:</span>
-                  <p className="text-sm font-black font-mono text-[#3b352f]">{orderRef || 'OMG-DEMO-7842'}</p>
+                  <span className="text-[10px] uppercase font-bold text-[#a1a1aa] font-mono">Reference:</span>
+                  <p className="text-sm font-black font-mono text-[#18181b]">{orderRef || 'OMG-DEMO-7842'}</p>
                 </div>
                 <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-[#2A9D8F] border border-emerald-200">
                   In Transit
@@ -99,8 +99,8 @@ export const OrderTrackingModal: React.FC = () => {
                     <CheckCircle2 className="w-4 h-4" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-[#3b352f]">Order Confirmed on WhatsApp</h4>
-                    <p className="text-[11px] text-[#8c847e]">Stock confirmed from Kariakoo Central Warehouse.</p>
+                    <h4 className="text-xs font-bold text-[#18181b]">Order Confirmed on WhatsApp</h4>
+                    <p className="text-[11px] text-[#a1a1aa]">Stock confirmed from Kariakoo Central Warehouse.</p>
                   </div>
                 </div>
 
@@ -109,18 +109,18 @@ export const OrderTrackingModal: React.FC = () => {
                     <PackageCheck className="w-4 h-4" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-[#3b352f]">Packed in Heavy OMEGA Cartons</h4>
-                    <p className="text-[11px] text-[#8c847e]">Reinforced packaging for counter books &amp; envelopes.</p>
+                    <h4 className="text-xs font-bold text-[#18181b]">Packed in Heavy OMEGA Cartons</h4>
+                    <p className="text-[11px] text-[#a1a1aa]">Reinforced packaging for counter books &amp; envelopes.</p>
                   </div>
                 </div>
 
                 <div className="flex gap-3 items-start">
-                  <div className="w-7 h-7 rounded-full bg-[#c49b7c] text-[#4b423b] flex items-center justify-center shrink-0 animate-pulse font-bold">
-                    <Truck className="w-4 h-4 text-[#4b423b]" />
+                  <div className="w-7 h-7 rounded-full bg-[#dc2626] text-white flex items-center justify-center shrink-0 animate-pulse font-bold">
+                    <Truck className="w-4 h-4 text-[#111113]" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-[#4b423b]">Out for Delivery / Upcountry Bus Parcel</h4>
-                    <p className="text-[11px] text-[#8c847e]">Direct courier delivery in Dar es Salaam or dispatched to regional bus terminals.</p>
+                    <h4 className="text-xs font-bold text-[#111113]">Out for Delivery / Upcountry Bus Parcel</h4>
+                    <p className="text-[11px] text-[#a1a1aa]">Direct courier delivery in Dar es Salaam or dispatched to regional bus terminals.</p>
                   </div>
                 </div>
               </div>
@@ -132,7 +132,7 @@ export const OrderTrackingModal: React.FC = () => {
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-2.5 rounded-[12px] bg-[#4b423b] hover:bg-[#3b352f] text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors shadow-xs"
+                  className="w-full py-2.5 rounded-[12px] bg-[#111113] hover:bg-[#18181b] text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-colors shadow-xs"
                 >
                   <MessageCircle className="w-4 h-4 fill-white" />
                   <span>Ask Dispatch Manager on WhatsApp</span>

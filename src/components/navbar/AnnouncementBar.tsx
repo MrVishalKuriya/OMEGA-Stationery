@@ -62,7 +62,7 @@ export const AnnouncementBar: React.FC<AnnouncementBarProps> = ({ onDismiss }) =
       aria-label="Announcement"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      className="relative z-50 w-full h-9 bg-[#4b423b] text-white text-[13px] font-sans flex items-center justify-between px-4 sm:px-6 border-b border-[#e2dedb]/20 overflow-hidden select-none"
+      className="relative z-50 w-full h-9 bg-[#111113] text-white text-[13px] font-sans flex items-center justify-between px-4 sm:px-6 border-b border-[#e4e4e7]/20 overflow-hidden select-none"
     >
       <div className="w-8 shrink-0" aria-hidden="true" />
 
@@ -70,9 +70,9 @@ export const AnnouncementBar: React.FC<AnnouncementBarProps> = ({ onDismiss }) =
       <div className="flex-1 flex items-center justify-center overflow-hidden">
         <Link
           to={current.link}
-          className="group inline-flex items-center gap-2 max-w-full truncate hover:text-[#c49b7c] transition-colors focus-ring-gold rounded-sm px-1 py-0.5"
+          className="group inline-flex items-center gap-2 max-w-full truncate hover:text-[#dc2626] transition-colors focus-ring-gold rounded-sm px-1 py-0.5"
         >
-          <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#c49b7c] text-[#3b352f] shadow-xs">
+          <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#dc2626] text-white shadow-xs">
             <Sparkles className="w-2.5 h-2.5" />
             {current.badge}
           </span>

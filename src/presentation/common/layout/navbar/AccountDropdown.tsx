@@ -85,14 +85,14 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
       aria-label="Account Menu"
       onMouseDown={(e) => e.stopPropagation()}
       onClick={(e) => e.stopPropagation()}
-      className="absolute right-0 top-full mt-2 w-72 rounded-[12px] bg-white text-[#14182B] border border-[#e2dedb] shadow-2xl z-[100] p-2 animate-in fade-in slide-in-from-top-1 font-sans pointer-events-auto"
+      className="absolute right-0 top-full mt-2 w-72 rounded-[12px] bg-white text-[#14182B] border border-[#e4e4e7] shadow-2xl z-[100] p-2 animate-in fade-in slide-in-from-top-1 font-sans pointer-events-auto"
     >
       {/* Header Profile Info */}
-      <div className="p-3 rounded-[8px] bg-[#fafafa] border border-[#e2dedb]/50 mb-2">
+      <div className="p-3 rounded-[8px] bg-[#fafafa] border border-[#e4e4e7]/50 mb-2">
         {currentUser ? (
           <div>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#4b423b] text-[#c49b7c] font-bold text-sm flex items-center justify-center font-mono shrink-0 shadow-xs">
+              <div className="w-10 h-10 rounded-full bg-[#111113] text-[#dc2626] font-bold text-sm flex items-center justify-center font-mono shrink-0 shadow-xs">
                 {currentUser.initials}
               </div>
               <div className="min-w-0 flex-1">
@@ -115,7 +115,7 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
 
             {/* Active Session Token Indicator */}
             {activeSession && (
-              <div className="mt-2 pt-2 border-t border-[#e2dedb]/60 flex items-center justify-between text-[10px] text-[#6B7280]">
+              <div className="mt-2 pt-2 border-t border-[#e4e4e7]/60 flex items-center justify-between text-[10px] text-[#6B7280]">
                 <span className="flex items-center gap-1 text-[#2A9D8F] font-bold">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#2A9D8F] animate-pulse" />
                   Active Secure Session
@@ -143,10 +143,10 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
           <Link
             to="/account"
             onClick={onClose}
-            className="w-full flex items-center justify-between p-2.5 rounded-[8px] hover:bg-[#F3EEE2] text-[#14182B] hover:text-[#4b423b] transition-colors group focus-ring-gold font-bold bg-[#fafafa]/60 border border-[#e2dedb]/50"
+            className="w-full flex items-center justify-between p-2.5 rounded-[8px] hover:bg-[#F3EEE2] text-[#14182B] hover:text-[#111113] transition-colors group focus-ring-gold font-bold bg-[#fafafa]/60 border border-[#e4e4e7]/50"
           >
             <div className="flex items-center gap-2.5">
-              <User className="w-4 h-4 text-[#4b423b]" />
+              <User className="w-4 h-4 text-[#111113]" />
               <span>My Account &amp; Profile</span>
             </div>
             <ChevronRight className="w-3.5 h-3.5 text-[#6B7280] group-hover:translate-x-0.5 transition-transform" />
@@ -160,10 +160,10 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
             onOpenOrders();
             onClose();
           }}
-          className="w-full flex items-center justify-between p-2.5 rounded-[8px] hover:bg-[#F3EEE2] text-[#14182B] hover:text-[#4b423b] transition-colors group focus-ring-gold"
+          className="w-full flex items-center justify-between p-2.5 rounded-[8px] hover:bg-[#F3EEE2] text-[#14182B] hover:text-[#111113] transition-colors group focus-ring-gold"
         >
           <div className="flex items-center gap-2.5">
-            <Package className="w-4 h-4 text-[#4b423b]" />
+            <Package className="w-4 h-4 text-[#111113]" />
             <span>My Orders &amp; Tracking</span>
           </div>
           <ChevronRight className="w-3.5 h-3.5 text-[#6B7280] group-hover:translate-x-0.5 transition-transform" />
@@ -176,13 +176,13 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
             onOpenWishlist();
             onClose();
           }}
-          className="w-full flex items-center justify-between p-2.5 rounded-[8px] hover:bg-[#F3EEE2] text-[#14182B] hover:text-[#4b423b] transition-colors group focus-ring-gold"
+          className="w-full flex items-center justify-between p-2.5 rounded-[8px] hover:bg-[#F3EEE2] text-[#14182B] hover:text-[#111113] transition-colors group focus-ring-gold"
         >
           <div className="flex items-center gap-2.5">
             <Heart className="w-4 h-4 text-[#D64545]" />
             <span>Saved Wishlist</span>
           </div>
-          <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded-full bg-[#fafafa] border border-[#e2dedb] text-[#14182B]">
+          <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded-full bg-[#fafafa] border border-[#e4e4e7] text-[#14182B]">
             {wishlistCount}
           </span>
         </button>
@@ -194,17 +194,17 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
             onClose();
             openCookiePreferences();
           }}
-          className="w-full flex items-center justify-between p-2.5 rounded-[8px] hover:bg-[#F3EEE2] text-[#14182B] hover:text-[#4b423b] transition-colors group focus-ring-gold"
+          className="w-full flex items-center justify-between p-2.5 rounded-[8px] hover:bg-[#F3EEE2] text-[#14182B] hover:text-[#111113] transition-colors group focus-ring-gold"
         >
           <div className="flex items-center gap-2.5">
-            <Cookie className="w-4 h-4 text-[#c49b7c]" />
+            <Cookie className="w-4 h-4 text-[#dc2626]" />
             <span>Cookie &amp; Session Privacy</span>
           </div>
           <ChevronRight className="w-3.5 h-3.5 text-[#6B7280] group-hover:translate-x-0.5 transition-transform" />
         </button>
 
 
-        <div className="my-1.5 border-t border-[#e2dedb]" />
+        <div className="my-1.5 border-t border-[#e4e4e7]" />
 
         {/* Login / Register or Logout */}
         {currentUser ? (
@@ -240,7 +240,7 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
                   e.stopPropagation();
                   handleOpenRegister();
                 }}
-                className="w-full py-2.5 px-3 rounded-[8px] bg-white border border-[#e2dedb] hover:bg-[#F3EEE2] text-xs font-bold text-center text-[#4b423b] flex items-center justify-center gap-1.5 cursor-pointer hover:border-[#4b423b] active:scale-95 transition-all select-none"
+                className="w-full py-2.5 px-3 rounded-[8px] bg-white border border-[#e4e4e7] hover:bg-[#F3EEE2] text-xs font-bold text-center text-[#111113] flex items-center justify-center gap-1.5 cursor-pointer hover:border-[#111113] active:scale-95 transition-all select-none"
               >
                 <UserPlus className="w-3.5 h-3.5 pointer-events-none" />
                 <span className="pointer-events-none">Register</span>
@@ -254,7 +254,7 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
                   e.stopPropagation();
                   onClose();
                 }}
-                className="hover:text-[#4b423b] hover:underline cursor-pointer select-none"
+                className="hover:text-[#111113] hover:underline cursor-pointer select-none"
               >
                 Open Full Dedicated Sign In Page →
               </Link>

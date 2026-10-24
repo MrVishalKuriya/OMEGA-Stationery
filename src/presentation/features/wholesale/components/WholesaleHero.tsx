@@ -9,6 +9,7 @@ import {
   ChevronRight,
   MessageCircle,
   FileSpreadsheet,
+  Download,
 } from 'lucide-react';
 
 interface WholesaleHeroProps {
@@ -23,15 +24,15 @@ export const WholesaleHero: React.FC<WholesaleHeroProps> = ({
   onExportCSV,
 }) => {
   return (
-    <section className="relative overflow-hidden w-full bg-[#3b352f] text-white py-16 lg:py-24 border-b border-[#2b2520] shadow-2xl">
+    <section className="relative overflow-hidden w-full bg-[#18181b] text-white py-16 lg:py-24 border-b border-[#18181b] shadow-2xl">
       {/* Soft Ambient Warm Glows */}
-      <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[#c49b7c]/18 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-0 left-10 w-[450px] h-[450px] bg-[#a46b44]/15 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[#dc2626]/18 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-0 left-10 w-[450px] h-[450px] bg-[#b91c1c]/15 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         {/* Refined Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md mb-6 shadow-sm">
-          <Building2 className="w-4 h-4 text-[#c49b7c]" />
+          <Building2 className="w-4 h-4 text-[#dc2626]" />
           <span className="text-xs font-semibold tracking-wider text-stone-200 uppercase">
             Factory Direct Wholesale · SIDO Industrial Estate, Mbeya
           </span>
@@ -40,7 +41,7 @@ export const WholesaleHero: React.FC<WholesaleHeroProps> = ({
         <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-light text-white leading-tight tracking-tight max-w-4xl mx-auto mb-5">
           {language === 'sw' ? 'Mauzo ya Jumla & Oda Kubwa' : 'Wholesale Stationery & School Tenders'}{' '}
           <br />
-          <span className="font-bold text-[#c49b7c] bg-gradient-to-r from-[#e3bf9e] via-[#c49b7c] to-[#e3bf9e] bg-clip-text text-transparent">
+          <span className="font-bold text-[#dc2626] bg-gradient-to-r from-[#e3bf9e] via-[#dc2626] to-[#e3bf9e] bg-clip-text text-transparent">
             {language === 'sw' ? 'Moja kwa Moja Kiwandani.' : 'Direct From Manufacturer.'}
           </span>
         </h1>
@@ -54,7 +55,7 @@ export const WholesaleHero: React.FC<WholesaleHeroProps> = ({
         {/* Quick-Trust Metrics Strip */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl mx-auto mb-10 text-left">
           <div className="bg-white/5 border border-white/10 rounded-xl p-3 flex items-center gap-3">
-            <Truck className="w-5 h-5 text-[#c49b7c] shrink-0" />
+            <Truck className="w-5 h-5 text-[#dc2626] shrink-0" />
             <div>
               <div className="text-xs font-bold text-white">24–48h Dispatch</div>
               <div className="text-[11px] text-stone-400">Bus parcel waybill</div>
@@ -68,7 +69,7 @@ export const WholesaleHero: React.FC<WholesaleHeroProps> = ({
             </div>
           </div>
           <div className="bg-white/5 border border-white/10 rounded-xl p-3 flex items-center gap-3">
-            <BadgeCheck className="w-5 h-5 text-[#c49b7c] shrink-0" />
+            <BadgeCheck className="w-5 h-5 text-[#dc2626] shrink-0" />
             <div>
               <div className="text-xs font-bold text-white">TRA EFD Invoices</div>
               <div className="text-[11px] text-stone-400">Official tax compliance</div>
@@ -106,13 +107,23 @@ export const WholesaleHero: React.FC<WholesaleHeroProps> = ({
             <span>WhatsApp Wholesale Desk</span>
           </a>
 
+          <a
+            href="/uploads/PL00001.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-5 py-3.5 rounded-full bg-[#dc2626] hover:bg-[#ef4444] text-[#09090b] text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-md inline-flex items-center gap-2 min-h-[48px] active:scale-95 font-mono"
+          >
+            <Download className="w-4 h-4 text-[#09090b]" />
+            <span>Official Price List (PDF)</span>
+          </a>
+
           <button
             type="button"
             onClick={onExportCSV}
             className="px-5 py-3.5 rounded-full bg-white/5 hover:bg-white/15 text-stone-200 border border-white/15 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors inline-flex items-center gap-2 min-h-[48px] active:scale-95"
           >
-            <FileSpreadsheet className="w-4 h-4 text-[#c49b7c]" />
-            <span>Download CSV Price List</span>
+            <FileSpreadsheet className="w-4 h-4 text-[#dc2626]" />
+            <span>Download CSV</span>
           </button>
         </div>
       </div>

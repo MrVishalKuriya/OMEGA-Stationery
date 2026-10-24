@@ -1,65 +1,65 @@
 @import "tailwindcss";
 
 :root {
-  /* ==================== LEDUP.PT SIGNATURE ARCHITECTURAL PALETTE ==================== */
-  /* Primary Deep Walnut / Mocha: #4b423b | Accent Copper: #c49b7c | Accent Amber: #a46b44 */
-  /* Canvas: #fafafa | Hairline Border: #e2dedb | Deep Espresso Text: #3b352f */
-  --clr-main: #4b423b;              /* Signature LEDUP Deep Mocha / Walnut */
+  /* ==================== OMEGA SIGNATURE BLACK & RED ARCHITECTURAL PALETTE ==================== */
+  /* Primary Obsidian Black: #111113 | Deep Pitch: #09090b | Accent Crimson Red: #dc2626 | Deep Red: #b91c1c */
+  /* Canvas: #fafafa | Hairline Border: #e4e4e7 | Deep Obsidian Text: #18181b */
+  --clr-main: #111113;              /* Signature Obsidian Black */
   --clr-main-50: #fafafa;           /* Clean Off-white Surface */
-  --clr-main-100: #f5f4f4;          /* Soft Gray Stone */
-  --clr-main-200: #efeded;          /* Architectural Panel */
-  --clr-main-300: #e2dedb;          /* Hairline Border */
-  --clr-main-400: #beb5ae;          /* Warm Muted Taupe */
-  --clr-main-500: #a69d98;          /* Neutral Taupe */
-  --clr-main-600: #a1948c;          /* Medium Deep Taupe */
-  --clr-main-700: #736c67;          /* Charcoal Taupe */
-  --clr-main-900: #3b352f;          /* Rich Espresso Dark */
-  --clr-copper: #c49b7c;            /* Warm Copper Bronze */
-  --clr-amber: #a46b44;             /* Deep Amber Bronze */
-  --clr-copper-gradient: linear-gradient(90deg, #a46b44, #c49b7c, #a46b44);
-  --clr-glass-header: linear-gradient(90.48deg, rgba(255,255,255,.88) -4.41%, rgba(245,244,244,.88) 100.38%);
+  --clr-main-100: #f4f4f5;          /* Soft Gray Stone */
+  --clr-main-200: #e4e4e7;          /* Hairline Architectural Panel */
+  --clr-main-300: #d4d4d8;          /* Hairline Border */
+  --clr-main-400: #a1a1aa;          /* Muted Zinc */
+  --clr-main-500: #71717a;          /* Neutral Zinc */
+  --clr-main-600: #52525b;          /* Medium Deep Zinc */
+  --clr-main-700: #27272a;          /* Charcoal Zinc */
+  --clr-main-900: #09090b;          /* Pitch Black Dark */
+  --clr-copper: #dc2626;            /* Vivid Crimson Red */
+  --clr-amber: #b91c1c;             /* Deep Rich Red */
+  --clr-copper-gradient: linear-gradient(90deg, #b91c1c, #dc2626, #ef4444);
+  --clr-glass-header: linear-gradient(90.48deg, rgba(255,255,255,.94) -4.41%, rgba(244,244,245,.94) 100.38%);
   --clr-white: #ffffff;
   --clr-bg: #fafafa;
   --clr-black: #000000;
 
   /* Canonical Tokens */
-  --primary: #4b423b;               /* LEDUP Core Mocha */
-  --primary-light: #5f5751;
-  --primary-lighter: #736c67;
-  --accent: #c49b7c;                /* LEDUP Copper Bronze */
-  --accent-light: #d6b59d;
-  --accent-dark: #a46b44;
-  --bg: #fafafa;                    /* LEDUP Soft Canvas */
+  --primary: #111113;               /* Obsidian Black Core */
+  --primary-light: #27272a;
+  --primary-lighter: #3f3f46;
+  --accent: #dc2626;                /* Crimson Red */
+  --accent-light: #ef4444;
+  --accent-dark: #b91c1c;
+  --bg: #f9f9f9;                    /* Soft Canvas - Atelier Crimson */
   --surface: #ffffff;
-  --surface-alt: #f5f4f4;
-  --surface-dark: #efeded;
-  --text: #3b352f;
-  --text-light: #736c67;
-  --muted: #8c847e;
-  --border: #e2dedb;
-  --success: #2A9D8F;
-  --danger: #D64545;
+  --surface-alt: #f3f3f3;
+  --surface-dark: #e8e8e8;
+  --text: #1a1c1c;                  /* Carbon Obsidian Text */
+  --text-light: #52525b;
+  --muted: #71717a;
+  --border: #e4e4e7;
+  --success: #16a34a;
+  --danger: #dc2626;
 
-  --navy: #4b423b;
-  --ink: #3b352f;
-  --gold: #c49b7c;
-  --paper: #fafafa;
-  --cream: #f5f4f4;
+  --navy: #111113;
+  --ink: #1a1c1c;
+  --gold: #dc2626;                  /* High-Contrast Luxury Red */
+  --paper: #f9f9f9;
+  --cream: #f3f3f3;
   --white: #ffffff;
-  --line: #e2dedb;
+  --line: #e4e4e7;
 
-  /* Seamless Rustic Charm Aliases mapped to LEDUP.PT palette */
-  --clr-rustic-primary: #4b423b;
-  --clr-rustic-secondary: #c49b7c;
-  --clr-rustic-taupe: #a69d98;
-  --clr-rustic-linen: #e2dedb;
-  --clr-rustic-canvas: #fafafa;
-  --clr-rustic-espresso: #3b352f;
-  --clr-rustic-dark: #292420;
+  /* Aliases mapped to Black & Red palette */
+  --clr-rustic-primary: #111113;
+  --clr-rustic-secondary: #dc2626;
+  --clr-rustic-taupe: #71717a;
+  --clr-rustic-linen: #e4e4e7;
+  --clr-rustic-canvas: #f9f9f9;
+  --clr-rustic-espresso: #1a1c1c;
+  --clr-rustic-dark: #09090b;
 
-  /* Typography */
-  --font-heading: 'Poppins', 'Fraunces', sans-serif;
-  --font-body: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Typography - Atelier Crimson */
+  --font-heading: 'Newsreader', 'Fraunces', serif;
+  --font-body: 'Hanken Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 html, body {
@@ -98,26 +98,26 @@ p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
 
 /* Indra Notebook High-Contrast Components & Utilities */
 
-/* 1. Header (Dark Teal #084C54) */
+/* 1. Header (Obsidian Black #111113) */
 .header-ink-blue {
-  background-color: #084C54;
+  background-color: #111113;
   color: #FFFFFF;
-  border-bottom: 1px solid rgba(241, 235, 213, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* 2. Vibrant Gen-Z Orange CTA Buttons */
+/* 2. Vibrant Crimson Red CTA Buttons */
 .btn-indra-primary, .btn-indra-primary {
-  background-color: #FD7E14 !important;
-  color: #084C54 !important;
+  background-color: #dc2626 !important;
+  color: #FFFFFF !important;
   font-weight: 800 !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 14px rgba(253, 126, 20, 0.32);
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
 }
 
 .btn-indra-primary:hover, .btn-indra-primary:hover {
-  background-color: #FF922B !important;
-  color: #042529 !important;
-  box-shadow: 0 6px 20px rgba(253, 126, 20, 0.45);
+  background-color: #b91c1c !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5);
   transform: translateY(-2px);
 }
 
@@ -125,17 +125,17 @@ p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
   transform: translateY(0);
 }
 
-/* 3. Primary Dark Teal Buttons */
+/* 3. Primary Obsidian Black Buttons */
 .btn-ink-primary, .btn-indra-secondary {
-  background-color: #084C54 !important;
+  background-color: #111113 !important;
   color: #FFFFFF !important;
   font-weight: 700 !important;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 14px rgba(8, 76, 84, 0.25);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
 }
 
 .btn-ink-primary:hover, .btn-indra-secondary:hover {
-  background-color: #0D6D78 !important;
+  background-color: #dc2626 !important;
   transform: translateY(-2px);
 }
 
@@ -221,7 +221,7 @@ p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: var(--gold, #FD7E14);
+  background-color: var(--gold, #dc2626);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -233,11 +233,11 @@ p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
 }
 
 .shadow-boutique-soft {
-  box-shadow: 0 12px 40px rgba(20, 24, 43, 0.08);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
 }
 
 .focus-ring-gold:focus-visible {
-  outline: 2px solid var(--gold, #FD7E14);
+  outline: 2px solid var(--gold, #dc2626);
   outline-offset: 2px;
 }
 
@@ -330,19 +330,19 @@ p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
 }
 
 .heimplanet-hairline {
-  border-color: rgba(228, 221, 204, 0.45);
+  border-color: #e4e4e7;
 }
 
 .heimplanet-card {
   position: relative;
   background-color: #FFFFFF;
-  border: 1px solid rgba(228, 221, 204, 0.65);
+  border: 1px solid #e4e4e7;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .heimplanet-card:hover {
-  border-color: var(--clr-main, #4b423b);
-  box-shadow: 0 16px 36px -8px rgba(75, 66, 59, 0.12);
+  border-color: #dc2626;
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.08);
 }
 
 .heimplanet-pill-tab {
@@ -364,7 +364,7 @@ p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
 
 /* ==================== 10. LEDUP.PT SIGNATURE ANIMATIONS & MICRO-INTERACTIONS ==================== */
 
-/* A) LEDUP Custom Smooth Scrollbar */
+/* A) Custom Smooth Scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -373,67 +373,50 @@ p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
   background: var(--clr-main-50, #fafafa);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--clr-main-500, #a69d98);
+  background: #dc2626;
   border-radius: 999px;
   border: 2px solid var(--clr-main-50, #fafafa);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--clr-main-700, #736c67);
+  background: #b91c1c;
 }
 
-/* ==================== RUSTIC CHARM SIGNATURE BUTTONS & COMPONENTS ==================== */
-/* 1. Primary Warm Brown (#6D4C41) Button */
-.btn-rustic-primary {
-  background-color: #6D4C41 !important;
-  color: #FFFFFF !important;
-  font-weight: 700 !important;
-  border-radius: 9999px !important;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  box-shadow: 0 4px 14px rgba(109, 76, 65, 0.28) !important;
-}
-
-.btn-rustic-primary:hover {
-  background-color: #5D4037 !important;
-  transform: translateY(-2px) !important;
-  box-shadow: 0 8px 22px rgba(93, 64, 55, 0.38) !important;
-}
-
-/* ==================== LEDUP.PT SIGNATURE BUTTONS & COMPONENTS ==================== */
-/* 1. Primary Deep Walnut / Mocha (#4b423b) Button */
-.btn-ledup-mocha, .btn-rustic-primary {
-  background-color: #4b423b !important;
+/* ==================== SIGNATURE BUTTONS & COMPONENTS ==================== */
+/* 1. Primary Obsidian Black Button */
+.btn-rustic-primary, .btn-ledup-mocha {
+  background-color: #111113 !important;
   color: #ffffff !important;
   font-weight: 700 !important;
   border-radius: 9999px !important;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  box-shadow: 0 4px 14px rgba(75, 66, 59, 0.24) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
 }
 
-.btn-ledup-mocha:hover, .btn-rustic-primary:hover {
-  background-color: #3b352f !important;
+.btn-rustic-primary:hover, .btn-ledup-mocha:hover {
+  background-color: #dc2626 !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 8px 22px rgba(59, 53, 47, 0.35) !important;
+  box-shadow: 0 8px 22px rgba(220, 38, 38, 0.4) !important;
 }
 
 .btn-ledup-mocha:active, .btn-rustic-primary:active {
   transform: scale(0.96) !important;
 }
 
-/* 2. Signature Warm Copper & Amber Gradient Button (#a46b44 -> #c49b7c) */
+/* 2. Signature Crimson Red Gradient Button (#b91c1c -> #dc2626 -> #ef4444) */
 .btn-ledup-copper, .btn-rustic-secondary {
-  background: linear-gradient(90deg, #a46b44, #c49b7c, #a46b44) !important;
+  background: linear-gradient(90deg, #b91c1c, #dc2626, #ef4444) !important;
   background-size: 200% auto !important;
   color: #ffffff !important;
   font-weight: 700 !important;
   border-radius: 9999px !important;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
-  box-shadow: 0 4px 16px rgba(164, 107, 68, 0.28) !important;
+  box-shadow: 0 4px 16px rgba(220, 38, 38, 0.35) !important;
 }
 
 .btn-ledup-copper:hover, .btn-rustic-secondary:hover {
   background-position: right center !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 8px 24px rgba(196, 155, 124, 0.42) !important;
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.45) !important;
 }
 
 .btn-ledup-copper:active, .btn-rustic-secondary:active {
@@ -443,64 +426,65 @@ p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
 /* 3. Hairline Architectural Outline Button */
 .btn-rustic-outline, .btn-ledup-outline {
   background-color: transparent !important;
-  color: #4b423b !important;
-  border: 1.5px solid #4b423b !important;
+  color: #111113 !important;
+  border: 1.5px solid #111113 !important;
   font-weight: 700 !important;
   border-radius: 9999px !important;
   transition: all 0.2s ease !important;
 }
 
 .btn-rustic-outline:hover, .btn-ledup-outline:hover {
-  background-color: #4b423b !important;
+  background-color: #dc2626 !important;
+  border-color: #dc2626 !important;
   color: #ffffff !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 6px 18px rgba(75, 66, 59, 0.22) !important;
+  box-shadow: 0 6px 18px rgba(220, 38, 38, 0.3) !important;
 }
 
-/* 4. LEDUP Signature Badges */
+/* 4. Signature Badges */
 .badge-rustic-primary, .badge-ledup-mocha {
-  background-color: #4b423b;
+  background-color: #111113;
   color: #ffffff;
 }
 
 .badge-rustic-secondary, .badge-ledup-copper {
-  background-color: #c49b7c;
+  background-color: #dc2626;
   color: #ffffff;
 }
 
 .badge-rustic-taupe, .badge-ledup-taupe {
-  background-color: #a69d98;
+  background-color: #71717a;
   color: #ffffff;
 }
 
 .badge-rustic-linen, .badge-ledup-stone {
-  background-color: #efeded;
-  color: #3b352f;
+  background-color: #f4f4f5;
+  color: #18181b;
 }
 
-/* B) LEDUP Pill Floating Island & Glassmorphism */
+/* B) Pill Floating Island & Glassmorphism */
 .ledup-glass-pill {
-  background: linear-gradient(90.48deg, rgba(255, 255, 255, 0.88) -4.41%, rgba(245, 244, 244, 0.88) 100.38%);
+  background: linear-gradient(90.48deg, rgba(255, 255, 255, 0.92) -4.41%, rgba(244, 244, 245, 0.92) 100.38%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-radius: 9999px;
-  border: 1px solid rgba(226, 222, 219, 0.85);
-  box-shadow: 0 4px 20px -2px rgba(75, 66, 59, 0.08);
+  border: 1px solid rgba(228, 228, 231, 0.85);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.08);
 }
 
-/* C) LEDUP Architectural Card (24px radius, soft drop shadow, copper hover) */
+/* C) Architectural Card (24px radius, soft drop shadow, crimson red hover) */
 .ledup-card, .card-rustic {
   border-radius: 1.5rem;
   background-color: #ffffff;
-  border: 1px solid #e2dedb;
-  box-shadow: 0 4px 20px -4px rgba(75, 66, 59, 0.06);
+  border: 1px solid #e4e4e7;
+  box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.05);
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
 }
 
 .ledup-card:hover, .card-rustic:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 40px -10px rgba(75, 66, 59, 0.14);
-  border-color: #c49b7c;
+  box-shadow: 0 20px 40px -10px rgba(220, 38, 38, 0.16);
+  border-color: #dc2626;
 }
 
 /* F) LEDUP Rotating 45-degree Arrow on Link Hover */

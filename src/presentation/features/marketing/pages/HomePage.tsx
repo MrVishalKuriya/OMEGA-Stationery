@@ -24,6 +24,14 @@ import {
   MapPin,
   ChevronRight,
   PhoneCall,
+  Plus,
+  Minus,
+  Navigation,
+  Quote,
+  Building2,
+  GraduationCap,
+  Store,
+  Phone,
 } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { ProductCard } from '@/components/ProductCard';
@@ -41,7 +49,7 @@ export const HomePage: React.FC = () => {
     setQuickViewProduct,
     setIsTrackingModalOpen,
   } = useStore();
-  const t = TRANSLATIONS[language];
+  const t = TRANSLATIONS[language] || TRANSLATIONS.en;
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState<
@@ -79,11 +87,14 @@ export const HomePage: React.FC = () => {
 
   const displayedProducts = filteredProducts.slice(0, 8);
 
-  const cleanWhatsappDigits = storeConfig.whatsappNumber.replace(/\D/g, '');
+  const cleanWhatsappDigits = storeConfig.whatsappNumber
+    ? storeConfig.whatsappNumber.replace(/\D/g, '')
+    : '255746268391';
+
   const whatsappGreetingUrl = `https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
     language === 'sw'
-      ? `Habari OMEGA Tanzania, ninahitaji kuagiza madaftari (Counter Books, Exercise Books na Bahasha) kwa bei ya jumla.`
-      : `Hello OMEGA Stationery, I would like to place an order and inquire about wholesale carton pricing.`
+      ? `Habari OMEGA Tanzania, ninahitaji kuagiza madaftari (Counter Books, Exercise Books na Bahasha) kwa bei ya jumla kiwandani.`
+      : `Hello OMEGA Stationery, I would like to place an order and inquire about factory wholesale carton pricing.`
   )}`;
 
   // Signature category cards (Dynamically linked to live MongoDB products)
@@ -95,6 +106,7 @@ export const HomePage: React.FC = () => {
       link: q2Prod ? `/product/${q2Prod.id}` : '/product/prod-omega-cb-q2',
       image: '/omega-products/counter-book-q2-catalog.jpeg',
       tag: 'Accounting & Schools',
+      badge: 'Bestseller',
     },
     {
       title: ex200Prod?.name || '200 Pages Exercise',
@@ -103,6 +115,7 @@ export const HomePage: React.FC = () => {
       link: ex200Prod ? `/product/${ex200Prod.id}` : '/product/prod-omega-ex-200sl',
       image: '/omega-products/exercise-book-200p-sl-catalog.jpeg',
       tag: 'Primary & Secondary',
+      badge: 'Popular',
     },
     {
       title: stiffProd?.name || 'Stiff Cover 200 Pages',
@@ -111,22 +124,25 @@ export const HomePage: React.FC = () => {
       link: stiffProd ? `/product/${stiffProd.id}` : '/product/prod-omega-stiff-200',
       image: '/omega-products/stiff-cover-200-catalog.jpeg',
       tag: 'Executive & Office',
+      badge: 'Heavy Duty',
     },
     {
-      title: ex100Prod?.name || '100 Pages',
+      title: ex100Prod?.name || '100 Pages Exercise',
       subtitle: language === 'sw' ? 'Kurasa 100 · SL, DL & Square' : '100p · SL, DL, Square & Plain',
       desc: language === 'sw' ? 'Madaftari ya wanafunzi shuleni' : 'Standard classroom exercise books',
       link: ex100Prod ? `/product/${ex100Prod.id}` : '/product/prod-omega-ex-100sl',
       image: '/omega-products/exercise-book-100p-catalog.jpeg',
       tag: 'Primary & Secondary',
+      badge: 'Classroom',
     },
     {
-      title: ex80Prod?.name || '80 Pages',
+      title: ex80Prod?.name || '80 Pages Notebook',
       subtitle: language === 'sw' ? 'Canary Yellow · Kurasa 80' : '80p Canary Yellow Notebook',
       desc: language === 'sw' ? 'Uzito mwepesi, imara kwa marudio' : 'Lightweight and durable revision books',
       link: ex80Prod ? `/product/${ex80Prod.id}` : '/product/prod-omega-ex-80',
       image: '/omega-products/exercise-book-80p-catalog.jpeg',
       tag: 'Semester & Revision',
+      badge: 'Compact',
     },
     {
       title: bahashaProd?.name || 'Heavy Kraft Bahasha',
@@ -135,6 +151,7 @@ export const HomePage: React.FC = () => {
       link: bahashaProd ? `/product/${bahashaProd.id}` : '/product/prod-omega-bahasha-a4',
       image: '/omega-products/bahasha-a4-catalog.png',
       tag: 'Office Mailers',
+      badge: 'Tear-Proof',
     },
   ], [q2Prod, ex200Prod, stiffProd, ex100Prod, ex80Prod, bahashaProd, language]);
 
@@ -145,10 +162,13 @@ export const HomePage: React.FC = () => {
     return q4Prod?.wholesalePrice || 60000;
   }, [calcBookType, q2Prod, q3Prod, q4Prod]);
 
+  const unitsPerCarton = calcBookType === 'q2' ? 48 : calcBookType === 'q3' ? 36 : 24;
+  const totalUnits = calcQuantity * unitsPerCarton;
+  const unitPrice = Math.round(calcBaseRate / unitsPerCarton);
   const calcTotal = calcBaseRate * calcQuantity;
 
   return (
-    <div className="bg-[#fafafa] min-h-screen font-sans text-[#3b352f]">
+    <div className="bg-[#fafafa] min-h-screen font-sans text-[#18181b] selection:bg-[#dc2626]/30 selection:text-[#09090b]">
       <SEOHead
         title="OMEGA Writing Notebooks & Stationery | Premium Quality | Tanzania"
         description="Tanzania's benchmark in Counter Books (Q2, Q3, Q4), Exercise Books, Kraft Bahasha, and Office Files. Factory-direct wholesale and upcountry bus parcel delivery."
@@ -160,209 +180,316 @@ export const HomePage: React.FC = () => {
       <Hero whatsappGreetingUrl={whatsappGreetingUrl} />
 
       {/* ========================================================================= */}
-      {/* 2. TRUST & SCALE METRICS (Indra Notebook Inspired) */}
+      {/* 2. TRUST & SCALE METRICS BAR (Refined Architectural Cards) */}
       {/* ========================================================================= */}
-      <section className="bg-white border-b border-[#e2dedb] py-8">
+      <section className="bg-white border-b border-[#e4e4e7] py-8 sm:py-10 relative z-20 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            <div className="p-4 rounded-[16px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#4b423b] font-heading block">
-                500,000+
-              </span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#3b352f] mt-1">
-                Books Distributed
-              </h4>
-              <p className="text-[11px] text-[#736c67] mt-0.5">Annual supply to schools &amp; firms</p>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
+            
+            {/* Metric 1 */}
+            <div className="group p-4 sm:p-5 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 flex flex-col justify-between">
+              <div className="flex items-center justify-between mb-3">
+                <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#111113]/5 text-[#dc2626] flex items-center justify-center font-bold border border-[#dc2626]/20 group-hover:bg-[#111113] group-hover:text-white transition-colors duration-300">
+                  <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
+                </span>
+                <span className="text-[10px] font-mono font-bold text-[#a1a1aa] uppercase tracking-wider bg-white px-2 py-0.5 rounded-full border border-[#e4e4e7]">
+                  Metric 01
+                </span>
+              </div>
+              <div>
+                <span className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#111113] font-heading tracking-tight block">
+                  500,000+
+                </span>
+                <h4 className="text-xs sm:text-[13px] font-bold uppercase tracking-wider text-[#18181b] mt-1">
+                  Books Distributed
+                </h4>
+                <p className="text-[11px] sm:text-xs text-[#71717a] mt-0.5 leading-snug">
+                  Annual factory supply to schools &amp; firms
+                </p>
+              </div>
             </div>
 
-            <div className="p-4 rounded-[16px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#4b423b] font-heading block">
-                31 Regions
-              </span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#3b352f] mt-1">
-                Nationwide Bus Parcel
-              </h4>
-              <p className="text-[11px] text-[#736c67] mt-0.5">Reliable waybills to all towns</p>
+            {/* Metric 2 */}
+            <div className="group p-4 sm:p-5 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 flex flex-col justify-between">
+              <div className="flex items-center justify-between mb-3">
+                <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#111113]/5 text-[#dc2626] flex items-center justify-center font-bold border border-[#dc2626]/20 group-hover:bg-[#111113] group-hover:text-white transition-colors duration-300">
+                  <Truck className="w-4 h-4 sm:w-5 sm:h-5" />
+                </span>
+                <span className="text-[10px] font-mono font-bold text-[#a1a1aa] uppercase tracking-wider bg-white px-2 py-0.5 rounded-full border border-[#e4e4e7]">
+                  Metric 02
+                </span>
+              </div>
+              <div>
+                <span className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#111113] font-heading tracking-tight block">
+                  31 Regions
+                </span>
+                <h4 className="text-xs sm:text-[13px] font-bold uppercase tracking-wider text-[#18181b] mt-1">
+                  Nationwide Bus Parcel
+                </h4>
+                <p className="text-[11px] sm:text-xs text-[#71717a] mt-0.5 leading-snug">
+                  Same-day waybills to all bus terminals
+                </p>
+              </div>
             </div>
 
-            <div className="p-4 rounded-[16px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#c49b7c] font-heading block">
-                70 GSM
-              </span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#3b352f] mt-1">
-                Bleed-Proof Paper
-              </h4>
-              <p className="text-[11px] text-[#736c67] mt-0.5">Zero feathering with fountain ink</p>
+            {/* Metric 3 */}
+            <div className="group p-4 sm:p-5 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 flex flex-col justify-between">
+              <div className="flex items-center justify-between mb-3">
+                <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center font-bold border border-[#dc2626]/30 group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300">
+                  <Feather className="w-4 h-4 sm:w-5 sm:h-5" />
+                </span>
+                <span className="text-[10px] font-mono font-bold text-[#dc2626] uppercase tracking-wider bg-white px-2 py-0.5 rounded-full border border-[#dc2626]/30">
+                  High Density
+                </span>
+              </div>
+              <div>
+                <span className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#dc2626] font-heading tracking-tight block">
+                  70 GSM
+                </span>
+                <h4 className="text-xs sm:text-[13px] font-bold uppercase tracking-wider text-[#18181b] mt-1">
+                  Bleed-Proof Paper
+                </h4>
+                <p className="text-[11px] sm:text-xs text-[#71717a] mt-0.5 leading-snug">
+                  Zero feathering with fountain &amp; gel ink
+                </p>
+              </div>
             </div>
 
-            <div className="p-4 rounded-[16px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#2A9D8F] font-heading block">
-                100%
-              </span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#3b352f] mt-1">
-                Thread-Sewn Guarantee
-              </h4>
-              <p className="text-[11px] text-[#736c67] mt-0.5">Pages never loosen or fall out</p>
+            {/* Metric 4 */}
+            <div className="group p-4 sm:p-5 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#2A9D8F] transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 flex flex-col justify-between">
+              <div className="flex items-center justify-between mb-3">
+                <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#2A9D8F]/10 text-[#2A9D8F] flex items-center justify-center font-bold border border-[#2A9D8F]/30 group-hover:bg-[#2A9D8F] group-hover:text-white transition-colors duration-300">
+                  <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" />
+                </span>
+                <span className="text-[10px] font-mono font-bold text-[#2A9D8F] uppercase tracking-wider bg-white px-2 py-0.5 rounded-full border border-[#2A9D8F]/30">
+                  Guarantee
+                </span>
+              </div>
+              <div>
+                <span className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#2A9D8F] font-heading tracking-tight block">
+                  100%
+                </span>
+                <h4 className="text-xs sm:text-[13px] font-bold uppercase tracking-wider text-[#18181b] mt-1">
+                  Thread-Sewn Spine
+                </h4>
+                <p className="text-[11px] sm:text-xs text-[#71717a] mt-0.5 leading-snug">
+                  Pages never loosen or fall out over years
+                </p>
+              </div>
             </div>
+
           </div>
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* 3. SIGNATURE CATEGORIES SHOWCASE (Indra Notebook & LEDUP Cards) */}
+      {/* 3. SIGNATURE CATEGORIES SHOWCASE (Curated Minimalist Collections) */}
       {/* ========================================================================= */}
-      <section className="py-14 lg:py-20 bg-[#fafafa] border-b border-[#e2dedb]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-          <div className="text-center space-y-2">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#c49b7c] font-heading block">
-              Curated Collections
-            </span>
-            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#3b352f] tracking-tight">
-              {language === 'sw' ? 'Mkusanyiko Rasmi wa Vitabu' : 'Explore by Category'}
-            </h2>
-            <p className="text-xs sm:text-sm text-[#736c67] max-w-lg mx-auto">
-              {language === 'sw'
-                ? 'Kila daftari linatengenezwa kwa viwango vikali vya kudumu kwa miaka mingi bila kuchanika.'
-                : 'From durable hardcover counter books to reinforced kraft envelopes, precision manufactured in Tanzania.'}
-            </p>
+      <section className="py-14 sm:py-20 bg-[#fafafa] border-b border-[#e4e4e7]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
+          
+          {/* Section Header */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#e4e4e7] pb-6">
+            <div className="space-y-1.5 max-w-2xl">
+              <div className="inline-flex items-center gap-2">
+                <span className="w-6 h-[1.5px] bg-[#dc2626]" />
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#dc2626] font-mono">
+                  CURATED COLLECTIONS
+                </span>
+              </div>
+              <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#18181b] tracking-tight">
+                {language === 'sw' ? 'Mkusanyiko Rasmi wa Vitabu' : 'Explore by Category'}
+              </h2>
+              <p className="text-xs sm:text-sm text-[#71717a]">
+                {language === 'sw'
+                  ? 'Kila daftari linatengenezwa kwa viwango vikali vya kudumu kwa miaka mingi bila kuchanika.'
+                  : 'From Smyth thread-sewn hardback counter books to heavy-duty document kraft mailers.'}
+              </p>
+            </div>
+
+            <Link
+              to="/catalog"
+              className="group inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#111113] hover:text-[#dc2626] font-mono transition-colors pb-1 border-b border-[#111113] hover:border-[#dc2626] self-start sm:self-end shrink-0"
+            >
+              <span>{language === 'sw' ? 'TAZAMA ZOTE' : 'VIEW ALL CATEGORIES'}</span>
+              <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-5">
+          {/* 6 Category Showcase Cards */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-5">
             {signatureCategories.map((cat, idx) => (
               <Link
                 key={idx}
                 to={cat.link}
-                className="group flex flex-col bg-white border border-[#e2dedb] rounded-[20px] overflow-hidden hover:border-[#c49b7c] p-4 text-center items-center shadow-xs transition-all hover:shadow-md"
+                className="group flex flex-col bg-white border border-[#e4e4e7] rounded-2xl overflow-hidden hover:border-[#dc2626] p-3.5 sm:p-4 text-center items-center shadow-xs transition-all duration-300 hover:shadow-xl hover:-translate-y-1 relative"
               >
-                {/* Tag */}
-                <div className="w-full flex items-center justify-between pb-2 mb-2 border-b border-[#e2dedb] text-[10px] font-semibold text-[#8c847e]">
-                  <span className="text-[#c49b7c] font-bold">{cat.tag}</span>
-                  <span className="text-stone-400">0{idx + 1}</span>
+                {/* Header Tag / Number */}
+                <div className="w-full flex items-center justify-between pb-2 mb-2.5 border-b border-[#e4e4e7] text-[10px] font-semibold text-[#a1a1aa]">
+                  <span className="text-[#dc2626] font-mono font-bold tracking-wider">
+                    {cat.badge}
+                  </span>
+                  <span className="font-mono text-stone-400">0{idx + 1}</span>
                 </div>
 
-                {/* Photo container */}
-                <div className="aspect-square w-full bg-white rounded-[16px] p-2.5 overflow-hidden flex items-center justify-center relative mb-3 border border-[#e2dedb] group-hover:border-[#c49b7c] transition-all shadow-2xs">
+                {/* Product Photo Canvas */}
+                <div className="aspect-square w-full bg-[#fafafa] rounded-xl p-3 overflow-hidden flex items-center justify-center relative mb-3 border border-[#e4e4e7]/70 group-hover:border-[#dc2626]/40 transition-colors shadow-inner">
                   <img
                     src={cat.image}
                     alt={cat.title}
-                    className="w-full h-full object-contain mix-blend-multiply scale-110 group-hover:scale-125 transition-transform duration-300"
+                    className="w-full h-full object-contain mix-blend-multiply scale-100 group-hover:scale-110 transition-transform duration-500 ease-out"
                     loading="lazy"
                   />
                 </div>
 
-                {/* Details */}
-                <h3 className="font-heading font-bold text-sm text-[#3b352f] group-hover:text-[#c49b7c] transition-colors leading-tight">
-                  {cat.title}
-                </h3>
-                <p className="text-[11px] text-[#736c67] mt-1 line-clamp-1">
-                  {cat.subtitle}
-                </p>
+                {/* Card Meta & Title */}
+                <div className="space-y-1 w-full flex-1 flex flex-col justify-between">
+                  <div>
+                    <h3 className="font-heading font-bold text-xs sm:text-[13px] text-[#18181b] group-hover:text-[#dc2626] transition-colors leading-snug line-clamp-1">
+                      {cat.title}
+                    </h3>
+                    <p className="text-[10px] sm:text-[11px] text-[#71717a] line-clamp-1 mt-0.5">
+                      {cat.subtitle}
+                    </p>
+                  </div>
 
-                <span className="mt-3 text-[11px] font-bold tracking-wider uppercase text-[#c49b7c] group-hover:text-[#a46b44] inline-flex items-center gap-1">
-                  <span>View Details</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 ledup-arrow-icon" />
-                </span>
+                  <span className="mt-3 text-[10px] sm:text-[11px] font-bold tracking-wider uppercase text-[#dc2626] group-hover:text-[#b91c1c] inline-flex items-center justify-center gap-1 font-mono pt-2 border-t border-[#e4e4e7]/50">
+                    <span>Explore</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </span>
+                </div>
               </Link>
             ))}
           </div>
+
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* 4. THE ANATOMY OF AN OMEGA NOTEBOOK (Interactive Quality Dissection) */}
+      {/* 4. THE ANATOMY OF AN OMEGA NOTEBOOK (Engineering Standards) */}
       {/* ========================================================================= */}
-      <section className="py-14 lg:py-20 bg-white border-b border-[#e2dedb]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          <div className="text-center space-y-2">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#c49b7c] font-heading block">
-              The Engineering Standard
-            </span>
-            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#3b352f] tracking-tight">
+      <section className="py-14 sm:py-20 bg-white border-b border-[#e4e4e7] relative overflow-hidden">
+        {/* Subtle background luxury accent */}
+        <div className="absolute top-0 right-0 w-80 h-80 bg-[#dc2626]/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#111113]/5 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 sm:space-y-14 relative z-10">
+          
+          {/* Header */}
+          <div className="text-center space-y-3 max-w-2xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#111113]/5 border border-[#dc2626]/30 text-xs font-bold text-[#dc2626] font-mono uppercase tracking-widest">
+              <Sparkles className="w-3.5 h-3.5 text-[#dc2626]" />
+              <span>THE ENGINEERING STANDARD</span>
+            </div>
+            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#18181b] tracking-tight">
               {language === 'sw' ? 'Sayansi ya Daftari Bora la OMEGA' : 'The Anatomy of an OMEGA Notebook'}
             </h2>
-            <p className="text-xs sm:text-sm text-[#736c67] max-w-xl mx-auto">
+            <p className="text-xs sm:text-sm text-[#71717a] leading-relaxed">
               {language === 'sw'
                 ? 'Kwanini shule, wahasibu, na ofisi kubwa wanachagua OMEGA badala ya madaftari ya kawaida.'
-                : 'Every single component is selected to ensure lasting endurance, effortless writing, and complete ink resistance.'}
+                : 'Every single component is selected to guarantee lasting endurance, effortless writing, and complete ink resistance.'}
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 sm:gap-6">
+          {/* 4 Engineering Pillars Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            
             {/* Pillar 1 */}
-            <div className="p-3.5 sm:p-6 rounded-2xl sm:rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-2 sm:space-y-3 flex flex-col justify-between">
-              <div className="space-y-2 sm:space-y-3">
-                <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-[14px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold shadow-xs">
-                  <BookOpen className="w-4 h-4 sm:w-6 sm:h-6" />
+            <div className="group p-5 sm:p-6 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-between shadow-xs hover:shadow-xl hover:-translate-y-1">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300">
+                    <BookOpen className="w-5 h-5" />
+                  </div>
+                  <span className="font-mono text-xs font-bold text-[#dc2626] bg-white px-2 py-0.5 rounded-full border border-[#e4e4e7]">
+                    LAYER 01
+                  </span>
                 </div>
-                <h3 className="font-heading font-bold text-xs sm:text-base text-[#3b352f] leading-snug">
-                  1. Smyth Thread-Sewn Spine
+                <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
+                  Smyth Thread-Sewn Spine
                 </h3>
-                <p className="text-[11px] sm:text-xs text-[#736c67] leading-relaxed">
-                  Pages are double-stitched with high-tensile cotton-linen thread that never loosens. The book opens completely flat at 180° for effortless two-page writing.
+                <p className="text-xs text-[#71717a] leading-relaxed">
+                  Pages are double-stitched with high-tensile cotton-linen thread that never loosens. Opens flat at 180° for effortless two-page ledgers and note taking.
                 </p>
               </div>
-              <div className="text-[10px] sm:text-[11px] font-semibold text-[#c49b7c] flex items-center gap-1 pt-1 border-t border-stone-200/60">
-                <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+              <div className="text-[11px] font-bold text-[#dc2626] font-mono flex items-center gap-1.5 pt-3 border-t border-[#e4e4e7] mt-4">
+                <Check className="w-3.5 h-3.5 shrink-0 text-[#2A9D8F]" />
                 <span className="truncate">180° Lay-Flat Ergonomics</span>
               </div>
             </div>
 
             {/* Pillar 2 */}
-            <div className="p-3.5 sm:p-6 rounded-2xl sm:rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-2 sm:space-y-3 flex flex-col justify-between">
-              <div className="space-y-2 sm:space-y-3">
-                <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-[14px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold shadow-xs">
-                  <Feather className="w-4 h-4 sm:w-6 sm:h-6" />
+            <div className="group p-5 sm:p-6 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-between shadow-xs hover:shadow-xl hover:-translate-y-1">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300">
+                    <Feather className="w-5 h-5" />
+                  </div>
+                  <span className="font-mono text-xs font-bold text-[#dc2626] bg-white px-2 py-0.5 rounded-full border border-[#e4e4e7]">
+                    LAYER 02
+                  </span>
                 </div>
-                <h3 className="font-heading font-bold text-xs sm:text-base text-[#3b352f] leading-snug">
-                  2. 70 GSM Bleed-Proof Bond
+                <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
+                  70 GSM Bleed-Proof Bond
                 </h3>
-                <p className="text-[11px] sm:text-xs text-[#736c67] leading-relaxed">
+                <p className="text-xs text-[#71717a] leading-relaxed">
                   High-density virgin wood-pulp paper prevents ink ghosting and feathering from rollerballs, gel pens, and heavy fountain pen inks.
                 </p>
               </div>
-              <div className="text-[10px] sm:text-[11px] font-semibold text-[#c49b7c] flex items-center gap-1 pt-1 border-t border-stone-200/60">
-                <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+              <div className="text-[11px] font-bold text-[#dc2626] font-mono flex items-center gap-1.5 pt-3 border-t border-[#e4e4e7] mt-4">
+                <Check className="w-3.5 h-3.5 shrink-0 text-[#2A9D8F]" />
                 <span className="truncate">Zero Ink Bleed-Through</span>
               </div>
             </div>
 
             {/* Pillar 3 */}
-            <div className="p-3.5 sm:p-6 rounded-2xl sm:rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-2 sm:space-y-3 flex flex-col justify-between">
-              <div className="space-y-2 sm:space-y-3">
-                <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-[14px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold shadow-xs">
-                  <ShieldCheck className="w-4 h-4 sm:w-6 sm:h-6" />
+            <div className="group p-5 sm:p-6 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-between shadow-xs hover:shadow-xl hover:-translate-y-1">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300">
+                    <ShieldCheck className="w-5 h-5" />
+                  </div>
+                  <span className="font-mono text-xs font-bold text-[#dc2626] bg-white px-2 py-0.5 rounded-full border border-[#e4e4e7]">
+                    LAYER 03
+                  </span>
                 </div>
-                <h3 className="font-heading font-bold text-xs sm:text-base text-[#3b352f] leading-snug">
-                  3. 1.8mm Laminated Hardcover
+                <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
+                  1.8mm Laminated Hardcover
                 </h3>
-                <p className="text-[11px] sm:text-xs text-[#736c67] leading-relaxed">
+                <p className="text-xs text-[#71717a] leading-relaxed">
                   Heavy-duty greyboard wrapped in a water-resistant matt laminated cover. Protects records against humidity, spills, and rough transport.
                 </p>
               </div>
-              <div className="text-[10px] sm:text-[11px] font-semibold text-[#c49b7c] flex items-center gap-1 pt-1 border-t border-stone-200/60">
-                <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+              <div className="text-[11px] font-bold text-[#dc2626] font-mono flex items-center gap-1.5 pt-3 border-t border-[#e4e4e7] mt-4">
+                <Check className="w-3.5 h-3.5 shrink-0 text-[#2A9D8F]" />
                 <span className="truncate">Multi-Year Durability</span>
               </div>
             </div>
 
             {/* Pillar 4 */}
-            <div className="p-3.5 sm:p-6 rounded-2xl sm:rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-2 sm:space-y-3 flex flex-col justify-between">
-              <div className="space-y-2 sm:space-y-3">
-                <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-[14px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold shadow-xs">
-                  <Compass className="w-4 h-4 sm:w-6 sm:h-6" />
+            <div className="group p-5 sm:p-6 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-between shadow-xs hover:shadow-xl hover:-translate-y-1">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300">
+                    <Compass className="w-5 h-5" />
+                  </div>
+                  <span className="font-mono text-xs font-bold text-[#dc2626] bg-white px-2 py-0.5 rounded-full border border-[#e4e4e7]">
+                    LAYER 04
+                  </span>
                 </div>
-                <h3 className="font-heading font-bold text-xs sm:text-base text-[#3b352f] leading-snug">
-                  4. Precision Indigo Ruling
+                <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
+                  Precision Indigo Ruling
                 </h3>
-                <p className="text-[11px] sm:text-xs text-[#736c67] leading-relaxed">
+                <p className="text-xs text-[#71717a] leading-relaxed">
                   Uniform 8mm feint lines with soft red margin guides calibrated strictly to Tanzanian National Examination Council (NECTA) standards.
                 </p>
               </div>
-              <div className="text-[10px] sm:text-[11px] font-semibold text-[#c49b7c] flex items-center gap-1 pt-1 border-t border-stone-200/60">
-                <Check className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+              <div className="text-[11px] font-bold text-[#dc2626] font-mono flex items-center gap-1.5 pt-3 border-t border-[#e4e4e7] mt-4">
+                <Check className="w-3.5 h-3.5 shrink-0 text-[#2A9D8F]" />
                 <span className="truncate">NECTA Syllabus Standard</span>
               </div>
             </div>
+
           </div>
         </div>
       </section>
@@ -370,17 +497,22 @@ export const HomePage: React.FC = () => {
       {/* ========================================================================= */}
       {/* 5. FEATURED BENCHMARK PRODUCTS (Tabbed Catalog Grid) */}
       {/* ========================================================================= */}
-      <section className="py-14 lg:py-20 bg-[#fafafa] border-b border-[#e2dedb]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#e2dedb] pb-5">
-            <div>
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#c49b7c] font-heading block">
-                Official 2026 Batch
-              </span>
-              <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#3b352f] tracking-tight mt-1">
+      <section className="py-14 sm:py-20 bg-[#fafafa] border-b border-[#e4e4e7]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
+          
+          {/* Header Row */}
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#e4e4e7] pb-6">
+            <div className="space-y-1.5">
+              <div className="inline-flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#dc2626]" />
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#dc2626] font-mono">
+                  OFFICIAL 2026 BATCH
+                </span>
+              </div>
+              <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#18181b] tracking-tight">
                 {language === 'sw' ? 'Bidhaa Zinazoongoza kwa Mauzo' : 'Benchmark Stationery Picks'}
               </h2>
-              <p className="text-xs sm:text-sm text-[#736c67] mt-1">
+              <p className="text-xs sm:text-sm text-[#71717a]">
                 {language === 'sw'
                   ? 'Madaftari maarufu yaliyopo stoo tayari kwa oda za jumla na rejareja.'
                   : 'In-stock factory lines ready for instant retail dispatch and wholesale carton delivery.'}
@@ -389,18 +521,18 @@ export const HomePage: React.FC = () => {
 
             <Link
               to="/catalog"
-              className="font-mono text-xs font-bold tracking-wider uppercase text-[#4b423b] hover:text-[#c49b7c] inline-flex items-center gap-1.5 border-b border-[#4b423b] hover:border-[#c49b7c] pb-0.5 transition-colors"
+              className="font-mono text-xs font-bold tracking-wider uppercase text-[#111113] hover:text-[#dc2626] inline-flex items-center gap-1.5 border-b border-[#111113] hover:border-[#dc2626] pb-1 transition-colors self-start sm:self-end"
             >
               <span>{language === 'sw' ? 'TAZAMA ZOTE' : 'VIEW COMPLETE CATALOGUE'}</span>
-              <ArrowUpRight className="w-3.5 h-3.5 ledup-arrow-icon" />
+              <ArrowUpRight className="w-4 h-4" />
             </Link>
           </div>
 
-          {/* Segmented Filter Pills (Horizontal scroll on mobile, preventing deformed bubble) */}
+          {/* Segmented Filter Pills (Horizontal scroll on mobile) */}
           <div className="w-full overflow-x-auto no-scrollbar py-1">
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 p-1 sm:p-1.5 bg-white rounded-2xl sm:rounded-full border border-[#e2dedb] shadow-xs">
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 p-1.5 bg-white rounded-2xl border border-[#e4e4e7] shadow-xs">
               {[
-                { id: 'all', label: t.allProducts },
+                { id: 'all', label: t.allProducts || 'All Products' },
                 { id: 'counter', label: 'Counter Books' },
                 { id: 'exercise', label: 'Exercise Books' },
                 { id: 'bahasha', label: 'Bahasha & Envelopes' },
@@ -410,10 +542,10 @@ export const HomePage: React.FC = () => {
                   key={tab.id}
                   type="button"
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-3.5 sm:px-4 py-1.5 text-xs font-semibold rounded-xl sm:rounded-full whitespace-nowrap shrink-0 transition-all ${
+                  className={`px-4 sm:px-5 py-2 text-xs font-bold rounded-xl whitespace-nowrap shrink-0 transition-all duration-200 ${
                     activeTab === tab.id
-                      ? 'bg-[#4b423b] text-white shadow-xs'
-                      : 'text-[#736c67] hover:text-[#3b352f] hover:bg-[#efeded]'
+                      ? 'bg-[#111113] text-white shadow-md'
+                      : 'text-[#71717a] hover:text-[#18181b] hover:bg-[#efeded]'
                   }`}
                 >
                   {tab.label}
@@ -423,159 +555,226 @@ export const HomePage: React.FC = () => {
           </div>
 
           {/* Product Cards Grid (2 cols on mobile, 4 on desktop) */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
             {displayedProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
 
-          {/* View All Products Button (OMEGA Theme Matched: Deep Mocha & Copper Accent) */}
-          <div className="pt-8 sm:pt-10 flex justify-center">
+          {/* View All Products CTA Button */}
+          <div className="pt-6 sm:pt-8 flex justify-center">
             <Link
               to="/catalog"
               id="view-all-products-home-btn"
-              className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-3.5 sm:py-4 rounded-full bg-[#4b423b] hover:bg-[#38312b] text-white text-sm sm:text-base font-bold tracking-wide shadow-md hover:shadow-xl transition-all duration-300 active:scale-95 group border border-[#c49b7c]/25"
+              className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-3.5 sm:py-4 rounded-full bg-[#111113] hover:bg-[#111113] text-white text-xs sm:text-sm font-bold tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 active:scale-95 group border border-[#dc2626]/30"
             >
-              <span>{language === 'sw' ? 'Tazama Bidhaa Zote' : 'View All Products'}</span>
-              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-[#c49b7c] transition-transform duration-300 group-hover:translate-x-1.5" />
+              <span>{language === 'sw' ? 'Tazama Bidhaa Zote' : 'Explore Complete Catalogue'}</span>
+              <ArrowRight className="w-4 h-4 text-[#dc2626] transition-transform duration-300 group-hover:translate-x-1.5" />
             </Link>
           </div>
+
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* 6. WHOLESALE CARTON CALCULATOR (Interactive B2B Hub) */}
+      {/* 6. WHOLESALE CARTON PRICING CALCULATOR (Interactive B2B Studio) */}
       {/* ========================================================================= */}
-      <section className="py-14 lg:py-20 bg-[#4b423b] text-white border-b border-[#3b352f] relative overflow-hidden">
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#c49b7c]/15 rounded-full blur-3xl pointer-events-none" />
+      <section className="py-14 sm:py-20 bg-[#111113] text-white border-b border-[#18181b] relative overflow-hidden">
+        {/* Soft radial backlight */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#dc2626]/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-black/30 rounded-full blur-2xl pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            {/* Left Content */}
-            <div className="lg:col-span-5 space-y-4">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold text-[#c49b7c] bg-white/10 border border-[#c49b7c]/30">
-                <Package className="w-3.5 h-3.5 text-[#c49b7c]" />
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            
+            {/* Left Column: B2B Procurement Value Proposition */}
+            <div className="lg:col-span-5 space-y-5 text-left">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold text-[#dc2626] bg-white/10 border border-[#dc2626]/30 font-mono tracking-wider">
+                <Package className="w-3.5 h-3.5 text-[#dc2626]" />
                 <span>B2B WHOLESALE &amp; SCHOOL TENDERS</span>
               </div>
+
               <h2 className="font-heading text-2xl sm:text-4xl font-bold text-white leading-tight">
                 {language === 'sw'
-                  ? 'Kikokotoo cha Bei za Jumla (Carton Pricing)'
+                  ? 'Kikokotoo cha Bei za Jumla Kiwandani'
                   : 'Wholesale Carton Pricing Calculator'}
               </h2>
-              <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
+
+              <p className="text-xs sm:text-sm text-stone-300 leading-relaxed font-normal">
                 {language === 'sw'
-                  ? 'Chagua aina ya daftari na idadi ya katoni unazohitaji ili upate hesabu kamili ya moja kwa moja kutoka kiwandani.'
-                  : 'Select your preferred ledger quire and order quantity to see instant factory carton rates. We pack in branded OMEGA reinforced cartons with bus parcel waybills.'}
+                  ? 'Chagua aina ya daftari na idadi ya katoni unazohitaji ili upate hesabu kamili ya moja kwa moja kutoka kiwandani kwa bei ya jumla.'
+                  : 'Select your preferred quire ledger and required carton quantity to see instantaneous factory rates, unit breakdowns, and bus parcel dispatch schedules.'}
               </p>
 
-              <div className="space-y-2 pt-2 text-xs text-stone-200">
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#c49b7c]" />
-                  <span>Transparent Factory Direct Pricing (Zero hidden markup)</span>
+              {/* 4 Guarantees Checklist */}
+              <div className="space-y-3 pt-2 text-xs sm:text-sm text-stone-200">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-5 h-5 rounded-full bg-[#dc2626]/20 flex items-center justify-center shrink-0">
+                    <CheckCircle2 className="w-4 h-4 text-[#dc2626]" />
+                  </div>
+                  <span>Factory-Direct Pricing (Zero intermediary markups)</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#c49b7c]" />
-                  <span>Nationwide Bus Parcel Dispatch to all 31 regions</span>
+                <div className="flex items-center gap-2.5">
+                  <div className="w-5 h-5 rounded-full bg-[#dc2626]/20 flex items-center justify-center shrink-0">
+                    <CheckCircle2 className="w-4 h-4 text-[#dc2626]" />
+                  </div>
+                  <span>Nationwide Bus Parcel Waybill Dispatch to all 31 regions</span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <div className="w-5 h-5 rounded-full bg-[#dc2626]/20 flex items-center justify-center shrink-0">
+                    <CheckCircle2 className="w-4 h-4 text-[#dc2626]" />
+                  </div>
+                  <span>Official EFD Electronic Invoices &amp; Formal Proforma Quotations</span>
+                </div>
+                <div className="flex items-center gap-2.5">
+                  <div className="w-5 h-5 rounded-full bg-[#dc2626]/20 flex items-center justify-center shrink-0">
+                    <CheckCircle2 className="w-4 h-4 text-[#dc2626]" />
+                  </div>
+                  <span>Heavy-Duty Double-Strapped OMEGA Branded Cartons</span>
                 </div>
               </div>
             </div>
 
-            {/* Right Calculator Studio */}
-            <div className="lg:col-span-7 bg-[#3b352f] border border-white/15 p-6 sm:p-8 rounded-[24px] shadow-2xl space-y-5">
-              {/* Step 1: Book Model */}
-              <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-wider text-[#c49b7c] block">
-                  1. Select Notebook Model:
-                </label>
-                <div className="grid grid-cols-3 gap-1.5 sm:gap-3">
+            {/* Right Column: Interactive B2B Calculator Studio */}
+            <div className="lg:col-span-7 bg-[#18181b] border border-white/15 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6">
+              
+              {/* Step 1: Select Book Model */}
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold uppercase tracking-wider text-[#dc2626] font-mono">
+                    1. Select Notebook Model:
+                  </label>
+                  <span className="text-[11px] text-stone-300 font-mono">
+                    Smyth-sewn hardcovers
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
                   {[
-                    { key: 'q2', label: 'Quire 2', sub: '198p', rate: `${formatPrice(q2Prod?.wholesalePrice || 56000, currency)}/-` },
-                    { key: 'q3', label: 'Quire 3', sub: '288p', rate: `${formatPrice(q3Prod?.wholesalePrice || 57000, currency)}/-` },
-                    { key: 'q4', label: 'Quire 4', sub: '384p', rate: `${formatPrice(q4Prod?.wholesalePrice || 60000, currency)}/-` },
+                    { key: 'q2', label: 'Quire 2 (Q2)', sub: '192p · 48 pcs/box', rate: formatPrice(q2Prod?.wholesalePrice || 56000, currency) },
+                    { key: 'q3', label: 'Quire 3 (Q3)', sub: '288p · 36 pcs/box', rate: formatPrice(q3Prod?.wholesalePrice || 57000, currency) },
+                    { key: 'q4', label: 'Quire 4 (Q4)', sub: '384p · 24 pcs/box', rate: formatPrice(q4Prod?.wholesalePrice || 60000, currency) },
                   ].map((item) => (
                     <button
                       key={item.key}
                       type="button"
                       onClick={() => setCalcBookType(item.key as any)}
-                      className={`p-2 sm:p-3 rounded-[12px] border text-center transition-all ${
+                      className={`p-3 rounded-2xl border text-center transition-all duration-200 cursor-pointer ${
                         calcBookType === item.key
-                          ? 'btn-ledup-copper text-[#23201d] font-bold border-transparent shadow-md'
-                          : 'bg-[#4b423b] text-stone-200 border-white/15 hover:border-[#c49b7c]'
+                          ? 'bg-[#dc2626] text-white font-bold border-transparent shadow-lg scale-[1.02]'
+                          : 'bg-[#111113]/80 text-stone-200 border-white/10 hover:border-[#dc2626]/60 hover:bg-[#111113]'
                       }`}
                     >
-                      <div className="text-xs font-bold truncate">{item.label}</div>
-                      <div className="text-[10px] opacity-80 font-mono hidden sm:block">{item.sub}</div>
-                      <div className={`text-[10px] sm:text-[11px] mt-0.5 font-mono ${calcBookType === item.key ? 'text-[#23201d] font-bold' : 'text-[#c49b7c]'}`}>{item.rate}</div>
+                      <div className="text-xs sm:text-sm font-bold truncate">{item.label}</div>
+                      <div className="text-[10px] opacity-80 font-mono mt-0.5">{item.sub}</div>
+                      <div className={`text-xs mt-1 font-mono font-bold ${calcBookType === item.key ? 'text-[#09090b]' : 'text-[#dc2626]'}`}>
+                        {item.rate}
+                      </div>
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* Step 2: Quantity */}
-              <div className="space-y-2">
-                <div className="flex justify-between items-center text-xs font-bold uppercase tracking-wider">
-                  <label className="text-[#c49b7c]">
-                    2. Select Cartons ({calcBookType === 'q2' ? 48 : calcBookType === 'q3' ? 36 : 24} Pcs / Box):
+              {/* Step 2: Select Quantity (Presets + Stepper) */}
+              <div className="space-y-2.5">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 text-xs font-bold uppercase tracking-wider">
+                  <label className="text-[#dc2626] font-mono">
+                    2. Order Quantity ({unitsPerCarton} Pcs / Box):
                   </label>
                   <span className="text-white font-mono text-xs">
-                    {calcQuantity} Cartons ({calcQuantity * (calcBookType === 'q2' ? 48 : calcBookType === 'q3' ? 36 : 24)} Books)
+                    {calcQuantity} Cartons ({totalUnits.toLocaleString()} Books)
                   </span>
                 </div>
-                <div className="flex flex-wrap sm:flex-nowrap gap-1.5 sm:gap-2">
-                  {[1, 5, 10, 20, 50].map((qty) => (
+
+                {/* Presets and Stepper row */}
+                <div className="flex items-center gap-2">
+                  <div className="grid grid-cols-5 gap-1.5 sm:gap-2 flex-1">
+                    {[1, 5, 10, 20, 50].map((qty) => (
+                      <button
+                        key={qty}
+                        type="button"
+                        onClick={() => setCalcQuantity(qty)}
+                        className={`py-2 text-xs font-bold rounded-xl border transition-all duration-200 font-mono cursor-pointer ${
+                          calcQuantity === qty
+                            ? 'bg-[#dc2626] text-white border-transparent shadow-md'
+                            : 'bg-[#111113]/80 text-stone-300 border-white/10 hover:border-white/30'
+                        }`}
+                      >
+                        {qty} {qty === 1 ? 'Box' : 'Boxes'}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Manual Stepper */}
+                  <div className="flex items-center rounded-xl bg-[#09090b] border border-white/15 p-1 shrink-0">
                     <button
-                      key={qty}
                       type="button"
-                      onClick={() => setCalcQuantity(qty)}
-                      className={`flex-1 py-2.5 text-xs font-bold rounded-[10px] border transition-all font-mono ${
-                        calcQuantity === qty
-                          ? 'btn-ledup-copper text-[#23201d] border-transparent shadow-md'
-                          : 'bg-[#4b423b] text-stone-300 border-white/15 hover:border-white/40'
-                      }`}
+                      onClick={() => setCalcQuantity(Math.max(1, calcQuantity - 1))}
+                      aria-label="Decrease quantity"
+                      className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
                     >
-                      {qty} {qty === 1 ? 'Box' : 'Boxes'}
+                      <Minus className="w-3.5 h-3.5" />
                     </button>
-                  ))}
+                    <span className="w-9 text-center font-mono font-bold text-xs text-white">
+                      {calcQuantity}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setCalcQuantity(calcQuantity + 1)}
+                      aria-label="Increase quantity"
+                      className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              {/* Price Calculation Output (No discount) */}
-              <div className="p-4 rounded-[14px] bg-[#292420] border border-white/10 space-y-2 font-mono">
+              {/* Price Calculation Live Studio Breakdown */}
+              <div className="p-4 sm:p-5 rounded-2xl bg-[#09090b] border border-white/10 space-y-2.5 font-mono">
                 <div className="flex justify-between text-xs text-stone-300">
-                  <span>Rate per Carton:</span>
+                  <span>Factory Carton Rate:</span>
                   <span className="text-white font-bold">{formatPrice(calcBaseRate, currency)}</span>
                 </div>
                 <div className="flex justify-between text-xs text-stone-300">
-                  <span>Selected Quantity:</span>
+                  <span>Effective Unit Rate:</span>
+                  <span className="text-[#dc2626] font-bold">~{formatPrice(unitPrice, currency)} / book</span>
+                </div>
+                <div className="flex justify-between text-xs text-stone-300">
+                  <span>Selected Volume:</span>
                   <span className="text-white font-bold">
-                    {calcQuantity} {calcQuantity === 1 ? 'Carton' : 'Cartons'} ({calcQuantity * (calcBookType === 'q2' ? 48 : calcBookType === 'q3' ? 36 : 24)} Books)
+                    {calcQuantity} {calcQuantity === 1 ? 'Carton' : 'Cartons'} ({totalUnits.toLocaleString()} units)
                   </span>
                 </div>
-                <div className="flex justify-between text-base font-extrabold text-white pt-2 border-t border-white/10">
-                  <span>Total Amount:</span>
-                  <span className="text-[#c49b7c] text-lg sm:text-xl font-black">{formatPrice(calcTotal, currency)}</span>
+                <div className="flex justify-between items-center text-sm sm:text-base font-extrabold text-white pt-3 border-t border-white/15">
+                  <span className="font-heading">Total Proforma Amount:</span>
+                  <span className="text-[#dc2626] text-xl sm:text-2xl font-black font-mono">
+                    {formatPrice(calcTotal, currency)}
+                  </span>
                 </div>
               </div>
 
-              {/* Copper CTA Button */}
+              {/* WhatsApp Proforma Trigger */}
               <a
                 href={`https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
                   `*OMEGA WHOLESALE PROFORMA INQUIRY*\n` +
                   `Product: Counter Book ${calcBookType.toUpperCase()}\n` +
-                  `Quantity: ${calcQuantity} Cartons (${calcQuantity * (calcBookType === 'q2' ? 48 : calcBookType === 'q3' ? 36 : 24)} Units)\n` +
-                  `Rate per Carton: ${currency} ${calcBaseRate.toLocaleString()}\n` +
-                  `Total Amount: ${currency} ${calcTotal.toLocaleString()}\n\n` +
+                  `Quantity: ${calcQuantity} Cartons (${totalUnits} Units)\n` +
+                  `Rate per Carton: ${formatPrice(calcBaseRate, currency)}\n` +
+                  `Total Amount: ${formatPrice(calcTotal, currency)}\n\n` +
                   `Please share formal proforma invoice and dispatch waybill schedule.`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3.5 px-4 rounded-[12px] btn-ledup-copper text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 group"
+                className="w-full py-4 px-5 rounded-2xl bg-[#dc2626] hover:bg-[#ef4444] text-[#09090b] text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl hover:shadow-2xl transition-all duration-300 active:scale-95 group font-mono"
               >
-                <MessageCircle className="w-4 h-4 text-white" />
-                <span className="text-white">Request Proforma Invoice on WhatsApp</span>
-                <ArrowUpRight className="w-4 h-4 text-white ledup-arrow-icon" />
+                <MessageCircle className="w-4 h-4 text-[#09090b]" />
+                <span>Request Proforma Invoice on WhatsApp</span>
+                <ArrowUpRight className="w-4 h-4 text-[#09090b] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
+
             </div>
+
           </div>
         </div>
       </section>
@@ -583,201 +782,376 @@ export const HomePage: React.FC = () => {
       {/* ========================================================================= */}
       {/* 7. NATIONWIDE DISPATCH & LOGISTICS (Upcountry Bus Parcel Hub) */}
       {/* ========================================================================= */}
-      <section className="py-14 lg:py-20 bg-white border-b border-[#e2dedb]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-          <div className="text-center space-y-2">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#c49b7c] font-heading block">
-              Logistics &amp; Delivery
-            </span>
-            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#3b352f] tracking-tight">
+      <section className="py-14 sm:py-20 bg-white border-b border-[#e4e4e7]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
+          
+          {/* Header */}
+          <div className="text-center space-y-3 max-w-2xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#111113]/5 border border-[#dc2626]/30 text-xs font-bold text-[#dc2626] font-mono uppercase tracking-widest">
+              <Truck className="w-3.5 h-3.5 text-[#dc2626]" />
+              <span>LOGISTICS &amp; UPCOUNTRY DISPATCH</span>
+            </div>
+            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#18181b] tracking-tight">
               {language === 'sw' ? 'Usafirishaji wa Uhakika Mikoani Kote' : 'Reliable Nationwide Bus Parcel Delivery'}
             </h2>
-            <p className="text-xs sm:text-sm text-[#736c67] max-w-xl mx-auto">
+            <p className="text-xs sm:text-sm text-[#71717a] leading-relaxed">
               {language === 'sw'
-                ? 'Tunafikisha mzigo wako mkoa wowote Tanzania kupitia mabasi ya kuaminika ndani ya saa 24–48.'
-                : 'Direct carton delivery from our Central Warehouse in Soweto SIDO Mbeya and Kariakoo Dispatch Hub to your local bus terminal.'}
+                ? 'Tunafikisha mzigo wako mkoa wowote Tanzania kupitia mabasi ya kuaminika ndani ya saa 24–48 kutoka kiwandani Soweto Mbeya au stoo ya Kariakoo.'
+                : 'Direct carton delivery from our Central Factory in Soweto SIDO Mbeya and Kariakoo Dispatch Hub directly to your regional bus terminal.'}
             </p>
           </div>
 
-          <div className="grid grid-cols-3 gap-2 sm:gap-6">
-            <div className="p-3 sm:p-6 rounded-2xl sm:rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-2 sm:space-y-3 flex flex-col justify-between">
-              <div className="space-y-1.5 sm:space-y-3">
-                <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-[10px] sm:rounded-[12px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold">
-                  <Truck className="w-4 h-4 sm:w-5 sm:h-5" />
+          {/* 3 Step Logistics Flow */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+            
+            {/* Step 1 */}
+            <div className="p-6 rounded-2xl bg-[#fafafa] border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 space-y-3.5 flex flex-col justify-between shadow-xs hover:shadow-lg">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-xs">
+                    <Package className="w-5 h-5" />
+                  </div>
+                  <span className="font-mono text-xs font-bold text-[#a1a1aa] bg-white px-2 py-0.5 rounded-full border border-[#e4e4e7]">
+                    STEP 01
+                  </span>
                 </div>
-                <h3 className="font-heading font-bold text-xs sm:text-base text-[#3b352f] leading-snug">
-                  Daily Regional Bus Waybills
+                <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
+                  Reinforced Packaging
                 </h3>
-                <p className="text-[10px] sm:text-xs text-[#736c67] leading-relaxed">
-                  We partner with Shabiby, BM Coach, Abood, New Force, and Saibaba to ensure same-day parcel drop-off with SMS waybill tracking numbers.
+                <p className="text-xs text-[#71717a] leading-relaxed">
+                  Cartons are double-strapped with water-resistant protective tape and official OMEGA branding to prevent transit damage or pilferage during long bus journeys.
                 </p>
+              </div>
+              <div className="text-[11px] font-bold text-[#dc2626] font-mono flex items-center gap-1.5 pt-3 border-t border-[#e4e4e7]">
+                <Check className="w-3.5 h-3.5 text-[#2A9D8F]" />
+                <span>Heavy Strapping Standard</span>
               </div>
             </div>
 
-            <div className="p-3 sm:p-6 rounded-2xl sm:rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-2 sm:space-y-3 flex flex-col justify-between">
-              <div className="space-y-1.5 sm:space-y-3">
-                <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-[10px] sm:rounded-[12px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold">
-                  <Package className="w-4 h-4 sm:w-5 sm:h-5" />
+            {/* Step 2 */}
+            <div className="p-6 rounded-2xl bg-[#fafafa] border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 space-y-3.5 flex flex-col justify-between shadow-xs hover:shadow-lg">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-xs">
+                    <Truck className="w-5 h-5" />
+                  </div>
+                  <span className="font-mono text-xs font-bold text-[#a1a1aa] bg-white px-2 py-0.5 rounded-full border border-[#e4e4e7]">
+                    STEP 02
+                  </span>
                 </div>
-                <h3 className="font-heading font-bold text-xs sm:text-base text-[#3b352f] leading-snug">
-                  Heavy Branded Packaging
+                <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
+                  Daily Bus Fleet Handoff
                 </h3>
-                <p className="text-[10px] sm:text-xs text-[#736c67] leading-relaxed">
-                  Cartons are double-strapped with water-resistant protective tape and official OMEGA branding to prevent transit damage or pilferage.
+                <p className="text-xs text-[#71717a] leading-relaxed">
+                  Partnerships with Shabiby, BM Coach, Abood, New Force, and Saibaba for same-day parcel drop-off with official bus receipt waybills.
                 </p>
+              </div>
+              <div className="text-[11px] font-bold text-[#dc2626] font-mono flex items-center gap-1.5 pt-3 border-t border-[#e4e4e7]">
+                <Check className="w-3.5 h-3.5 text-[#2A9D8F]" />
+                <span>Daily Bus Drops (31 Regions)</span>
               </div>
             </div>
 
-            <div className="p-3 sm:p-6 rounded-2xl sm:rounded-[20px] bg-[#fafafa] border border-[#e2dedb] hover:border-[#c49b7c] transition-all space-y-2 sm:space-y-3 flex flex-col justify-between">
-              <div className="space-y-1.5 sm:space-y-3">
-                <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-[10px] sm:rounded-[12px] bg-[#4b423b] text-[#c49b7c] flex items-center justify-center font-bold">
-                  <PhoneCall className="w-4 h-4 sm:w-5 sm:h-5" />
+            {/* Step 3 */}
+            <div className="p-6 rounded-2xl bg-[#fafafa] border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 space-y-3.5 flex flex-col justify-between shadow-xs hover:shadow-lg">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-xs">
+                    <PhoneCall className="w-5 h-5" />
+                  </div>
+                  <span className="font-mono text-xs font-bold text-[#a1a1aa] bg-white px-2 py-0.5 rounded-full border border-[#e4e4e7]">
+                    STEP 03
+                  </span>
                 </div>
-                <h3 className="font-heading font-bold text-xs sm:text-base text-[#3b352f] leading-snug">
+                <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
                   Live Dispatch Confirmation
                 </h3>
-                <p className="text-[10px] sm:text-xs text-[#736c67] leading-relaxed">
-                  Receive instant photo proof of your loaded carton, bus receipt, and driver contact directly on WhatsApp before bus departure.
+                <p className="text-xs text-[#71717a] leading-relaxed">
+                  Receive instant photo proof of loaded cartons, bus receipt with tracking waybill number, and bus conductor contacts directly on WhatsApp.
+                </p>
+              </div>
+              <div className="text-[11px] font-bold text-[#dc2626] font-mono flex items-center gap-1.5 pt-3 border-t border-[#e4e4e7]">
+                <Check className="w-3.5 h-3.5 text-[#2A9D8F]" />
+                <span>Photo Proof on WhatsApp</span>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Quick Track Action Banner */}
+          <div className="p-4 sm:p-5 rounded-2xl bg-[#fafafa] border border-[#e4e4e7] flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3 text-left">
+              <div className="w-10 h-10 rounded-xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center shrink-0">
+                <Navigation className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="text-xs sm:text-sm font-bold text-[#18181b]">
+                  Already have an active order waybill?
+                </h4>
+                <p className="text-[11px] sm:text-xs text-[#71717a]">
+                  Track bus cargo delivery status across all regional transit hubs in real time.
                 </p>
               </div>
             </div>
+
+            <button
+              type="button"
+              onClick={() => setIsTrackingModalOpen(true)}
+              className="px-5 py-2.5 rounded-xl bg-[#111113] hover:bg-[#111113] text-white text-xs font-bold uppercase tracking-wider font-mono flex items-center gap-2 transition-all active:scale-95 shadow-xs shrink-0 cursor-pointer"
+            >
+              <span>Track Bus Waybill</span>
+              <ArrowRight className="w-3.5 h-3.5 text-[#dc2626]" />
+            </button>
           </div>
+
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* 8. CLIENT TESTIMONIALS */}
+      {/* 8. CLIENT & ENTERPRISE TESTIMONIALS (Social Proof) */}
       {/* ========================================================================= */}
-      <section className="py-14 lg:py-20 bg-[#4b423b] text-white border-b border-[#3b352f]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-          <div className="text-center space-y-2">
-            <span className="text-xs font-bold tracking-[0.2em] text-[#c49b7c] uppercase block font-heading">
-              TESTIMONIALS
-            </span>
+      <section className="py-14 sm:py-20 bg-[#111113] text-white border-b border-[#18181b] relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
+          
+          {/* Header */}
+          <div className="text-center space-y-3 max-w-2xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-[#dc2626]/30 text-xs font-bold text-[#dc2626] font-mono uppercase tracking-widest">
+              <Star className="w-3.5 h-3.5 fill-[#dc2626] text-[#dc2626]" />
+              <span>TESTIMONIALS &amp; CLIENT TRUST</span>
+            </div>
             <h2 className="font-heading text-2xl sm:text-4xl font-bold text-white tracking-tight">
               {language === 'sw' ? 'Wateja Wetu Wanasemaje' : 'Trusted by Schools & Enterprises'}
             </h2>
-            <p className="text-xs sm:text-sm text-stone-300 max-w-lg mx-auto">
+            <p className="text-xs sm:text-sm text-stone-300">
               {language === 'sw'
                 ? 'Walimu wakuu, wahasibu, na wamiliki wa maduka ya vifaa vya shule kote nchini wanaamini OMEGA.'
-                : 'Loved by headmasters, corporate accountants, and stationery wholesalers across Tanzania.'}
+                : 'Loved by headmasters, corporate accountants, and stationery wholesalers across all 31 regions of Tanzania.'}
             </p>
           </div>
 
-          <div className="grid grid-cols-3 gap-2 sm:gap-6">
-            <div className="p-3 sm:p-6 rounded-[16px] sm:rounded-[20px] bg-[#3b352f] border border-white/15 space-y-2 sm:space-y-3 shadow-lg flex flex-col justify-between">
-              <div className="space-y-2">
-                <div className="flex gap-0.5 sm:gap-1 text-[#c49b7c]">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 fill-[#c49b7c] text-[#c49b7c]" />
-                  ))}
+          {/* 3 Review Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+            
+            {/* Review 1 */}
+            <div className="p-6 rounded-2xl bg-[#18181b] border border-white/10 space-y-4 shadow-xl flex flex-col justify-between hover:border-[#dc2626]/40 transition-colors">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex gap-1 text-[#dc2626]">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-[#dc2626] text-[#dc2626]" />
+                    ))}
+                  </div>
+                  <Quote className="w-5 h-5 text-[#dc2626]/40" />
                 </div>
-                <p className="text-[10px] sm:text-xs md:text-sm text-stone-200 italic leading-relaxed line-clamp-4 sm:line-clamp-none">
+                <p className="text-xs sm:text-sm text-stone-200 italic leading-relaxed">
                   “Daftari la OMEGA Quire 3 lina karatasi ngumu sana na jalada lisilopinda. Linanisaidia sana kwenye mahesabu ya kila mwezi bila wino kupenya.”
                 </p>
               </div>
-              <div className="pt-2 sm:pt-3 border-t border-white/10 flex items-center gap-2 sm:gap-3">
-                <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#c49b7c] text-[#3b352f] font-bold flex items-center justify-center text-[10px] sm:text-xs shadow-xs shrink-0">
+              <div className="pt-4 border-t border-white/10 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#dc2626] text-white font-black flex items-center justify-center text-xs shadow-md shrink-0">
                   EK
                 </div>
                 <div className="min-w-0">
-                  <h4 className="text-[10px] sm:text-xs font-bold text-white truncate">Emanuel Kiwanga</h4>
-                  <p className="text-[9px] sm:text-[11px] text-stone-400 truncate">Chief Accountant · Dar</p>
+                  <h4 className="text-xs sm:text-sm font-bold text-white truncate">Emanuel Kiwanga</h4>
+                  <div className="flex items-center gap-1.5 text-[11px] text-stone-400">
+                    <Building2 className="w-3 h-3 text-[#dc2626]" />
+                    <span className="truncate">Chief Accountant · Dar es Salaam</span>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="p-3 sm:p-6 rounded-[16px] sm:rounded-[20px] bg-[#3b352f] border border-white/15 space-y-2 sm:space-y-3 shadow-lg flex flex-col justify-between">
-              <div className="space-y-2">
-                <div className="flex gap-0.5 sm:gap-1 text-[#c49b7c]">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 fill-[#c49b7c] text-[#c49b7c]" />
-                  ))}
+            {/* Review 2 */}
+            <div className="p-6 rounded-2xl bg-[#18181b] border border-white/10 space-y-4 shadow-xl flex flex-col justify-between hover:border-[#dc2626]/40 transition-colors">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex gap-1 text-[#dc2626]">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-[#dc2626] text-[#dc2626]" />
+                    ))}
+                  </div>
+                  <Quote className="w-5 h-5 text-[#dc2626]/40" />
                 </div>
-                <p className="text-[10px] sm:text-xs md:text-sm text-stone-200 italic leading-relaxed line-clamp-4 sm:line-clamp-none">
+                <p className="text-xs sm:text-sm text-stone-200 italic leading-relaxed">
                   “The quality of OMEGA stationery is unmatched. Our secondary school orders 200-page single line exercise books every term without fail.”
                 </p>
               </div>
-              <div className="pt-2 sm:pt-3 border-t border-white/10 flex items-center gap-2 sm:gap-3">
-                <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#c49b7c] text-[#3b352f] font-bold flex items-center justify-center text-[10px] sm:text-xs shadow-xs shrink-0">
+              <div className="pt-4 border-t border-white/10 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#dc2626] text-white font-black flex items-center justify-center text-xs shadow-md shrink-0">
                   GM
                 </div>
                 <div className="min-w-0">
-                  <h4 className="text-[10px] sm:text-xs font-bold text-white truncate">Grace Mhando</h4>
-                  <p className="text-[9px] sm:text-[11px] text-stone-400 truncate">Head of Academics · Arusha</p>
+                  <h4 className="text-xs sm:text-sm font-bold text-white truncate">Grace Mhando</h4>
+                  <div className="flex items-center gap-1.5 text-[11px] text-stone-400">
+                    <GraduationCap className="w-3 h-3 text-[#dc2626]" />
+                    <span className="truncate">Head of Academics · Arusha</span>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="p-3 sm:p-6 rounded-[16px] sm:rounded-[20px] bg-[#3b352f] border border-white/15 space-y-2 sm:space-y-3 shadow-lg flex flex-col justify-between">
-              <div className="space-y-2">
-                <div className="flex gap-0.5 sm:gap-1 text-[#c49b7c]">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 fill-[#c49b7c] text-[#c49b7c]" />
-                  ))}
+            {/* Review 3 */}
+            <div className="p-6 rounded-2xl bg-[#18181b] border border-white/10 space-y-4 shadow-xl flex flex-col justify-between hover:border-[#dc2626]/40 transition-colors">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex gap-1 text-[#dc2626]">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-[#dc2626] text-[#dc2626]" />
+                    ))}
+                  </div>
+                  <Quote className="w-5 h-5 text-[#dc2626]/40" />
                 </div>
-                <p className="text-[10px] sm:text-xs md:text-sm text-stone-200 italic leading-relaxed line-clamp-4 sm:line-clamp-none">
+                <p className="text-xs sm:text-sm text-stone-200 italic leading-relaxed">
                   “Fast bus parcel dispatch to Mwanza! The kraft envelopes and ruled reams arrived safely packed in OMEGA branded cartons within 24 hours.”
                 </p>
               </div>
-              <div className="pt-2 sm:pt-3 border-t border-white/10 flex items-center gap-2 sm:gap-3">
-                <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#c49b7c] text-[#3b352f] font-bold flex items-center justify-center text-[10px] sm:text-xs shadow-xs shrink-0">
+              <div className="pt-4 border-t border-white/10 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#dc2626] text-white font-black flex items-center justify-center text-xs shadow-md shrink-0">
                   JM
                 </div>
                 <div className="min-w-0">
-                  <h4 className="text-[10px] sm:text-xs font-bold text-white truncate">Joseph Mollel</h4>
-                  <p className="text-[9px] sm:text-[11px] text-stone-400 truncate">Stationery Store · Mwanza</p>
+                  <h4 className="text-xs sm:text-sm font-bold text-white truncate">Joseph Mollel</h4>
+                  <div className="flex items-center gap-1.5 text-[11px] text-stone-400">
+                    <Store className="w-3 h-3 text-[#dc2626]" />
+                    <span className="truncate">Stationery Store Owner · Mwanza</span>
+                  </div>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* 9. STAY CONNECTED BANNER (LEDUP Warm Copper Gradient) */}
+      {/* 9. VIP CONCIERGE & DIRECT FACTORY HOTLINES */}
       {/* ========================================================================= */}
-      <section className="py-12 bg-gradient-to-r from-[#a46b44] via-[#c49b7c] to-[#a46b44] text-[#23201d]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-5">
-          <div className="space-y-1.5">
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#23201d] tracking-tight flex items-center justify-center gap-2">
-              <span>{language === 'sw' ? 'Jiunge na OMEGA Stationery' : 'Connect with OMEGA Stationery'}</span>
-              <Sparkles className="w-5 h-5 text-[#23201d]" />
+      <section className="py-14 sm:py-18 bg-gradient-to-b from-[#18181b] to-[#09090b] text-white relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 relative z-10">
+          
+          {/* Top Newsletter & Catalog Request Form */}
+          <div className="max-w-3xl mx-auto text-center space-y-4">
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#dc2626] font-mono block">
+              VIP CONCIERGE &amp; PRICE ALERTS
+            </span>
+            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-white tracking-tight">
+              {language === 'sw' ? 'Jiunge na OMEGA Stationery' : 'Connect with OMEGA Stationery'}
             </h2>
-            <p className="text-xs sm:text-sm text-[#3b352f] font-medium max-w-lg mx-auto">
+            <p className="text-xs sm:text-sm text-stone-300 max-w-lg mx-auto">
               {language === 'sw'
                 ? 'Pata taarifa za bei mpya za jumla, katalogi ya 2026 na ofa maalum za vifaa vya shule na ofisi.'
-                : 'Get 2026 catalog updates, wholesale tender offers, and direct factory price lists.'}
+                : 'Receive official 2026 wholesale catalogs, bulk school tender announcements, and factory-direct price updates.'}
             </p>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                alert(language === 'sw' ? 'Asante! Tumepokea mawasiliano yako.' : 'Thank you! We received your details.');
+              }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-2.5 max-w-md mx-auto pt-2"
+            >
+              <input
+                type="text"
+                required
+                placeholder={language === 'sw' ? 'Namba ya simu au email...' : 'Enter your email or phone number...'}
+                className="w-full px-5 py-3 rounded-full text-xs sm:text-sm bg-white/10 text-white placeholder:text-stone-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-[#dc2626] backdrop-blur-xs font-sans"
+              />
+              <button
+                type="submit"
+                className="w-full sm:w-auto px-7 py-3 rounded-full bg-[#dc2626] hover:bg-[#ef4444] text-[#09090b] text-xs sm:text-sm font-bold uppercase tracking-wider font-mono transition-all shadow-md shrink-0 flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
+              >
+                <span>{language === 'sw' ? 'WASILIANA' : 'SUBSCRIBE'}</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </button>
+            </form>
           </div>
 
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              alert(language === 'sw' ? 'Asante! Tumepokea mawasiliano yako.' : 'Thank you! We received your details.');
-            }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto"
-          >
-            <input
-              type="text"
-              required
-              placeholder={language === 'sw' ? 'Namba ya simu au email...' : 'Enter your email or phone number...'}
-              className="w-full px-5 py-3 rounded-full text-xs sm:text-sm bg-white text-[#3b352f] placeholder:text-[#8c847e] border border-white/40 focus:outline-none focus:ring-2 focus:ring-[#4b423b] shadow-sm"
-            />
-            <button
-              type="submit"
-              className="w-full sm:w-auto px-7 py-3 rounded-full btn-ledup-mocha text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-md shrink-0 flex items-center justify-center gap-2 group"
-            >
-              <span>{language === 'sw' ? 'WASILIANA' : 'SUBSCRIBE'}</span>
-              <ArrowUpRight className="w-4 h-4 ledup-arrow-icon" />
-            </button>
-          </form>
+          {/* 4 Dedicated Direct Hotlines */}
+          <div className="pt-6 border-t border-white/10">
+            <div className="text-center mb-5">
+              <span className="text-[11px] font-mono uppercase tracking-widest text-[#dc2626]">
+                DIRECT FACTORY HOTLINES &amp; DISPATCH DIRECTORS
+              </span>
+            </div>
 
-          <p className="text-xs text-[#3b352f] font-semibold font-mono">
-            Dedicated Hotlines: Kanti Bhai K. Halai: +255 715 268 391 | Vijesh K. Halai: +255 624 265 480 | Mbeya: +255 746 268 391 | Mwanza: +255 699 032 777
-          </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+              
+              {/* Contact 1 */}
+              <a
+                href="tel:+255715268391"
+                className="p-4 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#dc2626]/50 transition-all flex items-center gap-3.5 group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center shrink-0 group-hover:bg-[#dc2626] group-hover:text-[#09090b] transition-colors">
+                  <Phone className="w-4 h-4" />
+                </div>
+                <div className="min-w-0 text-left">
+                  <h4 className="text-xs font-bold text-white truncate">Kanti Bhai K. Halai</h4>
+                  <p className="text-[10px] text-stone-400">Managing Director</p>
+                  <span className="text-xs font-mono font-bold text-[#dc2626] group-hover:underline block mt-0.5">
+                    +255 715 268 391
+                  </span>
+                </div>
+              </a>
+
+              {/* Contact 2 */}
+              <a
+                href="tel:+255624265480"
+                className="p-4 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#dc2626]/50 transition-all flex items-center gap-3.5 group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center shrink-0 group-hover:bg-[#dc2626] group-hover:text-[#09090b] transition-colors">
+                  <Phone className="w-4 h-4" />
+                </div>
+                <div className="min-w-0 text-left">
+                  <h4 className="text-xs font-bold text-white truncate">Vijesh K. Halai</h4>
+                  <p className="text-[10px] text-stone-400">Sales &amp; Logistics</p>
+                  <span className="text-xs font-mono font-bold text-[#dc2626] group-hover:underline block mt-0.5">
+                    +255 624 265 480
+                  </span>
+                </div>
+              </a>
+
+              {/* Contact 3 */}
+              <a
+                href="tel:+255746268391"
+                className="p-4 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#dc2626]/50 transition-all flex items-center gap-3.5 group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center shrink-0 group-hover:bg-[#dc2626] group-hover:text-[#09090b] transition-colors">
+                  <MapPin className="w-4 h-4" />
+                </div>
+                <div className="min-w-0 text-left">
+                  <h4 className="text-xs font-bold text-white truncate">Mbeya Central Factory</h4>
+                  <p className="text-[10px] text-stone-400">Soweto SIDO Estate</p>
+                  <span className="text-xs font-mono font-bold text-[#dc2626] group-hover:underline block mt-0.5">
+                    +255 746 268 391
+                  </span>
+                </div>
+              </a>
+
+              {/* Contact 4 */}
+              <a
+                href="tel:+255699032777"
+                className="p-4 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#dc2626]/50 transition-all flex items-center gap-3.5 group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center shrink-0 group-hover:bg-[#dc2626] group-hover:text-[#09090b] transition-colors">
+                  <MapPin className="w-4 h-4" />
+                </div>
+                <div className="min-w-0 text-left">
+                  <h4 className="text-xs font-bold text-white truncate">Mwanza Dispatch Hub</h4>
+                  <p className="text-[10px] text-stone-400">Lake Zone Waybills</p>
+                  <span className="text-xs font-mono font-bold text-[#dc2626] group-hover:underline block mt-0.5">
+                    +255 699 032 777
+                  </span>
+                </div>
+              </a>
+
+            </div>
+          </div>
+
         </div>
       </section>
+
     </div>
   );
 };
+
+export default HomePage;

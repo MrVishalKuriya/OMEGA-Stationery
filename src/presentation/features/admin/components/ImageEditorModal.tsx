@@ -1040,7 +1040,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               type="button"
               onClick={handleApplyExport}
               disabled={isProcessing || !sourceImg}
-              className="px-3.5 sm:px-5 py-1.5 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[#c49b7c] to-[#a46b44] hover:brightness-110 shadow-md active:scale-95 transition-all flex items-center gap-1.5 disabled:opacity-50"
+              className="px-3.5 sm:px-5 py-1.5 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[#dc2626] to-[#b91c1c] hover:brightness-110 shadow-md active:scale-95 transition-all flex items-center gap-1.5 disabled:opacity-50"
             >
               {isProcessing ? (
                 <>
@@ -1071,7 +1071,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
             >
               {isLoadingImage ? (
                 <div className="flex flex-col items-center gap-2 text-stone-400">
-                  <RefreshCw className="w-8 h-8 text-[#c49b7c] animate-spin" />
+                  <RefreshCw className="w-8 h-8 text-[#dc2626] animate-spin" />
                   <span className="text-xs font-bold">Loading Photo...</span>
                 </div>
               ) : imgLoadError ? (
@@ -1141,11 +1141,11 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                 onClick={() => setStudioTab('crop')}
                 className={`py-3 flex flex-col items-center gap-1 transition-all ${
                   studioTab === 'crop'
-                    ? 'text-white border-b-2 border-[#c49b7c] bg-white/5'
+                    ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
                     : 'text-stone-400 hover:text-stone-200'
                 }`}
               >
-                <Crop className="w-4 h-4 text-[#c49b7c]" />
+                <Crop className="w-4 h-4 text-[#dc2626]" />
                 <span className="text-[10px] sm:text-[11px]">Crop</span>
               </button>
 
@@ -1154,11 +1154,11 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                 onClick={() => setStudioTab('studio')}
                 className={`py-3 flex flex-col items-center gap-1 transition-all ${
                   studioTab === 'studio'
-                    ? 'text-white border-b-2 border-[#c49b7c] bg-white/5'
+                    ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
                     : 'text-stone-400 hover:text-stone-200'
                 }`}
               >
-                <Paintbrush className="w-4 h-4 text-[#c49b7c]" />
+                <Paintbrush className="w-4 h-4 text-[#dc2626]" />
                 <span className="text-[10px] sm:text-[11px]">Studio BG</span>
               </button>
 
@@ -1167,11 +1167,11 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                 onClick={() => setStudioTab('filter')}
                 className={`py-3 flex flex-col items-center gap-1 transition-all ${
                   studioTab === 'filter'
-                    ? 'text-white border-b-2 border-[#c49b7c] bg-white/5'
+                    ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
                     : 'text-stone-400 hover:text-stone-200'
                 }`}
               >
-                <Wand2 className="w-4 h-4 text-[#c49b7c]" />
+                <Wand2 className="w-4 h-4 text-[#dc2626]" />
                 <span className="text-[10px] sm:text-[11px]">Filters</span>
               </button>
 
@@ -1180,11 +1180,11 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                 onClick={() => setStudioTab('adjust')}
                 className={`py-3 flex flex-col items-center gap-1 transition-all ${
                   studioTab === 'adjust'
-                    ? 'text-white border-b-2 border-[#c49b7c] bg-white/5'
+                    ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
                     : 'text-stone-400 hover:text-stone-200'
                 }`}
               >
-                <Sliders className="w-4 h-4 text-[#c49b7c]" />
+                <Sliders className="w-4 h-4 text-[#dc2626]" />
                 <span className="text-[10px] sm:text-[11px]">Adjust</span>
               </button>
 
@@ -1193,11 +1193,11 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                 onClick={() => setStudioTab('preview')}
                 className={`py-3 flex flex-col items-center gap-1 transition-all ${
                   studioTab === 'preview'
-                    ? 'text-white border-b-2 border-[#c49b7c] bg-white/5'
+                    ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
                     : 'text-stone-400 hover:text-stone-200'
                 }`}
               >
-                <Eye className="w-4 h-4 text-[#c49b7c]" />
+                <Eye className="w-4 h-4 text-[#dc2626]" />
                 <span className="text-[10px] sm:text-[11px]">Card View</span>
               </button>
             </div>
@@ -1225,7 +1225,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                           onClick={() => handleRatioChange(ratio.id as AspectRatioMode)}
                           className={`p-2.5 rounded-xl border text-left transition-all ${
                             aspectRatio === ratio.id
-                              ? 'border-[#c49b7c] bg-[#c49b7c]/15 text-white shadow-xs'
+                              ? 'border-[#dc2626] bg-[#dc2626]/15 text-white shadow-xs'
                               : 'border-[#2c2c2c] bg-[#1a1a1a] text-stone-400 hover:text-stone-200'
                           }`}
                         >
@@ -1240,10 +1240,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   <div className="space-y-1.5 p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c]">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-bold text-stone-300 flex items-center gap-1.5">
-                        <Compass className="w-3.5 h-3.5 text-[#c49b7c]" />
+                        <Compass className="w-3.5 h-3.5 text-[#dc2626]" />
                         <span>Straighten Leveler</span>
                       </span>
-                      <span className="font-mono font-bold text-[#c49b7c]">{fineAngle}°</span>
+                      <span className="font-mono font-bold text-[#dc2626]">{fineAngle}°</span>
                     </div>
                     <input
                       type="range"
@@ -1252,7 +1252,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       step="0.5"
                       value={fineAngle}
                       onChange={(e) => setFineAngle(parseFloat(e.target.value))}
-                      className="w-full accent-[#c49b7c] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                      className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
                     />
                     <div className="flex justify-between text-[10px] text-stone-500 font-mono">
                       <span>-45°</span>
@@ -1271,10 +1271,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   <div className="space-y-1.5 p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c]">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-bold text-stone-300 flex items-center gap-1.5">
-                        <ZoomIn className="w-3.5 h-3.5 text-[#c49b7c]" />
+                        <ZoomIn className="w-3.5 h-3.5 text-[#dc2626]" />
                         <span>Scale &amp; Zoom</span>
                       </span>
-                      <span className="font-mono font-bold text-[#c49b7c]">
+                      <span className="font-mono font-bold text-[#dc2626]">
                         {Math.round(zoom * 100)}%
                       </span>
                     </div>
@@ -1285,7 +1285,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       step="0.05"
                       value={zoom}
                       onChange={(e) => setZoom(parseFloat(e.target.value))}
-                      className="w-full accent-[#c49b7c] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                      className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
                     />
                   </div>
 
@@ -1296,7 +1296,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       onClick={() => setFlipH((prev) => !prev)}
                       className={`py-2 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all ${
                         flipH
-                          ? 'bg-[#c49b7c]/20 border-[#c49b7c] text-[#c49b7c]'
+                          ? 'bg-[#dc2626]/20 border-[#dc2626] text-[#dc2626]'
                           : 'bg-[#1a1a1a] border-[#2c2c2c] text-stone-300 hover:text-white'
                       }`}
                     >
@@ -1309,7 +1309,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       onClick={() => setFlipV((prev) => !prev)}
                       className={`py-2 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all ${
                         flipV
-                          ? 'bg-[#c49b7c]/20 border-[#c49b7c] text-[#c49b7c]'
+                          ? 'bg-[#dc2626]/20 border-[#dc2626] text-[#dc2626]'
                           : 'bg-[#1a1a1a] border-[#2c2c2c] text-stone-300 hover:text-white'
                       }`}
                     >
@@ -1349,7 +1349,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                           onClick={() => setBgPreset(item.id as BackgroundPreset)}
                           className={`p-2 rounded-xl border text-left transition-all ${
                             bgPreset === item.id
-                              ? 'border-[#c49b7c] bg-[#c49b7c]/20 text-white shadow-xs'
+                              ? 'border-[#dc2626] bg-[#dc2626]/20 text-white shadow-xs'
                               : 'border-[#262626] bg-[#1a1a1a] text-stone-400 hover:border-stone-600'
                           }`}
                         >
@@ -1364,7 +1364,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   <div className="space-y-2 p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c]">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-stone-300 flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-[#c49b7c]" />
+                        <Sparkles className="w-3.5 h-3.5 text-[#dc2626]" />
                         <span>3D Product Drop Shadow</span>
                       </span>
                       <span className="text-[10px] text-emerald-400 font-bold uppercase">
@@ -1388,7 +1388,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                           onClick={() => setShadowStyle(s.id as ShadowStyle)}
                           className={`py-1.5 px-2 rounded-lg text-xs font-bold transition-all ${
                             shadowStyle === s.id
-                              ? 'bg-[#c49b7c] text-stone-900 shadow-xs'
+                              ? 'bg-[#dc2626] text-stone-900 shadow-xs'
                               : 'bg-stone-800 text-stone-300 hover:bg-stone-700'
                           }`}
                         >
@@ -1409,7 +1409,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                           max="100"
                           value={shadowIntensity}
                           onChange={(e) => setShadowIntensity(parseInt(e.target.value))}
-                          className="w-full accent-[#c49b7c] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                          className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
                         />
                       </div>
                     )}
@@ -1419,10 +1419,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1.5">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-bold text-stone-300 flex items-center gap-1.5">
-                        <Box className="w-3.5 h-3.5 text-[#c49b7c]" />
+                        <Box className="w-3.5 h-3.5 text-[#dc2626]" />
                         <span>Studio Framing Margin</span>
                       </span>
-                      <span className="font-mono text-[#c49b7c] font-bold">
+                      <span className="font-mono text-[#dc2626] font-bold">
                         {studioPadding}% padding
                       </span>
                     </div>
@@ -1435,7 +1435,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       max="25"
                       value={studioPadding}
                       onChange={(e) => setStudioPadding(parseInt(e.target.value))}
-                      className="w-full accent-[#c49b7c] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                      className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
                     />
                   </div>
 
@@ -1492,7 +1492,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                     <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1">
                       <div className="flex items-center justify-between text-xs">
                         <span className="font-bold text-stone-300">Filter Intensity</span>
-                        <span className="font-mono text-[#c49b7c] font-bold">
+                        <span className="font-mono text-[#dc2626] font-bold">
                           {filterIntensity}%
                         </span>
                       </div>
@@ -1502,7 +1502,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                         max="100"
                         value={filterIntensity}
                         onChange={(e) => setFilterIntensity(parseInt(e.target.value))}
-                        className="w-full accent-[#c49b7c] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                        className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
                       />
                     </div>
                   )}
@@ -1518,7 +1518,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                           onClick={() => setSelectedFilterId(filter.id)}
                           className={`flex flex-col items-center gap-1.5 p-2 rounded-2xl border text-center transition-all ${
                             isSelected
-                              ? 'border-[#c49b7c] bg-[#c49b7c]/15 shadow-md scale-[1.02]'
+                              ? 'border-[#dc2626] bg-[#dc2626]/15 shadow-md scale-[1.02]'
                               : 'border-[#262626] bg-[#1a1a1a] hover:border-stone-600'
                           }`}
                         >
@@ -1537,7 +1537,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                           </div>
                           <span
                             className={`text-[11px] font-bold truncate max-w-full ${
-                              isSelected ? 'text-[#c49b7c]' : 'text-stone-300'
+                              isSelected ? 'text-[#dc2626]' : 'text-stone-300'
                             }`}
                           >
                             {filter.name}
@@ -1560,7 +1560,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-bold text-stone-300 flex items-center gap-1.5">
-                        <Sun className="w-3.5 h-3.5 text-[#c49b7c]" /> Brightness
+                        <Sun className="w-3.5 h-3.5 text-[#dc2626]" /> Brightness
                       </span>
                       <span className="font-mono text-stone-300 font-bold">
                         {brightness > 0 ? `+${brightness}` : brightness}
@@ -1572,7 +1572,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       max="100"
                       value={brightness}
                       onChange={(e) => setBrightness(parseInt(e.target.value))}
-                      className="w-full accent-[#c49b7c] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                      className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
                     />
                   </div>
 
@@ -1580,7 +1580,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-bold text-stone-300 flex items-center gap-1.5">
-                        <Contrast className="w-3.5 h-3.5 text-[#c49b7c]" /> Contrast
+                        <Contrast className="w-3.5 h-3.5 text-[#dc2626]" /> Contrast
                       </span>
                       <span className="font-mono text-stone-300 font-bold">
                         {contrast > 0 ? `+${contrast}` : contrast}
@@ -1592,7 +1592,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       max="100"
                       value={contrast}
                       onChange={(e) => setContrast(parseInt(e.target.value))}
-                      className="w-full accent-[#c49b7c] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                      className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
                     />
                   </div>
 
@@ -1600,7 +1600,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-bold text-stone-300 flex items-center gap-1.5">
-                        <Palette className="w-3.5 h-3.5 text-[#c49b7c]" /> Warmth / Tone
+                        <Palette className="w-3.5 h-3.5 text-[#dc2626]" /> Warmth / Tone
                       </span>
                       <span className="font-mono text-stone-300 font-bold">
                         {warmth > 0 ? `+${warmth}` : warmth}
@@ -1612,7 +1612,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       max="100"
                       value={warmth}
                       onChange={(e) => setWarmth(parseInt(e.target.value))}
-                      className="w-full accent-[#c49b7c] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                      className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
                     />
                   </div>
 
@@ -1620,7 +1620,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-bold text-stone-300 flex items-center gap-1.5">
-                        <SlidersHorizontal className="w-3.5 h-3.5 text-[#c49b7c]" /> Saturation
+                        <SlidersHorizontal className="w-3.5 h-3.5 text-[#dc2626]" /> Saturation
                       </span>
                       <span className="font-mono text-stone-300 font-bold">
                         {saturation > 0 ? `+${saturation}` : saturation}
@@ -1632,7 +1632,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       max="100"
                       value={saturation}
                       onChange={(e) => setSaturation(parseInt(e.target.value))}
-                      className="w-full accent-[#c49b7c] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                      className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
                     />
                   </div>
 
@@ -1640,7 +1640,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-bold text-stone-300 flex items-center gap-1.5">
-                        <Aperture className="w-3.5 h-3.5 text-[#c49b7c]" /> Vignette Spotlight
+                        <Aperture className="w-3.5 h-3.5 text-[#dc2626]" /> Vignette Spotlight
                       </span>
                       <span className="font-mono text-stone-300 font-bold">{vignette}%</span>
                     </div>
@@ -1650,7 +1650,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       max="100"
                       value={vignette}
                       onChange={(e) => setVignette(parseInt(e.target.value))}
-                      className="w-full accent-[#c49b7c] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                      className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
                     />
                   </div>
                 </div>
@@ -1679,7 +1679,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                         onClick={() => setStoreImageFit('cover')}
                         className={`py-1.5 px-2 rounded-xl text-xs font-bold transition-all text-center ${
                           storeImageFit === 'cover'
-                            ? 'bg-[#c49b7c] text-stone-900 shadow-xs'
+                            ? 'bg-[#dc2626] text-stone-900 shadow-xs'
                             : 'bg-stone-800 text-stone-400 hover:text-white'
                         }`}
                       >
@@ -1690,7 +1690,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                         onClick={() => setStoreImageFit('contain')}
                         className={`py-1.5 px-2 rounded-xl text-xs font-bold transition-all text-center ${
                           storeImageFit === 'contain'
-                            ? 'bg-[#c49b7c] text-stone-900 shadow-xs'
+                            ? 'bg-[#dc2626] text-stone-900 shadow-xs'
                             : 'bg-stone-800 text-stone-400 hover:text-white'
                         }`}
                       >
@@ -1700,17 +1700,17 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   </div>
 
                   {/* Realistic Mini OMEGA Product Card */}
-                  <div className="max-w-[260px] mx-auto w-full bg-white text-[#2b2520] rounded-[22px] border border-[#e2dedb] shadow-xl overflow-hidden flex flex-col">
+                  <div className="max-w-[260px] mx-auto w-full bg-white text-[#18181b] rounded-[22px] border border-[#e4e4e7] shadow-xl overflow-hidden flex flex-col">
                     {/* Region 1: Adaptive display */}
                     <div
-                      className={`relative aspect-square w-full bg-[#f8f7f5] overflow-hidden border-b border-[#e2dedb] ${
+                      className={`relative aspect-square w-full bg-[#f8f7f5] overflow-hidden border-b border-[#e4e4e7] ${
                         storeImageFit === 'contain' ? 'p-3 flex items-center justify-center' : ''
                       }`}
                     >
-                      <span className="absolute top-2 left-2 z-10 bg-[#4b423b] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm tracking-wider">
+                      <span className="absolute top-2 left-2 z-10 bg-[#111113] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm tracking-wider">
                         7% OFF
                       </span>
-                      <div className="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-white/95 text-[#4b423b] border border-[#e2dedb] flex items-center justify-center shadow-xs">
+                      <div className="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-white/95 text-[#111113] border border-[#e4e4e7] flex items-center justify-center shadow-xs">
                         <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
                       </div>
 
@@ -1742,7 +1742,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                         </span>
                       </div>
 
-                      <h4 className="text-xs font-bold text-[#2b2520] line-clamp-1 leading-tight">
+                      <h4 className="text-xs font-bold text-[#18181b] line-clamp-1 leading-tight">
                         {productName || 'OMEGA Exercise Book 200 Pages'}
                       </h4>
 
@@ -1756,8 +1756,8 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       </div>
 
                       <div>
-                        <div className="text-sm font-extrabold text-[#2b2520]">TSh 25,500</div>
-                        <div className="text-[10px] font-semibold text-[#8c847e]">
+                        <div className="text-sm font-extrabold text-[#18181b]">TSh 25,500</div>
+                        <div className="text-[10px] font-semibold text-[#a1a1aa]">
                           Wholesale: TSh 23,000
                         </div>
                       </div>
@@ -1810,7 +1810,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               type="button"
               onClick={handleApplyExport}
               disabled={isProcessing || !sourceImg}
-              className="px-3.5 sm:px-5 py-1.5 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[#c49b7c] to-[#a46b44] hover:brightness-110 shadow-md active:scale-95 transition-all flex items-center gap-1.5 disabled:opacity-50"
+              className="px-3.5 sm:px-5 py-1.5 rounded-full text-xs font-bold text-white bg-gradient-to-r from-[#dc2626] to-[#b91c1c] hover:brightness-110 shadow-md active:scale-95 transition-all flex items-center gap-1.5 disabled:opacity-50"
             >
               {isProcessing ? (
                 <>

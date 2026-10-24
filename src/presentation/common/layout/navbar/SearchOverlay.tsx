@@ -177,17 +177,17 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
       className="fixed inset-0 z-[100] flex flex-col bg-[#fafafa] lg:bg-[#fafafa]/95 lg:backdrop-blur-md animate-in fade-in duration-200"
     >
       {/* Header Bar with Search Input */}
-      <div className="w-full bg-[#fafafa] border-b border-[#e2dedb] px-4 sm:px-8 py-4 sm:py-6 shadow-sm">
+      <div className="w-full bg-[#fafafa] border-b border-[#e4e4e7] px-4 sm:px-8 py-4 sm:py-6 shadow-sm">
         <div className="max-w-5xl mx-auto flex items-center gap-3 sm:gap-4">
           <form onSubmit={handleSubmit} className="flex-1 relative flex items-center">
-            <Search className="w-5 h-5 sm:w-6 sm:h-6 text-[#4b423b] absolute left-3 sm:left-4 pointer-events-none" />
+            <Search className="w-5 h-5 sm:w-6 sm:h-6 text-[#111113] absolute left-3 sm:left-4 pointer-events-none" />
             <input
               ref={inputRef}
               type="search"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search notebooks, pens, books, bahasha..."
-              className="w-full pl-11 sm:pl-14 pr-12 py-3 sm:py-4 text-base sm:text-xl font-heading bg-white rounded-[12px] border border-[#e2dedb] text-[#14182B] placeholder:text-[#6B7280] focus-ring-gold shadow-xs"
+              className="w-full pl-11 sm:pl-14 pr-12 py-3 sm:py-4 text-base sm:text-xl font-heading bg-white rounded-[12px] border border-[#e4e4e7] text-[#14182B] placeholder:text-[#6B7280] focus-ring-gold shadow-xs"
             />
             {searchTerm && (
               <button
@@ -204,7 +204,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
           <button
             type="button"
             onClick={onClose}
-            className="flex items-center gap-1.5 px-3 sm:px-4 py-3 rounded-[12px] bg-white border border-[#e2dedb] hover:bg-[#F3EEE2] text-xs font-bold text-[#14182B] transition-colors focus-ring-gold"
+            className="flex items-center gap-1.5 px-3 sm:px-4 py-3 rounded-[12px] bg-white border border-[#e4e4e7] hover:bg-[#F3EEE2] text-xs font-bold text-[#14182B] transition-colors focus-ring-gold"
           >
             <span className="hidden sm:inline">Close</span>
             <span className="text-[10px] text-[#6B7280] font-mono hidden sm:inline">(Esc)</span>
@@ -223,7 +223,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
               {matchingResults.categories.length > 0 && (
                 <div>
                   <h4 className="text-xs font-bold uppercase tracking-wider text-[#6B7280] mb-3 flex items-center gap-2">
-                    <Tag className="w-3.5 h-3.5 text-[#c49b7c]" />
+                    <Tag className="w-3.5 h-3.5 text-[#dc2626]" />
                     Matching Categories
                   </h4>
                   <div className="flex flex-wrap gap-2">
@@ -235,7 +235,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
                           navigate(`/catalog?category=${encodeURIComponent(cat)}`);
                           onClose();
                         }}
-                        className="px-3.5 py-1.5 rounded-full bg-white border border-[#e2dedb] hover:border-[#c49b7c] hover:text-[#4b423b] text-xs font-semibold text-[#14182B] transition-all flex items-center gap-1.5"
+                        className="px-3.5 py-1.5 rounded-full bg-white border border-[#e4e4e7] hover:border-[#dc2626] hover:text-[#111113] text-xs font-semibold text-[#14182B] transition-all flex items-center gap-1.5"
                       >
                         <span>{cat}</span>
                         <ChevronRight className="w-3 h-3 text-[#6B7280]" />
@@ -249,12 +249,12 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-[#6B7280] flex items-center gap-2">
-                    <BookOpen className="w-3.5 h-3.5 text-[#4b423b]" />
+                    <BookOpen className="w-3.5 h-3.5 text-[#111113]" />
                     Products Matching &ldquo;{debouncedTerm}&rdquo; ({matchingResults.products.length})
                   </h4>
                   <button
                     onClick={() => executeSearch(debouncedTerm)}
-                    className="text-xs font-bold text-[#4b423b] hover:text-[#c49b7c] flex items-center gap-1"
+                    className="text-xs font-bold text-[#111113] hover:text-[#dc2626] flex items-center gap-1"
                   >
                     View all results <ArrowRight className="w-3.5 h-3.5" />
                   </button>
@@ -270,9 +270,9 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
                           navigate(`/product/${p.id}`);
                           onClose();
                         }}
-                        className="flex items-center gap-3.5 p-3 rounded-[12px] bg-white border border-[#e2dedb] hover:border-[#c49b7c] transition-all cursor-pointer group shadow-xs"
+                        className="flex items-center gap-3.5 p-3 rounded-[12px] bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all cursor-pointer group shadow-xs"
                       >
-                        <div className="w-14 h-14 rounded-[8px] bg-[#fafafa] overflow-hidden shrink-0 border border-[#e2dedb]/50 p-1">
+                        <div className="w-14 h-14 rounded-[8px] bg-[#fafafa] overflow-hidden shrink-0 border border-[#e4e4e7]/50 p-1">
                           <img
                             src={p.image}
                             alt={p.name}
@@ -283,10 +283,10 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
                           <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280] block truncate">
                             {p.category}
                           </span>
-                          <h5 className="text-xs font-bold text-[#14182B] group-hover:text-[#4b423b] transition-colors truncate">
+                          <h5 className="text-xs font-bold text-[#14182B] group-hover:text-[#111113] transition-colors truncate">
                             {p.name}
                           </h5>
-                          <span className="text-xs font-mono font-bold text-[#4b423b] mt-0.5 block">
+                          <span className="text-xs font-mono font-bold text-[#111113] mt-0.5 block">
                             {currency} {(p.discountPrice || p.price).toLocaleString()}
                           </span>
                         </div>
@@ -294,7 +294,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-12 bg-white rounded-[12px] border border-[#e2dedb] p-8">
+                  <div className="text-center py-12 bg-white rounded-[12px] border border-[#e4e4e7] p-8">
                     <p className="font-heading text-lg text-[#14182B]">No exact matches for &ldquo;{debouncedTerm}&rdquo;</p>
                     <p className="text-xs text-[#6B7280] mt-1 max-w-md mx-auto">
                       Try searching by category such as Counter Books, Exercise Books, Oxford Math Set, or Kraft Bahasha.
@@ -316,7 +316,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <h4 className="text-xs font-bold uppercase tracking-wider text-[#6B7280] flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-[#4b423b]" />
+                    <Clock className="w-3.5 h-3.5 text-[#111113]" />
                     Recent Searches
                   </h4>
                   {recentSearches.length > 0 && (
@@ -335,9 +335,9 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
                     <div
                       key={idx}
                       onClick={() => executeSearch(term)}
-                      className="flex items-center justify-between p-2.5 rounded-[8px] bg-white hover:bg-[#F3EEE2] border border-[#e2dedb] cursor-pointer text-xs font-medium text-[#14182B] group transition-colors"
+                      className="flex items-center justify-between p-2.5 rounded-[8px] bg-white hover:bg-[#F3EEE2] border border-[#e4e4e7] cursor-pointer text-xs font-medium text-[#14182B] group transition-colors"
                     >
-                      <span className="group-hover:text-[#4b423b]">{term}</span>
+                      <span className="group-hover:text-[#111113]">{term}</span>
                       <button
                         type="button"
                         onClick={(e) => removeRecentSearch(e, term)}
@@ -354,7 +354,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
               {/* Trending Searches & Collections */}
               <div className="space-y-3">
                 <h4 className="text-xs font-bold uppercase tracking-wider text-[#6B7280] flex items-center gap-1.5">
-                  <Flame className="w-3.5 h-3.5 text-[#c49b7c]" />
+                  <Flame className="w-3.5 h-3.5 text-[#dc2626]" />
                   Trending Searches
                 </h4>
 
@@ -363,16 +363,16 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
                     <button
                       key={idx}
                       onClick={() => executeSearch(item)}
-                      className="px-3.5 py-2 rounded-full bg-white hover:bg-[#4b423b] hover:text-white border border-[#e2dedb] text-xs font-semibold text-[#14182B] transition-all flex items-center gap-1.5 shadow-xs"
+                      className="px-3.5 py-2 rounded-full bg-white hover:bg-[#111113] hover:text-white border border-[#e4e4e7] text-xs font-semibold text-[#14182B] transition-all flex items-center gap-1.5 shadow-xs"
                     >
-                      <Sparkles className="w-3 h-3 text-[#c49b7c]" />
+                      <Sparkles className="w-3 h-3 text-[#dc2626]" />
                       <span>{item}</span>
                     </button>
                   ))}
                 </div>
 
-                <div className="mt-6 p-4 rounded-[12px] bg-[#F3EEE2] border border-[#e2dedb] space-y-2">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-[#4b423b]">
+                <div className="mt-6 p-4 rounded-[12px] bg-[#F3EEE2] border border-[#e4e4e7] space-y-2">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-[#111113]">
                     Boutique Recommendation
                   </span>
                   <p className="text-xs text-[#14182B]">
@@ -383,7 +383,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
                       navigate('/catalog?category=Counter+Books');
                       onClose();
                     }}
-                    className="text-xs font-bold text-[#4b423b] hover:text-[#c49b7c] inline-flex items-center gap-1"
+                    className="text-xs font-bold text-[#111113] hover:text-[#dc2626] inline-flex items-center gap-1"
                   >
                     View Wholesale Books <ArrowRight className="w-3 h-3" />
                   </button>

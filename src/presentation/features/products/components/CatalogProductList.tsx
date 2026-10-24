@@ -37,14 +37,14 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
 }) => {
   if (products.length === 0) {
     return (
-      <div className="bg-white border border-[#e2dedb] rounded-2xl p-12 text-center space-y-4 shadow-xs">
-        <div className="w-16 h-16 rounded-full bg-[#f5f4f4] border border-[#e2dedb] flex items-center justify-center mx-auto text-[#8c847e]">
+      <div className="bg-white border border-[#e4e4e7] rounded-2xl p-12 text-center space-y-4 shadow-xs">
+        <div className="w-16 h-16 rounded-full bg-[#f5f4f4] border border-[#e4e4e7] flex items-center justify-center mx-auto text-[#a1a1aa]">
           <Search className="w-7 h-7" />
         </div>
-        <h3 className="font-heading text-xl font-bold text-[#3b352f]">
+        <h3 className="font-heading text-xl font-bold text-[#18181b]">
           {language === 'sw' ? 'Hakuna Bidhaa Iliyopatikana' : 'No Notebooks or Products Found'}
         </h3>
-        <p className="text-xs sm:text-sm text-[#8c847e] max-w-md mx-auto">
+        <p className="text-xs sm:text-sm text-[#a1a1aa] max-w-md mx-auto">
           {language === 'sw'
             ? 'Jaribu kubadilisha vichujio au neno la utafutaji ili kuona bidhaa zilizopo kwenye katalogi yetu.'
             : 'Try clearing some filters or searching with a different keyword to browse our complete stationery inventory.'}
@@ -52,7 +52,7 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
         <button
           type="button"
           onClick={onResetFilters}
-          className="px-6 py-2.5 rounded-full bg-[#4b423b] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#3b352f] transition-all"
+          className="px-6 py-2.5 rounded-full bg-[#111113] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#18181b] transition-all"
         >
           Clear All Filters
         </button>
@@ -81,12 +81,12 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
             return (
               <div
                 key={p.id}
-                className="bg-white border border-[#e2dedb] hover:border-[#c49b7c] rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-center justify-between gap-5 transition-all shadow-xs ledup-card ledup-sheen"
+                className="bg-white border border-[#e4e4e7] hover:border-[#dc2626] rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-center justify-between gap-5 transition-all shadow-xs ledup-card ledup-sheen"
               >
                 {/* Image Thumbnail */}
-                <div className="w-full md:w-36 h-36 bg-[#fafafa] rounded-xl border border-[#e2dedb] p-2 flex items-center justify-center shrink-0 overflow-hidden relative">
+                <div className="w-full md:w-36 h-36 bg-[#fafafa] rounded-xl border border-[#e4e4e7] p-2 flex items-center justify-center shrink-0 overflow-hidden relative">
                   {p.badge && (
-                    <span className="absolute top-2 left-2 z-10 bg-[#c49b7c] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-2xs">
+                    <span className="absolute top-2 left-2 z-10 bg-[#dc2626] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-2xs">
                       {p.badge}
                     </span>
                   )}
@@ -103,7 +103,7 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                 {/* Info Column */}
                 <div className="flex-1 space-y-2 w-full">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-[10px] font-mono uppercase font-bold text-[#8c847e]">
+                    <span className="text-[10px] font-mono uppercase font-bold text-[#a1a1aa]">
                       SKU: {p.sku} · {p.category}
                     </span>
                     <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
@@ -112,35 +112,35 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                     </span>
                   </div>
 
-                  <h3 className="font-heading text-base font-bold text-[#3b352f]">
-                    <Link to={`/product/${p.id}`} className="hover:text-[#c49b7c] transition-colors">
+                  <h3 className="font-heading text-base font-bold text-[#18181b]">
+                    <Link to={`/product/${p.id}`} className="hover:text-[#dc2626] transition-colors">
                       {language === 'sw' && p.nameSw ? p.nameSw : p.name}
                     </Link>
                   </h3>
 
-                  <p className="text-xs text-[#8c847e] line-clamp-2">
+                  <p className="text-xs text-[#a1a1aa] line-clamp-2">
                     {language === 'sw' && p.descriptionSw ? p.descriptionSw : p.description}
                   </p>
 
                   {/* Technical Specs Tags */}
-                  <div className="flex flex-wrap items-center gap-2 pt-1 text-[11px] text-[#4b423b]">
+                  <div className="flex flex-wrap items-center gap-2 pt-1 text-[11px] text-[#111113]">
                     {p.quire && (
-                      <span className="px-2 py-0.5 rounded bg-[#f5f4f4] font-medium border border-[#e2dedb]">
+                      <span className="px-2 py-0.5 rounded bg-[#f5f4f4] font-medium border border-[#e4e4e7]">
                         {p.quire}
                       </span>
                     )}
                     {p.pageCount && (
-                      <span className="px-2 py-0.5 rounded bg-[#f5f4f4] font-medium border border-[#e2dedb]">
+                      <span className="px-2 py-0.5 rounded bg-[#f5f4f4] font-medium border border-[#e4e4e7]">
                         {p.pageCount}
                       </span>
                     )}
                     {p.paperType && (
-                      <span className="px-2 py-0.5 rounded bg-[#f5f4f4] font-medium border border-[#e2dedb]">
+                      <span className="px-2 py-0.5 rounded bg-[#f5f4f4] font-medium border border-[#e4e4e7]">
                         {p.paperType}
                       </span>
                     )}
                     {p.packaging && (
-                      <span className="px-2 py-0.5 rounded bg-[#f5f4f4] font-medium border border-[#e2dedb]">
+                      <span className="px-2 py-0.5 rounded bg-[#f5f4f4] font-medium border border-[#e4e4e7]">
                         Box: {p.packaging}
                       </span>
                     )}
@@ -148,18 +148,18 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                 </div>
 
                 {/* Price & Action Column */}
-                <div className="flex flex-row md:flex-col items-center md:items-end justify-between w-full md:w-44 gap-3 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-[#e2dedb]">
+                <div className="flex flex-row md:flex-col items-center md:items-end justify-between w-full md:w-44 gap-3 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-[#e4e4e7]">
                   <div className="text-left md:text-right">
-                    <div className="text-lg font-bold font-mono text-[#3b352f]">
+                    <div className="text-lg font-bold font-mono text-[#18181b]">
                       {formatPrice(effectivePrice, currency)}
                     </div>
                     {hasDiscount && (
-                      <div className="text-[11px] text-[#8c847e] line-through font-mono">
+                      <div className="text-[11px] text-[#a1a1aa] line-through font-mono">
                         {formatPrice(p.price, currency)}
                       </div>
                     )}
                     {p.wholesalePrice && (
-                      <div className="text-[10px] text-[#c49b7c] font-bold font-mono">
+                      <div className="text-[10px] text-[#dc2626] font-bold font-mono">
                         Carton: {formatPrice(p.wholesalePrice, currency)}
                       </div>
                     )}
@@ -179,7 +179,7 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                       href={directWhatsappUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 rounded-full bg-[#4b423b] hover:bg-[#3b352f] text-white transition-colors"
+                      className="p-2 rounded-full bg-[#111113] hover:bg-[#18181b] text-white transition-colors"
                       title="Order on WhatsApp"
                     >
                       <MessageCircle className="w-3.5 h-3.5" />
@@ -197,13 +197,13 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
         <nav
           role="navigation"
           aria-label="Pagination"
-          className="flex items-center justify-center gap-2 pt-8 border-t border-[#e2dedb]"
+          className="flex items-center justify-center gap-2 pt-8 border-t border-[#e4e4e7]"
         >
           <button
             type="button"
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="px-3 py-2 rounded-lg border border-[#e2dedb] bg-white text-xs font-bold text-[#4b423b] hover:bg-[#f5f4f4] disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1"
+            className="px-3 py-2 rounded-lg border border-[#e4e4e7] bg-white text-xs font-bold text-[#111113] hover:bg-[#f5f4f4] disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1"
           >
             <ChevronLeft className="w-3.5 h-3.5" />
             <span>Prev</span>
@@ -219,8 +219,8 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                 aria-current={isCurrent ? 'page' : undefined}
                 className={`w-9 h-9 rounded-lg text-xs font-bold font-mono transition-all ${
                   isCurrent
-                    ? 'bg-[#4b423b] text-white shadow-xs'
-                    : 'bg-white border border-[#e2dedb] text-[#3b352f] hover:bg-[#f5f4f4]'
+                    ? 'bg-[#111113] text-white shadow-xs'
+                    : 'bg-white border border-[#e4e4e7] text-[#18181b] hover:bg-[#f5f4f4]'
                 }`}
               >
                 {pageNum}
@@ -232,7 +232,7 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
             type="button"
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="px-3 py-2 rounded-lg border border-[#e2dedb] bg-white text-xs font-bold text-[#4b423b] hover:bg-[#f5f4f4] disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1"
+            className="px-3 py-2 rounded-lg border border-[#e4e4e7] bg-white text-xs font-bold text-[#111113] hover:bg-[#f5f4f4] disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1"
           >
             <span>Next</span>
             <ChevronRight className="w-3.5 h-3.5" />

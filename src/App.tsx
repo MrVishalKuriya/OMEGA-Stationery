@@ -67,23 +67,23 @@ const ScrollToTop: React.FC = () => {
 
 const NotFoundPage: React.FC = () => (
   <div className="max-w-xl mx-auto px-4 py-20 text-center space-y-4">
-    <div className="w-16 h-16 rounded-[16px] bg-[#f5f4f4] text-[#4b423b] flex items-center justify-center mx-auto border border-[#e2dedb]">
+    <div className="w-16 h-16 rounded-[16px] bg-[#f4f4f5] text-[#111113] flex items-center justify-center mx-auto border border-[#e4e4e7]">
       <span className="font-heading text-xl font-bold">404</span>
     </div>
-    <h1 className="text-3xl font-bold text-[#3b352f] font-heading">Page Not Found</h1>
-    <p className="text-xs text-[#8c847e] max-w-md mx-auto leading-relaxed">
+    <h1 className="text-3xl font-bold text-[#111113] font-heading">Page Not Found</h1>
+    <p className="text-xs text-[#71717a] max-w-md mx-auto leading-relaxed">
       The requested stationery catalogue destination does not exist. Use the shortcuts below to continue browsing.
     </p>
     <div className="pt-2 flex justify-center gap-3">
       <Link
         to="/"
-        className="px-6 py-2.5 rounded-full btn-ledup-copper text-xs font-bold uppercase tracking-wider shadow-sm transition-all"
+        className="px-6 py-2.5 rounded-full bg-[#dc2626] hover:bg-[#b91c1c] text-white text-xs font-bold uppercase tracking-wider shadow-sm transition-all"
       >
         Return Home
       </Link>
       <Link
         to="/catalog"
-        className="px-6 py-2.5 rounded-full btn-ledup-mocha text-white text-xs font-bold uppercase tracking-wider shadow-sm transition-all"
+        className="px-6 py-2.5 rounded-full bg-[#111113] hover:bg-[#27272a] text-white text-xs font-bold uppercase tracking-wider shadow-sm transition-all"
       >
         Browse Catalog
       </Link>

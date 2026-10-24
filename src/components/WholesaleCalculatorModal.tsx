@@ -26,17 +26,22 @@ interface WholesaleItemConfig {
 }
 
 const OFFICIAL_WHOLESALE_ITEMS: WholesaleItemConfig[] = [
-  { id: 'q1', name: 'Counter Book Q1 (96 Pages)', piecesPerBox: 96, boxPriceTzs: 58000, category: 'Counter Books' },
-  { id: 'q2', name: 'Counter Book Q2 (192 Pages)', piecesPerBox: 48, boxPriceTzs: 54000, category: 'Counter Books' },
-  { id: 'q3', name: 'Counter Book Q3 (288 Pages)', piecesPerBox: 36, boxPriceTzs: 56000, category: 'Counter Books' },
-  { id: 'q4', name: 'Counter Book Q4 (384 Pages)', piecesPerBox: 24, boxPriceTzs: 44000, category: 'Counter Books' },
-  { id: 'ex-200', name: 'Exercise Book 200 Pages', piecesPerBox: 120, boxPriceTzs: 56000, category: 'Exercise Books' },
-  { id: 'ex-100', name: 'Exercise Book 100 Pages', piecesPerBox: 120, boxPriceTzs: 41000, category: 'Exercise Books' },
-  { id: 'ex-80', name: 'Exercise Book 80 Pages', piecesPerBox: 100, boxPriceTzs: 26000, category: 'Exercise Books' },
-  { id: 'ex-32', name: 'Exercise Book 32 Pages', piecesPerBox: 300, boxPriceTzs: 42000, category: 'Exercise Books' },
-  { id: 'bahasha-a4', name: 'Kraft Bahasha A4', piecesPerBox: 500, boxPriceTzs: 41000, category: 'Bahasha & Envelopes' },
-  { id: 'bahasha-a3', name: 'Kraft Bahasha A3', piecesPerBox: 500, boxPriceTzs: 54000, category: 'Bahasha & Envelopes' },
-  { id: 'bahasha-a5', name: 'Kraft Bahasha A5', piecesPerBox: 500, boxPriceTzs: 33000, category: 'Bahasha & Envelopes' },
+  { id: 'q2', name: 'Counter Book Q2 (192 Pages)', piecesPerBox: 48, boxPriceTzs: 56000, category: 'Counter Books' },
+  { id: 'q3', name: 'Counter Book Q3 (288 Pages)', piecesPerBox: 36, boxPriceTzs: 57000, category: 'Counter Books' },
+  { id: 'q4', name: 'Counter Book Q4 (384 Pages)', piecesPerBox: 24, boxPriceTzs: 60000, category: 'Counter Books' },
+  { id: 'stiff-200', name: 'Stiff Cover 200 Pages (SL/DL/SQ)', piecesPerBox: 96, boxPriceTzs: 75000, category: 'Exercise Books' },
+  { id: 'ex-200', name: 'Exercise Book 200 Pages (SL/DL/SQ)', piecesPerBox: 120, boxPriceTzs: 68000, category: 'Exercise Books' },
+  { id: 'ex-100', name: 'Exercise Book 100 Pages (SL/DL/SQ/Plain)', piecesPerBox: 120, boxPriceTzs: 41000, category: 'Exercise Books' },
+  { id: 'ex-80', name: 'Exercise Book 80 Pages', piecesPerBox: 100, boxPriceTzs: 42000, category: 'Exercise Books' },
+  { id: 'ex-32', name: 'Exercise Book 32 Pages (DL)', piecesPerBox: 300, boxPriceTzs: 32000, category: 'Exercise Books' },
+  { id: 'shorthand', name: 'Shorthand Notebooks (70 Sheets)', piecesPerBox: 192, boxPriceTzs: 110000, category: 'Registers' },
+  { id: 'bahasha-a4', name: 'Kraft Bahasha A4', piecesPerBox: 500, boxPriceTzs: 28000, category: 'Bahasha & Envelopes' },
+  { id: 'bahasha-a3', name: 'Kraft Bahasha A3', piecesPerBox: 500, boxPriceTzs: 52000, category: 'Bahasha & Envelopes' },
+  { id: 'bahasha-a5', name: 'Kraft Bahasha A5', piecesPerBox: 500, boxPriceTzs: 23000, category: 'Bahasha & Envelopes' },
+  { id: 'bahasha-a6', name: 'Kraft Bahasha A6', piecesPerBox: 5000, boxPriceTzs: 140000, category: 'Bahasha & Envelopes' },
+  { id: 'manila', name: 'Manila File Folders', piecesPerBox: 500, boxPriceTzs: 42000, category: 'Files & Folders' },
+  { id: 'pvc-file', name: 'Plastic P.V.C. Spring File', piecesPerBox: 50, boxPriceTzs: 270000, category: 'Files & Folders' },
+  { id: 'ruled-paper', name: 'Ruled Paper (400 Sheets / 16 Pkt)', piecesPerBox: 16, boxPriceTzs: 70000, category: 'Ruled Paper' },
 ];
 
 export const WholesaleCalculatorModal: React.FC<WholesaleCalculatorModalProps> = ({
@@ -114,14 +119,14 @@ export const WholesaleCalculatorModal: React.FC<WholesaleCalculatorModalProps> =
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
       <div
-        className="w-full max-w-3xl bg-[#fafafa] rounded-2xl shadow-2xl border border-[#e2dedb] flex flex-col max-h-[90vh] overflow-hidden"
+        className="w-full max-w-3xl bg-[#fafafa] rounded-2xl shadow-2xl border border-[#e4e4e7] flex flex-col max-h-[90vh] overflow-hidden"
         role="dialog"
         aria-modal="true"
       >
         {/* Header */}
-        <div className="bg-[#4b423b] text-white p-4 sm:p-5 flex items-center justify-between border-b border-white/10 shrink-0">
+        <div className="bg-[#111113] text-white p-4 sm:p-5 flex items-center justify-between border-b border-white/10 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-[#c49b7c]">
+            <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-[#dc2626]">
               <Calculator className="w-5 h-5" />
             </div>
             <div>
@@ -129,7 +134,7 @@ export const WholesaleCalculatorModal: React.FC<WholesaleCalculatorModalProps> =
                 <h3 className="font-heading text-sm sm:text-base font-bold text-white tracking-wide">
                   Wholesale Carton &amp; Tender Calculator
                 </h3>
-                <span className="heimplanet-tag text-[9px] border-[#c49b7c]/40 text-[#c49b7c]">
+                <span className="heimplanet-tag text-[9px] border-[#dc2626]/40 text-[#dc2626]">
                   [ FACTORY SHEET 2026 ]
                 </span>
               </div>
@@ -152,29 +157,29 @@ export const WholesaleCalculatorModal: React.FC<WholesaleCalculatorModalProps> =
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
           {/* Discount Tier Banner */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-            <div className={`p-3 rounded-xl border transition-all ${totalBoxes < 5 ? 'bg-white border-[#4b423b] ring-2 ring-[#c49b7c]' : 'bg-white/70 border-[#e2dedb]'}`}>
-              <p className="font-bold text-[#4b423b]">Tier 1: 1–4 Boxes</p>
+            <div className={`p-3 rounded-xl border transition-all ${totalBoxes < 5 ? 'bg-white border-[#111113] ring-2 ring-[#dc2626]' : 'bg-white/70 border-[#e4e4e7]'}`}>
+              <p className="font-bold text-[#111113]">Tier 1: 1–4 Boxes</p>
               <p className="text-[11px] text-stone-500">Standard factory wholesale rates</p>
             </div>
-            <div className={`p-3 rounded-xl border transition-all ${totalBoxes >= 5 && totalBoxes < 20 ? 'bg-white border-[#2A9D8F] ring-2 ring-[#2A9D8F]' : 'bg-white/70 border-[#e2dedb]'}`}>
+            <div className={`p-3 rounded-xl border transition-all ${totalBoxes >= 5 && totalBoxes < 20 ? 'bg-white border-[#2A9D8F] ring-2 ring-[#2A9D8F]' : 'bg-white/70 border-[#e4e4e7]'}`}>
               <div className="flex items-center justify-between">
                 <p className="font-bold text-[#2A9D8F]">Tier 2: 5–19 Boxes</p>
                 <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-[#2A9D8F]/15 font-bold text-[#2A9D8F]">5% OFF</span>
               </div>
               <p className="text-[11px] text-stone-500">For retail shops &amp; primary schools</p>
             </div>
-            <div className={`p-3 rounded-xl border transition-all ${totalBoxes >= 20 ? 'bg-white border-[#c49b7c] ring-2 ring-[#c49b7c]' : 'bg-white/70 border-[#e2dedb]'}`}>
+            <div className={`p-3 rounded-xl border transition-all ${totalBoxes >= 20 ? 'bg-white border-[#dc2626] ring-2 ring-[#dc2626]' : 'bg-white/70 border-[#e4e4e7]'}`}>
               <div className="flex items-center justify-between">
-                <p className="font-bold text-[#4b423b]">Tier 3: 20+ Boxes</p>
-                <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-[#c49b7c] font-bold text-[#4b423b]">10% OFF</span>
+                <p className="font-bold text-[#111113]">Tier 3: 20+ Boxes</p>
+                <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-[#dc2626] font-bold text-[#111113]">10% OFF</span>
               </div>
               <p className="text-[11px] text-stone-500">Major tenders &amp; bulk regional distributors</p>
             </div>
           </div>
 
           {/* Product Items Table */}
-          <div className="bg-white rounded-xl border border-[#e2dedb] overflow-hidden shadow-2xs">
-            <div className="p-3 bg-[#fafafa] border-b border-[#e2dedb] flex items-center justify-between text-xs font-bold text-[#4b423b]">
+          <div className="bg-white rounded-xl border border-[#e4e4e7] overflow-hidden shadow-2xs">
+            <div className="p-3 bg-[#fafafa] border-b border-[#e4e4e7] flex items-center justify-between text-xs font-bold text-[#111113]">
               <span>Select Product Lines</span>
               <a
                 href="/sheet/Indigo_Printed_Price_List.xlsx"
@@ -186,7 +191,7 @@ export const WholesaleCalculatorModal: React.FC<WholesaleCalculatorModalProps> =
               </a>
             </div>
 
-            <div className="divide-y divide-[#e2dedb] max-h-72 overflow-y-auto">
+            <div className="divide-y divide-[#e4e4e7] max-h-72 overflow-y-auto">
               {OFFICIAL_WHOLESALE_ITEMS.map((item) => {
                 const boxes = quantities[item.id] || 0;
                 return (
@@ -202,7 +207,7 @@ export const WholesaleCalculatorModal: React.FC<WholesaleCalculatorModalProps> =
                     </div>
 
                     <div className="flex items-center gap-3 shrink-0">
-                      <div className="flex items-center border border-[#e2dedb] rounded-lg bg-white">
+                      <div className="flex items-center border border-[#e4e4e7] rounded-lg bg-white">
                         <button
                           type="button"
                           onClick={() => handleQtyChange(item.id, boxes - 1)}
@@ -226,7 +231,7 @@ export const WholesaleCalculatorModal: React.FC<WholesaleCalculatorModalProps> =
                         </button>
                       </div>
 
-                      <div className="w-24 text-right font-mono font-bold text-[#4b423b]">
+                      <div className="w-24 text-right font-mono font-bold text-[#111113]">
                         {boxes > 0 ? `${currency} ${(boxes * item.boxPriceTzs).toLocaleString()}` : '—'}
                       </div>
                     </div>
@@ -237,10 +242,10 @@ export const WholesaleCalculatorModal: React.FC<WholesaleCalculatorModalProps> =
           </div>
 
           {/* Quotation Summary Box */}
-          <div className="bg-[#4b423b] text-white p-4 sm:p-5 rounded-2xl space-y-3 shadow-lg">
+          <div className="bg-[#111113] text-white p-4 sm:p-5 rounded-2xl space-y-3 shadow-lg">
             <div className="flex items-center justify-between text-xs pb-2 border-b border-white/10">
               <span className="text-stone-300">Total Cartons:</span>
-              <span className="font-mono font-bold text-[#c49b7c] text-sm">
+              <span className="font-mono font-bold text-[#dc2626] text-sm">
                 {totalBoxes} Boxes ({totalPieces.toLocaleString()} Notebooks)
               </span>
             </div>
@@ -259,7 +264,7 @@ export const WholesaleCalculatorModal: React.FC<WholesaleCalculatorModalProps> =
 
             <div className="flex items-center justify-between pt-2 border-t border-white/15 text-sm sm:text-base font-black">
               <span>Final Payable (Ex-Factory):</span>
-              <span className="font-mono text-[#c49b7c] text-lg sm:text-xl">
+              <span className="font-mono text-[#dc2626] text-lg sm:text-xl">
                 {currency} {finalPayable.toLocaleString()}
               </span>
             </div>
@@ -267,7 +272,7 @@ export const WholesaleCalculatorModal: React.FC<WholesaleCalculatorModalProps> =
         </div>
 
         {/* Footer Actions */}
-        <div className="p-4 bg-white border-t border-[#e2dedb] flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
+        <div className="p-4 bg-white border-t border-[#e4e4e7] flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
           <div className="flex items-center gap-2 text-xs text-stone-500">
             <Truck className="w-4 h-4 text-[#2A9D8F]" />
             <span>Bus freight dispatch to Dar, Mbeya, Arusha &amp; all regions</span>

@@ -1391,16 +1391,16 @@ export const AdminDashboardPage: React.FC = () => {
   const modalCartonDealerProfit = modalCartonRetailYield - modalCartonWholesaleTotal;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 font-sans text-[#2b2520]">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 font-sans text-[#18181b]">
       <SEOHead
         title="OMEGA HQ Enterprise ERP Portal | Central Management System"
         description="Comprehensive Enterprise Resource Planning (ERP) suite for OMEGA Stationery Tanzania: Direct MongoDB Atlas CRUD operations, catalog handles, CMS web content, and logistics waybills."
       />
 
       {/* Top Security & ERP Telemetry Banner */}
-      <div className="bg-[#3b352f] text-stone-200 border border-[#2b2520] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+      <div className="bg-[#18181b] text-stone-200 border border-[#18181b] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#c49b7c] text-white flex items-center justify-center shrink-0 shadow-sm">
+          <div className="w-10 h-10 rounded-xl bg-[#dc2626] text-white flex items-center justify-center shrink-0 shadow-sm">
             <Lock className="w-5 h-5 text-white" />
           </div>
           <div>
@@ -1408,7 +1408,7 @@ export const AdminDashboardPage: React.FC = () => {
               <span className="text-white font-bold text-xs uppercase tracking-wider">
                 OMEGA HQ ENTERPRISE ERP ENGINE
               </span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/10 text-[#c49b7c] font-mono font-bold">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/10 text-[#dc2626] font-mono font-bold">
                 /omega-hq-portal-2026
               </span>
             </div>
@@ -1439,12 +1439,12 @@ export const AdminDashboardPage: React.FC = () => {
       <div className="border-b border-stone-200 pb-6 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
         <div>
           <div className="flex items-center gap-2.5 mb-1.5">
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#4b423b] text-[#c49b7c]">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#111113] text-[#dc2626]">
               ERP OPERATIONS
             </span>
             <span className="text-xs text-stone-500 font-mono">v4.2 · Direct Cloud Database CRUD</span>
           </div>
-          <h1 className="font-heading text-3xl font-bold text-[#2b2520]">
+          <h1 className="font-heading text-3xl font-bold text-[#18181b]">
             Store Operations &amp; Database Controls
           </h1>
           <p className="text-sm text-stone-600 mt-1">
@@ -1459,11 +1459,11 @@ export const AdminDashboardPage: React.FC = () => {
             onClick={() => setActiveTab('inventory')}
             className={`px-4 py-2 text-xs font-bold rounded-lg transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
               activeTab === 'inventory'
-                ? 'bg-white text-[#4b423b] shadow-xs'
+                ? 'bg-white text-[#111113] shadow-xs'
                 : 'text-stone-600 hover:text-black'
             }`}
           >
-            <Package className="w-4 h-4 text-[#c49b7c]" />
+            <Package className="w-4 h-4 text-[#dc2626]" />
             <span>Product Inventory ({products.length})</span>
           </button>
 
@@ -1472,11 +1472,11 @@ export const AdminDashboardPage: React.FC = () => {
             onClick={() => setActiveTab('orders')}
             className={`px-4 py-2 text-xs font-bold rounded-lg transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
               activeTab === 'orders'
-                ? 'bg-white text-[#4b423b] shadow-xs'
+                ? 'bg-white text-[#111113] shadow-xs'
                 : 'text-stone-600 hover:text-black'
             }`}
           >
-            <ShoppingBag className="w-4 h-4 text-[#c49b7c]" />
+            <ShoppingBag className="w-4 h-4 text-[#dc2626]" />
             <span>Orders &amp; Logistics ({allOrdersCombined.length})</span>
           </button>
 
@@ -1485,11 +1485,11 @@ export const AdminDashboardPage: React.FC = () => {
             onClick={() => setActiveTab('cms_handles')}
             className={`px-4 py-2 text-xs font-bold rounded-lg transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
               activeTab === 'cms_handles'
-                ? 'bg-white text-[#4b423b] shadow-xs'
+                ? 'bg-white text-[#111113] shadow-xs'
                 : 'text-stone-600 hover:text-black'
             }`}
           >
-            <Globe className="w-4 h-4 text-[#c49b7c]" />
+            <Globe className="w-4 h-4 text-[#dc2626]" />
             <span>Web Content &amp; Handles (CMS)</span>
           </button>
 
@@ -1498,11 +1498,11 @@ export const AdminDashboardPage: React.FC = () => {
             onClick={() => setActiveTab('architecture')}
             className={`px-4 py-2 text-xs font-bold rounded-lg transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
               activeTab === 'architecture'
-                ? 'bg-white text-[#4b423b] shadow-xs'
+                ? 'bg-white text-[#111113] shadow-xs'
                 : 'text-stone-600 hover:text-black'
             }`}
           >
-            <Server className="w-4 h-4 text-[#c49b7c]" />
+            <Server className="w-4 h-4 text-[#dc2626]" />
             <span>Cloud &amp; Telemetry</span>
           </button>
         </div>
@@ -1515,7 +1515,7 @@ export const AdminDashboardPage: React.FC = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs">
               <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">Total Active SKUs</span>
-              <p className="text-2xl font-black text-[#2b2520] font-mono mt-1">{products.length}</p>
+              <p className="text-2xl font-black text-[#18181b] font-mono mt-1">{products.length}</p>
               <span className="text-[11px] text-stone-500">Live MongoDB documents</span>
             </div>
 
@@ -1529,7 +1529,7 @@ export const AdminDashboardPage: React.FC = () => {
 
             <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs">
               <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">Wholesale Asset Value</span>
-              <p className="text-lg font-black text-[#4b423b] font-mono mt-1 truncate">
+              <p className="text-lg font-black text-[#111113] font-mono mt-1 truncate">
                 {formatPrice(totalWholesaleValuation, currency)}
               </p>
               <span className="text-[11px] text-stone-500">At factory dealer rates</span>
@@ -1545,7 +1545,7 @@ export const AdminDashboardPage: React.FC = () => {
           </div>
 
           {/* Database Master Source of Truth Live Indicator */}
-          <div className="bg-linear-to-r from-[#1c2e24] via-[#242b26] to-[#2b2520] text-white p-3.5 rounded-2xl border border-emerald-700/40 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+          <div className="bg-linear-to-r from-[#1c2e24] via-[#242b26] to-[#18181b] text-white p-3.5 rounded-2xl border border-emerald-700/40 flex flex-wrap items-center justify-between gap-3 shadow-sm">
             <div className="flex items-center gap-3">
               <div className="relative flex items-center justify-center">
                 <div className="w-3 h-3 rounded-full bg-emerald-400" />
@@ -1587,7 +1587,7 @@ export const AdminDashboardPage: React.FC = () => {
               onClick={() => setStockStatusFilter('All')}
               className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
                 stockStatusFilter === 'All'
-                  ? 'bg-[#4b423b] text-white shadow-2xs'
+                  ? 'bg-[#111113] text-white shadow-2xs'
                   : 'bg-white border border-stone-200 text-stone-600 hover:bg-stone-50'
               }`}
             >
@@ -1630,9 +1630,9 @@ export const AdminDashboardPage: React.FC = () => {
 
           {/* ERP Floating Bulk Action Bar (Visible when rows are selected) */}
           {selectedProductIds.length > 0 && (
-            <div className="bg-[#4b423b] text-white p-4 rounded-2xl shadow-lg border border-[#3b352f] flex flex-wrap items-center justify-between gap-4 animate-in fade-in duration-200">
+            <div className="bg-[#111113] text-white p-4 rounded-2xl shadow-lg border border-[#18181b] flex flex-wrap items-center justify-between gap-4 animate-in fade-in duration-200">
               <div className="flex items-center gap-3">
-                <span className="w-7 h-7 rounded-full bg-[#c49b7c] text-white flex items-center justify-center font-bold text-xs">
+                <span className="w-7 h-7 rounded-full bg-[#dc2626] text-white flex items-center justify-center font-bold text-xs">
                   {selectedProductIds.length}
                 </span>
                 <span className="text-xs font-bold tracking-wide">
@@ -1698,7 +1698,7 @@ export const AdminDashboardPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleExportCSV}
-                  className="px-3 py-1.5 bg-[#c49b7c] hover:bg-[#b08769] text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5 shadow-2xs"
+                  className="px-3 py-1.5 bg-[#dc2626] hover:bg-[#b08769] text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5 shadow-2xs"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Export CSV</span>
@@ -1725,7 +1725,7 @@ export const AdminDashboardPage: React.FC = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search title, SKU, barcode..."
-                  className="w-full pl-9 pr-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                  className="w-full pl-9 pr-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
                 />
               </div>
 
@@ -1733,7 +1733,7 @@ export const AdminDashboardPage: React.FC = () => {
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
                 aria-label="Filter inventory by category"
-                className="px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                className="px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
               >
                 <option value="All">All Categories ({products.length})</option>
                 {PRODUCT_CATEGORIES.map((cat) => (
@@ -1747,7 +1747,7 @@ export const AdminDashboardPage: React.FC = () => {
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
                 aria-label="Sort inventory"
-                className="px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                className="px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
               >
                 <option value="default">Sort: Default</option>
                 <option value="price-desc">Sort: Retail Price (High → Low)</option>
@@ -1765,7 +1765,7 @@ export const AdminDashboardPage: React.FC = () => {
                 type="button"
                 onClick={handleExportCSV}
                 title="Export current view to Excel CSV format"
-                className="px-3 py-2 bg-stone-100 hover:bg-stone-200 text-[#4b423b] border border-stone-200 text-xs font-bold rounded-xl inline-flex items-center gap-1.5 transition-colors shadow-2xs"
+                className="px-3 py-2 bg-stone-100 hover:bg-stone-200 text-[#111113] border border-stone-200 text-xs font-bold rounded-xl inline-flex items-center gap-1.5 transition-colors shadow-2xs"
               >
                 <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-700" />
                 <span>Export CSV</span>
@@ -1776,9 +1776,9 @@ export const AdminDashboardPage: React.FC = () => {
                 onClick={handleSyncDatabase}
                 disabled={syncingDb}
                 title="Synchronize and seed all official catalog products to MongoDB Atlas"
-                className="px-3.5 py-2 bg-stone-100 hover:bg-stone-200 text-[#4b423b] border border-stone-200 text-xs font-bold rounded-xl inline-flex items-center gap-1.5 transition-colors shadow-2xs"
+                className="px-3.5 py-2 bg-stone-100 hover:bg-stone-200 text-[#111113] border border-stone-200 text-xs font-bold rounded-xl inline-flex items-center gap-1.5 transition-colors shadow-2xs"
               >
-                <RefreshCw className={`w-3.5 h-3.5 text-[#c49b7c] ${syncingDb ? 'animate-spin' : ''}`} />
+                <RefreshCw className={`w-3.5 h-3.5 text-[#dc2626] ${syncingDb ? 'animate-spin' : ''}`} />
                 <span>Sync DB</span>
               </button>
 
@@ -1813,7 +1813,7 @@ export const AdminDashboardPage: React.FC = () => {
           ) : filteredInventory.length === 0 ? (
             <div className="p-12 text-center bg-white border border-stone-200 rounded-2xl shadow-xs space-y-3">
               <Package className="w-10 h-10 text-stone-300 mx-auto" />
-              <h3 className="text-sm font-bold text-[#2b2520]">No Products Found</h3>
+              <h3 className="text-sm font-bold text-[#18181b]">No Products Found</h3>
               <p className="text-xs text-stone-500 max-w-sm mx-auto">
                 {debouncedSearchQuery
                   ? `No product matches "${debouncedSearchQuery}". Try adjusting your keywords or category filters.`
@@ -1838,7 +1838,7 @@ export const AdminDashboardPage: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-xs">
                 <thead>
-                  <tr className="bg-[#3b352f] text-white uppercase tracking-wider text-[11px] font-heading">
+                  <tr className="bg-[#18181b] text-white uppercase tracking-wider text-[11px] font-heading">
                     <th className="py-3 px-4 w-10 text-center">
                       <input
                         type="checkbox"
@@ -1848,7 +1848,7 @@ export const AdminDashboardPage: React.FC = () => {
                         }
                         onChange={handleToggleSelectAll}
                         aria-label="Select all products"
-                        className="rounded text-[#c49b7c] focus:ring-0 cursor-pointer"
+                        className="rounded text-[#dc2626] focus:ring-0 cursor-pointer"
                       />
                     </th>
                     <th className="py-3 px-4 font-bold">Product &amp; SKU</th>
@@ -1886,7 +1886,7 @@ export const AdminDashboardPage: React.FC = () => {
                             checked={isSelected}
                             onChange={() => handleToggleSelectProduct(product.id)}
                             aria-label={`Select ${product.name}`}
-                            className="rounded text-[#c49b7c] focus:ring-0 cursor-pointer"
+                            className="rounded text-[#dc2626] focus:ring-0 cursor-pointer"
                           />
                         </td>
 
@@ -1906,7 +1906,7 @@ export const AdminDashboardPage: React.FC = () => {
                                 onError={(e) => {
                                   (e.target as HTMLImageElement).src = '/omega-products/counter-book-q3-288p.jpeg';
                                 }}
-                                className="w-12 h-12 rounded-lg object-contain bg-stone-50 p-1 border border-stone-200 group-hover:border-[#c49b7c] transition-colors"
+                                className="w-12 h-12 rounded-lg object-contain bg-stone-50 p-1 border border-stone-200 group-hover:border-[#dc2626] transition-colors"
                               />
                               <div className="absolute inset-0 bg-black/30 rounded-lg opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
                                 <Eye className="w-4 h-4 text-white" />
@@ -1916,7 +1916,7 @@ export const AdminDashboardPage: React.FC = () => {
                               <button
                                 type="button"
                                 onClick={() => setInspectingProduct(product)}
-                                className="font-bold text-[#2b2520] hover:text-[#c49b7c] text-left line-clamp-1 transition-colors"
+                                className="font-bold text-[#18181b] hover:text-[#dc2626] text-left line-clamp-1 transition-colors"
                               >
                                 {product.name}
                               </button>
@@ -1965,7 +1965,7 @@ export const AdminDashboardPage: React.FC = () => {
                             </div>
                           ) : (
                             <div className="flex flex-col">
-                              <span className="font-bold text-[#2b2520]">
+                              <span className="font-bold text-[#18181b]">
                                 {formatPrice(product.discountPrice ?? product.price, currency)}
                               </span>
                               {product.discountPrice && (
@@ -2051,7 +2051,7 @@ export const AdminDashboardPage: React.FC = () => {
                                 type="button"
                                 onClick={() => saveRowEdit(product.id)}
                                 title="Save changes directly to MongoDB Atlas"
-                                className="px-2.5 py-1 bg-[#4b423b] hover:bg-black text-white text-xs font-bold rounded-lg inline-flex items-center gap-1 shadow-2xs"
+                                className="px-2.5 py-1 bg-[#111113] hover:bg-black text-white text-xs font-bold rounded-lg inline-flex items-center gap-1 shadow-2xs"
                               >
                                 <Check className="w-3.5 h-3.5" />
                                 <span>Save</span>
@@ -2071,7 +2071,7 @@ export const AdminDashboardPage: React.FC = () => {
                                 type="button"
                                 onClick={() => startRowEdit(product)}
                                 title="Quick in-table edit"
-                                className="p-1.5 text-stone-500 hover:text-[#4b423b] hover:bg-stone-100 rounded-lg transition-colors"
+                                className="p-1.5 text-stone-500 hover:text-[#111113] hover:bg-stone-100 rounded-lg transition-colors"
                               >
                                 <Sliders className="w-3.5 h-3.5" />
                               </button>
@@ -2079,9 +2079,9 @@ export const AdminDashboardPage: React.FC = () => {
                                 type="button"
                                 onClick={() => openEditProductModal(product)}
                                 title="Open full master edit form"
-                                className="p-1.5 text-stone-500 hover:text-[#4b423b] hover:bg-stone-100 rounded-lg transition-colors"
+                                className="p-1.5 text-stone-500 hover:text-[#111113] hover:bg-stone-100 rounded-lg transition-colors"
                               >
-                                <Edit3 className="w-3.5 h-3.5 text-[#c49b7c]" />
+                                <Edit3 className="w-3.5 h-3.5 text-[#dc2626]" />
                               </button>
                               <button
                                 type="button"
@@ -2119,7 +2119,7 @@ export const AdminDashboardPage: React.FC = () => {
           {/* Header & Description */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h2 className="font-heading text-xl font-bold text-[#2b2520]">
+              <h2 className="font-heading text-xl font-bold text-[#18181b]">
                 Customer Orders &amp; Wholesale Logistics Pipeline
               </h2>
               <p className="text-xs text-stone-600 mt-0.5">
@@ -2131,10 +2131,10 @@ export const AdminDashboardPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleExportOrdersCSV}
-                className="px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-[#4b423b] rounded-xl text-xs font-bold inline-flex items-center gap-1.5 transition-colors border border-stone-200"
+                className="px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-[#111113] rounded-xl text-xs font-bold inline-flex items-center gap-1.5 transition-colors border border-stone-200"
                 title="Download CSV spreadsheet of all filtered customer consignments"
               >
-                <FileSpreadsheet className="w-3.5 h-3.5 text-[#c49b7c]" />
+                <FileSpreadsheet className="w-3.5 h-3.5 text-[#dc2626]" />
                 <span>Export CSV</span>
               </button>
 
@@ -2142,10 +2142,10 @@ export const AdminDashboardPage: React.FC = () => {
                 type="button"
                 onClick={() => loadLiveOrders(false)}
                 disabled={isLoadingOrders}
-                className="px-3.5 py-1.5 bg-[#4b423b] hover:bg-black text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5 transition-colors shadow-2xs active:scale-95"
+                className="px-3.5 py-1.5 bg-[#111113] hover:bg-black text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5 transition-colors shadow-2xs active:scale-95"
                 title="Pull latest live orders directly from MongoDB Atlas"
               >
-                <RefreshCw className={`w-3.5 h-3.5 text-[#c49b7c] ${isLoadingOrders ? 'animate-spin' : ''}`} />
+                <RefreshCw className={`w-3.5 h-3.5 text-[#dc2626] ${isLoadingOrders ? 'animate-spin' : ''}`} />
                 <span>{isLoadingOrders ? 'Syncing...' : 'Refresh Orders'}</span>
               </button>
             </div>
@@ -2155,7 +2155,7 @@ export const AdminDashboardPage: React.FC = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs">
               <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">Total Consignments</span>
-              <p className="text-2xl font-black text-[#2b2520] font-mono mt-1">{orderAnalytics.totalCount}</p>
+              <p className="text-2xl font-black text-[#18181b] font-mono mt-1">{orderAnalytics.totalCount}</p>
               <span className="text-[11px] text-stone-500">Live MongoDB documents</span>
             </div>
 
@@ -2183,7 +2183,7 @@ export const AdminDashboardPage: React.FC = () => {
           </div>
 
           {/* Real-Time Database Polling Indicator & Auto-Sync Bar */}
-          <div className="bg-linear-to-r from-[#1c2e24] via-[#242b26] to-[#2b2520] text-white p-3.5 rounded-2xl border border-emerald-700/40 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+          <div className="bg-linear-to-r from-[#1c2e24] via-[#242b26] to-[#18181b] text-white p-3.5 rounded-2xl border border-emerald-700/40 flex flex-wrap items-center justify-between gap-3 shadow-sm">
             <div className="flex items-center gap-3">
               <div className="relative flex items-center justify-center">
                 <div className="w-3 h-3 rounded-full bg-emerald-400" />
@@ -2229,7 +2229,7 @@ export const AdminDashboardPage: React.FC = () => {
                 value={ordersSearchQuery}
                 onChange={(e) => setOrdersSearchQuery(e.target.value)}
                 placeholder="Search orders by customer, phone, reference, tracking, or items..."
-                className="w-full pl-9 pr-8 py-2 text-xs bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:border-[#4b423b] focus:bg-white"
+                className="w-full pl-9 pr-8 py-2 text-xs bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:border-[#111113] focus:bg-white"
               />
               {ordersSearchQuery && (
                 <button
@@ -2249,7 +2249,7 @@ export const AdminDashboardPage: React.FC = () => {
                 onClick={() => setOrderFilter('all')}
                 className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
                   orderFilter === 'all'
-                    ? 'bg-[#4b423b] text-white shadow-2xs'
+                    ? 'bg-[#111113] text-white shadow-2xs'
                     : 'bg-stone-50 border border-stone-200 text-stone-600 hover:bg-stone-100'
                 }`}
               >
@@ -2260,7 +2260,7 @@ export const AdminDashboardPage: React.FC = () => {
                 onClick={() => setOrderFilter('wholesale')}
                 className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
                   orderFilter === 'wholesale'
-                    ? 'bg-[#4b423b] text-white shadow-2xs'
+                    ? 'bg-[#111113] text-white shadow-2xs'
                     : 'bg-stone-50 border border-stone-200 text-stone-600 hover:bg-stone-100'
                 }`}
               >
@@ -2271,7 +2271,7 @@ export const AdminDashboardPage: React.FC = () => {
                 onClick={() => setOrderFilter('dispatched')}
                 className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
                   orderFilter === 'dispatched'
-                    ? 'bg-[#4b423b] text-white shadow-2xs'
+                    ? 'bg-[#111113] text-white shadow-2xs'
                     : 'bg-stone-50 border border-stone-200 text-stone-600 hover:bg-stone-100'
                 }`}
               >
@@ -2285,7 +2285,7 @@ export const AdminDashboardPage: React.FC = () => {
           ) : allOrdersCombined.length === 0 ? (
             <div className="bg-white p-12 text-center rounded-2xl border border-stone-200 shadow-xs space-y-3">
               <ShoppingBag className="w-10 h-10 text-stone-300 mx-auto" />
-              <h3 className="text-sm font-bold text-[#2b2520]">No Orders Matching Filters</h3>
+              <h3 className="text-sm font-bold text-[#18181b]">No Orders Matching Filters</h3>
               <p className="text-xs text-stone-500 max-w-sm mx-auto">
                 {ordersSearchQuery
                   ? `No orders match "${ordersSearchQuery}". Try clearing search keywords.`
@@ -2319,11 +2319,11 @@ export const AdminDashboardPage: React.FC = () => {
                 return (
                   <div
                     key={orderId}
-                    className="bg-white border border-stone-200 rounded-2xl p-5 shadow-xs space-y-3 hover:border-[#c49b7c] transition-colors"
+                    className="bg-white border border-stone-200 rounded-2xl p-5 shadow-xs space-y-3 hover:border-[#dc2626] transition-colors"
                   >
                     <div className="flex items-center justify-between pb-2 border-b border-stone-100">
                       <div>
-                        <span className="font-mono font-bold text-xs text-[#4b423b]">
+                        <span className="font-mono font-bold text-xs text-[#111113]">
                           #{orderId}
                         </span>
                         <div className="text-[11px] text-stone-500">
@@ -2356,7 +2356,7 @@ export const AdminDashboardPage: React.FC = () => {
                     <div className="space-y-1.5 text-xs">
                       <div className="flex justify-between">
                         <span className="text-stone-500">Customer:</span>
-                        <span className="font-bold text-[#2b2520]">{custName}</span>
+                        <span className="font-bold text-[#18181b]">{custName}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-stone-500">Phone:</span>
@@ -2438,7 +2438,7 @@ export const AdminDashboardPage: React.FC = () => {
                               <button
                                 type="button"
                                 onClick={() => handleSaveOrderTracking(orderId)}
-                                className="px-3 py-1 bg-[#4b423b] text-white rounded text-xs font-bold"
+                                className="px-3 py-1 bg-[#111113] text-white rounded text-xs font-bold"
                               >
                                 Save Waybill
                               </button>
@@ -2448,7 +2448,7 @@ export const AdminDashboardPage: React.FC = () => {
                           <div className="flex items-center justify-between text-xs">
                             <span className="text-stone-500">Waybill / Tracking:</span>
                             <div className="flex items-center gap-1.5">
-                              <span className="font-mono font-bold text-[#4b423b]">
+                              <span className="font-mono font-bold text-[#111113]">
                                 {tracking || 'Not assigned'}
                               </span>
                               <button
@@ -2458,7 +2458,7 @@ export const AdminDashboardPage: React.FC = () => {
                                   setTempTrackingNumber(tracking);
                                   setTempAdminNotes(ord.adminNotes || '');
                                 }}
-                                className="text-[10px] text-[#c49b7c] hover:underline font-bold"
+                                className="text-[10px] text-[#dc2626] hover:underline font-bold"
                               >
                                 Edit
                               </button>
@@ -2469,7 +2469,7 @@ export const AdminDashboardPage: React.FC = () => {
 
                       <div className="flex justify-between pt-1 border-t border-stone-100 font-bold">
                         <span>Total Consignment:</span>
-                        <span className="text-[#4b423b] font-mono text-sm">{formatPrice(total, currency)}</span>
+                        <span className="text-[#111113] font-mono text-sm">{formatPrice(total, currency)}</span>
                       </div>
                     </div>
 
@@ -2488,7 +2488,7 @@ export const AdminDashboardPage: React.FC = () => {
                         href={waConfirmationUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-3.5 py-1.5 rounded-full bg-[#4b423b] hover:bg-black text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-2xs"
+                        className="px-3.5 py-1.5 rounded-full bg-[#111113] hover:bg-black text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-2xs"
                       >
                         <MessageCircle className="w-3.5 h-3.5 fill-white" />
                         <span>Update via WhatsApp</span>
@@ -2511,12 +2511,12 @@ export const AdminDashboardPage: React.FC = () => {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-200 pb-4">
             <div>
               <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-[#4b423b] text-[#c49b7c]">
+                <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-[#111113] text-[#dc2626]">
                   CMS ENGINE
                 </span>
                 <span className="text-xs text-stone-500 font-mono">Live MongoDB Configuration</span>
               </div>
-              <h2 className="font-heading text-xl font-bold text-[#2b2520] mt-1">
+              <h2 className="font-heading text-xl font-bold text-[#18181b] mt-1">
                 Web Content, Store Handles &amp; Tanzanian Contacts
               </h2>
               <p className="text-xs sm:text-sm text-stone-600 mt-0.5">
@@ -2531,7 +2531,7 @@ export const AdminDashboardPage: React.FC = () => {
                   resetStoreConfigToDefault();
                   setBrandingForm({ ...storeConfig });
                 }}
-                className="text-xs font-bold text-stone-500 hover:text-[#c49b7c] inline-flex items-center gap-1 shrink-0"
+                className="text-xs font-bold text-stone-500 hover:text-[#dc2626] inline-flex items-center gap-1 shrink-0"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Reset Defaults</span>
@@ -2553,7 +2553,7 @@ export const AdminDashboardPage: React.FC = () => {
               onClick={() => setCmsActiveSubTab('identity')}
               className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
                 cmsActiveSubTab === 'identity'
-                  ? 'bg-[#4b423b] text-white'
+                  ? 'bg-[#111113] text-white'
                   : 'text-stone-600 hover:bg-stone-100'
               }`}
             >
@@ -2564,7 +2564,7 @@ export const AdminDashboardPage: React.FC = () => {
               onClick={() => setCmsActiveSubTab('hero')}
               className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
                 cmsActiveSubTab === 'hero'
-                  ? 'bg-[#4b423b] text-white'
+                  ? 'bg-[#111113] text-white'
                   : 'text-stone-600 hover:bg-stone-100'
               }`}
             >
@@ -2575,7 +2575,7 @@ export const AdminDashboardPage: React.FC = () => {
               onClick={() => setCmsActiveSubTab('contacts')}
               className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
                 cmsActiveSubTab === 'contacts'
-                  ? 'bg-[#4b423b] text-white'
+                  ? 'bg-[#111113] text-white'
                   : 'text-stone-600 hover:bg-stone-100'
               }`}
             >
@@ -2586,7 +2586,7 @@ export const AdminDashboardPage: React.FC = () => {
               onClick={() => setCmsActiveSubTab('about')}
               className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
                 cmsActiveSubTab === 'about'
-                  ? 'bg-[#4b423b] text-white'
+                  ? 'bg-[#111113] text-white'
                   : 'text-stone-600 hover:bg-stone-100'
               }`}
             >
@@ -2597,7 +2597,7 @@ export const AdminDashboardPage: React.FC = () => {
               onClick={() => setCmsActiveSubTab('logistics')}
               className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
                 cmsActiveSubTab === 'logistics'
-                  ? 'bg-[#4b423b] text-white'
+                  ? 'bg-[#111113] text-white'
                   : 'text-stone-600 hover:bg-stone-100'
               }`}
             >
@@ -2617,7 +2617,7 @@ export const AdminDashboardPage: React.FC = () => {
                     type="text"
                     value={brandingForm.businessName}
                     onChange={(e) => setBrandingForm({ ...brandingForm, businessName: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
                   />
                 </div>
 
@@ -2629,7 +2629,7 @@ export const AdminDashboardPage: React.FC = () => {
                     type="text"
                     value={brandingForm.logoText}
                     onChange={(e) => setBrandingForm({ ...brandingForm, logoText: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
                   />
                 </div>
               </div>
@@ -2643,7 +2643,7 @@ export const AdminDashboardPage: React.FC = () => {
                     type="text"
                     value={brandingForm.tagline}
                     onChange={(e) => setBrandingForm({ ...brandingForm, tagline: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
                   />
                 </div>
 
@@ -2655,7 +2655,7 @@ export const AdminDashboardPage: React.FC = () => {
                     type="text"
                     value={brandingForm.taglineSw}
                     onChange={(e) => setBrandingForm({ ...brandingForm, taglineSw: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
                   />
                 </div>
               </div>
@@ -2669,7 +2669,7 @@ export const AdminDashboardPage: React.FC = () => {
                     type="text"
                     value={brandingForm.brandSubtitle}
                     onChange={(e) => setBrandingForm({ ...brandingForm, brandSubtitle: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
                   />
                 </div>
 
@@ -2681,7 +2681,7 @@ export const AdminDashboardPage: React.FC = () => {
                     type="text"
                     value={brandingForm.brandSubtitleSw}
                     onChange={(e) => setBrandingForm({ ...brandingForm, brandSubtitleSw: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
                   />
                 </div>
               </div>
@@ -2699,7 +2699,7 @@ export const AdminDashboardPage: React.FC = () => {
                   rows={2}
                   value={brandingForm.announcementText}
                   onChange={(e) => setBrandingForm({ ...brandingForm, announcementText: e.target.value })}
-                  className="w-full px-3.5 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                  className="w-full px-3.5 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
                 />
               </div>
 
@@ -2711,7 +2711,7 @@ export const AdminDashboardPage: React.FC = () => {
                   rows={2}
                   value={brandingForm.announcementTextSw}
                   onChange={(e) => setBrandingForm({ ...brandingForm, announcementTextSw: e.target.value })}
-                  className="w-full px-3.5 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                  className="w-full px-3.5 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
                 />
               </div>
             </div>
@@ -2729,7 +2729,7 @@ export const AdminDashboardPage: React.FC = () => {
                     type="text"
                     value={brandingForm.phoneNumber || ''}
                     onChange={(e) => setBrandingForm({ ...brandingForm, phoneNumber: e.target.value })}
-                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs font-mono focus:outline-none focus:border-[#4b423b]"
+                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs font-mono focus:outline-none focus:border-[#111113]"
                     placeholder="+255 715 268 391"
                   />
                   <span className="text-[10px] text-stone-400">e.g. +255 715 268 391</span>
@@ -2743,7 +2743,7 @@ export const AdminDashboardPage: React.FC = () => {
                     type="text"
                     value={brandingForm.secondaryPhone || ''}
                     onChange={(e) => setBrandingForm({ ...brandingForm, secondaryPhone: e.target.value })}
-                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs font-mono focus:outline-none focus:border-[#4b423b]"
+                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs font-mono focus:outline-none focus:border-[#111113]"
                     placeholder="+255 624 265 480"
                   />
                   <span className="text-[10px] text-stone-400">e.g. +255 624 265 480</span>
@@ -2763,7 +2763,7 @@ export const AdminDashboardPage: React.FC = () => {
                         thirdPhone: e.target.value,
                       })
                     }
-                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs font-mono focus:outline-none focus:border-[#4b423b]"
+                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs font-mono focus:outline-none focus:border-[#111113]"
                     placeholder="+255 746 268 391"
                   />
                   <span className="text-[10px] text-stone-400">e.g. +255 746 268 391</span>
@@ -2783,7 +2783,7 @@ export const AdminDashboardPage: React.FC = () => {
                         fourthPhone: e.target.value,
                       })
                     }
-                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs font-mono focus:outline-none focus:border-[#4b423b]"
+                    className="w-full px-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs font-mono focus:outline-none focus:border-[#111113]"
                     placeholder="+255 699 032 777"
                   />
                   <span className="text-[10px] text-stone-400">e.g. +255 699 032 777</span>
@@ -2799,7 +2799,7 @@ export const AdminDashboardPage: React.FC = () => {
                     type="text"
                     value={brandingForm.shopAddress}
                     onChange={(e) => setBrandingForm({ ...brandingForm, shopAddress: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
                   />
                 </div>
 
@@ -2811,7 +2811,7 @@ export const AdminDashboardPage: React.FC = () => {
                     type="text"
                     value={brandingForm.shopAddressSw}
                     onChange={(e) => setBrandingForm({ ...brandingForm, shopAddressSw: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
                   />
                 </div>
               </div>
@@ -2825,7 +2825,7 @@ export const AdminDashboardPage: React.FC = () => {
                     type="text"
                     value={brandingForm.businessHours}
                     onChange={(e) => setBrandingForm({ ...brandingForm, businessHours: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
                   />
                 </div>
 
@@ -2837,7 +2837,7 @@ export const AdminDashboardPage: React.FC = () => {
                     type="text"
                     value={brandingForm.businessHoursSw}
                     onChange={(e) => setBrandingForm({ ...brandingForm, businessHoursSw: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
                   />
                 </div>
               </div>
@@ -2851,7 +2851,7 @@ export const AdminDashboardPage: React.FC = () => {
                     type="email"
                     value={brandingForm.emailAddress}
                     onChange={(e) => setBrandingForm({ ...brandingForm, emailAddress: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
                   />
                 </div>
 
@@ -2863,7 +2863,7 @@ export const AdminDashboardPage: React.FC = () => {
                     type="text"
                     value={brandingForm.googleMapsUrl}
                     onChange={(e) => setBrandingForm({ ...brandingForm, googleMapsUrl: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                    className="w-full px-3.5 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
                   />
                 </div>
               </div>
@@ -2881,7 +2881,7 @@ export const AdminDashboardPage: React.FC = () => {
                   rows={3}
                   value={brandingForm.aboutIntro}
                   onChange={(e) => setBrandingForm({ ...brandingForm, aboutIntro: e.target.value })}
-                  className="w-full px-3.5 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                  className="w-full px-3.5 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
                 />
               </div>
 
@@ -2893,7 +2893,7 @@ export const AdminDashboardPage: React.FC = () => {
                   rows={3}
                   value={brandingForm.aboutIntroSw}
                   onChange={(e) => setBrandingForm({ ...brandingForm, aboutIntroSw: e.target.value })}
-                  className="w-full px-3.5 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                  className="w-full px-3.5 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
                 />
               </div>
 
@@ -2905,7 +2905,7 @@ export const AdminDashboardPage: React.FC = () => {
                   rows={2}
                   value={brandingForm.aboutProductRange}
                   onChange={(e) => setBrandingForm({ ...brandingForm, aboutProductRange: e.target.value })}
-                  className="w-full px-3.5 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                  className="w-full px-3.5 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
                 />
               </div>
 
@@ -2917,7 +2917,7 @@ export const AdminDashboardPage: React.FC = () => {
                   rows={2}
                   value={brandingForm.aboutProductRangeSw}
                   onChange={(e) => setBrandingForm({ ...brandingForm, aboutProductRangeSw: e.target.value })}
-                  className="w-full px-3.5 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#4b423b]"
+                  className="w-full px-3.5 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:border-[#111113]"
                 />
               </div>
             </div>
@@ -2996,7 +2996,7 @@ export const AdminDashboardPage: React.FC = () => {
                   <Server className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-heading text-sm font-bold text-[#2b2520]">Cloud API Gateway &amp; Backend Origin</h3>
+                  <h3 className="font-heading text-sm font-bold text-[#18181b]">Cloud API Gateway &amp; Backend Origin</h3>
                   <p className="text-[11px] text-stone-500">Cross-Origin Resource Sharing (CORS) &amp; Render Cloud Connection</p>
                 </div>
               </div>
@@ -3046,13 +3046,13 @@ export const AdminDashboardPage: React.FC = () => {
                   value={customBackendInput}
                   onChange={(e) => setCustomBackendInput(e.target.value)}
                   placeholder="https://omega-stationery-backend.onrender.com"
-                  className="flex-1 px-3.5 py-2 text-xs font-mono bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:border-[#c49b7c] focus:bg-white"
+                  className="flex-1 px-3.5 py-2 text-xs font-mono bg-stone-50 border border-stone-200 rounded-xl focus:outline-none focus:border-[#dc2626] focus:bg-white"
                 />
                 <div className="flex gap-2">
                   <button
                     type="button"
                     onClick={handleSaveCustomBackend}
-                    className="px-4 py-2 bg-[#2b2520] hover:bg-black text-white text-xs font-bold rounded-xl transition-colors shrink-0"
+                    className="px-4 py-2 bg-[#18181b] hover:bg-black text-white text-xs font-bold rounded-xl transition-colors shrink-0"
                   >
                     Connect URL
                   </button>
@@ -3087,7 +3087,7 @@ export const AdminDashboardPage: React.FC = () => {
                     <Database className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-heading text-sm font-bold text-[#2b2520]">MongoDB Atlas Cloud</h3>
+                    <h3 className="font-heading text-sm font-bold text-[#18181b]">MongoDB Atlas Cloud</h3>
                     <p className="text-[11px] text-stone-500">Mongoose ODM · Persistent Cloud Database</p>
                   </div>
                 </div>
@@ -3099,11 +3099,11 @@ export const AdminDashboardPage: React.FC = () => {
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div className="p-3 bg-stone-50 rounded-xl">
                   <span className="text-stone-400 block text-[10px] uppercase font-bold">Cluster Engine</span>
-                  <span className="font-bold text-[#2b2520]">MongoDB Atlas (Cloud)</span>
+                  <span className="font-bold text-[#18181b]">MongoDB Atlas (Cloud)</span>
                 </div>
                 <div className="p-3 bg-stone-50 rounded-xl">
                   <span className="text-stone-400 block text-[10px] uppercase font-bold">Target Database</span>
-                  <span className="font-bold text-[#2b2520] font-mono">omega_stationery</span>
+                  <span className="font-bold text-[#18181b] font-mono">omega_stationery</span>
                 </div>
                 <div className="p-3 bg-stone-50 rounded-xl">
                   <span className="text-stone-400 block text-[10px] uppercase font-bold">Cloud Products Count</span>
@@ -3113,7 +3113,7 @@ export const AdminDashboardPage: React.FC = () => {
                 </div>
                 <div className="p-3 bg-stone-50 rounded-xl">
                   <span className="text-stone-400 block text-[10px] uppercase font-bold">Orders Recorded</span>
-                  <span className="font-bold text-[#2b2520] font-mono">
+                  <span className="font-bold text-[#18181b] font-mono">
                     {liveOrders.length} Orders
                   </span>
                 </div>
@@ -3124,9 +3124,9 @@ export const AdminDashboardPage: React.FC = () => {
                   type="button"
                   onClick={handleSyncDatabase}
                   disabled={syncingDb}
-                  className="w-full py-2.5 bg-stone-100 hover:bg-stone-200 border border-stone-200 rounded-xl text-xs font-bold text-[#4b423b] inline-flex items-center justify-center gap-2 transition-colors shadow-2xs"
+                  className="w-full py-2.5 bg-stone-100 hover:bg-stone-200 border border-stone-200 rounded-xl text-xs font-bold text-[#111113] inline-flex items-center justify-center gap-2 transition-colors shadow-2xs"
                 >
-                  <RefreshCw className={`w-4 h-4 text-[#c49b7c] ${syncingDb ? 'animate-spin' : ''}`} />
+                  <RefreshCw className={`w-4 h-4 text-[#dc2626] ${syncingDb ? 'animate-spin' : ''}`} />
                   <span>Synchronize Catalog Seed with MongoDB Atlas</span>
                 </button>
               </div>
@@ -3140,7 +3140,7 @@ export const AdminDashboardPage: React.FC = () => {
                     <Zap className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-heading text-sm font-bold text-[#2b2520]">Redis &amp; Memory Cache</h3>
+                    <h3 className="font-heading text-sm font-bold text-[#18181b]">Redis &amp; Memory Cache</h3>
                     <p className="text-[11px] text-stone-500">Sub-millisecond Edge Response Cache</p>
                   </div>
                 </div>
@@ -3176,7 +3176,7 @@ export const AdminDashboardPage: React.FC = () => {
 
                 <div className="p-3 bg-stone-50 rounded-xl">
                   <span className="text-stone-400 block text-[10px] uppercase font-bold">Active Engine</span>
-                  <span className="font-bold text-[#2b2520] font-mono text-xs truncate block">
+                  <span className="font-bold text-[#18181b] font-mono text-xs truncate block">
                     {backendHealth?.cache?.engine || 'Sub-millisecond Edge LRU'}
                   </span>
                   <span className="block text-[10px] text-stone-400 mt-0.5">
@@ -3186,7 +3186,7 @@ export const AdminDashboardPage: React.FC = () => {
 
                 <div className="p-3 bg-stone-50 rounded-xl">
                   <span className="text-stone-400 block text-[10px] uppercase font-bold">Cached Query Keys</span>
-                  <span className="font-bold text-[#2b2520] font-mono text-sm">
+                  <span className="font-bold text-[#18181b] font-mono text-sm">
                     {backendHealth?.cache?.cachedKeysCount ?? 0} Keys
                   </span>
                   <span className="block text-[10px] text-stone-400 mt-0.5">Auto-evicted via TTL</span>
@@ -3255,9 +3255,9 @@ export const AdminDashboardPage: React.FC = () => {
                   type="button"
                   onClick={handleReconnectRedis}
                   disabled={reconnectingRedis}
-                  className="py-2.5 px-3 bg-stone-100 hover:bg-stone-200 border border-stone-200 text-[#4b423b] rounded-xl text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
+                  className="py-2.5 px-3 bg-stone-100 hover:bg-stone-200 border border-stone-200 text-[#111113] rounded-xl text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
                 >
-                  <RefreshCw className={`w-3.5 h-3.5 text-[#c49b7c] ${reconnectingRedis ? 'animate-spin' : ''}`} />
+                  <RefreshCw className={`w-3.5 h-3.5 text-[#dc2626] ${reconnectingRedis ? 'animate-spin' : ''}`} />
                   <span>{reconnectingRedis ? 'Connecting...' : 'Reconnect Redis'}</span>
                 </button>
 
@@ -3265,7 +3265,7 @@ export const AdminDashboardPage: React.FC = () => {
                   type="button"
                   onClick={handleFlushCache}
                   disabled={flushingCache}
-                  className="py-2.5 px-3 bg-stone-100 hover:bg-stone-200 border border-stone-200 text-[#4b423b] rounded-xl text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
+                  className="py-2.5 px-3 bg-stone-100 hover:bg-stone-200 border border-stone-200 text-[#111113] rounded-xl text-xs font-bold inline-flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
                 >
                   <RotateCcw className={`w-3.5 h-3.5 text-amber-600 ${flushingCache ? 'animate-spin' : ''}`} />
                   <span>{flushingCache ? 'Evicting...' : 'Flush Cache'}</span>
@@ -3303,12 +3303,12 @@ export const AdminDashboardPage: React.FC = () => {
             <div className="flex items-center justify-between border-b border-stone-200 pb-3">
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-[#4b423b] text-[#c49b7c]">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-[#111113] text-[#dc2626]">
                     {modalMode === 'add' ? 'ADD NEW PRODUCT' : modalMode === 'clone' ? 'CLONE VARIANT SKU' : 'EDIT PRODUCT'}
                   </span>
                   <span className="text-[11px] text-stone-500 font-mono">Direct Database CRUD</span>
                 </div>
-                <h3 className="font-heading text-lg font-bold text-[#2b2520] mt-0.5">
+                <h3 className="font-heading text-lg font-bold text-[#18181b] mt-0.5">
                   {modalMode === 'add'
                     ? 'Create Product Master in MongoDB Atlas'
                     : modalMode === 'clone'
@@ -3349,7 +3349,7 @@ export const AdminDashboardPage: React.FC = () => {
                 onClick={() => setModalActiveTab('info')}
                 className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
                   modalActiveTab === 'info'
-                    ? 'bg-[#4b423b] text-white'
+                    ? 'bg-[#111113] text-white'
                     : 'text-stone-600 hover:bg-stone-100'
                 }`}
               >
@@ -3360,7 +3360,7 @@ export const AdminDashboardPage: React.FC = () => {
                 onClick={() => setModalActiveTab('pricing')}
                 className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
                   modalActiveTab === 'pricing'
-                    ? 'bg-[#4b423b] text-white'
+                    ? 'bg-[#111113] text-white'
                     : 'text-stone-600 hover:bg-stone-100'
                 }`}
               >
@@ -3371,7 +3371,7 @@ export const AdminDashboardPage: React.FC = () => {
                 onClick={() => setModalActiveTab('specs')}
                 className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
                   modalActiveTab === 'specs'
-                    ? 'bg-[#4b423b] text-white'
+                    ? 'bg-[#111113] text-white'
                     : 'text-stone-600 hover:bg-stone-100'
                 }`}
               >
@@ -3382,7 +3382,7 @@ export const AdminDashboardPage: React.FC = () => {
                 onClick={() => setModalActiveTab('stock')}
                 className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
                   modalActiveTab === 'stock'
-                    ? 'bg-[#4b423b] text-white'
+                    ? 'bg-[#111113] text-white'
                     : 'text-stone-600 hover:bg-stone-100'
                 }`}
               >
@@ -3393,7 +3393,7 @@ export const AdminDashboardPage: React.FC = () => {
                 onClick={() => setModalActiveTab('media')}
                 className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
                   modalActiveTab === 'media'
-                    ? 'bg-[#4b423b] text-white'
+                    ? 'bg-[#111113] text-white'
                     : 'text-stone-600 hover:bg-stone-100'
                 }`}
               >
@@ -3406,7 +3406,7 @@ export const AdminDashboardPage: React.FC = () => {
               {modalActiveTab === 'info' && (
                 <div className="space-y-4">
                   <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#2b2520] uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
                       Product Title *
                     </label>
                     <input
@@ -3415,13 +3415,13 @@ export const AdminDashboardPage: React.FC = () => {
                       value={productForm.name}
                       onChange={(e) => setProductForm({ ...productForm, name: e.target.value })}
                       placeholder="e.g. OMEGA Hardcover Counter Book Q3 (288 Pages)"
-                      className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs bg-stone-50 focus:outline-none focus:border-[#4b423b]"
+                      className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs bg-stone-50 focus:outline-none focus:border-[#111113]"
                     />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#2b2520] uppercase tracking-wider">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
                         Category *
                       </label>
                       <select
@@ -3429,7 +3429,7 @@ export const AdminDashboardPage: React.FC = () => {
                         onChange={(e) =>
                           setProductForm({ ...productForm, category: e.target.value as ProductCategory })
                         }
-                        className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs bg-stone-50 focus:outline-none focus:border-[#4b423b]"
+                        className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs bg-stone-50 focus:outline-none focus:border-[#111113]"
                       >
                         {PRODUCT_CATEGORIES.map((cat) => (
                           <option key={cat} value={cat}>
@@ -3441,7 +3441,7 @@ export const AdminDashboardPage: React.FC = () => {
 
                     <div className="space-y-1">
                       <div className="flex items-center justify-between">
-                        <label className="block text-xs font-bold text-[#2b2520] uppercase tracking-wider">
+                        <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
                           SKU Code *
                         </label>
                         <button
@@ -3456,7 +3456,7 @@ export const AdminDashboardPage: React.FC = () => {
                               ),
                             })
                           }
-                          className="text-[10px] text-[#c49b7c] hover:underline font-bold"
+                          className="text-[10px] text-[#dc2626] hover:underline font-bold"
                         >
                           ⚡ Auto-Generate
                         </button>
@@ -3466,7 +3466,7 @@ export const AdminDashboardPage: React.FC = () => {
                         required
                         value={productForm.sku}
                         onChange={(e) => setProductForm({ ...productForm, sku: e.target.value })}
-                        className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#4b423b]"
+                        className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
                       />
                     </div>
                   </div>
@@ -3474,7 +3474,7 @@ export const AdminDashboardPage: React.FC = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1">
                       <div className="flex items-center justify-between">
-                        <label className="block text-xs font-bold text-[#2b2520] uppercase tracking-wider">
+                        <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
                           Barcode (EAN-13 / GS1)
                         </label>
                         <button
@@ -3482,7 +3482,7 @@ export const AdminDashboardPage: React.FC = () => {
                           onClick={() =>
                             setProductForm({ ...productForm, barcode: generateEan13Barcode() })
                           }
-                          className="text-[10px] text-[#c49b7c] hover:underline font-bold"
+                          className="text-[10px] text-[#dc2626] hover:underline font-bold"
                         >
                           ⚡ Generate EAN-13
                         </button>
@@ -3492,12 +3492,12 @@ export const AdminDashboardPage: React.FC = () => {
                         value={productForm.barcode}
                         onChange={(e) => setProductForm({ ...productForm, barcode: e.target.value })}
                         placeholder="e.g. 6164000192837"
-                        className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#4b423b]"
+                        className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
                       />
                     </div>
 
                     <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#2b2520] uppercase tracking-wider">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
                         Dispatch Time Guarantee
                       </label>
                       <input
@@ -3507,13 +3507,13 @@ export const AdminDashboardPage: React.FC = () => {
                           setProductForm({ ...productForm, dispatchTime: e.target.value })
                         }
                         placeholder="e.g. Same-Day Factory Dispatch"
-                        className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs bg-stone-50 focus:outline-none focus:border-[#4b423b]"
+                        className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs bg-stone-50 focus:outline-none focus:border-[#111113]"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#2b2520] uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
                       Product Description
                     </label>
                     <textarea
@@ -3534,7 +3534,7 @@ export const AdminDashboardPage: React.FC = () => {
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#2b2520] uppercase tracking-wider">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
                         Retail MSRP (TSh) *
                       </label>
                       <input
@@ -3543,12 +3543,12 @@ export const AdminDashboardPage: React.FC = () => {
                         required
                         value={productForm.price}
                         onChange={(e) => setProductForm({ ...productForm, price: e.target.value })}
-                        className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#4b423b]"
+                        className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
                       />
                     </div>
 
                     <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#2b2520] uppercase tracking-wider">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
                         Discount Price (TSh)
                       </label>
                       <input
@@ -3559,7 +3559,7 @@ export const AdminDashboardPage: React.FC = () => {
                           setProductForm({ ...productForm, discountPrice: e.target.value })
                         }
                         placeholder="Optional sale rate"
-                        className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#4b423b]"
+                        className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
                       />
                     </div>
 
@@ -3581,7 +3581,7 @@ export const AdminDashboardPage: React.FC = () => {
                   </div>
 
                   <div className="space-y-1 max-w-xs">
-                    <label className="block text-xs font-bold text-[#2b2520] uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
                       Min Wholesale Quantity (Pcs/Box) *
                     </label>
                     <input
@@ -3598,7 +3598,7 @@ export const AdminDashboardPage: React.FC = () => {
 
                   {/* Live Margin & Carton Calculator Box */}
                   <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200 space-y-2">
-                    <div className="flex items-center justify-between text-xs font-bold text-[#4b423b] border-b border-stone-200 pb-1.5">
+                    <div className="flex items-center justify-between text-xs font-bold text-[#111113] border-b border-stone-200 pb-1.5">
                       <span>ERP Live Commercial Margin Calculator</span>
                       <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-mono">
                         {modalMarginPercent}% Dealer Margin
@@ -3608,7 +3608,7 @@ export const AdminDashboardPage: React.FC = () => {
                     <div className="grid grid-cols-3 gap-3 text-xs pt-1">
                       <div>
                         <span className="text-[10px] text-stone-500 block uppercase font-bold">Carton Wholesale Cost:</span>
-                        <span className="font-mono font-bold text-[#2b2520]">
+                        <span className="font-mono font-bold text-[#18181b]">
                           {formatPrice(modalCartonWholesaleTotal, currency)}
                         </span>
                       </div>
@@ -3634,7 +3634,7 @@ export const AdminDashboardPage: React.FC = () => {
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#2b2520] uppercase tracking-wider">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
                         Packaging Spec (e.g. 48 Pcs / Box)
                       </label>
                       <input
@@ -3649,7 +3649,7 @@ export const AdminDashboardPage: React.FC = () => {
                     </div>
 
                     <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#2b2520] uppercase tracking-wider">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
                         Quire Classification
                       </label>
                       <select
@@ -3668,7 +3668,7 @@ export const AdminDashboardPage: React.FC = () => {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#2b2520] uppercase tracking-wider">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
                         Page Count
                       </label>
                       <select
@@ -3693,7 +3693,7 @@ export const AdminDashboardPage: React.FC = () => {
                     </div>
 
                     <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#2b2520] uppercase tracking-wider">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
                         Ruling / Grid Pattern
                       </label>
                       <select
@@ -3714,7 +3714,7 @@ export const AdminDashboardPage: React.FC = () => {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#2b2520] uppercase tracking-wider">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
                         Paper Weight / Quality
                       </label>
                       <input
@@ -3729,7 +3729,7 @@ export const AdminDashboardPage: React.FC = () => {
                     </div>
 
                     <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#2b2520] uppercase tracking-wider">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
                         Binding Type
                       </label>
                       <input
@@ -3751,7 +3751,7 @@ export const AdminDashboardPage: React.FC = () => {
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#2b2520] uppercase tracking-wider">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
                         Stock Status
                       </label>
                       <select
@@ -3768,7 +3768,7 @@ export const AdminDashboardPage: React.FC = () => {
                     </div>
 
                     <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#2b2520] uppercase tracking-wider">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
                         Physical Stock Quantity on Hand (Units)
                       </label>
                       <input
@@ -3792,7 +3792,7 @@ export const AdminDashboardPage: React.FC = () => {
                         onChange={(e) =>
                           setProductForm({ ...productForm, featured: e.target.checked })
                         }
-                        className="rounded text-[#4b423b] focus:ring-0"
+                        className="rounded text-[#111113] focus:ring-0"
                       />
                       <span>Featured on Homepage Showcase</span>
                     </label>
@@ -3804,7 +3804,7 @@ export const AdminDashboardPage: React.FC = () => {
                         onChange={(e) =>
                           setProductForm({ ...productForm, bestSeller: e.target.checked })
                         }
-                        className="rounded text-[#4b423b] focus:ring-0"
+                        className="rounded text-[#111113] focus:ring-0"
                       />
                       <span>Best-Selling Badge</span>
                     </label>
@@ -3816,7 +3816,7 @@ export const AdminDashboardPage: React.FC = () => {
                         onChange={(e) =>
                           setProductForm({ ...productForm, freeDelivery: e.target.checked })
                         }
-                        className="rounded text-[#4b423b] focus:ring-0"
+                        className="rounded text-[#111113] focus:ring-0"
                       />
                       <span>Free Delivery Eligibility Tag</span>
                     </label>
@@ -3842,8 +3842,8 @@ export const AdminDashboardPage: React.FC = () => {
                     }}
                     className={`relative border-2 border-dashed rounded-2xl p-6 text-center transition-all ${
                       isDraggingFile
-                        ? 'border-[#c49b7c] bg-[#c49b7c]/10 shadow-md scale-[1.01]'
-                        : 'border-stone-300 hover:border-[#c49b7c] bg-stone-50/80 hover:bg-stone-50'
+                        ? 'border-[#dc2626] bg-[#dc2626]/10 shadow-md scale-[1.01]'
+                        : 'border-stone-300 hover:border-[#dc2626] bg-stone-50/80 hover:bg-stone-50'
                     }`}
                   >
                     <input
@@ -3859,8 +3859,8 @@ export const AdminDashboardPage: React.FC = () => {
 
                     {isUploadingImage ? (
                       <div className="py-4 flex flex-col items-center justify-center space-y-2">
-                        <RefreshCw className="w-8 h-8 text-[#c49b7c] animate-spin" />
-                        <p className="text-xs font-bold text-[#4b423b]">
+                        <RefreshCw className="w-8 h-8 text-[#dc2626] animate-spin" />
+                        <p className="text-xs font-bold text-[#111113]">
                           Processing &amp; Uploading Image...
                         </p>
                         <p className="text-[11px] text-stone-500">
@@ -3869,15 +3869,15 @@ export const AdminDashboardPage: React.FC = () => {
                       </div>
                     ) : (
                       <div className="flex flex-col items-center justify-center space-y-2.5">
-                        <div className="w-12 h-12 rounded-2xl bg-[#4b423b]/10 text-[#4b423b] flex items-center justify-center">
-                          <UploadCloud className="w-6 h-6 text-[#c49b7c]" />
+                        <div className="w-12 h-12 rounded-2xl bg-[#111113]/10 text-[#111113] flex items-center justify-center">
+                          <UploadCloud className="w-6 h-6 text-[#dc2626]" />
                         </div>
                         <div>
-                          <p className="text-xs font-bold text-[#2b2520]">
+                          <p className="text-xs font-bold text-[#18181b]">
                             Drag &amp; Drop product photo here, or{' '}
                             <label
                               htmlFor="product-image-file-input"
-                              className="text-[#c49b7c] font-black hover:underline cursor-pointer"
+                              className="text-[#dc2626] font-black hover:underline cursor-pointer"
                             >
                               Browse Files
                             </label>
@@ -3890,9 +3890,9 @@ export const AdminDashboardPage: React.FC = () => {
                         <div className="flex items-center gap-2 pt-1">
                           <label
                             htmlFor="product-image-file-input"
-                            className="px-3.5 py-1.5 bg-[#4b423b] hover:bg-[#3b352f] text-white text-[11px] font-bold rounded-xl cursor-pointer inline-flex items-center gap-1.5 shadow-2xs active:scale-95 transition-all"
+                            className="px-3.5 py-1.5 bg-[#111113] hover:bg-[#18181b] text-white text-[11px] font-bold rounded-xl cursor-pointer inline-flex items-center gap-1.5 shadow-2xs active:scale-95 transition-all"
                           >
-                            <Upload className="w-3.5 h-3.5 text-[#c49b7c]" />
+                            <Upload className="w-3.5 h-3.5 text-[#dc2626]" />
                             <span>Select from Computer / Mobile</span>
                           </label>
                         </div>
@@ -3933,14 +3933,14 @@ export const AdminDashboardPage: React.FC = () => {
                           disabled={!productForm.image}
                           className="absolute inset-0 bg-black/60 opacity-0 group-hover/thumb:opacity-100 rounded-xl flex flex-col items-center justify-center text-white text-[10px] font-bold transition-opacity cursor-pointer"
                         >
-                          <Crop className="w-4 h-4 text-[#c49b7c]" />
+                          <Crop className="w-4 h-4 text-[#dc2626]" />
                           <span>Crop</span>
                         </button>
                       </div>
 
                       <div className="text-xs min-w-0 space-y-0.5">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <p className="font-bold text-[#2b2520]">Active Product Photo</p>
+                          <p className="font-bold text-[#18181b]">Active Product Photo</p>
                           <span className="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800">
                             Ready for Database
                           </span>
@@ -3949,7 +3949,7 @@ export const AdminDashboardPage: React.FC = () => {
                           {productForm.image}
                         </p>
                         <p className="text-[10px] text-stone-500 flex items-center gap-1 pt-0.5">
-                          <Sparkles className="w-3 h-3 text-[#c49b7c]" />
+                          <Sparkles className="w-3 h-3 text-[#dc2626]" />
                           <span>1:1 Square Crop fills the product card border-to-border cleanly.</span>
                         </p>
                       </div>
@@ -3960,10 +3960,10 @@ export const AdminDashboardPage: React.FC = () => {
                         type="button"
                         onClick={handleOpenCurrentInEditor}
                         disabled={!productForm.image}
-                        className="px-3.5 py-2 bg-[#4b423b] hover:bg-[#3b352f] text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition-all active:scale-95 disabled:opacity-50"
+                        className="px-3.5 py-2 bg-[#111113] hover:bg-[#18181b] text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition-all active:scale-95 disabled:opacity-50"
                         title="Open Image Cropper & Editing Studio"
                       >
-                        <Crop className="w-4 h-4 text-[#c49b7c]" />
+                        <Crop className="w-4 h-4 text-[#dc2626]" />
                         <span>Edit &amp; Crop Photo</span>
                       </button>
                     </div>
@@ -3972,10 +3972,10 @@ export const AdminDashboardPage: React.FC = () => {
                   {/* Card Display Adaptation (With vs Without Background) */}
                   <div className="p-3 bg-stone-50 rounded-xl border border-stone-200 space-y-2">
                     <div className="flex items-center justify-between">
-                      <label className="text-xs font-bold text-[#2b2520] uppercase tracking-wider block">
+                      <label className="text-xs font-bold text-[#18181b] uppercase tracking-wider block">
                         Website Card Display Mode (Background Adaptation)
                       </label>
-                      <span className="text-[10px] font-bold text-[#c49b7c] bg-[#c49b7c]/10 px-2 py-0.5 rounded-full font-mono">
+                      <span className="text-[10px] font-bold text-[#dc2626] bg-[#dc2626]/10 px-2 py-0.5 rounded-full font-mono">
                         {productForm.imageFit === 'contain' ? 'Studio Pedestal' : 'Edge-to-Edge Fill'}
                       </span>
                     </div>
@@ -3986,13 +3986,13 @@ export const AdminDashboardPage: React.FC = () => {
                         onClick={() => setProductForm({ ...productForm, imageFit: 'cover' })}
                         className={`p-2.5 rounded-xl border text-left flex items-start gap-2 transition-all ${
                           (productForm.imageFit || 'cover') === 'cover'
-                            ? 'border-[#c49b7c] bg-amber-50/60 shadow-2xs text-[#2b2520]'
+                            ? 'border-[#dc2626] bg-amber-50/60 shadow-2xs text-[#18181b]'
                             : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300'
                         }`}
                       >
                         <div className="w-4 h-4 rounded-full border border-stone-400 mt-0.5 flex items-center justify-center shrink-0">
                           {(productForm.imageFit || 'cover') === 'cover' && (
-                            <div className="w-2 h-2 rounded-full bg-[#c49b7c]" />
+                            <div className="w-2 h-2 rounded-full bg-[#dc2626]" />
                           )}
                         </div>
                         <div>
@@ -4006,13 +4006,13 @@ export const AdminDashboardPage: React.FC = () => {
                         onClick={() => setProductForm({ ...productForm, imageFit: 'contain' })}
                         className={`p-2.5 rounded-xl border text-left flex items-start gap-2 transition-all ${
                           productForm.imageFit === 'contain'
-                            ? 'border-[#c49b7c] bg-amber-50/60 shadow-2xs text-[#2b2520]'
+                            ? 'border-[#dc2626] bg-amber-50/60 shadow-2xs text-[#18181b]'
                             : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300'
                         }`}
                       >
                         <div className="w-4 h-4 rounded-full border border-stone-400 mt-0.5 flex items-center justify-center shrink-0">
                           {productForm.imageFit === 'contain' && (
-                            <div className="w-2 h-2 rounded-full bg-[#c49b7c]" />
+                            <div className="w-2 h-2 rounded-full bg-[#dc2626]" />
                           )}
                         </div>
                         <div>
@@ -4025,7 +4025,7 @@ export const AdminDashboardPage: React.FC = () => {
 
                   {/* Manual Image URL Path */}
                   <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#2b2520] uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
                       Or Direct Image URL / Path
                     </label>
                     <input
@@ -4033,7 +4033,7 @@ export const AdminDashboardPage: React.FC = () => {
                       value={productForm.image}
                       onChange={(e) => setProductForm({ ...productForm, image: e.target.value })}
                       placeholder="/uploads/omega_photo.png or https://..."
-                      className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#4b423b]"
+                      className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
                     />
                   </div>
 
@@ -4050,7 +4050,7 @@ export const AdminDashboardPage: React.FC = () => {
                           onClick={() => setProductForm({ ...productForm, image: preset.path })}
                           className={`p-1.5 rounded-lg border text-left flex items-center gap-2 transition-all ${
                             productForm.image === preset.path
-                              ? 'border-[#c49b7c] bg-amber-50/50 shadow-2xs'
+                              ? 'border-[#dc2626] bg-amber-50/50 shadow-2xs'
                               : 'border-stone-200 hover:border-stone-300 bg-white'
                           }`}
                         >
@@ -4128,10 +4128,10 @@ export const AdminDashboardPage: React.FC = () => {
           <div className="bg-white rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-xl border border-stone-200 animate-in fade-in zoom-in-95 duration-200">
             <div className="flex items-center justify-between border-b border-stone-200 pb-3">
               <div>
-                <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-[#4b423b] text-[#c49b7c]">
+                <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-[#111113] text-[#dc2626]">
                   ERP MASTER RECORD
                 </span>
-                <h3 className="font-heading text-lg font-bold text-[#2b2520] mt-1">
+                <h3 className="font-heading text-lg font-bold text-[#18181b] mt-1">
                   {inspectingProduct.name}
                 </h3>
               </div>
@@ -4183,7 +4183,7 @@ export const AdminDashboardPage: React.FC = () => {
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="p-2.5 bg-stone-50 rounded-xl">
                 <span className="text-[10px] text-stone-400 uppercase font-bold block">Retail Price:</span>
-                <span className="font-mono font-bold text-[#2b2520]">
+                <span className="font-mono font-bold text-[#18181b]">
                   {formatPrice(inspectingProduct.price, currency)}
                 </span>
               </div>
@@ -4228,9 +4228,9 @@ export const AdminDashboardPage: React.FC = () => {
                   setInspectingProduct(null);
                   openEditProductModal(inspectingProduct);
                 }}
-                className="px-4 py-1.5 bg-[#4b423b] hover:bg-black text-white rounded-xl text-xs font-bold inline-flex items-center gap-1"
+                className="px-4 py-1.5 bg-[#111113] hover:bg-black text-white rounded-xl text-xs font-bold inline-flex items-center gap-1"
               >
-                <Edit3 className="w-3.5 h-3.5 text-[#c49b7c]" />
+                <Edit3 className="w-3.5 h-3.5 text-[#dc2626]" />
                 <span>Edit Master Record</span>
               </button>
             </div>
@@ -4249,7 +4249,7 @@ export const AdminDashboardPage: React.FC = () => {
             return (
               <div
                 key={item.product.id}
-                className="pointer-events-auto bg-[#2b2520] border-2 border-[#c49b7c]/70 text-white rounded-2xl p-4 shadow-2xl backdrop-blur-xl animate-in slide-in-from-bottom-4 duration-300 space-y-3"
+                className="pointer-events-auto bg-[#18181b] border-2 border-[#dc2626]/70 text-white rounded-2xl p-4 shadow-2xl backdrop-blur-xl animate-in slide-in-from-bottom-4 duration-300 space-y-3"
               >
                 {/* Header Info & Countdown */}
                 <div className="flex items-start justify-between gap-3">
@@ -4283,7 +4283,7 @@ export const AdminDashboardPage: React.FC = () => {
                 <div className="space-y-1">
                   <div className="w-full bg-white/10 rounded-full h-1.5 overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-amber-400 via-[#c49b7c] to-emerald-400 rounded-full transition-all duration-1000 ease-linear"
+                      className="h-full bg-gradient-to-r from-amber-400 via-[#dc2626] to-emerald-400 rounded-full transition-all duration-1000 ease-linear"
                       style={{ width: `${percentRemaining}%` }}
                     />
                   </div>

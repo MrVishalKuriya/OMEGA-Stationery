@@ -67,8 +67,8 @@ export const LoginPage: React.FC = () => {
           title="Account Active | OMEGA Stationery & Books"
           description="Manage your OMEGA account, order history and wholesale profile."
         />
-        <div className="max-w-md w-full bg-white rounded-[16px] border border-[#e2dedb] shadow-boutique p-8 text-center space-y-6">
-          <div className="w-16 h-16 rounded-full bg-[#4b423b] text-[#c49b7c] font-bold text-xl flex items-center justify-center font-mono mx-auto shadow-sm">
+        <div className="max-w-md w-full bg-white rounded-[16px] border border-[#e4e4e7] shadow-boutique p-8 text-center space-y-6">
+          <div className="w-16 h-16 rounded-full bg-[#111113] text-[#dc2626] font-bold text-xl flex items-center justify-center font-mono mx-auto shadow-sm">
             {currentUser.initials}
           </div>
           <div>
@@ -93,7 +93,7 @@ export const LoginPage: React.FC = () => {
             </Link>
             <Link
               to="/catalog"
-              className="w-full py-2.5 px-4 rounded-[8px] bg-white border border-[#e2dedb] hover:bg-[#fafafa] text-[#4b423b] text-xs font-bold block"
+              className="w-full py-2.5 px-4 rounded-[8px] bg-white border border-[#e4e4e7] hover:bg-[#fafafa] text-[#111113] text-xs font-bold block"
             >
               Browse Catalog
             </Link>
@@ -112,19 +112,19 @@ export const LoginPage: React.FC = () => {
 
       <div className="max-w-lg w-full">
         {/* Main Card */}
-        <div className="bg-white rounded-[16px] border border-[#e2dedb] shadow-boutique overflow-hidden">
+        <div className="bg-white rounded-[16px] border border-[#e4e4e7] shadow-boutique overflow-hidden">
           {/* Card Header */}
-          <div className="bg-[#4b423b] text-white p-6 sm:p-8">
+          <div className="bg-[#111113] text-white p-6 sm:p-8">
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-[11px] font-mono tracking-widest text-[#c49b7c] uppercase font-bold">
+                <span className="text-[11px] font-mono tracking-widest text-[#dc2626] uppercase font-bold">
                   OMEGA Member Portal
                 </span>
                 <h1 className="text-2xl font-serif font-bold mt-1 text-white">
                   Sign In to Account
                 </h1>
               </div>
-              <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-[#c49b7c]">
+              <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-[#dc2626]">
                 <ShieldCheck className="w-6 h-6" />
               </div>
             </div>
@@ -141,37 +141,37 @@ export const LoginPage: React.FC = () => {
 
           <div className="p-6 sm:p-8 space-y-5">
             {/* 1-Click Demo Logins */}
-            <div className="p-3.5 rounded-[10px] bg-[#fafafa] border border-[#e2dedb]">
+            <div className="p-3.5 rounded-[10px] bg-[#fafafa] border border-[#e4e4e7]">
               <div className="flex items-center gap-2 mb-2 text-xs font-bold text-[#14182B]">
-                <Sparkles className="w-4 h-4 text-[#c49b7c]" />
+                <Sparkles className="w-4 h-4 text-[#dc2626]" />
                 <span>Quick Test Accounts (1-Click Fill)</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 <button
                   type="button"
                   onClick={() => handleDemoFill('admin@omega.co.tz', 'admin123')}
-                  className="p-2 rounded-[6px] bg-[#4b423b]/5 border-2 border-[#c49b7c] hover:bg-[#4b423b]/10 text-left transition-colors text-xs"
+                  className="p-2 rounded-[6px] bg-[#111113]/5 border-2 border-[#dc2626] hover:bg-[#111113]/10 text-left transition-colors text-xs"
                 >
-                  <div className="font-bold text-[#4b423b] flex items-center gap-1">
+                  <div className="font-bold text-[#111113] flex items-center gap-1">
                     <span>HQ Admin</span>
-                    <span className="text-[9px] bg-[#c49b7c] text-white px-1.5 py-0.2 rounded font-bold">PORTAL</span>
+                    <span className="text-[9px] bg-[#dc2626] text-white px-1.5 py-0.2 rounded font-bold">PORTAL</span>
                   </div>
-                  <div className="text-[10px] text-[#4b423b] font-medium">admin@omega.co.tz</div>
+                  <div className="text-[10px] text-[#111113] font-medium">admin@omega.co.tz</div>
                 </button>
                 <button
                   type="button"
                   onClick={() => handleDemoFill('mussa.juma@omega.co.tz', 'password123')}
-                  className="p-2 rounded-[6px] bg-white border border-[#e2dedb] hover:border-[#4b423b] text-left transition-colors text-xs"
+                  className="p-2 rounded-[6px] bg-white border border-[#e4e4e7] hover:border-[#111113] text-left transition-colors text-xs"
                 >
-                  <div className="font-bold text-[#4b423b]">Mussa Juma</div>
+                  <div className="font-bold text-[#111113]">Mussa Juma</div>
                   <div className="text-[10px] text-[#6B7280]">Wholesale Partner</div>
                 </button>
                 <button
                   type="button"
                   onClick={() => handleDemoFill('purchasing@daracademy.sc.tz', 'school123')}
-                  className="p-2 rounded-[6px] bg-white border border-[#e2dedb] hover:border-[#4b423b] text-left transition-colors text-xs"
+                  className="p-2 rounded-[6px] bg-white border border-[#e4e4e7] hover:border-[#111113] text-left transition-colors text-xs"
                 >
-                  <div className="font-bold text-[#4b423b]">Dar Academy</div>
+                  <div className="font-bold text-[#111113]">Dar Academy</div>
                   <div className="text-[10px] text-[#6B7280]">School / Tender</div>
                 </button>
               </div>
@@ -199,7 +199,7 @@ export const LoginPage: React.FC = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="e.g. mussa.juma@omega.co.tz"
-                    className="w-full pl-9 pr-3 py-2.5 rounded-[8px] bg-white border border-[#e2dedb] text-xs focus:border-[#4b423b] focus:outline-none"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-[8px] bg-white border border-[#e4e4e7] text-xs focus:border-[#111113] focus:outline-none"
                   />
                 </div>
               </div>
@@ -209,7 +209,7 @@ export const LoginPage: React.FC = () => {
                   <label className="text-xs font-bold text-[#14182B]">
                     Password
                   </label>
-                  <span className="text-[11px] text-[#4b423b] font-medium hover:underline cursor-pointer">
+                  <span className="text-[11px] text-[#111113] font-medium hover:underline cursor-pointer">
                     Forgot password?
                   </span>
                 </div>
@@ -221,7 +221,7 @@ export const LoginPage: React.FC = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter account password"
-                    className="w-full pl-9 pr-10 py-2.5 rounded-[8px] bg-white border border-[#e2dedb] text-xs focus:border-[#4b423b] focus:outline-none"
+                    className="w-full pl-9 pr-10 py-2.5 rounded-[8px] bg-white border border-[#e4e4e7] text-xs focus:border-[#111113] focus:outline-none"
                   />
                   <button
                     type="button"
@@ -239,7 +239,7 @@ export const LoginPage: React.FC = () => {
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    className="rounded border-[#e2dedb] text-[#4b423b] focus:ring-[#c49b7c]"
+                    className="rounded border-[#e4e4e7] text-[#111113] focus:ring-[#dc2626]"
                   />
                   <span>Remember me for 30 days</span>
                 </label>
@@ -265,11 +265,11 @@ export const LoginPage: React.FC = () => {
             </form>
 
             {/* Footer switcher */}
-            <div className="pt-4 border-t border-[#e2dedb] text-center text-xs text-[#6B7280]">
+            <div className="pt-4 border-t border-[#e4e4e7] text-center text-xs text-[#6B7280]">
               Don't have an account yet?{' '}
               <Link
                 to="/register"
-                className="font-bold text-[#4b423b] hover:underline"
+                className="font-bold text-[#111113] hover:underline"
               >
                 Create Account (Individual, Wholesale or School)
               </Link>

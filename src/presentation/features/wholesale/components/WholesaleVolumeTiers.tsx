@@ -9,11 +9,11 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
   return (
     <section className="py-16 lg:py-22 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="text-center space-y-2 mb-12">
-        <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#4b423b]">
-          <Percent className="w-4 h-4 text-[#c49b7c]" />
+        <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#111113]">
+          <Percent className="w-4 h-4 text-[#dc2626]" />
           <span>TRANSPARENT VOLUME ARCHITECTURE</span>
         </div>
-        <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#2b2520] tracking-tight">
+        <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#18181b] tracking-tight">
           Wholesale Discount Tiers
         </h2>
         <p className="text-sm text-stone-600 max-w-lg mx-auto">
@@ -23,18 +23,18 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
         {/* Tier 1: Starter */}
-        <div className="bg-white p-7 sm:p-8 flex flex-col justify-between border border-stone-200 hover:border-[#c49b7c] rounded-2xl shadow-sm hover:shadow-md transition-all">
+        <div className="bg-white p-7 sm:p-8 flex flex-col justify-between border border-stone-200 hover:border-[#dc2626] rounded-2xl shadow-sm hover:shadow-md transition-all">
           <div>
             <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-stone-100 text-[#4b423b]">
+              <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-stone-100 text-[#111113]">
                 Starter Tier
               </span>
               <span className="text-xs font-semibold text-stone-600">5 — 19 Cartons</span>
             </div>
-            <h3 className="font-heading text-2xl font-bold text-[#2b2520]">Retailers &amp; Kiosks</h3>
+            <h3 className="font-heading text-2xl font-bold text-[#18181b]">Retailers &amp; Kiosks</h3>
             <div className="my-5 pb-5 border-b border-stone-200">
               <div className="flex items-baseline gap-1.5">
-                <span className="text-4xl font-black text-[#4b423b] font-mono">20%</span>
+                <span className="text-4xl font-black text-[#111113] font-mono">20%</span>
                 <span className="text-xs font-bold uppercase tracking-wider text-stone-600">
                   OFF Retail MSRP
                 </span>
@@ -67,7 +67,7 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
             <a
               href="#inquiry"
               onClick={() => onSelectTier('5 — 19 Cartons (20% OFF)')}
-              className="w-full py-3.5 px-4 rounded-full border-2 border-[#4b423b] text-[#4b423b] hover:bg-[#4b423b] hover:text-white transition-colors text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 min-h-[44px]"
+              className="w-full py-3.5 px-4 rounded-full border-2 border-[#111113] text-[#111113] hover:bg-[#111113] hover:text-white transition-colors text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 min-h-[44px]"
             >
               <span>Select Starter Tier</span>
               <ChevronRight className="w-4 h-4" />
@@ -76,8 +76,8 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
         </div>
 
         {/* Tier 2: Business (Most Popular) */}
-        <div className="relative bg-[#2d2520] text-white p-7 sm:p-8 flex flex-col justify-between border-2 border-[#c49b7c] rounded-2xl shadow-xl md:-translate-y-2">
-          <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#c49b7c] text-white text-[10px] font-black uppercase tracking-widest shadow-md flex items-center gap-1.5 whitespace-nowrap">
+        <div className="relative bg-[#2d2520] text-white p-7 sm:p-8 flex flex-col justify-between border-2 border-[#dc2626] rounded-2xl shadow-xl md:-translate-y-2">
+          <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#dc2626] text-white text-[10px] font-black uppercase tracking-widest shadow-md flex items-center gap-1.5 whitespace-nowrap">
             <Sparkles className="w-3 h-3 text-white" />
             <span>MOST POPULAR · BEST VALUE</span>
           </div>
@@ -87,12 +87,12 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
               <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-white/10 text-stone-200 border border-white/20">
                 Business Tier
               </span>
-              <span className="text-xs font-semibold text-[#c49b7c]">20 — 49 Cartons</span>
+              <span className="text-xs font-semibold text-[#dc2626]">20 — 49 Cartons</span>
             </div>
             <h3 className="font-heading text-2xl font-bold text-white">Schools &amp; Bookstores</h3>
             <div className="my-5 pb-5 border-b border-white/15">
               <div className="flex items-baseline gap-1.5">
-                <span className="text-4xl font-black text-[#c49b7c] font-mono">30%</span>
+                <span className="text-4xl font-black text-[#dc2626] font-mono">30%</span>
                 <span className="text-xs font-bold uppercase tracking-wider text-stone-300">
                   OFF Retail MSRP
                 </span>
@@ -103,19 +103,19 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
             </div>
             <ul className="space-y-3 text-xs text-stone-200">
               <li className="flex items-start gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-[#c49b7c] shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-4 h-4 text-[#dc2626] shrink-0 mt-0.5" />
                 <span>Min order: 20 Cartons (approx. 720 — 960 units)</span>
               </li>
               <li className="flex items-start gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-[#c49b7c] shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-4 h-4 text-[#dc2626] shrink-0 mt-0.5" />
                 <span>Custom institution stamp &amp; school crest option</span>
               </li>
               <li className="flex items-start gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-[#c49b7c] shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-4 h-4 text-[#dc2626] shrink-0 mt-0.5" />
                 <span>Subsidized shipping allowance on bus freight cargo</span>
               </li>
               <li className="flex items-start gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-[#c49b7c] shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-4 h-4 text-[#dc2626] shrink-0 mt-0.5" />
                 <span>Priority factory loading with official EFD Tax Invoice</span>
               </li>
             </ul>
@@ -134,18 +134,18 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
         </div>
 
         {/* Tier 3: Enterprise */}
-        <div className="bg-white p-7 sm:p-8 flex flex-col justify-between border border-stone-200 hover:border-[#c49b7c] rounded-2xl shadow-sm hover:shadow-md transition-all">
+        <div className="bg-white p-7 sm:p-8 flex flex-col justify-between border border-stone-200 hover:border-[#dc2626] rounded-2xl shadow-sm hover:shadow-md transition-all">
           <div>
             <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-stone-100 text-[#4b423b]">
+              <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-stone-100 text-[#111113]">
                 Enterprise Tier
               </span>
               <span className="text-xs font-semibold text-stone-600">50+ Cartons</span>
             </div>
-            <h3 className="font-heading text-2xl font-bold text-[#2b2520]">Tenders &amp; Importers</h3>
+            <h3 className="font-heading text-2xl font-bold text-[#18181b]">Tenders &amp; Importers</h3>
             <div className="my-5 pb-5 border-b border-stone-200">
               <div className="flex items-baseline gap-1.5">
-                <span className="text-4xl font-black text-[#4b423b] font-mono">40%</span>
+                <span className="text-4xl font-black text-[#111113] font-mono">40%</span>
                 <span className="text-xs font-bold uppercase tracking-wider text-stone-600">
                   OFF Retail MSRP
                 </span>
@@ -178,7 +178,7 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
             <a
               href="#inquiry"
               onClick={() => onSelectTier('50 — 99 Cartons (40% OFF - Enterprise)')}
-              className="w-full py-3.5 px-4 rounded-full border-2 border-[#4b423b] text-[#4b423b] hover:bg-[#4b423b] hover:text-white transition-colors text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 min-h-[44px]"
+              className="w-full py-3.5 px-4 rounded-full border-2 border-[#111113] text-[#111113] hover:bg-[#111113] hover:text-white transition-colors text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 min-h-[44px]"
             >
               <span>Select Enterprise Tier</span>
               <ChevronRight className="w-4 h-4" />

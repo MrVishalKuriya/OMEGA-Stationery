@@ -38,13 +38,13 @@ export const OmegaLogo: React.FC<OmegaLogoProps> = ({
   if (variant === 'badge') {
     return (
       <div className="flex items-center gap-2.5">
-        <div className="bg-white px-2.5 py-1.5 rounded-xl shadow-md border border-white/20 hover:border-[#c49b7c] transition-all flex items-center gap-2">
+        <div className="bg-white px-2.5 py-1.5 rounded-xl shadow-md border border-white/20 hover:border-[#dc2626] transition-all flex items-center gap-2">
           <img
             src="/logo-icon.png"
             alt="OMEGA Icon"
             className="w-5 h-5 object-contain shrink-0"
           />
-          <span className="font-heading font-black tracking-wider text-[#23201d] text-base leading-none">
+          <span className="font-heading font-black tracking-wider text-[#09090b] text-base leading-none">
             OMEGA
           </span>
         </div>

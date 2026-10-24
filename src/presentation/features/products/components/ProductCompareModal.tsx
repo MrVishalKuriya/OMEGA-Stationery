@@ -37,14 +37,14 @@ export const ProductCompareModal: React.FC<ProductCompareModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
       <div
-        className="w-full max-w-4xl bg-[#fafafa] rounded-2xl shadow-2xl border border-[#e2dedb] flex flex-col max-h-[90vh] overflow-hidden"
+        className="w-full max-w-4xl bg-[#fafafa] rounded-2xl shadow-2xl border border-[#e4e4e7] flex flex-col max-h-[90vh] overflow-hidden"
         role="dialog"
         aria-modal="true"
       >
         {/* Header */}
-        <div className="bg-[#4b423b] text-white p-4 sm:p-5 flex items-center justify-between border-b border-white/10 shrink-0">
+        <div className="bg-[#111113] text-white p-4 sm:p-5 flex items-center justify-between border-b border-white/10 shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-[#c49b7c]">
+            <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-[#dc2626]">
               <Scale className="w-5 h-5" />
             </div>
             <div>
@@ -73,10 +73,10 @@ export const ProductCompareModal: React.FC<ProductCompareModalProps> = ({
 
         {/* Comparison Matrix Table */}
         <div className="flex-1 overflow-y-auto p-4 sm:p-6">
-          <div className="bg-white rounded-2xl border border-[#e2dedb] overflow-x-auto shadow-2xs">
+          <div className="bg-white rounded-2xl border border-[#e4e4e7] overflow-x-auto shadow-2xs">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="border-b border-[#e2dedb] bg-[#fafafa]">
+                <tr className="border-b border-[#e4e4e7] bg-[#fafafa]">
                   <th className="p-3 sm:p-4 text-stone-500 font-bold uppercase tracking-wider text-[11px] w-1/4">
                     Specification
                   </th>
@@ -85,7 +85,7 @@ export const ProductCompareModal: React.FC<ProductCompareModalProps> = ({
                       <select
                         value={p.id}
                         onChange={(e) => handleSelectProduct(idx, e.target.value)}
-                        className="w-full p-1.5 rounded-lg border border-[#e2dedb] bg-white text-xs font-bold text-[#4b423b] focus:outline-none mb-2"
+                        className="w-full p-1.5 rounded-lg border border-[#e4e4e7] bg-white text-xs font-bold text-[#111113] focus:outline-none mb-2"
                       >
                         {products.map((prod) => (
                           <option key={prod.id} value={prod.id}>
@@ -93,7 +93,7 @@ export const ProductCompareModal: React.FC<ProductCompareModalProps> = ({
                           </option>
                         ))}
                       </select>
-                      <div className="aspect-[4/3] rounded-lg bg-[#fafafa] border border-[#e2dedb] p-2 flex items-center justify-center mb-2">
+                      <div className="aspect-[4/3] rounded-lg bg-[#fafafa] border border-[#e4e4e7] p-2 flex items-center justify-center mb-2">
                         <img
                           src={p.image}
                           alt={p.name}
@@ -101,14 +101,14 @@ export const ProductCompareModal: React.FC<ProductCompareModalProps> = ({
                         />
                       </div>
                       <p className="font-bold text-[#14182B] truncate">{p.name}</p>
-                      <p className="font-mono text-sm font-black text-[#4b423b] mt-1">
+                      <p className="font-mono text-sm font-black text-[#111113] mt-1">
                         {currency} {(p.discountPrice || p.price).toLocaleString()}
                       </p>
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#e2dedb]">
+              <tbody className="divide-y divide-[#e4e4e7]">
                 <tr>
                   <td className="p-3 sm:p-4 font-bold text-stone-600 bg-[#fafafa]/50">
                     Category
@@ -125,7 +125,7 @@ export const ProductCompareModal: React.FC<ProductCompareModalProps> = ({
                     Quire / Page Count
                   </td>
                   {comparedProducts.map((p) => (
-                    <td key={p.id} className="p-3 sm:p-4 font-mono font-bold text-[#4b423b]">
+                    <td key={p.id} className="p-3 sm:p-4 font-mono font-bold text-[#111113]">
                       {p.quire ? `${p.quire} (${p.pageCount || '—'})` : p.pageCount || 'Standard'}
                     </td>
                   ))}

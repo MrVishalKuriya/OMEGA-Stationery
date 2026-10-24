@@ -11,16 +11,16 @@ export const CatalogHero: React.FC<CatalogHeroProps> = ({
   totalProductsCount,
 }) => {
   return (
-    <div className="bg-[#3b352f] text-white py-10 lg:py-14 border-b border-[#2b2520] relative overflow-hidden">
+    <div className="bg-[#18181b] text-white py-10 lg:py-14 border-b border-[#18181b] relative overflow-hidden">
       {/* Warm Ambient Glows */}
-      <div className="absolute top-0 right-10 w-96 h-96 bg-[#c49b7c]/15 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#a46b44]/15 rounded-full blur-[90px] pointer-events-none" />
+      <div className="absolute top-0 right-10 w-96 h-96 bg-[#dc2626]/15 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#b91c1c]/15 rounded-full blur-[90px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold uppercase tracking-wider text-stone-200 mb-3">
-              <Layers className="w-3.5 h-3.5 text-[#c49b7c]" />
+              <Layers className="w-3.5 h-3.5 text-[#dc2626]" />
               <span>SIDO Industrial Estate, Soweto · Mbeya Factory</span>
             </div>
             <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-light text-white tracking-tight">
@@ -35,7 +35,7 @@ export const CatalogHero: React.FC<CatalogHeroProps> = ({
 
           <div className="flex items-center gap-3">
             <div className="bg-white/10 border border-white/15 rounded-2xl px-5 py-3 backdrop-blur-sm text-center">
-              <div className="text-2xl font-black text-[#c49b7c] font-mono-tabular">
+              <div className="text-2xl font-black text-[#dc2626] font-mono-tabular">
                 {totalProductsCount}
               </div>
               <div className="text-[11px] text-stone-300 uppercase tracking-wider font-semibold">

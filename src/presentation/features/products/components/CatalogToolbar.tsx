@@ -66,7 +66,7 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder={language === 'sw' ? 'Tafuta daftari, kurasa, au SKU...' : 'Search notebooks, pages, SKU...'}
-            className="w-full pl-9 pr-8 py-2 text-xs rounded-full border border-stone-200 focus:outline-none focus:border-[#4b423b] bg-stone-50 text-[#2b2520] placeholder:text-stone-400"
+            className="w-full pl-9 pr-8 py-2 text-xs rounded-full border border-stone-200 focus:outline-none focus:border-[#111113] bg-stone-50 text-[#18181b] placeholder:text-stone-400"
           />
           {searchQuery && (
             <button
@@ -85,12 +85,12 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
           <button
             type="button"
             onClick={onOpenMobileFilters}
-            className="lg:hidden px-3 py-2 rounded-xl border border-stone-200 bg-stone-50 hover:bg-stone-100 text-xs font-bold text-[#4b423b] inline-flex items-center gap-1.5"
+            className="lg:hidden px-3 py-2 rounded-xl border border-stone-200 bg-stone-50 hover:bg-stone-100 text-xs font-bold text-[#111113] inline-flex items-center gap-1.5"
           >
             <SlidersHorizontal className="w-3.5 h-3.5" />
             <span>Filters</span>
             {activeFilterCount > 0 && (
-              <span className="w-4 h-4 rounded-full bg-[#c49b7c] text-white text-[10px] flex items-center justify-center font-bold">
+              <span className="w-4 h-4 rounded-full bg-[#dc2626] text-white text-[10px] flex items-center justify-center font-bold">
                 {activeFilterCount}
               </span>
             )}
@@ -102,7 +102,7 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
             <select
               value={sortBy}
               onChange={(e) => onSortChange(e.target.value as SortOption)}
-              className="px-3 py-1.5 rounded-xl border border-stone-200 bg-stone-50 text-xs font-semibold text-[#2b2520] focus:outline-none focus:border-[#4b423b]"
+              className="px-3 py-1.5 rounded-xl border border-stone-200 bg-stone-50 text-xs font-semibold text-[#18181b] focus:outline-none focus:border-[#111113]"
             >
               <option value="featured">Featured / Best Match</option>
               <option value="price-asc">Price: Low to High</option>
@@ -119,7 +119,7 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
               onClick={() => onViewModeChange('grid')}
               aria-label="Grid View"
               className={`p-1.5 rounded-lg transition-colors ${
-                viewMode === 'grid' ? 'bg-white shadow-xs text-[#2b2520]' : 'text-stone-400 hover:text-stone-600'
+                viewMode === 'grid' ? 'bg-white shadow-xs text-[#18181b]' : 'text-stone-400 hover:text-stone-600'
               }`}
             >
               <LayoutGrid className="w-4 h-4" />
@@ -129,7 +129,7 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
               onClick={() => onViewModeChange('list')}
               aria-label="List View"
               className={`p-1.5 rounded-lg transition-colors ${
-                viewMode === 'list' ? 'bg-white shadow-xs text-[#2b2520]' : 'text-stone-400 hover:text-stone-600'
+                viewMode === 'list' ? 'bg-white shadow-xs text-[#18181b]' : 'text-stone-400 hover:text-stone-600'
               }`}
             >
               <List className="w-4 h-4" />

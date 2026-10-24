@@ -62,8 +62,8 @@ export class ErrorBoundary extends Component<Props, State> {
   public render() {
     if (this.state.isOffline) {
       return (
-        <div className="min-h-screen bg-[#fafafa] flex items-center justify-center p-6 text-[#3b352f] font-sans">
-          <div className="max-w-md w-full bg-white rounded-3xl border border-[#e2dedb] p-8 shadow-2xl text-center space-y-6">
+        <div className="min-h-screen bg-[#fafafa] flex items-center justify-center p-6 text-[#18181b] font-sans">
+          <div className="max-w-md w-full bg-white rounded-3xl border border-[#e4e4e7] p-8 shadow-2xl text-center space-y-6">
             <div className="w-16 h-16 rounded-2xl bg-amber-500/10 text-amber-700 flex items-center justify-center mx-auto shadow-md border border-amber-200">
               <WifiOff className="w-8 h-8 text-amber-600" />
             </div>
@@ -72,10 +72,10 @@ export class ErrorBoundary extends Component<Props, State> {
               <span className="text-[11px] font-mono font-bold tracking-widest uppercase text-amber-700">
                 [ NETWORK OFFLINE // OMEGA ]
               </span>
-              <h2 className="font-heading text-2xl font-bold text-[#3b352f]">
+              <h2 className="font-heading text-2xl font-bold text-[#18181b]">
                 No Internet Connection
               </h2>
-              <p className="text-xs text-[#8c847e] leading-relaxed">
+              <p className="text-xs text-[#a1a1aa] leading-relaxed">
                 Your device appears to be offline. Reconnect your Wi-Fi or mobile data to resume live catalog and order synchronization.
               </p>
             </div>
@@ -100,20 +100,20 @@ export class ErrorBoundary extends Component<Props, State> {
       const isServerColdStart = errStr.includes('502') || errStr.includes('503') || errStr.includes('504') || errStr.includes('timeout');
 
       return (
-        <div className="min-h-screen bg-[#fafafa] flex items-center justify-center p-6 text-[#3b352f] font-sans">
-          <div className="max-w-md w-full bg-white rounded-3xl border border-[#e2dedb] p-8 shadow-2xl text-center space-y-6">
-            <div className="w-16 h-16 rounded-2xl bg-[#4b423b] text-[#c49b7c] flex items-center justify-center mx-auto shadow-md border border-[#c49b7c]/40">
+        <div className="min-h-screen bg-[#fafafa] flex items-center justify-center p-6 text-[#18181b] font-sans">
+          <div className="max-w-md w-full bg-white rounded-3xl border border-[#e4e4e7] p-8 shadow-2xl text-center space-y-6">
+            <div className="w-16 h-16 rounded-2xl bg-[#111113] text-[#dc2626] flex items-center justify-center mx-auto shadow-md border border-[#dc2626]/40">
               {isRateLimit ? (
-                <Clock className="w-8 h-8 text-[#c49b7c]" />
+                <Clock className="w-8 h-8 text-[#dc2626]" />
               ) : isAuthError ? (
-                <LogIn className="w-8 h-8 text-[#c49b7c]" />
+                <LogIn className="w-8 h-8 text-[#dc2626]" />
               ) : (
-                <AlertTriangle className="w-8 h-8 text-[#c49b7c]" />
+                <AlertTriangle className="w-8 h-8 text-[#dc2626]" />
               )}
             </div>
 
             <div className="space-y-2">
-              <span className="text-[11px] font-mono font-bold tracking-widest uppercase text-[#c49b7c]">
+              <span className="text-[11px] font-mono font-bold tracking-widest uppercase text-[#dc2626]">
                 {isAuthError
                   ? '[ CLEARANCE REQUIRED // OMEGA ]'
                   : isRateLimit
@@ -122,7 +122,7 @@ export class ErrorBoundary extends Component<Props, State> {
                   ? '[ SERVER RE-ENGAGING // OMEGA ]'
                   : '[ SYSTEM RECOVERY // OMEGA ]'}
               </span>
-              <h2 className="font-heading text-2xl font-bold text-[#3b352f]">
+              <h2 className="font-heading text-2xl font-bold text-[#18181b]">
                 {isAuthError
                   ? 'Session Expired'
                   : isRateLimit
@@ -131,7 +131,7 @@ export class ErrorBoundary extends Component<Props, State> {
                   ? 'Cloud Server Waking Up'
                   : 'Something went wrong'}
               </h2>
-              <p className="text-xs text-[#8c847e] leading-relaxed">
+              <p className="text-xs text-[#a1a1aa] leading-relaxed">
                 {isAuthError
                   ? 'Your administrative clearance has expired. Sign in again to access the portal.'
                   : isRateLimit
@@ -143,7 +143,7 @@ export class ErrorBoundary extends Component<Props, State> {
             </div>
 
             {this.state.error && !isAuthError && (
-              <div className="p-3 rounded-xl bg-[#f5f4f4] border border-[#e2dedb] text-[11px] text-[#736c67] font-mono text-left max-h-24 overflow-y-auto">
+              <div className="p-3 rounded-xl bg-[#f5f4f4] border border-[#e4e4e7] text-[11px] text-[#71717a] font-mono text-left max-h-24 overflow-y-auto">
                 {this.state.error.message}
               </div>
             )}
@@ -161,13 +161,13 @@ export class ErrorBoundary extends Component<Props, State> {
               <button
                 type="button"
                 onClick={this.handleHardReload}
-                className="flex-1 py-3 px-4 rounded-full bg-stone-100 hover:bg-stone-200 text-[#4b423b] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all border border-stone-200"
+                className="flex-1 py-3 px-4 rounded-full bg-stone-100 hover:bg-stone-200 text-[#111113] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all border border-stone-200"
               >
                 <span>Reload</span>
               </button>
             </div>
 
-            <div className="pt-2 border-t border-[#e2dedb]/60 flex items-center justify-between text-xs text-[#8c847e]">
+            <div className="pt-2 border-t border-[#e4e4e7]/60 flex items-center justify-between text-xs text-[#a1a1aa]">
               <a href="/" className="hover:text-black inline-flex items-center gap-1 font-semibold">
                 <Home className="w-3.5 h-3.5" />
                 <span>Store Home</span>
@@ -177,7 +177,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 href="https://wa.me/255746268391?text=Hello%20OMEGA,%20reporting%20an%20issue."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[11px] text-[#4b423b] hover:text-[#c49b7c] font-semibold inline-flex items-center gap-1 transition-colors"
+                className="text-[11px] text-[#111113] hover:text-[#dc2626] font-semibold inline-flex items-center gap-1 transition-colors"
               >
                 <MessageCircle className="w-3.5 h-3.5 text-[#2A9D8F]" />
                 <span>WhatsApp Help</span>

@@ -51,7 +51,7 @@ export const WholesalePage: React.FC = () => {
     ex200: {
       label: ex200Prod?.name || 'School Exercise Book 200 Pages',
       pcsPerBox: ex200Prod?.wholesaleMinQty || 72,
-      baseCarton: ex200Prod?.wholesalePrice || 48000,
+      baseCarton: ex200Prod?.wholesalePrice || 68000,
       unitMSRP: ex200Prod?.price || 2200,
       boxWeight: '18.0 kg',
       packaging: ex200Prod?.packaging || 'Shrink-Wrapped · 72 Pcs / Box',
@@ -59,7 +59,7 @@ export const WholesalePage: React.FC = () => {
     bahasha: {
       label: bahashaProd?.name || 'Heavy Kraft Bahasha Envelopes A4',
       pcsPerBox: bahashaProd?.wholesaleMinQty || 250,
-      baseCarton: bahashaProd?.wholesalePrice || 55000,
+      baseCarton: bahashaProd?.wholesalePrice || 28000,
       unitMSRP: bahashaProd?.price || 600,
       boxWeight: '8.5 kg',
       packaging: bahashaProd?.packaging || 'Reinforced Carton · 250 Pcs',
@@ -105,7 +105,7 @@ export const WholesalePage: React.FC = () => {
     link.setAttribute('href', encodedUri);
     link.setAttribute(
       'download',
-      `OMEGA_Tanzania_Wholesale_Master_Pricelist_2026.csv`
+      `OMEGA_Indigo_Printed_PriceList_PL00001_2026.csv`
     );
     document.body.appendChild(link);
     link.click();
@@ -113,7 +113,7 @@ export const WholesalePage: React.FC = () => {
   };
 
   return (
-    <div className="bg-[#faf9f8] min-h-screen font-sans text-[#2b2520]">
+    <div className="bg-[#fafafa] min-h-screen font-sans text-[#18181b]">
       <SEOHead
         title="Wholesale Stationery & School Tenders | OMEGA Tanzania Factory Direct"
         description="Buy genuine OMEGA Counter Books, Exercise Books, and Kraft Envelopes at wholesale carton prices direct from our Soweto SIDO factory in Mbeya. Daily parcel dispatch across Tanzania."

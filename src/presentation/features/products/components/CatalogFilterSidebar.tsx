@@ -72,8 +72,8 @@ export const CatalogFilterSidebar: React.FC<CatalogFilterSidebarProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between pb-3 border-b border-stone-200">
         <div className="flex items-center gap-2">
-          <Filter className="w-4 h-4 text-[#4b423b]" />
-          <h2 className="text-xs font-bold uppercase tracking-wider text-[#2b2520]">
+          <Filter className="w-4 h-4 text-[#111113]" />
+          <h2 className="text-xs font-bold uppercase tracking-wider text-[#18181b]">
             {language === 'sw' ? 'Chuja Bidhaa' : 'Filter Products'}
           </h2>
         </div>
@@ -105,7 +105,7 @@ export const CatalogFilterSidebar: React.FC<CatalogFilterSidebarProps> = ({
                 onClick={() => onSelectCategory(cat)}
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all text-left ${
                   isSelected
-                    ? 'bg-[#4b423b] text-white shadow-xs font-bold'
+                    ? 'bg-[#111113] text-white shadow-xs font-bold'
                     : 'text-stone-700 hover:bg-stone-100'
                 }`}
               >
@@ -132,7 +132,7 @@ export const CatalogFilterSidebar: React.FC<CatalogFilterSidebarProps> = ({
               onClick={() => onSelectQuire(q.id)}
               className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
                 selectedQuire === q.id
-                  ? 'bg-[#c49b7c] text-white font-bold shadow-xs'
+                  ? 'bg-[#dc2626] text-white font-bold shadow-xs'
                   : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
               }`}
             >
@@ -155,7 +155,7 @@ export const CatalogFilterSidebar: React.FC<CatalogFilterSidebarProps> = ({
               onClick={() => onSelectRuling(r.id)}
               className={`w-full text-left px-3 py-1.5 rounded-lg text-xs transition-colors flex items-center justify-between ${
                 selectedRuling === r.id
-                  ? 'bg-[#4b423b] text-white font-bold'
+                  ? 'bg-[#111113] text-white font-bold'
                   : 'text-stone-700 hover:bg-stone-100'
               }`}
             >
@@ -179,7 +179,7 @@ export const CatalogFilterSidebar: React.FC<CatalogFilterSidebarProps> = ({
               onClick={() => onSelectBinding(b.id)}
               className={`w-full text-left px-3 py-1.5 rounded-lg text-xs transition-colors flex items-center justify-between ${
                 selectedBinding === b.id
-                  ? 'bg-[#4b423b] text-white font-bold'
+                  ? 'bg-[#111113] text-white font-bold'
                   : 'text-stone-700 hover:bg-stone-100'
               }`}
             >
@@ -201,14 +201,14 @@ export const CatalogFilterSidebar: React.FC<CatalogFilterSidebarProps> = ({
             placeholder="Min"
             value={priceMin}
             onChange={(e) => setPriceMin(e.target.value)}
-            className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-stone-200 bg-stone-50 focus:outline-none focus:border-[#4b423b]"
+            className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-stone-200 bg-stone-50 focus:outline-none focus:border-[#111113]"
           />
           <input
             type="number"
             placeholder="Max"
             value={priceMax}
             onChange={(e) => setPriceMax(e.target.value)}
-            className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-stone-200 bg-stone-50 focus:outline-none focus:border-[#4b423b]"
+            className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-stone-200 bg-stone-50 focus:outline-none focus:border-[#111113]"
           />
         </div>
         <button
@@ -227,7 +227,7 @@ export const CatalogFilterSidebar: React.FC<CatalogFilterSidebarProps> = ({
             type="checkbox"
             checked={inStockOnly}
             onChange={(e) => setInStockOnly(e.target.checked)}
-            className="w-4 h-4 text-[#4b423b] rounded focus:ring-0"
+            className="w-4 h-4 text-[#111113] rounded focus:ring-0"
           />
           <span>{language === 'sw' ? 'Zilizopo Stoo Tu' : 'In Stock Only'}</span>
         </label>
@@ -236,7 +236,7 @@ export const CatalogFilterSidebar: React.FC<CatalogFilterSidebarProps> = ({
             type="checkbox"
             checked={bestsellerOnly}
             onChange={(e) => setBestsellerOnly(e.target.checked)}
-            className="w-4 h-4 text-[#4b423b] rounded focus:ring-0"
+            className="w-4 h-4 text-[#111113] rounded focus:ring-0"
           />
           <span>{language === 'sw' ? 'Zinazonunuliwa Zaidi' : 'Bestsellers Only'}</span>
         </label>
@@ -257,7 +257,7 @@ export const CatalogFilterSidebar: React.FC<CatalogFilterSidebarProps> = ({
           <div className="fixed inset-0 bg-black/50 backdrop-blur-xs" onClick={onCloseMobile} />
           <div className="relative ml-auto w-full max-w-xs bg-white h-full p-5 shadow-2xl overflow-y-auto z-10">
             <div className="flex justify-between items-center pb-4 mb-4 border-b border-stone-200">
-              <span className="font-heading font-bold text-base text-[#2b2520]">Filter Catalog</span>
+              <span className="font-heading font-bold text-base text-[#18181b]">Filter Catalog</span>
               <button type="button" onClick={onCloseMobile} className="p-1 rounded-lg text-stone-500 hover:bg-stone-100">
                 <X className="w-5 h-5" />
               </button>
