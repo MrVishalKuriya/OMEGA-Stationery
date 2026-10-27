@@ -156,6 +156,8 @@ export default function App() {
 
                 {/* Protected Administrative Portal */}
                 <Route path="/omega-hq-portal-2026" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
+                <Route path="/omega-hq" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
+                <Route path="/omega-hq-portal" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
 
                 {/* Catch-all 404 */}
                 <Route path="/admin" element={<NotFoundPage />} />

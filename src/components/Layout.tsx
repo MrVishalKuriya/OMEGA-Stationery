@@ -41,7 +41,7 @@ import { Navbar } from './navbar';
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const isAdminPage =
-    location.pathname.startsWith('/omega-hq-portal') ||
+    location.pathname.startsWith('/omega-hq') ||
     location.pathname.startsWith('/admin');
 
   const {

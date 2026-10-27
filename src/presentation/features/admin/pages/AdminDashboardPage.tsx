@@ -52,6 +52,7 @@ import {
   Activity,
   Image as ImageIcon,
   Crop,
+  ArrowLeft,
 } from 'lucide-react';
 import { ImageEditorModal } from '@/components/admin/ImageEditorModal';
 import { useStore } from '@/context/StoreContext';
@@ -901,6 +902,7 @@ export const AdminDashboardPage: React.FC = () => {
     setFormError('');
     setDbSaveSuccessMessage(null);
     setIsProductModalOpen(true);
+    if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const openEditProductModal = (product: Product) => {
@@ -944,6 +946,7 @@ export const AdminDashboardPage: React.FC = () => {
     setFormError('');
     setDbSaveSuccessMessage(null);
     setIsProductModalOpen(true);
+    if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // ERP Product Duplication / Variant Cloning
@@ -985,6 +988,7 @@ export const AdminDashboardPage: React.FC = () => {
     setFormError('');
     setDbSaveSuccessMessage(null);
     setIsProductModalOpen(true);
+    if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleProductFormSubmit = async (e: React.FormEvent) => {
@@ -1389,6 +1393,1042 @@ export const AdminDashboardPage: React.FC = () => {
   const modalCartonWholesaleTotal = modalWholesaleNum * modalMinQtyNum;
   const modalCartonRetailYield = modalRetailNum * modalMinQtyNum;
   const modalCartonDealerProfit = modalCartonRetailYield - modalCartonWholesaleTotal;
+
+  const handleOpenInspectProduct = (product: Product) => {
+    setInspectingProduct(product);
+    if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // =========================================================================
+  // FULL PAGE VIEW 1: DEDICATED PRODUCT EDITOR & CREATOR (NO POPUPS / MODALS!)
+  // =========================================================================
+  if (isProductModalOpen) {
+    return (
+      <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-8 space-y-6 font-sans text-[#18181b] animate-in fade-in duration-200">
+        <SEOHead
+          title={`${
+            modalMode === 'add'
+              ? 'Add New Product Master'
+              : modalMode === 'clone'
+              ? `Clone Variant: ${productForm.name}`
+              : `Edit SKU: ${productForm.sku}`
+          } | OMEGA HQ ERP`}
+          description="Enterprise Product Master Record Database CRUD"
+        />
+
+        {/* Full-Page Sticky Top Bar */}
+        <div className="sticky top-0 z-30 bg-[#fafafa]/95 backdrop-blur-md py-3.5 -mx-3 sm:-mx-6 lg:-mx-8 px-3 sm:px-6 lg:px-8 border-b border-stone-200 shadow-2xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-3 min-w-0">
+              <button
+                type="button"
+                onClick={() => setIsProductModalOpen(false)}
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-stone-200 hover:border-stone-400 text-stone-700 text-xs font-bold transition-all shadow-2xs hover:bg-stone-50 shrink-0"
+              >
+                <ArrowLeft className="w-4 h-4 text-[#dc2626]" />
+                <span>Back to Inventory</span>
+              </button>
+
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-[#111113] text-[#dc2626]">
+                    {modalMode === 'add'
+                      ? 'ADD NEW PRODUCT'
+                      : modalMode === 'clone'
+                      ? 'CLONE VARIANT SKU'
+                      : 'EDIT PRODUCT'}
+                  </span>
+                  <span className="text-[11px] text-stone-500 font-mono hidden md:inline">
+                    Direct MongoDB Atlas CRUD
+                  </span>
+                </div>
+                <h1 className="font-heading text-lg sm:text-xl font-bold text-[#18181b] mt-0.5 truncate max-w-xs sm:max-w-md md:max-w-xl">
+                  {modalMode === 'add'
+                    ? 'Create Product Master Record'
+                    : modalMode === 'clone'
+                    ? `Clone SKU Variant: ${productForm.name}`
+                    : `Edit Master SKU: ${productForm.sku}`}
+                </h1>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 self-end sm:self-auto shrink-0">
+              <button
+                type="button"
+                onClick={() => setIsProductModalOpen(false)}
+                className="px-4 py-2 border border-stone-200 rounded-xl text-xs font-bold text-stone-600 hover:bg-stone-50 bg-white"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleProductFormSubmit}
+                disabled={isSavingProduct}
+                className={`px-5 py-2 btn-ledup-copper text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 ${
+                  isSavingProduct ? 'opacity-70 cursor-not-allowed' : ''
+                }`}
+              >
+                {isSavingProduct ? (
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Check className="w-4 h-4" />
+                )}
+                <span>
+                  {isSavingProduct
+                    ? 'Saving...'
+                    : modalMode === 'add'
+                    ? 'Create Product'
+                    : modalMode === 'clone'
+                    ? 'Save Cloned Variant'
+                    : 'Update Product'}
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Success notification */}
+        {dbSaveSuccessMessage && (
+          <div className="p-3.5 bg-emerald-50 border border-emerald-300 rounded-xl text-xs font-bold text-emerald-800 flex items-center gap-2 animate-in fade-in duration-200">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>{dbSaveSuccessMessage}</span>
+          </div>
+        )}
+
+        {/* Error notification */}
+        {formError && (
+          <div className="p-3.5 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 font-medium flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-red-600 shrink-0" />
+            <span>{formError}</span>
+          </div>
+        )}
+
+        {/* Section Tabs */}
+        <div className="flex border-b border-stone-200 gap-2 overflow-x-auto pb-1 text-xs font-bold scrollbar-none">
+          <button
+            type="button"
+            onClick={() => setModalActiveTab('info')}
+            className={`px-3.5 py-2 rounded-xl whitespace-nowrap transition-all ${
+              modalActiveTab === 'info'
+                ? 'bg-[#111113] text-white shadow-xs'
+                : 'text-stone-600 hover:bg-stone-100 bg-white border border-stone-200/80'
+            }`}
+          >
+            1. Core Info &amp; Barcode
+          </button>
+          <button
+            type="button"
+            onClick={() => setModalActiveTab('pricing')}
+            className={`px-3.5 py-2 rounded-xl whitespace-nowrap transition-all ${
+              modalActiveTab === 'pricing'
+                ? 'bg-[#111113] text-white shadow-xs'
+                : 'text-stone-600 hover:bg-stone-100 bg-white border border-stone-200/80'
+            }`}
+          >
+            2. Pricing &amp; Wholesale Tiers
+          </button>
+          <button
+            type="button"
+            onClick={() => setModalActiveTab('specs')}
+            className={`px-3.5 py-2 rounded-xl whitespace-nowrap transition-all ${
+              modalActiveTab === 'specs'
+                ? 'bg-[#111113] text-white shadow-xs'
+                : 'text-stone-600 hover:bg-stone-100 bg-white border border-stone-200/80'
+            }`}
+          >
+            3. Manufacturing &amp; Packaging
+          </button>
+          <button
+            type="button"
+            onClick={() => setModalActiveTab('stock')}
+            className={`px-3.5 py-2 rounded-xl whitespace-nowrap transition-all ${
+              modalActiveTab === 'stock'
+                ? 'bg-[#111113] text-white shadow-xs'
+                : 'text-stone-600 hover:bg-stone-100 bg-white border border-stone-200/80'
+            }`}
+          >
+            4. Stock &amp; Warehouse
+          </button>
+          <button
+            type="button"
+            onClick={() => setModalActiveTab('media')}
+            className={`px-3.5 py-2 rounded-xl whitespace-nowrap transition-all ${
+              modalActiveTab === 'media'
+                ? 'bg-[#111113] text-white shadow-xs'
+                : 'text-stone-600 hover:bg-stone-100 bg-white border border-stone-200/80'
+            }`}
+          >
+            5. Imagery &amp; Presets
+          </button>
+        </div>
+
+        {/* Form Container */}
+        <div className="bg-white rounded-2xl border border-stone-200 p-4 sm:p-7 shadow-xs">
+          <form onSubmit={handleProductFormSubmit} className="space-y-6">
+            {/* SECTION 1: Core Info & Barcode */}
+            {modalActiveTab === 'info' && (
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                    Product Title *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={productForm.name}
+                    onChange={(e) => setProductForm({ ...productForm, name: e.target.value })}
+                    placeholder="e.g. OMEGA Hardcover Counter Book Q3 (288 Pages)"
+                    className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs bg-stone-50 focus:outline-none focus:border-[#111113]"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                      Category *
+                    </label>
+                    <select
+                      value={productForm.category}
+                      onChange={(e) =>
+                        setProductForm({ ...productForm, category: e.target.value as ProductCategory })
+                      }
+                      className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs bg-stone-50 focus:outline-none focus:border-[#111113]"
+                    >
+                      {PRODUCT_CATEGORIES.map((cat) => (
+                        <option key={cat} value={cat}>
+                          {cat}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                        SKU Code *
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setProductForm({
+                            ...productForm,
+                            sku: generateSkuCode(
+                              productForm.category,
+                              productForm.quire,
+                              productForm.pageCount
+                            ),
+                          })
+                        }
+                        className="text-[10px] text-[#dc2626] hover:underline font-bold"
+                      >
+                        ⚡ Auto-Generate
+                      </button>
+                    </div>
+                    <input
+                      type="text"
+                      required
+                      value={productForm.sku}
+                      onChange={(e) => setProductForm({ ...productForm, sku: e.target.value })}
+                      className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                        Barcode (EAN-13 / GS1)
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setProductForm({ ...productForm, barcode: generateEan13Barcode() })
+                        }
+                        className="text-[10px] text-[#dc2626] hover:underline font-bold"
+                      >
+                        ⚡ Generate EAN-13
+                      </button>
+                    </div>
+                    <input
+                      type="text"
+                      value={productForm.barcode}
+                      onChange={(e) => setProductForm({ ...productForm, barcode: e.target.value })}
+                      placeholder="e.g. 6164000192837"
+                      className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                      Dispatch Time Guarantee
+                    </label>
+                    <input
+                      type="text"
+                      value={productForm.dispatchTime}
+                      onChange={(e) =>
+                        setProductForm({ ...productForm, dispatchTime: e.target.value })
+                      }
+                      placeholder="e.g. Same-Day Factory Dispatch"
+                      className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs bg-stone-50 focus:outline-none focus:border-[#111113]"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                    Product Description
+                  </label>
+                  <textarea
+                    rows={3}
+                    value={productForm.description}
+                    onChange={(e) =>
+                      setProductForm({ ...productForm, description: e.target.value })
+                    }
+                    placeholder="Specifications, paper ruling, GSM, school requirements..."
+                    className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs bg-stone-50"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* SECTION 2: Pricing, Margins & Wholesale Tiers */}
+            {modalActiveTab === 'pricing' && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                      Retail MSRP (TSh) *
+                    </label>
+                    <input
+                      type="number"
+                      min={1}
+                      required
+                      value={productForm.price}
+                      onChange={(e) => setProductForm({ ...productForm, price: e.target.value })}
+                      className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                      Discount Price (TSh)
+                    </label>
+                    <input
+                      type="number"
+                      min={1}
+                      value={productForm.discountPrice}
+                      onChange={(e) =>
+                        setProductForm({ ...productForm, discountPrice: e.target.value })
+                      }
+                      placeholder="Optional sale rate"
+                      className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-emerald-800 uppercase tracking-wider">
+                      Wholesale Unit Price (TSh) *
+                    </label>
+                    <input
+                      type="number"
+                      min={1}
+                      required
+                      value={productForm.wholesalePrice}
+                      onChange={(e) =>
+                        setProductForm({ ...productForm, wholesalePrice: e.target.value })
+                      }
+                      className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-emerald-600 font-bold text-emerald-800"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1 max-w-xs">
+                  <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                    Min Wholesale Quantity (Pcs/Box) *
+                  </label>
+                  <input
+                    type="number"
+                    min={1}
+                    required
+                    value={productForm.wholesaleMinQty}
+                    onChange={(e) =>
+                      setProductForm({ ...productForm, wholesaleMinQty: e.target.value })
+                    }
+                    className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50"
+                  />
+                </div>
+
+                {/* Live Margin & Carton Calculator Box */}
+                <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200 space-y-2">
+                  <div className="flex items-center justify-between text-xs font-bold text-[#111113] border-b border-stone-200 pb-1.5">
+                    <span>ERP Live Commercial Margin Calculator</span>
+                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-mono">
+                      {modalMarginPercent}% Dealer Margin
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-3 text-xs pt-1">
+                    <div>
+                      <span className="text-[10px] text-stone-500 block uppercase font-bold">Carton Wholesale Cost:</span>
+                      <span className="font-mono font-bold text-[#18181b]">
+                        {formatPrice(modalCartonWholesaleTotal, currency)}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-stone-500 block uppercase font-bold">Carton Retail Value:</span>
+                      <span className="font-mono font-bold text-stone-700">
+                        {formatPrice(modalCartonRetailYield, currency)}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-stone-500 block uppercase font-bold">Retailer Profit / Case:</span>
+                      <span className="font-mono font-bold text-emerald-700">
+                        +{formatPrice(modalCartonDealerProfit, currency)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* SECTION 3: Manufacturing & Packaging Specs */}
+            {modalActiveTab === 'specs' && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                      Packaging Spec (e.g. 48 Pcs / Box)
+                    </label>
+                    <input
+                      type="text"
+                      value={productForm.packaging}
+                      onChange={(e) =>
+                        setProductForm({ ...productForm, packaging: e.target.value })
+                      }
+                      placeholder="e.g. 48 Pcs / Strapped Corrugated Box"
+                      className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                      Quire Classification
+                    </label>
+                    <select
+                      value={productForm.quire}
+                      onChange={(e) => setProductForm({ ...productForm, quire: e.target.value })}
+                      className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
+                    >
+                      <option value="1 Quire">1 Quire</option>
+                      <option value="2 Quire">2 Quire</option>
+                      <option value="3 Quire">3 Quire</option>
+                      <option value="4 Quire">4 Quire</option>
+                      <option value="N/A">N/A / Standard</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                      Page Count
+                    </label>
+                    <select
+                      value={productForm.pageCount}
+                      onChange={(e) =>
+                        setProductForm({ ...productForm, pageCount: e.target.value })
+                      }
+                      className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
+                    >
+                      <option value="32 Pages">32 Pages</option>
+                      <option value="48 Pages">48 Pages</option>
+                      <option value="80 Pages">80 Pages</option>
+                      <option value="100 Pages">100 Pages</option>
+                      <option value="120 Pages">120 Pages</option>
+                      <option value="192 Pages">192 Pages</option>
+                      <option value="200 Pages">200 Pages</option>
+                      <option value="288 Pages">288 Pages</option>
+                      <option value="384 Pages">384 Pages</option>
+                      <option value="500 Sheets / Ream">500 Sheets / Ream</option>
+                      <option value="50 Envelopes / Pack">50 Envelopes / Pack</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                      Ruling / Grid Pattern
+                    </label>
+                    <select
+                      value={productForm.rulingType}
+                      onChange={(e) =>
+                        setProductForm({ ...productForm, rulingType: e.target.value })
+                      }
+                      className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
+                    >
+                      <option value="Single Line Ruled">Single Line Ruled</option>
+                      <option value="Square Grid 5mm (Hesabu)">Square Grid 5mm (Hesabu)</option>
+                      <option value="Double Line (Kiswahili/English)">Double Line (Kiswahili/English)</option>
+                      <option value="Plain Unruled">Plain Unruled</option>
+                      <option value="Ledger / Cash Columns">Ledger / Cash Columns</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                      Paper Weight / Quality
+                    </label>
+                    <input
+                      type="text"
+                      value={productForm.paperQuality}
+                      onChange={(e) =>
+                        setProductForm({ ...productForm, paperQuality: e.target.value })
+                      }
+                      placeholder="e.g. 70 GSM Bleed-Proof Woodfree Paper"
+                      className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                      Binding Type
+                    </label>
+                    <input
+                      type="text"
+                      value={productForm.bindingType}
+                      onChange={(e) =>
+                        setProductForm({ ...productForm, bindingType: e.target.value })
+                      }
+                      placeholder="e.g. Hardcover Smyth-Sewn Thread Bound"
+                      className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* SECTION 4: Stock & Warehouse Inventory */}
+            {modalActiveTab === 'stock' && (
+              <div className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                      Stock Status
+                    </label>
+                    <select
+                      value={productForm.stockStatus}
+                      onChange={(e) =>
+                        setProductForm({ ...productForm, stockStatus: e.target.value as StockStatus })
+                      }
+                      className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
+                    >
+                      <option value="In Stock">In Stock</option>
+                      <option value="Low Stock">Low Stock</option>
+                      <option value="Out of Stock">Out of Stock</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                      Physical Stock Quantity on Hand (Units)
+                    </label>
+                    <input
+                      type="number"
+                      min={0}
+                      value={productForm.stockQuantity}
+                      onChange={(e) =>
+                        setProductForm({ ...productForm, stockQuantity: e.target.value })
+                      }
+                      placeholder="e.g. 500 pcs"
+                      className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-6 pt-3 border-t border-stone-200">
+                  <label className="inline-flex items-center gap-2 text-xs font-semibold text-stone-700 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={productForm.featured}
+                      onChange={(e) =>
+                        setProductForm({ ...productForm, featured: e.target.checked })
+                      }
+                      className="rounded text-[#111113] focus:ring-0"
+                    />
+                    <span>Featured on Homepage Showcase</span>
+                  </label>
+
+                  <label className="inline-flex items-center gap-2 text-xs font-semibold text-stone-700 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={productForm.bestSeller}
+                      onChange={(e) =>
+                        setProductForm({ ...productForm, bestSeller: e.target.checked })
+                      }
+                      className="rounded text-[#111113] focus:ring-0"
+                    />
+                    <span>Best-Selling Badge</span>
+                  </label>
+
+                  <label className="inline-flex items-center gap-2 text-xs font-semibold text-stone-700 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={productForm.freeDelivery}
+                      onChange={(e) =>
+                        setProductForm({ ...productForm, freeDelivery: e.target.checked })
+                      }
+                      className="rounded text-[#111113] focus:ring-0"
+                    />
+                    <span>Free Delivery Eligibility Tag</span>
+                  </label>
+                </div>
+              </div>
+            )}
+
+            {/* SECTION 5: Imagery, Upload & Presets */}
+            {modalActiveTab === 'media' && (
+              <div className="space-y-4">
+                {/* File Upload Dropzone */}
+                <div
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    setIsDraggingFile(true);
+                  }}
+                  onDragLeave={() => setIsDraggingFile(false)}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    setIsDraggingFile(false);
+                    const file = e.dataTransfer.files?.[0];
+                    if (file) handleImageFileSelect(file);
+                  }}
+                  className={`relative border-2 border-dashed rounded-2xl p-6 text-center transition-all ${
+                    isDraggingFile
+                      ? 'border-[#dc2626] bg-[#dc2626]/10 shadow-md scale-[1.01]'
+                      : 'border-stone-300 hover:border-[#dc2626] bg-stone-50/80 hover:bg-stone-50'
+                  }`}
+                >
+                  <input
+                    type="file"
+                    id="product-image-file-input"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleImageFileSelect(file);
+                    }}
+                  />
+
+                  {isUploadingImage ? (
+                    <div className="py-4 flex flex-col items-center justify-center space-y-2">
+                      <RefreshCw className="w-8 h-8 text-[#dc2626] animate-spin" />
+                      <p className="text-xs font-bold text-[#111113]">
+                        Processing &amp; Uploading Image...
+                      </p>
+                      <p className="text-[11px] text-stone-500">
+                        Saving image to server repository and linking to MongoDB Atlas
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center space-y-2.5">
+                      <div className="w-12 h-12 rounded-2xl bg-[#111113]/10 text-[#111113] flex items-center justify-center">
+                        <UploadCloud className="w-6 h-6 text-[#dc2626]" />
+                      </div>
+
+                      <div>
+                        <p className="text-xs font-bold text-[#18181b]">
+                          Drag &amp; Drop product photo here, or{' '}
+                          <label
+                            htmlFor="product-image-file-input"
+                            className="text-[#dc2626] font-black hover:underline cursor-pointer"
+                          >
+                            Browse Files
+                          </label>
+                        </p>
+                        <p className="text-[11px] text-stone-500 mt-0.5">
+                          Supports PNG, JPG, JPEG, WEBP or SVG (Max 25MB). Uploads directly to server storage.
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-2 pt-1">
+                        <label
+                          htmlFor="product-image-file-input"
+                          className="px-3.5 py-1.5 bg-[#111113] hover:bg-[#18181b] text-white text-[11px] font-bold rounded-xl cursor-pointer inline-flex items-center gap-1.5 shadow-2xs active:scale-95 transition-all"
+                        >
+                          <Upload className="w-3.5 h-3.5 text-[#dc2626]" />
+                          <span>Select from Computer / Mobile</span>
+                        </label>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Upload Notification Banners */}
+                {uploadSuccessNotice && (
+                  <div className="p-3 bg-emerald-50 border border-emerald-300 rounded-xl text-xs text-emerald-800 font-bold flex items-center gap-2 animate-in fade-in">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span className="truncate">{uploadSuccessNotice}</span>
+                  </div>
+                )}
+
+                {uploadErrorNotice && (
+                  <div className="p-3 bg-red-50 border border-red-300 rounded-xl text-xs text-red-800 font-bold flex items-center gap-2 animate-in fade-in">
+                    <AlertTriangle className="w-4 h-4 text-red-600 shrink-0" />
+                    <span>{uploadErrorNotice}</span>
+                  </div>
+                )}
+
+                {/* Live Image Preview & Assigned Path */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-stone-50 rounded-2xl border border-stone-200">
+                  <div className="flex items-center gap-3.5 min-w-0">
+                    <div className="relative group/thumb shrink-0">
+                      <img
+                        src={productForm.image}
+                        alt="Preview"
+                        className="w-20 h-20 rounded-xl object-contain bg-white p-1 border border-stone-300 shadow-2xs"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/omega-products/counter-book-q2-192p.jpeg';
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={handleOpenCurrentInEditor}
+                        disabled={!productForm.image}
+                        className="absolute inset-0 bg-black/60 opacity-0 group-hover/thumb:opacity-100 rounded-xl flex flex-col items-center justify-center text-white text-[10px] font-bold transition-opacity cursor-pointer"
+                      >
+                        <Crop className="w-4 h-4 text-[#dc2626]" />
+                        <span>Crop</span>
+                      </button>
+                    </div>
+
+                    <div className="text-xs min-w-0 space-y-0.5">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <p className="font-bold text-[#18181b]">Active Product Photo</p>
+                        <span className="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800">
+                          Ready for Database
+                        </span>
+                      </div>
+                      <p className="text-stone-500 text-[11px] truncate font-mono max-w-xs sm:max-w-sm">
+                        {productForm.image}
+                      </p>
+                      <p className="text-[10px] text-stone-500 flex items-center gap-1 pt-0.5">
+                        <Sparkles className="w-3 h-3 text-[#dc2626]" />
+                        <span>1:1 Square Crop fills the product card border-to-border cleanly.</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      type="button"
+                      onClick={handleOpenCurrentInEditor}
+                      disabled={!productForm.image}
+                      className="px-3.5 py-2 bg-[#111113] hover:bg-[#18181b] text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition-all active:scale-95 disabled:opacity-50"
+                      title="Open Image Cropper & Editing Studio"
+                    >
+                      <Crop className="w-4 h-4 text-[#dc2626]" />
+                      <span>Edit &amp; Crop Photo</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Card Display Adaptation (With vs Without Background) */}
+                <div className="p-3 bg-stone-50 rounded-xl border border-stone-200 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-bold text-[#18181b] uppercase tracking-wider block">
+                      Website Card Display Mode (Background Adaptation)
+                    </label>
+                    <span className="text-[10px] font-bold text-[#dc2626] bg-[#dc2626]/10 px-2 py-0.5 rounded-full font-mono">
+                      {productForm.imageFit === 'contain' ? 'Studio Pedestal' : 'Edge-to-Edge Fill'}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setProductForm({ ...productForm, imageFit: 'cover' })}
+                      className={`p-2.5 rounded-xl border text-left flex items-start gap-2 transition-all ${
+                        (productForm.imageFit || 'cover') === 'cover'
+                          ? 'border-[#dc2626] bg-amber-50/60 shadow-2xs text-[#18181b]'
+                          : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300'
+                      }`}
+                    >
+                      <div className="w-4 h-4 rounded-full border border-stone-400 mt-0.5 flex items-center justify-center shrink-0">
+                        {(productForm.imageFit || 'cover') === 'cover' && (
+                          <div className="w-2 h-2 rounded-full bg-[#dc2626]" />
+                        )}
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold">Edge-to-Edge Fill</div>
+                        <div className="text-[10px] text-stone-500">For photos with full backgrounds</div>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setProductForm({ ...productForm, imageFit: 'contain' })}
+                      className={`p-2.5 rounded-xl border text-left flex items-start gap-2 transition-all ${
+                        productForm.imageFit === 'contain'
+                          ? 'border-[#dc2626] bg-amber-50/60 shadow-2xs text-[#18181b]'
+                          : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300'
+                      }`}
+                    >
+                      <div className="w-4 h-4 rounded-full border border-stone-400 mt-0.5 flex items-center justify-center shrink-0">
+                        {productForm.imageFit === 'contain' && (
+                          <div className="w-2 h-2 rounded-full bg-[#dc2626]" />
+                        )}
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold">Studio Pedestal Fit</div>
+                        <div className="text-[10px] text-stone-500">For cutouts without background / any size</div>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Manual Image URL Path */}
+                <div className="space-y-1">
+                  <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                    Or Direct Image URL / Path
+                  </label>
+                  <input
+                    type="text"
+                    value={productForm.image}
+                    onChange={(e) => setProductForm({ ...productForm, image: e.target.value })}
+                    placeholder="/uploads/omega_photo.png or https://..."
+                    className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
+                  />
+                </div>
+
+                {/* 1-Click Official OMEGA Asset Presets */}
+                <div className="space-y-1.5">
+                  <span className="text-[11px] font-bold text-stone-600 uppercase block">
+                    ⚡ Quick 1-Click Factory Presets:
+                  </span>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 max-h-56 overflow-y-auto p-1">
+                    {OMEGA_IMAGE_PRESETS.map((preset, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setProductForm({ ...productForm, image: preset.path })}
+                        className={`p-1.5 rounded-lg border text-left flex items-center gap-2 transition-all ${
+                          productForm.image === preset.path
+                            ? 'border-[#dc2626] bg-amber-50/50 shadow-2xs'
+                            : 'border-stone-200 hover:border-stone-300 bg-white'
+                        }`}
+                      >
+                        <img
+                          src={preset.path}
+                          alt={preset.label}
+                          className="w-8 h-8 rounded object-contain bg-stone-50 shrink-0"
+                        />
+                        <span className="text-[10px] font-semibold text-stone-700 line-clamp-2">
+                          {preset.label}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Bottom Form Actions */}
+            <div className="flex items-center justify-between pt-5 border-t border-stone-200">
+              <button
+                type="button"
+                onClick={() => setIsProductModalOpen(false)}
+                className="px-4 py-2.5 border border-stone-200 rounded-xl text-xs font-bold text-stone-600 hover:bg-stone-50 bg-white"
+              >
+                Cancel &amp; Return
+              </button>
+
+              <button
+                type="submit"
+                disabled={isSavingProduct}
+                className={`px-6 py-2.5 btn-ledup-copper text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 ${
+                  isSavingProduct ? 'opacity-70 cursor-not-allowed' : ''
+                }`}
+              >
+                {isSavingProduct ? (
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Check className="w-4 h-4" />
+                )}
+                <span>
+                  {isSavingProduct
+                    ? 'Saving to MongoDB Atlas...'
+                    : modalMode === 'add'
+                    ? 'Create Product in MongoDB Atlas'
+                    : modalMode === 'clone'
+                    ? 'Save Cloned Variant to Database'
+                    : 'Update Product in Database'}
+                </span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* Studio Image Editor Modal */}
+        <ImageEditorModal
+          isOpen={isImageEditorOpen}
+          imageSrc={imageToEditUrl}
+          fileName={imageToEditFileName}
+          productName={productForm.name || 'OMEGA Product'}
+          initialImageFit={productForm.imageFit || 'cover'}
+          initialImageBackground={productForm.imageBackground || ''}
+          onClose={() => setIsImageEditorOpen(false)}
+          onApply={handleApplyCroppedImage}
+          isProcessing={isUploadingImage}
+        />
+      </div>
+    );
+  }
+
+  // =========================================================================
+  // FULL PAGE VIEW 2: DEDICATED ERP MASTER RECORD INSPECTOR (NO POPUPS / MODALS!)
+  // =========================================================================
+  if (inspectingProduct) {
+    return (
+      <div className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-8 space-y-6 font-sans text-[#18181b] animate-in fade-in duration-200">
+        <SEOHead
+          title={`ERP Master: ${inspectingProduct.name} | OMEGA HQ`}
+          description="Enterprise Master Record Inspection"
+        />
+
+        {/* Top Header & Actions */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-stone-200">
+          <button
+            type="button"
+            onClick={() => setInspectingProduct(null)}
+            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-stone-200 hover:border-stone-400 text-stone-700 text-xs font-bold transition-all shadow-2xs hover:bg-stone-50 shrink-0 self-start sm:self-auto"
+          >
+            <ArrowLeft className="w-4 h-4 text-[#dc2626]" />
+            <span>Back to Inventory</span>
+          </button>
+
+          <div className="flex items-center gap-2 self-end sm:self-auto">
+            <button
+              type="button"
+              onClick={() => {
+                const prod = inspectingProduct;
+                setInspectingProduct(null);
+                handleCloneProduct(prod);
+              }}
+              className="px-3.5 py-2 border border-stone-200 hover:bg-stone-50 text-stone-700 rounded-xl text-xs font-bold inline-flex items-center gap-1.5 bg-white shadow-2xs"
+            >
+              <Copy className="w-3.5 h-3.5" />
+              <span>Clone Variant</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                const prod = inspectingProduct;
+                setInspectingProduct(null);
+                openEditProductModal(prod);
+              }}
+              className="px-4 py-2 bg-[#111113] hover:bg-black text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5 shadow-sm"
+            >
+              <Edit3 className="w-3.5 h-3.5 text-[#dc2626]" />
+              <span>Edit Master Record</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Detailed ERP Master Record Card */}
+        <div className="bg-white rounded-2xl border border-stone-200 p-5 sm:p-8 space-y-6 shadow-xs">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 pb-6 border-b border-stone-200">
+            <img
+              src={inspectingProduct.image || '/omega-products/counter-book-q3-288p.jpeg'}
+              alt={inspectingProduct.name}
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = '/omega-products/counter-book-q3-288p.jpeg';
+              }}
+              className="w-28 h-28 rounded-2xl object-contain bg-stone-50 p-2 border border-stone-200 shadow-2xs"
+            />
+            <div className="space-y-1.5 min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-[#111113] text-[#dc2626]">
+                  ERP MASTER RECORD
+                </span>
+                <span className="px-2.5 py-0.5 rounded-md bg-stone-100 text-stone-700 text-[10px] font-mono uppercase font-bold">
+                  {inspectingProduct.category}
+                </span>
+                <span
+                  className={`px-2.5 py-0.5 rounded-md text-[10px] font-bold font-mono ${
+                    inspectingProduct.stockStatus === 'In Stock'
+                      ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                      : inspectingProduct.stockStatus === 'Low Stock'
+                      ? 'bg-amber-50 text-amber-800 border border-amber-200'
+                      : 'bg-red-50 text-red-800 border border-red-200'
+                  }`}
+                >
+                  {inspectingProduct.stockStatus} ·{' '}
+                  {inspectingProduct.stockQuantity !== undefined
+                    ? inspectingProduct.stockQuantity
+                    : 100}{' '}
+                  Units on Hand
+                </span>
+              </div>
+              <h2 className="font-heading text-xl sm:text-2xl font-bold text-[#18181b]">
+                {inspectingProduct.name}
+              </h2>
+              <div className="flex items-center gap-3 text-xs text-stone-500 font-mono flex-wrap">
+                <span>SKU: <strong className="text-stone-800">{inspectingProduct.sku}</strong></span>
+                {inspectingProduct.barcode && (
+                  <span>· Barcode: <strong className="text-stone-800">{inspectingProduct.barcode}</strong></span>
+                )}
+                {inspectingProduct.dispatchTime && (
+                  <span>· Dispatch: <strong className="text-stone-800">{inspectingProduct.dispatchTime}</strong></span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Specifications Matrix */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+            <div className="p-3.5 bg-stone-50 rounded-xl border border-stone-200/80">
+              <span className="text-[10px] text-stone-500 uppercase font-bold block mb-1">Retail Price (MSRP)</span>
+              <span className="font-mono text-base font-bold text-[#18181b]">
+                {formatPrice(inspectingProduct.price, currency)}
+              </span>
+            </div>
+            <div className="p-3.5 bg-emerald-50/60 rounded-xl border border-emerald-200/80">
+              <span className="text-[10px] text-emerald-700 uppercase font-bold block mb-1">Wholesale Unit Price</span>
+              <span className="font-mono text-base font-bold text-emerald-800">
+                {formatPrice(
+                  inspectingProduct.wholesalePrice || Math.round(inspectingProduct.price * 0.7),
+                  currency
+                )}
+              </span>
+            </div>
+            <div className="p-3.5 bg-stone-50 rounded-xl border border-stone-200/80">
+              <span className="text-[10px] text-stone-500 uppercase font-bold block mb-1">Packaging Spec</span>
+              <span className="font-bold text-stone-800">
+                {inspectingProduct.packaging || '48 Pcs / Strapped Box'}
+              </span>
+            </div>
+            <div className="p-3.5 bg-stone-50 rounded-xl border border-stone-200/80">
+              <span className="text-[10px] text-stone-500 uppercase font-bold block mb-1">Quire &amp; Pages</span>
+              <span className="font-bold text-stone-800">
+                {inspectingProduct.quire || '2 Quire'} · {inspectingProduct.pageCount || '192 Pages'}
+              </span>
+            </div>
+          </div>
+
+          {/* Description */}
+          {inspectingProduct.description && (
+            <div className="p-4 bg-stone-50 rounded-xl border border-stone-200/80 space-y-1">
+              <span className="text-[10px] text-stone-500 uppercase font-bold block">Catalog Description</span>
+              <p className="text-xs text-stone-700 leading-relaxed">
+                {inspectingProduct.description}
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 font-sans text-[#18181b]">
@@ -1892,7 +2932,7 @@ export const AdminDashboardPage: React.FC = () => {
 
                         <button
                           type="button"
-                          onClick={() => setInspectingProduct(product)}
+                          onClick={() => handleOpenInspectProduct(product)}
                           className="shrink-0 relative group"
                           title="View product details"
                         >
@@ -1925,7 +2965,7 @@ export const AdminDashboardPage: React.FC = () => {
 
                           <button
                             type="button"
-                            onClick={() => setInspectingProduct(product)}
+                            onClick={() => handleOpenInspectProduct(product)}
                             className="font-bold text-sm text-[#18181b] hover:text-[#dc2626] text-left leading-snug line-clamp-2 transition-colors block"
                           >
                             {product.name}
@@ -2170,7 +3210,7 @@ export const AdminDashboardPage: React.FC = () => {
                               <div className="flex items-center gap-3">
                                 <button
                                   type="button"
-                                  onClick={() => setInspectingProduct(product)}
+                                  onClick={() => handleOpenInspectProduct(product)}
                                   className="shrink-0 group relative"
                                   title="Click to view full ERP specification sheet"
                                 >
@@ -2190,7 +3230,7 @@ export const AdminDashboardPage: React.FC = () => {
                                 <div>
                                   <button
                                     type="button"
-                                    onClick={() => setInspectingProduct(product)}
+                                    onClick={() => handleOpenInspectProduct(product)}
                                     className="font-bold text-[#18181b] hover:text-[#dc2626] text-left line-clamp-1 transition-colors"
                                   >
                                     {product.name}
@@ -3566,949 +4606,6 @@ export const AdminDashboardPage: React.FC = () => {
                   {cacheFlushMessage}
                 </div>
               )}
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* ==================== ADD / EDIT / CLONE MASTER PRODUCT MODAL (DIRECT MONGODB CRUD) ==================== */}
-      {isProductModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
-          <div className="bg-white rounded-xl sm:rounded-2xl max-w-2xl w-full p-3.5 sm:p-6 space-y-4 shadow-2xl border border-stone-200 animate-in fade-in zoom-in-95 duration-200 max-h-[94vh] sm:max-h-[90vh] overflow-y-auto">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-stone-200 pb-3">
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-[#111113] text-[#dc2626]">
-                    {modalMode === 'add' ? 'ADD NEW PRODUCT' : modalMode === 'clone' ? 'CLONE VARIANT SKU' : 'EDIT PRODUCT'}
-                  </span>
-                  <span className="text-[11px] text-stone-500 font-mono">Direct Database CRUD</span>
-                </div>
-                <h3 className="font-heading text-lg font-bold text-[#18181b] mt-0.5">
-                  {modalMode === 'add'
-                    ? 'Create Product Master in MongoDB Atlas'
-                    : modalMode === 'clone'
-                    ? `Clone SKU Variant: ${productForm.name}`
-                    : `Edit Master SKU: ${productForm.sku}`}
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsProductModalOpen(false)}
-                aria-label="Close modal"
-                className="text-stone-400 hover:text-stone-700 p-1 rounded-lg"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Success notification */}
-            {dbSaveSuccessMessage && (
-              <div className="p-3 bg-emerald-50 border border-emerald-300 rounded-xl text-xs font-bold text-emerald-800 flex items-center gap-2 animate-in fade-in duration-200">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>{dbSaveSuccessMessage}</span>
-              </div>
-            )}
-
-            {/* Error notification */}
-            {formError && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 font-medium flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-red-600" />
-                <span>{formError}</span>
-              </div>
-            )}
-
-            {/* Modal Internal Section Tabs */}
-            <div className="flex border-b border-stone-200 gap-1 overflow-x-auto pb-1 text-xs font-bold">
-              <button
-                type="button"
-                onClick={() => setModalActiveTab('info')}
-                className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
-                  modalActiveTab === 'info'
-                    ? 'bg-[#111113] text-white'
-                    : 'text-stone-600 hover:bg-stone-100'
-                }`}
-              >
-                1. Core Info &amp; Barcode
-              </button>
-              <button
-                type="button"
-                onClick={() => setModalActiveTab('pricing')}
-                className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
-                  modalActiveTab === 'pricing'
-                    ? 'bg-[#111113] text-white'
-                    : 'text-stone-600 hover:bg-stone-100'
-                }`}
-              >
-                2. Pricing &amp; Wholesale Tiers
-              </button>
-              <button
-                type="button"
-                onClick={() => setModalActiveTab('specs')}
-                className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
-                  modalActiveTab === 'specs'
-                    ? 'bg-[#111113] text-white'
-                    : 'text-stone-600 hover:bg-stone-100'
-                }`}
-              >
-                3. Manufacturing &amp; Packaging
-              </button>
-              <button
-                type="button"
-                onClick={() => setModalActiveTab('stock')}
-                className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
-                  modalActiveTab === 'stock'
-                    ? 'bg-[#111113] text-white'
-                    : 'text-stone-600 hover:bg-stone-100'
-                }`}
-              >
-                4. Stock &amp; Warehouse
-              </button>
-              <button
-                type="button"
-                onClick={() => setModalActiveTab('media')}
-                className={`px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors ${
-                  modalActiveTab === 'media'
-                    ? 'bg-[#111113] text-white'
-                    : 'text-stone-600 hover:bg-stone-100'
-                }`}
-              >
-                5. Imagery &amp; Presets
-              </button>
-            </div>
-
-            <form onSubmit={handleProductFormSubmit} className="space-y-4">
-              {/* SECTION 1: Core Info & Barcode */}
-              {modalActiveTab === 'info' && (
-                <div className="space-y-4">
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                      Product Title *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={productForm.name}
-                      onChange={(e) => setProductForm({ ...productForm, name: e.target.value })}
-                      placeholder="e.g. OMEGA Hardcover Counter Book Q3 (288 Pages)"
-                      className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs bg-stone-50 focus:outline-none focus:border-[#111113]"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                        Category *
-                      </label>
-                      <select
-                        value={productForm.category}
-                        onChange={(e) =>
-                          setProductForm({ ...productForm, category: e.target.value as ProductCategory })
-                        }
-                        className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs bg-stone-50 focus:outline-none focus:border-[#111113]"
-                      >
-                        {PRODUCT_CATEGORIES.map((cat) => (
-                          <option key={cat} value={cat}>
-                            {cat}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between">
-                        <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                          SKU Code *
-                        </label>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setProductForm({
-                              ...productForm,
-                              sku: generateSkuCode(
-                                productForm.category,
-                                productForm.quire,
-                                productForm.pageCount
-                              ),
-                            })
-                          }
-                          className="text-[10px] text-[#dc2626] hover:underline font-bold"
-                        >
-                          ⚡ Auto-Generate
-                        </button>
-                      </div>
-                      <input
-                        type="text"
-                        required
-                        value={productForm.sku}
-                        onChange={(e) => setProductForm({ ...productForm, sku: e.target.value })}
-                        className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between">
-                        <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                          Barcode (EAN-13 / GS1)
-                        </label>
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setProductForm({ ...productForm, barcode: generateEan13Barcode() })
-                          }
-                          className="text-[10px] text-[#dc2626] hover:underline font-bold"
-                        >
-                          ⚡ Generate EAN-13
-                        </button>
-                      </div>
-                      <input
-                        type="text"
-                        value={productForm.barcode}
-                        onChange={(e) => setProductForm({ ...productForm, barcode: e.target.value })}
-                        placeholder="e.g. 6164000192837"
-                        className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
-                      />
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                        Dispatch Time Guarantee
-                      </label>
-                      <input
-                        type="text"
-                        value={productForm.dispatchTime}
-                        onChange={(e) =>
-                          setProductForm({ ...productForm, dispatchTime: e.target.value })
-                        }
-                        placeholder="e.g. Same-Day Factory Dispatch"
-                        className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs bg-stone-50 focus:outline-none focus:border-[#111113]"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                      Product Description
-                    </label>
-                    <textarea
-                      rows={2}
-                      value={productForm.description}
-                      onChange={(e) =>
-                        setProductForm({ ...productForm, description: e.target.value })
-                      }
-                      placeholder="Specifications, paper ruling, GSM, school requirements..."
-                      className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* SECTION 2: Pricing, Margins & Wholesale Tiers */}
-              {modalActiveTab === 'pricing' && (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                        Retail MSRP (TSh) *
-                      </label>
-                      <input
-                        type="number"
-                        min={1}
-                        required
-                        value={productForm.price}
-                        onChange={(e) => setProductForm({ ...productForm, price: e.target.value })}
-                        className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
-                      />
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                        Discount Price (TSh)
-                      </label>
-                      <input
-                        type="number"
-                        min={1}
-                        value={productForm.discountPrice}
-                        onChange={(e) =>
-                          setProductForm({ ...productForm, discountPrice: e.target.value })
-                        }
-                        placeholder="Optional sale rate"
-                        className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
-                      />
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="block text-xs font-bold text-emerald-800 uppercase tracking-wider">
-                        Wholesale Unit Price (TSh) *
-                      </label>
-                      <input
-                        type="number"
-                        min={1}
-                        required
-                        value={productForm.wholesalePrice}
-                        onChange={(e) =>
-                          setProductForm({ ...productForm, wholesalePrice: e.target.value })
-                        }
-                        className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-emerald-600 font-bold text-emerald-800"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1 max-w-xs">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                      Min Wholesale Quantity (Pcs/Box) *
-                    </label>
-                    <input
-                      type="number"
-                      min={1}
-                      required
-                      value={productForm.wholesaleMinQty}
-                      onChange={(e) =>
-                        setProductForm({ ...productForm, wholesaleMinQty: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50"
-                    />
-                  </div>
-
-                  {/* Live Margin & Carton Calculator Box */}
-                  <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200 space-y-2">
-                    <div className="flex items-center justify-between text-xs font-bold text-[#111113] border-b border-stone-200 pb-1.5">
-                      <span>ERP Live Commercial Margin Calculator</span>
-                      <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-mono">
-                        {modalMarginPercent}% Dealer Margin
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-3 text-xs pt-1">
-                      <div>
-                        <span className="text-[10px] text-stone-500 block uppercase font-bold">Carton Wholesale Cost:</span>
-                        <span className="font-mono font-bold text-[#18181b]">
-                          {formatPrice(modalCartonWholesaleTotal, currency)}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-[10px] text-stone-500 block uppercase font-bold">Carton Retail Value:</span>
-                        <span className="font-mono font-bold text-stone-700">
-                          {formatPrice(modalCartonRetailYield, currency)}
-                        </span>
-                      </div>
-                      <div>
-                        <span className="text-[10px] text-stone-500 block uppercase font-bold">Retailer Profit / Case:</span>
-                        <span className="font-mono font-bold text-emerald-700">
-                          +{formatPrice(modalCartonDealerProfit, currency)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* SECTION 3: Manufacturing & Packaging Specs */}
-              {modalActiveTab === 'specs' && (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                        Packaging Spec (e.g. 48 Pcs / Box)
-                      </label>
-                      <input
-                        type="text"
-                        value={productForm.packaging}
-                        onChange={(e) =>
-                          setProductForm({ ...productForm, packaging: e.target.value })
-                        }
-                        placeholder="e.g. 48 Pcs / Strapped Corrugated Box"
-                        className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
-                      />
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                        Quire Classification
-                      </label>
-                      <select
-                        value={productForm.quire}
-                        onChange={(e) => setProductForm({ ...productForm, quire: e.target.value })}
-                        className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
-                      >
-                        <option value="1 Quire">1 Quire</option>
-                        <option value="2 Quire">2 Quire</option>
-                        <option value="3 Quire">3 Quire</option>
-                        <option value="4 Quire">4 Quire</option>
-                        <option value="N/A">N/A / Standard</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                        Page Count
-                      </label>
-                      <select
-                        value={productForm.pageCount}
-                        onChange={(e) =>
-                          setProductForm({ ...productForm, pageCount: e.target.value })
-                        }
-                        className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
-                      >
-                        <option value="32 Pages">32 Pages</option>
-                        <option value="48 Pages">48 Pages</option>
-                        <option value="80 Pages">80 Pages</option>
-                        <option value="100 Pages">100 Pages</option>
-                        <option value="120 Pages">120 Pages</option>
-                        <option value="192 Pages">192 Pages</option>
-                        <option value="200 Pages">200 Pages</option>
-                        <option value="288 Pages">288 Pages</option>
-                        <option value="384 Pages">384 Pages</option>
-                        <option value="500 Sheets / Ream">500 Sheets / Ream</option>
-                        <option value="50 Envelopes / Pack">50 Envelopes / Pack</option>
-                      </select>
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                        Ruling / Grid Pattern
-                      </label>
-                      <select
-                        value={productForm.rulingType}
-                        onChange={(e) =>
-                          setProductForm({ ...productForm, rulingType: e.target.value })
-                        }
-                        className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
-                      >
-                        <option value="Single Line Ruled">Single Line Ruled</option>
-                        <option value="Square Grid 5mm (Hesabu)">Square Grid 5mm (Hesabu)</option>
-                        <option value="Double Line (Kiswahili/English)">Double Line (Kiswahili/English)</option>
-                        <option value="Plain Unruled">Plain Unruled</option>
-                        <option value="Ledger / Cash Columns">Ledger / Cash Columns</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                        Paper Weight / Quality
-                      </label>
-                      <input
-                        type="text"
-                        value={productForm.paperQuality}
-                        onChange={(e) =>
-                          setProductForm({ ...productForm, paperQuality: e.target.value })
-                        }
-                        placeholder="e.g. 70 GSM Bleed-Proof Woodfree Paper"
-                        className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
-                      />
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                        Binding Type
-                      </label>
-                      <input
-                        type="text"
-                        value={productForm.bindingType}
-                        onChange={(e) =>
-                          setProductForm({ ...productForm, bindingType: e.target.value })
-                        }
-                        placeholder="e.g. Hardcover Smyth-Sewn Thread Bound"
-                        className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* SECTION 4: Stock & Warehouse Inventory */}
-              {modalActiveTab === 'stock' && (
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                        Stock Status
-                      </label>
-                      <select
-                        value={productForm.stockStatus}
-                        onChange={(e) =>
-                          setProductForm({ ...productForm, stockStatus: e.target.value as StockStatus })
-                        }
-                        className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
-                      >
-                        <option value="In Stock">In Stock</option>
-                        <option value="Low Stock">Low Stock</option>
-                        <option value="Out of Stock">Out of Stock</option>
-                      </select>
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                        Physical Stock Quantity on Hand (Units)
-                      </label>
-                      <input
-                        type="number"
-                        min={0}
-                        value={productForm.stockQuantity}
-                        onChange={(e) =>
-                          setProductForm({ ...productForm, stockQuantity: e.target.value })
-                        }
-                        placeholder="e.g. 500 pcs"
-                        className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap items-center gap-6 pt-3 border-t border-stone-200">
-                    <label className="inline-flex items-center gap-2 text-xs font-semibold text-stone-700 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={productForm.featured}
-                        onChange={(e) =>
-                          setProductForm({ ...productForm, featured: e.target.checked })
-                        }
-                        className="rounded text-[#111113] focus:ring-0"
-                      />
-                      <span>Featured on Homepage Showcase</span>
-                    </label>
-
-                    <label className="inline-flex items-center gap-2 text-xs font-semibold text-stone-700 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={productForm.bestSeller}
-                        onChange={(e) =>
-                          setProductForm({ ...productForm, bestSeller: e.target.checked })
-                        }
-                        className="rounded text-[#111113] focus:ring-0"
-                      />
-                      <span>Best-Selling Badge</span>
-                    </label>
-
-                    <label className="inline-flex items-center gap-2 text-xs font-semibold text-stone-700 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={productForm.freeDelivery}
-                        onChange={(e) =>
-                          setProductForm({ ...productForm, freeDelivery: e.target.checked })
-                        }
-                        className="rounded text-[#111113] focus:ring-0"
-                      />
-                      <span>Free Delivery Eligibility Tag</span>
-                    </label>
-                  </div>
-                </div>
-              )}
-
-              {/* SECTION 5: Imagery, Upload & Presets */}
-              {modalActiveTab === 'media' && (
-                <div className="space-y-4">
-                  {/* File Upload Dropzone */}
-                  <div
-                    onDragOver={(e) => {
-                      e.preventDefault();
-                      setIsDraggingFile(true);
-                    }}
-                    onDragLeave={() => setIsDraggingFile(false)}
-                    onDrop={(e) => {
-                      e.preventDefault();
-                      setIsDraggingFile(false);
-                      const file = e.dataTransfer.files?.[0];
-                      if (file) handleImageFileSelect(file);
-                    }}
-                    className={`relative border-2 border-dashed rounded-2xl p-6 text-center transition-all ${
-                      isDraggingFile
-                        ? 'border-[#dc2626] bg-[#dc2626]/10 shadow-md scale-[1.01]'
-                        : 'border-stone-300 hover:border-[#dc2626] bg-stone-50/80 hover:bg-stone-50'
-                    }`}
-                  >
-                    <input
-                      type="file"
-                      id="product-image-file-input"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) handleImageFileSelect(file);
-                      }}
-                    />
-
-                    {isUploadingImage ? (
-                      <div className="py-4 flex flex-col items-center justify-center space-y-2">
-                        <RefreshCw className="w-8 h-8 text-[#dc2626] animate-spin" />
-                        <p className="text-xs font-bold text-[#111113]">
-                          Processing &amp; Uploading Image...
-                        </p>
-                        <p className="text-[11px] text-stone-500">
-                          Saving image to server repository and linking to MongoDB Atlas
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col items-center justify-center space-y-2.5">
-                        <div className="w-12 h-12 rounded-2xl bg-[#111113]/10 text-[#111113] flex items-center justify-center">
-                          <UploadCloud className="w-6 h-6 text-[#dc2626]" />
-                        </div>
-                        <div>
-                          <p className="text-xs font-bold text-[#18181b]">
-                            Drag &amp; Drop product photo here, or{' '}
-                            <label
-                              htmlFor="product-image-file-input"
-                              className="text-[#dc2626] font-black hover:underline cursor-pointer"
-                            >
-                              Browse Files
-                            </label>
-                          </p>
-                          <p className="text-[11px] text-stone-500 mt-0.5">
-                            Supports PNG, JPG, JPEG, WEBP or SVG (Max 25MB). Uploads directly to server storage.
-                          </p>
-                        </div>
-
-                        <div className="flex items-center gap-2 pt-1">
-                          <label
-                            htmlFor="product-image-file-input"
-                            className="px-3.5 py-1.5 bg-[#111113] hover:bg-[#18181b] text-white text-[11px] font-bold rounded-xl cursor-pointer inline-flex items-center gap-1.5 shadow-2xs active:scale-95 transition-all"
-                          >
-                            <Upload className="w-3.5 h-3.5 text-[#dc2626]" />
-                            <span>Select from Computer / Mobile</span>
-                          </label>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Upload Notification Banners */}
-                  {uploadSuccessNotice && (
-                    <div className="p-3 bg-emerald-50 border border-emerald-300 rounded-xl text-xs text-emerald-800 font-bold flex items-center gap-2 animate-in fade-in">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span className="truncate">{uploadSuccessNotice}</span>
-                    </div>
-                  )}
-
-                  {uploadErrorNotice && (
-                    <div className="p-3 bg-red-50 border border-red-300 rounded-xl text-xs text-red-800 font-bold flex items-center gap-2 animate-in fade-in">
-                      <AlertTriangle className="w-4 h-4 text-red-600 shrink-0" />
-                      <span>{uploadErrorNotice}</span>
-                    </div>
-                  )}
-
-                  {/* Live Image Preview & Assigned Path */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-stone-50 rounded-2xl border border-stone-200">
-                    <div className="flex items-center gap-3.5 min-w-0">
-                      <div className="relative group/thumb shrink-0">
-                        <img
-                          src={productForm.image}
-                          alt="Preview"
-                          className="w-20 h-20 rounded-xl object-contain bg-white p-1 border border-stone-300 shadow-2xs"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = '/omega-products/counter-book-q2-192p.jpeg';
-                          }}
-                        />
-                        <button
-                          type="button"
-                          onClick={handleOpenCurrentInEditor}
-                          disabled={!productForm.image}
-                          className="absolute inset-0 bg-black/60 opacity-0 group-hover/thumb:opacity-100 rounded-xl flex flex-col items-center justify-center text-white text-[10px] font-bold transition-opacity cursor-pointer"
-                        >
-                          <Crop className="w-4 h-4 text-[#dc2626]" />
-                          <span>Crop</span>
-                        </button>
-                      </div>
-
-                      <div className="text-xs min-w-0 space-y-0.5">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <p className="font-bold text-[#18181b]">Active Product Photo</p>
-                          <span className="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800">
-                            Ready for Database
-                          </span>
-                        </div>
-                        <p className="text-stone-500 text-[11px] truncate font-mono max-w-xs sm:max-w-sm">
-                          {productForm.image}
-                        </p>
-                        <p className="text-[10px] text-stone-500 flex items-center gap-1 pt-0.5">
-                          <Sparkles className="w-3 h-3 text-[#dc2626]" />
-                          <span>1:1 Square Crop fills the product card border-to-border cleanly.</span>
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 shrink-0">
-                      <button
-                        type="button"
-                        onClick={handleOpenCurrentInEditor}
-                        disabled={!productForm.image}
-                        className="px-3.5 py-2 bg-[#111113] hover:bg-[#18181b] text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition-all active:scale-95 disabled:opacity-50"
-                        title="Open Image Cropper & Editing Studio"
-                      >
-                        <Crop className="w-4 h-4 text-[#dc2626]" />
-                        <span>Edit &amp; Crop Photo</span>
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Card Display Adaptation (With vs Without Background) */}
-                  <div className="p-3 bg-stone-50 rounded-xl border border-stone-200 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <label className="text-xs font-bold text-[#18181b] uppercase tracking-wider block">
-                        Website Card Display Mode (Background Adaptation)
-                      </label>
-                      <span className="text-[10px] font-bold text-[#dc2626] bg-[#dc2626]/10 px-2 py-0.5 rounded-full font-mono">
-                        {productForm.imageFit === 'contain' ? 'Studio Pedestal' : 'Edge-to-Edge Fill'}
-                      </span>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2">
-                      <button
-                        type="button"
-                        onClick={() => setProductForm({ ...productForm, imageFit: 'cover' })}
-                        className={`p-2.5 rounded-xl border text-left flex items-start gap-2 transition-all ${
-                          (productForm.imageFit || 'cover') === 'cover'
-                            ? 'border-[#dc2626] bg-amber-50/60 shadow-2xs text-[#18181b]'
-                            : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300'
-                        }`}
-                      >
-                        <div className="w-4 h-4 rounded-full border border-stone-400 mt-0.5 flex items-center justify-center shrink-0">
-                          {(productForm.imageFit || 'cover') === 'cover' && (
-                            <div className="w-2 h-2 rounded-full bg-[#dc2626]" />
-                          )}
-                        </div>
-                        <div>
-                          <div className="text-xs font-bold">Edge-to-Edge Fill</div>
-                          <div className="text-[10px] text-stone-500">For photos with full backgrounds</div>
-                        </div>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => setProductForm({ ...productForm, imageFit: 'contain' })}
-                        className={`p-2.5 rounded-xl border text-left flex items-start gap-2 transition-all ${
-                          productForm.imageFit === 'contain'
-                            ? 'border-[#dc2626] bg-amber-50/60 shadow-2xs text-[#18181b]'
-                            : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300'
-                        }`}
-                      >
-                        <div className="w-4 h-4 rounded-full border border-stone-400 mt-0.5 flex items-center justify-center shrink-0">
-                          {productForm.imageFit === 'contain' && (
-                            <div className="w-2 h-2 rounded-full bg-[#dc2626]" />
-                          )}
-                        </div>
-                        <div>
-                          <div className="text-xs font-bold">Studio Pedestal Fit</div>
-                          <div className="text-[10px] text-stone-500">For cutouts without background / any size</div>
-                        </div>
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Manual Image URL Path */}
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                      Or Direct Image URL / Path
-                    </label>
-                    <input
-                      type="text"
-                      value={productForm.image}
-                      onChange={(e) => setProductForm({ ...productForm, image: e.target.value })}
-                      placeholder="/uploads/omega_photo.png or https://..."
-                      className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
-                    />
-                  </div>
-
-                  {/* 1-Click Official OMEGA Asset Presets */}
-                  <div className="space-y-1.5">
-                    <span className="text-[11px] font-bold text-stone-600 uppercase block">
-                      ⚡ Quick 1-Click Factory Presets:
-                    </span>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 max-h-48 overflow-y-auto p-1">
-                      {OMEGA_IMAGE_PRESETS.map((preset, idx) => (
-                        <button
-                          key={idx}
-                          type="button"
-                          onClick={() => setProductForm({ ...productForm, image: preset.path })}
-                          className={`p-1.5 rounded-lg border text-left flex items-center gap-2 transition-all ${
-                            productForm.image === preset.path
-                              ? 'border-[#dc2626] bg-amber-50/50 shadow-2xs'
-                              : 'border-stone-200 hover:border-stone-300 bg-white'
-                          }`}
-                        >
-                          <img
-                            src={preset.path}
-                            alt={preset.label}
-                            className="w-8 h-8 rounded object-contain bg-stone-50 shrink-0"
-                          />
-                          <span className="text-[10px] font-semibold text-stone-700 line-clamp-2">
-                            {preset.label}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Modal Footer */}
-              <div className="flex items-center justify-between pt-3 border-t border-stone-200">
-                <button
-                  type="button"
-                  onClick={() => setIsProductModalOpen(false)}
-                  className="px-4 py-2 border border-stone-200 rounded-xl text-xs font-bold text-stone-600 hover:bg-stone-50"
-                >
-                  Cancel
-                </button>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="submit"
-                    disabled={isSavingProduct}
-                    className={`px-6 py-2.5 btn-ledup-copper text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 ${
-                      isSavingProduct ? 'opacity-70 cursor-not-allowed' : ''
-                    }`}
-                  >
-                    {isSavingProduct ? (
-                      <RefreshCw className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <Check className="w-4 h-4" />
-                    )}
-                    <span>
-                      {isSavingProduct
-                        ? 'Saving to MongoDB Atlas...'
-                        : modalMode === 'add'
-                        ? 'Create Product in MongoDB Atlas'
-                        : modalMode === 'clone'
-                        ? 'Save Cloned Variant to Database'
-                        : 'Update Product in Database'}
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* ==================== IMAGE EDITOR & CROPPING STUDIO MODAL ==================== */}
-      <ImageEditorModal
-        isOpen={isImageEditorOpen}
-        imageSrc={imageToEditUrl}
-        fileName={imageToEditFileName}
-        productName={productForm.name || 'OMEGA Product'}
-        initialImageFit={productForm.imageFit || 'cover'}
-        initialImageBackground={productForm.imageBackground || ''}
-        onClose={() => setIsImageEditorOpen(false)}
-        onApply={handleApplyCroppedImage}
-        isProcessing={isUploadingImage}
-      />
-
-      {/* ==================== QUICK PRODUCT INSPECTION DRAWER ==================== */}
-      {inspectingProduct && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-xl border border-stone-200 animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between border-b border-stone-200 pb-3">
-              <div>
-                <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider bg-[#111113] text-[#dc2626]">
-                  ERP MASTER RECORD
-                </span>
-                <h3 className="font-heading text-lg font-bold text-[#18181b] mt-1">
-                  {inspectingProduct.name}
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setInspectingProduct(null)}
-                className="text-stone-400 hover:text-stone-700"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="flex items-center gap-4 bg-stone-50 p-3 rounded-xl border border-stone-200">
-              <img
-                src={inspectingProduct.image || '/omega-products/counter-book-q3-288p.jpeg'}
-                alt={inspectingProduct.name}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/omega-products/counter-book-q3-288p.jpeg';
-                }}
-                className="w-20 h-20 rounded-lg object-contain bg-white p-1 border border-stone-300"
-              />
-              <div className="space-y-1 text-xs">
-                <p className="font-mono font-bold text-stone-800">
-                  SKU: {inspectingProduct.sku}
-                </p>
-                {inspectingProduct.barcode && (
-                  <p className="font-mono text-stone-600 text-[11px]">
-                    📟 EAN-13: {inspectingProduct.barcode}
-                  </p>
-                )}
-                <p className="text-stone-500 font-semibold">{inspectingProduct.category}</p>
-                <span
-                  className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                    inspectingProduct.stockStatus === 'In Stock'
-                      ? 'bg-emerald-100 text-emerald-800'
-                      : 'bg-red-100 text-red-800'
-                  }`}
-                >
-                  {inspectingProduct.stockStatus} ·{' '}
-                  {inspectingProduct.stockQuantity !== undefined
-                    ? inspectingProduct.stockQuantity
-                    : 100}{' '}
-                  units on hand
-                </span>
-              </div>
-            </div>
-
-            {/* Specifications Matrix */}
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="p-2.5 bg-stone-50 rounded-xl">
-                <span className="text-[10px] text-stone-400 uppercase font-bold block">Retail Price:</span>
-                <span className="font-mono font-bold text-[#18181b]">
-                  {formatPrice(inspectingProduct.price, currency)}
-                </span>
-              </div>
-              <div className="p-2.5 bg-stone-50 rounded-xl">
-                <span className="text-[10px] text-stone-400 uppercase font-bold block">Wholesale Unit Price:</span>
-                <span className="font-mono font-bold text-emerald-700">
-                  {formatPrice(
-                    inspectingProduct.wholesalePrice || Math.round(inspectingProduct.price * 0.7),
-                    currency
-                  )}
-                </span>
-              </div>
-              <div className="p-2.5 bg-stone-50 rounded-xl">
-                <span className="text-[10px] text-stone-400 uppercase font-bold block">Packaging Spec:</span>
-                <span className="font-medium text-stone-800">
-                  {inspectingProduct.packaging || '48 Pcs / Strapped Box'}
-                </span>
-              </div>
-              <div className="p-2.5 bg-stone-50 rounded-xl">
-                <span className="text-[10px] text-stone-400 uppercase font-bold block">Quire &amp; Pages:</span>
-                <span className="font-medium text-stone-800">
-                  {inspectingProduct.quire || '2 Quire'} · {inspectingProduct.pageCount || '192 Pages'}
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-end gap-2 pt-3 border-t border-stone-200">
-              <button
-                type="button"
-                onClick={() => {
-                  setInspectingProduct(null);
-                  handleCloneProduct(inspectingProduct);
-                }}
-                className="px-3.5 py-1.5 border border-stone-200 hover:bg-stone-50 text-stone-700 rounded-xl text-xs font-bold inline-flex items-center gap-1"
-              >
-                <Copy className="w-3.5 h-3.5" />
-                <span>Clone Variant</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setInspectingProduct(null);
-                  openEditProductModal(inspectingProduct);
-                }}
-                className="px-4 py-1.5 bg-[#111113] hover:bg-black text-white rounded-xl text-xs font-bold inline-flex items-center gap-1"
-              >
-                <Edit3 className="w-3.5 h-3.5 text-[#dc2626]" />
-                <span>Edit Master Record</span>
-              </button>
             </div>
           </div>
         </div>
