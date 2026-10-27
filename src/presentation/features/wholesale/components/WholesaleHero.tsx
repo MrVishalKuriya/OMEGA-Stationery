@@ -1,30 +1,22 @@
 import React from 'react';
 import {
-  Building2,
   Truck,
   Percent,
   BadgeCheck,
   ShieldCheck,
-  Calculator,
-  ChevronRight,
-  MessageCircle,
-  FileSpreadsheet,
-  Download,
 } from 'lucide-react';
 
 interface WholesaleHeroProps {
   language: string;
-  cleanWhatsappDigits: string;
-  onExportCSV: () => void;
+  cleanWhatsappDigits?: string;
+  onExportCSV?: () => void;
 }
 
 export const WholesaleHero: React.FC<WholesaleHeroProps> = ({
   language,
-  cleanWhatsappDigits,
-  onExportCSV,
 }) => {
   return (
-    <section className="relative overflow-hidden w-full bg-[#18181b] text-white py-16 lg:py-24 border-b border-[#18181b] shadow-2xl">
+    <section className="relative overflow-hidden w-full bg-[#18181b] text-white py-12 lg:py-16 border-b border-[#18181b] shadow-2xl">
       {/* Soft Ambient Warm Glows */}
       <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[#dc2626]/18 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-0 left-10 w-[450px] h-[450px] bg-[#b91c1c]/15 rounded-full blur-[120px] pointer-events-none" />
@@ -52,7 +44,7 @@ export const WholesaleHero: React.FC<WholesaleHeroProps> = ({
         </p>
 
         {/* Quick-Trust Metrics Strip */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl mx-auto mb-10 text-left">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-3xl mx-auto text-left">
           <div className="bg-white/5 border border-white/10 rounded-xl p-3 flex items-center gap-3">
             <Truck className="w-5 h-5 text-[#dc2626] shrink-0" />
             <div>
@@ -81,49 +73,6 @@ export const WholesaleHero: React.FC<WholesaleHeroProps> = ({
               <div className="text-[11px] text-stone-400">70 GSM bleed-proof paper</div>
             </div>
           </div>
-        </div>
-
-        {/* Call to Actions */}
-        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-          <a
-            href="#calculator"
-            className="btn-ledup-copper group px-7 py-3.5 rounded-lg text-xs sm:text-sm uppercase tracking-wider font-bold inline-flex items-center gap-2 shadow-lg min-h-[44px] active:scale-95"
-          >
-            <Calculator className="w-4 h-4 text-white" />
-            <span>Calculate Carton Savings</span>
-            <ChevronRight className="w-4 h-4 text-white group-hover:translate-x-0.5 transition-transform" />
-          </a>
-
-          <a
-            href={`https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
-              'Hello OMEGA Tanzania, I would like to inquire about wholesale prices and carton availability for bulk ordering.'
-            )}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-6 py-3.5 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-md inline-flex items-center gap-2 min-h-[44px] active:scale-95"
-          >
-            <MessageCircle className="w-4 h-4 fill-white" />
-            <span>WhatsApp Wholesale Desk</span>
-          </a>
-
-          <a
-            href="/uploads/PL00001.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-5 py-3.5 rounded-lg bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] hover:from-[#991b1b] hover:to-[#dc2626] text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-md inline-flex items-center gap-2 min-h-[44px] active:scale-95 font-mono"
-          >
-            <Download className="w-4 h-4 text-white" />
-            <span>Official Price List (PDF)</span>
-          </a>
-
-          <button
-            type="button"
-            onClick={onExportCSV}
-            className="px-5 py-3.5 rounded-lg bg-white/5 hover:bg-white/15 text-stone-200 border border-white/15 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors inline-flex items-center gap-2 min-h-[44px] active:scale-95"
-          >
-            <FileSpreadsheet className="w-4 h-4 text-[#dc2626]" />
-            <span>Download CSV</span>
-          </button>
         </div>
       </div>
     </section>
