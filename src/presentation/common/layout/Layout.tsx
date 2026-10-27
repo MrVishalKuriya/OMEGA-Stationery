@@ -158,45 +158,84 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
             {/* Col 1: Heritage & Manufacturing (6 cols) */}
             <div className="lg:col-span-6 space-y-4">
-              <Link to="/" className="inline-block">
-                <OmegaLogo variant="badge" size="md" showSubtitle={true} />
-              </Link>
+              {/* Brand Hallmark & Manufacturing Eyebrow */}
+              <div className="flex flex-wrap items-center gap-3">
+                <Link to="/" className="inline-block group focus-ring-gold rounded-lg">
+                  <OmegaLogo variant="badge" size="md" showSubtitle={true} />
+                </Link>
 
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#dc2626]/15 border border-[#dc2626]/30 text-[10px] font-mono font-bold text-[#ef4444]">
-                <Building2 className="w-3 h-3 text-[#dc2626]" />
-                <span>Manufactured by INDIGO PRINTED LIMITED</span>
+                <div className="inline-flex items-center px-3 py-1 rounded-md bg-gradient-to-r from-[#dc2626]/20 via-[#dc2626]/10 to-transparent border border-[#dc2626]/40 text-[10px] font-mono font-bold text-[#ef4444] uppercase tracking-wider shadow-xs">
+                  <span>MANUFACTURED BY INDIGO PRINTED LIMITED</span>
+                </div>
               </div>
 
               <p className="text-xs text-zinc-300 leading-relaxed max-w-xl">
-                Tanzania's benchmark manufacturer of Counter Books (Q2, Q3, Q4), Exercise Books, Kraft Bahasha, and educational paper products. Engineered for scholars, schools, wholesale traders, and commercial enterprises nationwide.
+                Tanzania&apos;s benchmark manufacturer of Counter Books (Q2, Q3, Q4), Exercise Books, Kraft Bahasha, and educational paper products. Engineered for scholars, schools, wholesale traders, and commercial enterprises nationwide.
               </p>
 
-              <div className="space-y-2 text-xs pt-2 border-t border-white/10 text-zinc-300 max-w-xl">
-                <div className="flex items-start gap-2">
-                  <MapPin className="w-4 h-4 text-[#dc2626] shrink-0 mt-0.5" />
+              {/* Manufacturing Facilities & Direct Dispatch Hubs Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-w-xl pt-1">
+                {/* 1. Main Factory & HQ */}
+                <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-[#dc2626]/40 transition-all flex flex-col justify-between">
                   <div>
-                    <span className="font-semibold text-white">Main Factory &amp; HQ:</span>{' '}
-                    <span>Plot 30, Block F Kilwa Rd, Mwanambaya-Mkuranga, P.O. Box 10424, Dar es Salaam</span>
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-[#dc2626] shrink-0" />
+                      <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-zinc-400">
+                        Main Factory &amp; HQ
+                      </span>
+                    </div>
+                    <p className="text-xs text-white font-semibold leading-snug">
+                      Plot 30, Block F Kilwa Rd, Mwanambaya-Mkuranga
+                    </p>
                   </div>
+                  <p className="text-[11px] text-zinc-400 mt-2 font-mono">
+                    P.O. Box 10424, Dar es Salaam
+                  </p>
                 </div>
 
-                <div className="flex items-start gap-2">
-                  <Building2 className="w-4 h-4 text-[#dc2626] shrink-0 mt-0.5" />
+                {/* 2. Upcountry Factory Desk (Mbeya) */}
+                <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-[#dc2626]/40 transition-all flex flex-col justify-between">
                   <div>
-                    <span className="font-semibold text-white">Mbeya Factory Desk:</span>{' '}
-                    <span>Soweto SIDO Viwandani</span>
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      <Building2 className="w-3.5 h-3.5 text-[#dc2626] shrink-0" />
+                      <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-zinc-400">
+                        Highlands Hub Desk
+                      </span>
+                    </div>
+                    <p className="text-xs text-white font-semibold leading-snug">
+                      Mbeya Factory Desk
+                    </p>
+                  </div>
+                  <p className="text-[11px] text-zinc-400 mt-2 font-mono">
+                    Soweto SIDO Viwandani, Mbeya
+                  </p>
+                </div>
+              </div>
+
+              {/* Official Corporate Inquiries Bar */}
+              <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/10 hover:border-[#dc2626]/40 transition-all flex items-center justify-between gap-3 max-w-xl">
+                <div className="flex items-center gap-2 min-w-0">
+                  <div className="w-7 h-7 rounded-lg bg-[#dc2626]/15 border border-[#dc2626]/30 flex items-center justify-center text-[#ef4444] shrink-0">
+                    <Mail className="w-3.5 h-3.5" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block leading-tight">
+                      Official Inquiries
+                    </span>
+                    <a
+                      href="mailto:indigoprinter06423@gmail.com"
+                      className="text-xs font-mono font-bold text-zinc-200 hover:text-[#ef4444] transition-colors block truncate"
+                    >
+                      indigoprinter06423@gmail.com
+                    </a>
                   </div>
                 </div>
-
-                <div className="flex items-center gap-2 pt-1 text-zinc-300">
-                  <Mail className="w-4 h-4 text-[#dc2626] shrink-0" />
-                  <a
-                    href="mailto:indigoprinter06423@gmail.com"
-                    className="hover:text-white transition-colors font-mono"
-                  >
-                    indigoprinter06423@gmail.com
-                  </a>
-                </div>
+                <a
+                  href="mailto:indigoprinter06423@gmail.com"
+                  className="px-2.5 py-1 rounded-md bg-white/5 hover:bg-[#dc2626] text-zinc-300 hover:text-white text-[11px] font-mono font-semibold transition-all shrink-0"
+                >
+                  Email Us
+                </a>
               </div>
             </div>
 
@@ -206,7 +245,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-white">
                   Executive Desks &amp; Direct Hotlines
                 </h4>
-                <span className="inline-flex items-center gap-1 text-[9px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                <span className="inline-flex items-center gap-1.5 text-[9px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-md border border-emerald-500/20">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   DIRECT DESKS
                 </span>

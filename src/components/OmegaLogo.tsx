@@ -38,22 +38,22 @@ export const OmegaLogo: React.FC<OmegaLogoProps> = ({
   if (variant === 'badge') {
     return (
       <div className="flex items-center gap-2.5">
-        <div className="bg-white px-2.5 py-1.5 rounded-xl shadow-md border border-white/20 hover:border-[#dc2626] transition-all flex items-center gap-2">
+        <div className="bg-gradient-to-br from-[#1c1c1f] to-[#09090b] px-3 py-1.5 rounded-lg shadow-md border border-white/15 hover:border-[#dc2626] transition-all flex items-center gap-2">
           <img
             src="/logo-icon.png"
             alt="OMEGA Icon"
             className="w-5 h-5 object-contain shrink-0"
           />
-          <span className="font-heading font-black tracking-wider text-[#09090b] text-base leading-none">
+          <span className="font-heading font-black tracking-wider text-white text-base leading-none">
             OMEGA
           </span>
         </div>
         {showSubtitle && (
           <div className="flex flex-col border-l border-white/20 pl-2.5">
-            <span className="text-[10px] sm:text-xs font-black tracking-[0.2em] text-[#D64545] uppercase leading-none font-mono">
+            <span className="text-[10px] sm:text-xs font-black tracking-[0.2em] text-[#ef4444] uppercase leading-none font-mono">
               TANZANIA
             </span>
-            <span className="text-[9px] tracking-wider font-bold text-stone-300 uppercase mt-0.5 whitespace-nowrap font-sans">
+            <span className="text-[9px] tracking-wider font-bold text-zinc-400 uppercase mt-0.5 whitespace-nowrap font-sans">
               Writing Notebooks
             </span>
           </div>
