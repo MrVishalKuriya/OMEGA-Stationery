@@ -75,7 +75,7 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
         </div>
 
         {/* Tier 2: Business (Most Popular) */}
-        <div className="relative bg-[#2d2520] text-white p-7 sm:p-8 flex flex-col justify-between border-2 border-[#dc2626] rounded-2xl shadow-xl md:-translate-y-2">
+        <div className="relative bg-[#111113] text-white p-7 sm:p-8 flex flex-col justify-between border-2 border-[#dc2626] rounded-2xl shadow-[0_12px_40px_rgba(220,38,38,0.25)] md:-translate-y-2">
           <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-md bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] text-white text-[10px] font-black uppercase tracking-widest shadow-md flex items-center gap-1.5 whitespace-nowrap">
             <Sparkles className="w-3 h-3 text-white" />
             <span>MOST POPULAR · BEST VALUE</span>
