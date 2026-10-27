@@ -763,14 +763,13 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={() => setIsTrackingModalOpen(true)}
+            <Link
+              to="/tracking"
               className="px-5 py-2.5 rounded-xl bg-[#111113] hover:bg-[#111113] text-white text-xs font-bold uppercase tracking-wider font-mono flex items-center gap-2 transition-all active:scale-95 shadow-xs shrink-0 cursor-pointer"
             >
               <span>Track Bus Waybill</span>
               <ArrowRight className="w-3.5 h-3.5 text-[#dc2626]" />
-            </button>
+            </Link>
           </div>
 
         </div>

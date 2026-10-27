@@ -122,15 +122,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           />
         </button>
 
-        {/* Quick View Button Hover Overlay (Desktop) */}
-        <button
-          type="button"
-          onClick={handleQuickView}
+        {/* View Details Button Hover Overlay (Desktop) */}
+        <Link
+          to={`/product/${product.id}`}
           className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-10 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 px-3 py-1.5 rounded-lg bg-[#111113]/90 hover:bg-black text-[#ef4444] text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-lg border border-[#dc2626]/50 backdrop-blur-sm whitespace-nowrap cursor-pointer hidden sm:flex"
         >
           <Eye className="w-3.5 h-3.5 text-[#ef4444]" />
-          <span>Quick View</span>
-        </button>
+          <span>View Details</span>
+        </Link>
 
         {/* Clickable Image */}
         <Link

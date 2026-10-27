@@ -42,6 +42,9 @@ const SchoolTendersPage = lazy(() =>
 const ShippingGuidePage = lazy(() =>
   import('./presentation/features/marketing').then((m) => ({ default: m.ShippingGuidePage }))
 );
+const OrderTrackingPage = lazy(() =>
+  import('./presentation/features/cart').then((m) => ({ default: m.OrderTrackingPage }))
+);
 const AdminDashboardPage = lazy(() =>
   import('./presentation/features/admin').then((m) => ({ default: m.AdminDashboardPage }))
 );
@@ -131,6 +134,9 @@ export default function App() {
                 <Route path="/tenders" element={<SchoolTendersPage />} />
                 <Route path="/shipping-guide" element={<ShippingGuidePage />} />
                 <Route path="/dispatch-locations" element={<ShippingGuidePage />} />
+                <Route path="/tracking" element={<OrderTrackingPage />} />
+                <Route path="/order-tracking" element={<OrderTrackingPage />} />
+                <Route path="/track-order" element={<OrderTrackingPage />} />
 
                 {/* Guest-only Authentication Routes */}
                 <Route path="/login" element={<GuestRoute><LoginPage /></GuestRoute>} />

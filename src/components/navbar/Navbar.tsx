@@ -402,9 +402,8 @@ export const Navbar: React.FC = () => {
                 </button>
 
                 {/* 4. Wishlist Icon (Heart) - Visible sm+ */}
-                <button
-                  type="button"
-                  onClick={() => setIsWishlistModalOpen(true)}
+                <Link
+                  to="/wishlist"
                   aria-label={`Wishlist (${wishlistCount} saved items)`}
                   className="hidden sm:flex p-2 rounded-full text-[#18181b] hover:text-[#dc2626] hover:bg-[#f4f4f5] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] items-center justify-center relative shrink-0"
                   title="Wishlist"
@@ -419,7 +418,7 @@ export const Navbar: React.FC = () => {
                       {wishlistCount}
                     </span>
                   )}
-                </button>
+                </Link>
 
                 {/* 5. Account Icon (User) - Visible sm+ */}
                 <div className="relative z-50 shrink-0 hidden sm:block">
@@ -443,8 +442,8 @@ export const Navbar: React.FC = () => {
                   <AccountDropdown
                     isOpen={isAccountOpen}
                     onClose={() => setIsAccountOpen(false)}
-                    onOpenOrders={() => setIsTrackingModalOpen(true)}
-                    onOpenWishlist={() => setIsWishlistModalOpen(true)}
+                    onOpenOrders={() => navigate('/tracking')}
+                    onOpenWishlist={() => navigate('/wishlist')}
                   />
                 </div>
 
@@ -563,8 +562,8 @@ export const Navbar: React.FC = () => {
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}
         onOpenSearch={() => setIsSearchOpen(true)}
-        onOpenWishlist={() => setIsWishlistModalOpen(true)}
-        onOpenTracking={() => setIsTrackingModalOpen(true)}
+        onOpenWishlist={() => navigate('/wishlist')}
+        onOpenTracking={() => navigate('/tracking')}
       />
     </>
   );

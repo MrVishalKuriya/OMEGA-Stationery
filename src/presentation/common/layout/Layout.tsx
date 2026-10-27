@@ -316,29 +316,26 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs">
-              <button
-                type="button"
-                onClick={() => setIsTrackingModalOpen(true)}
+              <Link
+                to="/tracking"
                 className="hover:text-[#ef4444] transition-colors cursor-pointer"
               >
                 Track Parcel
-              </button>
+              </Link>
               <span>·</span>
-              <button
-                type="button"
-                onClick={() => setIsWholesaleModalOpen(true)}
+              <Link
+                to="/wholesale#calculator"
                 className="hover:text-[#ef4444] transition-colors cursor-pointer"
               >
                 Carton Calculator
-              </button>
+              </Link>
               <span>·</span>
-              <button
-                type="button"
-                onClick={() => setIsWishlistModalOpen(true)}
+              <Link
+                to="/wishlist"
                 className="hover:text-[#ef4444] transition-colors cursor-pointer"
               >
                 Wishlist ({wishlistCount})
-              </button>
+              </Link>
               <span>·</span>
               <button
                 type="button"

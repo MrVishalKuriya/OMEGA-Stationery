@@ -188,26 +188,20 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
           ) : (
             <div className="space-y-2">
               <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    onClose();
-                    openAuthModal('login');
-                  }}
+                <Link
+                  to="/login"
+                  onClick={onClose}
                   className="py-2 px-3 rounded-lg bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] hover:from-[#991b1b] hover:to-[#dc2626] text-xs font-bold text-center text-white block w-full shadow-md shadow-red-900/20 active:scale-98 cursor-pointer transition-all"
                 >
                   Sign In
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    onClose();
-                    openAuthModal('register');
-                  }}
+                </Link>
+                <Link
+                  to="/register"
+                  onClick={onClose}
                   className="py-2 px-3 rounded-lg bg-white/5 border border-white/15 hover:bg-white/10 text-xs font-bold text-center text-zinc-200 block w-full active:scale-98 cursor-pointer transition-all"
                 >
                   Register
-                </button>
+                </Link>
               </div>
             </div>
           )}
@@ -215,12 +209,9 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
 
         {/* Quick Tools Row (Wishlist, Track, Language) */}
         <div className="grid grid-cols-3 divide-x divide-white/10 border-b border-white/10 bg-[#111115] text-xs">
-          <button
-            type="button"
-            onClick={() => {
-              onOpenWishlist();
-              onClose();
-            }}
+          <Link
+            to="/wishlist"
+            onClick={onClose}
             className="py-2.5 px-2 flex flex-col items-center gap-1 text-zinc-300 hover:text-white hover:bg-white/[0.04] transition-colors"
           >
             <div className="relative">
@@ -232,19 +223,16 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
               )}
             </div>
             <span className="text-[11px] font-medium">Wishlist</span>
-          </button>
+          </Link>
 
-          <button
-            type="button"
-            onClick={() => {
-              onOpenTracking();
-              onClose();
-            }}
+          <Link
+            to="/tracking"
+            onClick={onClose}
             className="py-2.5 px-2 flex flex-col items-center gap-1 text-zinc-300 hover:text-white hover:bg-white/[0.04] transition-colors"
           >
             <Package className="w-4 h-4 text-zinc-300" />
             <span className="text-[11px] font-medium">Track Order</span>
-          </button>
+          </Link>
 
           <button
             type="button"

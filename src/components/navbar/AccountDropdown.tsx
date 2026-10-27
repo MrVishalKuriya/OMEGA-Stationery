@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   User,
   LogIn,
@@ -26,11 +26,11 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
   onOpenOrders,
   onOpenWishlist,
 }) => {
+  const navigate = useNavigate();
   const {
     wishlistCount,
     currentUser,
     activeSession,
-    openAuthModal,
     logout,
     openCookiePreferences,
   } = useStore();
@@ -63,12 +63,12 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
 
   const handleOpenSignIn = () => {
     onClose();
-    openAuthModal('login');
+    navigate('/login');
   };
 
   const handleOpenRegister = () => {
     onClose();
-    openAuthModal('register');
+    navigate('/register');
   };
 
   const handleLogout = () => {
