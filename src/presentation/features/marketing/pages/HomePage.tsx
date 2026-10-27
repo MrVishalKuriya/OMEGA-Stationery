@@ -498,37 +498,38 @@ export const HomePage: React.FC = () => {
           </div>
 
           {/* Filter Bar & Quick Catalog Access */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 pt-1">
-            {/* Segmented Filter Pills (Centered on mobile, scrollable) */}
-            <div className="w-full sm:w-auto overflow-x-auto no-scrollbar py-1 flex sm:justify-start justify-center">
-              <div className="inline-flex items-center gap-1 sm:gap-1.5 p-1.5 bg-white rounded-xl border border-[#e4e4e7] shadow-xs mx-auto sm:mx-0">
-                {[
-                  { id: 'all', label: t.allProducts || 'All Products' },
-                  { id: 'counter', label: 'Counter Books' },
-                  { id: 'exercise', label: 'Exercise Books' },
-                  { id: 'bahasha', label: 'Bahasha & Envelopes' },
-                  { id: 'registers', label: 'Registers & Paper' },
-                ].map((tab) => (
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3.5 sm:gap-4 pt-1">
+            {/* Filter Pills (Smooth scrollable on mobile, natural left alignment, no clipping) */}
+            <div className="w-full sm:w-auto overflow-x-auto no-scrollbar py-1.5 -mx-4 px-4 sm:mx-0 sm:px-0 flex items-center justify-start gap-2">
+              {[
+                { id: 'all', label: t.allProducts || 'All Products' },
+                { id: 'counter', label: 'Counter Books' },
+                { id: 'exercise', label: 'Exercise Books' },
+                { id: 'bahasha', label: 'Bahasha & Envelopes' },
+                { id: 'registers', label: 'Registers & Paper' },
+              ].map((tab) => {
+                const isActive = activeTab === tab.id;
+                return (
                   <button
                     key={tab.id}
                     type="button"
                     onClick={() => setActiveTab(tab.id as any)}
-                    className={`px-3.5 sm:px-5 py-2 text-xs font-bold rounded-lg whitespace-nowrap shrink-0 transition-all duration-200 ${
-                      activeTab === tab.id
-                        ? 'bg-[#111113] text-white shadow-md'
-                        : 'text-[#71717a] hover:text-[#18181b] hover:bg-[#f4f4f5]'
+                    className={`px-3.5 sm:px-4 py-2 text-xs font-bold rounded-xl whitespace-nowrap shrink-0 transition-all duration-200 font-mono tracking-wider uppercase ${
+                      isActive
+                        ? 'bg-[#111113] text-white shadow-sm border border-zinc-900 ring-1 ring-white/10'
+                        : 'bg-white hover:bg-zinc-50 text-zinc-600 hover:text-zinc-900 border border-zinc-200 shadow-2xs'
                     }`}
                   >
                     {tab.label}
                   </button>
-                ))}
-              </div>
+                );
+              })}
             </div>
 
             {/* View Complete Catalogue Button */}
             <Link
               to="/catalog"
-              className="group inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white border border-[#e4e4e7] hover:border-[#dc2626] shadow-xs text-xs font-mono font-bold uppercase tracking-wider text-[#18181b] hover:text-[#dc2626] transition-all self-center sm:self-auto shrink-0"
+              className="group inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-zinc-200 hover:border-[#dc2626] shadow-2xs text-xs font-mono font-bold uppercase tracking-wider text-[#18181b] hover:text-[#dc2626] transition-all shrink-0 self-start sm:self-auto"
             >
               <span>{language === 'sw' ? 'TAZAMA CATALOGUE YOTE' : 'VIEW COMPLETE CATALOGUE'}</span>
               <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-[#dc2626]" />
