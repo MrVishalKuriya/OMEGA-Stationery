@@ -291,10 +291,18 @@ export const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
           
           {/* Section Header */}
-          <div className="border-b border-[#e4e4e7] pb-4">
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#18181b] tracking-tight">
+          <div className="text-center space-y-3 max-w-2xl mx-auto">
+            <div className="inline-flex items-center px-3.5 py-1 rounded-md bg-gradient-to-r from-[#dc2626]/15 via-[#dc2626]/5 to-transparent border border-[#dc2626]/30 text-xs font-bold text-[#dc2626] font-mono uppercase tracking-widest shadow-xs">
+              <span>{language === 'sw' ? 'MAKUNDI YA BIDHAA' : 'CURATED NOTEBOOK LINES'}</span>
+            </div>
+            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#18181b] tracking-tight">
               {language === 'sw' ? 'Mkusanyiko Rasmi wa Vitabu' : 'Explore by Category'}
             </h2>
+            <p className="text-xs sm:text-sm text-[#71717a] leading-relaxed">
+              {language === 'sw'
+                ? 'Kuanzia madaftari ya Q2, Q3, Q4 yenye jalada gumu hadi madaftari ya shule za msingi na sekondari pamoja na bahasha imara za krafti.'
+                : 'From heavy-duty Q2–Q4 counter ledger books to standard school exercise editions and tear-resistant kraft mailers.'}
+            </p>
           </div>
 
           {/* 6 Category Showcase Cards */}
@@ -439,45 +447,57 @@ export const HomePage: React.FC = () => {
       <section className="py-14 sm:py-20 bg-[#fafafa] border-b border-[#e4e4e7]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
           
-          {/* Header Row */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#e4e4e7] pb-4">
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#18181b] tracking-tight">
+          {/* Section Header */}
+          <div className="text-center space-y-3 max-w-2xl mx-auto">
+            <div className="inline-flex items-center px-3.5 py-1 rounded-md bg-gradient-to-r from-[#dc2626]/15 via-[#dc2626]/5 to-transparent border border-[#dc2626]/30 text-xs font-bold text-[#dc2626] font-mono uppercase tracking-widest shadow-xs">
+              <span>{language === 'sw' ? 'VINARA VYA MAUZO KIWANDANI' : 'FACTORY BENCHMARK EDITIONS'}</span>
+            </div>
+            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#18181b] tracking-tight">
               {language === 'sw' ? 'Bidhaa Zinazoongoza kwa Mauzo' : 'Benchmark Stationery Picks'}
             </h2>
-
-            <Link
-              to="/catalog"
-              className="font-mono text-xs font-bold tracking-wider uppercase text-[#111113] hover:text-[#dc2626] inline-flex items-center gap-1.5 border-b border-[#111113] hover:border-[#dc2626] pb-1 transition-colors self-start sm:self-auto shrink-0"
-            >
-              <span>{language === 'sw' ? 'TAZAMA ZOTE' : 'VIEW COMPLETE CATALOGUE'}</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </Link>
+            <p className="text-xs sm:text-sm text-[#71717a] leading-relaxed">
+              {language === 'sw'
+                ? 'Vitabu na madaftari yanayoongoza kwa mahitaji ya shule, maduka na taasisi kote Tanzania, tayari kwa usafirishaji wa haraka.'
+                : 'High-velocity ledger books and student exercise editions in high daily demand across schools, wholesale shops, and commercial offices.'}
+            </p>
           </div>
 
-          {/* Segmented Filter Pills (Horizontal scroll on mobile) */}
-          <div className="w-full overflow-x-auto no-scrollbar py-1">
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 p-1.5 bg-white rounded-2xl border border-[#e4e4e7] shadow-xs">
-              {[
-                { id: 'all', label: t.allProducts || 'All Products' },
-                { id: 'counter', label: 'Counter Books' },
-                { id: 'exercise', label: 'Exercise Books' },
-                { id: 'bahasha', label: 'Bahasha & Envelopes' },
-                { id: 'registers', label: 'Registers & Paper' },
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-4 sm:px-5 py-2 text-xs font-bold rounded-xl whitespace-nowrap shrink-0 transition-all duration-200 ${
-                    activeTab === tab.id
-                      ? 'bg-[#111113] text-white shadow-md'
-                      : 'text-[#71717a] hover:text-[#18181b] hover:bg-[#efeded]'
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
+          {/* Filter Bar & Quick Catalog Access */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 pt-1">
+            {/* Segmented Filter Pills (Centered on mobile, scrollable) */}
+            <div className="w-full sm:w-auto overflow-x-auto no-scrollbar py-1 flex sm:justify-start justify-center">
+              <div className="inline-flex items-center gap-1 sm:gap-1.5 p-1.5 bg-white rounded-xl border border-[#e4e4e7] shadow-xs mx-auto sm:mx-0">
+                {[
+                  { id: 'all', label: t.allProducts || 'All Products' },
+                  { id: 'counter', label: 'Counter Books' },
+                  { id: 'exercise', label: 'Exercise Books' },
+                  { id: 'bahasha', label: 'Bahasha & Envelopes' },
+                  { id: 'registers', label: 'Registers & Paper' },
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setActiveTab(tab.id as any)}
+                    className={`px-3.5 sm:px-5 py-2 text-xs font-bold rounded-lg whitespace-nowrap shrink-0 transition-all duration-200 ${
+                      activeTab === tab.id
+                        ? 'bg-[#111113] text-white shadow-md'
+                        : 'text-[#71717a] hover:text-[#18181b] hover:bg-[#f4f4f5]'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
             </div>
+
+            {/* View Complete Catalogue Button */}
+            <Link
+              to="/catalog"
+              className="group inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white border border-[#e4e4e7] hover:border-[#dc2626] shadow-xs text-xs font-mono font-bold uppercase tracking-wider text-[#18181b] hover:text-[#dc2626] transition-all self-center sm:self-auto shrink-0"
+            >
+              <span>{language === 'sw' ? 'TAZAMA CATALOGUE YOTE' : 'VIEW COMPLETE CATALOGUE'}</span>
+              <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-[#dc2626]" />
+            </Link>
           </div>
 
           {/* Product Cards Grid (2 cols on mobile, 4 on desktop) */}
