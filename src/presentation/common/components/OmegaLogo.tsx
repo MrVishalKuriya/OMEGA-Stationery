@@ -40,9 +40,9 @@ export const OmegaLogo: React.FC<OmegaLogoProps> = ({
       <div className="flex items-center gap-2.5">
         <div className="bg-gradient-to-br from-[#1c1c1f] to-[#09090b] px-3 py-1.5 rounded-lg shadow-md border border-white/15 hover:border-[#dc2626] transition-all flex items-center gap-2">
           <img
-            src="/logo-icon.png"
+            src="/logo-icon-white.png"
             alt="OMEGA Icon"
-            className="w-5 h-5 object-contain shrink-0"
+            className="w-5 h-5 object-contain shrink-0 drop-shadow-[0_0_6px_rgba(255,255,255,0.4)]"
           />
           <span className="font-heading font-black tracking-wider text-white text-base leading-none">
             OMEGA

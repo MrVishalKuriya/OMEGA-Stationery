@@ -98,11 +98,11 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
         {/* Drawer Header */}
         <div className="flex items-center justify-between p-4 border-b border-white/10 bg-[#141418]">
           <Link to="/" onClick={onClose} className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 p-1 flex items-center justify-center shadow-xs shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-white/10 border border-white/15 p-1 flex items-center justify-center shadow-xs shrink-0">
               <img
-                src="/logo-icon.png"
+                src="/logo-icon-white.png"
                 alt="OMEGA Icon"
-                className="w-full h-full object-contain brightness-110"
+                className="w-full h-full object-contain"
               />
             </div>
             <div className="flex flex-col">

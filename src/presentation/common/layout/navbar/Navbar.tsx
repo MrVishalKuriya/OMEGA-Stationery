@@ -255,7 +255,7 @@ export const Navbar: React.FC = () => {
                 </button>
 
                 {/* Brand Logo & Name */}
-                <Link
+                <Link 
                   to="/"
                   className="flex items-center gap-2.5 group focus-ring-gold rounded-[8px] p-0.5 shrink-0"
                   aria-label="OMEGA Stationery & Books Home"
