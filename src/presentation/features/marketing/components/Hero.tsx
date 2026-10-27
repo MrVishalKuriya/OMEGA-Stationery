@@ -66,7 +66,7 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
       title: language === 'sw' ? 'Counter Book Q2 (192p)' : 'Counter Book Q2 (192 Pages)',
       category: 'Accounting & Schools',
       price: 'TZS 3,500',
-      image: '/omega-products/counter-book-q2-catalog.jpeg',
+      image: '/omega-products/omega-counter-book-podium.png',
       href: '/product/prod-omega-cb-q2',
       tag: 'Bestseller',
     },
@@ -261,21 +261,21 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
             </div>
 
             {/* =================================================================== */}
-            {/* CENTER COLUMN: PURE TRANSPARENT PNG 3D BOOK (NO BACKGROUND BOX) */}
+            {/* CENTER COLUMN: CINEMATIC PODIUM EXHIBITION STAGE */}
             {/* =================================================================== */}
             <div className="lg:col-span-5 flex flex-col items-center justify-center order-2 my-4 lg:my-0 select-none">
-              <div className="relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[460px] flex items-center justify-center">
+              <div className="relative w-full max-w-[320px] sm:max-w-[390px] lg:max-w-[430px] flex items-center justify-center">
                 
-                {/* Subtle Ambient Radial Backlight behind the PNG book */}
+                {/* Subtle Ambient Radial Backlight behind the stage */}
                 <div
-                  className="absolute inset-0 m-auto w-56 sm:w-72 h-56 sm:h-72 rounded-full bg-gradient-to-tr from-[#dc2626]/20 via-[#ef4444]/25 to-red-600/15 blur-2xl pointer-events-none"
+                  className="absolute inset-0 m-auto w-64 sm:w-80 h-64 sm:h-80 rounded-full bg-gradient-to-tr from-[#dc2626]/25 via-[#ef4444]/20 to-red-600/10 blur-3xl pointer-events-none"
                   aria-hidden="true"
                 />
 
-                {/* Floating Badge 1: 200 Pages · Bleed-Proof Paper (Top-Left) */}
-                <div className="absolute top-2 -left-2 sm:-left-6 z-20 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-[#111113]/90 border border-white/15 backdrop-blur-md shadow-xl flex items-center gap-2 text-[10px] sm:text-xs font-bold text-white tracking-wide">
+                {/* Floating Badge 1: 198 Pages · Bleed-Proof Paper (Top-Left) */}
+                <div className="absolute top-2 -left-2 sm:-left-4 z-20 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-[#111113]/90 border border-white/15 backdrop-blur-md shadow-xl flex items-center gap-2 text-[10px] sm:text-xs font-bold text-white tracking-wide">
                   <div className="w-2 h-2 rounded-full bg-[#ef4444] animate-pulse" />
-                  <span>200 Pages · Bleed-Proof</span>
+                  <span>198 Pages · Bleed-Proof</span>
                 </div>
 
                 {/* Floating Badge 2: Wholesale Save up to 40% (Bottom-Right) */}
@@ -284,21 +284,41 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
                   <span>Wholesale: Save 40%</span>
                 </div>
 
-                {/* Central Visual: Genuine Cutout PNG OMEGA Hardcover Notebook */}
-                <div className="relative z-10 w-full flex items-center justify-center animate-aardvark-float group cursor-pointer transition-transform duration-500 hover:scale-105">
-                  <img
-                    src="/omega-hero-book.png"
-                    alt="OMEGA Flagship Smyth-Sewn Hardcover Book"
-                    className="w-full max-h-[340px] sm:max-h-[440px] object-contain drop-shadow-[0_25px_40px_rgba(0,0,0,0.9)]"
-                    loading="eager"
-                  />
-                </div>
+                {/* Central Visual: Genuine OMEGA Flagship Hardcover Book on Spotlight Smoke Podium */}
+                <Link
+                  to="/product/prod-omega-cb-q2"
+                  className="relative z-10 w-full rounded-2xl overflow-hidden border border-white/15 bg-black shadow-[0_25px_60px_rgba(0,0,0,0.95)] group transition-all duration-500 hover:border-[#dc2626]/70 hover:shadow-[0_30px_70px_rgba(220,38,38,0.25)] block cursor-pointer"
+                  title="Explore OMEGA Counter Book Flagship Edition"
+                >
+                  <div className="relative aspect-[3/4] w-full overflow-hidden flex items-center justify-center">
+                    <img
+                      src="/omega-products/omega-counter-book-podium.png"
+                      alt="OMEGA Flagship Smyth-Sewn Counter Book on Spotlight Podium"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                      loading="eager"
+                    />
 
-                {/* Floor Pedestal Glow & Soft Contact Shadow */}
-                <div
-                  className="absolute -bottom-2 w-3/4 h-6 bg-black/85 rounded-full blur-lg pointer-events-none"
-                  aria-hidden="true"
-                />
+                    {/* Gradient Overlay for subtle edge softening */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/30 pointer-events-none" />
+
+                    {/* Exhibition Podium Plaque at bottom */}
+                    <div className="absolute bottom-2.5 inset-x-2.5 sm:bottom-3 sm:inset-x-3 p-2.5 rounded-xl bg-black/80 backdrop-blur-md border border-white/15 flex items-center justify-between text-left group-hover:border-[#dc2626]/40 transition-colors">
+                      <div className="min-w-0 pr-2">
+                        <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-widest text-[#ef4444] font-bold block">
+                          FLAGSHIP PODIUM EXHIBIT
+                        </span>
+                        <span className="text-xs sm:text-sm font-bold text-white block truncate">
+                          Counter Book (198p · Size A4)
+                        </span>
+                      </div>
+                      <span className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] text-white text-[10px] sm:text-xs font-bold tracking-wider uppercase font-mono shadow-md inline-flex items-center gap-1 shrink-0 group-hover:translate-x-0.5 transition-transform">
+                        <span>EXPLORE</span>
+                        <ArrowUpRight className="w-3 h-3" />
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+
               </div>
             </div>
 
@@ -361,12 +381,12 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
                 to={prod.href}
                 className="group flex items-center gap-3 p-2.5 sm:p-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#dc2626] shrink-0 min-w-[240px] sm:min-w-[270px] max-w-[290px] transition-all hover:shadow-md hover:-translate-y-0.5"
               >
-                {/* Thumbnail */}
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-lg bg-white p-1 flex items-center justify-center shrink-0 overflow-hidden border border-white/20">
+                {/* Thumbnail Stage */}
+                <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-xl ${prod.image.includes('podium') ? 'bg-black border-[#dc2626]/40 p-0' : 'bg-white p-1 border-white/20'} flex items-center justify-center shrink-0 overflow-hidden border group-hover:border-[#dc2626] transition-all relative shadow-sm`}>
                   <img
                     src={prod.image}
                     alt={prod.title}
-                    className="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-300"
+                    className={`w-full h-full ${prod.image.includes('podium') ? 'object-cover' : 'object-contain mix-blend-multiply'} group-hover:scale-110 transition-transform duration-300`}
                     loading="lazy"
                   />
                 </div>

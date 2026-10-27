@@ -106,7 +106,7 @@ export const HomePage: React.FC = () => {
       subtitle: language === 'sw' ? 'Q2 Jalada Gumu · Kurasa 192' : '192 Pages · Q2 Folio Ledgers',
       desc: language === 'sw' ? '192p, ushonaji wa nyuzi madhubuti' : '192 pages, thread-sewn hardboard spine',
       link: q2Prod ? `/product/${q2Prod.id}` : '/product/prod-omega-cb-q2',
-      image: '/omega-products/counter-book-q2-catalog.jpeg',
+      image: '/omega-products/omega-counter-book-podium.png',
       tag: 'Accounting & Schools',
       badge: 'Bestseller',
     },
@@ -314,11 +314,11 @@ export const HomePage: React.FC = () => {
                 className="group flex flex-col bg-white border border-[#e4e4e7] rounded-2xl overflow-hidden hover:border-[#dc2626] p-3.5 sm:p-4 text-center items-center shadow-xs transition-all duration-300 hover:shadow-xl hover:-translate-y-1 relative"
               >
                 {/* Product Photo Canvas */}
-                <div className="aspect-square w-full bg-[#fafafa] rounded-xl p-3 overflow-hidden flex items-center justify-center relative mb-3 border border-[#e4e4e7]/70 group-hover:border-[#dc2626]/40 transition-colors shadow-inner">
+                <div className={`aspect-square w-full ${cat.image.includes('podium') ? 'bg-black p-0' : 'bg-[#fafafa] p-3'} rounded-xl overflow-hidden flex items-center justify-center relative mb-3 border border-[#e4e4e7]/70 group-hover:border-[#dc2626]/40 transition-colors shadow-inner`}>
                   <img
                     src={cat.image}
                     alt={cat.title}
-                    className="w-full h-full object-contain mix-blend-multiply scale-100 group-hover:scale-110 transition-transform duration-500 ease-out"
+                    className={`w-full h-full ${cat.image.includes('podium') ? 'object-cover' : 'object-contain mix-blend-multiply'} scale-100 group-hover:scale-110 transition-transform duration-500 ease-out`}
                     loading="lazy"
                   />
                 </div>
@@ -366,74 +366,109 @@ export const HomePage: React.FC = () => {
             </h2>
           </div>
 
-          {/* 4 Engineering Pillars Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {/* Main Anatomy Showcase: Podium Book Display + 4 Technical Pillars */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
             
-            {/* Pillar 1 */}
-            <div className="group p-5 sm:p-6 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-start shadow-xs hover:shadow-xl hover:-translate-y-1">
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 shrink-0">
-                    <BookOpen className="w-5 h-5" />
+            {/* Visual Spotlight Podium Feature (5 Cols) */}
+            <div className="lg:col-span-5 flex flex-col items-center justify-center">
+              <div className="relative w-full max-w-[360px] sm:max-w-[420px] rounded-2xl overflow-hidden border border-[#e4e4e7] bg-[#111113] shadow-xl group hover:border-[#dc2626] transition-all duration-500">
+                <div className="relative aspect-[3/4] w-full overflow-hidden flex items-center justify-center">
+                  <img
+                    src="/omega-products/omega-counter-book-podium.png"
+                    alt="Anatomy of OMEGA Counter Book on Podium"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none" />
+
+                  {/* Feature Hotspots Overlay */}
+                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-md bg-black/80 backdrop-blur-md border border-white/15 text-[10px] font-mono font-bold text-white tracking-wider uppercase">
+                    <span>NECTA Standard Spec</span>
                   </div>
-                  <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
-                    Smyth Thread-Sewn Spine
-                  </h3>
+
+                  <div className="absolute bottom-3 inset-x-3 p-3 rounded-xl bg-black/85 backdrop-blur-md border border-white/10 text-left">
+                    <span className="text-[10px] font-mono uppercase tracking-widest text-[#ef4444] font-bold block">
+                      ARCHIVAL BENCHMARK
+                    </span>
+                    <h3 className="text-sm font-bold text-white block">
+                      OMEGA Smyth-Sewn Counter Book
+                    </h3>
+                    <p className="text-[11px] text-zinc-400 mt-0.5 leading-snug">
+                      Engineered with 1.8mm rigid laminated board, 70 GSM bond, and dual-stitched spine.
+                    </p>
+                  </div>
                 </div>
-                <p className="text-xs text-[#71717a] leading-relaxed">
-                  Pages are double-stitched with high-tensile cotton-linen thread that never loosens. Opens flat at 180° for effortless two-page ledgers and note taking.
-                </p>
               </div>
             </div>
 
-            {/* Pillar 2 */}
-            <div className="group p-5 sm:p-6 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-start shadow-xs hover:shadow-xl hover:-translate-y-1">
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 shrink-0">
-                    <Feather className="w-5 h-5" />
+            {/* 4 Engineering Pillars Grid (7 Cols: 2x2 Grid) */}
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+              {/* Pillar 1 */}
+              <div className="group p-5 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-start shadow-xs hover:shadow-xl hover:-translate-y-0.5">
+                <div className="space-y-2.5">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 shrink-0">
+                      <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </div>
+                    <h3 className="font-heading font-bold text-sm sm:text-base text-[#18181b] leading-snug">
+                      Smyth Thread-Sewn Spine
+                    </h3>
                   </div>
-                  <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
-                    70 GSM Bleed-Proof Bond
-                  </h3>
+                  <p className="text-xs text-[#71717a] leading-relaxed">
+                    Pages are double-stitched with high-tensile cotton-linen thread that never loosens. Opens flat at 180° for effortless two-page ledgers and note taking.
+                  </p>
                 </div>
-                <p className="text-xs text-[#71717a] leading-relaxed">
-                  High-density virgin wood-pulp paper prevents ink ghosting and feathering from rollerballs, gel pens, and heavy fountain pen inks.
-                </p>
               </div>
-            </div>
 
-            {/* Pillar 3 */}
-            <div className="group p-5 sm:p-6 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-start shadow-xs hover:shadow-xl hover:-translate-y-1">
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 shrink-0">
-                    <ShieldCheck className="w-5 h-5" />
+              {/* Pillar 2 */}
+              <div className="group p-5 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-start shadow-xs hover:shadow-xl hover:-translate-y-0.5">
+                <div className="space-y-2.5">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 shrink-0">
+                      <Feather className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </div>
+                    <h3 className="font-heading font-bold text-sm sm:text-base text-[#18181b] leading-snug">
+                      70 GSM Bleed-Proof Bond
+                    </h3>
                   </div>
-                  <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
-                    1.8mm Laminated Hardcover
-                  </h3>
+                  <p className="text-xs text-[#71717a] leading-relaxed">
+                    High-density virgin wood-pulp paper prevents ink ghosting and feathering from rollerballs, gel pens, and heavy fountain pen inks.
+                  </p>
                 </div>
-                <p className="text-xs text-[#71717a] leading-relaxed">
-                  Heavy-duty greyboard wrapped in a water-resistant matt laminated cover. Protects records against humidity, spills, and rough transport.
-                </p>
               </div>
-            </div>
 
-            {/* Pillar 4 */}
-            <div className="group p-5 sm:p-6 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-start shadow-xs hover:shadow-xl hover:-translate-y-1">
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 shrink-0">
-                    <Compass className="w-5 h-5" />
+              {/* Pillar 3 */}
+              <div className="group p-5 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-start shadow-xs hover:shadow-xl hover:-translate-y-0.5">
+                <div className="space-y-2.5">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 shrink-0">
+                      <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </div>
+                    <h3 className="font-heading font-bold text-sm sm:text-base text-[#18181b] leading-snug">
+                      1.8mm Laminated Hardcover
+                    </h3>
                   </div>
-                  <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
-                    Precision Indigo Ruling
-                  </h3>
+                  <p className="text-xs text-[#71717a] leading-relaxed">
+                    Heavy-duty greyboard wrapped in a water-resistant matt laminated cover. Protects records against humidity, spills, and rough transport.
+                  </p>
                 </div>
-                <p className="text-xs text-[#71717a] leading-relaxed">
-                  Uniform 8mm feint lines with soft red margin guides calibrated strictly to Tanzanian National Examination Council (NECTA) standards.
-                </p>
+              </div>
+
+              {/* Pillar 4 */}
+              <div className="group p-5 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-start shadow-xs hover:shadow-xl hover:-translate-y-0.5">
+                <div className="space-y-2.5">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 shrink-0">
+                      <Compass className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </div>
+                    <h3 className="font-heading font-bold text-sm sm:text-base text-[#18181b] leading-snug">
+                      Precision Indigo Ruling
+                    </h3>
+                  </div>
+                  <p className="text-xs text-[#71717a] leading-relaxed">
+                    Uniform 8mm feint lines with soft red margin guides calibrated strictly to Tanzanian National Examination Council (NECTA) standards.
+                  </p>
+                </div>
               </div>
             </div>
 
