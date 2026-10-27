@@ -1185,9 +1185,9 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
             <div className="absolute bottom-2.5 right-2.5 z-10 flex items-center gap-1 bg-black/80 backdrop-blur-md p-1 rounded-xl border border-white/15 shadow-lg">
               <button
                 type="button"
-                onClick={() => setFlipHorizontal((prev) => !prev)}
+                onClick={() => setFlipH((prev) => !prev)}
                 className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
-                  flipHorizontal ? 'bg-[#dc2626] text-white' : 'text-stone-300 hover:text-white hover:bg-white/10'
+                  flipH ? 'bg-[#dc2626] text-white' : 'text-stone-300 hover:text-white hover:bg-white/10'
                 }`}
                 title="Flip Horizontally"
               >
@@ -1195,9 +1195,9 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               </button>
               <button
                 type="button"
-                onClick={() => setFlipVertical((prev) => !prev)}
+                onClick={() => setFlipV((prev) => !prev)}
                 className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
-                  flipVertical ? 'bg-[#dc2626] text-white' : 'text-stone-300 hover:text-white hover:bg-white/10'
+                  flipV ? 'bg-[#dc2626] text-white' : 'text-stone-300 hover:text-white hover:bg-white/10'
                 }`}
                 title="Flip Vertically"
               >
