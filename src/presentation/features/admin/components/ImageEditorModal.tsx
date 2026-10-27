@@ -214,6 +214,9 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
   // Live preview data url for simulated Product Card
   const [livePreviewUrl, setLivePreviewUrl] = useState<string>('');
 
+  // 3x3 Rule of Thirds alignment grid
+  const [showGrid, setShowGrid] = useState<boolean>(true);
+
   // Load image on source change
   useEffect(() => {
     if (!isOpen || !imageSrc) return;
@@ -1000,51 +1003,49 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 w-screen h-screen bg-[#0e0e0e] text-white flex flex-col overflow-hidden select-none animate-in fade-in duration-150">
-      {/* ================= STUDIO TOP APP BAR ================= */}
-      <div className="px-2.5 xs:px-4 sm:px-6 py-2 sm:py-3 bg-[#161616] flex items-center justify-between border-b border-[#262626] shrink-0 gap-2">
-        <div className="flex items-center gap-1.5 sm:gap-3 min-w-0">
-          <button
-            type="button"
-            onClick={onClose}
-            disabled={isProcessing}
-            className="flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-[#222222] hover:bg-[#2c2c2c] active:bg-[#333333] text-stone-200 text-xs font-semibold transition-colors shrink-0 border border-[#333333]"
-            title="Return to Product Form"
-          >
-            <ArrowLeft className="w-4 h-4 text-stone-200" />
-            <span className="hidden xs:inline">Back</span>
-          </button>
+      {/* ================= TOP APP BAR (STITCH DESIGN) ================= */}
+      <header className="sticky top-0 z-40 bg-[#0d0d10]/95 backdrop-blur-md border-b border-[#1f1f26] px-3 xs:px-4 sm:px-6 py-2.5 flex items-center justify-between shrink-0">
+        {/* Left: Back Button */}
+        <button
+          type="button"
+          onClick={onClose}
+          disabled={isProcessing}
+          className="w-8 h-8 xs:w-9 xs:h-9 rounded-full bg-[#18181d] border border-[#272730] flex items-center justify-center text-neutral-300 hover:text-white hover:bg-[#202028] transition active:scale-95 shrink-0"
+          title="Return to Product Form"
+        >
+          <ArrowLeft className="w-4 h-4" />
+        </button>
 
-          <div className="h-4 w-px bg-stone-700/60 hidden xs:block" />
-
-          <div className="min-w-0">
-            <div className="flex items-center gap-1 sm:gap-2">
-              <span className="font-bold text-xs sm:text-sm tracking-tight text-white truncate">
-                OMEGA Studio
-              </span>
-              <span className="text-[9px] uppercase font-mono tracking-wider bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 text-white font-extrabold px-1.5 py-0.5 rounded-md shadow-xs shrink-0">
-                PRO
-              </span>
-            </div>
-            <p className="text-[10px] sm:text-[11px] text-stone-400 font-mono truncate max-w-[100px] xs:max-w-[160px] sm:max-w-md">
-              {fileName} {sourceImg ? `· ${sourceImg.width}×${sourceImg.height}px` : ''}
-            </p>
+        {/* Center: Brand Title + Status */}
+        <div className="flex flex-col items-center min-w-0 mx-2">
+          <div className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-[#dc2626] animate-pulse shrink-0" />
+            <h1 className="text-xs xs:text-sm font-bold tracking-wider font-mono uppercase text-white flex items-center gap-1 truncate">
+              OMEGA <span className="text-[#dc2626] font-extrabold text-[10px] xs:text-[11px] px-1.5 py-0.5 rounded bg-[#dc2626]/15 border border-[#dc2626]/30">STUDIO PRO</span>
+            </h1>
           </div>
+          <p className="text-[9px] xs:text-[10px] text-neutral-400 font-mono tracking-tight mt-0.5 truncate max-w-[140px] xs:max-w-xs sm:max-w-md">
+            {fileName} {sourceImg ? `• ${sourceImg.width}×${sourceImg.height}px` : ''}
+          </p>
         </div>
 
-        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+        {/* Right: Quick Reset & Apply Button */}
+        <div className="flex items-center gap-1.5 xs:gap-2 shrink-0">
           <button
             type="button"
             onClick={handleResetAll}
-            className="text-[11px] sm:text-xs font-semibold text-stone-400 hover:text-stone-200 px-2 sm:px-3 py-1.5 rounded-lg border border-[#2e2e2e] hover:bg-[#222222] transition-colors"
+            className="text-xs font-medium text-neutral-400 hover:text-neutral-200 px-2 py-1.5 transition active:scale-95 flex items-center gap-1"
+            title="Reset All Edits"
           >
-            Reset
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span className="hidden xs:inline">Reset</span>
           </button>
 
           <button
             type="button"
             onClick={handleApplyExport}
             disabled={isProcessing || !sourceImg}
-            className="px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-[#dc2626] to-[#b91c1c] hover:brightness-110 shadow-md active:scale-95 transition-all flex items-center gap-1.5 sm:gap-2 disabled:opacity-50"
+            className="bg-[#dc2626] hover:bg-red-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-md shadow-[#dc2626]/30 transition flex items-center gap-1.5 active:scale-95 disabled:opacity-50"
           >
             {isProcessing ? (
               <>
@@ -1053,8 +1054,69 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               </>
             ) : (
               <>
-                <Check className="w-4 h-4 text-white" />
-                <span className="whitespace-nowrap font-bold">Done / Apply</span>
+                <span>Apply</span>
+                <Check className="w-3.5 h-3.5" />
+              </>
+            )}
+          </button>
+        </div>
+      </header>
+
+      {/* ================= RATIO & FRAMING HUD BAR (STITCH) ================= */}
+      <div className="bg-[#0e0e12] border-b border-[#1f1f26] px-3 py-2 flex items-center justify-between gap-2 overflow-x-auto no-scrollbar shrink-0">
+        <div className="flex items-center gap-1.5 shrink-0">
+          <span className="text-[10px] uppercase font-bold text-stone-500 tracking-wider mr-1 hidden xs:inline">Ratio</span>
+          {[
+            { id: '1:1', label: '1:1 Sq' },
+            { id: '4:5', label: '4:5 Insta' },
+            { id: '16:9', label: '16:9 Wide' },
+            { id: 'original', label: 'Orig' },
+          ].map((r) => (
+            <button
+              key={r.id}
+              type="button"
+              onClick={() => handleRatioChange(r.id as AspectRatioMode)}
+              className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all shrink-0 ${
+                aspectRatio === r.id
+                  ? 'bg-white text-black font-bold shadow-xs'
+                  : 'bg-[#18181f] text-stone-400 hover:text-white border border-[#272733]'
+              }`}
+            >
+              {r.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-1.5 shrink-0">
+          <button
+            type="button"
+            onClick={() => setShowGrid((prev) => !prev)}
+            className={`px-2 py-1 rounded-lg text-[11px] font-medium flex items-center gap-1 border transition-all ${
+              showGrid
+                ? 'bg-[#dc2626]/20 border-[#dc2626] text-red-300'
+                : 'bg-[#18181f] border-[#272733] text-stone-400 hover:text-white'
+            }`}
+            title="Toggle 3x3 Rule of Thirds Grid"
+          >
+            <Grid className="w-3 h-3 text-[#dc2626]" />
+            <span className="hidden sm:inline">3x3 Grid</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setFitMode((prev) => (prev === 'fill' ? 'fit' : 'fill'))}
+            className="px-2 py-1 rounded-lg text-[11px] font-medium flex items-center gap-1 bg-[#18181f] border border-[#272733] text-stone-400 hover:text-white transition-all"
+            title={fitMode === 'fill' ? 'Switch to Fit Entire Object' : 'Switch to Fill Edge'}
+          >
+            {fitMode === 'fill' ? (
+              <>
+                <Minimize className="w-3 h-3 text-[#dc2626]" />
+                <span className="hidden sm:inline">Fit</span>
+              </>
+            ) : (
+              <>
+                <Maximize className="w-3 h-3 text-[#dc2626]" />
+                <span className="hidden sm:inline">Fill</span>
               </>
             )}
           </button>
@@ -1063,15 +1125,15 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
 
       {/* ================= MAIN STUDIO VIEWPORT & CONTROLS ================= */}
       {/* On mobile: Upper half fixed preview, Lower half scrollable controls; On desktop: 2-column grid */}
-      <div className="flex-1 min-h-0 flex flex-col lg:grid lg:grid-cols-12 overflow-hidden bg-[#0a0a0a]">
-        {/* UPPER (Mobile) / LEFT (Desktop): Viewport with checkered transparency background */}
-        <div className="h-[36vh] xs:h-[40vh] sm:h-[44vh] lg:h-auto lg:col-span-7 xl:col-span-8 p-2 xs:p-3 sm:p-5 lg:p-8 flex flex-col items-center justify-center border-b lg:border-b-0 lg:border-r border-[#262626] relative bg-[#050505] shrink-0 min-h-0 overflow-hidden">
+      <div className="flex-1 min-h-0 flex flex-col lg:grid lg:grid-cols-12 overflow-hidden bg-[#09090b]">
+        {/* UPPER (Mobile) / LEFT (Desktop): Viewport */}
+        <div className="h-[36vh] xs:h-[40vh] sm:h-[44vh] lg:h-auto lg:col-span-7 xl:col-span-8 p-2 xs:p-3 sm:p-5 lg:p-8 flex flex-col items-center justify-center border-b lg:border-b-0 lg:border-r border-[#1f1f26] relative bg-[#09090c] shrink-0 min-h-0 overflow-hidden">
           <div
             ref={containerRef}
-            className={`relative w-full h-full max-h-[32vh] xs:max-h-[36vh] sm:max-h-[40vh] lg:max-h-[min(72vh,680px)] aspect-square rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center select-none ${
+            className={`relative w-full h-full max-h-[32vh] xs:max-h-[36vh] sm:max-h-[40vh] lg:max-h-[min(72vh,680px)] aspect-square rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center select-none border border-[#1f1f26] ${
               bgPreset === 'transparent'
-                ? 'bg-[linear-gradient(45deg,#1f1f1f_25%,transparent_25%),linear-gradient(-45deg,#1f1f1f_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#1f1f1f_75%),linear-gradient(-45deg,transparent_75%,#1f1f1f_75%)] bg-[size:20px_20px] bg-[position:0_0,0_10px,10px_-10px,-10px_0px] bg-[#141414]'
-                : 'bg-[#1a1a1a]'
+                ? 'bg-[linear-gradient(45deg,#1f1f26_25%,transparent_25%),linear-gradient(-45deg,#1f1f26_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#1f1f26_75%),linear-gradient(-45deg,transparent_75%,#1f1f26_75%)] bg-[size:16px_16px] bg-[position:0_0,0_8px,8px_-8px,-8px_0px] bg-[#121217]'
+                : 'bg-[#121217]'
             }`}
           >
             {isLoadingImage ? (
@@ -1093,118 +1155,141 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               />
             )}
 
-            {/* Floating Corner Controls */}
-            <div className="absolute bottom-2.5 left-2.5 z-10 flex items-center gap-1.5 sm:gap-2">
-              <button
-                type="button"
-                onClick={() => setFitMode((prev) => (prev === 'fill' ? 'fit' : 'fill'))}
-                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/75 hover:bg-black/90 active:scale-90 backdrop-blur-md text-white flex items-center justify-center border border-white/20 shadow-md transition-transform"
-                title={fitMode === 'fill' ? 'Switch to Fit Entire Object' : 'Switch to Fill Edge'}
-              >
-                {fitMode === 'fill' ? (
-                  <Minimize className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
-                ) : (
-                  <Maximize className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
-                )}
-              </button>
+            {/* 3x3 Rule of Thirds Guide Grid Overlay */}
+            {showGrid && !isLoadingImage && !imgLoadError && (
+              <div className="absolute inset-0 pointer-events-none grid grid-cols-3 grid-rows-3 z-5">
+                <div className="border-r border-b border-white/15" />
+                <div className="border-r border-b border-white/15" />
+                <div className="border-b border-white/15" />
+                <div className="border-r border-b border-white/15" />
+                <div className="border-r border-b border-white/15" />
+                <div className="border-b border-white/15" />
+                <div className="border-r border-b border-white/15" />
+                <div className="border-r border-b border-white/15" />
+                <div />
+              </div>
+            )}
 
-              <button
-                type="button"
-                onClick={() => handleRatioChange('1:1')}
-                className={`px-2 sm:px-2.5 py-1 rounded-full text-[9px] sm:text-[10px] font-bold backdrop-blur-md border shadow-md transition-all ${
-                  aspectRatio === '1:1'
-                    ? 'bg-white text-black border-white'
-                    : 'bg-black/75 text-white border-white/20'
-                }`}
-              >
-                1:1 Square
-              </button>
+            {/* Corner Framing L-accents */}
+            <div className="absolute top-2 left-2 w-3.5 h-3.5 border-t-2 border-l-2 border-[#dc2626] pointer-events-none z-10" />
+            <div className="absolute top-2 right-2 w-3.5 h-3.5 border-t-2 border-r-2 border-[#dc2626] pointer-events-none z-10" />
+            <div className="absolute bottom-2 left-2 w-3.5 h-3.5 border-b-2 border-l-2 border-[#dc2626] pointer-events-none z-10" />
+            <div className="absolute bottom-2 right-2 w-3.5 h-3.5 border-b-2 border-r-2 border-[#dc2626] pointer-events-none z-10" />
+
+            {/* Floating Live Zoom Pill */}
+            <div className="absolute top-2.5 left-2.5 z-10 bg-black/80 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/15 text-[10px] font-mono font-bold text-white shadow-md pointer-events-none">
+              {Math.round(zoom * 100)}%
             </div>
 
-            <button
-              type="button"
-              onClick={() => setRotation((prev) => (prev + 90) % 360)}
-              className="absolute bottom-2.5 right-2.5 z-10 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/75 hover:bg-black/90 active:scale-90 backdrop-blur-md text-white flex items-center justify-center border border-white/20 shadow-md transition-transform"
-              title="Rotate 90°"
-            >
-              <RotateCw className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
-            </button>
+            {/* Floating Quick Transform Bar (Stitch) */}
+            <div className="absolute bottom-2.5 right-2.5 z-10 flex items-center gap-1 bg-black/80 backdrop-blur-md p-1 rounded-xl border border-white/15 shadow-lg">
+              <button
+                type="button"
+                onClick={() => setFlipHorizontal((prev) => !prev)}
+                className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
+                  flipHorizontal ? 'bg-[#dc2626] text-white' : 'text-stone-300 hover:text-white hover:bg-white/10'
+                }`}
+                title="Flip Horizontally"
+              >
+                <FlipHorizontal className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setFlipVertical((prev) => !prev)}
+                className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
+                  flipVertical ? 'bg-[#dc2626] text-white' : 'text-stone-300 hover:text-white hover:bg-white/10'
+                }`}
+                title="Flip Vertically"
+              >
+                <FlipVertical className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setRotation((prev) => (prev + 90) % 360)}
+                className="w-7 h-7 rounded-lg text-stone-300 hover:text-white hover:bg-white/10 flex items-center justify-center transition-all"
+                title="Rotate 90° Clockwise"
+              >
+                <RotateCw className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
 
           <p className="text-[10px] sm:text-[11px] text-stone-500 font-medium mt-1.5 hidden xs:flex items-center gap-1.5">
-            <Grid className="w-3 h-3 text-stone-400" />
-            <span>Drag corners to crop · Center to reposition</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#dc2626]" />
+            <span>Pinch / wheel to zoom · Drag center to reposition · Drag corners to crop</span>
           </p>
         </div>
 
         {/* LOWER (Mobile) / RIGHT (Desktop): Tabs & Controls */}
-        <div className="flex-1 min-h-0 flex flex-col lg:col-span-5 xl:col-span-4 bg-[#141414] overflow-hidden">
-          {/* Studio Navigation Tabs Header */}
-          <div className="grid grid-cols-5 border-b border-[#262626] bg-[#1a1a1a] text-xs font-bold text-center shrink-0">
-            <button
-              type="button"
-              onClick={() => setStudioTab('crop')}
-              className={`py-2 sm:py-3 px-1 flex flex-col items-center justify-center gap-0.5 sm:gap-1 transition-all ${
-                studioTab === 'crop'
-                  ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
-                  : 'text-stone-400 hover:text-stone-200'
-              }`}
-            >
-              <Crop className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#dc2626]" />
-              <span className="text-[9px] xs:text-[10px] sm:text-[11px] font-bold">Crop</span>
-            </button>
+        <div className="flex-1 min-h-0 flex flex-col lg:col-span-5 xl:col-span-4 bg-[#0f0f13] overflow-hidden">
+          {/* Segmented Studio Navigation Tabs Header (Stitch) */}
+          <div className="p-2 border-b border-[#1f1f26] bg-[#0c0c10] shrink-0">
+            <div className="grid grid-cols-5 p-1 bg-[#15151b] rounded-xl border border-[#22222c] gap-1">
+              <button
+                type="button"
+                onClick={() => setStudioTab('crop')}
+                className={`py-1.5 px-1 rounded-lg flex flex-col items-center justify-center gap-0.5 transition-all ${
+                  studioTab === 'crop'
+                    ? 'bg-[#dc2626] text-white font-bold shadow-md shadow-[#dc2626]/20'
+                    : 'text-stone-400 hover:text-stone-200'
+                }`}
+              >
+                <Crop className="w-3.5 h-3.5" />
+                <span className="text-[9px] xs:text-[10px] font-semibold">Crop</span>
+              </button>
 
-            <button
-              type="button"
-              onClick={() => setStudioTab('studio')}
-              className={`py-2 sm:py-3 px-1 flex flex-col items-center justify-center gap-0.5 sm:gap-1 transition-all ${
-                studioTab === 'studio'
-                  ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
-                  : 'text-stone-400 hover:text-stone-200'
-              }`}
-            >
-              <Paintbrush className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#dc2626]" />
-              <span className="text-[9px] xs:text-[10px] sm:text-[11px] font-bold">BG Style</span>
-            </button>
+              <button
+                type="button"
+                onClick={() => setStudioTab('studio')}
+                className={`py-1.5 px-1 rounded-lg flex flex-col items-center justify-center gap-0.5 transition-all ${
+                  studioTab === 'studio'
+                    ? 'bg-[#dc2626] text-white font-bold shadow-md shadow-[#dc2626]/20'
+                    : 'text-stone-400 hover:text-stone-200'
+                }`}
+              >
+                <Paintbrush className="w-3.5 h-3.5" />
+                <span className="text-[9px] xs:text-[10px] font-semibold">Studio BG</span>
+              </button>
 
-            <button
-              type="button"
-              onClick={() => setStudioTab('filter')}
-              className={`py-2 sm:py-3 px-1 flex flex-col items-center justify-center gap-0.5 sm:gap-1 transition-all ${
-                studioTab === 'filter'
-                  ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
-                  : 'text-stone-400 hover:text-stone-200'
-              }`}
-            >
-              <Wand2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#dc2626]" />
-              <span className="text-[9px] xs:text-[10px] sm:text-[11px] font-bold">Filters</span>
-            </button>
+              <button
+                type="button"
+                onClick={() => setStudioTab('filter')}
+                className={`py-1.5 px-1 rounded-lg flex flex-col items-center justify-center gap-0.5 transition-all ${
+                  studioTab === 'filter'
+                    ? 'bg-[#dc2626] text-white font-bold shadow-md shadow-[#dc2626]/20'
+                    : 'text-stone-400 hover:text-stone-200'
+                }`}
+              >
+                <Wand2 className="w-3.5 h-3.5" />
+                <span className="text-[9px] xs:text-[10px] font-semibold">Filters</span>
+              </button>
 
-            <button
-              type="button"
-              onClick={() => setStudioTab('adjust')}
-              className={`py-2 sm:py-3 px-1 flex flex-col items-center justify-center gap-0.5 sm:gap-1 transition-all ${
-                studioTab === 'adjust'
-                  ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
-                  : 'text-stone-400 hover:text-stone-200'
-              }`}
-            >
-              <Sliders className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#dc2626]" />
-              <span className="text-[9px] xs:text-[10px] sm:text-[11px] font-bold">Adjust</span>
-            </button>
+              <button
+                type="button"
+                onClick={() => setStudioTab('adjust')}
+                className={`py-1.5 px-1 rounded-lg flex flex-col items-center justify-center gap-0.5 transition-all ${
+                  studioTab === 'adjust'
+                    ? 'bg-[#dc2626] text-white font-bold shadow-md shadow-[#dc2626]/20'
+                    : 'text-stone-400 hover:text-stone-200'
+                }`}
+              >
+                <Sliders className="w-3.5 h-3.5" />
+                <span className="text-[9px] xs:text-[10px] font-semibold">Adjust</span>
+              </button>
 
-            <button
-              type="button"
-              onClick={() => setStudioTab('preview')}
-              className={`py-2 sm:py-3 px-1 flex flex-col items-center justify-center gap-0.5 sm:gap-1 transition-all ${
-                studioTab === 'preview'
-                  ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
-                  : 'text-stone-400 hover:text-stone-200'
-              }`}
-            >
-              <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#dc2626]" />
-              <span className="text-[9px] xs:text-[10px] sm:text-[11px] font-bold">Preview</span>
-            </button>
+              <button
+                type="button"
+                onClick={() => setStudioTab('preview')}
+                className={`py-1.5 px-1 rounded-lg flex flex-col items-center justify-center gap-0.5 transition-all ${
+                  studioTab === 'preview'
+                    ? 'bg-[#dc2626] text-white font-bold shadow-md shadow-[#dc2626]/20'
+                    : 'text-stone-400 hover:text-stone-200'
+                }`}
+              >
+                <Eye className="w-3.5 h-3.5" />
+                <span className="text-[9px] xs:text-[10px] font-semibold">Card View</span>
+              </button>
+            </div>
           </div>
 
           {/* TAB CONTENTS */}
@@ -1241,24 +1326,40 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                     </div>
                   </div>
 
-                  {/* Straighten Angle */}
-                  <div className="space-y-1.5 p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c]">
+                  {/* Straighten Angle with -1° and +1° micro adjust */}
+                  <div className="space-y-1.5 p-3 rounded-2xl bg-[#15151b] border border-[#22222c]">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-bold text-stone-300 flex items-center gap-1.5">
                         <Compass className="w-3.5 h-3.5 text-[#dc2626]" />
                         <span>Straighten Leveler</span>
                       </span>
-                      <span className="font-mono font-bold text-[#dc2626]">{fineAngle}°</span>
+                      <span className="font-mono font-bold text-[#dc2626]">{fineAngle > 0 ? `+${fineAngle}` : fineAngle}°</span>
                     </div>
-                    <input
-                      type="range"
-                      min="-45"
-                      max="45"
-                      step="0.5"
-                      value={fineAngle}
-                      onChange={(e) => setFineAngle(parseFloat(e.target.value))}
-                      className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
-                    />
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setFineAngle((prev) => Math.max(-45, +(prev - 1).toFixed(1)))}
+                        className="w-7 h-7 rounded-lg bg-[#202029] hover:bg-[#2a2a36] text-stone-300 text-xs font-bold shrink-0 transition"
+                      >
+                        -1°
+                      </button>
+                      <input
+                        type="range"
+                        min="-45"
+                        max="45"
+                        step="0.5"
+                        value={fineAngle}
+                        onChange={(e) => setFineAngle(parseFloat(e.target.value))}
+                        className="flex-1 accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setFineAngle((prev) => Math.min(45, +(prev + 1).toFixed(1)))}
+                        className="w-7 h-7 rounded-lg bg-[#202029] hover:bg-[#2a2a36] text-stone-300 text-xs font-bold shrink-0 transition"
+                      >
+                        +1°
+                      </button>
+                    </div>
                     <div className="flex justify-between text-[10px] text-stone-500 font-mono">
                       <span>-45°</span>
                       <button
@@ -1787,26 +1888,26 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
           </div>
         </div>
 
-      {/* ================= STUDIO BOTTOM STATUS BAR ================= */}
-      <div className="px-4 sm:px-6 py-2.5 bg-[#161616] border-t border-[#262626] flex items-center justify-between gap-3 text-xs text-stone-400 shrink-0">
-        <div className="flex items-center gap-2 sm:gap-3 text-[10px] sm:text-xs min-w-0 truncate">
+      {/* ================= STUDIO BOTTOM STATUS BAR (STITCH) ================= */}
+      <div className="px-3 xs:px-4 sm:px-6 py-2.5 bg-[#0d0d12] border-t border-[#1f1f26] flex items-center justify-between gap-2 xs:gap-3 text-xs text-stone-400 shrink-0">
+        <div className="flex items-center gap-1.5 xs:gap-2 sm:gap-3 text-[10px] sm:text-xs min-w-0 truncate">
           <span className="truncate">
-            Mode: <strong className="text-white">{storeImageFit === 'contain' ? 'Studio' : 'Edge Cover'}</strong>
+            Mode: <strong className="text-white">{storeImageFit === 'contain' ? 'Studio' : 'Cover'}</strong>
           </span>
-          <span className="text-stone-600">·</span>
+          <span className="text-stone-700">·</span>
           <span className="truncate">
-            Canvas: <strong className="text-white">{bgPreset.toUpperCase()}</strong>
+            BG: <strong className="text-white">{bgPreset.toUpperCase()}</strong>
           </span>
-          <span className="hidden md:inline text-stone-600">·</span>
-          <span className="hidden md:inline text-stone-400 text-[11px]">1200×1200 Pro Export</span>
+          <span className="hidden sm:inline text-stone-700">·</span>
+          <span className="hidden sm:inline text-stone-400 text-[11px] font-mono">1200×1200px • Lossless PNG • 300 DPI</span>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0 ml-auto">
+        <div className="flex items-center gap-1.5 xs:gap-2 sm:gap-3 shrink-0 ml-auto">
           <button
             type="button"
             onClick={onClose}
             disabled={isProcessing}
-            className="px-3 sm:px-4 py-1.5 text-xs font-semibold text-stone-400 hover:text-white rounded-lg hover:bg-stone-800 transition-colors"
+            className="px-3 sm:px-4 py-1.5 text-xs font-semibold text-stone-400 hover:text-white rounded-lg hover:bg-[#1c1c24] border border-transparent hover:border-[#272733] transition-colors"
           >
             Cancel
           </button>
@@ -1815,7 +1916,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
             type="button"
             onClick={handleApplyExport}
             disabled={isProcessing || !sourceImg}
-            className="px-4 sm:px-6 py-2 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-[#dc2626] to-[#b91c1c] hover:brightness-110 shadow-md active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50"
+            className="px-3.5 sm:px-5 py-2 rounded-xl text-xs font-bold text-white bg-[#dc2626] hover:bg-red-500 shadow-md shadow-[#dc2626]/30 active:scale-95 transition-all flex items-center gap-1.5 disabled:opacity-50"
           >
             {isProcessing ? (
               <>
@@ -1824,8 +1925,8 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               </>
             ) : (
               <>
-                <Check className="w-4 h-4 text-white" />
-                <span className="whitespace-nowrap">Done / Apply</span>
+                <Check className="w-3.5 h-3.5" />
+                <span className="whitespace-nowrap font-bold">Apply &amp; Save</span>
               </>
             )}
           </button>
