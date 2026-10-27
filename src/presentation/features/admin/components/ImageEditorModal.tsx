@@ -755,7 +755,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
     const py = (e.clientY - rect.top) / rect.height;
 
     const cb = cropBox;
-    const tolerance = 0.06;
+    const tolerance = 0.12;
 
     if (Math.abs(px - cb.x) < tolerance && Math.abs(py - cb.y) < tolerance) {
       setDragHandle('nw');
@@ -1001,60 +1001,60 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 w-screen h-screen bg-[#0e0e0e] text-white flex flex-col overflow-hidden select-none animate-in fade-in duration-150">
       {/* ================= STUDIO TOP APP BAR ================= */}
-      <div className="px-4 sm:px-6 py-3 bg-[#161616] flex items-center justify-between border-b border-[#262626] shrink-0 gap-3">
-        <div className="flex items-center gap-2 sm:gap-3.5 min-w-0">
+      <div className="px-2.5 xs:px-4 sm:px-6 py-2 sm:py-3 bg-[#161616] flex items-center justify-between border-b border-[#262626] shrink-0 gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-3 min-w-0">
           <button
             type="button"
             onClick={onClose}
             disabled={isProcessing}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#222222] hover:bg-[#2c2c2c] text-stone-200 text-xs font-semibold transition-colors shrink-0 border border-[#333333]"
+            className="flex items-center gap-1.5 p-1.5 sm:px-3 sm:py-1.5 rounded-lg bg-[#222222] hover:bg-[#2c2c2c] active:bg-[#333333] text-stone-200 text-xs font-semibold transition-colors shrink-0 border border-[#333333]"
             title="Return to Product Form"
           >
-            <ArrowLeft className="w-4 h-4 text-stone-300" />
-            <span className="hidden sm:inline">Back to Product</span>
+            <ArrowLeft className="w-4 h-4 text-stone-200" />
+            <span className="hidden xs:inline">Back</span>
           </button>
 
-          <div className="h-5 w-px bg-stone-700/60 hidden sm:block" />
+          <div className="h-4 w-px bg-stone-700/60 hidden xs:block" />
 
           <div className="min-w-0">
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-sm tracking-tight text-white truncate">
-                OMEGA Product Studio
+            <div className="flex items-center gap-1 sm:gap-2">
+              <span className="font-bold text-xs sm:text-sm tracking-tight text-white truncate">
+                OMEGA Studio
               </span>
-              <span className="text-[10px] uppercase font-mono tracking-wider bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 text-white font-extrabold px-2 py-0.5 rounded-md shadow-xs shrink-0">
-                PRO STUDIO
+              <span className="text-[9px] uppercase font-mono tracking-wider bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 text-white font-extrabold px-1.5 py-0.5 rounded-md shadow-xs shrink-0">
+                PRO
               </span>
             </div>
-            <p className="text-[11px] text-stone-400 font-mono truncate max-w-[200px] xs:max-w-xs sm:max-w-md">
+            <p className="text-[10px] sm:text-[11px] text-stone-400 font-mono truncate max-w-[100px] xs:max-w-[160px] sm:max-w-md">
               {fileName} {sourceImg ? `· ${sourceImg.width}×${sourceImg.height}px` : ''}
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
           <button
             type="button"
             onClick={handleResetAll}
-            className="text-xs font-semibold text-stone-400 hover:text-stone-200 px-3 py-1.5 rounded-lg border border-[#2e2e2e] hover:bg-[#222222] transition-colors hidden sm:block"
+            className="text-[11px] sm:text-xs font-semibold text-stone-400 hover:text-stone-200 px-2 sm:px-3 py-1.5 rounded-lg border border-[#2e2e2e] hover:bg-[#222222] transition-colors"
           >
-            Reset All
+            Reset
           </button>
 
           <button
             type="button"
             onClick={handleApplyExport}
             disabled={isProcessing || !sourceImg}
-            className="px-4 sm:px-5 py-2 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-[#dc2626] to-[#b91c1c] hover:brightness-110 shadow-md active:scale-95 transition-all flex items-center gap-2 disabled:opacity-50"
+            className="px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-[#dc2626] to-[#b91c1c] hover:brightness-110 shadow-md active:scale-95 transition-all flex items-center gap-1.5 sm:gap-2 disabled:opacity-50"
           >
             {isProcessing ? (
               <>
                 <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                <span className="hidden xs:inline">Uploading...</span>
+                <span className="hidden xs:inline">Saving...</span>
               </>
             ) : (
               <>
                 <Check className="w-4 h-4 text-white" />
-                <span className="whitespace-nowrap">Done / Apply</span>
+                <span className="whitespace-nowrap font-bold">Done / Apply</span>
               </>
             )}
           </button>
@@ -1062,152 +1062,153 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
       </div>
 
       {/* ================= MAIN STUDIO VIEWPORT & CONTROLS ================= */}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 min-h-0 overflow-y-auto lg:overflow-hidden bg-[#0a0a0a]">
-        {/* LEFT: Viewport with checkered transparency background (7 Cols on desktop, 8 on wide) */}
-        <div className="lg:col-span-7 xl:col-span-8 p-3 sm:p-5 lg:p-8 flex flex-col items-center justify-center border-b lg:border-b-0 lg:border-r border-[#262626] relative bg-[#070707] min-h-0 overflow-hidden">
+      {/* On mobile: Upper half fixed preview, Lower half scrollable controls; On desktop: 2-column grid */}
+      <div className="flex-1 min-h-0 flex flex-col lg:grid lg:grid-cols-12 overflow-hidden bg-[#0a0a0a]">
+        {/* UPPER (Mobile) / LEFT (Desktop): Viewport with checkered transparency background */}
+        <div className="h-[36vh] xs:h-[40vh] sm:h-[44vh] lg:h-auto lg:col-span-7 xl:col-span-8 p-2 xs:p-3 sm:p-5 lg:p-8 flex flex-col items-center justify-center border-b lg:border-b-0 lg:border-r border-[#262626] relative bg-[#050505] shrink-0 min-h-0 overflow-hidden">
           <div
             ref={containerRef}
-            className={`relative w-full aspect-square max-h-[300px] xs:max-h-[360px] sm:max-h-[460px] lg:max-h-[min(72vh,680px)] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center select-none ${
-                bgPreset === 'transparent'
-                  ? 'bg-[linear-gradient(45deg,#1f1f1f_25%,transparent_25%),linear-gradient(-45deg,#1f1f1f_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#1f1f1f_75%),linear-gradient(-45deg,transparent_75%,#1f1f1f_75%)] bg-[size:20px_20px] bg-[position:0_0,0_10px,10px_-10px,-10px_0px] bg-[#141414]'
-                  : 'bg-[#1a1a1a]'
-              }`}
-            >
-              {isLoadingImage ? (
-                <div className="flex flex-col items-center gap-2 text-stone-400">
-                  <RefreshCw className="w-8 h-8 text-[#dc2626] animate-spin" />
-                  <span className="text-xs font-bold">Loading Photo...</span>
-                </div>
-              ) : imgLoadError ? (
-                <div className="p-4 text-center text-red-400 text-xs font-bold">
-                  {imgLoadError}
-                </div>
-              ) : (
-                <canvas
-                  ref={canvasRef}
-                  onPointerDown={handlePointerDown}
-                  onPointerMove={handlePointerMove}
-                  onPointerUp={handlePointerUp}
-                  className="w-full h-full object-contain cursor-grab active:cursor-grabbing touch-none"
-                />
-              )}
-
-              {/* Floating Corner Controls */}
-              <div className="absolute bottom-3 left-3 z-10 flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setFitMode((prev) => (prev === 'fill' ? 'fit' : 'fill'))}
-                  className="w-8 h-8 rounded-full bg-black/60 hover:bg-black/90 backdrop-blur-md text-white flex items-center justify-center border border-white/20 shadow-md active:scale-90 transition-transform"
-                  title={fitMode === 'fill' ? 'Switch to Fit Entire Object' : 'Switch to Fill Edge'}
-                >
-                  {fitMode === 'fill' ? (
-                    <Minimize className="w-3.5 h-3.5 text-white" />
-                  ) : (
-                    <Maximize className="w-3.5 h-3.5 text-white" />
-                  )}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => handleRatioChange('1:1')}
-                  className={`px-2.5 py-1 rounded-full text-[10px] font-bold backdrop-blur-md border shadow-md transition-all ${
-                    aspectRatio === '1:1'
-                      ? 'bg-white text-black border-white'
-                      : 'bg-black/60 text-white border-white/20'
-                  }`}
-                >
-                  1:1 Square
-                </button>
+            className={`relative w-full h-full max-h-[32vh] xs:max-h-[36vh] sm:max-h-[40vh] lg:max-h-[min(72vh,680px)] aspect-square rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center select-none ${
+              bgPreset === 'transparent'
+                ? 'bg-[linear-gradient(45deg,#1f1f1f_25%,transparent_25%),linear-gradient(-45deg,#1f1f1f_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#1f1f1f_75%),linear-gradient(-45deg,transparent_75%,#1f1f1f_75%)] bg-[size:20px_20px] bg-[position:0_0,0_10px,10px_-10px,-10px_0px] bg-[#141414]'
+                : 'bg-[#1a1a1a]'
+            }`}
+          >
+            {isLoadingImage ? (
+              <div className="flex flex-col items-center gap-2 text-stone-400">
+                <RefreshCw className="w-8 h-8 text-[#dc2626] animate-spin" />
+                <span className="text-xs font-bold">Loading Photo...</span>
               </div>
+            ) : imgLoadError ? (
+              <div className="p-4 text-center text-red-400 text-xs font-bold">
+                {imgLoadError}
+              </div>
+            ) : (
+              <canvas
+                ref={canvasRef}
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
+                className="w-full h-full object-contain cursor-grab active:cursor-grabbing touch-none"
+              />
+            )}
+
+            {/* Floating Corner Controls */}
+            <div className="absolute bottom-2.5 left-2.5 z-10 flex items-center gap-1.5 sm:gap-2">
+              <button
+                type="button"
+                onClick={() => setFitMode((prev) => (prev === 'fill' ? 'fit' : 'fill'))}
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/75 hover:bg-black/90 active:scale-90 backdrop-blur-md text-white flex items-center justify-center border border-white/20 shadow-md transition-transform"
+                title={fitMode === 'fill' ? 'Switch to Fit Entire Object' : 'Switch to Fill Edge'}
+              >
+                {fitMode === 'fill' ? (
+                  <Minimize className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
+                ) : (
+                  <Maximize className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
+                )}
+              </button>
 
               <button
                 type="button"
-                onClick={() => setRotation((prev) => (prev + 90) % 360)}
-                className="absolute bottom-3 right-3 z-10 w-8 h-8 rounded-full bg-black/60 hover:bg-black/90 backdrop-blur-md text-white flex items-center justify-center border border-white/20 shadow-md active:scale-90 transition-transform"
-                title="Rotate 90°"
+                onClick={() => handleRatioChange('1:1')}
+                className={`px-2 sm:px-2.5 py-1 rounded-full text-[9px] sm:text-[10px] font-bold backdrop-blur-md border shadow-md transition-all ${
+                  aspectRatio === '1:1'
+                    ? 'bg-white text-black border-white'
+                    : 'bg-black/75 text-white border-white/20'
+                }`}
               >
-                <RotateCw className="w-3.5 h-3.5 text-white" />
+                1:1 Square
               </button>
             </div>
 
-            <p className="text-[11px] text-stone-500 font-medium mt-2 flex items-center gap-1.5">
-              <Grid className="w-3 h-3 text-stone-400" />
-              <span>Drag corners to crop · Center to reposition · Works with and without background</span>
-            </p>
+            <button
+              type="button"
+              onClick={() => setRotation((prev) => (prev + 90) % 360)}
+              className="absolute bottom-2.5 right-2.5 z-10 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/75 hover:bg-black/90 active:scale-90 backdrop-blur-md text-white flex items-center justify-center border border-white/20 shadow-md transition-transform"
+              title="Rotate 90°"
+            >
+              <RotateCw className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" />
+            </button>
           </div>
 
-          {/* RIGHT: Tabs & Controls (5 Cols on desktop, 4 on wide) */}
-          <div className="lg:col-span-5 xl:col-span-4 flex flex-col bg-[#141414] min-h-0 overflow-hidden">
-            {/* Studio Navigation Tabs Header */}
-            <div className="grid grid-cols-5 border-b border-[#262626] bg-[#1a1a1a] text-xs font-bold text-center shrink-0">
-              <button
-                type="button"
-                onClick={() => setStudioTab('crop')}
-                className={`py-3 flex flex-col items-center gap-1 transition-all ${
-                  studioTab === 'crop'
-                    ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
-                    : 'text-stone-400 hover:text-stone-200'
-                }`}
-              >
-                <Crop className="w-4 h-4 text-[#dc2626]" />
-                <span className="text-[10px] sm:text-[11px]">Crop</span>
-              </button>
+          <p className="text-[10px] sm:text-[11px] text-stone-500 font-medium mt-1.5 hidden xs:flex items-center gap-1.5">
+            <Grid className="w-3 h-3 text-stone-400" />
+            <span>Drag corners to crop · Center to reposition</span>
+          </p>
+        </div>
 
-              <button
-                type="button"
-                onClick={() => setStudioTab('studio')}
-                className={`py-3 flex flex-col items-center gap-1 transition-all ${
-                  studioTab === 'studio'
-                    ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
-                    : 'text-stone-400 hover:text-stone-200'
-                }`}
-              >
-                <Paintbrush className="w-4 h-4 text-[#dc2626]" />
-                <span className="text-[10px] sm:text-[11px]">Studio BG</span>
-              </button>
+        {/* LOWER (Mobile) / RIGHT (Desktop): Tabs & Controls */}
+        <div className="flex-1 min-h-0 flex flex-col lg:col-span-5 xl:col-span-4 bg-[#141414] overflow-hidden">
+          {/* Studio Navigation Tabs Header */}
+          <div className="grid grid-cols-5 border-b border-[#262626] bg-[#1a1a1a] text-xs font-bold text-center shrink-0">
+            <button
+              type="button"
+              onClick={() => setStudioTab('crop')}
+              className={`py-2 sm:py-3 px-1 flex flex-col items-center justify-center gap-0.5 sm:gap-1 transition-all ${
+                studioTab === 'crop'
+                  ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
+                  : 'text-stone-400 hover:text-stone-200'
+              }`}
+            >
+              <Crop className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#dc2626]" />
+              <span className="text-[9px] xs:text-[10px] sm:text-[11px] font-bold">Crop</span>
+            </button>
 
-              <button
-                type="button"
-                onClick={() => setStudioTab('filter')}
-                className={`py-3 flex flex-col items-center gap-1 transition-all ${
-                  studioTab === 'filter'
-                    ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
-                    : 'text-stone-400 hover:text-stone-200'
-                }`}
-              >
-                <Wand2 className="w-4 h-4 text-[#dc2626]" />
-                <span className="text-[10px] sm:text-[11px]">Filters</span>
-              </button>
+            <button
+              type="button"
+              onClick={() => setStudioTab('studio')}
+              className={`py-2 sm:py-3 px-1 flex flex-col items-center justify-center gap-0.5 sm:gap-1 transition-all ${
+                studioTab === 'studio'
+                  ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
+                  : 'text-stone-400 hover:text-stone-200'
+              }`}
+            >
+              <Paintbrush className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#dc2626]" />
+              <span className="text-[9px] xs:text-[10px] sm:text-[11px] font-bold">BG Style</span>
+            </button>
 
-              <button
-                type="button"
-                onClick={() => setStudioTab('adjust')}
-                className={`py-3 flex flex-col items-center gap-1 transition-all ${
-                  studioTab === 'adjust'
-                    ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
-                    : 'text-stone-400 hover:text-stone-200'
-                }`}
-              >
-                <Sliders className="w-4 h-4 text-[#dc2626]" />
-                <span className="text-[10px] sm:text-[11px]">Adjust</span>
-              </button>
+            <button
+              type="button"
+              onClick={() => setStudioTab('filter')}
+              className={`py-2 sm:py-3 px-1 flex flex-col items-center justify-center gap-0.5 sm:gap-1 transition-all ${
+                studioTab === 'filter'
+                  ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
+                  : 'text-stone-400 hover:text-stone-200'
+              }`}
+            >
+              <Wand2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#dc2626]" />
+              <span className="text-[9px] xs:text-[10px] sm:text-[11px] font-bold">Filters</span>
+            </button>
 
-              <button
-                type="button"
-                onClick={() => setStudioTab('preview')}
-                className={`py-3 flex flex-col items-center gap-1 transition-all ${
-                  studioTab === 'preview'
-                    ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
-                    : 'text-stone-400 hover:text-stone-200'
-                }`}
-              >
-                <Eye className="w-4 h-4 text-[#dc2626]" />
-                <span className="text-[10px] sm:text-[11px]">Card View</span>
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={() => setStudioTab('adjust')}
+              className={`py-2 sm:py-3 px-1 flex flex-col items-center justify-center gap-0.5 sm:gap-1 transition-all ${
+                studioTab === 'adjust'
+                  ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
+                  : 'text-stone-400 hover:text-stone-200'
+              }`}
+            >
+              <Sliders className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#dc2626]" />
+              <span className="text-[9px] xs:text-[10px] sm:text-[11px] font-bold">Adjust</span>
+            </button>
 
-            {/* TAB CONTENTS */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            <button
+              type="button"
+              onClick={() => setStudioTab('preview')}
+              className={`py-2 sm:py-3 px-1 flex flex-col items-center justify-center gap-0.5 sm:gap-1 transition-all ${
+                studioTab === 'preview'
+                  ? 'text-white border-b-2 border-[#dc2626] bg-white/5'
+                  : 'text-stone-400 hover:text-stone-200'
+              }`}
+            >
+              <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#dc2626]" />
+              <span className="text-[9px] xs:text-[10px] sm:text-[11px] font-bold">Preview</span>
+            </button>
+          </div>
+
+          {/* TAB CONTENTS */}
+          <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3.5 pb-6 overscroll-contain">
               {/* ================= TAB 1: CROP & FRAMING ================= */}
               {studioTab === 'crop' && (
                 <div className="space-y-4 animate-in fade-in duration-150">
