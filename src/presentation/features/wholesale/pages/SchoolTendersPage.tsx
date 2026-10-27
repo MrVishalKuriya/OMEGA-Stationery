@@ -82,8 +82,7 @@ export const SchoolTendersPage: React.FC = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[#dc2626] bg-white/10 border border-[#dc2626]/30">
-              <GraduationCap className="w-4 h-4 text-[#dc2626]" />
+            <div className="inline-flex items-center px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#dc2626]/20 via-[#dc2626]/10 to-transparent border border-[#dc2626]/40 font-mono shadow-xs">
               <span>Official School Procurement &amp; Syllabi Booklists</span>
             </div>
 
@@ -256,7 +255,7 @@ export const SchoolTendersPage: React.FC = () => {
                   href={tenderWhatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3.5 px-4 rounded-full btn-ledup-copper text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 group"
+                  className="w-full py-3.5 px-4 rounded-lg btn-ledup-copper text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 group"
                 >
                   <MessageCircle className="w-4 h-4 text-white" />
                   <span className="text-white">Submit to Tender Desk (WhatsApp)</span>
@@ -266,7 +265,7 @@ export const SchoolTendersPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => window.print()}
-                  className="w-full py-2.5 px-4 rounded-full bg-white/10 hover:bg-white/20 text-stone-200 text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-2"
+                  className="w-full py-2.5 px-4 rounded-lg bg-white/10 hover:bg-white/20 text-stone-200 text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-2"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Print / Save Quotation</span>

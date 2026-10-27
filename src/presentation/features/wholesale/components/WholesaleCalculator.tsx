@@ -57,8 +57,7 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-2 mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold text-[#dc2626] bg-white/10 border border-[#dc2626]/30">
-            <Calculator className="w-3.5 h-3.5 text-[#dc2626]" />
+          <div className="inline-flex items-center px-3.5 py-1.5 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-[#dc2626]/20 via-[#dc2626]/10 to-transparent border border-[#dc2626]/40 font-mono shadow-xs">
             <span>DYNAMIC PROFORMA &amp; MARGIN SIMULATOR</span>
           </div>
           <h2 className="font-heading text-3xl sm:text-4xl font-bold text-white tracking-tight">
@@ -242,7 +241,7 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-3.5 px-4 rounded-full btn-ledup-copper group text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg min-h-[48px] active:scale-95 text-white"
+              className="w-full py-3.5 px-4 rounded-lg btn-ledup-copper group text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg min-h-[48px] active:scale-95 text-white"
             >
               <MessageCircle className="w-4 h-4 fill-white" />
               <span>Confirm Proforma on WhatsApp</span>

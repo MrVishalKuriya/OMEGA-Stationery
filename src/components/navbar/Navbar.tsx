@@ -286,7 +286,11 @@ export const Navbar: React.FC = () => {
                 <form onSubmit={handleDesktopSearchSubmit} className="relative w-full flex items-center">
                   <Search className="w-4 h-4 text-[#71717a] absolute left-3.5 pointer-events-none" />
                   <input
-                    type="search"
+                    type="text"
+                    role="searchbox"
+                    autoCapitalize="none"
+                    autoCorrect="off"
+                    enterKeyHint="search"
                     value={desktopSearchQuery}
                     onChange={(e) => {
                       setDesktopSearchQuery(e.target.value);
@@ -298,7 +302,7 @@ export const Navbar: React.FC = () => {
                         ? 'Tafuta madaftari, counter books, bahasha, rejesta...'
                         : 'Search notebooks, counter books, bahasha, registers...'
                     }
-                    className="w-full pl-10 pr-10 py-2 sm:py-2.5 text-xs sm:text-sm bg-[#fafafa] rounded-full border border-[#e4e4e7] hover:border-[#dc2626] focus:border-[#dc2626] text-[#18181b] placeholder:text-[#71717a] transition-all shadow-2xs focus:outline-none focus:ring-1 focus:ring-[#dc2626]"
+                    className="w-full pl-10 pr-10 py-2 sm:py-2.5 text-xs sm:text-sm bg-[#fafafa] rounded-lg border border-[#e4e4e7] hover:border-[#dc2626] focus:border-[#dc2626] text-[#18181b] placeholder:text-[#71717a] transition-all shadow-2xs focus:outline-none focus:ring-1 focus:ring-[#dc2626]"
                   />
                   {desktopSearchQuery && (
                     <button
@@ -317,7 +321,7 @@ export const Navbar: React.FC = () => {
 
                 {/* Instant Live Search Dropdown */}
                 {isInlineSearchFocused && inlineMatches.length > 0 && (
-                  <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-[16px] border border-[#e4e4e7] shadow-2xl overflow-hidden z-50">
+                  <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-[12px] border border-[#e4e4e7] shadow-2xl overflow-hidden z-50">
                     <div className="px-4 py-2.5 bg-[#fafafa] border-b border-[#e4e4e7] flex items-center justify-between text-xs font-bold text-[#71717a]">
                       <span>{language === 'sw' ? 'Bidhaa Zinazolingana' : 'Matching Products'}</span>
                       <button
@@ -368,7 +372,7 @@ export const Navbar: React.FC = () => {
                 {/* 1. B2B Wholesale Quote Pill Button */}
                 <Link
                   to="/wholesale"
-                  className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] hover:from-[#991b1b] hover:to-[#dc2626] text-white text-xs font-bold uppercase tracking-wider shadow-sm hover:shadow-md transition-all active:scale-95 group shrink-0"
+                  className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] hover:from-[#991b1b] hover:to-[#dc2626] text-white text-xs font-bold uppercase tracking-wider shadow-sm hover:shadow-md transition-all active:scale-95 group shrink-0"
                 >
                   <span>B2B Wholesale</span>
                   <ArrowRight className="w-3.5 h-3.5 ledup-arrow-icon" />
@@ -378,7 +382,7 @@ export const Navbar: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsTrackingModalOpen(true)}
-                  className="hidden xl:flex items-center gap-1 px-3 py-1.5 rounded-full border border-[#e4e4e7] hover:border-[#dc2626] bg-white text-xs font-semibold text-[#18181b] transition-all hover:bg-[#fafafa] shrink-0"
+                  className="hidden xl:flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#e4e4e7] hover:border-[#dc2626] bg-white text-xs font-semibold text-[#18181b] transition-all hover:bg-[#fafafa] shrink-0"
                   title="Track Parcel Delivery"
                 >
                   <Truck className="w-3.5 h-3.5 text-[#dc2626]" />
@@ -389,7 +393,7 @@ export const Navbar: React.FC = () => {
                 <button
                   type="button"
                   onClick={toggleLanguage}
-                  className="flex items-center gap-1 px-2.5 py-1.5 rounded-full border border-[#e4e4e7] hover:border-[#dc2626] bg-white hover:bg-[#fafafa] text-xs font-bold text-[#18181b] transition-all min-h-[34px] focus-ring-gold shadow-2xs shrink-0"
+                  className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-[#e4e4e7] hover:border-[#dc2626] bg-white hover:bg-[#fafafa] text-xs font-bold text-[#18181b] transition-all min-h-[34px] focus-ring-gold shadow-2xs shrink-0"
                   title={language === 'en' ? 'Badili lugha kuwa Kiswahili' : 'Switch to English'}
                   aria-label="Toggle language between English and Swahili"
                 >
@@ -464,32 +468,29 @@ export const Navbar: React.FC = () => {
               </div>
             </div>
 
-            {/* Mobile Inline Search Bar (Visible on mobile screens < md) */}
+            {/* Mobile Inline Search Bar (Visible on mobile screens < md) - No popup window */}
             <div className="md:hidden pb-2.5 pt-1 relative">
               <form onSubmit={handleDesktopSearchSubmit} className="relative flex items-center">
                 <Search className="w-4 h-4 text-[#a1a1aa] absolute left-3.5 pointer-events-none" />
                 <input
-                  type="search"
+                  type="text"
+                  role="searchbox"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  enterKeyHint="search"
                   value={desktopSearchQuery}
-                  onChange={(e) => {
-                    setDesktopSearchQuery(e.target.value);
-                    setIsInlineSearchFocused(true);
-                  }}
-                  onFocus={() => setIsInlineSearchFocused(true)}
+                  onChange={(e) => setDesktopSearchQuery(e.target.value)}
                   placeholder={
                     language === 'sw'
                       ? 'Tafuta madaftari, counter books, bahasha...'
                       : 'Search notebooks, counter books, bahasha...'
                   }
-                  className="w-full pl-9 pr-8 py-2 text-xs bg-white rounded-full border border-[#e4e4e7] text-[#18181b] placeholder:text-[#71717a] shadow-2xs focus:outline-none focus:ring-1 focus:ring-[#dc2626]"
+                  className="w-full pl-9 pr-8 py-2 text-xs bg-white rounded-lg border border-[#e4e4e7] text-[#18181b] placeholder:text-[#71717a] shadow-2xs focus:outline-none focus:border-[#dc2626] focus:ring-1 focus:ring-[#dc2626]"
                 />
                 {desktopSearchQuery && (
                   <button
                     type="button"
-                    onClick={() => {
-                      setDesktopSearchQuery('');
-                      setIsInlineSearchFocused(false);
-                    }}
+                    onClick={() => setDesktopSearchQuery('')}
                     className="absolute right-3 p-1 text-[#71717a]"
                     aria-label="Clear"
                   >
@@ -497,43 +498,6 @@ export const Navbar: React.FC = () => {
                   </button>
                 )}
               </form>
-
-              {/* Mobile Live Suggestions Dropdown */}
-              {isInlineSearchFocused && inlineMatches.length > 0 && (
-                <div className="absolute left-0 right-0 top-full mt-1.5 bg-white rounded-[14px] border border-[#e4e4e7] shadow-2xl overflow-hidden z-50">
-                  <div className="max-h-56 overflow-y-auto divide-y divide-[#e4e4e7]/60">
-                    {inlineMatches.map((item) => (
-                      <button
-                        key={item.id}
-                        type="button"
-                        onClick={() => {
-                          navigate(`/product/${item.id}`);
-                          setIsInlineSearchFocused(false);
-                          setDesktopSearchQuery('');
-                        }}
-                        className="w-full p-2.5 flex items-center gap-2.5 hover:bg-[#fafafa] text-left transition-colors cursor-pointer"
-                      >
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="w-8 h-8 object-contain rounded bg-white p-0.5 border border-[#e4e4e7] shrink-0"
-                        />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs font-semibold text-[#18181b] truncate">
-                            {language === 'sw' && item.nameSw ? item.nameSw : item.name}
-                          </p>
-                          <p className="text-[10px] text-[#71717a] truncate font-mono">
-                            {item.category}
-                          </p>
-                        </div>
-                        <span className="text-xs font-mono font-bold text-[#dc2626] shrink-0">
-                          TZS {(item.discountPrice || item.price).toLocaleString()}
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -553,15 +517,15 @@ export const Navbar: React.FC = () => {
                   <Link
                     key={item.id}
                     to={item.href}
-                    className={`px-3 py-1.5 text-xs font-semibold tracking-tight rounded-full transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                    className={`px-3 py-1.5 text-xs font-semibold tracking-tight rounded-md transition-all whitespace-nowrap flex items-center gap-1.5 ${
                       active
-                        ? 'bg-[#111113] text-white shadow-xs'
+                        ? 'bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] text-white shadow-xs font-bold'
                         : 'text-[#18181b] hover:text-[#dc2626] hover:bg-[#f4f4f5]'
                     }`}
                   >
                     <span>{item.label}</span>
                     {item.badge && (
-                      <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-[#dc2626] text-white leading-none">
+                      <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-sm bg-[#dc2626] text-white leading-none">
                         {item.badge}
                       </span>
                     )}

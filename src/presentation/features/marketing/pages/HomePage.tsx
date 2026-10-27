@@ -32,6 +32,8 @@ import {
   GraduationCap,
   Store,
   Phone,
+  Calculator,
+  Mail,
 } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { ProductCard } from '@/components/ProductCard';
@@ -289,31 +291,10 @@ export const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
           
           {/* Section Header */}
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#e4e4e7] pb-6">
-            <div className="space-y-1.5 max-w-2xl">
-              <div className="inline-flex items-center gap-2">
-                <span className="w-6 h-[1.5px] bg-[#dc2626]" />
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#dc2626] font-mono">
-                  CURATED COLLECTIONS
-                </span>
-              </div>
-              <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#18181b] tracking-tight">
-                {language === 'sw' ? 'Mkusanyiko Rasmi wa Vitabu' : 'Explore by Category'}
-              </h2>
-              <p className="text-xs sm:text-sm text-[#71717a]">
-                {language === 'sw'
-                  ? 'Kila daftari linatengenezwa kwa viwango vikali vya kudumu kwa miaka mingi bila kuchanika.'
-                  : 'From Smyth thread-sewn hardback counter books to heavy-duty document kraft mailers.'}
-              </p>
-            </div>
-
-            <Link
-              to="/catalog"
-              className="group inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#111113] hover:text-[#dc2626] font-mono transition-colors pb-1 border-b border-[#111113] hover:border-[#dc2626] self-start sm:self-end shrink-0"
-            >
-              <span>{language === 'sw' ? 'TAZAMA ZOTE' : 'VIEW ALL CATEGORIES'}</span>
-              <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
+          <div className="border-b border-[#e4e4e7] pb-4">
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#18181b] tracking-tight">
+              {language === 'sw' ? 'Mkusanyiko Rasmi wa Vitabu' : 'Explore by Category'}
+            </h2>
           </div>
 
           {/* 6 Category Showcase Cards */}
@@ -324,14 +305,6 @@ export const HomePage: React.FC = () => {
                 to={cat.link}
                 className="group flex flex-col bg-white border border-[#e4e4e7] rounded-2xl overflow-hidden hover:border-[#dc2626] p-3.5 sm:p-4 text-center items-center shadow-xs transition-all duration-300 hover:shadow-xl hover:-translate-y-1 relative"
               >
-                {/* Header Tag / Number */}
-                <div className="w-full flex items-center justify-between pb-2 mb-2.5 border-b border-[#e4e4e7] text-[10px] font-semibold text-[#a1a1aa]">
-                  <span className="text-[#dc2626] font-mono font-bold tracking-wider">
-                    {cat.badge}
-                  </span>
-                  <span className="font-mono text-stone-400">0{idx + 1}</span>
-                </div>
-
                 {/* Product Photo Canvas */}
                 <div className="aspect-square w-full bg-[#fafafa] rounded-xl p-3 overflow-hidden flex items-center justify-center relative mb-3 border border-[#e4e4e7]/70 group-hover:border-[#dc2626]/40 transition-colors shadow-inner">
                   <img
@@ -377,116 +350,82 @@ export const HomePage: React.FC = () => {
           
           {/* Header */}
           <div className="text-center space-y-3 max-w-2xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#111113]/5 border border-[#dc2626]/30 text-xs font-bold text-[#dc2626] font-mono uppercase tracking-widest">
-              <Sparkles className="w-3.5 h-3.5 text-[#dc2626]" />
+            <div className="inline-flex items-center px-3.5 py-1 rounded-lg bg-gradient-to-r from-[#dc2626]/15 via-[#dc2626]/5 to-transparent border border-[#dc2626]/30 text-xs font-bold text-[#dc2626] font-mono uppercase tracking-widest shadow-xs">
               <span>THE ENGINEERING STANDARD</span>
             </div>
             <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#18181b] tracking-tight">
               {language === 'sw' ? 'Sayansi ya Daftari Bora la OMEGA' : 'The Anatomy of an OMEGA Notebook'}
             </h2>
-            <p className="text-xs sm:text-sm text-[#71717a] leading-relaxed">
-              {language === 'sw'
-                ? 'Kwanini shule, wahasibu, na ofisi kubwa wanachagua OMEGA badala ya madaftari ya kawaida.'
-                : 'Every single component is selected to guarantee lasting endurance, effortless writing, and complete ink resistance.'}
-            </p>
           </div>
 
           {/* 4 Engineering Pillars Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             
             {/* Pillar 1 */}
-            <div className="group p-5 sm:p-6 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-between shadow-xs hover:shadow-xl hover:-translate-y-1">
+            <div className="group p-5 sm:p-6 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-start shadow-xs hover:shadow-xl hover:-translate-y-1">
               <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300">
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 shrink-0">
                     <BookOpen className="w-5 h-5" />
                   </div>
-                  <span className="font-mono text-xs font-bold text-[#dc2626] bg-white px-2 py-0.5 rounded-full border border-[#e4e4e7]">
-                    LAYER 01
-                  </span>
+                  <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
+                    Smyth Thread-Sewn Spine
+                  </h3>
                 </div>
-                <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
-                  Smyth Thread-Sewn Spine
-                </h3>
                 <p className="text-xs text-[#71717a] leading-relaxed">
                   Pages are double-stitched with high-tensile cotton-linen thread that never loosens. Opens flat at 180° for effortless two-page ledgers and note taking.
                 </p>
               </div>
-              <div className="text-[11px] font-bold text-[#dc2626] font-mono flex items-center gap-1.5 pt-3 border-t border-[#e4e4e7] mt-4">
-                <Check className="w-3.5 h-3.5 shrink-0 text-[#2A9D8F]" />
-                <span className="truncate">180° Lay-Flat Ergonomics</span>
-              </div>
             </div>
 
             {/* Pillar 2 */}
-            <div className="group p-5 sm:p-6 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-between shadow-xs hover:shadow-xl hover:-translate-y-1">
+            <div className="group p-5 sm:p-6 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-start shadow-xs hover:shadow-xl hover:-translate-y-1">
               <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300">
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 shrink-0">
                     <Feather className="w-5 h-5" />
                   </div>
-                  <span className="font-mono text-xs font-bold text-[#dc2626] bg-white px-2 py-0.5 rounded-full border border-[#e4e4e7]">
-                    LAYER 02
-                  </span>
+                  <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
+                    70 GSM Bleed-Proof Bond
+                  </h3>
                 </div>
-                <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
-                  70 GSM Bleed-Proof Bond
-                </h3>
                 <p className="text-xs text-[#71717a] leading-relaxed">
                   High-density virgin wood-pulp paper prevents ink ghosting and feathering from rollerballs, gel pens, and heavy fountain pen inks.
                 </p>
               </div>
-              <div className="text-[11px] font-bold text-[#dc2626] font-mono flex items-center gap-1.5 pt-3 border-t border-[#e4e4e7] mt-4">
-                <Check className="w-3.5 h-3.5 shrink-0 text-[#2A9D8F]" />
-                <span className="truncate">Zero Ink Bleed-Through</span>
-              </div>
             </div>
 
             {/* Pillar 3 */}
-            <div className="group p-5 sm:p-6 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-between shadow-xs hover:shadow-xl hover:-translate-y-1">
+            <div className="group p-5 sm:p-6 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-start shadow-xs hover:shadow-xl hover:-translate-y-1">
               <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300">
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 shrink-0">
                     <ShieldCheck className="w-5 h-5" />
                   </div>
-                  <span className="font-mono text-xs font-bold text-[#dc2626] bg-white px-2 py-0.5 rounded-full border border-[#e4e4e7]">
-                    LAYER 03
-                  </span>
+                  <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
+                    1.8mm Laminated Hardcover
+                  </h3>
                 </div>
-                <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
-                  1.8mm Laminated Hardcover
-                </h3>
                 <p className="text-xs text-[#71717a] leading-relaxed">
                   Heavy-duty greyboard wrapped in a water-resistant matt laminated cover. Protects records against humidity, spills, and rough transport.
                 </p>
               </div>
-              <div className="text-[11px] font-bold text-[#dc2626] font-mono flex items-center gap-1.5 pt-3 border-t border-[#e4e4e7] mt-4">
-                <Check className="w-3.5 h-3.5 shrink-0 text-[#2A9D8F]" />
-                <span className="truncate">Multi-Year Durability</span>
-              </div>
             </div>
 
             {/* Pillar 4 */}
-            <div className="group p-5 sm:p-6 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-between shadow-xs hover:shadow-xl hover:-translate-y-1">
+            <div className="group p-5 sm:p-6 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-start shadow-xs hover:shadow-xl hover:-translate-y-1">
               <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300">
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 shrink-0">
                     <Compass className="w-5 h-5" />
                   </div>
-                  <span className="font-mono text-xs font-bold text-[#dc2626] bg-white px-2 py-0.5 rounded-full border border-[#e4e4e7]">
-                    LAYER 04
-                  </span>
+                  <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
+                    Precision Indigo Ruling
+                  </h3>
                 </div>
-                <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
-                  Precision Indigo Ruling
-                </h3>
                 <p className="text-xs text-[#71717a] leading-relaxed">
                   Uniform 8mm feint lines with soft red margin guides calibrated strictly to Tanzanian National Examination Council (NECTA) standards.
                 </p>
-              </div>
-              <div className="text-[11px] font-bold text-[#dc2626] font-mono flex items-center gap-1.5 pt-3 border-t border-[#e4e4e7] mt-4">
-                <Check className="w-3.5 h-3.5 shrink-0 text-[#2A9D8F]" />
-                <span className="truncate">NECTA Syllabus Standard</span>
               </div>
             </div>
 
@@ -501,27 +440,14 @@ export const HomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
           
           {/* Header Row */}
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#e4e4e7] pb-6">
-            <div className="space-y-1.5">
-              <div className="inline-flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#dc2626]" />
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#dc2626] font-mono">
-                  OFFICIAL 2026 BATCH
-                </span>
-              </div>
-              <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#18181b] tracking-tight">
-                {language === 'sw' ? 'Bidhaa Zinazoongoza kwa Mauzo' : 'Benchmark Stationery Picks'}
-              </h2>
-              <p className="text-xs sm:text-sm text-[#71717a]">
-                {language === 'sw'
-                  ? 'Madaftari maarufu yaliyopo stoo tayari kwa oda za jumla na rejareja.'
-                  : 'In-stock factory lines ready for instant retail dispatch and wholesale carton delivery.'}
-              </p>
-            </div>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#e4e4e7] pb-4">
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#18181b] tracking-tight">
+              {language === 'sw' ? 'Bidhaa Zinazoongoza kwa Mauzo' : 'Benchmark Stationery Picks'}
+            </h2>
 
             <Link
               to="/catalog"
-              className="font-mono text-xs font-bold tracking-wider uppercase text-[#111113] hover:text-[#dc2626] inline-flex items-center gap-1.5 border-b border-[#111113] hover:border-[#dc2626] pb-1 transition-colors self-start sm:self-end"
+              className="font-mono text-xs font-bold tracking-wider uppercase text-[#111113] hover:text-[#dc2626] inline-flex items-center gap-1.5 border-b border-[#111113] hover:border-[#dc2626] pb-1 transition-colors self-start sm:self-auto shrink-0"
             >
               <span>{language === 'sw' ? 'TAZAMA ZOTE' : 'VIEW COMPLETE CATALOGUE'}</span>
               <ArrowUpRight className="w-4 h-4" />
@@ -579,201 +505,166 @@ export const HomePage: React.FC = () => {
       {/* ========================================================================= */}
       {/* 6. WHOLESALE CARTON PRICING CALCULATOR (Interactive B2B Studio) */}
       {/* ========================================================================= */}
-      <section className="py-14 sm:py-20 bg-[#111113] text-white border-b border-[#18181b] relative overflow-hidden">
+      <section className="py-8 sm:py-14 bg-[#111113] text-white border-b border-[#18181b] relative overflow-hidden">
         {/* Soft radial backlight */}
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#dc2626]/15 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-black/30 rounded-full blur-2xl pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            
-            {/* Left Column: B2B Procurement Value Proposition */}
-            <div className="lg:col-span-5 space-y-5 text-left">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-bold text-[#dc2626] bg-white/10 border border-[#dc2626]/30 font-mono tracking-wider">
-                <Package className="w-3.5 h-3.5 text-[#dc2626]" />
-                <span>B2B WHOLESALE &amp; SCHOOL TENDERS</span>
+        <div className="max-w-3xl mx-auto px-3.5 sm:px-6 relative z-10 space-y-4 sm:space-y-5">
+          <div className="text-center space-y-1.5">
+            <span className="inline-flex items-center px-3 py-1 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#ef4444] bg-[#dc2626]/10 border border-[#dc2626]/20 font-mono">
+              <span>{language === 'sw' ? 'Bei za Jumla za Kiwandani' : 'B2B Factory Direct Pricing'}</span>
+            </span>
+            <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight">
+              {language === 'sw'
+                ? 'Kikokotoo cha Bei za Jumla Kiwandani'
+                : 'Wholesale Carton Pricing Calculator'}
+            </h2>
+          </div>
+
+          {/* Interactive B2B Calculator Studio */}
+          <div className="bg-[#131316] border border-white/10 p-4 sm:p-6 rounded-xl shadow-2xl space-y-4 sm:space-y-5 text-left relative overflow-hidden backdrop-blur-md">
+            {/* Subtle card glow */}
+            <div className="absolute top-0 right-0 w-48 h-48 bg-[#dc2626]/10 rounded-full blur-2xl pointer-events-none" />
+
+            {/* Step 1: Select Book Model */}
+            <div className="space-y-2 relative z-10">
+              <div className="flex items-center justify-between">
+                <label className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-red-400 font-mono flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 inline-block" />
+                  1. Select Notebook Model:
+                </label>
+                <span className="text-[11px] text-zinc-400 font-mono">
+                  Smyth-sewn hardcovers
+                </span>
               </div>
 
-              <h2 className="font-heading text-2xl sm:text-4xl font-bold text-white leading-tight">
-                {language === 'sw'
-                  ? 'Kikokotoo cha Bei za Jumla Kiwandani'
-                  : 'Wholesale Carton Pricing Calculator'}
-              </h2>
-
-              <p className="text-xs sm:text-sm text-stone-300 leading-relaxed font-normal">
-                {language === 'sw'
-                  ? 'Chagua aina ya daftari na idadi ya katoni unazohitaji ili upate hesabu kamili ya moja kwa moja kutoka kiwandani kwa bei ya jumla.'
-                  : 'Select your preferred quire ledger and required carton quantity to see instantaneous factory rates, unit breakdowns, and bus parcel dispatch schedules.'}
-              </p>
-
-              {/* 4 Guarantees Checklist */}
-              <div className="space-y-3 pt-2 text-xs sm:text-sm text-stone-200">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-[#dc2626]/20 flex items-center justify-center shrink-0">
-                    <CheckCircle2 className="w-4 h-4 text-[#dc2626]" />
-                  </div>
-                  <span>Factory-Direct Pricing (Zero intermediary markups)</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-[#dc2626]/20 flex items-center justify-center shrink-0">
-                    <CheckCircle2 className="w-4 h-4 text-[#dc2626]" />
-                  </div>
-                  <span>Nationwide Bus Parcel Waybill Dispatch to all 31 regions</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-[#dc2626]/20 flex items-center justify-center shrink-0">
-                    <CheckCircle2 className="w-4 h-4 text-[#dc2626]" />
-                  </div>
-                  <span>Official EFD Electronic Invoices &amp; Formal Proforma Quotations</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-[#dc2626]/20 flex items-center justify-center shrink-0">
-                    <CheckCircle2 className="w-4 h-4 text-[#dc2626]" />
-                  </div>
-                  <span>Heavy-Duty Double-Strapped OMEGA Branded Cartons</span>
-                </div>
+              <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
+                {[
+                  { key: 'q2', label: 'Quire 2 (Q2)', sub: '192p · 48 pcs/box', rate: formatPrice(q2Prod?.wholesalePrice || 56000, currency) },
+                  { key: 'q3', label: 'Quire 3 (Q3)', sub: '288p · 36 pcs/box', rate: formatPrice(q3Prod?.wholesalePrice || 57000, currency) },
+                  { key: 'q4', label: 'Quire 4 (Q4)', sub: '384p · 24 pcs/box', rate: formatPrice(q4Prod?.wholesalePrice || 60000, currency) },
+                ].map((item) => (
+                  <button
+                    key={item.key}
+                    type="button"
+                    onClick={() => setCalcBookType(item.key as any)}
+                    className={`p-2.5 sm:p-3 rounded-lg border text-center transition-all duration-200 cursor-pointer ${
+                      calcBookType === item.key
+                        ? 'bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] text-white font-bold border-transparent shadow-md ring-1 ring-white/20'
+                        : 'bg-[#0b0b0e] text-zinc-300 border-white/10 hover:border-white/25 hover:bg-[#111115]'
+                    }`}
+                  >
+                    <div className="text-xs sm:text-sm font-bold truncate leading-tight">{item.label}</div>
+                    <div className={`text-[10px] font-mono mt-0.5 ${calcBookType === item.key ? 'text-white/80' : 'text-zinc-400'}`}>
+                      {item.sub}
+                    </div>
+                    <div className={`text-xs mt-1 font-mono font-bold ${calcBookType === item.key ? 'text-white' : 'text-red-400'}`}>
+                      {item.rate}
+                    </div>
+                  </button>
+                ))}
               </div>
             </div>
 
-            {/* Right Column: Interactive B2B Calculator Studio */}
-            <div className="lg:col-span-7 bg-[#18181b] border border-white/15 p-6 sm:p-8 rounded-3xl shadow-2xl space-y-6">
-              
-              {/* Step 1: Select Book Model */}
-              <div className="space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <label className="text-xs font-bold uppercase tracking-wider text-[#dc2626] font-mono">
-                    1. Select Notebook Model:
-                  </label>
-                  <span className="text-[11px] text-stone-300 font-mono">
-                    Smyth-sewn hardcovers
-                  </span>
-                </div>
+            {/* Step 2: Select Quantity (Responsive Grid + Stepper) */}
+            <div className="space-y-2 relative z-10">
+              <div className="flex items-center justify-between gap-1">
+                <label className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-red-400 font-mono flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 inline-block" />
+                  2. Order Quantity ({unitsPerCarton} Pcs/Box):
+                </label>
+                <span className="text-white font-mono text-[11px] sm:text-xs font-bold bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">
+                  {calcQuantity} Cartons · {totalUnits.toLocaleString()} Books
+                </span>
+              </div>
 
-                <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
-                  {[
-                    { key: 'q2', label: 'Quire 2 (Q2)', sub: '192p · 48 pcs/box', rate: formatPrice(q2Prod?.wholesalePrice || 56000, currency) },
-                    { key: 'q3', label: 'Quire 3 (Q3)', sub: '288p · 36 pcs/box', rate: formatPrice(q3Prod?.wholesalePrice || 57000, currency) },
-                    { key: 'q4', label: 'Quire 4 (Q4)', sub: '384p · 24 pcs/box', rate: formatPrice(q4Prod?.wholesalePrice || 60000, currency) },
-                  ].map((item) => (
+              {/* Presets and Stepper row */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                <div className="grid grid-cols-5 gap-1.5 flex-1">
+                  {[1, 5, 10, 20, 50].map((qty) => (
                     <button
-                      key={item.key}
+                      key={qty}
                       type="button"
-                      onClick={() => setCalcBookType(item.key as any)}
-                      className={`p-3 rounded-2xl border text-center transition-all duration-200 cursor-pointer ${
-                        calcBookType === item.key
-                          ? 'bg-[#dc2626] text-white font-bold border-transparent shadow-lg scale-[1.02]'
-                          : 'bg-[#111113]/80 text-stone-200 border-white/10 hover:border-[#dc2626]/60 hover:bg-[#111113]'
+                      onClick={() => setCalcQuantity(qty)}
+                      className={`py-2 text-xs font-bold rounded-lg border transition-all duration-200 font-mono cursor-pointer flex items-center justify-center ${
+                        calcQuantity === qty
+                          ? 'bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] text-white border-transparent shadow-sm'
+                          : 'bg-[#0b0b0e] text-zinc-300 border-white/10 hover:border-white/25 hover:text-white'
                       }`}
                     >
-                      <div className="text-xs sm:text-sm font-bold truncate">{item.label}</div>
-                      <div className="text-[10px] opacity-80 font-mono mt-0.5">{item.sub}</div>
-                      <div className={`text-xs mt-1 font-mono font-bold ${calcBookType === item.key ? 'text-[#09090b]' : 'text-[#dc2626]'}`}>
-                        {item.rate}
-                      </div>
+                      {qty} {qty === 1 ? 'Box' : 'Boxes'}
                     </button>
                   ))}
                 </div>
-              </div>
 
-              {/* Step 2: Select Quantity (Presets + Stepper) */}
-              <div className="space-y-2.5">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 text-xs font-bold uppercase tracking-wider">
-                  <label className="text-[#dc2626] font-mono">
-                    2. Order Quantity ({unitsPerCarton} Pcs / Box):
-                  </label>
-                  <span className="text-white font-mono text-xs">
-                    {calcQuantity} Cartons ({totalUnits.toLocaleString()} Books)
+                {/* Manual Stepper */}
+                <div className="flex items-center justify-between sm:justify-center rounded-lg bg-[#0b0b0e] border border-white/10 p-1 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => setCalcQuantity(Math.max(1, calcQuantity - 1))}
+                    aria-label="Decrease quantity"
+                    className="w-8 h-8 rounded-md bg-white/5 hover:bg-white/15 text-white flex items-center justify-center transition-colors active:scale-95 cursor-pointer"
+                  >
+                    <Minus className="w-3.5 h-3.5" />
+                  </button>
+                  <span className="w-12 text-center font-mono font-bold text-xs text-white">
+                    {calcQuantity}
                   </span>
-                </div>
-
-                {/* Presets and Stepper row */}
-                <div className="flex items-center gap-2">
-                  <div className="grid grid-cols-5 gap-1.5 sm:gap-2 flex-1">
-                    {[1, 5, 10, 20, 50].map((qty) => (
-                      <button
-                        key={qty}
-                        type="button"
-                        onClick={() => setCalcQuantity(qty)}
-                        className={`py-2 text-xs font-bold rounded-xl border transition-all duration-200 font-mono cursor-pointer ${
-                          calcQuantity === qty
-                            ? 'bg-[#dc2626] text-white border-transparent shadow-md'
-                            : 'bg-[#111113]/80 text-stone-300 border-white/10 hover:border-white/30'
-                        }`}
-                      >
-                        {qty} {qty === 1 ? 'Box' : 'Boxes'}
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* Manual Stepper */}
-                  <div className="flex items-center rounded-xl bg-[#09090b] border border-white/15 p-1 shrink-0">
-                    <button
-                      type="button"
-                      onClick={() => setCalcQuantity(Math.max(1, calcQuantity - 1))}
-                      aria-label="Decrease quantity"
-                      className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
-                    >
-                      <Minus className="w-3.5 h-3.5" />
-                    </button>
-                    <span className="w-9 text-center font-mono font-bold text-xs text-white">
-                      {calcQuantity}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setCalcQuantity(calcQuantity + 1)}
-                      aria-label="Increase quantity"
-                      className="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
-                    >
-                      <Plus className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setCalcQuantity(calcQuantity + 1)}
+                    aria-label="Increase quantity"
+                    className="w-8 h-8 rounded-md bg-white/5 hover:bg-white/15 text-white flex items-center justify-center transition-colors active:scale-95 cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               </div>
-
-              {/* Price Calculation Live Studio Breakdown */}
-              <div className="p-4 sm:p-5 rounded-2xl bg-[#09090b] border border-white/10 space-y-2.5 font-mono">
-                <div className="flex justify-between text-xs text-stone-300">
-                  <span>Factory Carton Rate:</span>
-                  <span className="text-white font-bold">{formatPrice(calcBaseRate, currency)}</span>
-                </div>
-                <div className="flex justify-between text-xs text-stone-300">
-                  <span>Effective Unit Rate:</span>
-                  <span className="text-[#dc2626] font-bold">~{formatPrice(unitPrice, currency)} / book</span>
-                </div>
-                <div className="flex justify-between text-xs text-stone-300">
-                  <span>Selected Volume:</span>
-                  <span className="text-white font-bold">
-                    {calcQuantity} {calcQuantity === 1 ? 'Carton' : 'Cartons'} ({totalUnits.toLocaleString()} units)
-                  </span>
-                </div>
-                <div className="flex justify-between items-center text-sm sm:text-base font-extrabold text-white pt-3 border-t border-white/15">
-                  <span className="font-heading">Total Proforma Amount:</span>
-                  <span className="text-[#dc2626] text-xl sm:text-2xl font-black font-mono">
-                    {formatPrice(calcTotal, currency)}
-                  </span>
-                </div>
-              </div>
-
-              {/* WhatsApp Proforma Trigger */}
-              <a
-                href={`https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
-                  `*OMEGA WHOLESALE PROFORMA INQUIRY*\n` +
-                  `Product: Counter Book ${calcBookType.toUpperCase()}\n` +
-                  `Quantity: ${calcQuantity} Cartons (${totalUnits} Units)\n` +
-                  `Rate per Carton: ${formatPrice(calcBaseRate, currency)}\n` +
-                  `Total Amount: ${formatPrice(calcTotal, currency)}\n\n` +
-                  `Please share formal proforma invoice and dispatch waybill schedule.`
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-4 px-5 rounded-2xl bg-[#dc2626] hover:bg-[#ef4444] text-[#09090b] text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl hover:shadow-2xl transition-all duration-300 active:scale-95 group font-mono"
-              >
-                <MessageCircle className="w-4 h-4 text-[#09090b]" />
-                <span>Request Proforma Invoice on WhatsApp</span>
-                <ArrowUpRight className="w-4 h-4 text-[#09090b] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </a>
-
             </div>
+
+            {/* Price Calculation Live Studio Breakdown */}
+            <div className="p-3.5 sm:p-4 rounded-lg bg-[#0b0b0e] border border-white/10 space-y-2 font-mono text-xs relative z-10">
+              <div className="flex justify-between text-zinc-300">
+                <span className="text-zinc-400">Factory Carton Rate:</span>
+                <span className="text-white font-bold">{formatPrice(calcBaseRate, currency)}</span>
+              </div>
+              <div className="flex justify-between text-zinc-300">
+                <span className="text-zinc-400">Effective Unit Rate:</span>
+                <span className="text-emerald-400 font-bold">~{formatPrice(unitPrice, currency)} / book</span>
+              </div>
+              <div className="flex justify-between text-zinc-300">
+                <span className="text-zinc-400">Selected Volume:</span>
+                <span className="text-white font-bold">
+                  {calcQuantity} {calcQuantity === 1 ? 'Carton' : 'Cartons'} ({totalUnits.toLocaleString()} units)
+                </span>
+              </div>
+              <div className="flex justify-between items-baseline pt-2.5 border-t border-white/10">
+                <span className="font-sans font-semibold text-xs sm:text-sm text-zinc-200">Total Proforma Amount:</span>
+                <span className="text-xl sm:text-2xl font-black font-mono text-[#ef4444] tracking-tight">
+                  {formatPrice(calcTotal, currency)}
+                </span>
+              </div>
+            </div>
+
+            {/* WhatsApp Proforma Trigger */}
+            <a
+              href={`https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
+                `*OMEGA WHOLESALE PROFORMA INQUIRY*\n` +
+                `Product: Counter Book ${calcBookType.toUpperCase()}\n` +
+                `Quantity: ${calcQuantity} Cartons (${totalUnits} Units)\n` +
+                `Rate per Carton: ${formatPrice(calcBaseRate, currency)}\n` +
+                `Total Amount: ${formatPrice(calcTotal, currency)}\n\n` +
+                `Please share formal proforma invoice and dispatch waybill schedule.`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-3.5 px-4 rounded-lg bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] hover:from-[#991b1b] hover:to-[#dc2626] text-white text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-200 active:scale-98 group cursor-pointer font-sans"
+            >
+              <MessageCircle className="w-4 h-4 fill-white text-transparent shrink-0" />
+              <span>Request Proforma Invoice on WhatsApp</span>
+              <ArrowUpRight className="w-4 h-4 text-white transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0" />
+            </a>
 
           </div>
         </div>
@@ -787,8 +678,7 @@ export const HomePage: React.FC = () => {
           
           {/* Header */}
           <div className="text-center space-y-3 max-w-2xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#111113]/5 border border-[#dc2626]/30 text-xs font-bold text-[#dc2626] font-mono uppercase tracking-widest">
-              <Truck className="w-3.5 h-3.5 text-[#dc2626]" />
+            <div className="inline-flex items-center px-3.5 py-1 rounded-lg bg-gradient-to-r from-[#dc2626]/15 via-[#dc2626]/5 to-transparent border border-[#dc2626]/30 text-xs font-bold text-[#dc2626] font-mono uppercase tracking-widest shadow-xs">
               <span>LOGISTICS &amp; UPCOUNTRY DISPATCH</span>
             </div>
             <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#18181b] tracking-tight">
@@ -805,74 +695,53 @@ export const HomePage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
             
             {/* Step 1 */}
-            <div className="p-6 rounded-2xl bg-[#fafafa] border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 space-y-3.5 flex flex-col justify-between shadow-xs hover:shadow-lg">
+            <div className="group p-5 sm:p-6 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-start shadow-xs hover:shadow-xl hover:-translate-y-1">
               <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-xs">
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 shrink-0">
                     <Package className="w-5 h-5" />
                   </div>
-                  <span className="font-mono text-xs font-bold text-[#a1a1aa] bg-white px-2 py-0.5 rounded-full border border-[#e4e4e7]">
-                    STEP 01
-                  </span>
+                  <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
+                    Reinforced Packaging
+                  </h3>
                 </div>
-                <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
-                  Reinforced Packaging
-                </h3>
                 <p className="text-xs text-[#71717a] leading-relaxed">
                   Cartons are double-strapped with water-resistant protective tape and official OMEGA branding to prevent transit damage or pilferage during long bus journeys.
                 </p>
               </div>
-              <div className="text-[11px] font-bold text-[#dc2626] font-mono flex items-center gap-1.5 pt-3 border-t border-[#e4e4e7]">
-                <Check className="w-3.5 h-3.5 text-[#2A9D8F]" />
-                <span>Heavy Strapping Standard</span>
-              </div>
             </div>
 
             {/* Step 2 */}
-            <div className="p-6 rounded-2xl bg-[#fafafa] border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 space-y-3.5 flex flex-col justify-between shadow-xs hover:shadow-lg">
+            <div className="group p-5 sm:p-6 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-start shadow-xs hover:shadow-xl hover:-translate-y-1">
               <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-xs">
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 shrink-0">
                     <Truck className="w-5 h-5" />
                   </div>
-                  <span className="font-mono text-xs font-bold text-[#a1a1aa] bg-white px-2 py-0.5 rounded-full border border-[#e4e4e7]">
-                    STEP 02
-                  </span>
+                  <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
+                    Daily Bus Fleet Handoff
+                  </h3>
                 </div>
-                <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
-                  Daily Bus Fleet Handoff
-                </h3>
                 <p className="text-xs text-[#71717a] leading-relaxed">
                   Partnerships with Shabiby, BM Coach, Abood, New Force, and Saibaba for same-day parcel drop-off with official bus receipt waybills.
                 </p>
               </div>
-              <div className="text-[11px] font-bold text-[#dc2626] font-mono flex items-center gap-1.5 pt-3 border-t border-[#e4e4e7]">
-                <Check className="w-3.5 h-3.5 text-[#2A9D8F]" />
-                <span>Daily Bus Drops (31 Regions)</span>
-              </div>
             </div>
 
             {/* Step 3 */}
-            <div className="p-6 rounded-2xl bg-[#fafafa] border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 space-y-3.5 flex flex-col justify-between shadow-xs hover:shadow-lg">
+            <div className="group p-5 sm:p-6 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-start shadow-xs hover:shadow-xl hover:-translate-y-1">
               <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-xs">
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 shrink-0">
                     <PhoneCall className="w-5 h-5" />
                   </div>
-                  <span className="font-mono text-xs font-bold text-[#a1a1aa] bg-white px-2 py-0.5 rounded-full border border-[#e4e4e7]">
-                    STEP 03
-                  </span>
+                  <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
+                    Live Dispatch Confirmation
+                  </h3>
                 </div>
-                <h3 className="font-heading font-bold text-base text-[#18181b] leading-snug">
-                  Live Dispatch Confirmation
-                </h3>
                 <p className="text-xs text-[#71717a] leading-relaxed">
                   Receive instant photo proof of loaded cartons, bus receipt with tracking waybill number, and bus conductor contacts directly on WhatsApp.
                 </p>
-              </div>
-              <div className="text-[11px] font-bold text-[#dc2626] font-mono flex items-center gap-1.5 pt-3 border-t border-[#e4e4e7]">
-                <Check className="w-3.5 h-3.5 text-[#2A9D8F]" />
-                <span>Photo Proof on WhatsApp</span>
               </div>
             </div>
 
@@ -915,8 +784,7 @@ export const HomePage: React.FC = () => {
           
           {/* Header */}
           <div className="text-center space-y-3 max-w-2xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 border border-[#dc2626]/30 text-xs font-bold text-[#dc2626] font-mono uppercase tracking-widest">
-              <Star className="w-3.5 h-3.5 fill-[#dc2626] text-[#dc2626]" />
+            <div className="inline-flex items-center px-3.5 py-1 rounded-lg bg-gradient-to-r from-[#dc2626]/20 via-[#dc2626]/10 to-transparent border border-[#dc2626]/40 text-xs font-bold text-[#ef4444] font-mono uppercase tracking-widest shadow-xs">
               <span>TESTIMONIALS &amp; CLIENT TRUST</span>
             </div>
             <h2 className="font-heading text-2xl sm:text-4xl font-bold text-white tracking-tight">
@@ -1026,18 +894,19 @@ export const HomePage: React.FC = () => {
       {/* ========================================================================= */}
       {/* 9. VIP CONCIERGE & DIRECT FACTORY HOTLINES */}
       {/* ========================================================================= */}
-      <section className="py-14 sm:py-18 bg-gradient-to-b from-[#18181b] to-[#09090b] text-white relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 relative z-10">
-          
-          {/* Top Newsletter & Catalog Request Form */}
-          <div className="max-w-3xl mx-auto text-center space-y-4">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#dc2626] font-mono block">
+      <section className="py-12 sm:py-16 bg-gradient-to-b from-[#18181b] via-[#111114] to-[#0a0a0c] text-white relative overflow-hidden">
+        {/* Ambient Backlight Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#dc2626]/10 blur-[100px] pointer-events-none rounded-full" />
+
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="p-6 sm:p-10 rounded-xl bg-white/[0.03] border border-white/10 shadow-2xl backdrop-blur-sm text-center space-y-5">
+            <span className="inline-flex items-center px-3 py-1 rounded-md bg-[#dc2626]/15 border border-[#dc2626]/30 text-xs font-bold uppercase tracking-wider text-[#ef4444] font-mono">
               VIP CONCIERGE &amp; PRICE ALERTS
             </span>
-            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-white tracking-tight">
+            <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight">
               {language === 'sw' ? 'Jiunge na OMEGA Stationery' : 'Connect with OMEGA Stationery'}
             </h2>
-            <p className="text-xs sm:text-sm text-stone-300 max-w-lg mx-auto">
+            <p className="text-xs sm:text-sm text-zinc-300 max-w-lg mx-auto">
               {language === 'sw'
                 ? 'Pata taarifa za bei mpya za jumla, katalogi ya 2026 na ofa maalum za vifaa vya shule na ofisi.'
                 : 'Receive official 2026 wholesale catalogs, bulk school tender announcements, and factory-direct price updates.'}
@@ -1048,105 +917,38 @@ export const HomePage: React.FC = () => {
                 e.preventDefault();
                 alert(language === 'sw' ? 'Asante! Tumepokea mawasiliano yako.' : 'Thank you! We received your details.');
               }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-2.5 max-w-md mx-auto pt-2"
+              className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-lg mx-auto pt-2 w-full"
             >
-              <input
-                type="text"
-                required
-                placeholder={language === 'sw' ? 'Namba ya simu au email...' : 'Enter your email or phone number...'}
-                className="w-full px-5 py-3 rounded-full text-xs sm:text-sm bg-white/10 text-white placeholder:text-stone-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-[#dc2626] backdrop-blur-xs font-sans"
-              />
+              <div className="relative flex-1 w-full">
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 pointer-events-none" />
+                <input
+                  type="text"
+                  required
+                  placeholder={language === 'sw' ? 'Namba ya simu au email...' : 'Enter your email or phone number...'}
+                  className="w-full pl-10 pr-4 py-3 rounded-lg text-xs sm:text-sm bg-black/50 text-white placeholder:text-zinc-500 border border-white/15 focus:outline-none focus:border-[#dc2626] focus:ring-1 focus:ring-[#dc2626] backdrop-blur-xs font-sans transition-all"
+                />
+              </div>
               <button
                 type="submit"
-                className="w-full sm:w-auto px-7 py-3 rounded-full bg-[#dc2626] hover:bg-[#ef4444] text-[#09090b] text-xs sm:text-sm font-bold uppercase tracking-wider font-mono transition-all shadow-md shrink-0 flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
+                className="w-full sm:w-auto px-7 py-3 rounded-lg bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] hover:from-[#991b1b] hover:via-[#b91c1c] hover:to-[#dc2626] text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-lg shadow-red-900/30 shrink-0 flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
               >
                 <span>{language === 'sw' ? 'WASILIANA' : 'SUBSCRIBE'}</span>
                 <ArrowUpRight className="w-4 h-4" />
               </button>
             </form>
-          </div>
 
-          {/* 4 Dedicated Direct Hotlines */}
-          <div className="pt-6 border-t border-white/10">
-            <div className="text-center mb-5">
-              <span className="text-[11px] font-mono uppercase tracking-widest text-[#dc2626]">
-                DIRECT FACTORY HOTLINES &amp; DISPATCH DIRECTORS
+            <div className="flex flex-wrap items-center justify-center gap-4 pt-1 text-[11px] text-zinc-400">
+              <span className="flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#dc2626]" />
+                {language === 'sw' ? 'Hakuna barua taka (No Spam)' : 'Zero Spam Guarantee'}
+              </span>
+              <span className="hidden sm:inline text-zinc-600">•</span>
+              <span className="flex items-center gap-1.5">
+                <Package className="w-3.5 h-3.5 text-[#dc2626]" />
+                {language === 'sw' ? 'Katalogi ya 2026 papo hapo' : 'Instant 2026 Price Catalog'}
               </span>
             </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
-              
-              {/* Contact 1 */}
-              <a
-                href="tel:+255715268391"
-                className="p-4 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#dc2626]/50 transition-all flex items-center gap-3.5 group"
-              >
-                <div className="w-10 h-10 rounded-xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center shrink-0 group-hover:bg-[#dc2626] group-hover:text-[#09090b] transition-colors">
-                  <Phone className="w-4 h-4" />
-                </div>
-                <div className="min-w-0 text-left">
-                  <h4 className="text-xs font-bold text-white truncate">Kanti Bhai K. Halai</h4>
-                  <p className="text-[10px] text-stone-400">Managing Director</p>
-                  <span className="text-xs font-mono font-bold text-[#dc2626] group-hover:underline block mt-0.5">
-                    +255 715 268 391
-                  </span>
-                </div>
-              </a>
-
-              {/* Contact 2 */}
-              <a
-                href="tel:+255624265480"
-                className="p-4 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#dc2626]/50 transition-all flex items-center gap-3.5 group"
-              >
-                <div className="w-10 h-10 rounded-xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center shrink-0 group-hover:bg-[#dc2626] group-hover:text-[#09090b] transition-colors">
-                  <Phone className="w-4 h-4" />
-                </div>
-                <div className="min-w-0 text-left">
-                  <h4 className="text-xs font-bold text-white truncate">Vijesh K. Halai</h4>
-                  <p className="text-[10px] text-stone-400">Sales &amp; Logistics</p>
-                  <span className="text-xs font-mono font-bold text-[#dc2626] group-hover:underline block mt-0.5">
-                    +255 624 265 480
-                  </span>
-                </div>
-              </a>
-
-              {/* Contact 3 */}
-              <a
-                href="tel:+255746268391"
-                className="p-4 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#dc2626]/50 transition-all flex items-center gap-3.5 group"
-              >
-                <div className="w-10 h-10 rounded-xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center shrink-0 group-hover:bg-[#dc2626] group-hover:text-[#09090b] transition-colors">
-                  <MapPin className="w-4 h-4" />
-                </div>
-                <div className="min-w-0 text-left">
-                  <h4 className="text-xs font-bold text-white truncate">Mbeya Central Factory</h4>
-                  <p className="text-[10px] text-stone-400">Soweto SIDO Estate</p>
-                  <span className="text-xs font-mono font-bold text-[#dc2626] group-hover:underline block mt-0.5">
-                    +255 746 268 391
-                  </span>
-                </div>
-              </a>
-
-              {/* Contact 4 */}
-              <a
-                href="tel:+255699032777"
-                className="p-4 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-[#dc2626]/50 transition-all flex items-center gap-3.5 group"
-              >
-                <div className="w-10 h-10 rounded-xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center shrink-0 group-hover:bg-[#dc2626] group-hover:text-[#09090b] transition-colors">
-                  <MapPin className="w-4 h-4" />
-                </div>
-                <div className="min-w-0 text-left">
-                  <h4 className="text-xs font-bold text-white truncate">Mwanza Dispatch Hub</h4>
-                  <p className="text-[10px] text-stone-400">Lake Zone Waybills</p>
-                  <span className="text-xs font-mono font-bold text-[#dc2626] group-hover:underline block mt-0.5">
-                    +255 699 032 777
-                  </span>
-                </div>
-              </a>
-
-            </div>
           </div>
-
         </div>
       </section>
 

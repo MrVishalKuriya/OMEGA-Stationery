@@ -62,8 +62,7 @@ export const ShippingGuidePage: React.FC = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[#dc2626] bg-white/10 border border-[#dc2626]/30">
-              <Truck className="w-4 h-4 text-[#dc2626]" />
+            <div className="inline-flex items-center px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#dc2626]/20 via-[#dc2626]/10 to-transparent border border-[#dc2626]/40 font-mono shadow-xs">
               <span>Nationwide Regional Logistics Directory</span>
             </div>
 
@@ -222,7 +221,7 @@ export const ShippingGuidePage: React.FC = () => {
           <div className="pt-2">
             <Link
               to="/contact"
-              className="btn-ledup-copper px-7 py-3 rounded-full text-xs font-bold uppercase tracking-wider inline-flex items-center gap-2"
+              className="btn-ledup-copper px-7 py-3 rounded-lg text-xs font-bold uppercase tracking-wider inline-flex items-center gap-2"
             >
               <span>Speak with Dispatch Coordinator</span>
               <ArrowRight className="w-3.5 h-3.5 ledup-arrow-icon" />

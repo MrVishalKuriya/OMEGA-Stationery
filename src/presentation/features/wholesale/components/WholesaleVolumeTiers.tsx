@@ -9,8 +9,7 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
   return (
     <section className="py-16 lg:py-22 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="text-center space-y-2 mb-12">
-        <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#111113]">
-          <Percent className="w-4 h-4 text-[#dc2626]" />
+        <div className="inline-flex items-center px-3.5 py-1 rounded-lg bg-gradient-to-r from-[#dc2626]/15 via-[#dc2626]/5 to-transparent border border-[#dc2626]/30 text-xs font-bold text-[#dc2626] font-mono uppercase tracking-widest shadow-xs">
           <span>TRANSPARENT VOLUME ARCHITECTURE</span>
         </div>
         <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#18181b] tracking-tight">
@@ -26,7 +25,7 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
         <div className="bg-white p-7 sm:p-8 flex flex-col justify-between border border-stone-200 hover:border-[#dc2626] rounded-2xl shadow-sm hover:shadow-md transition-all">
           <div>
             <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-stone-100 text-[#111113]">
+              <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-md bg-stone-100 text-[#111113]">
                 Starter Tier
               </span>
               <span className="text-xs font-semibold text-stone-600">5 — 19 Cartons</span>
@@ -67,7 +66,7 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
             <a
               href="#inquiry"
               onClick={() => onSelectTier('5 — 19 Cartons (20% OFF)')}
-              className="w-full py-3.5 px-4 rounded-full border-2 border-[#111113] text-[#111113] hover:bg-[#111113] hover:text-white transition-colors text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 min-h-[44px]"
+              className="w-full py-3.5 px-4 rounded-lg border-2 border-[#111113] text-[#111113] hover:bg-[#111113] hover:text-white transition-colors text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 min-h-[44px]"
             >
               <span>Select Starter Tier</span>
               <ChevronRight className="w-4 h-4" />
@@ -77,14 +76,14 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
 
         {/* Tier 2: Business (Most Popular) */}
         <div className="relative bg-[#2d2520] text-white p-7 sm:p-8 flex flex-col justify-between border-2 border-[#dc2626] rounded-2xl shadow-xl md:-translate-y-2">
-          <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#dc2626] text-white text-[10px] font-black uppercase tracking-widest shadow-md flex items-center gap-1.5 whitespace-nowrap">
+          <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-md bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] text-white text-[10px] font-black uppercase tracking-widest shadow-md flex items-center gap-1.5 whitespace-nowrap">
             <Sparkles className="w-3 h-3 text-white" />
             <span>MOST POPULAR · BEST VALUE</span>
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-4 pt-1">
-              <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-white/10 text-stone-200 border border-white/20">
+              <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-md bg-white/10 text-stone-200 border border-white/20">
                 Business Tier
               </span>
               <span className="text-xs font-semibold text-[#dc2626]">20 — 49 Cartons</span>
@@ -125,7 +124,7 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
             <a
               href="#inquiry"
               onClick={() => onSelectTier('20 — 49 Cartons (30% OFF - Most Popular)')}
-              className="w-full py-3.5 px-4 rounded-full btn-ledup-copper group text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 min-h-[44px] shadow-lg active:scale-95"
+              className="w-full py-3.5 px-4 rounded-lg btn-ledup-copper group text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 min-h-[44px] shadow-lg active:scale-95"
             >
               <span>Select Business Tier</span>
               <ChevronRight className="w-4 h-4" />
@@ -137,7 +136,7 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
         <div className="bg-white p-7 sm:p-8 flex flex-col justify-between border border-stone-200 hover:border-[#dc2626] rounded-2xl shadow-sm hover:shadow-md transition-all">
           <div>
             <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-stone-100 text-[#111113]">
+              <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-md bg-stone-100 text-[#111113]">
                 Enterprise Tier
               </span>
               <span className="text-xs font-semibold text-stone-600">50+ Cartons</span>
@@ -178,7 +177,7 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
             <a
               href="#inquiry"
               onClick={() => onSelectTier('50 — 99 Cartons (40% OFF - Enterprise)')}
-              className="w-full py-3.5 px-4 rounded-full border-2 border-[#111113] text-[#111113] hover:bg-[#111113] hover:text-white transition-colors text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 min-h-[44px]"
+              className="w-full py-3.5 px-4 rounded-lg border-2 border-[#111113] text-[#111113] hover:bg-[#111113] hover:text-white transition-colors text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 min-h-[44px]"
             >
               <span>Select Enterprise Tier</span>
               <ChevronRight className="w-4 h-4" />

@@ -291,13 +291,13 @@ export const ProductDetailsPage: React.FC = () => {
               {/* Badges on Visual */}
               <div className="absolute top-4 left-4 z-10 flex flex-col gap-1.5 items-start">
                 {product.badge && (
-                  <span className="px-3 py-1 rounded-full bg-[#111113] text-[#e5a962] text-[11px] font-bold uppercase tracking-wider shadow-sm flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-[#e5a962]" />
+                  <span className="px-2.5 py-1 rounded-md bg-[#111113] text-[#ef4444] border border-[#dc2626]/30 text-[11px] font-bold uppercase tracking-wider shadow-sm flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-[#ef4444]" />
                     <span>{product.badge}</span>
                   </span>
                 )}
                 {product.freeDelivery && (
-                  <span className="px-2.5 py-0.5 rounded-full bg-[#2A9D8F]/10 text-[#2A9D8F] border border-[#2A9D8F]/25 text-[10px] font-bold uppercase tracking-wider">
+                  <span className="px-2.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 text-[10px] font-bold uppercase tracking-wider">
                     Free Bus Parcel Elig.
                   </span>
                 )}
@@ -305,7 +305,7 @@ export const ProductDetailsPage: React.FC = () => {
 
               <div className="absolute top-4 right-4 z-10 flex flex-col gap-1.5 items-end">
                 {hasDiscount && (
-                  <span className="px-2.5 py-1 rounded-full bg-[#d9534f] text-white text-xs font-black shadow-sm tracking-wide">
+                  <span className="px-2.5 py-1 rounded-md bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] text-white text-xs font-bold shadow-sm tracking-wide">
                     {Math.round(((product.price - effectivePrice) / product.price) * 100)}% OFF
                   </span>
                 )}
@@ -511,12 +511,12 @@ export const ProductDetailsPage: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <span className="text-stone-400">·</span>
                   <span
-                    className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold ${
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-bold ${
                       product.stockStatus === 'In Stock'
-                        ? 'bg-[#2A9D8F]/15 text-[#2A9D8F]'
+                        ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/25'
                         : product.stockStatus === 'Low Stock'
-                        ? 'bg-[#dc2626]/20 text-[#111113]'
-                        : 'bg-[#d9534f]/15 text-[#d9534f]'
+                        ? 'bg-[#dc2626]/20 text-[#ef4444] border border-[#dc2626]/30'
+                        : 'bg-red-500/15 text-red-400 border border-red-500/25'
                     }`}
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-current" />

@@ -89,18 +89,17 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* Top Badges (Discount & Tag) */}
         <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1 items-start max-w-[70%]">
           {hasDiscount && (
-            <span className="bg-[#111113] text-white text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm font-mono tracking-wider">
+            <span className="bg-[#111113] text-white text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-md shadow-sm font-mono tracking-wider border border-white/10">
               {discountPercent}% OFF
             </span>
           )}
           {product.badge ? (
-            <span className="bg-[#dc2626] text-white text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm tracking-wider truncate max-w-full font-mono">
+            <span className="bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] text-white text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md shadow-sm tracking-wider truncate max-w-full font-mono">
               {product.badge}
             </span>
           ) : product.bestSeller && !hasDiscount ? (
-            <span className="bg-[#111113] text-[#ef4444] border border-[#dc2626]/40 text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm tracking-wider flex items-center gap-1 font-mono">
-              <Sparkles className="w-2.5 h-2.5 text-[#ef4444]" />
-              <span>Bestseller</span>
+            <span className="bg-[#111113] text-[#ef4444] border border-[#dc2626]/40 text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md shadow-sm tracking-wider font-mono">
+              Bestseller
             </span>
           ) : null}
         </div>
@@ -127,7 +126,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <button
           type="button"
           onClick={handleQuickView}
-          className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-10 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 px-3 py-1.5 rounded-full bg-[#111113]/90 hover:bg-black text-[#ef4444] text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-lg border border-[#dc2626]/50 backdrop-blur-sm whitespace-nowrap cursor-pointer hidden sm:flex"
+          className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-10 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 px-3 py-1.5 rounded-lg bg-[#111113]/90 hover:bg-black text-[#ef4444] text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-lg border border-[#dc2626]/50 backdrop-blur-sm whitespace-nowrap cursor-pointer hidden sm:flex"
         >
           <Eye className="w-3.5 h-3.5 text-[#ef4444]" />
           <span>Quick View</span>
@@ -164,11 +163,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       {/* ================= REGION 2: METADATA & SPECS ================= */}
       <div className="flex flex-col flex-1 justify-between p-3.5 sm:p-4 gap-2.5 sm:gap-3 bg-white">
         <div className="space-y-1.5">
-          {/* Row 1: Clean Category Tag */}
+          {/* Row 1: Rating & Availability */}
           <div className="flex items-center justify-between text-[10px] sm:text-[11px]">
-            <span className="text-[#dc2626] font-bold uppercase tracking-wider text-[9px] sm:text-[10px] font-mono truncate max-w-[80%]">
-              {product.category || 'Stationery'}
-            </span>
             {isOutOfStock ? (
               <span className="text-[9px] font-bold text-stone-500 bg-stone-100 border border-stone-200 px-1.5 py-0.5 rounded-full">
                 Out of Stock
@@ -202,18 +198,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 </span>
               )}
             </div>
-
-            {/* Enhanced Wholesale Carton Strip */}
-            {product.wholesalePrice && (
-              <div className="flex items-center justify-between text-[10px] sm:text-[11px] bg-[#dc2626]/5 hover:bg-[#dc2626]/10 border border-[#dc2626]/20 rounded-xl px-2.5 py-1.5 transition-colors">
-                <span className="text-[#71717a] font-bold uppercase tracking-wider text-[9px] sm:text-[10px] font-mono truncate">
-                  Wholesale {packagingInfo ? `(${packagingInfo})` : 'Carton'}
-                </span>
-                <span className="font-mono font-black text-[#dc2626] text-xs shrink-0 ml-1">
-                  {formatPrice(product.wholesalePrice, currency)}
-                </span>
-              </div>
-            )}
           </div>
 
           {/* Row 4: Dispatch Guarantee (Subtle & Clean) */}
@@ -229,12 +213,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             type="button"
             onClick={handleQuickAdd}
             disabled={isOutOfStock}
-            className={`w-full py-2.5 px-3 rounded-full text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 min-h-[42px] transition-all duration-200 active:scale-95 shadow-sm cursor-pointer font-mono ${
+            className={`w-full py-2.5 px-3 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 min-h-[42px] transition-all duration-200 active:scale-95 shadow-sm cursor-pointer font-mono ${
               isOutOfStock
                 ? 'bg-zinc-100 text-zinc-400 cursor-not-allowed border border-[#e4e4e7]'
                 : justAdded
                 ? 'bg-emerald-600 text-white shadow-md'
-                : 'bg-[#dc2626] hover:bg-[#b91c1c] text-white hover:shadow-md'
+                : 'bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] hover:from-[#991b1b] hover:to-[#dc2626] text-white hover:shadow-md'
             }`}
           >
             {isOutOfStock ? (

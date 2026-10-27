@@ -106,8 +106,7 @@ export const AboutPage: React.FC = () => {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[#dc2626] bg-white/10 border border-[#dc2626]/30 backdrop-blur-md">
-              <Factory className="w-3.5 h-3.5 text-[#dc2626]" />
+            <div className="inline-flex items-center px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#dc2626]/20 via-[#dc2626]/10 to-transparent border border-[#dc2626]/40 backdrop-blur-md font-mono shadow-xs">
               <span>Soweto SIDO Mbeya &amp; Kariakoo Hub · Est. 1998</span>
             </div>
 
@@ -127,14 +126,14 @@ export const AboutPage: React.FC = () => {
             <div className="pt-2 flex flex-wrap items-center gap-4">
               <Link
                 to="/catalog"
-                className="btn-ledup-copper px-7 py-3.5 rounded-full text-xs sm:text-sm uppercase tracking-wider font-bold inline-flex items-center gap-2 group shadow-lg"
+                className="btn-ledup-copper px-7 py-3.5 rounded-lg text-xs sm:text-sm uppercase tracking-wider font-bold inline-flex items-center gap-2 group shadow-lg"
               >
                 <span>{language === 'sw' ? 'TAZAMA BIDHAA' : 'EXPLORE CATALOGUE'}</span>
                 <ArrowRight className="w-4 h-4 ledup-arrow-icon" />
               </Link>
               <Link
                 to="/contact"
-                className="px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all"
+                className="px-6 py-3.5 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all"
               >
                 <span>{language === 'sw' ? 'WASILIANA NASI' : 'CONTACT DISPATCH'}</span>
               </Link>
@@ -354,14 +353,14 @@ export const AboutPage: React.FC = () => {
           <div className="flex flex-wrap justify-center items-center gap-4 pt-2">
             <Link
               to="/wholesale"
-              className="btn-ledup-copper px-8 py-3.5 rounded-full text-xs sm:text-sm uppercase tracking-wider font-bold inline-flex items-center gap-2 shadow-lg"
+              className="btn-ledup-copper px-8 py-3.5 rounded-lg text-xs sm:text-sm uppercase tracking-wider font-bold inline-flex items-center gap-2 shadow-lg"
             >
               <span>{language === 'sw' ? 'HESABU BEI YA JUMLA' : 'WHOLESALE CARTON CALCULATOR'}</span>
               <ArrowRight className="w-4 h-4 ledup-arrow-icon" />
             </Link>
             <Link
               to="/contact"
-              className="px-7 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/25 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all"
+              className="px-7 py-3.5 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/25 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all"
             >
               <span>{language === 'sw' ? 'WASILIANA NASI' : 'SPEAK WITH SALES'}</span>
             </Link>

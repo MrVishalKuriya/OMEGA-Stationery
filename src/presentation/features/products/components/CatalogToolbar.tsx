@@ -143,7 +143,7 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
         <div className="flex flex-wrap items-center gap-2 pt-1">
           <span className="text-xs text-stone-500 font-medium">Active Filters:</span>
           {selectedCategory !== 'All' && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-100 text-stone-700 text-xs font-semibold">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-[#e4e4e7] text-[#18181b] text-xs font-semibold shadow-2xs">
               Category: {selectedCategory}
               <button type="button" onClick={() => onClearFilter('category')} className="hover:text-red-600">
                 <X className="w-3 h-3" />
@@ -151,7 +151,7 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
             </span>
           )}
           {selectedQuire !== 'All' && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-100 text-stone-700 text-xs font-semibold">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-[#e4e4e7] text-[#18181b] text-xs font-semibold shadow-2xs">
               Quire: {selectedQuire}
               <button type="button" onClick={() => onClearFilter('quire')} className="hover:text-red-600">
                 <X className="w-3 h-3" />
@@ -159,7 +159,7 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
             </span>
           )}
           {selectedRuling !== 'All' && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-100 text-stone-700 text-xs font-semibold">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-[#e4e4e7] text-[#18181b] text-xs font-semibold shadow-2xs">
               Ruling: {selectedRuling}
               <button type="button" onClick={() => onClearFilter('ruling')} className="hover:text-red-600">
                 <X className="w-3 h-3" />
@@ -167,7 +167,7 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
             </span>
           )}
           {selectedBinding !== 'All' && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-100 text-stone-700 text-xs font-semibold">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-[#e4e4e7] text-[#18181b] text-xs font-semibold shadow-2xs">
               Binding: {selectedBinding}
               <button type="button" onClick={() => onClearFilter('binding')} className="hover:text-red-600">
                 <X className="w-3 h-3" />
@@ -175,7 +175,7 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
             </span>
           )}
           {(appliedPriceRange.min !== null || appliedPriceRange.max !== null) && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-100 text-stone-700 text-xs font-semibold">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-[#e4e4e7] text-[#18181b] text-xs font-semibold shadow-2xs">
               Price: {appliedPriceRange.min || 0} - {appliedPriceRange.max || '∞'}
               <button type="button" onClick={() => onClearFilter('price')} className="hover:text-red-600">
                 <X className="w-3 h-3" />
@@ -183,7 +183,7 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
             </span>
           )}
           {inStockOnly && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-100 text-stone-700 text-xs font-semibold">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-[#e4e4e7] text-[#18181b] text-xs font-semibold shadow-2xs">
               In Stock Only
               <button type="button" onClick={() => onClearFilter('inStock')} className="hover:text-red-600">
                 <X className="w-3 h-3" />
@@ -191,7 +191,7 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
             </span>
           )}
           {bestsellerOnly && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-100 text-stone-700 text-xs font-semibold">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-[#e4e4e7] text-[#18181b] text-xs font-semibold shadow-2xs">
               Bestsellers Only
               <button type="button" onClick={() => onClearFilter('bestseller')} className="hover:text-red-600">
                 <X className="w-3 h-3" />

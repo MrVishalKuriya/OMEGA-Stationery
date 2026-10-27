@@ -462,8 +462,7 @@ export const Notebook3D: React.FC<Notebook3DProps> = () => {
         {/* Right Side: Product Details, Quire Selector & Direct Order */}
         <div className="lg:col-span-5 flex flex-col justify-between space-y-4 border-t lg:border-t-0 lg:border-l border-stone-800 pt-5 lg:pt-0 lg:pl-8 w-full">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-red-950 text-amber-300 border border-red-800/80 mb-2">
-              <Layers className="w-3.5 h-3.5 text-amber-400" />
+            <div className="inline-flex items-center px-3 py-1 rounded-md text-xs font-bold bg-gradient-to-r from-[#dc2626]/20 via-[#dc2626]/10 to-transparent text-[#ef4444] border border-[#dc2626]/40 font-mono shadow-xs mb-2">
               <span>{selectedQuire} Series · Hardcover Edition</span>
             </div>
 

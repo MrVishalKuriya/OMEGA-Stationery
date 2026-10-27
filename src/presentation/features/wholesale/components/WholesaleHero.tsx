@@ -31,9 +31,8 @@ export const WholesaleHero: React.FC<WholesaleHeroProps> = ({
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         {/* Refined Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-md mb-6 shadow-sm">
-          <Building2 className="w-4 h-4 text-[#dc2626]" />
-          <span className="text-xs font-semibold tracking-wider text-stone-200 uppercase">
+        <div className="inline-flex items-center px-4 py-1.5 rounded-lg bg-gradient-to-r from-[#dc2626]/20 via-[#dc2626]/10 to-transparent border border-[#dc2626]/40 backdrop-blur-md mb-6 shadow-xs">
+          <span className="text-xs font-semibold tracking-wider text-white uppercase font-mono">
             Factory Direct Wholesale · SIDO Industrial Estate, Mbeya
           </span>
         </div>
@@ -88,7 +87,7 @@ export const WholesaleHero: React.FC<WholesaleHeroProps> = ({
         <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
           <a
             href="#calculator"
-            className="btn-ledup-copper group px-7 py-3.5 rounded-full text-xs sm:text-sm uppercase tracking-wider font-bold inline-flex items-center gap-2 shadow-lg min-h-[48px] active:scale-95"
+            className="btn-ledup-copper group px-7 py-3.5 rounded-lg text-xs sm:text-sm uppercase tracking-wider font-bold inline-flex items-center gap-2 shadow-lg min-h-[44px] active:scale-95"
           >
             <Calculator className="w-4 h-4 text-white" />
             <span>Calculate Carton Savings</span>
@@ -101,7 +100,7 @@ export const WholesaleHero: React.FC<WholesaleHeroProps> = ({
             )}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-md inline-flex items-center gap-2 min-h-[48px] active:scale-95"
+            className="px-6 py-3.5 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-md inline-flex items-center gap-2 min-h-[44px] active:scale-95"
           >
             <MessageCircle className="w-4 h-4 fill-white" />
             <span>WhatsApp Wholesale Desk</span>
@@ -111,16 +110,16 @@ export const WholesaleHero: React.FC<WholesaleHeroProps> = ({
             href="/uploads/PL00001.pdf"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-5 py-3.5 rounded-full bg-[#dc2626] hover:bg-[#ef4444] text-[#09090b] text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-md inline-flex items-center gap-2 min-h-[48px] active:scale-95 font-mono"
+            className="px-5 py-3.5 rounded-lg bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] hover:from-[#991b1b] hover:to-[#dc2626] text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-md inline-flex items-center gap-2 min-h-[44px] active:scale-95 font-mono"
           >
-            <Download className="w-4 h-4 text-[#09090b]" />
+            <Download className="w-4 h-4 text-white" />
             <span>Official Price List (PDF)</span>
           </a>
 
           <button
             type="button"
             onClick={onExportCSV}
-            className="px-5 py-3.5 rounded-full bg-white/5 hover:bg-white/15 text-stone-200 border border-white/15 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors inline-flex items-center gap-2 min-h-[48px] active:scale-95"
+            className="px-5 py-3.5 rounded-lg bg-white/5 hover:bg-white/15 text-stone-200 border border-white/15 text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors inline-flex items-center gap-2 min-h-[44px] active:scale-95"
           >
             <FileSpreadsheet className="w-4 h-4 text-[#dc2626]" />
             <span>Download CSV</span>

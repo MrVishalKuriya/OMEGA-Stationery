@@ -96,6 +96,23 @@ p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
   font-family: var(--font-body);
 }
 
+/* Disable native browser search clear/cancel buttons to prevent double-X close icon */
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  display: none !important;
+}
+
+input[type="search"]::-ms-clear,
+input[type="search"]::-ms-reveal {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
 /* Indra Notebook High-Contrast Components & Utilities */
 
 /* 1. Header (Obsidian Black #111113) */
@@ -387,7 +404,7 @@ p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
   background-color: #111113 !important;
   color: #ffffff !important;
   font-weight: 700 !important;
-  border-radius: 9999px !important;
+  border-radius: 8px !important;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
 }
@@ -408,7 +425,7 @@ p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
   background-size: 200% auto !important;
   color: #ffffff !important;
   font-weight: 700 !important;
-  border-radius: 9999px !important;
+  border-radius: 8px !important;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
   box-shadow: 0 4px 16px rgba(220, 38, 38, 0.35) !important;
 }
@@ -429,7 +446,7 @@ p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
   color: #111113 !important;
   border: 1.5px solid #111113 !important;
   font-weight: 700 !important;
-  border-radius: 9999px !important;
+  border-radius: 8px !important;
   transition: all 0.2s ease !important;
 }
 
@@ -467,7 +484,7 @@ p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
   background: linear-gradient(90.48deg, rgba(255, 255, 255, 0.92) -4.41%, rgba(244, 244, 245, 0.92) 100.38%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-radius: 9999px;
+  border-radius: 10px;
   border: 1px solid rgba(228, 228, 231, 0.85);
   box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.08);
 }
@@ -600,5 +617,54 @@ p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
 
 .animate-omega-logo-glow {
   animation: omega-logo-glow 3s ease-in-out infinite alternate;
+}
+
+/* ==================== ANDROID & WINDOWS ADVANCED UX OPTIMIZATIONS (STITCH ENHANCED) ==================== */
+/* 1. Prevent Android & iOS Mobile Form Auto-Zoom when tapping inputs */
+@media screen and (max-width: 768px) {
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* 2. Sleek Custom Scrollbar for Windows & Desktop Web */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #f4f4f5;
+}
+::-webkit-scrollbar-thumb {
+  background: #d4d4d8;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #dc2626;
+}
+
+/* 3. Android Touch Ergonomics & Momentum Scrolling */
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 4. Stitch Craftsmanship Card & Touch Utilities */
+.stitch-card {
+  background-color: #ffffff;
+  border: 1px solid #e4e4e7;
+  border-radius: 1rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.stitch-card:hover {
+  border-color: #dc2626;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+}
+
+.tap-active:active {
+  transform: scale(0.97);
+  transition: transform 0.1s ease;
 }
 

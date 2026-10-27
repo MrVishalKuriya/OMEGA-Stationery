@@ -55,8 +55,7 @@ export const WholesaleCatalogView: React.FC<WholesaleCatalogViewProps> = ({
     <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
         <div>
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#111113]">
-            <Layers className="w-4 h-4 text-[#dc2626]" />
+          <div className="inline-flex items-center px-3.5 py-1 rounded-lg bg-gradient-to-r from-[#dc2626]/15 via-[#dc2626]/5 to-transparent border border-[#dc2626]/30 text-xs font-bold text-[#dc2626] font-mono uppercase tracking-widest shadow-xs">
             <span>OFFICIAL FACTORY PRICE SCHEDULE</span>
           </div>
           <h2 className="font-heading text-3xl font-bold text-[#18181b] tracking-tight mt-1">

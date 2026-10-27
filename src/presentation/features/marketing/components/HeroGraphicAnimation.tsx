@@ -22,8 +22,8 @@ export const HeroGraphicAnimation: React.FC = () => {
         </div>
 
         {/* ================= 2. ANIMATED OMEGA LOGO PILL (Floating Top Left) ================= */}
-        <div className="absolute -top-2 left-2 sm:left-6 z-20 inline-flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-full bg-[#1a1614]/90 border border-[#dc2626]/40 shadow-xl backdrop-blur-md animate-omega-float">
-          <div className="w-5 h-5 rounded-full bg-[#dc2626]/20 flex items-center justify-center p-0.5">
+        <div className="absolute -top-2 left-2 sm:left-6 z-20 inline-flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-lg bg-[#111114]/90 border border-[#dc2626]/40 shadow-xl backdrop-blur-md animate-omega-float">
+          <div className="w-5 h-5 rounded-md bg-[#dc2626]/20 flex items-center justify-center p-0.5">
             <img
               src="/logo-icon.png"
               alt="OMEGA Logo"

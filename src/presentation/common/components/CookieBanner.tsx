@@ -31,16 +31,14 @@ export const CookieBanner: React.FC<CookieBannerProps> = ({ forceOpen, onClose }
     const existing = getStoredCookieConsent();
     if (existing) {
       setPreferences(existing);
-      if (forceOpen) {
-        setIsVisible(true);
-        setIsPreferencesOpen(true);
-      } else {
-        setIsVisible(false);
-      }
+    }
+    // Never auto-show popup window on any screen without user explicitly clicking preferences
+    if (forceOpen) {
+      setIsVisible(true);
+      setIsPreferencesOpen(true);
     } else {
-      // Delay slightly for smooth entrance
-      const timer = setTimeout(() => setIsVisible(true), 1200);
-      return () => clearTimeout(timer);
+      setIsVisible(false);
+      setIsPreferencesOpen(false);
     }
   }, [forceOpen]);
 

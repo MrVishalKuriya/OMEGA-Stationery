@@ -183,7 +183,11 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
             <Search className="w-5 h-5 sm:w-6 sm:h-6 text-[#111113] absolute left-3 sm:left-4 pointer-events-none" />
             <input
               ref={inputRef}
-              type="search"
+              type="text"
+              role="searchbox"
+              autoCapitalize="none"
+              autoCorrect="off"
+              enterKeyHint="search"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search notebooks, pens, books, bahasha..."
