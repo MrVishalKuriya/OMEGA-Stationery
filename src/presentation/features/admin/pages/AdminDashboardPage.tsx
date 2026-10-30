@@ -198,10 +198,10 @@ export const AdminDashboardPage: React.FC = () => {
     stockStatus: 'In Stock' as StockStatus,
     stockQuantity: '150',
     image: '/omega-products/counter-book-q2-192p.jpeg',
-    description: 'Premier Tanzanian heavy-duty book manufactured by OMEGA Indigo Printer · Mbeya.',
     featured: false,
     bestSeller: false,
     freeDelivery: true,
+    badge: '',
     imageFit: 'cover' as 'cover' | 'contain',
     imageBackground: '',
   });
@@ -896,6 +896,7 @@ export const AdminDashboardPage: React.FC = () => {
       featured: false,
       bestSeller: false,
       freeDelivery: true,
+      badge: '',
       imageFit: 'cover',
       imageBackground: '',
     });
@@ -940,6 +941,7 @@ export const AdminDashboardPage: React.FC = () => {
       featured: !!product.featured,
       bestSeller: !!product.bestSeller,
       freeDelivery: product.freeDelivery !== false,
+      badge: product.badge || '',
       imageFit: product.imageFit || 'cover',
       imageBackground: product.imageBackground || '',
     });
@@ -982,6 +984,7 @@ export const AdminDashboardPage: React.FC = () => {
       featured: false,
       bestSeller: false,
       freeDelivery: true,
+      badge: product.badge || '',
       imageFit: product.imageFit || 'cover',
       imageBackground: product.imageBackground || '',
     });
@@ -1033,6 +1036,7 @@ export const AdminDashboardPage: React.FC = () => {
       featured: productForm.featured,
       bestSeller: productForm.bestSeller,
       freeDelivery: productForm.freeDelivery,
+      badge: productForm.badge.trim(),
     });
 
     if (!validationResult.success) {
@@ -1079,6 +1083,7 @@ export const AdminDashboardPage: React.FC = () => {
             featured: validated.featured,
             bestSeller: validated.bestSeller,
             freeDelivery: validated.freeDelivery,
+            badge: validated.badge || undefined,
             dispatchTime: validated.dispatchTime,
             imageFit: productForm.imageFit || 'cover',
             imageBackground: productForm.imageBackground || undefined,
@@ -1109,6 +1114,7 @@ export const AdminDashboardPage: React.FC = () => {
           featured: validated.featured,
           bestSeller: validated.bestSeller,
           freeDelivery: validated.freeDelivery,
+          badge: validated.badge || undefined,
           dispatchTime: validated.dispatchTime,
           imageFit: productForm.imageFit || 'cover',
           imageBackground: productForm.imageBackground || undefined,
@@ -1503,109 +1509,141 @@ export const AdminDashboardPage: React.FC = () => {
           </div>
         )}
 
-        {/* Section Tabs */}
-        <div className="flex border-b border-stone-200 gap-2 overflow-x-auto pb-1 text-xs font-bold scrollbar-none">
-          <button
-            type="button"
-            onClick={() => setModalActiveTab('info')}
-            className={`px-3.5 py-2 rounded-xl whitespace-nowrap transition-all ${
-              modalActiveTab === 'info'
-                ? 'bg-[#111113] text-white shadow-xs'
-                : 'text-stone-600 hover:bg-stone-100 bg-white border border-stone-200/80'
-            }`}
-          >
-            1. Core Info &amp; Barcode
-          </button>
-          <button
-            type="button"
-            onClick={() => setModalActiveTab('pricing')}
-            className={`px-3.5 py-2 rounded-xl whitespace-nowrap transition-all ${
-              modalActiveTab === 'pricing'
-                ? 'bg-[#111113] text-white shadow-xs'
-                : 'text-stone-600 hover:bg-stone-100 bg-white border border-stone-200/80'
-            }`}
-          >
-            2. Pricing &amp; Wholesale Tiers
-          </button>
-          <button
-            type="button"
-            onClick={() => setModalActiveTab('specs')}
-            className={`px-3.5 py-2 rounded-xl whitespace-nowrap transition-all ${
-              modalActiveTab === 'specs'
-                ? 'bg-[#111113] text-white shadow-xs'
-                : 'text-stone-600 hover:bg-stone-100 bg-white border border-stone-200/80'
-            }`}
-          >
-            3. Manufacturing &amp; Packaging
-          </button>
-          <button
-            type="button"
-            onClick={() => setModalActiveTab('stock')}
-            className={`px-3.5 py-2 rounded-xl whitespace-nowrap transition-all ${
-              modalActiveTab === 'stock'
-                ? 'bg-[#111113] text-white shadow-xs'
-                : 'text-stone-600 hover:bg-stone-100 bg-white border border-stone-200/80'
-            }`}
-          >
-            4. Stock &amp; Warehouse
-          </button>
-          <button
-            type="button"
-            onClick={() => setModalActiveTab('media')}
-            className={`px-3.5 py-2 rounded-xl whitespace-nowrap transition-all ${
-              modalActiveTab === 'media'
-                ? 'bg-[#111113] text-white shadow-xs'
-                : 'text-stone-600 hover:bg-stone-100 bg-white border border-stone-200/80'
-            }`}
-          >
-            5. Imagery &amp; Presets
-          </button>
+        {/* Section Tabs - Mobile optimized horizontal scrollable pill bar */}
+        <div className="bg-white p-2 rounded-2xl border border-stone-200 shadow-2xs">
+          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-0.5 scrollbar-none text-xs font-bold">
+            {[
+              { id: 'info', num: '1', title: 'Core Info', sub: 'Title & Barcode' },
+              { id: 'pricing', num: '2', title: 'Pricing', sub: 'Retail & Wholesale' },
+              { id: 'specs', num: '3', title: 'Specs', sub: 'Paper & Binding' },
+              { id: 'stock', num: '4', title: 'Stock', sub: 'Inventory & Tags' },
+              { id: 'media', num: '5', title: 'Media', sub: 'Photo & Display' },
+            ].map((tab) => {
+              const isActive = modalActiveTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setModalActiveTab(tab.id as typeof modalActiveTab)}
+                  className={`flex items-center gap-2 px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-xl whitespace-nowrap transition-all text-left shrink-0 active:scale-95 ${
+                    isActive
+                      ? 'bg-[#111113] text-white shadow-xs'
+                      : 'bg-stone-50 hover:bg-stone-100 text-stone-600 border border-stone-200/80'
+                  }`}
+                >
+                  <span
+                    className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-black shrink-0 ${
+                      isActive ? 'bg-[#dc2626] text-white' : 'bg-stone-200 text-stone-700'
+                    }`}
+                  >
+                    {tab.num}
+                  </span>
+                  <div className="flex flex-col leading-tight">
+                    <span className="text-xs font-bold">{tab.title}</span>
+                    <span className={`text-[9px] hidden sm:block ${isActive ? 'text-stone-300' : 'text-stone-400'}`}>
+                      {tab.sub}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Form Container */}
-        <div className="bg-white rounded-2xl border border-stone-200 p-4 sm:p-7 shadow-xs">
+        <div className="bg-white rounded-2xl border border-stone-200 p-4 sm:p-7 shadow-xs pb-24 sm:pb-7">
           <form onSubmit={handleProductFormSubmit} className="space-y-6">
             {/* SECTION 1: Core Info & Barcode */}
             {modalActiveTab === 'info' && (
-              <div className="space-y-4">
-                <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                    Product Title *
-                  </label>
+              <div className="space-y-5 animate-in fade-in duration-150">
+                <div className="border-b border-stone-100 pb-3">
+                  <h2 className="text-sm font-bold text-[#18181b] flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#dc2626]" />
+                    Product Identity &amp; Classification
+                  </h2>
+                  <p className="text-[11px] text-stone-500 mt-0.5">
+                    Essential naming, categorization, SKU code, and barcode identification for this product.
+                  </p>
+                </div>
+
+                {/* Product Title */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                      Product Title <span className="text-[#dc2626]">*</span>
+                    </label>
+                    <span className="text-[10px] font-mono text-stone-400 font-medium">Text (Max 120 chars)</span>
+                  </div>
                   <input
                     type="text"
                     required
                     value={productForm.name}
                     onChange={(e) => setProductForm({ ...productForm, name: e.target.value })}
                     placeholder="e.g. OMEGA Hardcover Counter Book Q3 (288 Pages)"
-                    className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs bg-stone-50 focus:outline-none focus:border-[#111113]"
+                    className="w-full px-3.5 py-3 border border-stone-200 rounded-xl text-sm bg-stone-50/80 focus:bg-white focus:outline-none focus:border-[#111113] focus:ring-1 focus:ring-[#111113] transition-all"
                   />
+                  <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-sans">
+                    <span className="font-semibold text-stone-600">Expected Type:</span>
+                    <span>Clean text name with brand, model, quire size and leaf/page count.</span>
+                  </div>
                 </div>
 
+                {/* Category & SKU Code */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                      Category *
-                    </label>
-                    <select
+                  {/* Category */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                        Category <span className="text-[#dc2626]">*</span>
+                      </label>
+                      <span className="text-[10px] font-mono text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded">Type or Select</span>
+                    </div>
+                    <input
+                      type="text"
+                      list="admin-category-suggestions"
+                      required
                       value={productForm.category}
                       onChange={(e) =>
                         setProductForm({ ...productForm, category: e.target.value as ProductCategory })
                       }
-                      className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs bg-stone-50 focus:outline-none focus:border-[#111113]"
-                    >
+                      placeholder="Type any category (e.g. Counter Books, Festival Deals...)"
+                      className="w-full px-3.5 py-3 border border-stone-200 rounded-xl text-sm bg-white focus:outline-none focus:border-[#111113] focus:ring-1 focus:ring-[#111113] shadow-2xs transition-all"
+                    />
+                    <datalist id="admin-category-suggestions">
                       {PRODUCT_CATEGORIES.map((cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
-                        </option>
+                        <option key={cat} value={cat} />
                       ))}
-                    </select>
+                    </datalist>
+
+                    {/* Quick 1-Click Suggestion Chips */}
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {PRODUCT_CATEGORIES.slice(0, 6).map((cat) => (
+                        <button
+                          key={cat}
+                          type="button"
+                          onClick={() => setProductForm({ ...productForm, category: cat })}
+                          className={`px-2 py-1 rounded-lg text-[10.5px] font-medium transition-all active:scale-95 cursor-pointer ${
+                            productForm.category === cat
+                              ? 'bg-[#111113] text-white shadow-2xs'
+                              : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200'
+                          }`}
+                        >
+                          {cat}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-sans">
+                      <span className="font-semibold text-stone-600">Expected Type:</span>
+                      <span>Type any custom category name freely, or click any chip above.</span>
+                    </div>
                   </div>
 
-                  <div className="space-y-1">
+                  {/* SKU Code */}
+                  <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
                       <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                        SKU Code *
+                        SKU Code <span className="text-[#dc2626]">*</span>
                       </label>
                       <button
                         type="button"
@@ -1619,7 +1657,7 @@ export const AdminDashboardPage: React.FC = () => {
                             ),
                           })
                         }
-                        className="text-[10px] text-[#dc2626] hover:underline font-bold"
+                        className="text-[11px] text-[#dc2626] hover:underline font-bold inline-flex items-center gap-0.5"
                       >
                         ⚡ Auto-Generate
                       </button>
@@ -1628,14 +1666,21 @@ export const AdminDashboardPage: React.FC = () => {
                       type="text"
                       required
                       value={productForm.sku}
-                      onChange={(e) => setProductForm({ ...productForm, sku: e.target.value })}
-                      className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
+                      onChange={(e) => setProductForm({ ...productForm, sku: e.target.value.toUpperCase() })}
+                      placeholder="e.g. OMG-CB-Q3-288P"
+                      className="w-full px-3.5 py-3 border border-stone-200 rounded-xl text-sm font-mono font-semibold bg-stone-50/80 focus:bg-white focus:outline-none focus:border-[#111113] focus:ring-1 focus:ring-[#111113] uppercase transition-all"
                     />
+                    <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-sans">
+                      <span className="font-semibold text-stone-600">Expected Type:</span>
+                      <span>Unique alphanumeric stock code (uppercase, e.g. OMG-CB-Q2).</span>
+                    </div>
                   </div>
                 </div>
 
+                {/* Barcode & Dispatch Time */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
+                  {/* Barcode EAN-13 */}
+                  <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
                       <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
                         Barcode (EAN-13 / GS1)
@@ -1645,24 +1690,33 @@ export const AdminDashboardPage: React.FC = () => {
                         onClick={() =>
                           setProductForm({ ...productForm, barcode: generateEan13Barcode() })
                         }
-                        className="text-[10px] text-[#dc2626] hover:underline font-bold"
+                        className="text-[11px] text-[#dc2626] hover:underline font-bold inline-flex items-center gap-0.5"
                       >
                         ⚡ Generate EAN-13
                       </button>
                     </div>
                     <input
                       type="text"
+                      inputMode="numeric"
                       value={productForm.barcode}
                       onChange={(e) => setProductForm({ ...productForm, barcode: e.target.value })}
                       placeholder="e.g. 6164000192837"
-                      className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
+                      className="w-full px-3.5 py-3 border border-stone-200 rounded-xl text-sm font-mono bg-stone-50/80 focus:bg-white focus:outline-none focus:border-[#111113] focus:ring-1 focus:ring-[#111113] transition-all"
                     />
+                    <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-sans">
+                      <span className="font-semibold text-stone-600">Expected Type:</span>
+                      <span>Standard 13-digit GS1 barcode for warehouse laser scanners.</span>
+                    </div>
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                      Dispatch Time Guarantee
-                    </label>
+                  {/* Dispatch Time */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                        Dispatch Time Guarantee
+                      </label>
+                      <span className="text-[10px] font-mono text-stone-400 font-medium">Text (Badge)</span>
+                    </div>
                     <input
                       type="text"
                       value={productForm.dispatchTime}
@@ -1670,136 +1724,249 @@ export const AdminDashboardPage: React.FC = () => {
                         setProductForm({ ...productForm, dispatchTime: e.target.value })
                       }
                       placeholder="e.g. Same-Day Factory Dispatch"
-                      className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs bg-stone-50 focus:outline-none focus:border-[#111113]"
+                      className="w-full px-3.5 py-3 border border-stone-200 rounded-xl text-sm bg-stone-50/80 focus:bg-white focus:outline-none focus:border-[#111113] focus:ring-1 focus:ring-[#111113] transition-all"
                     />
+                    <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-sans">
+                      <span className="font-semibold text-stone-600">Expected Type:</span>
+                      <span>Customer shipping promise (e.g. Same-Day, 24 Hours, or In-Store).</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                    Product Description
-                  </label>
+                {/* Description */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                      Product Description
+                    </label>
+                    <span className="text-[10px] font-mono text-stone-400 font-medium">Multi-line text</span>
+                  </div>
                   <textarea
                     rows={3}
                     value={productForm.description}
                     onChange={(e) =>
                       setProductForm({ ...productForm, description: e.target.value })
                     }
-                    placeholder="Specifications, paper ruling, GSM, school requirements..."
-                    className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs bg-stone-50"
+                    placeholder="Enter detailed specifications, paper ruling, GSM density, cover finish, curriculum compatibility..."
+                    className="w-full px-3.5 py-3 border border-stone-200 rounded-xl text-sm bg-stone-50/80 focus:bg-white focus:outline-none focus:border-[#111113] focus:ring-1 focus:ring-[#111113] transition-all"
                   />
+                  <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-sans">
+                    <span className="font-semibold text-stone-600">Expected Type:</span>
+                    <span>Descriptive details displayed on the public product page and wholesale catalog.</span>
+                  </div>
+                </div>
+
+                {/* Mobile Next Step Button */}
+                <div className="flex justify-end pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setModalActiveTab('pricing')}
+                    className="w-full sm:w-auto px-4 py-2.5 bg-[#111113] text-white rounded-xl text-xs font-bold inline-flex items-center justify-center gap-2 active:scale-95 transition-all"
+                  >
+                    <span>Proceed to Pricing &amp; Wholesale</span>
+                    <span>→</span>
+                  </button>
                 </div>
               </div>
             )}
 
             {/* SECTION 2: Pricing, Margins & Wholesale Tiers */}
             {modalActiveTab === 'pricing' && (
-              <div className="space-y-4">
+              <div className="space-y-5 animate-in fade-in duration-150">
+                <div className="border-b border-stone-100 pb-3">
+                  <h2 className="text-sm font-bold text-[#18181b] flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-600" />
+                    Commercial Pricing &amp; Wholesale Volume Tiers
+                  </h2>
+                  <p className="text-[11px] text-stone-500 mt-0.5">
+                    Set retail MSRP, discount deals, and bulk distributor pricing per unit or box.
+                  </p>
+                </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                      Retail MSRP (TSh) *
-                    </label>
+                  {/* Retail MSRP */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                        Retail MSRP (TSh) <span className="text-[#dc2626]">*</span>
+                      </label>
+                      <span className="text-[10px] font-mono text-stone-400 font-medium">Integer (TSh)</span>
+                    </div>
                     <input
                       type="number"
+                      inputMode="numeric"
                       min={1}
                       required
                       value={productForm.price}
                       onChange={(e) => setProductForm({ ...productForm, price: e.target.value })}
-                      className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
+                      placeholder="e.g. 3500"
+                      className="w-full px-3.5 py-3 border border-stone-200 rounded-xl text-sm font-mono font-bold bg-stone-50/80 focus:bg-white focus:outline-none focus:border-[#111113] focus:ring-1 focus:ring-[#111113] transition-all"
                     />
+                    <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-sans">
+                      <span className="font-semibold text-stone-600">Expected Type:</span>
+                      <span>Single-item walk-in retail price in Tanzanian Shillings (e.g. 3500).</span>
+                    </div>
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                      Discount Price (TSh)
-                    </label>
+                  {/* Discount Price */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                        Discount Price (TSh)
+                      </label>
+                      <span className="text-[10px] font-mono text-stone-400 font-medium">Optional number</span>
+                    </div>
                     <input
                       type="number"
+                      inputMode="numeric"
                       min={1}
                       value={productForm.discountPrice}
                       onChange={(e) =>
                         setProductForm({ ...productForm, discountPrice: e.target.value })
                       }
-                      placeholder="Optional sale rate"
-                      className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
+                      placeholder="Leave empty if none"
+                      className="w-full px-3.5 py-3 border border-stone-200 rounded-xl text-sm font-mono bg-stone-50/80 focus:bg-white focus:outline-none focus:border-[#111113] focus:ring-1 focus:ring-[#111113] transition-all"
                     />
+                    <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-sans">
+                      <span className="font-semibold text-stone-600">Expected Type:</span>
+                      <span>Promotional sale price lower than retail MSRP (triggers % OFF badge).</span>
+                    </div>
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-emerald-800 uppercase tracking-wider">
-                      Wholesale Unit Price (TSh) *
-                    </label>
+                  {/* Wholesale Unit Price */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-bold text-emerald-800 uppercase tracking-wider">
+                        Wholesale Unit Price (TSh) <span className="text-[#dc2626]">*</span>
+                      </label>
+                      <span className="text-[10px] font-mono text-emerald-700 font-medium">B2B Rate</span>
+                    </div>
                     <input
                       type="number"
+                      inputMode="numeric"
                       min={1}
                       required
                       value={productForm.wholesalePrice}
                       onChange={(e) =>
                         setProductForm({ ...productForm, wholesalePrice: e.target.value })
                       }
-                      className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-emerald-600 font-bold text-emerald-800"
+                      placeholder="e.g. 2600"
+                      className="w-full px-3.5 py-3 border border-emerald-300 rounded-xl text-sm font-mono font-bold text-emerald-800 bg-emerald-50/40 focus:bg-white focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 transition-all"
                     />
+                    <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-sans">
+                      <span className="font-semibold text-emerald-800">Expected Type:</span>
+                      <span>Discounted dealer rate per piece for bulk carton buyers (e.g. 2600).</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="space-y-1 max-w-xs">
-                  <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                    Min Wholesale Quantity (Pcs/Box) *
-                  </label>
+                {/* Min Wholesale Qty */}
+                <div className="space-y-1.5 max-w-sm">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                      Min Wholesale Quantity (Pcs / Case) <span className="text-[#dc2626]">*</span>
+                    </label>
+                    <span className="text-[10px] font-mono text-stone-400 font-medium">Integer quantity</span>
+                  </div>
                   <input
                     type="number"
+                    inputMode="numeric"
                     min={1}
                     required
                     value={productForm.wholesaleMinQty}
                     onChange={(e) =>
                       setProductForm({ ...productForm, wholesaleMinQty: e.target.value })
                     }
-                    className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50"
+                    placeholder="e.g. 48"
+                    className="w-full px-3.5 py-3 border border-stone-200 rounded-xl text-sm font-mono font-bold bg-stone-50/80 focus:bg-white focus:outline-none focus:border-[#111113] focus:ring-1 focus:ring-[#111113] transition-all"
                   />
+                  <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-sans">
+                    <span className="font-semibold text-stone-600">Expected Type:</span>
+                    <span>Minimum units required to qualify for wholesale rate (e.g. 48 pcs).</span>
+                  </div>
                 </div>
 
                 {/* Live Margin & Carton Calculator Box */}
-                <div className="bg-stone-50 p-4 rounded-2xl border border-stone-200 space-y-2">
-                  <div className="flex items-center justify-between text-xs font-bold text-[#111113] border-b border-stone-200 pb-1.5">
-                    <span>ERP Live Commercial Margin Calculator</span>
-                    <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-mono">
+                <div className="bg-stone-50/90 p-4 sm:p-5 rounded-2xl border border-stone-200 space-y-3">
+                  <div className="flex items-center justify-between text-xs font-bold text-[#111113] border-b border-stone-200 pb-2">
+                    <span className="flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                      ERP Live Commercial Margin Calculator
+                    </span>
+                    <span className="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-mono font-bold">
                       {modalMarginPercent}% Dealer Margin
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-3 text-xs pt-1">
-                    <div>
-                      <span className="text-[10px] text-stone-500 block uppercase font-bold">Carton Wholesale Cost:</span>
-                      <span className="font-mono font-bold text-[#18181b]">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs pt-1">
+                    <div className="p-2.5 bg-white rounded-xl border border-stone-200/80">
+                      <span className="text-[10px] text-stone-500 block uppercase font-bold tracking-wider">Carton Wholesale Cost:</span>
+                      <span className="font-mono text-sm font-bold text-[#18181b] block mt-0.5">
                         {formatPrice(modalCartonWholesaleTotal, currency)}
                       </span>
+                      <span className="text-[10px] text-stone-400">Total B2B invoiced</span>
                     </div>
-                    <div>
-                      <span className="text-[10px] text-stone-500 block uppercase font-bold">Carton Retail Value:</span>
-                      <span className="font-mono font-bold text-stone-700">
+                    <div className="p-2.5 bg-white rounded-xl border border-stone-200/80">
+                      <span className="text-[10px] text-stone-500 block uppercase font-bold tracking-wider">Carton Retail Value:</span>
+                      <span className="font-mono text-sm font-bold text-stone-700 block mt-0.5">
                         {formatPrice(modalCartonRetailYield, currency)}
                       </span>
+                      <span className="text-[10px] text-stone-400">Expected counter sales</span>
                     </div>
-                    <div>
-                      <span className="text-[10px] text-stone-500 block uppercase font-bold">Retailer Profit / Case:</span>
-                      <span className="font-mono font-bold text-emerald-700">
+                    <div className="p-2.5 bg-emerald-50/80 rounded-xl border border-emerald-200">
+                      <span className="text-[10px] text-emerald-800 block uppercase font-bold tracking-wider">Retailer Profit / Case:</span>
+                      <span className="font-mono text-sm font-bold text-emerald-700 block mt-0.5">
                         +{formatPrice(modalCartonDealerProfit, currency)}
                       </span>
+                      <span className="text-[10px] text-emerald-600">Net shopkeeper yield</span>
                     </div>
                   </div>
+                </div>
+
+                {/* Step Navigation */}
+                <div className="flex items-center justify-between pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setModalActiveTab('info')}
+                    className="px-4 py-2.5 border border-stone-200 bg-white text-stone-700 rounded-xl text-xs font-bold hover:bg-stone-50 active:scale-95 transition-all"
+                  >
+                    ← Back to Core Info
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setModalActiveTab('specs')}
+                    className="px-4 py-2.5 bg-[#111113] text-white rounded-xl text-xs font-bold inline-flex items-center gap-2 active:scale-95 transition-all"
+                  >
+                    <span>Proceed to Specs</span>
+                    <span>→</span>
+                  </button>
                 </div>
               </div>
             )}
 
             {/* SECTION 3: Manufacturing & Packaging Specs */}
             {modalActiveTab === 'specs' && (
-              <div className="space-y-4">
+              <div className="space-y-5 animate-in fade-in duration-150">
+                <div className="border-b border-stone-100 pb-3">
+                  <h2 className="text-sm font-bold text-[#18181b] flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-blue-600" />
+                    Technical Manufacturing &amp; Packaging Specs
+                  </h2>
+                  <p className="text-[11px] text-stone-500 mt-0.5">
+                    Physical paper density, binding architecture, ruling pattern, and factory shipping cartons.
+                  </p>
+                </div>
+
+                {/* Packaging & Quire */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                      Packaging Spec (e.g. 48 Pcs / Box)
-                    </label>
+                  {/* Packaging Spec */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                        Packaging Spec
+                      </label>
+                      <span className="text-[10px] font-mono text-stone-400 font-medium">Text (Carton/Box)</span>
+                    </div>
                     <input
                       type="text"
                       value={productForm.packaging}
@@ -1807,79 +1974,182 @@ export const AdminDashboardPage: React.FC = () => {
                         setProductForm({ ...productForm, packaging: e.target.value })
                       }
                       placeholder="e.g. 48 Pcs / Strapped Corrugated Box"
-                      className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
+                      className="w-full px-3.5 py-3 border border-stone-200 rounded-xl text-sm bg-stone-50/80 focus:bg-white focus:outline-none focus:border-[#111113] focus:ring-1 focus:ring-[#111113] transition-all"
                     />
+                    <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-sans">
+                      <span className="font-semibold text-stone-600">Expected Type:</span>
+                      <span>Case packing format (e.g. 48 Pcs / Box or Shrink-Wrapped Bundle).</span>
+                    </div>
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                      Quire Classification
-                    </label>
-                    <select
+                  {/* Quire Classification */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                        Quire Classification
+                      </label>
+                      <span className="text-[10px] font-mono text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded">Type or Select</span>
+                    </div>
+                    <input
+                      type="text"
+                      list="admin-quire-suggestions"
                       value={productForm.quire}
                       onChange={(e) => setProductForm({ ...productForm, quire: e.target.value })}
-                      className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
-                    >
-                      <option value="1 Quire">1 Quire</option>
-                      <option value="2 Quire">2 Quire</option>
-                      <option value="3 Quire">3 Quire</option>
-                      <option value="4 Quire">4 Quire</option>
-                      <option value="N/A">N/A / Standard</option>
-                    </select>
+                      placeholder="Type or select quire (e.g. 2 Quire, 3 Quire, Custom...)"
+                      className="w-full px-3.5 py-3 border border-stone-200 rounded-xl text-sm bg-white focus:outline-none focus:border-[#111113] focus:ring-1 focus:ring-[#111113] shadow-2xs transition-all"
+                    />
+                    <datalist id="admin-quire-suggestions">
+                      <option value="1 Quire" />
+                      <option value="2 Quire" />
+                      <option value="3 Quire" />
+                      <option value="4 Quire" />
+                      <option value="N/A / Standard" />
+                    </datalist>
+
+                    {/* Quick suggestion chips */}
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {['1 Quire', '2 Quire', '3 Quire', '4 Quire', 'N/A'].map((q) => (
+                        <button
+                          key={q}
+                          type="button"
+                          onClick={() => setProductForm({ ...productForm, quire: q })}
+                          className={`px-2 py-1 rounded-lg text-[10.5px] font-medium transition-all active:scale-95 cursor-pointer ${
+                            productForm.quire === q
+                              ? 'bg-[#111113] text-white shadow-2xs'
+                              : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200'
+                          }`}
+                        >
+                          {q}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-sans">
+                      <span className="font-semibold text-stone-600">Expected Type:</span>
+                      <span>Type any custom quire thickness freely, or click a preset.</span>
+                    </div>
                   </div>
                 </div>
 
+                {/* Page Count & Ruling Pattern */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                      Page Count
-                    </label>
-                    <select
+                  {/* Page Count */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                        Page Count
+                      </label>
+                      <span className="text-[10px] font-mono text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded">Type or Select</span>
+                    </div>
+                    <input
+                      type="text"
+                      list="admin-pagecount-suggestions"
                       value={productForm.pageCount}
                       onChange={(e) =>
                         setProductForm({ ...productForm, pageCount: e.target.value })
                       }
-                      className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
-                    >
-                      <option value="32 Pages">32 Pages</option>
-                      <option value="48 Pages">48 Pages</option>
-                      <option value="80 Pages">80 Pages</option>
-                      <option value="100 Pages">100 Pages</option>
-                      <option value="120 Pages">120 Pages</option>
-                      <option value="192 Pages">192 Pages</option>
-                      <option value="200 Pages">200 Pages</option>
-                      <option value="288 Pages">288 Pages</option>
-                      <option value="384 Pages">384 Pages</option>
-                      <option value="500 Sheets / Ream">500 Sheets / Ream</option>
-                      <option value="50 Envelopes / Pack">50 Envelopes / Pack</option>
-                    </select>
+                      placeholder="Type page count (e.g. 192 Pages, 200 Pages, 50 Sheets...)"
+                      className="w-full px-3.5 py-3 border border-stone-200 rounded-xl text-sm bg-white focus:outline-none focus:border-[#111113] focus:ring-1 focus:ring-[#111113] shadow-2xs transition-all"
+                    />
+                    <datalist id="admin-pagecount-suggestions">
+                      <option value="32 Pages" />
+                      <option value="48 Pages" />
+                      <option value="80 Pages" />
+                      <option value="100 Pages" />
+                      <option value="120 Pages" />
+                      <option value="192 Pages" />
+                      <option value="200 Pages" />
+                      <option value="288 Pages" />
+                      <option value="384 Pages" />
+                      <option value="500 Sheets / Ream" />
+                      <option value="50 Envelopes / Pack" />
+                    </datalist>
+
+                    {/* Quick suggestion chips */}
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {['32 Pages', '80 Pages', '100 Pages', '192 Pages', '200 Pages', '288 Pages', '384 Pages'].map((pc) => (
+                        <button
+                          key={pc}
+                          type="button"
+                          onClick={() => setProductForm({ ...productForm, pageCount: pc })}
+                          className={`px-2 py-1 rounded-lg text-[10.5px] font-medium transition-all active:scale-95 cursor-pointer ${
+                            productForm.pageCount === pc
+                              ? 'bg-[#111113] text-white shadow-2xs'
+                              : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200'
+                          }`}
+                        >
+                          {pc}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-sans">
+                      <span className="font-semibold text-stone-600">Expected Type:</span>
+                      <span>Type any custom page or sheet count freely.</span>
+                    </div>
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                      Ruling / Grid Pattern
-                    </label>
-                    <select
+                  {/* Ruling Type */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                        Ruling / Grid Pattern
+                      </label>
+                      <span className="text-[10px] font-mono text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded">Type or Select</span>
+                    </div>
+                    <input
+                      type="text"
+                      list="admin-ruling-suggestions"
                       value={productForm.rulingType}
                       onChange={(e) =>
                         setProductForm({ ...productForm, rulingType: e.target.value })
                       }
-                      className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
-                    >
-                      <option value="Single Line Ruled">Single Line Ruled</option>
-                      <option value="Square Grid 5mm (Hesabu)">Square Grid 5mm (Hesabu)</option>
-                      <option value="Double Line (Kiswahili/English)">Double Line (Kiswahili/English)</option>
-                      <option value="Plain Unruled">Plain Unruled</option>
-                      <option value="Ledger / Cash Columns">Ledger / Cash Columns</option>
-                    </select>
+                      placeholder="Type ruling pattern (e.g. Single Line Ruled, Hesabu 5mm...)"
+                      className="w-full px-3.5 py-3 border border-stone-200 rounded-xl text-sm bg-white focus:outline-none focus:border-[#111113] focus:ring-1 focus:ring-[#111113] shadow-2xs transition-all"
+                    />
+                    <datalist id="admin-ruling-suggestions">
+                      <option value="Single Line Ruled" />
+                      <option value="Square Grid 5mm (Hesabu)" />
+                      <option value="Double Line (Kiswahili/English)" />
+                      <option value="Plain Unruled" />
+                      <option value="Ledger / Cash Columns" />
+                    </datalist>
+
+                    {/* Quick suggestion chips */}
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {['Single Line Ruled', 'Square Grid 5mm (Hesabu)', 'Double Line', 'Plain Unruled', 'Ledger'].map((rt) => (
+                        <button
+                          key={rt}
+                          type="button"
+                          onClick={() => setProductForm({ ...productForm, rulingType: rt })}
+                          className={`px-2 py-1 rounded-lg text-[10.5px] font-medium transition-all active:scale-95 cursor-pointer ${
+                            productForm.rulingType === rt
+                              ? 'bg-[#111113] text-white shadow-2xs'
+                              : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200'
+                          }`}
+                        >
+                          {rt}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-sans">
+                      <span className="font-semibold text-stone-600">Expected Type:</span>
+                      <span>Type any custom ruling pattern or click a preset.</span>
+                    </div>
                   </div>
                 </div>
 
+                {/* Paper Quality & Binding Type */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                      Paper Weight / Quality
-                    </label>
+                  {/* Paper Quality */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                        Paper Weight / Quality
+                      </label>
+                      <span className="text-[10px] font-mono text-stone-400 font-medium">GSM / Paper</span>
+                    </div>
                     <input
                       type="text"
                       value={productForm.paperQuality}
@@ -1887,14 +2157,22 @@ export const AdminDashboardPage: React.FC = () => {
                         setProductForm({ ...productForm, paperQuality: e.target.value })
                       }
                       placeholder="e.g. 70 GSM Bleed-Proof Woodfree Paper"
-                      className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
+                      className="w-full px-3.5 py-3 border border-stone-200 rounded-xl text-sm bg-stone-50/80 focus:bg-white focus:outline-none focus:border-[#111113] focus:ring-1 focus:ring-[#111113] transition-all"
                     />
+                    <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-sans">
+                      <span className="font-semibold text-stone-600">Expected Type:</span>
+                      <span>Paper density in GSM and raw material grade (e.g. 70 GSM Bleed-Proof).</span>
+                    </div>
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                      Binding Type
-                    </label>
+                  {/* Binding Type */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                        Binding Type
+                      </label>
+                      <span className="text-[10px] font-mono text-stone-400 font-medium">Binding style</span>
+                    </div>
                     <input
                       type="text"
                       value={productForm.bindingType}
@@ -1902,94 +2180,277 @@ export const AdminDashboardPage: React.FC = () => {
                         setProductForm({ ...productForm, bindingType: e.target.value })
                       }
                       placeholder="e.g. Hardcover Smyth-Sewn Thread Bound"
-                      className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
+                      className="w-full px-3.5 py-3 border border-stone-200 rounded-xl text-sm bg-stone-50/80 focus:bg-white focus:outline-none focus:border-[#111113] focus:ring-1 focus:ring-[#111113] transition-all"
                     />
+                    <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-sans">
+                      <span className="font-semibold text-stone-600">Expected Type:</span>
+                      <span>Spine construction (e.g. Hardcover Smyth-Sewn, Saddle Stitch, Spiral).</span>
+                    </div>
                   </div>
+                </div>
+
+                {/* Step Navigation */}
+                <div className="flex items-center justify-between pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setModalActiveTab('pricing')}
+                    className="px-4 py-2.5 border border-stone-200 bg-white text-stone-700 rounded-xl text-xs font-bold hover:bg-stone-50 active:scale-95 transition-all"
+                  >
+                    ← Back to Pricing
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setModalActiveTab('stock')}
+                    className="px-4 py-2.5 bg-[#111113] text-white rounded-xl text-xs font-bold inline-flex items-center gap-2 active:scale-95 transition-all"
+                  >
+                    <span>Proceed to Stock</span>
+                    <span>→</span>
+                  </button>
                 </div>
               </div>
             )}
 
             {/* SECTION 4: Stock & Warehouse Inventory */}
             {modalActiveTab === 'stock' && (
-              <div className="space-y-4">
+              <div className="space-y-5 animate-in fade-in duration-150">
+                <div className="border-b border-stone-100 pb-3">
+                  <h2 className="text-sm font-bold text-[#18181b] flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-amber-500" />
+                    Warehouse Inventory &amp; Merchandising Badges
+                  </h2>
+                  <p className="text-[11px] text-stone-500 mt-0.5">
+                    Live shelf stock counts, availability states, and showcase badges.
+                  </p>
+                </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                      Stock Status
-                    </label>
-                    <select
+                  {/* Stock Status */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                        Stock Status
+                      </label>
+                      <span className="text-[10px] font-mono text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded">Type or Select</span>
+                    </div>
+                    <input
+                      type="text"
+                      list="admin-stockstatus-suggestions"
                       value={productForm.stockStatus}
                       onChange={(e) =>
                         setProductForm({ ...productForm, stockStatus: e.target.value as StockStatus })
                       }
-                      className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs bg-stone-50"
-                    >
-                      <option value="In Stock">In Stock</option>
-                      <option value="Low Stock">Low Stock</option>
-                      <option value="Out of Stock">Out of Stock</option>
-                    </select>
+                      placeholder="Type stock status (e.g. In Stock, Low Stock, Pre-Order...)"
+                      className="w-full px-3.5 py-3 border border-stone-200 rounded-xl text-sm bg-white focus:outline-none focus:border-[#111113] focus:ring-1 focus:ring-[#111113] shadow-2xs transition-all"
+                    />
+                    <datalist id="admin-stockstatus-suggestions">
+                      <option value="In Stock" />
+                      <option value="Low Stock" />
+                      <option value="Out of Stock" />
+                      <option value="Pre-Order Available" />
+                    </datalist>
+
+                    {/* Quick suggestion chips */}
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {['In Stock', 'Low Stock', 'Out of Stock'].map((st) => (
+                        <button
+                          key={st}
+                          type="button"
+                          onClick={() => setProductForm({ ...productForm, stockStatus: st as StockStatus })}
+                          className={`px-2.5 py-1 rounded-lg text-[10.5px] font-bold font-mono transition-all active:scale-95 cursor-pointer ${
+                            productForm.stockStatus === st
+                              ? st === 'In Stock'
+                                ? 'bg-emerald-600 text-white shadow-2xs'
+                                : st === 'Low Stock'
+                                ? 'bg-amber-600 text-white shadow-2xs'
+                                : 'bg-red-600 text-white shadow-2xs'
+                              : 'bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-200'
+                          }`}
+                        >
+                          {st}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-sans">
+                      <span className="font-semibold text-stone-600">Expected Type:</span>
+                      <span>Type any availability status or choose from presets.</span>
+                    </div>
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                      Physical Stock Quantity on Hand (Units)
-                    </label>
+                  {/* Stock Quantity */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                        Physical Stock Quantity on Hand (Units)
+                      </label>
+                      <span className="text-[10px] font-mono text-stone-400 font-medium">Integer units</span>
+                    </div>
                     <input
                       type="number"
+                      inputMode="numeric"
                       min={0}
                       value={productForm.stockQuantity}
                       onChange={(e) =>
                         setProductForm({ ...productForm, stockQuantity: e.target.value })
                       }
-                      placeholder="e.g. 500 pcs"
-                      className="w-full px-3.5 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50"
+                      placeholder="e.g. 500"
+                      className="w-full px-3.5 py-3 border border-stone-200 rounded-xl text-sm font-mono font-bold bg-stone-50/80 focus:bg-white focus:outline-none focus:border-[#111113] focus:ring-1 focus:ring-[#111113] transition-all"
                     />
+                    <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-sans">
+                      <span className="font-semibold text-stone-600">Expected Type:</span>
+                      <span>Real unit count located in Dar es Salaam factory central warehouse.</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-6 pt-3 border-t border-stone-200">
-                  <label className="inline-flex items-center gap-2 text-xs font-semibold text-stone-700 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={productForm.featured}
-                      onChange={(e) =>
-                        setProductForm({ ...productForm, featured: e.target.checked })
-                      }
-                      className="rounded text-[#111113] focus:ring-0"
-                    />
-                    <span>Featured on Homepage Showcase</span>
-                  </label>
+                {/* Promotional & Showcase Badges */}
+                <div className="p-4 bg-stone-50/80 rounded-2xl border border-stone-200 space-y-3.5">
+                  <span className="text-xs font-bold text-[#18181b] uppercase tracking-wider block">
+                    Product Badges &amp; Merchandising Highlights
+                  </span>
 
-                  <label className="inline-flex items-center gap-2 text-xs font-semibold text-stone-700 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={productForm.bestSeller}
-                      onChange={(e) =>
-                        setProductForm({ ...productForm, bestSeller: e.target.checked })
-                      }
-                      className="rounded text-[#111113] focus:ring-0"
-                    />
-                    <span>Best-Selling Badge</span>
-                  </label>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <label className="flex items-center gap-3 p-3 bg-white rounded-xl border border-stone-200 cursor-pointer hover:border-stone-400 transition-all">
+                      <input
+                        type="checkbox"
+                        checked={productForm.featured}
+                        onChange={(e) =>
+                          setProductForm({ ...productForm, featured: e.target.checked })
+                        }
+                        className="w-4 h-4 rounded text-[#dc2626] focus:ring-0"
+                      />
+                      <div>
+                        <span className="text-xs font-bold text-stone-800 block">Featured Product</span>
+                        <span className="text-[10px] text-stone-500 block">Highlights on Home showcase</span>
+                      </div>
+                    </label>
 
-                  <label className="inline-flex items-center gap-2 text-xs font-semibold text-stone-700 cursor-pointer">
+                    <label className="flex items-center gap-3 p-3 bg-white rounded-xl border border-stone-200 cursor-pointer hover:border-stone-400 transition-all">
+                      <input
+                        type="checkbox"
+                        checked={productForm.bestSeller}
+                        onChange={(e) =>
+                          setProductForm({ ...productForm, bestSeller: e.target.checked })
+                        }
+                        className="w-4 h-4 rounded text-[#dc2626] focus:ring-0"
+                      />
+                      <div>
+                        <span className="text-xs font-bold text-stone-800 block">Bestseller Badge</span>
+                        <span className="text-[10px] text-stone-500 block">Shows gold star recommendation</span>
+                      </div>
+                    </label>
+
+                    <label className="flex items-center gap-3 p-3 bg-white rounded-xl border border-stone-200 cursor-pointer hover:border-stone-400 transition-all">
+                      <input
+                        type="checkbox"
+                        checked={productForm.freeDelivery}
+                        onChange={(e) =>
+                          setProductForm({ ...productForm, freeDelivery: e.target.checked })
+                        }
+                        className="w-4 h-4 rounded text-[#dc2626] focus:ring-0"
+                      />
+                      <div>
+                        <span className="text-xs font-bold text-stone-800 block">Free Delivery</span>
+                        <span className="text-[10px] text-stone-500 block">Zero delivery cost promo</span>
+                      </div>
+                    </label>
+                  </div>
+
+                  {/* Festival & Seasonal Campaign Badge Input */}
+                  <div className="p-3.5 bg-white rounded-xl border border-stone-200 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-[#18181b] uppercase tracking-wider block">
+                        🎉 Festival / Promotional Campaign Badge
+                      </label>
+                      <span className="text-[10px] font-mono text-stone-400 font-medium">Text (Max 40 chars)</span>
+                    </div>
+
                     <input
-                      type="checkbox"
-                      checked={productForm.freeDelivery}
-                      onChange={(e) =>
-                        setProductForm({ ...productForm, freeDelivery: e.target.checked })
-                      }
-                      className="rounded text-[#111113] focus:ring-0"
+                      type="text"
+                      value={productForm.badge}
+                      onChange={(e) => setProductForm({ ...productForm, badge: e.target.value })}
+                      placeholder="e.g. Festival Offer, Back to School, Diwali Deal, Eid Special..."
+                      className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-sm bg-stone-50 focus:bg-white focus:outline-none focus:border-[#111113] focus:ring-1 focus:ring-[#111113] transition-all"
                     />
-                    <span>Free Delivery Eligibility Tag</span>
-                  </label>
+
+                    {/* Quick 1-Click Festival Presets */}
+                    <div className="space-y-1 pt-1">
+                      <span className="text-[10px] font-bold text-stone-500 uppercase tracking-wider block">
+                        Quick 1-Click Festival Presets:
+                      </span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {[
+                          'Back to School',
+                          'Festival Offer',
+                          'Diwali Deal',
+                          'Eid Mubarak Special',
+                          'Holiday Mega Sale',
+                          'Wholesale Fest',
+                          'New Year 2026',
+                          'Clear Badge',
+                        ].map((fest) => {
+                          const isClear = fest === 'Clear Badge';
+                          return (
+                            <button
+                              key={fest}
+                              type="button"
+                              onClick={() =>
+                                setProductForm({
+                                  ...productForm,
+                                  badge: isClear ? '' : fest,
+                                })
+                              }
+                              className={`px-2.5 py-1 rounded-lg text-[10px] font-bold font-mono transition-all active:scale-95 ${
+                                isClear
+                                  ? 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                                  : productForm.badge === fest
+                                  ? 'bg-[#111113] text-white shadow-2xs'
+                                  : 'bg-red-50 text-[#dc2626] border border-red-200 hover:bg-red-100'
+                              }`}
+                            >
+                              {fest}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Step Navigation */}
+                <div className="flex items-center justify-between pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setModalActiveTab('specs')}
+                    className="px-4 py-2.5 border border-stone-200 bg-white text-stone-700 rounded-xl text-xs font-bold hover:bg-stone-50 active:scale-95 transition-all"
+                  >
+                    ← Back to Specs
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setModalActiveTab('media')}
+                    className="px-4 py-2.5 bg-[#111113] text-white rounded-xl text-xs font-bold inline-flex items-center gap-2 active:scale-95 transition-all"
+                  >
+                    <span>Proceed to Media</span>
+                    <span>→</span>
+                  </button>
                 </div>
               </div>
             )}
 
             {/* SECTION 5: Imagery, Upload & Presets */}
             {modalActiveTab === 'media' && (
-              <div className="space-y-4">
+              <div className="space-y-5 animate-in fade-in duration-150">
+                <div className="border-b border-stone-100 pb-3">
+                  <h2 className="text-sm font-bold text-[#18181b] flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-purple-600" />
+                    Product Photography, Studio Cropper &amp; Presets
+                  </h2>
+                  <p className="text-[11px] text-stone-500 mt-0.5">
+                    Upload high-res photos, crop in 1:1 square ratio, adjust card fill mode, or select factory presets.
+                  </p>
+                </div>
+
                 {/* File Upload Dropzone */}
                 <div
                   onDragOver={(e) => {
@@ -2003,7 +2464,7 @@ export const AdminDashboardPage: React.FC = () => {
                     const file = e.dataTransfer.files?.[0];
                     if (file) handleImageFileSelect(file);
                   }}
-                  className={`relative border-2 border-dashed rounded-2xl p-6 text-center transition-all ${
+                  className={`relative border-2 border-dashed rounded-2xl p-5 sm:p-7 text-center transition-all ${
                     isDraggingFile
                       ? 'border-[#dc2626] bg-[#dc2626]/10 shadow-md scale-[1.01]'
                       : 'border-stone-300 hover:border-[#dc2626] bg-stone-50/80 hover:bg-stone-50'
@@ -2054,10 +2515,10 @@ export const AdminDashboardPage: React.FC = () => {
                       <div className="flex items-center gap-2 pt-1">
                         <label
                           htmlFor="product-image-file-input"
-                          className="px-3.5 py-1.5 bg-[#111113] hover:bg-[#18181b] text-white text-[11px] font-bold rounded-xl cursor-pointer inline-flex items-center gap-1.5 shadow-2xs active:scale-95 transition-all"
+                          className="px-4 py-2 bg-[#111113] hover:bg-[#18181b] text-white text-xs font-bold rounded-xl cursor-pointer inline-flex items-center gap-1.5 shadow-2xs active:scale-95 transition-all"
                         >
                           <Upload className="w-3.5 h-3.5 text-[#dc2626]" />
-                          <span>Select from Computer / Mobile</span>
+                          <span>Select from Computer / Mobile Camera</span>
                         </label>
                       </div>
                     </div>
@@ -2080,7 +2541,7 @@ export const AdminDashboardPage: React.FC = () => {
                 )}
 
                 {/* Live Image Preview & Assigned Path */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-stone-50 rounded-2xl border border-stone-200">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 sm:p-4 bg-stone-50 rounded-2xl border border-stone-200">
                   <div className="flex items-center gap-3.5 min-w-0">
                     <div className="relative group/thumb shrink-0">
                       <img
@@ -2124,7 +2585,7 @@ export const AdminDashboardPage: React.FC = () => {
                       type="button"
                       onClick={handleOpenCurrentInEditor}
                       disabled={!productForm.image}
-                      className="px-3.5 py-2 bg-[#111113] hover:bg-[#18181b] text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition-all active:scale-95 disabled:opacity-50"
+                      className="w-full sm:w-auto px-4 py-2.5 bg-[#111113] hover:bg-[#18181b] text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 shadow-xs transition-all active:scale-95 disabled:opacity-50"
                       title="Open Image Cropper & Editing Studio"
                     >
                       <Crop className="w-4 h-4 text-[#dc2626]" />
@@ -2133,8 +2594,8 @@ export const AdminDashboardPage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Card Display Adaptation (With vs Without Background) */}
-                <div className="p-3 bg-stone-50 rounded-xl border border-stone-200 space-y-2">
+                {/* Card Display Adaptation */}
+                <div className="p-3.5 bg-stone-50 rounded-xl border border-stone-200 space-y-2.5">
                   <div className="flex items-center justify-between">
                     <label className="text-xs font-bold text-[#18181b] uppercase tracking-wider block">
                       Website Card Display Mode (Background Adaptation)
@@ -2144,11 +2605,11 @@ export const AdminDashboardPage: React.FC = () => {
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     <button
                       type="button"
                       onClick={() => setProductForm({ ...productForm, imageFit: 'cover' })}
-                      className={`p-2.5 rounded-xl border text-left flex items-start gap-2 transition-all ${
+                      className={`p-3 rounded-xl border text-left flex items-start gap-2.5 transition-all ${
                         (productForm.imageFit || 'cover') === 'cover'
                           ? 'border-[#dc2626] bg-amber-50/60 shadow-2xs text-[#18181b]'
                           : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300'
@@ -2161,14 +2622,14 @@ export const AdminDashboardPage: React.FC = () => {
                       </div>
                       <div>
                         <div className="text-xs font-bold">Edge-to-Edge Fill</div>
-                        <div className="text-[10px] text-stone-500">For photos with full backgrounds</div>
+                        <div className="text-[10px] text-stone-500">For photography with existing backgrounds</div>
                       </div>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setProductForm({ ...productForm, imageFit: 'contain' })}
-                      className={`p-2.5 rounded-xl border text-left flex items-start gap-2 transition-all ${
+                      className={`p-3 rounded-xl border text-left flex items-start gap-2.5 transition-all ${
                         productForm.imageFit === 'contain'
                           ? 'border-[#dc2626] bg-amber-50/60 shadow-2xs text-[#18181b]'
                           : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300'
@@ -2181,64 +2642,82 @@ export const AdminDashboardPage: React.FC = () => {
                       </div>
                       <div>
                         <div className="text-xs font-bold">Studio Pedestal Fit</div>
-                        <div className="text-[10px] text-stone-500">For cutouts without background / any size</div>
+                        <div className="text-[10px] text-stone-500">For transparent cutouts or any custom aspect ratio</div>
                       </div>
                     </button>
                   </div>
                 </div>
 
-                {/* Manual Image URL Path */}
-                <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
-                    Or Direct Image URL / Path
-                  </label>
+                {/* Direct Image URL Path */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                      Or Direct Image URL / Path
+                    </label>
+                    <span className="text-[10px] font-mono text-stone-400 font-medium">URL string</span>
+                  </div>
                   <input
                     type="text"
                     value={productForm.image}
                     onChange={(e) => setProductForm({ ...productForm, image: e.target.value })}
                     placeholder="/uploads/omega_photo.png or https://..."
-                    className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
+                    className="w-full px-3.5 py-3 border border-stone-200 rounded-xl text-sm font-mono bg-stone-50/80 focus:bg-white focus:outline-none focus:border-[#111113] focus:ring-1 focus:ring-[#111113] transition-all"
                   />
+                  <div className="flex items-center gap-1.5 text-[11px] text-stone-500 font-sans">
+                    <span className="font-semibold text-stone-600">Expected Type:</span>
+                    <span>Valid relative path (/uploads/...) or HTTPS image link.</span>
+                  </div>
                 </div>
 
                 {/* 1-Click Official OMEGA Asset Presets */}
-                <div className="space-y-1.5">
-                  <span className="text-[11px] font-bold text-stone-600 uppercase block">
+                <div className="space-y-2">
+                  <span className="text-[11px] font-bold text-stone-600 uppercase block tracking-wider">
                     ⚡ Quick 1-Click Factory Presets:
                   </span>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 max-h-56 overflow-y-auto p-1">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 max-h-56 overflow-y-auto p-1 border border-stone-100 rounded-xl bg-stone-50/50">
                     {OMEGA_IMAGE_PRESETS.map((preset, idx) => (
                       <button
                         key={idx}
                         type="button"
                         onClick={() => setProductForm({ ...productForm, image: preset.path })}
-                        className={`p-1.5 rounded-lg border text-left flex items-center gap-2 transition-all ${
+                        className={`p-2 rounded-xl border text-left flex items-center gap-2 transition-all active:scale-95 ${
                           productForm.image === preset.path
-                            ? 'border-[#dc2626] bg-amber-50/50 shadow-2xs'
+                            ? 'border-[#dc2626] bg-amber-50/70 shadow-2xs ring-1 ring-[#dc2626]'
                             : 'border-stone-200 hover:border-stone-300 bg-white'
                         }`}
                       >
                         <img
                           src={preset.path}
                           alt={preset.label}
-                          className="w-8 h-8 rounded object-contain bg-stone-50 shrink-0"
+                          className="w-9 h-9 rounded-lg object-contain bg-stone-50 shrink-0 border border-stone-200"
                         />
-                        <span className="text-[10px] font-semibold text-stone-700 line-clamp-2">
+                        <span className="text-[10px] font-semibold text-stone-700 line-clamp-2 leading-tight">
                           {preset.label}
                         </span>
                       </button>
                     ))}
                   </div>
                 </div>
+
+                {/* Back step button */}
+                <div className="flex items-center justify-start pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setModalActiveTab('stock')}
+                    className="px-4 py-2.5 border border-stone-200 bg-white text-stone-700 rounded-xl text-xs font-bold hover:bg-stone-50 active:scale-95 transition-all"
+                  >
+                    ← Back to Stock &amp; Warehouse
+                  </button>
+                </div>
               </div>
             )}
 
-            {/* Bottom Form Actions */}
-            <div className="flex items-center justify-between pt-5 border-t border-stone-200">
+            {/* Desktop Bottom Form Actions */}
+            <div className="hidden sm:flex items-center justify-between pt-5 border-t border-stone-200">
               <button
                 type="button"
                 onClick={() => setIsProductModalOpen(false)}
-                className="px-4 py-2.5 border border-stone-200 rounded-xl text-xs font-bold text-stone-600 hover:bg-stone-50 bg-white"
+                className="px-5 py-2.5 border border-stone-200 rounded-xl text-xs font-bold text-stone-600 hover:bg-stone-50 bg-white active:scale-95 transition-all"
               >
                 Cancel &amp; Return
               </button>
@@ -2246,7 +2725,7 @@ export const AdminDashboardPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSavingProduct}
-                className={`px-6 py-2.5 btn-ledup-copper text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 ${
+                className={`px-6 py-2.5 btn-ledup-copper text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-md active:scale-95 transition-all inline-flex items-center gap-2 ${
                   isSavingProduct ? 'opacity-70 cursor-not-allowed' : ''
                 }`}
               >
@@ -2267,6 +2746,40 @@ export const AdminDashboardPage: React.FC = () => {
               </button>
             </div>
           </form>
+        </div>
+
+        {/* Sticky Mobile Bottom Action Bar (Thumb-accessible on phones) */}
+        <div className="fixed bottom-0 left-0 right-0 sm:hidden bg-white/95 backdrop-blur-md border-t border-stone-200 px-3 py-2.5 z-40 shadow-lg flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setIsProductModalOpen(false)}
+            className="flex-1 py-3 border border-stone-200 rounded-xl text-xs font-bold text-stone-600 bg-stone-50 active:scale-95 transition-all text-center"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={handleProductFormSubmit}
+            disabled={isSavingProduct}
+            className={`flex-2 py-3 btn-ledup-copper text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-md active:scale-95 transition-all inline-flex items-center justify-center gap-1.5 ${
+              isSavingProduct ? 'opacity-70 cursor-not-allowed' : ''
+            }`}
+          >
+            {isSavingProduct ? (
+              <RefreshCw className="w-4 h-4 animate-spin" />
+            ) : (
+              <Check className="w-4 h-4" />
+            )}
+            <span className="truncate">
+              {isSavingProduct
+                ? 'Saving...'
+                : modalMode === 'add'
+                ? 'Create Product'
+                : modalMode === 'clone'
+                ? 'Save Clone'
+                : 'Update Product'}
+            </span>
+          </button>
         </div>
 
         {/* Studio Image Editor Modal */}

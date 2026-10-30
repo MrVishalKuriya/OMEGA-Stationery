@@ -163,22 +163,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <div className="flex flex-col flex-1 justify-between p-3.5 sm:p-4 gap-2.5 sm:gap-3 bg-white">
         <div className="space-y-1.5">
           {/* Row 1: Rating & Availability */}
-          <div className="flex items-center justify-between text-[10px] sm:text-[11px]">
+          <div className="flex items-center justify-between text-xs">
             {isOutOfStock ? (
-              <span className="text-[9px] font-bold text-stone-500 bg-stone-100 border border-stone-200 px-1.5 py-0.5 rounded-full">
+              <span className="text-[10px] font-bold text-red-700 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">
                 Out of Stock
               </span>
             ) : (
-              <div className="flex items-center gap-1 text-[10px] font-bold text-[#18181b]">
-                <Star className="w-3 h-3 fill-[#dc2626] text-[#dc2626]" />
+              <div className="flex items-center gap-1.5 text-xs font-bold text-[#09090b]">
+                <Star className="w-3.5 h-3.5 fill-[#dc2626] text-[#dc2626]" />
                 <span>{ratingVal.toFixed(1)}</span>
-                <span className="text-zinc-400 font-normal">({reviewCountVal})</span>
+                <span className="text-zinc-600 font-medium">({reviewCountVal} reviews)</span>
               </div>
             )}
           </div>
 
           {/* Row 2: Product Title (2 Lines max) */}
-          <h3 className="font-heading text-xs sm:text-sm font-bold text-[#18181b] group-hover:text-[#dc2626] transition-colors line-clamp-2 leading-snug">
+          <h3 className="font-heading text-sm sm:text-[15px] font-bold text-[#09090b] group-hover:text-[#dc2626] transition-colors line-clamp-2 leading-snug">
             <Link to={`/product/${product.id}`} className="focus:outline-none">
               {language === 'sw' && product.nameSw ? product.nameSw : product.name}
             </Link>
@@ -188,36 +188,43 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <div className="pt-2 border-t border-[#e4e4e7] mt-2 space-y-1.5">
             {/* Retail Price */}
             <div className="flex items-baseline gap-2">
-              <span className="text-base sm:text-lg font-black text-[#18181b] font-mono tracking-tight">
+              <span className="text-lg sm:text-xl font-black text-[#09090b] font-mono tracking-tight">
                 {formatPrice(effectivePrice, currency)}
               </span>
               {hasDiscount && (
-                <span className="text-[11px] sm:text-xs text-[#71717a] line-through font-mono">
+                <span className="text-xs text-red-600/80 line-through font-mono font-medium">
                   {formatPrice(product.price, currency)}
                 </span>
               )}
             </div>
           </div>
 
-          {/* Row 4: Dispatch Guarantee (Subtle & Clean) */}
-          <div className="flex items-center gap-1.5 text-emerald-600 font-semibold text-[10px] pt-0.5">
-            <Truck className="w-3 h-3 text-emerald-600 shrink-0" />
-            <span className="truncate">Fast Dispatch Available</span>
+          {/* Row 4: Dispatch Guarantee & Packaging Specs */}
+          <div className="flex items-center justify-between text-xs pt-1 text-zinc-700">
+            <span className="flex items-center gap-1 text-emerald-800 font-semibold">
+              <Truck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+              <span>Same-Day Dispatch</span>
+            </span>
+            {packagingInfo && (
+              <span className="font-mono text-zinc-600 font-medium truncate max-w-[130px]">
+                {packagingInfo}
+              </span>
+            )}
           </div>
         </div>
 
         {/* ================= REGION 3: PRIMARY ACTION BUTTON ================= */}
-        <div className="pt-1">
+        <div className="pt-2">
           <button
             type="button"
             onClick={handleQuickAdd}
             disabled={isOutOfStock}
-            className={`w-full py-2.5 px-3 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 min-h-[42px] transition-all duration-200 active:scale-95 shadow-sm cursor-pointer font-mono ${
+            className={`w-full py-2.5 px-3 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 min-h-[42px] transition-all duration-200 active:scale-95 shadow-sm cursor-pointer font-mono ${
               isOutOfStock
                 ? 'bg-zinc-100 text-zinc-400 cursor-not-allowed border border-[#e4e4e7]'
                 : justAdded
                 ? 'bg-emerald-600 text-white shadow-md'
-                : 'bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] hover:from-[#991b1b] hover:to-[#dc2626] text-white hover:shadow-md'
+                : 'bg-[#111113] hover:bg-[#dc2626] text-white hover:shadow-md'
             }`}
           >
             {isOutOfStock ? (

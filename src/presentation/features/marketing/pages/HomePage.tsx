@@ -55,7 +55,7 @@ export const HomePage: React.FC = () => {
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState<
-    'all' | 'counter' | 'exercise' | 'bahasha' | 'registers'
+    'all' | 'festive' | 'counter' | 'exercise' | 'bahasha' | 'registers'
   >('all');
 
   // Wholesale calculator state
@@ -76,6 +76,12 @@ export const HomePage: React.FC = () => {
 
   // Filter products dynamically for the featured catalog section
   const filteredProducts = useMemo(() => {
+    if (activeTab === 'festive') {
+      const festivalProducts = products.filter(
+        (p) => Boolean(p.badge && p.badge.trim() !== '') || Boolean(p.discountPercent && p.discountPercent > 0)
+      );
+      return festivalProducts.length > 0 ? festivalProducts : products.filter((p) => p.featured || p.bestSeller);
+    }
     if (activeTab === 'counter') return products.filter((p) => p.category === 'Counter Books');
     if (activeTab === 'exercise') return products.filter((p) => p.category === 'Exercise Books');
     if (activeTab === 'bahasha') return products.filter((p) => p.category === 'Bahasha & Envelopes');
@@ -181,108 +187,7 @@ export const HomePage: React.FC = () => {
       {/* ========================================================================= */}
       <Hero whatsappGreetingUrl={whatsappGreetingUrl} />
 
-      {/* ========================================================================= */}
-      {/* 2. TRUST & SCALE METRICS BAR (Refined Architectural Cards) */}
-      {/* ========================================================================= */}
-      <section className="bg-white border-b border-[#e4e4e7] py-8 sm:py-10 relative z-20 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
-            
-            {/* Metric 1 */}
-            <div className="group p-4 sm:p-5 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 flex flex-col justify-between">
-              <div className="flex items-center justify-between mb-3">
-                <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#111113]/5 text-[#dc2626] flex items-center justify-center font-bold border border-[#dc2626]/20 group-hover:bg-[#111113] group-hover:text-white transition-colors duration-300">
-                  <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
-                </span>
-                <span className="text-[10px] font-mono font-bold text-[#a1a1aa] uppercase tracking-wider bg-white px-2 py-0.5 rounded-full border border-[#e4e4e7]">
-                  Metric 01
-                </span>
-              </div>
-              <div>
-                <span className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#111113] font-heading tracking-tight block">
-                  500,000+
-                </span>
-                <h4 className="text-xs sm:text-[13px] font-bold uppercase tracking-wider text-[#18181b] mt-1">
-                  Books Distributed
-                </h4>
-                <p className="text-[11px] sm:text-xs text-[#71717a] mt-0.5 leading-snug">
-                  Annual factory supply to schools &amp; firms
-                </p>
-              </div>
-            </div>
 
-            {/* Metric 2 */}
-            <div className="group p-4 sm:p-5 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 flex flex-col justify-between">
-              <div className="flex items-center justify-between mb-3">
-                <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#111113]/5 text-[#dc2626] flex items-center justify-center font-bold border border-[#dc2626]/20 group-hover:bg-[#111113] group-hover:text-white transition-colors duration-300">
-                  <Truck className="w-4 h-4 sm:w-5 sm:h-5" />
-                </span>
-                <span className="text-[10px] font-mono font-bold text-[#a1a1aa] uppercase tracking-wider bg-white px-2 py-0.5 rounded-full border border-[#e4e4e7]">
-                  Metric 02
-                </span>
-              </div>
-              <div>
-                <span className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#111113] font-heading tracking-tight block">
-                  31 Regions
-                </span>
-                <h4 className="text-xs sm:text-[13px] font-bold uppercase tracking-wider text-[#18181b] mt-1">
-                  Nationwide Bus Parcel
-                </h4>
-                <p className="text-[11px] sm:text-xs text-[#71717a] mt-0.5 leading-snug">
-                  Same-day waybills to all bus terminals
-                </p>
-              </div>
-            </div>
-
-            {/* Metric 3 */}
-            <div className="group p-4 sm:p-5 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 flex flex-col justify-between">
-              <div className="flex items-center justify-between mb-3">
-                <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center font-bold border border-[#dc2626]/30 group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300">
-                  <Feather className="w-4 h-4 sm:w-5 sm:h-5" />
-                </span>
-                <span className="text-[10px] font-mono font-bold text-[#dc2626] uppercase tracking-wider bg-white px-2 py-0.5 rounded-full border border-[#dc2626]/30">
-                  High Density
-                </span>
-              </div>
-              <div>
-                <span className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#dc2626] font-heading tracking-tight block">
-                  70 GSM
-                </span>
-                <h4 className="text-xs sm:text-[13px] font-bold uppercase tracking-wider text-[#18181b] mt-1">
-                  Bleed-Proof Paper
-                </h4>
-                <p className="text-[11px] sm:text-xs text-[#71717a] mt-0.5 leading-snug">
-                  Zero feathering with fountain &amp; gel ink
-                </p>
-              </div>
-            </div>
-
-            {/* Metric 4 */}
-            <div className="group p-4 sm:p-5 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#2A9D8F] transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 flex flex-col justify-between">
-              <div className="flex items-center justify-between mb-3">
-                <span className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#2A9D8F]/10 text-[#2A9D8F] flex items-center justify-center font-bold border border-[#2A9D8F]/30 group-hover:bg-[#2A9D8F] group-hover:text-white transition-colors duration-300">
-                  <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" />
-                </span>
-                <span className="text-[10px] font-mono font-bold text-[#2A9D8F] uppercase tracking-wider bg-white px-2 py-0.5 rounded-full border border-[#2A9D8F]/30">
-                  Guarantee
-                </span>
-              </div>
-              <div>
-                <span className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#2A9D8F] font-heading tracking-tight block">
-                  100%
-                </span>
-                <h4 className="text-xs sm:text-[13px] font-bold uppercase tracking-wider text-[#18181b] mt-1">
-                  Thread-Sewn Spine
-                </h4>
-                <p className="text-[11px] sm:text-xs text-[#71717a] mt-0.5 leading-snug">
-                  Pages never loosen or fall out over years
-                </p>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
 
       {/* ========================================================================= */}
       {/* 3. SIGNATURE CATEGORIES SHOWCASE (Curated Minimalist Collections) */}
@@ -295,10 +200,10 @@ export const HomePage: React.FC = () => {
             <div className="inline-flex items-center px-3.5 py-1 rounded-md bg-gradient-to-r from-[#dc2626]/15 via-[#dc2626]/5 to-transparent border border-[#dc2626]/30 text-xs font-bold text-[#dc2626] font-mono uppercase tracking-widest shadow-xs">
               <span>{language === 'sw' ? 'MAKUNDI YA BIDHAA' : 'CURATED NOTEBOOK LINES'}</span>
             </div>
-            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#18181b] tracking-tight">
+            <h2 className="font-heading text-2xl sm:text-4xl font-extrabold text-[#09090b] tracking-tight">
               {language === 'sw' ? 'Mkusanyiko Rasmi wa Vitabu' : 'Explore by Category'}
             </h2>
-            <p className="text-xs sm:text-sm text-[#71717a] leading-relaxed">
+            <p className="text-sm sm:text-base text-[#27272a] font-normal leading-relaxed">
               {language === 'sw'
                 ? 'Kuanzia madaftari ya Q2, Q3, Q4 yenye jalada gumu hadi madaftari ya shule za msingi na sekondari pamoja na bahasha imara za krafti.'
                 : 'From heavy-duty Q2–Q4 counter ledger books to standard school exercise editions and tear-resistant kraft mailers.'}
@@ -324,17 +229,17 @@ export const HomePage: React.FC = () => {
                 </div>
 
                 {/* Card Meta & Title */}
-                <div className="space-y-1 w-full flex-1 flex flex-col justify-between">
+                <div className="space-y-1.5 w-full flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="font-heading font-bold text-xs sm:text-[13px] text-[#18181b] group-hover:text-[#dc2626] transition-colors leading-snug line-clamp-1">
+                    <h3 className="font-heading font-bold text-xs sm:text-sm text-[#09090b] group-hover:text-[#dc2626] transition-colors leading-snug line-clamp-1">
                       {cat.title}
                     </h3>
-                    <p className="text-[10px] sm:text-[11px] text-[#71717a] line-clamp-1 mt-0.5">
+                    <p className="text-xs text-[#3f3f46] font-medium line-clamp-1 mt-0.5">
                       {cat.subtitle}
                     </p>
                   </div>
 
-                  <span className="mt-3 text-[10px] sm:text-[11px] font-bold tracking-wider uppercase text-[#dc2626] group-hover:text-[#b91c1c] inline-flex items-center justify-center gap-1 font-mono pt-2 border-t border-[#e4e4e7]/50">
+                  <span className="mt-3 text-xs font-bold tracking-wider uppercase text-[#dc2626] group-hover:text-[#b91c1c] inline-flex items-center justify-center gap-1 font-mono pt-2 border-t border-[#e4e4e7]/70">
                     <span>Explore</span>
                     <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </span>
@@ -410,11 +315,11 @@ export const HomePage: React.FC = () => {
                     <div className="w-10 h-10 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 shrink-0">
                       <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
-                    <h3 className="font-heading font-bold text-sm sm:text-base text-[#18181b] leading-snug">
+                    <h3 className="font-heading font-bold text-sm sm:text-base text-[#09090b] leading-snug">
                       Smyth Thread-Sewn Spine
                     </h3>
                   </div>
-                  <p className="text-xs text-[#71717a] leading-relaxed">
+                  <p className="text-xs text-[#27272a] leading-relaxed font-normal">
                     Pages are double-stitched with high-tensile cotton-linen thread that never loosens. Opens flat at 180° for effortless two-page ledgers and note taking.
                   </p>
                 </div>
@@ -427,11 +332,11 @@ export const HomePage: React.FC = () => {
                     <div className="w-10 h-10 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 shrink-0">
                       <Feather className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
-                    <h3 className="font-heading font-bold text-sm sm:text-base text-[#18181b] leading-snug">
+                    <h3 className="font-heading font-bold text-sm sm:text-base text-[#09090b] leading-snug">
                       70 GSM Bleed-Proof Bond
                     </h3>
                   </div>
-                  <p className="text-xs text-[#71717a] leading-relaxed">
+                  <p className="text-xs text-[#27272a] leading-relaxed font-normal">
                     High-density virgin wood-pulp paper prevents ink ghosting and feathering from rollerballs, gel pens, and heavy fountain pen inks.
                   </p>
                 </div>
@@ -444,11 +349,11 @@ export const HomePage: React.FC = () => {
                     <div className="w-10 h-10 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 shrink-0">
                       <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
-                    <h3 className="font-heading font-bold text-sm sm:text-base text-[#18181b] leading-snug">
+                    <h3 className="font-heading font-bold text-sm sm:text-base text-[#09090b] leading-snug">
                       1.8mm Laminated Hardcover
                     </h3>
                   </div>
-                  <p className="text-xs text-[#71717a] leading-relaxed">
+                  <p className="text-xs text-[#27272a] leading-relaxed font-normal">
                     Heavy-duty greyboard wrapped in a water-resistant matt laminated cover. Protects records against humidity, spills, and rough transport.
                   </p>
                 </div>
@@ -461,11 +366,11 @@ export const HomePage: React.FC = () => {
                     <div className="w-10 h-10 rounded-xl bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-md group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 shrink-0">
                       <Compass className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
-                    <h3 className="font-heading font-bold text-sm sm:text-base text-[#18181b] leading-snug">
+                    <h3 className="font-heading font-bold text-sm sm:text-base text-[#09090b] leading-snug">
                       Precision Indigo Ruling
                     </h3>
                   </div>
-                  <p className="text-xs text-[#71717a] leading-relaxed">
+                  <p className="text-xs text-[#27272a] leading-relaxed font-normal">
                     Uniform 8mm feint lines with soft red margin guides calibrated strictly to Tanzanian National Examination Council (NECTA) standards.
                   </p>
                 </div>
@@ -487,10 +392,10 @@ export const HomePage: React.FC = () => {
             <div className="inline-flex items-center px-3.5 py-1 rounded-md bg-gradient-to-r from-[#dc2626]/15 via-[#dc2626]/5 to-transparent border border-[#dc2626]/30 text-xs font-bold text-[#dc2626] font-mono uppercase tracking-widest shadow-xs">
               <span>{language === 'sw' ? 'VINARA VYA MAUZO KIWANDANI' : 'FACTORY BENCHMARK EDITIONS'}</span>
             </div>
-            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#18181b] tracking-tight">
+            <h2 className="font-heading text-2xl sm:text-4xl font-extrabold text-[#09090b] tracking-tight">
               {language === 'sw' ? 'Bidhaa Zinazoongoza kwa Mauzo' : 'Benchmark Stationery Picks'}
             </h2>
-            <p className="text-xs sm:text-sm text-[#71717a] leading-relaxed">
+            <p className="text-sm sm:text-base text-[#27272a] font-normal leading-relaxed">
               {language === 'sw'
                 ? 'Vitabu na madaftari yanayoongoza kwa mahitaji ya shule, maduka na taasisi kote Tanzania, tayari kwa usafirishaji wa haraka.'
                 : 'High-velocity ledger books and student exercise editions in high daily demand across schools, wholesale shops, and commercial offices.'}
@@ -503,6 +408,7 @@ export const HomePage: React.FC = () => {
             <div className="w-full sm:w-auto overflow-x-auto no-scrollbar py-1.5 -mx-4 px-4 sm:mx-0 sm:px-0 flex items-center justify-start gap-2">
               {[
                 { id: 'all', label: t.allProducts || 'All Products' },
+                { id: 'festive', label: '🎉 Festival Deals' },
                 { id: 'counter', label: 'Counter Books' },
                 { id: 'exercise', label: 'Exercise Books' },
                 { id: 'bahasha', label: 'Bahasha & Envelopes' },
@@ -517,7 +423,7 @@ export const HomePage: React.FC = () => {
                     className={`px-3.5 sm:px-4 py-2 text-xs font-bold rounded-xl whitespace-nowrap shrink-0 transition-all duration-200 font-mono tracking-wider uppercase ${
                       isActive
                         ? 'bg-[#111113] text-white shadow-sm border border-zinc-900 ring-1 ring-white/10'
-                        : 'bg-white hover:bg-zinc-50 text-zinc-600 hover:text-zinc-900 border border-zinc-200 shadow-2xs'
+                        : 'bg-white hover:bg-zinc-100 text-zinc-800 hover:text-black border border-zinc-300 shadow-2xs'
                     }`}
                   >
                     {tab.label}
@@ -529,7 +435,7 @@ export const HomePage: React.FC = () => {
             {/* View Complete Catalogue Button */}
             <Link
               to="/catalog"
-              className="group inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-zinc-200 hover:border-[#dc2626] shadow-2xs text-xs font-mono font-bold uppercase tracking-wider text-[#18181b] hover:text-[#dc2626] transition-all shrink-0 self-start sm:self-auto"
+              className="group inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-zinc-300 hover:border-[#dc2626] shadow-2xs text-xs font-mono font-bold uppercase tracking-wider text-[#09090b] hover:text-[#dc2626] transition-all shrink-0 self-start sm:self-auto"
             >
               <span>{language === 'sw' ? 'TAZAMA CATALOGUE YOTE' : 'VIEW COMPLETE CATALOGUE'}</span>
               <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-[#dc2626]" />

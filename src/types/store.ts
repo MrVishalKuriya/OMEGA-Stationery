@@ -10,7 +10,8 @@ export type ProductCategory =
   | 'Office Supplies'
   | 'Packaging & Cartons'
   | 'Files & Folders'
-  | 'Bulk & Wholesale Paper';
+  | 'Bulk & Wholesale Paper'
+  | (string & {});
 
 export const PRODUCT_CATEGORIES: ProductCategory[] = [
   'Counter Books',
@@ -27,7 +28,7 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   'Bulk & Wholesale Paper',
 ];
 
-export type StockStatus = 'In Stock' | 'Low Stock' | 'Out of Stock';
+export type StockStatus = 'In Stock' | 'Low Stock' | 'Out of Stock' | (string & {});
 export type Language = 'en' | 'sw';
 
 export interface ProductSpecification {

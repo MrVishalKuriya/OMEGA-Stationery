@@ -398,33 +398,23 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         </div>
       </footer>
 
-      {/* Floating High-Contrast Quick Action Dock (Hidden on Admin Portal) */}
+      {/* Floating High-Contrast WhatsApp Action Button (Hidden on Admin Portal) */}
       {!isAdminPage && (
-        <div className="fixed bottom-4 right-3 sm:bottom-5 sm:right-5 z-40 flex items-center gap-2 pointer-events-none">
-          <div className="flex items-center gap-2 pointer-events-auto bg-[#09090b]/90 backdrop-blur-md p-1.5 rounded-xl border border-[#dc2626]/40 shadow-2xl">
-            {/* Direct WhatsApp Orders Quick Pill */}
-            <a
-              href="https://wa.me/255715268391?text=Hello%20OMEGA%20Stationery%20Tanzania,%20I%20would%20like%20to%20place%20an%20order."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold shadow-md transition-all hover:scale-105"
-              title="Chat with Sales Desk on WhatsApp"
-            >
-              <MessageCircle className="w-3.5 h-3.5 fill-white" />
-              <span className="hidden sm:inline">WhatsApp Orders</span>
-            </a>
-
-            {/* Wholesale Carton Calculator (Navigates directly to /wholesale without popup window) */}
-            <Link
-              to="/wholesale"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg btn-ledup-copper text-xs font-bold shadow-md hover:scale-105 transition-all group active:scale-95 text-white cursor-pointer"
-              aria-label="Open Wholesale Carton & Tender Calculator"
-            >
-              <Calculator className="w-3.5 h-3.5 text-white" />
-              <span>Wholesale Rates</span>
-            </Link>
-          </div>
-        </div>
+        <aside aria-label="WhatsApp Sales Assistance" className="fixed bottom-5 right-5 z-40 flex items-center pointer-events-auto">
+          <a
+            href="https://wa.me/255715268391?text=Hello%20OMEGA%20Stationery%20Tanzania,%20I%20would%20like%20to%20inquire%20about%20stationery%20and%20orders."
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Chat with OMEGA Stationery Sales Desk on WhatsApp"
+            className="group relative flex items-center gap-2.5 px-4 py-3 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white shadow-[0_8px_25px_rgba(37,211,102,0.4)] hover:shadow-[0_10px_30px_rgba(37,211,102,0.55)] transition-all duration-300 hover:scale-105 active:scale-95"
+          >
+            {/* Soft pulsing ring */}
+            <span className="absolute -inset-1 rounded-full bg-[#25D366]/30 animate-ping pointer-events-none" />
+            <MessageCircle className="w-5 h-5 fill-white text-transparent relative z-10 shrink-0" />
+            <span className="font-sans font-bold text-xs sm:text-sm tracking-wide relative z-10 whitespace-nowrap">
+            </span>
+          </a>
+        </aside>
       )}
 
       {/* Global E-Commerce Modals */}
@@ -440,5 +430,6 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     </div>
   );
 };
+
 
 

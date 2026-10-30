@@ -24,7 +24,7 @@ export const ALL_PRODUCT_CATEGORIES = [
 
 export const productCategoryEnum = z.string().min(1, 'Product category is required');
 
-export const stockStatusEnum = z.enum(['In Stock', 'Low Stock', 'Out of Stock']);
+export const stockStatusEnum = z.string().min(1, 'Stock status is required');
 
 /**
  * Strict Zod validation schema for Admin Product creation and editing
@@ -80,6 +80,7 @@ export const productFormSchema = z.object({
   featured: z.boolean().default(false),
   bestSeller: z.boolean().default(false),
   freeDelivery: z.boolean().default(true),
+  badge: z.string().max(50, 'Badge cannot exceed 50 characters').optional().default(''),
 });
 
 export type ProductFormValues = z.infer<typeof productFormSchema>;

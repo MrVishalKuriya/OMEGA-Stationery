@@ -407,6 +407,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
         setIsRemovingBg(false);
         setStoreImageFit('contain'); // Auto switch to contain for clean cutout!
         setStudioPadding(8);
+        setBgPreset('transparent');
       };
       newImg.src = offCanvas.toDataURL('image/png');
     } catch {
@@ -571,18 +572,20 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
     ctx.strokeRect(cbX, cbY, cbW, cbH);
 
     // Rule of thirds grid lines
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
-    ctx.lineWidth = 0.8;
-    ctx.beginPath();
-    ctx.moveTo(cbX + cbW / 3, cbY);
-    ctx.lineTo(cbX + cbW / 3, cbY + cbH);
-    ctx.moveTo(cbX + (cbW * 2) / 3, cbY);
-    ctx.lineTo(cbX + (cbW * 2) / 3, cbY + cbH);
-    ctx.moveTo(cbX, cbY + cbH / 3);
-    ctx.lineTo(cbX + cbW, cbY + cbH / 3);
-    ctx.moveTo(cbX, cbY + (cbH * 2) / 3);
-    ctx.lineTo(cbX + cbW, cbY + (cbH * 2) / 3);
-    ctx.stroke();
+    if (showGrid) {
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.moveTo(cbX + cbW / 3, cbY);
+      ctx.lineTo(cbX + cbW / 3, cbY + cbH);
+      ctx.moveTo(cbX + (cbW * 2) / 3, cbY);
+      ctx.lineTo(cbX + (cbW * 2) / 3, cbY + cbH);
+      ctx.moveTo(cbX, cbY + cbH / 3);
+      ctx.lineTo(cbX + cbW, cbY + cbH / 3);
+      ctx.moveTo(cbX, cbY + (cbH * 2) / 3);
+      ctx.lineTo(cbX + cbW, cbY + (cbH * 2) / 3);
+      ctx.stroke();
+    }
 
     // Corner brackets
     const bracketLen = 16;
@@ -633,6 +636,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
     warmth,
     vignette,
     cropBox,
+    showGrid,
   ]);
 
   // Generate cropped preview snippet
@@ -798,18 +802,29 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
 
     let newBox = { ...start };
 
+    const targetRatio =
+      aspectRatio === '1:1'
+        ? 1
+        : aspectRatio === '4:5'
+        ? 4 / 5
+        : aspectRatio === '16:9'
+        ? 16 / 9
+        : aspectRatio === 'original' && sourceImg
+        ? sourceImg.width / sourceImg.height
+        : null;
+
     if (dragHandle === 'move') {
       newBox.x = Math.max(0, Math.min(1 - start.width, start.x + dx));
       newBox.y = Math.max(0, Math.min(1 - start.height, start.y + dy));
     } else if (dragHandle === 'se') {
       let nw = Math.max(0.15, Math.min(1 - start.x, start.width + dx));
       let nh = Math.max(0.15, Math.min(1 - start.y, start.height + dy));
-      if (aspectRatio === '1:1') {
-        const side = Math.min(nw, nh);
-        nw = side;
-        nh = side;
-      } else if (aspectRatio === '4:5') {
-        nw = nh * (4 / 5);
+      if (targetRatio) {
+        if (nw / nh > targetRatio) {
+          nw = nh * targetRatio;
+        } else {
+          nh = nw / targetRatio;
+        }
       }
       newBox.width = nw;
       newBox.height = nh;
@@ -818,10 +833,12 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
       let ny = Math.max(0, Math.min(start.y + start.height - 0.15, start.y + dy));
       let nw = start.width - (nx - start.x);
       let nh = start.height - (ny - start.y);
-      if (aspectRatio === '1:1') {
-        const side = Math.min(nw, nh);
-        nw = side;
-        nh = side;
+      if (targetRatio) {
+        if (nw / nh > targetRatio) {
+          nw = nh * targetRatio;
+        } else {
+          nh = nw / targetRatio;
+        }
         nx = start.x + (start.width - nw);
         ny = start.y + (start.height - nh);
       }
@@ -831,12 +848,14 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
       newBox.height = nh;
     } else if (dragHandle === 'ne') {
       let nw = Math.max(0.15, Math.min(1 - start.x, start.width + dx));
-      let ny = Math.max(0, Math.min(1 - start.y, start.height + dy));
+      let ny = Math.max(0, Math.min(start.y + start.height - 0.15, start.y + dy));
       let nh = start.height - (ny - start.y);
-      if (aspectRatio === '1:1') {
-        const side = Math.min(nw, nh);
-        nw = side;
-        nh = side;
+      if (targetRatio) {
+        if (nw / nh > targetRatio) {
+          nw = nh * targetRatio;
+        } else {
+          nh = nw / targetRatio;
+        }
         ny = start.y + (start.height - nh);
       }
       newBox.width = nw;
@@ -845,10 +864,12 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
       let nx = Math.max(0, Math.min(start.x + start.width - 0.15, start.x + dx));
       let nw = start.width - (nx - start.x);
       let nh = Math.max(0.15, Math.min(1 - start.y, start.height + dy));
-      if (aspectRatio === '1:1') {
-        const side = Math.min(nw, nh);
-        nw = side;
-        nh = side;
+      if (targetRatio) {
+        if (nw / nh > targetRatio) {
+          nw = nh * targetRatio;
+        } else {
+          nh = nw / targetRatio;
+        }
         nx = start.x + (start.width - nw);
       }
       newBox.x = nx;
@@ -1153,21 +1174,6 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                 onPointerUp={handlePointerUp}
                 className="w-full h-full object-contain cursor-grab active:cursor-grabbing touch-none"
               />
-            )}
-
-            {/* 3x3 Rule of Thirds Guide Grid Overlay */}
-            {showGrid && !isLoadingImage && !imgLoadError && (
-              <div className="absolute inset-0 pointer-events-none grid grid-cols-3 grid-rows-3 z-5">
-                <div className="border-r border-b border-white/15" />
-                <div className="border-r border-b border-white/15" />
-                <div className="border-b border-white/15" />
-                <div className="border-r border-b border-white/15" />
-                <div className="border-r border-b border-white/15" />
-                <div className="border-b border-white/15" />
-                <div className="border-r border-b border-white/15" />
-                <div className="border-r border-b border-white/15" />
-                <div />
-              </div>
             )}
 
             {/* Corner Framing L-accents */}
@@ -1700,7 +1706,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                     <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider block">
                       Lighting &amp; Color Sliders
                     </span>
-                    {(brightness !== 0 || contrast !== 0 || warmth !== 0 || saturation !== 0 || vignette !== 0) && (
+                    {(brightness !== 0 || contrast !== 0 || warmth !== 0 || saturation !== 0 || vignette !== 0 || sharpness !== 0) && (
                       <button
                         type="button"
                         onClick={() => {
@@ -1709,6 +1715,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                           setWarmth(0);
                           setSaturation(0);
                           setVignette(0);
+                          setSharpness(0);
                         }}
                         className="text-[10px] font-bold text-red-400 hover:text-white px-2 py-0.5 rounded-lg bg-red-950/40 border border-red-800/60 transition"
                       >
@@ -1866,6 +1873,35 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       max="100"
                       value={vignette}
                       onChange={(e) => setVignette(parseInt(e.target.value))}
+                      className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                    />
+                  </div>
+
+                  {/* Clarity & Sharpness */}
+                  <div className="p-3 rounded-2xl bg-[#131318] border border-[#22222c] space-y-1">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-bold text-stone-300 flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-[#dc2626]" /> Clarity &amp; Sharpness
+                      </span>
+                      <div className="flex items-center gap-2">
+                        {sharpness !== 0 && (
+                          <button
+                            type="button"
+                            onClick={() => setSharpness(0)}
+                            className="text-[10px] text-stone-500 hover:text-white transition"
+                          >
+                            0
+                          </button>
+                        )}
+                        <span className="font-mono text-[#dc2626] font-bold">{sharpness}%</span>
+                      </div>
+                    </div>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={sharpness}
+                      onChange={(e) => setSharpness(parseInt(e.target.value))}
                       className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
                     />
                   </div>

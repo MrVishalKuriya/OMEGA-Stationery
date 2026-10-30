@@ -8,6 +8,11 @@ interface AnnouncementBarProps {
 
 const ANNOUNCEMENTS = [
   {
+    text: '🎉 Festival Mega Offer: Special factory discounts on School & Office Stationery cartons!',
+    link: '/catalog',
+    badge: 'Festival Offer',
+  },
+  {
     text: 'Wholesale & School Tenders: Save up to 40% OFF Cartons — Direct From Factory',
     link: '/wholesale',
     badge: 'Wholesale',

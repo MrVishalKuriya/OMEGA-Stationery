@@ -29,13 +29,13 @@
   --accent: #dc2626;                /* Crimson Red */
   --accent-light: #ef4444;
   --accent-dark: #b91c1c;
-  --bg: #f9f9f9;                    /* Soft Canvas - Atelier Crimson */
+  --bg: #fafafa;                    /* Soft Canvas - Atelier Crimson */
   --surface: #ffffff;
-  --surface-alt: #f3f3f3;
-  --surface-dark: #e8e8e8;
-  --text: #1a1c1c;                  /* Carbon Obsidian Text */
-  --text-light: #52525b;
-  --muted: #71717a;
+  --surface-alt: #f4f4f5;
+  --surface-dark: #e4e4e7;
+  --text: #09090b;                  /* Carbon Obsidian Deep Black */
+  --text-light: #27272a;            /* Rich Charcoal Text */
+  --muted: #4b423b;                 /* High-contrast neutral */
   --border: #e4e4e7;
   --success: #16a34a;
   --danger: #dc2626;
@@ -57,9 +57,9 @@
   --clr-rustic-espresso: #1a1c1c;
   --clr-rustic-dark: #09090b;
 
-  /* Typography - Atelier Crimson */
-  --font-heading: 'Newsreader', 'Fraunces', serif;
-  --font-body: 'Hanken Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Typography - Modern Premium E-Commerce Atelier */
+  --font-heading: 'Outfit', 'Plus Jakarta Sans', -apple-system, sans-serif;
+  --font-body: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 html, body {
@@ -74,6 +74,7 @@ html, body {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+  letter-spacing: -0.011em;
 }
 
 #root {
@@ -87,12 +88,13 @@ html, body {
   flex-direction: column;
 }
 
-h1, h2, h3, h4, h5, h6, .font-heading, .font-fraunces, .font-cinzel, .font-serif-luxury {
+h1, h2, h3, h4, h5, h6, .font-heading, .font-outfit {
   font-family: var(--font-heading) !important;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.025em;
+  font-weight: 700;
 }
 
-p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
+p, span, label, input, button, select, textarea, .font-sans {
   font-family: var(--font-body);
 }
 
@@ -668,3 +670,50 @@ html {
   transition: transform 0.1s ease;
 }
 
+/* ==================== STITCH ATELIER HIGH-CONTRAST READABILITY SYSTEM ==================== */
+/* Eliminates low-contrast washed out text across all pages and components */
+body {
+  color: #09090b !important;
+  background-color: #fafafa !important;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ensure all headings are crisp Obsidian Black */
+h1, h2, h3, h4, h5, h6, .font-heading {
+  color: #09090b;
+}
+
+/* Elevate low-contrast grey text classes to high-contrast readable charcoal */
+.text-\[\#71717a\], .text-zinc-500, .text-stone-500 {
+  color: #3f3f46 !important;
+}
+
+.text-zinc-400, .text-stone-400 {
+  color: #52525b !important;
+}
+
+/* When inside dark obsidian containers, keep text high-contrast white/light gray */
+.bg-\[\#111113\] .text-zinc-400,
+.bg-\[\#18181b\] .text-zinc-400,
+.bg-\[\#09090b\] .text-zinc-400,
+.bg-\[\#131316\] .text-zinc-400,
+.bg-\[\#0b0b0e\] .text-zinc-400 {
+  color: #e4e4e7 !important;
+}
+
+.bg-\[\#111113\] .text-stone-400,
+.bg-\[\#18181b\] .text-stone-400,
+.bg-\[\#09090b\] .text-stone-400 {
+  color: #e4e4e7 !important;
+}
+
+.bg-\[\#111113\] .text-\[\#71717a\],
+.bg-\[\#18181b\] .text-\[\#71717a\] {
+  color: #d4d4d8 !important;
+}
+
+.bg-\[\#111113\] .text-stone-500,
+.bg-\[\#18181b\] .text-stone-500 {
+  color: #e4e4e7 !important;
+}
