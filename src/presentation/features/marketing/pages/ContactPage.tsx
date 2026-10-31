@@ -123,28 +123,36 @@ export const ContactPage: React.FC = () => {
   ];
 
   return (
-    <div className="bg-[#FAF6F0] min-h-screen text-[#26130F]">
+    <div className="bg-[#FFFFFF] min-h-screen text-[#111113]">
       <SEOHead
         title="Contact Us & Official Sales Desks — OMEGA Stationery Tanzania"
         description="Official contact numbers: Kanti Bhai K. Halai (+255 715 268 391), Vijesh K. Halai (+255 624 265 480), Mbeya Branch (+255 746 268 391), Mwanza Branch (+255 699 032 777), WhatsApp ordering desks, factory depots in Mbeya and Kariakoo."
       />
 
-      {/* 1. Hero Header */}
-      <section className="relative overflow-hidden w-full bg-gradient-to-r from-[#6B140B] via-[#852512] to-[#9E3618] text-white py-12 lg:py-16 shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-left">
+      {/* 1. Photographic Hero with Reduced Dark Filter & Warm Light Filter */}
+      <section className="relative overflow-hidden w-full bg-[#1B1B1E] text-white py-16 lg:py-24">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-75 brightness-110 contrast-105 pointer-events-none"
+          style={{ backgroundImage: `url('/hero-desk-bg.jpg')` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#111113]/65 via-[#111113]/45 to-[#111113]/20 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-[#F9F8F6]/15 to-white/25 mix-blend-soft-light pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_25%,rgba(255,255,255,0.22),transparent_65%)] pointer-events-none" />
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-left">
           <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center px-3.5 py-1.5 bg-[#E9A858] text-[#26130F] text-xs font-semibold font-mono shadow-xs">
+            <div className="inline-flex items-center px-3 py-1 rounded-[2px] bg-[#DC2626] text-white text-[11px] font-bold uppercase tracking-widest">
               <span>Desks Active: Mon – Sat (08:00 – 18:00 EAT)</span>
             </div>
 
-            <h1 className="font-heading text-3xl sm:text-5xl font-black text-white leading-tight">
+            <h1 className="font-sans text-3xl sm:text-5xl font-extrabold text-white leading-tight">
               {language === 'sw' ? 'Mawasiliano Rasmi na' : 'Official Directory &'} <br />
-              <span className="text-[#E9A858]">
+              <span className="text-[#DC2626]">
                 {language === 'sw' ? 'Madawati ya Mauzo OMEGA.' : 'Ordering Desks — Tanzania.'}
               </span>
             </h1>
 
-            <p className="text-sm sm:text-base text-white/90 leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-white/80 leading-relaxed font-normal max-w-2xl">
               {language === 'sw'
                 ? 'Wasiliana moja kwa moja na madawati yetu ya mauzo kwa simu au WhatsApp. Tunahudumia oda za jumla na rejareja katika mikoa yote ya Tanzania kupitia vituo vyetu vya Mbeya na Kariakoo.'
                 : 'Connect directly with our dedicated phone and WhatsApp dispatch lines. We deliver wholesale carton tenders and retail stationery parcels across all 31 regions of Tanzania.'}
@@ -153,56 +161,89 @@ export const ContactPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 2. Four Dedicated Hotlines */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-left">
-          <div className="text-center space-y-2">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#9E3618] font-heading block">
+      {/* 2. Full-Width Crimson Red Callout Strip with Upward White Triangle Notch */}
+      <section className="relative bg-[#D62828] text-white py-8 sm:py-10">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="space-y-1 max-w-xl text-left">
+            <h2 className="text-base sm:text-lg font-extrabold uppercase tracking-wide text-white">
+              DIRECT FACTORY HOTLINES &amp; INSTANT WHATSAPP PROFORMA DESK
+            </h2>
+            <p className="text-xs text-white/85 leading-relaxed">
+              Reach our executive directors or regional branch depots in Mbeya, Kariakoo, and Mwanza for immediate order processing.
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <a
+              href="tel:+255715268391"
+              className="px-6 py-2.5 bg-white text-[#111113] hover:bg-zinc-100 text-[11px] font-bold uppercase tracking-[0.14em] rounded-[2px] transition-colors"
+            >
+              CALL +255 715 268 391
+            </a>
+          </div>
+        </div>
+
+        <div className="absolute -bottom-[1px] left-12 sm:left-24 lg:left-36 w-0 h-0 border-l-[26px] border-l-transparent border-r-[26px] border-r-transparent border-b-[18px] border-b-white">
+          <span className="absolute -left-1.5 top-1.5 text-[10px] text-zinc-400 font-bold leading-none select-none">
+            ⌄
+          </span>
+        </div>
+      </section>
+
+      {/* 3. Four Dedicated Hotlines */}
+      <section className="py-16 lg:py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-left">
+          <div className="text-center space-y-2.5">
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#DC2626] block">
               DEDICATED HOTLINES
             </span>
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#26130F]">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#111113]">
               {language === 'sw' ? 'Madawati Rasmi ya Simu & WhatsApp' : 'Direct Order & Support Hotlines'}
             </h2>
-            <p className="text-xs sm:text-sm text-[#7D685E] max-w-lg mx-auto">
+            <p className="text-xs sm:text-sm text-[#77767B] max-w-lg mx-auto">
               {language === 'sw'
                 ? 'Chagua dawati husika kulingana na aina ya oda yako kwa huduma ya haraka zaidi.'
                 : 'Choose the appropriate department below for instant quotes and dispatch coordination.'}
             </p>
+            <div className="pt-1 flex justify-center text-[#111113]">
+              <svg className="w-16 h-3" viewBox="0 0 60 8" fill="none">
+                <path d="M0 4 Q 5 0, 10 4 T 20 4 T 30 4 T 40 4 T 50 4 T 60 4" stroke="currentColor" strokeWidth="1.8" fill="none" />
+              </svg>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-t border-l border-[#EEEEEE]">
             {salesDesks.map((desk) => (
               <div
                 key={desk.id}
-                className="p-6 bg-[#FAF6F0] shadow-xs flex flex-col justify-between space-y-4"
+                className="p-6 bg-white border-r border-b border-[#EEEEEE] flex flex-col justify-between space-y-4 hover:bg-[#FAFAFA] transition-colors"
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 bg-[#E9A858] text-[#26130F]">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 bg-[#111113] text-white rounded-[2px]">
                       {desk.tag}
                     </span>
-                    <span className="w-2.5 h-2.5 bg-emerald-500 inline-block" title="Online" />
+                    <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full inline-block" title="Online" />
                   </div>
 
-                  <h3 className="font-heading font-bold text-sm text-[#26130F] line-clamp-2">
+                  <h3 className="font-bold text-sm text-[#111113] line-clamp-2">
                     {desk.title}
                   </h3>
 
-                  <p className="font-mono text-base font-bold text-[#9E3618]">
+                  <p className="font-mono text-base font-extrabold text-[#DC2626]">
                     {desk.phone}
                   </p>
 
-                  <p className="text-xs text-[#7D685E] leading-relaxed line-clamp-3">
+                  <p className="text-xs text-[#77767B] leading-relaxed line-clamp-3">
                     {desk.desc}
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-[#D8C3A5]/40 grid grid-cols-2 gap-2">
+                <div className="pt-4 border-t border-[#EEEEEE] grid grid-cols-2 gap-2">
                   <a
                     href={`tel:${desk.numberDigits}`}
-                    className="py-2.5 px-3 bg-white text-[#26130F] text-xs font-bold text-center transition-colors inline-flex items-center justify-center gap-1.5 shadow-xs hover:bg-[#D8C3A5]"
+                    className="py-2.5 px-3 bg-[#F7F7F7] border border-[#E5E7EB] text-[#111113] text-xs font-bold text-center transition-colors inline-flex items-center justify-center gap-1.5 rounded-[2px] hover:bg-[#111113] hover:text-white"
                   >
-                    <Phone className="w-3.5 h-3.5 text-[#9E3618]" />
+                    <Phone className="w-3.5 h-3.5 text-[#DC2626]" />
                     <span>Call</span>
                   </a>
 
@@ -214,7 +255,7 @@ export const ContactPage: React.FC = () => {
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="py-2.5 px-3 bg-[#9E3618] hover:bg-[#6B140B] text-white text-xs font-bold text-center transition-colors inline-flex items-center justify-center gap-1.5 shadow-xs"
+                    className="py-2.5 px-3 bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-bold text-center transition-colors inline-flex items-center justify-center gap-1.5 rounded-[2px]"
                   >
                     <MessageCircle className="w-3.5 h-3.5 fill-white text-white" />
                     <span>WhatsApp</span>
@@ -226,20 +267,20 @@ export const ContactPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 3. Interactive Inquiry Form + Depot Locations */}
-      <section className="py-14 lg:py-20 bg-[#FAF6F0]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 text-left">
+      {/* 4. Interactive Inquiry Form + Depot Locations */}
+      <section className="py-16 lg:py-20 bg-[#F7F7F7] border-y border-[#EEEEEE]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 text-left">
             {/* Left: Interactive Inquiry Form */}
-            <div className="lg:col-span-7 bg-white p-7 sm:p-9 shadow-xs space-y-6">
-              <div className="space-y-1">
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#9E3618] font-heading block">
+            <div className="lg:col-span-7 bg-white p-7 sm:p-9 border border-[#EEEEEE] space-y-6">
+              <div className="space-y-1.5">
+                <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#DC2626] block">
                   FAST QUOTATION
                 </span>
-                <h2 className="font-heading text-2xl font-bold text-[#26130F]">
+                <h2 className="text-2xl font-extrabold text-[#111113]">
                   {language === 'sw' ? 'Tuma Ombi la Bei au Proforma' : 'Request Instant Proforma Quotation'}
                 </h2>
-                <p className="text-xs text-[#7D685E]">
+                <p className="text-xs text-[#77767B]">
                   {language === 'sw'
                     ? 'Jaza taarifa zako hapa chini kupata makadirio rasmi ya gharama yaliyofomatiwa moja kwa moja.'
                     : 'Fill out your requirements below to automatically generate an official inquiry message on WhatsApp.'}
@@ -249,48 +290,48 @@ export const ContactPage: React.FC = () => {
               <form onSubmit={handleSubmitInquiry} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-[#26130F] uppercase">Your Full Name *</label>
+                    <label className="text-xs font-bold text-[#111113] uppercase">Your Full Name *</label>
                     <input
                       type="text"
                       required
                       value={inquiryName}
                       onChange={(e) => setInquiryName(e.target.value)}
                       placeholder="e.g. Mwalimu Joseph Mwita"
-                      className="w-full px-3.5 py-2.5 bg-[#FAF6F0] text-xs text-[#26130F] focus:outline-none"
+                      className="w-full px-3.5 py-2.5 bg-[#F7F7F7] border border-[#E5E7EB] focus:border-[#DC2626] rounded-[2px] text-xs text-[#111113] focus:outline-none"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-[#26130F] uppercase">School / Business Name</label>
+                    <label className="text-xs font-bold text-[#111113] uppercase">School / Business Name</label>
                     <input
                       type="text"
                       value={inquiryOrg}
                       onChange={(e) => setInquiryOrg(e.target.value)}
                       placeholder="e.g. St. Peter Secondary School"
-                      className="w-full px-3.5 py-2.5 bg-[#FAF6F0] text-xs text-[#26130F] focus:outline-none"
+                      className="w-full px-3.5 py-2.5 bg-[#F7F7F7] border border-[#E5E7EB] focus:border-[#DC2626] rounded-[2px] text-xs text-[#111113] focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-[#26130F] uppercase">WhatsApp Number *</label>
+                    <label className="text-xs font-bold text-[#111113] uppercase">WhatsApp Number *</label>
                     <input
                       type="tel"
                       required
                       value={inquiryPhone}
                       onChange={(e) => setInquiryPhone(e.target.value)}
                       placeholder="e.g. 0746 268 391"
-                      className="w-full px-3.5 py-2.5 bg-[#FAF6F0] text-xs text-[#26130F] focus:outline-none"
+                      className="w-full px-3.5 py-2.5 bg-[#F7F7F7] border border-[#E5E7EB] focus:border-[#DC2626] rounded-[2px] text-xs text-[#111113] focus:outline-none"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-[#26130F] uppercase">Route To Desk</label>
+                    <label className="text-xs font-bold text-[#111113] uppercase">Route To Desk</label>
                     <select
                       value={selectedDesk}
                       onChange={(e) => setSelectedDesk(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-[#FAF6F0] text-xs text-[#26130F] focus:outline-none cursor-pointer"
+                      className="w-full px-3.5 py-2.5 bg-[#F7F7F7] border border-[#E5E7EB] focus:border-[#DC2626] rounded-[2px] text-xs text-[#111113] focus:outline-none cursor-pointer"
                     >
                       <option value="255715268391">KANTI BHAI K. HALAI (+255 715 268 391) — Co-Founder &amp; MD</option>
                       <option value="255624265480">VIJESH K. HALAI (+255 624 265 480) — Co-Founder &amp; MD</option>
@@ -301,11 +342,11 @@ export const ContactPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-[#26130F] uppercase">Inquiry Topic</label>
+                  <label className="text-xs font-bold text-[#111113] uppercase">Inquiry Topic</label>
                   <select
                     value={inquirySubject}
                     onChange={(e) => setInquirySubject(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-[#FAF6F0] text-xs text-[#26130F] focus:outline-none cursor-pointer"
+                    className="w-full px-3.5 py-2.5 bg-[#F7F7F7] border border-[#E5E7EB] focus:border-[#DC2626] rounded-[2px] text-xs text-[#111113] focus:outline-none cursor-pointer"
                   >
                     <option value="B2B Wholesale Carton Pricing">B2B Wholesale Carton Pricing (5+ Boxes)</option>
                     <option value="School Syllabus Booklist Tender">School Syllabus Booklist Tender</option>
@@ -316,19 +357,19 @@ export const ContactPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-[#26130F] uppercase">Your Requirements / Order Details</label>
+                  <label className="text-xs font-bold text-[#111113] uppercase">Your Requirements / Order Details</label>
                   <textarea
                     rows={4}
                     value={inquiryMessage}
                     onChange={(e) => setInquiryMessage(e.target.value)}
                     placeholder="Specify required book types, quantities (e.g. 10 cartons of Q3 Counter Books, 5 cartons of 200p single line), and your delivery region..."
-                    className="w-full px-3.5 py-2.5 bg-[#FAF6F0] text-xs text-[#26130F] focus:outline-none"
+                    className="w-full px-3.5 py-2.5 bg-[#F7F7F7] border border-[#E5E7EB] focus:border-[#DC2626] rounded-[2px] text-xs text-[#111113] focus:outline-none"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full py-3.5 px-6 bg-[#9E3618] hover:bg-[#6B140B] text-white text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer min-h-[46px]"
+                  className="w-full py-3.5 px-6 bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-bold uppercase tracking-[0.14em] rounded-[2px] flex items-center justify-center gap-2 transition-colors cursor-pointer min-h-[46px]"
                 >
                   <Send className="w-4 h-4 text-white" />
                   <span>{language === 'sw' ? 'Tuma Kupitia WhatsApp' : 'Send Quotation Request via WhatsApp'}</span>
@@ -339,58 +380,58 @@ export const ContactPage: React.FC = () => {
 
             {/* Right: Depot Locations */}
             <div className="lg:col-span-5 space-y-6">
-              <div className="p-6 bg-white space-y-3 shadow-xs">
-                <div className="flex items-center gap-2 text-[#9E3618]">
-                  <Building2 className="w-5 h-5 text-[#9E3618]" />
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#9E3618]">
+              <div className="p-6 bg-white border border-[#EEEEEE] space-y-3">
+                <div className="flex items-center gap-2 text-[#DC2626]">
+                  <Building2 className="w-5 h-5 text-[#DC2626]" />
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#DC2626]">
                     MAIN WORKS &amp; CENTRAL STOO
                   </span>
                 </div>
-                <h3 className="font-heading font-bold text-lg text-[#26130F]">
+                <h3 className="font-bold text-lg text-[#111113]">
                   Soweto SIDO Industrial Estate
                 </h3>
-                <p className="text-xs text-[#7D685E] flex items-center gap-1.5">
-                  <MapPin className="w-4 h-4 text-[#9E3618] shrink-0" />
+                <p className="text-xs text-[#77767B] flex items-center gap-1.5">
+                  <MapPin className="w-4 h-4 text-[#DC2626] shrink-0" />
                   <span>Mbeya City, Southern Highlands, Tanzania</span>
                 </p>
-                <p className="text-xs text-[#7D685E] leading-relaxed">
+                <p className="text-xs text-[#77767B] leading-relaxed">
                   Direct factory pickup for schools and wholesalers in Mbeya, Songwe, Iringa, Ruvuma, and Rukwa.
                 </p>
-                <div className="pt-2 text-[11px] font-mono text-[#26130F] flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-[#9E3618]" />
+                <div className="pt-2 text-[11px] font-mono text-[#111113] flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-[#DC2626]" />
                   <span>Mon – Sat: 08:00 – 17:30 EAT</span>
                 </div>
               </div>
 
-              <div className="p-6 bg-white space-y-3 shadow-xs">
-                <div className="flex items-center gap-2 text-[#9E3618]">
-                  <Truck className="w-5 h-5 text-[#9E3618]" />
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#9E3618]">
+              <div className="p-6 bg-white border border-[#EEEEEE] space-y-3">
+                <div className="flex items-center gap-2 text-[#DC2626]">
+                  <Truck className="w-5 h-5 text-[#DC2626]" />
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#DC2626]">
                     DISPATCH &amp; COMMERCIAL DEPOT
                   </span>
                 </div>
-                <h3 className="font-heading font-bold text-lg text-[#26130F]">
+                <h3 className="font-bold text-lg text-[#111113]">
                   Kariakoo Commercial District
                 </h3>
-                <p className="text-xs text-[#7D685E] flex items-center gap-1.5">
-                  <MapPin className="w-4 h-4 text-[#9E3618] shrink-0" />
+                <p className="text-xs text-[#77767B] flex items-center gap-1.5">
+                  <MapPin className="w-4 h-4 text-[#DC2626] shrink-0" />
                   <span>Dar es Salaam, Coastal Region, Tanzania</span>
                 </p>
-                <p className="text-xs text-[#7D685E] leading-relaxed">
+                <p className="text-xs text-[#77767B] leading-relaxed">
                   Hub for daily bus parcel drop-offs to all upcountry routes via Magufuli Bus Terminal &amp; Kariakoo courier depots.
                 </p>
-                <div className="pt-2 text-[11px] font-mono text-[#26130F] flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-[#9E3618]" />
+                <div className="pt-2 text-[11px] font-mono text-[#111113] flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-[#DC2626]" />
                   <span>Mon – Sat: 08:00 – 18:00 EAT</span>
                 </div>
               </div>
 
-              <div className="p-5 bg-[#6B140B] text-white space-y-2">
-                <div className="flex items-center gap-2 text-[#E9A858]">
+              <div className="p-5 bg-[#141416] text-white space-y-2 border-l-4 border-[#DC2626]">
+                <div className="flex items-center gap-2 text-[#DC2626]">
                   <Package className="w-4 h-4" />
-                  <span className="text-xs font-bold uppercase">Bus Parcel Packaging Protocol</span>
+                  <span className="text-xs font-bold uppercase tracking-wider">Bus Parcel Packaging Protocol</span>
                 </div>
-                <p className="text-xs text-white/90 leading-relaxed">
+                <p className="text-xs text-white/80 leading-relaxed">
                   Every carton is double-strapped with waterproof tape and marked with clear consignee name, destination town, and phone number before bus terminal drop-off.
                 </p>
               </div>
@@ -399,14 +440,14 @@ export const ContactPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 4. Frequently Asked Questions */}
-      <section className="py-14 lg:py-20 bg-white">
+      {/* 5. Frequently Asked Questions */}
+      <section className="py-16 lg:py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-left">
           <div className="text-center space-y-2">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#9E3618] font-heading block">
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#DC2626] block">
               HELP &amp; INQUIRIES
             </span>
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#26130F]">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-[#111113]">
               {language === 'sw' ? 'Maswali Yanayoulizwa Mara kwa Mara' : 'Frequently Asked Questions'}
             </h2>
           </div>
@@ -415,22 +456,22 @@ export const ContactPage: React.FC = () => {
             {faqs.map((faq, idx) => (
               <div
                 key={idx}
-                className="bg-[#FAF6F0] shadow-xs overflow-hidden"
+                className="bg-[#F7F7F7] border border-[#EEEEEE] overflow-hidden"
               >
                 <button
                   type="button"
                   onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                  className="w-full px-5 py-4 text-left font-heading font-bold text-sm text-[#26130F] flex items-center justify-between gap-4 hover:text-[#9E3618] transition-colors cursor-pointer"
+                  className="w-full px-5 py-4 text-left font-bold text-sm text-[#111113] flex items-center justify-between gap-4 hover:text-[#DC2626] transition-colors cursor-pointer"
                 >
                   <span>{faq.q}</span>
                   <ChevronDown
-                    className={`w-4 h-4 text-[#9E3618] shrink-0 transition-transform duration-200 ${
+                    className={`w-4 h-4 text-[#DC2626] shrink-0 transition-transform duration-200 ${
                       openFaq === idx ? 'rotate-180' : ''
                     }`}
                   />
                 </button>
                 {openFaq === idx && (
-                  <div className="px-5 pb-5 pt-1 text-xs text-[#7D685E] leading-relaxed border-t border-[#D8C3A5]/40">
+                  <div className="px-5 pb-5 pt-2 text-xs text-[#77767B] leading-relaxed border-t border-[#EEEEEE] bg-white">
                     {faq.a}
                   </div>
                 )}

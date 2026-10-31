@@ -9,7 +9,7 @@ import { CatalogToolbar, SortOption, ViewMode } from '../components/CatalogToolb
 import { CatalogProductList } from '../components/CatalogProductList';
 
 export const CatalogPage: React.FC = () => {
-  const { products, language, storeConfig, addToCart } = useStore();
+  const { products, language, storeConfig, addToCart, isCatalogLoading } = useStore();
   const [searchParams, setSearchParams] = useSearchParams();
   const currency = storeConfig.currencySymbol || 'TSh';
   const cleanWhatsappDigits = storeConfig.whatsappNumber.replace(/\D/g, '');
@@ -36,6 +36,7 @@ export const CatalogPage: React.FC = () => {
   const [bestsellerOnly, setBestsellerOnly] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState<boolean>(false);
+  const [isFilterTransitioning, setIsFilterTransitioning] = useState<boolean>(false);
 
   // Pagination
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -88,20 +89,26 @@ export const CatalogPage: React.FC = () => {
     { id: '32', label: '32 Pages Exercise' },
   ];
 
-  // Reset page when filter changes
+  // Reset page and show brief tactile skeleton pulse when filter changes
   useEffect(() => {
     setCurrentPage(1);
+    setIsFilterTransitioning(true);
+    const timer = setTimeout(() => setIsFilterTransitioning(false), 260);
+    return () => clearTimeout(timer);
   }, [
     selectedCategory,
     selectedQuire,
     selectedRuling,
     selectedBinding,
     appliedPriceRange,
-    searchQuery,
     sortBy,
     inStockOnly,
     bestsellerOnly,
   ]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
 
   // Sync with URL params
   useEffect(() => {
@@ -269,7 +276,7 @@ export const CatalogPage: React.FC = () => {
   }, [filteredProducts, currentPage, ITEMS_PER_PAGE]);
 
   return (
-    <div className="bg-[#F9F8F6] min-h-screen text-[#111113] pb-20">
+    <div className="bg-paper-base min-h-screen text-charcoal-ink pb-20">
       <SEOHead
         title="Official Catalog — OMEGA Tanzania Counter Books & Stationery"
         description="Browse all genuine OMEGA Counter Books, Exercise Books, and heavy kraft bahasha manufactured in Soweto SIDO, Mbeya."
@@ -348,6 +355,7 @@ export const CatalogPage: React.FC = () => {
               language={language}
               onAddToCart={addToCart}
               onResetFilters={handleResetFilters}
+              isLoading={isCatalogLoading || isFilterTransitioning}
             />
           </main>
         </div>

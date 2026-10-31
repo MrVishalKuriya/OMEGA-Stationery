@@ -56,38 +56,38 @@ export const AccountPage: React.FC = () => {
 
   if (!currentUser) {
     return (
-      <div className="min-h-[75vh] flex items-center justify-center py-16 px-4 bg-[#fafafa]">
+      <div className="min-h-[75vh] flex items-center justify-center py-16 px-4 bg-[#F7F7F7]">
         <SEOHead
           title="Account Portal | OMEGA Stationery & Books"
           description="Sign in or register to access your OMEGA member account, order history and wholesale pricing."
         />
-        <div className="max-w-md w-full bg-white rounded-[16px] border border-[#e4e4e7] shadow-boutique p-8 text-center space-y-6">
-          <div className="w-16 h-16 rounded-full bg-[#fafafa] border border-[#e4e4e7] text-[#0f172a] flex items-center justify-center mx-auto shadow-xs">
+        <div className="max-w-md w-full bg-white rounded-[2px] border border-[#EEEEEE] p-8 text-center space-y-6">
+          <div className="w-16 h-16 rounded-[2px] bg-[#F7F7F7] border border-[#EEEEEE] text-[#111113] flex items-center justify-center mx-auto">
             <User className="w-8 h-8" />
           </div>
           <div>
-            <h1 className="text-2xl font-serif font-bold text-[#0f172a]">
+            <h1 className="text-2xl font-extrabold text-[#111113]">
               Sign In to Your Account
             </h1>
-            <p className="text-xs text-[#6B7280] mt-2">
+            <p className="text-xs text-[#77767B] mt-2">
               Sign in to view your real-time order history, download business VAT receipts, and manage institutional quotas.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-3 pt-2">
             <Link
               to="/login"
-              className="py-3 px-4 rounded-[8px] bg-[#dc2626] hover:bg-[#b91c1c] text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs"
+              className="py-3 px-4 rounded-[2px] bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5"
             >
               Sign In
             </Link>
             <Link
               to="/register"
-              className="py-3 px-4 rounded-[8px] bg-white border border-[#e4e4e7] hover:bg-[#fafafa] font-bold text-xs text-[#0f172a] flex items-center justify-center gap-1.5"
+              className="py-3 px-4 rounded-[2px] bg-white border border-[#E5E7EB] hover:bg-[#F7F7F7] font-bold text-xs uppercase tracking-wider text-[#111113] flex items-center justify-center gap-1.5"
             >
               Register
             </Link>
           </div>
-          <div className="text-[11px] text-[#6B7280] pt-2 border-t border-[#e4e4e7]">
+          <div className="text-[11px] text-[#77767B] pt-2 border-t border-[#EEEEEE]">
             Fast 1-click test login available for Wholesale (Mussa Juma) &amp; School (Dar Academy).
           </div>
         </div>
@@ -110,7 +110,7 @@ export const AccountPage: React.FC = () => {
       : 'Standard Retail Pricing';
 
   return (
-    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 bg-[#fafafa]">
+    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 bg-[#F7F7F7]">
       <SEOHead
         title={`${currentUser.name} | Account Profile | OMEGA Stationery`}
         description="Manage your OMEGA account, real-time orders, and procurement discounts."
@@ -118,31 +118,37 @@ export const AccountPage: React.FC = () => {
 
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Profile Hero Header Card */}
-        <div className="bg-white rounded-[16px] border border-[#e4e4e7] shadow-boutique overflow-hidden">
-          <div className="bg-[#dc2626] text-white p-6 sm:p-8">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+        <div className="bg-white rounded-[2px] border border-[#EEEEEE] overflow-hidden">
+          <div className="relative overflow-hidden bg-[#1B1B1E] text-white p-6 sm:p-8 border-b-4 border-[#DC2626]">
+            <div
+              className="absolute inset-0 bg-cover bg-center opacity-75 brightness-110 contrast-105 pointer-events-none"
+              style={{ backgroundImage: `url('/hero-desk-bg.jpg')` }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#111113]/65 via-[#111113]/45 to-[#111113]/20 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-[#F9F8F6]/15 to-white/25 mix-blend-soft-light pointer-events-none" />
+            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
               <div className="flex items-center gap-4 sm:gap-5">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white text-[#0f172a] font-bold text-xl sm:text-2xl flex items-center justify-center font-mono shrink-0 shadow-md ring-4 ring-white/10">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[2px] bg-[#DC2626] text-white font-bold text-xl sm:text-2xl flex items-center justify-center font-mono shrink-0">
                   {currentUser.initials}
                 </div>
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h1 className="text-xl sm:text-2xl font-serif font-bold text-white">
+                    <h1 className="text-xl sm:text-2xl font-extrabold text-white">
                       {currentUser.name}
                     </h1>
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#dc2626] text-white">
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-[2px] text-[11px] font-bold bg-[#DC2626] text-white">
                       <ShieldCheck className="w-3.5 h-3.5" />
                       {tierName}
                     </span>
                   </div>
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-stone-300 mt-1 font-mono">
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-white/85 mt-1 font-mono">
                     <span className="flex items-center gap-1">
-                      <Mail className="w-3.5 h-3.5 text-[#dc2626]" />
+                      <Mail className="w-3.5 h-3.5 text-[#DC2626]" />
                       {currentUser.email}
                     </span>
                     {currentUser.phone && (
                       <span className="flex items-center gap-1">
-                        <Phone className="w-3.5 h-3.5 text-[#dc2626]" />
+                        <Phone className="w-3.5 h-3.5 text-[#DC2626]" />
                         {currentUser.phone}
                       </span>
                     )}
@@ -155,7 +161,7 @@ export const AccountPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="px-4 py-2.5 rounded-[8px] bg-white/10 hover:bg-red-600/30 text-white hover:text-red-200 border border-white/20 text-xs font-bold flex items-center gap-2 transition-colors"
+                  className="px-4 py-2.5 rounded-[2px] bg-white/15 hover:bg-[#DC2626] text-white border border-white/25 backdrop-blur-xs text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer"
                 >
                   <LogOut className="w-4 h-4" />
                   <span>Log Out</span>
@@ -164,41 +170,41 @@ export const AccountPage: React.FC = () => {
             </div>
 
             {/* Quick Stats Strip */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-white/10 text-xs">
-              <div className="p-2.5 rounded-[8px] bg-white/5 border border-white/10">
-                <div className="text-stone-300 text-[10px] uppercase font-mono">Orders Placed</div>
-                <div className="text-lg font-bold font-mono text-[#dc2626] mt-0.5">{demoOrders.length}</div>
+            <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-white/15 text-xs">
+              <div className="p-2.5 rounded-[2px] bg-black/35 backdrop-blur-xs border border-white/15">
+                <div className="text-white/75 text-[10px] uppercase font-mono">Orders Placed</div>
+                <div className="text-lg font-bold font-mono text-[#DC2626] mt-0.5">{demoOrders.length}</div>
               </div>
-              <div className="p-2.5 rounded-[8px] bg-white/5 border border-white/10">
-                <div className="text-stone-300 text-[10px] uppercase font-mono">Active Tier</div>
+              <div className="p-2.5 rounded-[2px] bg-black/35 backdrop-blur-xs border border-white/15">
+                <div className="text-white/75 text-[10px] uppercase font-mono">Active Tier</div>
                 <div className="text-xs font-bold text-white mt-1 truncate">{discountRate}</div>
               </div>
-              <div className="p-2.5 rounded-[8px] bg-white/5 border border-white/10">
-                <div className="text-stone-300 text-[10px] uppercase font-mono">Session State</div>
-                <div className="text-xs font-bold text-emerald-300 mt-1 flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  30-Day Cookie
+              <div className="p-2.5 rounded-[2px] bg-black/35 backdrop-blur-xs border border-white/15">
+                <div className="text-white/75 text-[10px] uppercase font-mono">Session State</div>
+                <div className="text-xs font-bold text-emerald-400 mt-1 flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                  Active Session
                 </div>
               </div>
-              <div className="p-2.5 rounded-[8px] bg-white/5 border border-white/10">
-                <div className="text-stone-300 text-[10px] uppercase font-mono">Backend Database</div>
+              <div className="p-2.5 rounded-[2px] bg-black/35 backdrop-blur-xs border border-white/15">
+                <div className="text-white/75 text-[10px] uppercase font-mono">Account Status</div>
                 <div className="text-xs font-bold text-white mt-1 flex items-center gap-1">
-                  <Database className="w-3.5 h-3.5 text-[#dc2626]" />
-                  <span>{isBackendOnline ? 'MongoDB Atlas' : 'Local Storage DB'}</span>
+                  <Database className="w-3.5 h-3.5 text-[#DC2626]" />
+                  <span>Verified B2B</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Navigation Tabs */}
-          <div className="flex border-b border-[#e4e4e7] overflow-x-auto bg-[#fafafa] px-4">
+          <div className="flex border-b border-[#EEEEEE] overflow-x-auto bg-[#FFFFFF] px-4">
             <button
               type="button"
               onClick={() => handleTabChange('orders')}
-              className={`py-3.5 px-4 font-bold text-xs flex items-center gap-2 border-b-2 whitespace-nowrap transition-colors ${
+              className={`py-3.5 px-4 font-bold text-xs uppercase tracking-wider flex items-center gap-2 border-b-2 whitespace-nowrap transition-colors cursor-pointer ${
                 activeTab === 'orders'
-                  ? 'border-[#dc2626] text-[#0f172a]'
-                  : 'border-transparent text-[#6B7280] hover:text-[#0f172a]'
+                  ? 'border-[#DC2626] text-[#111113]'
+                  : 'border-transparent text-[#77767B] hover:text-[#111113]'
               }`}
             >
               <Package className="w-4 h-4" />
@@ -208,10 +214,10 @@ export const AccountPage: React.FC = () => {
             <button
               type="button"
               onClick={() => handleTabChange('profile')}
-              className={`py-3.5 px-4 font-bold text-xs flex items-center gap-2 border-b-2 whitespace-nowrap transition-colors ${
+              className={`py-3.5 px-4 font-bold text-xs uppercase tracking-wider flex items-center gap-2 border-b-2 whitespace-nowrap transition-colors cursor-pointer ${
                 activeTab === 'profile'
-                  ? 'border-[#dc2626] text-[#0f172a]'
-                  : 'border-transparent text-[#6B7280] hover:text-[#0f172a]'
+                  ? 'border-[#DC2626] text-[#111113]'
+                  : 'border-transparent text-[#77767B] hover:text-[#111113]'
               }`}
             >
               <User className="w-4 h-4" />
@@ -221,10 +227,10 @@ export const AccountPage: React.FC = () => {
             <button
               type="button"
               onClick={() => handleTabChange('tier')}
-              className={`py-3.5 px-4 font-bold text-xs flex items-center gap-2 border-b-2 whitespace-nowrap transition-colors ${
+              className={`py-3.5 px-4 font-bold text-xs uppercase tracking-wider flex items-center gap-2 border-b-2 whitespace-nowrap transition-colors cursor-pointer ${
                 activeTab === 'tier'
-                  ? 'border-[#dc2626] text-[#0f172a]'
-                  : 'border-transparent text-[#6B7280] hover:text-[#0f172a]'
+                  ? 'border-[#DC2626] text-[#111113]'
+                  : 'border-transparent text-[#77767B] hover:text-[#111113]'
               }`}
             >
               <Building2 className="w-4 h-4" />
@@ -234,14 +240,14 @@ export const AccountPage: React.FC = () => {
             <button
               type="button"
               onClick={() => handleTabChange('security')}
-              className={`py-3.5 px-4 font-bold text-xs flex items-center gap-2 border-b-2 whitespace-nowrap transition-colors ${
+              className={`py-3.5 px-4 font-bold text-xs uppercase tracking-wider flex items-center gap-2 border-b-2 whitespace-nowrap transition-colors cursor-pointer ${
                 activeTab === 'security'
-                  ? 'border-[#dc2626] text-[#0f172a]'
-                  : 'border-transparent text-[#6B7280] hover:text-[#0f172a]'
+                  ? 'border-[#DC2626] text-[#111113]'
+                  : 'border-transparent text-[#77767B] hover:text-[#111113]'
               }`}
             >
               <Key className="w-4 h-4" />
-              <span>Security &amp; Backend Sync</span>
+              <span>Security &amp; Preferences</span>
             </button>
           </div>
         </div>

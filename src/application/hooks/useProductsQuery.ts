@@ -8,9 +8,28 @@ import {
   updateProductPriceInDb,
   updateProductStockInDb,
   deleteProductFromDb,
+  resolveImageUrl,
 } from '@/services/api';
 
 const PRODUCTS_QUERY_KEY = ['products'];
+
+function deduplicateProducts(list: Product[]): Product[] {
+  if (!Array.isArray(list)) return [];
+  const seen = new Set<string>();
+  const result: Product[] = [];
+  for (const p of list) {
+    if (!p || !p.id || seen.has(p.id)) continue;
+    seen.add(p.id);
+    result.push({
+      ...p,
+      image: resolveImageUrl(p.image, p.id),
+      gallery: Array.isArray(p.gallery)
+        ? p.gallery.map((g) => resolveImageUrl(g, p.id))
+        : p.gallery,
+    });
+  }
+  return result;
+}
 
 export const useProductsQuery = () => {
   const queryClient = useQueryClient();
@@ -20,17 +39,18 @@ export const useProductsQuery = () => {
     queryFn: async () => {
       const res = await fetchLiveProducts({ forceRefresh: true });
       if (res && res.length > 0) {
+        const unique = deduplicateProducts(res);
         try {
-          localStorage.setItem('omega_products_v2', JSON.stringify(res));
+          localStorage.setItem('omega_products_v2', JSON.stringify(unique));
         } catch {}
-        return res;
+        return unique;
       }
-      return INITIAL_PRODUCTS;
+      return deduplicateProducts(INITIAL_PRODUCTS);
     },
     placeholderData: () => {
       try {
         const saved = localStorage.getItem('omega_products_v2');
-        if (saved) return JSON.parse(saved);
+        if (saved) return deduplicateProducts(JSON.parse(saved));
       } catch {}
       return undefined;
     },
@@ -228,7 +248,7 @@ export const useProductsQuery = () => {
 
   return {
     products: query.data || INITIAL_PRODUCTS,
-    isLoading: query.isLoading,
+    isLoading: query.isLoading || (!query.isFetchedAfterMount && query.isFetching),
     isFetching: query.isFetching,
     error: query.error,
     refetch: query.refetch,

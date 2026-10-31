@@ -14,14 +14,14 @@ import { createTheme, alpha } from '@mui/material/styles';
  * Vellum Highlight: #F2EFEB
  */
 export const DESIGN_TOKENS = {
-  charcoalInk: '#111113',
-  paperBase: '#F9F8F6',
+  charcoalInk: '#0F1115',
+  paperBase: '#F8F9FA',
   paperPure: '#FFFFFF',
-  waxSeal: '#DC2626',
-  leatherWarm: '#8C7355',
-  inkMuted: '#6E6B66',
-  borderHairline: '#E7E5E0',
-  vellumHighlight: '#F2EFEB',
+  waxSeal: '#B91C1C',
+  leatherWarm: '#B91C1C',
+  inkMuted: '#64748B',
+  borderHairline: '#E5E7EB',
+  vellumHighlight: '#F1F5F9',
   emeraldSuccess: '#16a34a',
 };
 
@@ -30,14 +30,14 @@ export const omegaMuiTheme = createTheme({
     mode: 'light',
     primary: {
       main: DESIGN_TOKENS.charcoalInk,
-      light: '#262524',
+      light: '#27272A',
       dark: '#000000',
       contrastText: '#FFFFFF',
     },
     secondary: {
       main: DESIGN_TOKENS.waxSeal,
-      light: '#EF4444',
-      dark: '#B91C1C',
+      light: '#DC2626',
+      dark: '#991B1B',
       contrastText: '#FFFFFF',
     },
     background: {

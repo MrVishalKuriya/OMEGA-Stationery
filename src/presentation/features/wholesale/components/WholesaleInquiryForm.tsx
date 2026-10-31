@@ -70,44 +70,48 @@ export const WholesaleInquiryForm: React.FC<WholesaleInquiryFormProps> = ({
   };
 
   return (
-    <section className="py-12 lg:py-16 bg-[#F9F8F6] border-b border-[#E7E5E0]" id="inquiry">
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 text-left">
+    <section className="py-16 lg:py-20 bg-paper-base text-charcoal-ink border-t border-b border-[#E7E5E0]" id="inquiry">
+      <div className="max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8 text-left">
         <div className="text-center space-y-2 mb-10">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#F2EFEB] text-[#8C7355] border border-[#8C7355]/30 text-xs font-bold font-mono uppercase tracking-wider shadow-2xs">
-            <Sparkles className="w-3 h-3 text-[#8C7355]" />
-            <span>DIRECT FACTORY PROFORMA DESK</span>
-          </div>
-          <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-[#111113] tracking-tight">
+          <span className="text-[11px] font-bold font-mono uppercase tracking-widest text-[#B91C1C] block">
+            DIRECT FACTORY PROFORMA DESK
+          </span>
+          <h2 className="font-heading text-2xl sm:text-3xl font-bold text-charcoal-ink tracking-tight">
             Request Official Wholesale Proforma Quote
           </h2>
-          <p className="text-xs sm:text-sm text-[#6E6B66] max-w-lg mx-auto">
+          <p className="text-xs sm:text-[13px] text-charcoal-ink max-w-lg mx-auto">
             Submit your school, institution, or commercial order. Our sales desk in Soweto SIDO issues stamped proformas within 4 business hours.
           </p>
+          <div className="flex justify-center pt-1">
+            <svg className="w-16 h-3 text-charcoal-ink" viewBox="0 0 60 8" fill="none">
+              <path d="M0 4 Q 5 0, 10 4 T 20 4 T 30 4 T 40 4 T 50 4 T 60 4" stroke="currentColor" strokeWidth="1.8" fill="none" />
+            </svg>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-[1360px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start max-w-[1180px] mx-auto">
           {/* Form Column */}
-          <div className="lg:col-span-7 bg-white rounded-lg p-6 sm:p-8 shadow-xs border border-[#E7E5E0]">
+          <div className="lg:col-span-7 bg-white rounded-[2px] p-6 sm:p-8 border border-[#E7E5E0]">
             {formSubmitted ? (
               <div className="text-center py-8 space-y-4">
-                <div className="w-16 h-16 rounded-full bg-[#0B0B0E] border border-[#D4AF37]/40 text-[#D4AF37] flex items-center justify-center mx-auto shadow-md">
-                  <CheckCircle2 className="w-9 h-9 text-[#D4AF37]" />
+                <div className="w-16 h-16 rounded-full bg-[#111113] text-[#DC2626] flex items-center justify-center mx-auto shadow-md">
+                  <CheckCircle2 className="w-9 h-9 text-[#DC2626]" />
                 </div>
-                <h3 className="font-heading text-2xl font-black text-[#0B0B0E]">
+                <h3 className="font-heading text-2xl font-black text-charcoal-ink">
                   Wholesale Inquiry Dispatched!
                 </h3>
-                <p className="text-xs sm:text-sm text-[#7D685E] max-w-md mx-auto">
+                <p className="text-xs sm:text-sm text-charcoal-ink max-w-md mx-auto">
                   Your reference number is{' '}
-                  <strong className="font-mono text-[#9E3618] font-black">{inquiryRefId}</strong>. A dedicated wholesale manager from our Soweto SIDO factory desk is reviewing your requirements.
+                  <strong className="font-mono text-[#B91C1C] font-black">{inquiryRefId}</strong>. A dedicated wholesale manager from our Soweto SIDO factory desk is reviewing your requirements.
                 </p>
 
                 <div className="flex items-center justify-center gap-2 pt-2">
                   <button
                     type="button"
                     onClick={copyInquiryRef}
-                    className="px-4 py-2 rounded-xl bg-[#FAF6F0] border border-[#D4AF37]/25 text-xs font-bold text-[#0B0B0E] inline-flex items-center gap-1.5 hover:bg-[#F3EDE2] cursor-pointer transition-colors"
+                    className="px-4 py-2 rounded-[2px] bg-paper-base border border-[#E7E5E0] text-xs font-bold text-charcoal-ink inline-flex items-center gap-1.5 hover:bg-neutral-200 cursor-pointer transition-colors"
                   >
-                    {copiedRef ? <Check className="w-3.5 h-3.5 text-[#9E3618]" /> : <Copy className="w-3.5 h-3.5 text-[#9E3618]" />}
+                    {copiedRef ? <Check className="w-3.5 h-3.5 text-[#DC2626]" /> : <Copy className="w-3.5 h-3.5 text-[#DC2626]" />}
                     <span>{copiedRef ? 'Copied Ref!' : 'Copy Reference ID'}</span>
                   </button>
                 </div>
@@ -117,7 +121,7 @@ export const WholesaleInquiryForm: React.FC<WholesaleInquiryFormProps> = ({
                     href={getFormWhatsappUrl()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-6 py-3.5 rounded-xl bg-[#9E3618] hover:bg-[#6B140B] text-white text-xs font-bold uppercase tracking-wider inline-flex items-center gap-2 shadow-sm hover:shadow-md transition-all"
+                    className="px-6 py-3.5 rounded-[2px] bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-bold uppercase tracking-wider inline-flex items-center gap-2 shadow-xs transition-all"
                   >
                     <MessageCircle className="w-4 h-4 fill-white" />
                     <span>Send to Factory on WhatsApp</span>
@@ -138,7 +142,7 @@ export const WholesaleInquiryForm: React.FC<WholesaleInquiryFormProps> = ({
                         notes: '',
                       });
                     }}
-                    className="px-6 py-3.5 rounded-xl bg-[#0B0B0E] text-xs font-bold text-[#D4AF37] border border-[#D4AF37]/35 hover:bg-black transition-colors cursor-pointer"
+                    className="px-6 py-3.5 rounded-[2px] bg-[#111113] text-xs font-bold text-white hover:bg-black transition-colors cursor-pointer"
                   >
                     New Inquiry
                   </button>
@@ -148,7 +152,7 @@ export const WholesaleInquiryForm: React.FC<WholesaleInquiryFormProps> = ({
               <form onSubmit={handleFormSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-[#0B0B0E] uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-charcoal-ink uppercase tracking-wider mb-1.5">
                       Business or School Name *
                     </label>
                     <input
@@ -157,12 +161,12 @@ export const WholesaleInquiryForm: React.FC<WholesaleInquiryFormProps> = ({
                       value={formData.businessName}
                       onChange={(e) => setFormData({ ...formData, businessName: e.target.value })}
                       placeholder="e.g. Mbeya Day Secondary School"
-                      className="w-full px-4 py-2.5 rounded-xl border border-[#D4AF37]/20 text-xs bg-[#FAF6F0] text-[#0B0B0E] focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/40"
+                      className="w-full px-4 py-2.5 rounded-[2px] border border-[#E7E5E0] text-xs bg-paper-base text-charcoal-ink placeholder:text-[#3F3F46] focus:outline-none focus:border-[#DC2626]"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-[#0B0B0E] uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-charcoal-ink uppercase tracking-wider mb-1.5">
                       Contact Person *
                     </label>
                     <input
@@ -171,14 +175,14 @@ export const WholesaleInquiryForm: React.FC<WholesaleInquiryFormProps> = ({
                       value={formData.contactPerson}
                       onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
                       placeholder="Full Name / Headmaster / Manager"
-                      className="w-full px-4 py-2.5 rounded-xl border border-[#D4AF37]/20 text-xs bg-[#FAF6F0] text-[#0B0B0E] focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/40"
+                      className="w-full px-4 py-2.5 rounded-[2px] border border-[#E7E5E0] text-xs bg-paper-base text-charcoal-ink placeholder:text-[#3F3F46] focus:outline-none focus:border-[#DC2626]"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-[#0B0B0E] uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-charcoal-ink uppercase tracking-wider mb-1.5">
                       WhatsApp / Phone Number *
                     </label>
                     <input
@@ -187,12 +191,12 @@ export const WholesaleInquiryForm: React.FC<WholesaleInquiryFormProps> = ({
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="e.g. 0715 268 391"
-                      className="w-full px-4 py-2.5 rounded-xl border border-[#D4AF37]/20 text-xs bg-[#FAF6F0] text-[#0B0B0E] focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/40"
+                      className="w-full px-4 py-2.5 rounded-[2px] border border-[#E7E5E0] text-xs bg-paper-base text-charcoal-ink placeholder:text-[#3F3F46] focus:outline-none focus:border-[#DC2626]"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-[#0B0B0E] uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-charcoal-ink uppercase tracking-wider mb-1.5">
                       Delivery Town / Region *
                     </label>
                     <input
@@ -201,20 +205,20 @@ export const WholesaleInquiryForm: React.FC<WholesaleInquiryFormProps> = ({
                       value={formData.city}
                       onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                       placeholder="e.g. Mwanza, Arusha, Dodoma"
-                      className="w-full px-4 py-2.5 rounded-xl border border-[#D4AF37]/20 text-xs bg-[#FAF6F0] text-[#0B0B0E] focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/40"
+                      className="w-full px-4 py-2.5 rounded-[2px] border border-[#E7E5E0] text-xs bg-paper-base text-charcoal-ink placeholder:text-[#3F3F46] focus:outline-none focus:border-[#DC2626]"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-[#0B0B0E] uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-charcoal-ink uppercase tracking-wider mb-1.5">
                       Primary Stationery Required
                     </label>
                     <select
                       value={formData.productType}
                       onChange={(e) => setFormData({ ...formData, productType: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-[#D4AF37]/20 text-xs bg-[#FAF6F0] text-[#0B0B0E] focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/40 cursor-pointer"
+                      className="w-full px-4 py-2.5 rounded-[2px] border border-[#E7E5E0] text-xs bg-paper-base text-charcoal-ink focus:outline-none focus:border-[#DC2626] cursor-pointer"
                     >
                       <option>Counter Books (Q1, Q2, Q3, Q4)</option>
                       <option>Exercise Books (80p, 100p, 200p)</option>
@@ -225,13 +229,13 @@ export const WholesaleInquiryForm: React.FC<WholesaleInquiryFormProps> = ({
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-[#0B0B0E] uppercase tracking-wider mb-1.5">
+                    <label className="block text-xs font-bold text-charcoal-ink uppercase tracking-wider mb-1.5">
                       Target Volume Range
                     </label>
                     <select
                       value={formData.quantityRange}
                       onChange={(e) => setFormData({ ...formData, quantityRange: e.target.value })}
-                      className="w-full px-4 py-2.5 rounded-xl border border-[#D4AF37]/20 text-xs bg-[#FAF6F0] text-[#0B0B0E] focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/40 cursor-pointer"
+                      className="w-full px-4 py-2.5 rounded-[2px] border border-[#E7E5E0] text-xs bg-paper-base text-charcoal-ink focus:outline-none focus:border-[#DC2626] cursor-pointer"
                     >
                       <option>5 — 19 Cartons (20% OFF)</option>
                       <option>20 — 49 Cartons (30% OFF - Most Popular)</option>
@@ -242,7 +246,7 @@ export const WholesaleInquiryForm: React.FC<WholesaleInquiryFormProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-[#0B0B0E] uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-charcoal-ink uppercase tracking-wider mb-1.5">
                     Special Requirements / Delivery Deadlines
                   </label>
                   <textarea
@@ -250,14 +254,14 @@ export const WholesaleInquiryForm: React.FC<WholesaleInquiryFormProps> = ({
                     value={formData.notes}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                     placeholder="Custom school logo stamping, preferred bus parcel agency (Tahmeed, Shabiby, Abood), required delivery date, etc."
-                    className="w-full px-4 py-2.5 rounded-xl border border-[#D4AF37]/20 text-xs bg-[#FAF6F0] text-[#0B0B0E] focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/40"
+                    className="w-full px-4 py-2.5 rounded-[2px] border border-[#E7E5E0] text-xs bg-paper-base text-charcoal-ink placeholder:text-[#3F3F46] focus:outline-none focus:border-[#DC2626]"
                   />
                 </div>
 
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full py-3.5 rounded-xl bg-[#9E3618] hover:bg-[#6B140B] text-white font-mono font-bold text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm hover:shadow-md transition-all cursor-pointer min-h-[46px]"
+                    className="w-full py-3.5 rounded-[2px] bg-[#DC2626] hover:bg-[#B91C1C] text-white font-sans font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer"
                   >
                     <span>Submit Proforma Request →</span>
                   </button>
@@ -268,43 +272,43 @@ export const WholesaleInquiryForm: React.FC<WholesaleInquiryFormProps> = ({
 
           {/* Guarantee Card */}
           <div className="lg:col-span-5 space-y-4">
-            <div className="bg-white rounded-3xl text-[#0B0B0E] p-6 sm:p-8 shadow-xs border border-[#D4AF37]/25 space-y-4">
-              <div className="flex items-center gap-2 pb-3 border-b border-[#FAF6F0]">
-                <ShieldCheck className="w-5 h-5 text-[#9E3618]" />
-                <h4 className="font-heading text-sm font-black text-[#0B0B0E] uppercase tracking-wider">
+            <div className="bg-white rounded-[2px] text-charcoal-ink p-6 sm:p-8 border border-[#E7E5E0] space-y-4">
+              <div className="flex items-center gap-2 pb-3 border-b border-[#E7E5E0]">
+                <ShieldCheck className="w-5 h-5 text-[#DC2626]" />
+                <h4 className="font-heading text-sm font-black text-charcoal-ink uppercase tracking-wider">
                   Factory Procurement Guarantees
                 </h4>
               </div>
 
-              <ul className="space-y-3.5 text-xs text-[#52423A]">
+              <ul className="space-y-3.5 text-xs text-charcoal-ink">
                 <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#9E3618] shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-[#DC2626] shrink-0 mt-0.5" />
                   <span>
-                    <strong className="text-[#0B0B0E]">EFD Fiscal Receipt:</strong> Every wholesale consignment includes a genuine TRA electronic fiscal receipt.
+                    <strong className="text-charcoal-ink">EFD Fiscal Receipt:</strong> Every wholesale consignment includes a genuine TRA electronic fiscal receipt.
                   </span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#9E3618] shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-[#DC2626] shrink-0 mt-0.5" />
                   <span>
-                    <strong className="text-[#0B0B0E]">Tamper-Proof Strapping:</strong> High-tensile plastic band strapping and waterproof inner lining.
+                    <strong className="text-charcoal-ink">Tamper-Proof Strapping:</strong> High-tensile plastic band strapping and waterproof inner lining.
                   </span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#9E3618] shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-[#DC2626] shrink-0 mt-0.5" />
                   <span>
-                    <strong className="text-[#0B0B0E]">Bus Waybill Terminal:</strong> Same-day dispatch to regional bus terminals in Mbeya with live waybill tracking.
+                    <strong className="text-charcoal-ink">Bus Waybill Terminal:</strong> Same-day dispatch to regional bus terminals in Mbeya with live waybill tracking.
                   </span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#9E3618] shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-[#DC2626] shrink-0 mt-0.5" />
                   <span>
-                    <strong className="text-[#0B0B0E]">Standard NECTA Ruling:</strong> Bleed-proof 70 GSM archival bond paper guaranteed across all books.
+                    <strong className="text-charcoal-ink">Standard NECTA Ruling:</strong> Bleed-proof 70 GSM archival bond paper guaranteed across all books.
                   </span>
                 </li>
               </ul>
 
-              <div className="pt-3 border-t border-[#FAF6F0] flex items-center gap-2 text-xs text-[#9E3618] font-semibold">
-                <Clock className="w-4 h-4 text-[#9E3618]" />
+              <div className="pt-3 border-t border-[#E7E5E0] flex items-center gap-2 text-xs text-[#B91C1C] font-semibold">
+                <Clock className="w-4 h-4 text-[#B91C1C]" />
                 <span>Response Time: Stamped proforma in &lt; 4 hours</span>
               </div>
             </div>

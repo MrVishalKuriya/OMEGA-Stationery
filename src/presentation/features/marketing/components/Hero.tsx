@@ -204,70 +204,73 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
   const activeItem = SLIDE_ITEMS[currentSlide];
 
   return (
-    <section className="w-full bg-[#F9F8F6] text-[#111113] pt-6 sm:pt-10 pb-10 sm:pb-14 border-b border-[#E7E5E0]">
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
+    <section className="relative w-full bg-[#1B1B1E] text-white py-14 sm:py-20 lg:py-24 overflow-hidden">
+      {/* Photographic Atmospheric Backdrop with Reduced Dark Filter & Warm Light Filter */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center opacity-75 brightness-110 contrast-105 pointer-events-none"
+        style={{ backgroundImage: 'url(/hero-desk-bg.jpg)' }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#111113]/75 via-[#111113]/50 to-[#111113]/20 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-[#F9F8F6]/15 to-white/25 mix-blend-soft-light pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_30%,rgba(255,255,255,0.22),transparent_65%)] pointer-events-none" />
+
+      <div className="relative z-10 max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* ================= 1. SPLIT HERO: LEFT TEXT + RIGHT BG & PNG BOOKS SLIDER ================= */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+        {/* ================= SPLIT HERO: LEFT TEXT + RIGHT OMEGA BOOKS SLIDER ================= */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
           
           {/* LEFT COLUMN: BRAND PROMISE & ACTIONS (7 cols) */}
           <div className="lg:col-span-7 space-y-5 text-left">
             
-            {/* Origin Hallmark Badge (DESIGN.md: Charcoal Ink & Vellum) */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111113] text-[#FFFFFF] text-[11px] font-mono font-semibold shadow-2xs tracking-wide">
-              <Sparkles className="w-3.5 h-3.5 text-[#8C7355]" />
+            {/* Origin Hallmark Badge */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[2px] bg-[#111113]/70 backdrop-blur-xs text-[#FFFFFF] text-[10px] font-mono font-semibold tracking-wider border border-white/25">
+              <Sparkles className="w-3.5 h-3.5 text-[#DC2626]" />
               <span>SOWETO SIDO INDUSTRIAL ESTATE, MBEYA · EST. 1998</span>
             </div>
 
-            {/* Grand Headline (Bodoni Moda / Editorial serif contrast) */}
-            <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-[50px] font-semibold text-[#111113] leading-[1.12] tracking-tight">
+            {/* Grand Headline (Matching reference image: "Better Design Experiences") */}
+            <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-[62px] font-black text-white leading-[1.08] tracking-tight drop-shadow-xs">
               {language === 'sw' ? (
                 <>
-                  Kiwango Bora cha Tanzania Katika{' '}
-                  <span className="text-[#8C7355] block mt-1.5">
-                    Madaftari ya Jalada Gumu &amp; Shule
-                  </span>
+                  Uzoefu Bora wa <span className="text-[#DC2626]">Madaftari</span> &amp; Vitabu
                 </>
               ) : (
                 <>
-                  Tanzania’s Gold Standard in{' '}
-                  <span className="text-[#8C7355] block mt-1.5">
-                    Archival Notebooks &amp; Stationery
-                  </span>
+                  Better <span className="text-[#DC2626]">Stationery</span> Experiences
                 </>
               )}
             </h1>
 
             {/* Subtitle */}
-            <p className="text-sm sm:text-base text-[#6E6B66] leading-relaxed max-w-2xl font-normal">
+            <p className="text-sm sm:text-base text-[#F4F4F5] leading-relaxed max-w-2xl font-normal drop-shadow-2xs">
               {language === 'sw'
                 ? 'Madaftari yaliyoshonwa kwa nyuzi (Smyth-sewn) yasiyochana wala kudondosha kurasa, karatasi nzito ya 70 GSM isiyopenyeza wino, na bahasha thabiti za kraft. Bei rasmi za jumla kiwandani mikoa yote 31.'
-                : 'Meticulously crafted Smyth thread-sewn counter books, 70 GSM bleed-proof student exercise editions, and tear-resistant kraft envelopes. Direct factory wholesale carton distribution nationwide.'}
+                : 'Tanzania’s benchmark manufacturer of Smyth thread-sewn counter books, 70 GSM bleed-proof student exercise editions, and tear-resistant kraft envelopes direct from Soweto SIDO factory in Mbeya.'}
             </p>
 
-            {/* Feature Highlight Chips (DESIGN.md: 6px radius, hairline border) */}
+            {/* Feature Highlight Chips */}
             <div className="flex flex-wrap gap-2.5 pt-1 font-mono text-xs">
-              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-[#FFFFFF] text-[#111113] border border-[#E7E5E0] shadow-2xs font-medium">
-                <CheckCircle2 className="w-4 h-4 text-[#8C7355]" />
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-[2px] bg-[#111113]/65 backdrop-blur-xs text-white border border-white/25 font-medium shadow-xs">
+                <CheckCircle2 className="w-4 h-4 text-[#DC2626]" />
                 {language === 'sw' ? 'Mshono wa Uzi 180°' : 'Smyth-Sewn 180° Flat'}
               </span>
-              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-[#FFFFFF] text-[#111113] border border-[#E7E5E0] shadow-2xs font-medium">
-                <CheckCircle2 className="w-4 h-4 text-[#8C7355]" />
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-[2px] bg-[#111113]/65 backdrop-blur-xs text-white border border-white/25 font-medium shadow-xs">
+                <CheckCircle2 className="w-4 h-4 text-[#DC2626]" />
                 {language === 'sw' ? 'Karatasi 70 GSM Bond' : '70 GSM Bleed-Proof'}
               </span>
-              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-[#FFFFFF] text-[#111113] border border-[#E7E5E0] shadow-2xs font-medium">
-                <CheckCircle2 className="w-4 h-4 text-[#8C7355]" />
+              <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-[2px] bg-[#111113]/65 backdrop-blur-xs text-white border border-white/25 font-medium shadow-xs">
+                <CheckCircle2 className="w-4 h-4 text-[#DC2626]" />
                 {language === 'sw' ? 'Mabasi Mikoa Yote 31' : '31 Regions Bus Parcel'}
               </span>
             </div>
 
-            {/* High-Converting Action Buttons (DESIGN.md: Primary #111113, 6px radius) */}
-            <div className="pt-2 flex flex-wrap items-center gap-3">
+            {/* High-Converting Action Buttons: BUY NOW (Red) & LEARN MORE (White Outline) */}
+            <div className="pt-3 flex flex-wrap items-center gap-3.5">
               <Link
                 to="/catalog"
-                className="px-6 py-3 rounded-md bg-[#111113] hover:bg-[#262524] text-[#FFFFFF] font-sans font-semibold text-xs sm:text-sm uppercase tracking-wider inline-flex items-center gap-2 shadow-2xs transition-all active:scale-97 cursor-pointer"
+                className="px-8 py-3.5 rounded-[2px] bg-[#DC2626] hover:bg-[#B91C1C] text-[#FFFFFF] font-sans font-bold text-xs sm:text-sm uppercase tracking-wider inline-flex items-center gap-2 shadow-md transition-all active:scale-98 cursor-pointer"
               >
-                <span>{language === 'sw' ? 'TAZAMA KATALOGI NZIMA' : 'EXPLORE CATALOGUE'}</span>
+                <span>{language === 'sw' ? 'NUNUA SASA' : 'BUY NOW'}</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
@@ -275,26 +278,26 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
                 href={defaultWhatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 py-3 rounded-md bg-[#FFFFFF] hover:bg-[#F9F8F6] text-[#111113] border border-[#E7E5E0] font-sans font-semibold text-xs sm:text-sm uppercase tracking-wider inline-flex items-center gap-2.5 transition-all active:scale-97 shadow-2xs cursor-pointer"
+                className="px-8 py-3.5 rounded-[2px] bg-[#111113]/50 backdrop-blur-xs hover:bg-white text-white hover:text-[#111113] border border-white font-sans font-bold text-xs sm:text-sm uppercase tracking-wider inline-flex items-center gap-2.5 transition-all active:scale-98 shadow-xs cursor-pointer group"
               >
-                <IconWhatsAppCustom className="w-4 h-4 text-[#25D366]" />
-                <span>{language === 'sw' ? 'ODA WHATSAPP KIWANDANI' : 'WHATSAPP PROFORMA'}</span>
+                <IconWhatsAppCustom className="w-4 h-4 text-emerald-400 group-hover:text-[#111113] transition-colors" />
+                <span>{language === 'sw' ? 'JIFUNZE ZAIDI' : 'LEARN MORE'}</span>
               </a>
             </div>
 
             {/* Social Proof Trust Bar */}
-            <div className="pt-1 flex items-center gap-3 text-xs text-[#6E6B66]">
-              <div className="flex items-center text-[#8C7355]">
+            <div className="pt-2 flex items-center gap-3 text-xs text-[#E4E4E7]">
+              <div className="flex items-center text-[#DC2626]">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-[#8C7355] text-[#8C7355]" />
+                  <Star key={i} className="w-3.5 h-3.5 fill-[#DC2626] text-[#DC2626]" />
                 ))}
               </div>
-              <span className="font-bold text-[#111113]">4.9 / 5.0</span>
+              <span className="font-bold text-white">4.9 / 5.0</span>
               <span>·</span>
               <span>
                 {language === 'sw'
                   ? 'Zaidi ya vitabu 500,000+ husambazwa kila mwaka kwa shule na maduka 1,200+'
-                  : '500,000+ books supplied annually across 1,200+ partner schools & stockists'}
+                  : '500,000+ notebooks supplied annually across 1,200+ partner schools & stockists'}
               </span>
             </div>
 
@@ -310,21 +313,22 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
               onMouseEnter={() => setIsPaused(true)}
               onMouseLeave={() => setIsPaused(false)}
             >
-              {/* Subtle Warm Overlay for Depth & High Contrast */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#111113]/90 via-[#111113]/40 to-transparent pointer-events-none" />
+              {/* Reduced Dark Filter & Warm Light Filter for Depth & Clarity */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#111113]/55 via-[#111113]/20 to-white/15 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-[#F9F8F6]/10 to-transparent pointer-events-none" />
 
               {/* Top Navigation Pill Tabs */}
               <div className="relative z-10 p-3 sm:p-4 pb-0">
-                <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+                <div className="flex flex-wrap items-center gap-1.5 py-1">
                   {SLIDE_ITEMS.map((item, idx) => (
                     <button
                       key={item.id}
                       type="button"
                       onClick={() => goToSlide(idx)}
-                      className={`px-2.5 py-1 rounded-[4px] text-[10px] sm:text-xs font-mono font-medium tracking-wide uppercase whitespace-nowrap transition-all cursor-pointer backdrop-blur-sm ${
+                      className={`px-2.5 py-1 rounded-[2px] text-[10px] font-mono font-bold tracking-wide uppercase whitespace-nowrap transition-all cursor-pointer backdrop-blur-sm ${
                         currentSlide === idx
-                          ? 'bg-[#FFFFFF] text-[#111113] shadow-xs font-bold'
-                          : 'bg-black/40 text-white/80 hover:bg-black/60 hover:text-white'
+                          ? 'bg-[#DC2626] text-[#FFFFFF] shadow-xs border border-[#DC2626]'
+                          : 'bg-[#111113]/75 text-[#FFFFFF] border border-white/20 hover:bg-[#111113]'
                       }`}
                     >
                       {item.tabLabel}
@@ -334,15 +338,15 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
               </div>
 
               {/* Central Animated PNG Book Slider Area */}
-              <div className="relative z-10 px-4 sm:px-6 py-6 sm:py-8 flex flex-col items-center justify-center min-h-[310px] sm:min-h-[340px]">
+              <div className="relative z-10 px-4 sm:px-6 py-5 sm:py-6 flex flex-col items-center justify-center min-h-[290px] sm:min-h-[320px]">
                 
                 {/* Floating Specs Pill */}
-                <div className="self-start mb-2 px-2.5 py-1 rounded-[4px] bg-[#FFFFFF]/90 backdrop-blur-md text-[#111113] border border-white/40 text-[10px] font-mono font-bold uppercase tracking-wider shadow-xs">
+                <div className="self-start mb-2 px-2.5 py-1 rounded-[2px] bg-[#FFFFFF] text-[#111113] border border-[#E7E5E0] text-[10px] font-mono font-bold uppercase tracking-wider shadow-xs">
                   <span className="text-[#DC2626] font-black mr-1">●</span>
                   {activeItem.badge}
                 </div>
 
-                {/* Animated PNG Book Display Stage */}
+                {/* Animated Studio Book Display Stage */}
                 <div className="relative w-full h-52 sm:h-60 flex items-center justify-center my-2">
                   <AnimatePresence mode="wait">
                     <motion.div
@@ -366,20 +370,12 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
                         duration: 0.35,
                         ease: [0.16, 1, 0.3, 1],
                       }}
-                      className="w-full h-full flex items-center justify-center"
+                      className="w-52 sm:w-60 h-52 sm:h-60 aspect-square bg-[#FFFFFF] rounded-lg border border-[#E7E5E0] shadow-xl flex items-center justify-center overflow-hidden"
                     >
-                      <motion.img
+                      <img
                         src={activeItem.pngImage}
                         alt={activeItem.title}
-                        animate={{
-                          y: [0, -6, 0],
-                        }}
-                        transition={{
-                          duration: 3,
-                          repeat: Infinity,
-                          ease: 'easeInOut',
-                        }}
-                        className="max-h-full max-w-[85%] object-contain drop-shadow-[0_20px_25px_rgba(0,0,0,0.55)] cursor-pointer"
+                        className="w-full h-full aspect-square object-cover object-center rounded-lg cursor-pointer transition-transform duration-300 hover:scale-105"
                         onClick={nextSlide}
                         title="Click to view next book"
                       />
@@ -391,7 +387,7 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
                     type="button"
                     onClick={prevSlide}
                     aria-label="Previous book"
-                    className="absolute left-1 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-sm transition-all border border-white/20 hover:scale-105 active:scale-95 shadow-md cursor-pointer"
+                    className="absolute left-1 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[#111113]/80 hover:bg-[#DC2626] text-white backdrop-blur-sm transition-all border border-white/30 hover:scale-105 active:scale-95 shadow-md cursor-pointer"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
@@ -400,7 +396,7 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
                     type="button"
                     onClick={nextSlide}
                     aria-label="Next book"
-                    className="absolute right-1 top-1/2 -translate-y-1/2 p-2 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-sm transition-all border border-white/20 hover:scale-105 active:scale-95 shadow-md cursor-pointer"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[#111113]/80 hover:bg-[#DC2626] text-white backdrop-blur-sm transition-all border border-white/30 hover:scale-105 active:scale-95 shadow-md cursor-pointer"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </button>
@@ -417,7 +413,7 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
                       className={`h-1.5 rounded-full transition-all cursor-pointer ${
                         currentSlide === idx
                           ? 'w-6 bg-white shadow-xs'
-                          : 'w-2 bg-white/40 hover:bg-white/70'
+                          : 'w-2 bg-white/50 hover:bg-white/80'
                       }`}
                     />
                   ))}
@@ -428,10 +424,10 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
               <div className="relative z-10 bg-[#FFFFFF] p-4 sm:p-5 border-t border-[#E7E5E0] space-y-3 text-left">
                 <div className="flex items-start justify-between gap-3">
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-heading font-semibold text-sm sm:text-base text-[#111113] truncate">
+                    <h3 className="font-heading font-bold text-sm sm:text-base text-[#111113] truncate">
                       {language === 'sw' ? activeItem.titleSw : activeItem.title}
                     </h3>
-                    <p className="text-xs text-[#6E6B66] font-mono mt-0.5 truncate">
+                    <p className="text-xs text-[#4B5563] font-mono mt-0.5 truncate">
                       {language === 'sw' ? activeItem.specSw : activeItem.spec}
                     </p>
                   </div>
@@ -439,7 +435,7 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
                     <span className="font-mono font-bold text-base sm:text-lg text-[#111113] block leading-none">
                       {activeItem.price}
                     </span>
-                    <span className="text-[10px] text-[#8C7355] font-mono font-semibold block mt-1">
+                    <span className="text-[10px] text-[#DC2626] font-mono font-bold block mt-1">
                       {language === 'sw' ? activeItem.cartonPriceSw : activeItem.cartonPrice}
                     </span>
                   </div>
@@ -449,14 +445,14 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
                   <Link
                     to={activeItem.link}
                     onClick={() => triggerLuxuryConfetti()}
-                    className="flex-1 py-2.5 px-3 rounded-md bg-[#111113] hover:bg-[#262524] text-white text-xs font-sans font-semibold uppercase tracking-wider text-center transition-all shadow-2xs active:scale-97 flex items-center justify-center gap-1.5"
+                    className="flex-1 py-2.5 px-3 rounded-[4px] bg-[#111113] hover:bg-[#262524] text-white text-xs font-sans font-semibold uppercase tracking-wider text-center transition-all shadow-xs active:scale-98 flex items-center justify-center gap-1.5 cursor-pointer"
                   >
-                    <Package className="w-3.5 h-3.5 text-[#C8A27A]" />
+                    <Package className="w-3.5 h-3.5 text-white/80" />
                     <span>{language === 'sw' ? 'Agiza B2B Katoni' : 'Order Bulk Cartons'}</span>
                   </Link>
                   <Link
                     to="/wholesale"
-                    className="py-2.5 px-3.5 rounded-md bg-[#F9F8F6] hover:bg-[#F2EFEB] text-[#111113] border border-[#E7E5E0] text-xs font-sans font-semibold uppercase tracking-wider text-center transition-colors"
+                    className="py-2.5 px-3.5 rounded-[4px] bg-[#F9F8F6] hover:bg-[#F2EFEB] text-[#111113] border border-[#E7E5E0] text-xs font-sans font-semibold uppercase tracking-wider text-center transition-colors cursor-pointer"
                   >
                     {language === 'sw' ? 'Bei za Jumla' : 'Wholesale Tiers'}
                   </Link>
@@ -466,52 +462,6 @@ export const Hero: React.FC<HeroProps> = ({ whatsappGreetingUrl }) => {
             </div>
           </div>
 
-        </div>
-
-        {/* ================= 2. FOUR LUXURY MANUFACTURING PILLARS ================= */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 pt-2">
-          {[
-            {
-              Icon: IconNationwideBus,
-              title: language === 'sw' ? 'Mabasi Mikoa Yote 31' : '31 Regions Bus Parcel',
-              desc: language === 'sw' ? 'Kutumiwa siku hiyo hiyo ya oda' : 'Same-day waybill handoff',
-            },
-            {
-              Icon: IconQualitySeal,
-              title: language === 'sw' ? 'Karatasi Nzito 70 GSM' : '70 GSM Bleed-Proof',
-              desc: language === 'sw' ? 'Haivujishi wino wa kalamu' : 'Zero ink bleed or ghosting',
-            },
-            {
-              Icon: IconLayFlatSpine,
-              title: language === 'sw' ? 'Mshono wa Uzi 180°' : 'Smyth-Sewn 180°',
-              desc: language === 'sw' ? 'Hujifungua tambarare kabisa' : 'Thread stitched, opens flat',
-            },
-            {
-              Icon: ShieldCheck,
-              title: language === 'sw' ? 'Stakabadhi za TRA EFD' : 'TRA EFD Fiscal Invoices',
-              desc: language === 'sw' ? 'Ankara rasmi kwa shule na ofisi' : 'Official institutional compliance',
-            },
-          ].map((pillar, idx) => {
-            const Icon = pillar.Icon;
-            return (
-              <div
-                key={idx}
-                className="p-3.5 sm:p-4 bg-[#FFFFFF] rounded-lg transition-all flex items-center gap-3 shadow-[0_2px_8px_-2px_rgba(17,17,19,0.03)] hover:shadow-xs group text-left h-full border border-[#E7E5E0]"
-              >
-                <div className="w-10 h-10 rounded-md bg-[#F9F8F6] text-[#8C7355] flex items-center justify-center shrink-0 border border-[#E7E5E0]">
-                  <Icon className="w-5 h-5 text-[#8C7355]" />
-                </div>
-                <div className="min-w-0">
-                  <h4 className="font-heading font-semibold text-xs sm:text-sm text-[#111113] truncate">
-                    {pillar.title}
-                  </h4>
-                  <p className="text-[11px] text-[#6E6B66] truncate mt-0.5">
-                    {pillar.desc}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
         </div>
 
       </div>

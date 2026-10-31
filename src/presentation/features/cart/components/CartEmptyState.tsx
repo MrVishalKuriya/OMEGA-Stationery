@@ -1,40 +1,40 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag } from 'lucide-react';
-import { SEOHead } from '@/components/SEOHead';
+import { ShoppingBag, ArrowRight } from 'lucide-react';
+import { Language } from '@/types/store';
 
 interface CartEmptyStateProps {
-  language: string;
-  exploreCatalogText: string;
+  language?: Language;
+  exploreCatalogText?: string;
 }
 
 export const CartEmptyState: React.FC<CartEmptyStateProps> = ({
-  language,
+  language = 'en',
   exploreCatalogText,
 }) => {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center space-y-6">
-      <SEOHead
-        title="Shopping Cart &amp; WhatsApp Order — OMEGA"
-        description="View items in your order and submit directly to OMEGA sales team via WhatsApp."
-      />
-      <div className="w-16 h-16 bg-[#FAF6F0] flex items-center justify-center mx-auto text-[#9E3618] shadow-xs">
-        <ShoppingBag className="w-8 h-8" />
+    <div className="bg-paper-base min-h-[70vh] flex items-center justify-center px-4 py-16">
+      <div className="bg-white rounded-[4px] border border-[#E7E5E0] p-10 sm:p-12 text-center max-w-lg w-full shadow-sm">
+        <div className="w-20 h-20 bg-paper-base border border-[#E7E5E0] rounded-full flex items-center justify-center mx-auto mb-6 text-[#DC2626]">
+          <ShoppingBag className="w-9 h-9" />
+        </div>
+        <h2 className="font-display text-2xl font-bold text-charcoal-ink mb-2">
+          {language === 'sw' ? 'Kikapu chako ni tupu' : 'Your shopping bag is empty'}
+        </h2>
+        <p className="text-[#3F3F46] font-medium mb-8 text-sm leading-relaxed">
+          {language === 'sw'
+            ? 'Bado hujaongeza madaftari au vifaa vya stationery kwenye kikapu chako. Tembelea katalogi yetu kuchagua bidhaa za OMEGA.'
+            : "Looks like you haven't added any stationery or counter books to your order yet. Explore our catalog to find factory-direct OMEGA supplies."}
+        </p>
+        <Link
+          to="/catalog"
+          className="px-8 py-4 rounded-[4px] bg-[#DC2626] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#B91C1C] transition-all inline-flex items-center gap-2 shadow-sm"
+        >
+          <span>{exploreCatalogText || (language === 'sw' ? 'Angalia Katalogi' : 'Browse Product Catalog')}</span>
+          <ArrowRight className="w-4 h-4" />
+        </Link>
       </div>
-      <h1 className="text-2xl sm:text-3xl font-black text-[#26130F]">
-        {language === 'sw' ? 'Kikapu Chako Kiko Wazi' : 'Your Order List is Empty'}
-      </h1>
-      <p className="text-sm text-[#7D685E] max-w-md mx-auto">
-        {language === 'sw'
-          ? 'Bofya kitufe hapa chini kutazama madaftari yetu ya OMEGA Quire 2, 3, 4 na bahasha.'
-          : 'Explore our catalog to add OMEGA writing notebooks, counter books, and stationery.'}
-      </p>
-      <Link
-        to="/catalog"
-        className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#9E3618] hover:bg-[#6B140B] text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors shadow-sm"
-      >
-        <span>{exploreCatalogText}</span>
-      </Link>
     </div>
   );
 };
+export default CartEmptyState;

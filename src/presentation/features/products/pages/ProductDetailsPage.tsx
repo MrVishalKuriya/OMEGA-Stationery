@@ -116,13 +116,48 @@ export const ProductDetailsPage: React.FC = () => {
 
   if ((isCatalogLoading && !product) || isLoadingDirect) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 animate-pulse">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div className="bg-[#E7E5E0] h-96 rounded-lg" />
-          <div className="space-y-4">
-            <div className="h-8 bg-[#E7E5E0] rounded-md w-3/4" />
-            <div className="h-4 bg-[#E7E5E0] rounded-md w-1/2" />
-            <div className="h-24 bg-[#E7E5E0] rounded-md" />
+      <div
+        className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-12"
+        role="status"
+        aria-label="Loading product details"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+          <div className="lg:col-span-6 space-y-4">
+            <div className="w-full aspect-square rounded-lg border border-charcoal-ink/10 skeleton-paper-ink flex items-center justify-center">
+              <div className="w-28 h-36 rounded-md border border-charcoal-ink/10 bg-paper-base/80 flex flex-col items-center justify-between p-4">
+                <div className="w-14 h-2 rounded-xs skeleton-charcoal-bar" />
+                <div className="w-12 h-12 rounded-sm skeleton-charcoal-bar" />
+                <div className="w-16 h-2 rounded-xs skeleton-charcoal-bar" />
+              </div>
+            </div>
+            <div className="flex items-center gap-2.5">
+              {[0, 1, 2].map((i) => (
+                <div
+                  key={i}
+                  className="w-16 h-16 aspect-square rounded-lg border border-charcoal-ink/10 skeleton-paper-ink"
+                />
+              ))}
+            </div>
+          </div>
+          <div className="lg:col-span-6 space-y-5 bg-paper-base p-6 rounded-lg border border-[#E7E5E0]">
+            <div className="flex gap-2">
+              <div className="h-5 w-28 rounded-[4px] skeleton-charcoal-bar" />
+              <div className="h-5 w-24 rounded-[4px] skeleton-charcoal-bar" />
+            </div>
+            <div className="h-9 w-4/5 rounded-xs skeleton-charcoal-bar" />
+            <div className="h-5 w-1/2 rounded-xs skeleton-charcoal-bar" />
+            <div className="p-5 rounded-lg border border-charcoal-ink/10 skeleton-paper-ink space-y-3">
+              <div className="h-8 w-40 rounded-xs skeleton-charcoal-bar" />
+              <div className="grid grid-cols-3 gap-2 pt-2">
+                <div className="h-14 rounded-md skeleton-charcoal-bar" />
+                <div className="h-14 rounded-md skeleton-charcoal-bar" />
+                <div className="h-14 rounded-md skeleton-charcoal-bar" />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3 pt-2">
+              <div className="h-12 rounded-md skeleton-charcoal-bar" />
+              <div className="h-12 rounded-md skeleton-charcoal-bar" />
+            </div>
           </div>
         </div>
       </div>
@@ -237,12 +272,12 @@ export const ProductDetailsPage: React.FC = () => {
         product={product}
       />
 
-      {/* Top Value Strip (DESIGN.md: Charcoal Ink #111113 & Ochre #8C7355) */}
+      {/* Top Value Strip (DESIGN.md: Charcoal Ink #111113 & Ochre #DC2626) */}
       <div className="bg-[#111113] text-white/90 text-xs py-2 px-4 border-b border-[#262524] relative overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#8C7355]/60 to-transparent border-t border-dashed border-[#8C7355]/40" />
+        <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#DC2626]/60 to-transparent border-t border-dashed border-[#DC2626]/40" />
         <div className="max-w-[1360px] mx-auto flex flex-wrap items-center justify-between gap-3 font-medium">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#8C7355] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#DC2626] animate-pulse" />
             <span className="text-[11px] sm:text-xs">
               {language === 'sw'
                 ? 'Kiwandani moja kwa moja: Uwasilishaji nchi nzima Tanzania kwa njia ya mabasi'
@@ -251,11 +286,11 @@ export const ProductDetailsPage: React.FC = () => {
           </div>
           <div className="flex items-center gap-4 text-[11px] text-[#D5D2CC]">
             <span className="inline-flex items-center gap-1.5">
-              <CheckCircle className="w-3.5 h-3.5 text-[#8C7355]" />
+              <CheckCircle className="w-3.5 h-3.5 text-[#DC2626]" />
               <span>TRA Tax Invoicing</span>
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Truck className="w-3.5 h-3.5 text-[#8C7355]" />
+              <Truck className="w-3.5 h-3.5 text-[#DC2626]" />
               <span>Upcountry Waybills</span>
             </span>
           </div>
@@ -345,10 +380,10 @@ export const ProductDetailsPage: React.FC = () => {
                 </span>
               </div>
 
-              {/* Main Image Rendering (Centered, Symmetrical, Never Clipped) */}
+              {/* Main Image Rendering (Consistent 1:1 Aspect Square & Rounded-lg) */}
               {selectedImageIdx < galleryImages.length && !imgError ? (
                 <div
-                  className="w-full h-full flex items-center justify-center cursor-zoom-in"
+                  className="w-full h-full aspect-square flex items-center justify-center overflow-hidden rounded-lg cursor-zoom-in"
                   onClick={() => setIsLightboxOpen(true)}
                   title="Click to view full resolution"
                 >
@@ -357,7 +392,7 @@ export const ProductDetailsPage: React.FC = () => {
                     alt={`${product.name} - View ${selectedImageIdx + 1}`}
                     referrerPolicy="no-referrer"
                     onError={() => setImgError(true)}
-                    className="max-h-full max-w-full object-contain object-center drop-shadow-sm transition-transform duration-350 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.025]"
+                    className="w-full h-full aspect-square object-cover object-center rounded-lg transition-transform duration-350 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.025]"
                   />
                 </div>
               ) : (
@@ -399,7 +434,7 @@ export const ProductDetailsPage: React.FC = () => {
                 className="absolute bottom-3 right-3 p-2 rounded-md bg-[#FFFFFF] hover:bg-[#F9F8F6] text-[#111113] shadow-2xs border border-[#E7E5E0] transition-all flex items-center gap-1.5 text-xs font-medium cursor-pointer"
                 aria-label="Expand image"
               >
-                <Maximize2 className="w-3.5 h-3.5 text-[#8C7355]" />
+                <Maximize2 className="w-3.5 h-3.5 text-[#DC2626]" />
                 <span className="hidden sm:inline">Zoom Full-Res</span>
               </button>
             </motion.div>
@@ -414,17 +449,17 @@ export const ProductDetailsPage: React.FC = () => {
                     setImgError(false);
                     setSelectedImageIdx(index);
                   }}
-                  className={`w-18 h-15 rounded-md overflow-hidden border shrink-0 transition-all bg-[#FFFFFF] p-1 flex items-center justify-center cursor-pointer ${
+                  className={`w-16 h-16 aspect-square rounded-lg overflow-hidden border shrink-0 transition-all bg-[#FFFFFF] flex items-center justify-center cursor-pointer ${
                     selectedImageIdx === index
                       ? 'border-[#111113] ring-1 ring-[#111113] shadow-2xs'
-                      : 'border-[#E7E5E0] hover:border-[#8C7355]/60'
+                      : 'border-[#E7E5E0] hover:border-[#DC2626]/60'
                   }`}
                 >
                   <img
                     src={imgUrl}
                     alt={`Thumbnail ${index + 1}`}
                     referrerPolicy="no-referrer"
-                    className="w-full h-full object-contain"
+                    className="w-full h-full aspect-square object-cover object-center rounded-lg"
                   />
                 </button>
               ))}
@@ -435,10 +470,10 @@ export const ProductDetailsPage: React.FC = () => {
                 className={`h-15 px-3 rounded-md border shrink-0 flex flex-col items-center justify-center bg-[#FFFFFF] text-[11px] font-semibold transition-all cursor-pointer ${
                   selectedImageIdx === galleryImages.length
                     ? 'border-[#111113] text-[#111113] ring-1 ring-[#111113]'
-                    : 'border-[#E7E5E0] text-[#6E6B66] hover:border-[#8C7355]/60'
+                    : 'border-[#E7E5E0] text-[#6E6B66] hover:border-[#DC2626]/60'
                 }`}
               >
-                <FileText className="w-4 h-4 mb-0.5 text-[#8C7355]" />
+                <FileText className="w-4 h-4 mb-0.5 text-[#DC2626]" />
                 <span>Specs Sheet</span>
               </button>
             </div>
@@ -447,11 +482,11 @@ export const ProductDetailsPage: React.FC = () => {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1 text-center">
               <div className="p-2.5 rounded-md bg-[#FFFFFF] border border-[#E7E5E0] shadow-2xs">
                 {product.category?.includes('Bahasha') ? (
-                  <ShieldCheck className="w-4 h-4 text-[#8C7355] mx-auto mb-1" />
+                  <ShieldCheck className="w-4 h-4 text-[#DC2626] mx-auto mb-1" />
                 ) : product.category?.includes('File') || product.name.includes('Jaradio') ? (
-                  <Droplets className="w-4 h-4 text-[#8C7355] mx-auto mb-1" />
+                  <Droplets className="w-4 h-4 text-[#DC2626] mx-auto mb-1" />
                 ) : (
-                  <Layers className="w-4 h-4 text-[#8C7355] mx-auto mb-1" />
+                  <Layers className="w-4 h-4 text-[#DC2626] mx-auto mb-1" />
                 )}
                 <span className="text-[11px] font-semibold text-[#111113] block truncate">
                   {product.category?.includes('Bahasha')
@@ -480,7 +515,7 @@ export const ProductDetailsPage: React.FC = () => {
               </div>
 
               <div className="p-2.5 rounded-md bg-[#FFFFFF] border border-[#E7E5E0] shadow-2xs">
-                <Package className="w-4 h-4 text-[#8C7355] mx-auto mb-1" />
+                <Package className="w-4 h-4 text-[#DC2626] mx-auto mb-1" />
                 <span className="text-[11px] font-semibold text-[#111113] block truncate">
                   {product.packaging ? 'Master Box' : 'Wholesale'}
                 </span>
@@ -550,7 +585,7 @@ export const ProductDetailsPage: React.FC = () => {
               </h1>
 
               {product.subtitle && (
-                <p className="text-sm sm:text-base font-medium text-[#8C7355]">
+                <p className="text-sm sm:text-base font-medium text-[#DC2626]">
                   {language === 'sw' && product.subtitleSw ? product.subtitleSw : product.subtitle}
                 </p>
               )}
@@ -563,7 +598,7 @@ export const ProductDetailsPage: React.FC = () => {
                     precision={0.1}
                     readOnly
                     size="small"
-                    sx={{ color: '#8C7355' }}
+                    sx={{ color: '#DC2626' }}
                   />
                   <span className="font-semibold text-[#111113]">{product.rating || 4.8}</span>
                   <span className="text-[#6E6B66]">({product.reviewCount || 160} reviews)</span>
@@ -612,7 +647,7 @@ export const ProductDetailsPage: React.FC = () => {
 
                 {product.wholesalePrice && (
                   <div className="text-right p-3 rounded-md bg-[#F9F8F6] border border-[#E7E5E0]">
-                    <span className="text-[11px] font-bold text-[#8C7355] uppercase tracking-wider block">
+                    <span className="text-[11px] font-bold text-[#DC2626] uppercase tracking-wider block">
                       Wholesale Rate (5+ {unitLabel})
                     </span>
                     <span className="text-base font-bold text-[#111113] font-mono">
@@ -636,7 +671,7 @@ export const ProductDetailsPage: React.FC = () => {
                     className={`p-2.5 rounded-md text-center border cursor-pointer transition-all ${
                       quantity < wholesaleMinMoq
                         ? 'bg-[#111113] text-[#FFFFFF] border-[#111113] shadow-2xs'
-                        : 'bg-[#F9F8F6] text-[#111113] border-[#E7E5E0] hover:border-[#8C7355]/50'
+                        : 'bg-[#F9F8F6] text-[#111113] border-[#E7E5E0] hover:border-[#DC2626]/50'
                     }`}
                   >
                     <span className="block font-semibold">1 – 4 {unitLabel}</span>
@@ -648,12 +683,12 @@ export const ProductDetailsPage: React.FC = () => {
                     className={`p-2.5 rounded-md text-center border cursor-pointer transition-all ${
                       quantity >= wholesaleMinMoq && quantity < 10
                         ? 'bg-[#111113] text-[#FFFFFF] border-[#111113] shadow-2xs'
-                        : 'bg-[#F9F8F6] text-[#111113] border-[#E7E5E0] hover:border-[#8C7355]/50'
+                        : 'bg-[#F9F8F6] text-[#111113] border-[#E7E5E0] hover:border-[#DC2626]/50'
                     }`}
                   >
                     <span className="block font-semibold">5 – 9 {unitLabel}</span>
                     <span className="text-[11px] font-mono">{currency} {wholesaleRate.toLocaleString()}</span>
-                    <span className="text-[9px] text-[#8C7355] block font-semibold">Bulk Tier</span>
+                    <span className="text-[9px] text-[#DC2626] block font-semibold">Bulk Tier</span>
                   </div>
 
                   <div
@@ -661,14 +696,14 @@ export const ProductDetailsPage: React.FC = () => {
                     className={`p-2.5 rounded-md text-center border cursor-pointer transition-all ${
                       quantity >= 10
                         ? 'bg-[#111113] text-[#FFFFFF] border-[#111113] shadow-2xs'
-                        : 'bg-[#F9F8F6] text-[#111113] border-[#E7E5E0] hover:border-[#8C7355]/50'
+                        : 'bg-[#F9F8F6] text-[#111113] border-[#E7E5E0] hover:border-[#DC2626]/50'
                     }`}
                   >
                     <span className="block font-semibold">10+ {unitLabel}</span>
                     <span className="text-[11px] font-mono">
                       {currency} {getTierPrice(10).toLocaleString()}
                     </span>
-                    <span className="text-[9px] text-[#8C7355] block font-semibold">Carton Rate</span>
+                    <span className="text-[9px] text-[#DC2626] block font-semibold">Carton Rate</span>
                   </div>
                 </div>
               </div>
@@ -745,7 +780,7 @@ export const ProductDetailsPage: React.FC = () => {
                     className={`px-3 py-1 rounded-[4px] text-xs font-semibold transition-all cursor-pointer ${
                       quantity === preset
                         ? 'bg-[#111113] text-[#FFFFFF] shadow-2xs'
-                        : 'bg-[#F9F8F6] text-[#111113] border border-[#E7E5E0] hover:border-[#8C7355]/50'
+                        : 'bg-[#F9F8F6] text-[#111113] border border-[#E7E5E0] hover:border-[#DC2626]/50'
                     }`}
                   >
                     +{preset} {unitLabel}
@@ -772,10 +807,10 @@ export const ProductDetailsPage: React.FC = () => {
                       className={`p-2.5 rounded-md text-left border transition-all cursor-pointer ${
                         selectedPhoneDesk === d.digits
                           ? 'bg-[#F2EFEB] border-[#111113] ring-1 ring-[#111113] font-semibold shadow-2xs'
-                          : 'bg-[#FFFFFF] border-[#E7E5E0] text-[#6E6B66] hover:border-[#8C7355]/50'
+                          : 'bg-[#FFFFFF] border-[#E7E5E0] text-[#6E6B66] hover:border-[#DC2626]/50'
                       }`}
                     >
-                      <p className="text-[10px] text-[#8C7355] font-semibold truncate">{d.label}</p>
+                      <p className="text-[10px] text-[#DC2626] font-semibold truncate">{d.label}</p>
                       <p className="font-mono text-xs text-[#111113] mt-0.5">{d.number}</p>
                     </button>
                   ))}
@@ -830,7 +865,7 @@ export const ProductDetailsPage: React.FC = () => {
             {/* ================================================================= */}
             <div className="space-y-3 pt-4">
               <div className="flex items-center justify-between pb-1">
-                <h2 className="text-xs font-semibold uppercase tracking-wider text-[#8C7355] font-heading">
+                <h2 className="text-xs font-semibold uppercase tracking-wider text-[#DC2626] font-heading">
                   Product Details &amp; Specifications
                 </h2>
                 <span className="text-[11px] text-[#6E6B66]">Tap sections to expand</span>
@@ -844,7 +879,7 @@ export const ProductDetailsPage: React.FC = () => {
                   className="w-full p-4 text-left flex items-center justify-between font-semibold text-sm text-[#111113] hover:bg-[#F9F8F6] transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-2.5">
-                    <Droplets className="w-4 h-4 text-[#8C7355]" />
+                    <Droplets className="w-4 h-4 text-[#DC2626]" />
                     <span>Product Overview &amp; Shield Features</span>
                   </div>
                   {accordionState.overview ? (
@@ -869,7 +904,7 @@ export const ProductDetailsPage: React.FC = () => {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                         <div className="p-3.5 rounded-md bg-[#F9F8F6] border border-[#E7E5E0] flex items-start gap-2.5">
-                          <CheckCircle2 className="w-4 h-4 text-[#8C7355] shrink-0 mt-0.5" />
+                          <CheckCircle2 className="w-4 h-4 text-[#DC2626] shrink-0 mt-0.5" />
                           <div>
                             <strong className="block text-[#111113]">
                               {product.binding ? 'Guaranteed Binding' : 'Factory Grade Craft'}
@@ -881,7 +916,7 @@ export const ProductDetailsPage: React.FC = () => {
                         </div>
 
                         <div className="p-3.5 rounded-md bg-[#F9F8F6] border border-[#E7E5E0] flex items-start gap-2.5">
-                          <CheckCircle2 className="w-4 h-4 text-[#8C7355] shrink-0 mt-0.5" />
+                          <CheckCircle2 className="w-4 h-4 text-[#DC2626] shrink-0 mt-0.5" />
                           <div>
                             <strong className="block text-[#111113]">
                               {product.paperType ? 'Paper Standard' : 'Material Quality'}
@@ -893,7 +928,7 @@ export const ProductDetailsPage: React.FC = () => {
                         </div>
 
                         <div className="p-3.5 rounded-md bg-[#F9F8F6] border border-[#E7E5E0] flex items-start gap-2.5">
-                          <CheckCircle2 className="w-4 h-4 text-[#8C7355] shrink-0 mt-0.5" />
+                          <CheckCircle2 className="w-4 h-4 text-[#DC2626] shrink-0 mt-0.5" />
                           <div>
                             <strong className="block text-[#111113]">Master Packaging</strong>
                             <span className="text-[11px] text-[#6E6B66]">
@@ -903,7 +938,7 @@ export const ProductDetailsPage: React.FC = () => {
                         </div>
 
                         <div className="p-3.5 rounded-md bg-[#F9F8F6] border border-[#E7E5E0] flex items-start gap-2.5">
-                          <CheckCircle2 className="w-4 h-4 text-[#8C7355] shrink-0 mt-0.5" />
+                          <CheckCircle2 className="w-4 h-4 text-[#DC2626] shrink-0 mt-0.5" />
                           <div>
                             <strong className="block text-[#111113]">Indigo Printed Limited Hallmark</strong>
                             <span className="text-[11px] text-[#6E6B66]">
@@ -925,7 +960,7 @@ export const ProductDetailsPage: React.FC = () => {
                   className="w-full p-4 text-left flex items-center justify-between font-semibold text-sm text-[#111113] hover:bg-[#F9F8F6] transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-2.5">
-                    <Layers className="w-4 h-4 text-[#8C7355]" />
+                    <Layers className="w-4 h-4 text-[#DC2626]" />
                     <span>Technical Specifications &amp; Parameters</span>
                   </div>
                   {accordionState.specs ? (
@@ -1011,7 +1046,7 @@ export const ProductDetailsPage: React.FC = () => {
                   className="w-full p-4 text-left flex items-center justify-between font-semibold text-sm text-[#111113] hover:bg-[#F9F8F6] transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-2.5">
-                    <FileText className="w-4 h-4 text-[#8C7355]" />
+                    <FileText className="w-4 h-4 text-[#DC2626]" />
                     <span>Wholesale, School Tenders &amp; TRA Tax Invoicing</span>
                   </div>
                   {accordionState.wholesale ? (
@@ -1050,7 +1085,7 @@ export const ProductDetailsPage: React.FC = () => {
                   className="w-full p-4 text-left flex items-center justify-between font-semibold text-sm text-[#111113] hover:bg-[#F9F8F6] transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-2.5">
-                    <Truck className="w-4 h-4 text-[#8C7355]" />
+                    <Truck className="w-4 h-4 text-[#DC2626]" />
                     <span>Upcountry Bus Parcel Delivery (All 31 Regions)</span>
                   </div>
                   {accordionState.delivery ? (
@@ -1096,7 +1131,7 @@ export const ProductDetailsPage: React.FC = () => {
                   className="w-full p-4 text-left flex items-center justify-between font-semibold text-sm text-[#111113] hover:bg-[#F9F8F6] transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-2.5">
-                    <HelpCircle className="w-4 h-4 text-[#8C7355]" />
+                    <HelpCircle className="w-4 h-4 text-[#DC2626]" />
                     <span>How to Wrap &amp; Cover Books (Application Guide)</span>
                   </div>
                   {accordionState.guide ? (
@@ -1137,7 +1172,7 @@ export const ProductDetailsPage: React.FC = () => {
           <section className="pt-12 border-t border-[#E7E5E0] space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-xs font-semibold uppercase tracking-wider text-[#8C7355] font-heading block">
+                <span className="text-xs font-semibold uppercase tracking-wider text-[#DC2626] font-heading block">
                   Frequently Purchased Together
                 </span>
                 <h2 className="font-heading text-xl sm:text-2xl font-semibold text-[#111113] tracking-tight">
@@ -1153,8 +1188,8 @@ export const ProductDetailsPage: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {relatedProducts.map((rel) => (
-                <ProductCard key={rel.id} product={rel} />
+              {relatedProducts.map((rel, idx) => (
+                <ProductCard key={`${rel.id}-${idx}`} product={rel} />
               ))}
             </div>
           </section>
@@ -1183,7 +1218,7 @@ export const ProductDetailsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsLightboxOpen(false)}
-                className="absolute -top-12 right-0 p-2 text-white hover:text-[#8C7355] transition-colors focus:outline-none cursor-pointer"
+                className="absolute -top-12 right-0 p-2 text-white hover:text-[#DC2626] transition-colors focus:outline-none cursor-pointer"
                 aria-label="Close lightbox"
               >
                 <X className="w-8 h-8" />
@@ -1205,7 +1240,7 @@ export const ProductDetailsPage: React.FC = () => {
                       type="button"
                       onClick={() => setSelectedImageIdx(idx)}
                       className={`w-16 h-14 rounded-[4px] overflow-hidden border transition-all p-0.5 cursor-pointer ${
-                        selectedImageIdx === idx ? 'border-[#8C7355] scale-105' : 'border-white/30 opacity-70 hover:opacity-100'
+                        selectedImageIdx === idx ? 'border-[#DC2626] scale-105' : 'border-white/30 opacity-70 hover:opacity-100'
                       }`}
                     >
                       <img src={img} alt="" className="w-full h-full object-contain" />

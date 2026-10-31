@@ -33,18 +33,18 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const cleanWhatsappDigits = (storeConfig?.whatsappNumber || '255715268391').replace(/\D/g, '');
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-[#F9F8F6] text-[#111113] font-sans selection:bg-[#8C7355] selection:text-white">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-paper-base text-charcoal-ink font-sans selection:bg-[#DC2626] selection:text-white">
       {/* 1. Sleek Modern Header (AnnouncementBar, Header with Search & 2-Lang Toggle, Category Rail) */}
       <Navbar />
 
       {/* 2. Toast Notifications */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 bg-[#111113] text-[#F9F8F6] rounded-md border border-[#E7E5E0] shadow-2xl animate-in slide-in-from-bottom-5">
-          <CheckCircle2 className="w-5 h-5 text-[#8C7355] shrink-0" />
-          <span className="text-xs font-bold">{toastMessage}</span>
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 bg-charcoal-ink text-paper-base rounded-md border border-[#E7E5E0] shadow-2xl animate-in slide-in-from-bottom-5">
+          <CheckCircle2 className="w-5 h-5 text-[#DC2626] shrink-0" />
+          <span className="text-xs font-bold text-white">{toastMessage}</span>
           <button
             onClick={clearToast}
-            className="ml-2 text-stone-300 hover:text-white p-1"
+            className="ml-2 text-white/80 hover:text-white p-1"
             aria-label="Dismiss"
           >
             <X className="w-4 h-4" />

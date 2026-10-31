@@ -1,116 +1,187 @@
 @import "tailwindcss";
 
+@theme {
+  --color-paper-base: #F9F8F6;
+  --color-paper-pure: #FFFFFF;
+  --color-charcoal-ink: #111113;
+  --color-ink-muted: #3F3F46;
+  --color-border-hairline: #E7E5E0;
+  --color-accent-wax-seal: #DC2626;
+  --color-leather-warm: #8C7355;
+  --color-vellum-highlight: #F2EFEB;
+}
+
 :root {
-  /* ==================== USER CUSTOM ARTISANAL PALETTE ==================== */
-  /* 1. DARK RED:    #6B140B (Deep Burgundy / Roasted Wine) */
-  /* 2. LIGHT BEIGE: #D8C3A5 (Warm Sand / Paper Linen) */
-  /* 3. SOFT ORANGE: #E9A858 (Warm Amber Apricot) */
-  /* 4. RED-ORANGE:  #9E3618 (Terracotta Rust / Burnt Sienna) */
-  /* 5. CANVAS:      #FAF6F0 (Warm Parchment Cream) */
-  /* 6. TEXT DARK:   #26130F (Deep Roasted Espresso) */
-  /* 7. BORDER:      #E5D8C8 (Warm Hairline Sand) */
-
-  --clr-dark-red: #6B140B;
-  --clr-light-beige: #D8C3A5;
-  --clr-soft-orange: #E9A858;
-  --clr-red-orange: #9E3618;
-  --clr-canvas: #FAF6F0;
-  --clr-text-dark: #26130F;
-  --clr-text-muted: #7D685E;
-  --clr-border: #E5D8C8;
-
-  --clr-main: #6B140B;
-  --clr-gold: #E9A858;
-  --clr-gold-light: #FBF4E8;
-  --clr-main-50: #FAF6F0;
-  --clr-main-100: #F3EDE2;
-  --clr-main-200: #E5D8C8;
-  --clr-main-300: #D8C3A5;
-  --clr-main-400: #A89584;
-  --clr-main-500: #7D685E;
-  --clr-main-600: #52423A;
-  --clr-main-700: #3B2822;
-  --clr-main-900: #26130F;
-  --clr-copper: #9E3618;
-  --clr-amber: #E9A858;
-  --clr-copper-gradient: linear-gradient(90deg, #6B140B, #9E3618, #E9A858);
-  --clr-white: #FFFFFF;
-  --clr-bg: #FAF6F0;
-  --clr-black: #26130F;
-
-  /* Canonical Tokens */
-  --primary: #9E3618;               /* Red-Orange Primary Accent */
-  --primary-dark: #6B140B;          /* Dark Red Primary Header */
-  --primary-light: #B84725;
-  --accent: #E9A858;                /* Soft Orange Warm Foil */
-  --accent-light: #F4C486;
-  --bg: #FAF6F0;                    /* Warm Linen Canvas */
+  /* ==================== WARM TACTILE MINIMAL DESIGN SYSTEM (WCAG AAA CONTRAST) ==================== */
+  /* Canvas Tier (Base): Soft Paper Base (#F9F8F6) & Charcoal Ink (#111113) — 17.85:1 Contrast Ratio */
+  --paper-base: #F9F8F6;
+  --paper-pure: #FFFFFF;
+  --charcoal-ink: #111113;
+  --ink-muted: #3F3F46;
+  --border-hairline: #E7E5E0;
+  --bg: #F9F8F6;
   --surface: #FFFFFF;
-  --surface-alt: #F3EDE2;
-  --surface-dark: #E5D8C8;
-  --text: #26130F;                  /* Roasted Espresso Text */
-  --text-light: #52423A;
-  --muted: #7D685E;
-  --border: #E5D8C8;
-  --success: #16a34a;
-  --danger: #9E3618;
+  --surface-alt: #F2EFEB;
+  --surface-dark: #E7E5E0;
+  --line: #E7E5E0;
+  --border: #E7E5E0;
+  --border-hover: #D5D2CC;
 
-  --navy: #6B140B;
-  --ink: #26130F;
-  --gold: #9E3618;                  /* High-Contrast Luxury Red */
-  --paper: #f9f9f9;
-  --cream: #f3f3f3;
-  --white: #ffffff;
-  --line: #e4e4e7;
+  /* Archival Carbon Onyx Ink & Text (WCAG AA/AAA Compliant) */
+  --text: #111113;
+  --text-dark: #111113;
+  --text-light: #27272A;
+  --muted: #3F3F46;
+  --clr-text-dark: #111113;
+  --clr-text-muted: #3F3F46;
+  --clr-border: #E7E5E0;
 
-  /* Aliases mapped to Black & Red palette */
-  --clr-rustic-primary: #6B140B;
-  --clr-rustic-secondary: #9E3618;
-  --clr-rustic-taupe: #71717a;
-  --clr-rustic-linen: #e4e4e7;
-  --clr-rustic-canvas: #f9f9f9;
-  --clr-rustic-espresso: #26130F;
-  --clr-rustic-dark: #26130F;
+  /* Accent Action & Craftsmanship */
+  --primary: #111113;
+  --primary-dark: #262524;
+  --secondary: #8C7355;
+  --accent: #DC2626;
+  --accent-wax-seal: #DC2626;
+  --leather-warm: #8C7355;
+  --vellum-highlight: #F2EFEB;
+  --success: #16A34A;
 
-  /* Typography - Modern Premium E-Commerce Atelier */
-  --font-heading: 'Outfit', 'Plus Jakarta Sans', -apple-system, sans-serif;
-  --font-body: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Legacy mappings */
+  --clr-dark-red: #B91C1C;
+  --clr-light-beige: #F2EFEB;
+  --clr-canvas: #F9F8F6;
+  --clr-main: #111113;
+  --clr-white: #FFFFFF;
+  --clr-bg: #F9F8F6;
+  --clr-black: #111113;
+  --navy: #111113;
+  --ink: #111113;
+  --paper: #F9F8F6;
+  --cream: #F2EFEB;
+
+  /* Typography: Modern Bold Grotesque Sans (matching reference image) */
+  --font-heading: 'Outfit', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+
+  /* Tactile Ambient Shadows */
+  --shadow-resting: 0 2px 8px -2px rgba(17, 17, 19, 0.04), 0 1px 3px 0 rgba(17, 17, 19, 0.02);
+  --shadow-lifted: 0 12px 28px -6px rgba(35, 27, 18, 0.08), 0 4px 12px -2px rgba(35, 27, 18, 0.03);
 }
 
-html, body {
-  overflow-x: hidden !important;
-  max-width: 100vw !important;
-  width: 100% !important;
+/* ==================== TACTILE PAPER-BASE & CHARCOAL-INK SKELETON ANIMATION ==================== */
+@keyframes paper-ink-pulse {
+  0%, 100% {
+    background-color: #F9F8F6;
+    border-color: rgba(17, 17, 19, 0.06);
+  }
+  50% {
+    background-color: rgba(17, 17, 19, 0.075);
+    border-color: rgba(17, 17, 19, 0.12);
+  }
+}
+
+@keyframes charcoal-ink-breathe {
+  0%, 100% {
+    opacity: 0.06;
+  }
+  50% {
+    opacity: 0.14;
+  }
+}
+
+@keyframes paper-ink-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeleton-paper-ink {
   position: relative;
-  font-family: var(--font-body);
-  color: var(--text);
-  background-color: var(--bg);
-  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-  -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  letter-spacing: -0.011em;
+  overflow: hidden;
+  background-color: var(--paper-base, #F9F8F6);
+  animation: paper-ink-pulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-#root {
-  overflow-x: hidden !important;
-  max-width: 100vw !important;
-  width: 100% !important;
-  min-height: 100vh;
-  background-color: var(--bg);
-  color: var(--text);
-  display: flex;
-  flex-direction: column;
+.skeleton-paper-ink::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(17, 17, 19, 0.045) 50%,
+    transparent 100%
+  );
+  animation: paper-ink-shimmer 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-h1, h2, h3, h4, h5, h6, .font-heading, .font-outfit {
-  font-family: var(--font-heading) !important;
-  letter-spacing: -0.025em;
-  font-weight: 700;
+.skeleton-charcoal-bar {
+  background-color: var(--charcoal-ink, #111113);
+  animation: charcoal-ink-breathe 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-p, span, label, input, button, select, textarea, .font-sans {
-  font-family: var(--font-body);
+@layer base {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    width: 100% !important;
+    position: relative;
+    font-family: var(--font-body);
+    color: var(--color-charcoal-ink, #111113);
+    background-color: var(--color-paper-base, #F9F8F6);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    letter-spacing: -0.005em;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #root {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    width: 100% !important;
+    min-height: 100vh;
+    background-color: var(--color-paper-base, #F9F8F6);
+    color: var(--color-charcoal-ink, #111113);
+    display: flex;
+    flex-direction: column;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-heading {
+    font-family: var(--font-heading);
+    text-wrap: balance;
+  }
+
+  p, span, label, input, button, select, textarea, .font-sans {
+    font-family: var(--font-body);
+  }
+}
+
+/* WCAG 2.1 AA/AAA Contrast Safeguards for Muted Classes on Light & Dark Surfaces */
+@layer utilities {
+  .text-\[\#77767B\],
+  .text-\[\#6B7280\],
+  .text-\[\#6E6B66\],
+  .text-\[\#64748B\],
+  .text-\[\#64748b\] {
+    color: #27272A;
+  }
+
+  .text-\[\#A39E93\],
+  .text-\[\#D5D2CC\] {
+    color: #E4E4E7;
+  }
+
+  .bg-\[\#F7F7F7\],
+  .bg-\[\#F8F9FA\] {
+    background-color: var(--color-paper-base, #F9F8F6);
+  }
 }
 
 /* Disable native browser search clear/cancel buttons to prevent double-X close icon */
@@ -130,79 +201,94 @@ input[type="search"]::-ms-reveal {
   height: 0 !important;
 }
 
-/* Indra Notebook High-Contrast Components & Utilities */
-
-/* 1. Header (Obsidian Black #6B140B) */
+/* Charcoal Ink Header Tier (#111113) */
 .header-ink-blue {
-  background-color: #6B140B;
+  background-color: #111113;
   color: #FFFFFF;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(231, 229, 224, 0.15);
 }
 
-/* 2. Vibrant Crimson Red CTA Buttons */
-.btn-indra-primary, .btn-indra-primary {
-  background-color: #9E3618 !important;
+/* Warm Tactile Minimal Buttons */
+/* Primary: Charcoal Ink (#111113), text #FFFFFF, radius 4px */
+.btn-indra-primary, .btn-primary-charcoal {
+  background-color: #111113 !important;
   color: #FFFFFF !important;
-  font-weight: 800 !important;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(17, 17, 19, 0.08);
 }
 
-.btn-indra-primary:hover, .btn-indra-primary:hover {
-  background-color: #6B140B !important;
+.btn-indra-primary:hover, .btn-primary-charcoal:hover {
+  background-color: #262524 !important;
   color: #FFFFFF !important;
-  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5);
-  transform: translateY(-2px);
+  box-shadow: 0 6px 16px -2px rgba(17, 17, 19, 0.2);
+  transform: translateY(-1px);
 }
 
-.btn-indra-primary:active, .btn-indra-primary:active {
+.btn-indra-primary:active, .btn-primary-charcoal:active {
   transform: translateY(0);
 }
 
-/* 3. Primary Obsidian Black Buttons */
-.btn-ink-primary, .btn-indra-secondary {
-  background-color: #6B140B !important;
+/* Secondary (Paper Outline): transparent, 1px solid #111113, text #111113 */
+.btn-paper-outline, .btn-indra-secondary {
+  background-color: transparent !important;
+  color: #111113 !important;
+  border: 1px solid #111113 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-paper-outline:hover, .btn-indra-secondary:hover {
+  background-color: #111113 !important;
   color: #FFFFFF !important;
-  font-weight: 700 !important;
+}
+
+/* Accent Action: Wax Seal Vermilion (#DC2626) */
+.btn-wax-seal {
+  background-color: #DC2626 !important;
+  color: #FFFFFF !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px -2px rgba(220, 38, 38, 0.25);
 }
 
-.btn-ink-primary:hover, .btn-indra-secondary:hover {
-  background-color: #9E3618 !important;
-  transform: translateY(-2px);
+.btn-wax-seal:hover {
+  background-color: #B91C1C !important;
+  transform: translateY(-1px);
 }
 
-/* 4. Rounded Cards (12px) with Soft Shadows & Paper Surface */
+/* Warm Tactile Minimal Cards (Hairline border, warm resting shadow) */
 .card-ink-paper {
-  border-radius: 0px !important;
+  border-radius: 8px !important;
   background-color: #FFFFFF;
-  border: 1px solid #F1EBD5;
-  box-shadow: 0 2px 10px -2px rgba(30, 42, 94, 0.06);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+  border: 1px solid #E7E5E0;
+  box-shadow: var(--shadow-resting);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
 }
 
-/* 5. Hover Lift on Product Cards */
+/* Hover Lift on Cards (Warm Ambient Diffusion) */
 .hover-lift {
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
 }
 
 .hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 24px -4px rgba(30, 42, 94, 0.12);
-  border-color: #d8d0be;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lifted);
+  border-color: #D5D2CC;
 }
 
-/* 6. Clear Sale & Status Badges */
+/* Clear Sale & Status Badges (Strictly unboxed or subtle) */
 .badge-clear-sale {
-  background-color: #D64545;
+  background-color: #B91C1C;
   color: #FFFFFF;
   font-weight: 700;
-  border-radius: 0px !important;
-  padding: 0.18rem 0.6rem;
+  border-radius: 4px !important;
+  padding: 0.2rem 0.5rem;
   font-size: 0.6875rem;
-  letter-spacing: 0.04em;
-  box-shadow: 0 2px 6px rgba(214, 69, 69, 0.25);
+  letter-spacing: 0.03em;
 }
 
 .badge-ink-pill {
@@ -685,55 +771,6 @@ html {
   transition: transform 0.1s ease;
 }
 
-/* ==================== STITCH ATELIER HIGH-CONTRAST READABILITY SYSTEM ==================== */
-/* Eliminates low-contrast washed out text across all pages and components */
-body {
-  color: #26130F !important;
-  background-color: #FAF6F0 !important;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Ensure all headings are crisp Obsidian Black */
-h1, h2, h3, h4, h5, h6, .font-heading {
-  color: #26130F;
-}
-
-/* Elevate low-contrast grey text classes to high-contrast readable charcoal */
-.text-\[\#71717a\], .text-zinc-500, .text-stone-500 {
-  color: #3f3f46 !important;
-}
-
-.text-zinc-400, .text-stone-400 {
-  color: #52525b !important;
-}
-
-/* When inside dark obsidian containers, keep text high-contrast white/light gray */
-.bg-\[\#6B140B\] .text-zinc-400,
-.bg-\[\#26130F\] .text-zinc-400,
-.bg-\[\#26130F\] .text-zinc-400,
-.bg-\[\#131316\] .text-zinc-400,
-.bg-\[\#0b0b0e\] .text-zinc-400 {
-  color: #e4e4e7 !important;
-}
-
-.bg-\[\#6B140B\] .text-stone-400,
-.bg-\[\#26130F\] .text-stone-400,
-.bg-\[\#26130F\] .text-stone-400 {
-  color: #e4e4e7 !important;
-}
-
-.bg-\[\#6B140B\] .text-\[\#71717a\],
-.bg-\[\#26130F\] .text-\[\#71717a\] {
-  color: #d4d4d8 !important;
-}
-
-.bg-\[\#6B140B\] .text-stone-500,
-.bg-\[\#26130F\] .text-stone-500 {
-  color: #e4e4e7 !important;
-}
-
-
 /* ==================== GOOGLE TRANSLATE STYLING ==================== */
 .goog-te-banner-frame.skiptranslate,
 .goog-te-banner-frame {
@@ -758,63 +795,6 @@ body {
 }
 .VIpgJd-ZVi9od-aZ2wEe-wOHMyf {
   display: none !important;
-}
-
-
-
-/* ==========================================================================
-   ENHANCED ATELIER UI/UX: SUBTLE BORDER-RADIUS, BLACK & GOLD LUXURY EFFECTS
-   "used sum boreridused and more Efects and used black colors seds and golden corls seds"
-   ========================================================================== */
-
-:root {
-  /* ==================== BLACK LUXURY SHADES ==================== */
-  --clr-obsidian-950: #08080A;   /* Purest Velvet Black */
-  --clr-obsidian-900: #0F0F13;   /* Rich Obsidian Charcoal */
-  --clr-obsidian-850: #15151B;   /* Card Surface Black */
-  --clr-obsidian-800: #1C1C24;   /* Elevated Dark Container */
-  --clr-obsidian-700: #292934;   /* Muted Dark Slate */
-  --clr-obsidian-600: #3E3E4E;   /* Hairline Dark Border */
-
-  /* ==================== GOLDEN LUXURY SHADES ==================== */
-  --clr-gold-50:  #FCF9F2;
-  --clr-gold-100: #F7EED9;
-  --clr-gold-200: #EDDBAF;
-  --clr-gold-300: #E3C582;
-  --clr-gold-400: #D8B159;
-  --clr-gold-500: #D4AF37;       /* Royal Imperial Gold Benchmark */
-  --clr-gold-600: #BF953F;       /* Warm Burnished Gold */
-  --clr-gold-700: #99732B;       /* Deep Antique Gold */
-  --clr-gold-800: #73541D;
-  --clr-gold-900: #4D3711;
-
-  /* Metallic Gold & Obsidian Gradients */
-  --gradient-gold-foil: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
-  --gradient-gold-soft: linear-gradient(135deg, #E5B869 0%, #D4AF37 50%, #C5A059 100%);
-  --gradient-black-noir: linear-gradient(135deg, #1C1C24 0%, #0F0F13 50%, #08080A 100%);
-  --gradient-maroon-noir: linear-gradient(135deg, #6B140B 0%, #3B0B06 50%, #15151B 100%);
-
-  /* Ambient Gold Shadow */
-  --shadow-gold-sm: 0 2px 10px rgba(212, 175, 55, 0.16);
-  --shadow-gold-md: 0 8px 24px -4px rgba(212, 175, 55, 0.22);
-  --shadow-gold-glow: 0 0 28px rgba(212, 175, 55, 0.32);
-  --shadow-noir-md: 0 12px 32px -4px rgba(8, 8, 10, 0.45);
-}
-
-/* 1. Subtle, Modern Border-Radius Standards ("used sum boreridused") */
-/* Default form inputs, textareas, selects */
-input:not([type="checkbox"]):not([type="radio"]),
-textarea,
-select {
-  border-radius: 0.75rem !important; /* 12px smooth corners */
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none !important;
-  box-shadow: 0 0 0 2px #D4AF37, 0 0 16px rgba(212, 175, 55, 0.22) !important;
 }
 
 /* 2. Interactive Gold Shimmer Button Animation */

@@ -86,45 +86,53 @@ export const AboutPage: React.FC = () => {
   ];
 
   return (
-    <div className="bg-[#FAF6F0] min-h-screen text-[#26130F]">
+    <div className="bg-[#FFFFFF] min-h-screen text-[#111113]">
       <SEOHead
         title="About OMEGA Writing Notebooks & Stationery Tanzania | Our Heritage & Standards"
         description="Learn about OMEGA, Tanzania's benchmark manufacturer of Counter Books (Q2, Q3, Q4), Exercise Books, Kraft Bahasha, and educational paper goods since 1998."
       />
 
-      {/* 1. Hero Section */}
-      <section className="relative overflow-hidden w-full bg-[#111113] text-[#F9F8F6] py-14 lg:py-20 border-b border-[#E7E5E0]/15 shadow-sm">
-        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-left">
+      {/* 1. Photographic Hero with Reduced Dark Filter & Warm Light Filter */}
+      <section className="relative overflow-hidden w-full bg-[#1B1B1E] text-white py-16 lg:py-24">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-75 brightness-110 contrast-105 pointer-events-none"
+          style={{ backgroundImage: `url('/hero-desk-bg.jpg')` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#111113]/65 via-[#111113]/45 to-[#111113]/20 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-[#F9F8F6]/15 to-white/25 mix-blend-soft-light pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_25%,rgba(255,255,255,0.22),transparent_65%)] pointer-events-none" />
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-left">
           <div className="max-w-3xl space-y-5">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md bg-[#8C7355] text-white text-xs font-bold font-mono shadow-xs">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[2px] bg-[#DC2626] text-white text-[11px] font-bold uppercase tracking-widest">
               <Sparkles className="w-3.5 h-3.5 text-white" />
               <span>Soweto SIDO Mbeya &amp; Kariakoo Hub · Est. 1998</span>
             </div>
 
-            <h1 className="font-heading text-3xl sm:text-5xl lg:text-5xl font-black text-[#F9F8F6] leading-[1.12] tracking-tight">
+            <h1 className="font-sans text-3xl sm:text-5xl font-extrabold text-white leading-[1.12] tracking-tight">
               {language === 'sw' ? 'Historia na Ubora wa' : '28 Years of Precision'} <br />
-              <span className="text-[#C8A27A]">
+              <span className="text-[#DC2626]">
                 {language === 'sw' ? 'Madaftari ya OMEGA Tanzania' : 'Paper Engineering in Tanzania'}
               </span>
             </h1>
 
-            <p className="text-sm sm:text-base text-[#A39E93] leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-white/80 leading-relaxed font-normal max-w-2xl">
               {language === 'sw'
                 ? 'Tangu mwaka 1998, OMEGA imekuwa ikiongoza katika utengenezaji na usambazaji wa vitabu vya majalada magumu (Counter Books), madaftari ya mazoezi ya shule, na bahasha nzito za kraft zenye uimara usiomomonyoka.'
                 : 'Founded in Mbeya in 1998, OMEGA has set the gold standard for durable student exercise books, professional accounting ledgers, and institutional stationery across East Africa.'}
             </p>
 
-            <div className="pt-2 flex flex-wrap items-center gap-3">
+            <div className="pt-2 flex flex-wrap items-center gap-3.5">
               <Link
                 to="/catalog"
-                className="px-6 py-3 rounded-md bg-[#8C7355] hover:bg-[#725c42] text-white font-mono font-bold text-xs uppercase tracking-wider inline-flex items-center gap-2 shadow-xs transition-colors"
+                className="px-7 py-3.5 rounded-[2px] bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold text-[11px] uppercase tracking-[0.14em] inline-flex items-center gap-2 transition-colors"
               >
                 <span>{language === 'sw' ? 'TAZAMA BIDHAA' : 'EXPLORE CATALOGUE'}</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-3.5 h-3.5" />
               </Link>
               <Link
                 to="/contact"
-                className="px-6 py-3 rounded-md bg-white/10 hover:bg-white/20 text-white text-xs font-mono font-bold uppercase tracking-wider transition-colors border border-white/20"
+                className="px-7 py-3.5 rounded-[2px] bg-transparent hover:bg-white hover:text-[#111113] text-white text-[11px] font-bold uppercase tracking-[0.14em] transition-colors border border-white/80"
               >
                 <span>{language === 'sw' ? 'WASILIANA NASI' : 'CONTACT DISPATCH'}</span>
               </Link>
@@ -133,88 +141,128 @@ export const AboutPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 2. Scale & Trust Metrics */}
-      <section className="bg-white py-8 border-b border-[#E7E5E0]">
-        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-left">
-            <div className="p-5 rounded-lg bg-[#F9F8F6] border border-[#E7E5E0] shadow-2xs">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#111113] font-heading block">
+      {/* 2. Full-Width Crimson Red Callout Strip with Upward White Triangle Notch */}
+      <section className="relative bg-[#D62828] text-white py-9 sm:py-11">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="space-y-1.5 max-w-xl text-left">
+            <h2 className="text-lg sm:text-xl font-extrabold uppercase tracking-wide text-white">
+              ISO-GRADE THREAD-SEWN BINDING &amp; 70 GSM PURE WOOD-FREE BOND
+            </h2>
+            <p className="text-xs sm:text-[13px] text-white/85 leading-relaxed">
+              Engineered at Soweto SIDO Industrial Estate in Mbeya and distributed nationwide through our Kariakoo commercial hub in Dar es Salaam.
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <Link
+              to="/wholesale"
+              className="px-6 py-3 bg-white text-[#111113] hover:bg-zinc-100 text-[11px] font-bold uppercase tracking-[0.14em] rounded-[2px] transition-colors shadow-xs"
+            >
+              WHOLESALE RATES
+            </Link>
+            <Link
+              to="/school-tenders"
+              className="px-6 py-3 bg-transparent border border-white/85 text-white hover:bg-white hover:text-[#111113] text-[11px] font-bold uppercase tracking-[0.14em] rounded-[2px] transition-colors"
+            >
+              SCHOOL TENDERS
+            </Link>
+          </div>
+        </div>
+
+        {/* Bottom-left white upward-pointing triangle notch */}
+        <div className="absolute -bottom-[1px] left-12 sm:left-24 lg:left-36 w-0 h-0 border-l-[26px] border-l-transparent border-r-[26px] border-r-transparent border-b-[18px] border-b-white">
+          <span className="absolute -left-1.5 top-1.5 text-[10px] text-zinc-400 font-bold leading-none select-none">
+            ⌄
+          </span>
+        </div>
+      </section>
+
+      {/* 3. Scale & Trust Metrics */}
+      <section className="bg-white py-12 border-b border-[#EEEEEE]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 border-t border-l border-[#EEEEEE] text-left">
+            <div className="p-6 sm:p-8 bg-white border-r border-b border-[#EEEEEE]">
+              <span className="text-2xl sm:text-3xl font-extrabold text-[#111113] block">
                 28 Years
               </span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#111113] mt-1">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#111113] mt-1.5">
                 Continuous Heritage
               </h4>
-              <p className="text-[11px] text-[#7D685E] mt-0.5">Manufacturing in Tanzania since 1998</p>
+              <p className="text-xs text-[#77767B] mt-1">Manufacturing in Tanzania since 1998</p>
             </div>
 
-            <div className="p-5 bg-[#FAF6F0] shadow-xs">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#9E3618] font-heading block">
+            <div className="p-6 sm:p-8 bg-white border-r border-b border-[#EEEEEE]">
+              <span className="text-2xl sm:text-3xl font-extrabold text-[#DC2626] block">
                 500,000+
               </span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#26130F] mt-1">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#111113] mt-1.5">
                 Annual Book Volume
               </h4>
-              <p className="text-[11px] text-[#7D685E] mt-0.5">Supplied to schools and enterprises</p>
+              <p className="text-xs text-[#77767B] mt-1">Supplied to schools and enterprises</p>
             </div>
 
-            <div className="p-5 bg-[#FAF6F0] shadow-xs">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#6B140B] font-heading block">
+            <div className="p-6 sm:p-8 bg-white border-r border-b border-[#EEEEEE]">
+              <span className="text-2xl sm:text-3xl font-extrabold text-[#111113] block">
                 1,200+
               </span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#26130F] mt-1">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#111113] mt-1.5">
                 Partner Schools &amp; Tenders
               </h4>
-              <p className="text-[11px] text-[#7D685E] mt-0.5">Direct carton dispatch every term</p>
+              <p className="text-xs text-[#77767B] mt-1">Direct carton dispatch every term</p>
             </div>
 
-            <div className="p-5 bg-[#FAF6F0] shadow-xs">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#9E3618] font-heading block">
+            <div className="p-6 sm:p-8 bg-white border-r border-b border-[#EEEEEE]">
+              <span className="text-2xl sm:text-3xl font-extrabold text-[#DC2626] block">
                 31 Regions
               </span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#26130F] mt-1">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#111113] mt-1.5">
                 Nationwide Delivery
               </h4>
-              <p className="text-[11px] text-[#7D685E] mt-0.5">Daily bus parcel waybill logistics</p>
+              <p className="text-xs text-[#77767B] mt-1">Daily bus parcel waybill logistics</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 3. Four Manufacturing Pillars */}
-      <section className="py-14 lg:py-20 bg-[#F9F8F6]">
-        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          <div className="text-center space-y-2 max-w-2xl mx-auto">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#8C7355] font-heading block">
+      {/* 4. Four Manufacturing Pillars */}
+      <section className="py-16 lg:py-24 bg-[#FFFFFF]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <div className="text-center space-y-3 max-w-2xl mx-auto">
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#DC2626] block">
               OUR CRAFTSMANSHIP
             </span>
-            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#111113] tracking-tight">
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-[#111113] tracking-tight">
               {language === 'sw' ? 'Viwango Vinavyotutofautisha' : 'The Four OMEGA Quality Standards'}
             </h2>
-            <p className="text-xs sm:text-sm text-[#6E6B66]">
+            <p className="text-xs sm:text-sm text-[#77767B]">
               {language === 'sw'
                 ? 'Kila daftari linalotoka kiwandani kwetu linapitia hatua madhubuti za ubora ili kuhakikisha kumbukumbu zako zinadumu maisha yote.'
                 : 'Every batch produced at our Mbeya works undergoes rigorous pull-testing, ink-retention trials, and moisture tests.'}
             </p>
+            <div className="pt-1 flex justify-center text-[#111113]">
+              <svg className="w-16 h-3" viewBox="0 0 60 8" fill="none">
+                <path d="M0 4 Q 5 0, 10 4 T 20 4 T 30 4 T 40 4 T 50 4 T 60 4" stroke="currentColor" strokeWidth="1.8" fill="none" />
+              </svg>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-t border-l border-[#EEEEEE] text-left">
             {standards.map((std, idx) => {
               const Icon = std.icon;
               return (
                 <div
                   key={idx}
-                  className="p-6 bg-white rounded-lg border border-[#E7E5E0] space-y-3 shadow-2xs"
+                  className="p-7 bg-white border-r border-b border-[#EEEEEE] space-y-3 hover:bg-[#FAFAFA] transition-colors group"
                 >
-                  <div className="w-12 h-12 rounded-md bg-[#F2EFEB] text-[#8C7355] flex items-center justify-center font-bold shadow-xs">
-                    <Icon className="w-6 h-6" />
+                  <div className="w-12 h-12 rounded-[2px] bg-[#F7F7F7] text-[#111113] group-hover:bg-[#DC2626] group-hover:text-white flex items-center justify-center font-bold transition-colors">
+                    <Icon className="w-6 h-6 stroke-[1.5]" />
                   </div>
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#8C7355] block">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#DC2626] block">
                     {std.spec}
                   </span>
-                  <h3 className="font-heading font-bold text-base text-[#111113]">
+                  <h3 className="font-bold text-base text-[#111113]">
                     {std.title}
                   </h3>
-                  <p className="text-xs text-[#6E6B66] leading-relaxed">
+                  <p className="text-xs text-[#77767B] leading-relaxed">
                     {std.desc}
                   </p>
                 </div>
@@ -224,37 +272,37 @@ export const AboutPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 4. Heritage & Timeline */}
-      <section className="py-14 lg:py-20 bg-white">
+      {/* 5. Heritage & Timeline */}
+      <section className="py-16 lg:py-24 bg-[#F7F7F7] border-y border-[#EEEEEE]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 text-left">
-          <div className="text-center space-y-2">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#9E3618] font-heading block">
+          <div className="text-center space-y-3">
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#DC2626] block">
               CHRONOLOGY
             </span>
-            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#26130F] tracking-tight">
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-[#111113] tracking-tight">
               {language === 'sw' ? 'Safari ya OMEGA Tanzania' : 'Milestones in Our Journey'}
             </h2>
-            <p className="text-xs sm:text-sm text-[#7D685E] max-w-lg mx-auto">
+            <p className="text-xs sm:text-sm text-[#77767B] max-w-lg mx-auto">
               {language === 'sw'
                 ? 'Kutoka karakana ndogo ya Mbeya hadi kuwa chapa inayoaminika zaidi kwa elimu na biashara nchini.'
                 : 'From a humble Mbeya paper workshop into Tanzania’s national benchmark for institutional stationery.'}
             </p>
           </div>
 
-          <div className="relative border-l-2 border-[#D8C3A5] ml-4 md:ml-32 space-y-10 pl-6 md:pl-10">
+          <div className="relative border-l-2 border-[#E5E7EB] ml-4 md:ml-32 space-y-10 pl-6 md:pl-10">
             {milestones.map((m, idx) => (
               <div key={idx} className="relative group">
                 {/* Dot */}
-                <div className="absolute -left-[31px] md:-left-[47px] top-1.5 w-4 h-4 bg-[#FAF6F0] border-2 border-[#9E3618] group-hover:bg-[#9E3618] transition-colors" />
+                <div className="absolute -left-[31px] md:-left-[47px] top-1.5 w-4 h-4 bg-white border-2 border-[#DC2626] group-hover:bg-[#DC2626] transition-colors" />
 
-                <div className="space-y-1">
-                  <span className="font-mono text-sm font-bold text-[#9E3618] tracking-wider block">
+                <div className="space-y-1 bg-white p-5 border border-[#EEEEEE]">
+                  <span className="font-mono text-sm font-bold text-[#DC2626] tracking-wider block">
                     {m.year}
                   </span>
-                  <h3 className="font-heading font-bold text-lg text-[#26130F]">
+                  <h3 className="font-bold text-lg text-[#111113]">
                     {m.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-[#7D685E] leading-relaxed max-w-2xl">
+                  <p className="text-xs sm:text-sm text-[#77767B] leading-relaxed max-w-2xl">
                     {m.desc}
                   </p>
                 </div>
@@ -264,79 +312,79 @@ export const AboutPage: React.FC = () => {
         </div>
       </section>
 
-      {/* 5. Factory & Dispatch Locations */}
-      <section className="py-14 lg:py-20 bg-[#F9F8F6]">
-        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-left">
+      {/* 6. Factory & Dispatch Locations */}
+      <section className="py-16 lg:py-24 bg-[#FFFFFF]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-left">
           <div className="text-center space-y-2">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#8C7355] font-heading block">
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#DC2626] block">
               OPERATIONS &amp; LOGISTICS
             </span>
-            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#111113] tracking-tight">
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-[#111113] tracking-tight">
               {language === 'sw' ? 'Vituo Vyetu Rasmi' : 'Our Facilities & Dispatch Hubs'}
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 border-t border-l border-[#EEEEEE]">
             {/* Facility 1 */}
-            <div className="p-8 bg-white rounded-lg border border-[#E7E5E0] space-y-4 shadow-2xs">
-              <div className="w-12 h-12 rounded-md bg-[#F2EFEB] text-[#8C7355] flex items-center justify-center font-bold">
+            <div className="p-8 bg-white border-r border-b border-[#EEEEEE] space-y-4">
+              <div className="w-12 h-12 rounded-[2px] bg-[#F7F7F7] text-[#DC2626] flex items-center justify-center font-bold">
                 <Factory className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#8C7355] block">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#DC2626] block">
                   CENTRAL WORKS &amp; BINDERY
                 </span>
-                <h3 className="font-heading font-bold text-xl text-[#111113] mt-1">
+                <h3 className="font-bold text-xl text-[#111113] mt-1">
                   Soweto SIDO Industrial Estate
                 </h3>
-                <p className="text-xs text-[#6E6B66] mt-1 font-mono">
+                <p className="text-xs text-[#77767B] mt-1 font-mono">
                   Mbeya City, Southern Highlands, Tanzania
                 </p>
               </div>
-              <p className="text-xs text-[#6E6B66] leading-relaxed">
+              <p className="text-xs text-[#77767B] leading-relaxed">
                 Home to our heavy-duty Smyth thread-sewing lines, precision guillotine cutters, and carton bundling depot. Supplies upcountry tenders and regional bulk orders.
               </p>
               <div className="pt-2 text-xs font-semibold text-[#111113] flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#8C7355]" /> Factory direct carton pickups &amp; school tenders
+                <CheckCircle2 className="w-4 h-4 text-[#DC2626]" /> Factory direct carton pickups &amp; school tenders
               </div>
             </div>
 
             {/* Facility 2 */}
-            <div className="p-8 bg-white rounded-lg border border-[#E7E5E0] space-y-4 shadow-2xs">
-              <div className="w-12 h-12 rounded-md bg-[#F2EFEB] text-[#8C7355] flex items-center justify-center font-bold">
+            <div className="p-8 bg-white border-r border-b border-[#EEEEEE] space-y-4">
+              <div className="w-12 h-12 rounded-[2px] bg-[#F7F7F7] text-[#DC2626] flex items-center justify-center font-bold">
                 <Truck className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#8C7355] block">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#DC2626] block">
                   COMMERCIAL DISPATCH &amp; WAREHOUSE
                 </span>
-                <h3 className="font-heading font-bold text-xl text-[#111113] mt-1">
+                <h3 className="font-bold text-xl text-[#111113] mt-1">
                   Kariakoo Commercial District
                 </h3>
-                <p className="text-xs text-[#6E6B66] mt-1 font-mono">
+                <p className="text-xs text-[#77767B] mt-1 font-mono">
                   Dar es Salaam, Coastal Region, Tanzania
                 </p>
               </div>
-              <p className="text-xs text-[#6E6B66] leading-relaxed">
+              <p className="text-xs text-[#77767B] leading-relaxed">
                 Our national distribution hub handling rapid bus parcel waybills to all 31 regions via Shabiby, BM Coach, Abood, New Force, and Saibaba.
               </p>
               <div className="pt-2 text-xs font-semibold text-[#111113] flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#8C7355]" /> Same-day bus parcel waybill drop-offs
+                <CheckCircle2 className="w-4 h-4 text-[#DC2626]" /> Same-day bus parcel waybill drop-offs
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 6. Call To Action Banner */}
-      <section className="py-14 bg-[#111113] text-[#F9F8F6] border-t border-[#E7E5E0]/15">
-        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#F9F8F6] tracking-tight">
+      {/* 7. Call To Action Banner */}
+      <section className="py-16 bg-[#D62828] text-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
             {language === 'sw'
               ? 'Weka Oda ya Madaftari ya OMEGA Leo'
               : 'Equip Your Students & Accountants with OMEGA'}
           </h2>
-          <p className="text-xs sm:text-sm text-[#A39E93] max-w-xl mx-auto">
+          <p className="text-xs sm:text-sm text-white/85 max-w-xl mx-auto">
             {language === 'sw'
               ? 'Pata punguzo la moja kwa moja la bei za jumla kutoka kiwandani na usafirishaji wa haraka mkoani kwako.'
               : 'Direct factory pricing, dedicated bus parcel tracking, and guaranteed thread-sewn durability.'}
@@ -344,14 +392,14 @@ export const AboutPage: React.FC = () => {
           <div className="flex flex-wrap justify-center items-center gap-4 pt-2">
             <Link
               to="/wholesale"
-              className="bg-[#8C7355] hover:bg-[#725c42] text-white px-8 py-3.5 rounded-md text-xs sm:text-sm uppercase tracking-wider font-bold inline-flex items-center gap-2 shadow-xs transition-colors"
+              className="bg-white text-[#111113] hover:bg-zinc-100 px-8 py-3.5 rounded-[2px] text-[11px] uppercase tracking-[0.14em] font-bold inline-flex items-center gap-2 shadow-xs transition-colors"
             >
               <span>{language === 'sw' ? 'HESABU BEI YA JUMLA' : 'WHOLESALE CARTON CALCULATOR'}</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               to="/contact"
-              className="px-7 py-3.5 rounded-md bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors border border-white/20"
+              className="px-7 py-3.5 rounded-[2px] bg-transparent hover:bg-white hover:text-[#111113] text-white text-[11px] font-bold uppercase tracking-[0.14em] transition-colors border border-white/85"
             >
               <span>{language === 'sw' ? 'WASILIANA NASI' : 'SPEAK WITH SALES'}</span>
             </Link>

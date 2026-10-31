@@ -1890,10 +1890,10 @@
     "featured": true,
     "freeDelivery": true,
     "gallery": [
-      "/omega-products/catalog-sheet-doms-sharpeners.jpeg",
+      "/omega-products/doms-stopper-sharpeners.jpeg",
       "/omega-products/catalog-sheet-staples-doms.jpeg"
     ],
-    "image": "/omega-products/catalog-sheet-doms-sharpeners.jpeg",
+    "image": "/omega-products/doms-stopper-sharpeners.jpeg",
     "name": "DOMS Stopper Pencil Sharpeners (Counter Tub of 50)",
     "packaging": "50 Pcs / Tub",
     "price": 350000,
@@ -1943,9 +1943,10 @@
     "featured": false,
     "freeDelivery": true,
     "gallery": [
+      "/omega-products/doms-dustless-chalk.jpeg",
       "/omega-products/catalog-sheet-ruler-roll-chalk.jpeg"
     ],
-    "image": "/omega-products/catalog-sheet-ruler-roll-chalk.jpeg",
+    "image": "/omega-products/doms-dustless-chalk.jpeg",
     "name": "DOMS Dustless White Chalk (1 Ctn / 10 Box / 10 Pkt)",
     "packaging": "1 Ctn (10 Boxes × 10 Pkts × 10 Pcs)",
     "price": 175000,
@@ -2048,9 +2049,10 @@
     "featured": false,
     "freeDelivery": true,
     "gallery": [
+      "/omega-products/kangaro-blue-pin-staples.jpeg",
       "/omega-products/catalog-sheet-staples-doms.jpeg"
     ],
-    "image": "/omega-products/catalog-sheet-staples-doms.jpeg",
+    "image": "/omega-products/kangaro-blue-pin-staples.jpeg",
     "name": "Kangaro Blue Pin Staples 24/6",
     "packaging": "20 Boxes / Master Pack",
     "price": 204000,
@@ -2100,9 +2102,10 @@
     "featured": false,
     "freeDelivery": true,
     "gallery": [
+      "/omega-products/greathall-red-pin-staples.jpeg",
       "/omega-products/catalog-sheet-staples-doms.jpeg"
     ],
-    "image": "/omega-products/catalog-sheet-staples-doms.jpeg",
+    "image": "/omega-products/greathall-red-pin-staples.jpeg",
     "name": "Great Hall Red Pin Staples Model 369",
     "packaging": "10 Boxes / Pack",
     "price": 100000,

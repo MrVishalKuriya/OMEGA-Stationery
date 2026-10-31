@@ -16,6 +16,7 @@ import Chip from '@mui/material/Chip';
 import Tooltip from '@mui/material/Tooltip';
 import { Product, formatPrice } from '@/types/store';
 import { ProductCard } from '@/components/ProductCard';
+import { CatalogSkeletonGrid } from '@/components/ProductCardSkeleton';
 
 interface CatalogProductListProps {
   products: Product[];
@@ -28,6 +29,7 @@ interface CatalogProductListProps {
   language: string;
   onAddToCart: (id: string, qty: number, isWholesale: boolean) => void;
   onResetFilters: () => void;
+  isLoading?: boolean;
 }
 
 export const CatalogProductList: React.FC<CatalogProductListProps> = ({
@@ -41,7 +43,18 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
   language,
   onAddToCart,
   onResetFilters,
+  isLoading = false,
 }) => {
+  if (isLoading) {
+    return (
+      <CatalogSkeletonGrid
+        viewMode={viewMode}
+        count={viewMode === 'grid' ? 6 : 4}
+        columns={3}
+      />
+    );
+  }
+
   if (products.length === 0) {
     return (
       <motion.div
@@ -93,8 +106,8 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
           animate="show"
           className="grid grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-5"
         >
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {products.map((product, idx) => (
+            <ProductCard key={`${product.id}-${idx}`} product={product} />
           ))}
         </motion.div>
       ) : (
@@ -104,7 +117,7 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
           animate="show"
           className="space-y-3.5"
         >
-          {products.map((p) => {
+          {products.map((p, idx) => {
             const effectivePrice =
               p.discountPrice && p.discountPrice < p.price ? p.discountPrice : p.price;
             const hasDiscount = effectivePrice < p.price;
@@ -114,12 +127,15 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
 
             return (
               <motion.div
-                key={p.id}
+                key={`${p.id}-${idx}`}
                 whileHover={{ y: -2, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] } }}
                 className="bg-[#FFFFFF] rounded-lg p-4 sm:p-5 flex flex-col md:flex-row items-center justify-between gap-5 transition-all border border-[#E7E5E0] hover:border-[#8C7355]/60 shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04)] hover:shadow-[0_12px_28px_-6px_rgba(35,27,18,0.08)] text-left relative overflow-hidden group"
               >
-                {/* Image Stage - Centered, Symmetrical, Never Clipped */}
-                <div className="w-full md:w-36 h-36 rounded-md bg-[#F9F8F6] p-3 flex items-center justify-center shrink-0 overflow-hidden relative border border-[#E7E5E0] group-hover:border-[#D5D2CC] transition-colors">
+                {/* Image Stage - Consistent 1:1 Aspect Ratio & Rounded-lg Container */}
+                <Link
+                  to={`/product/${p.id}`}
+                  className="w-full sm:w-36 md:w-36 aspect-square rounded-lg bg-[#FFFFFF] flex items-center justify-center shrink-0 overflow-hidden relative border border-[#E7E5E0] group-hover:border-[#DC2626]/40 transition-colors"
+                >
                   {p.badge && (
                     <span className="absolute top-2 left-2 z-10 bg-[#111113] text-white text-[8px] font-semibold px-2 py-0.5 rounded-[4px] shadow-2xs font-mono">
                       {p.badge}
@@ -128,12 +144,12 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                   <img
                     src={p.image}
                     alt={p.name}
-                    className="max-h-full max-w-full object-contain object-center drop-shadow-2xs transition-transform duration-350 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.02]"
+                    className="w-full h-full aspect-square object-cover object-center rounded-lg transition-transform duration-300 ease-out group-hover:scale-105"
                     onError={(e) => {
                       (e.target as HTMLElement).style.display = 'none';
                     }}
                   />
-                </div>
+                </Link>
 
                 {/* Information Column (High Icon Density) */}
                 <div className="flex-1 space-y-1.5 w-full min-w-0">
@@ -253,7 +269,7 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                         whileTap={{ scale: 0.95 }}
                         type="button"
                         onClick={() => onAddToCart(p.id, 1, true)}
-                        className="px-3.5 py-2 rounded-md bg-[#111113] hover:bg-[#262524] text-white text-xs font-semibold flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
+                        className="px-3.5 py-2 rounded-[2px] bg-[#111113] hover:bg-[#DC2626] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
                       >
                         <ShoppingBag className="w-3.5 h-3.5" />
                         <span>Add</span>
@@ -265,7 +281,7 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                         href={directWhatsappUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-2 rounded-md bg-[#25D366] hover:bg-[#20ba59] text-white shadow-2xs transition-all cursor-pointer flex items-center justify-center"
+                        className="p-2 rounded-[2px] bg-[#25D366] hover:bg-[#20ba59] text-white shadow-2xs transition-all cursor-pointer flex items-center justify-center"
                       >
                         <MessageCircle className="w-4 h-4" />
                       </motion.a>
@@ -278,7 +294,7 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
         </motion.div>
       )}
 
-      {/* Pagination (DESIGN.md: 6px radius, Charcoal & White) */}
+      {/* Pagination */}
       {totalPages > 1 && (
         <nav
           role="navigation"
@@ -289,7 +305,7 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
             type="button"
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="px-3 py-2 rounded-md bg-[#FFFFFF] text-xs font-semibold text-[#111113] hover:bg-[#F9F8F6] disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1 border border-[#E7E5E0] shadow-2xs transition-colors cursor-pointer"
+            className="px-3 py-2 rounded-[2px] bg-[#FFFFFF] text-xs font-bold uppercase tracking-wider text-[#111113] hover:bg-[#111113] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1 border border-[#E5E7EB] shadow-2xs transition-colors cursor-pointer"
           >
             <ChevronLeft className="w-3.5 h-3.5" />
             <span>Prev</span>
@@ -303,10 +319,10 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                 type="button"
                 onClick={() => onPageChange(pageNum)}
                 aria-current={isCurrent ? 'page' : undefined}
-                className={`w-8 h-8 rounded-md text-xs font-semibold font-mono transition-all cursor-pointer ${
+                className={`w-8 h-8 rounded-[2px] text-xs font-bold font-mono transition-all cursor-pointer ${
                   isCurrent
-                    ? 'bg-[#111113] text-[#FFFFFF] shadow-2xs'
-                    : 'bg-[#FFFFFF] text-[#111113] hover:bg-[#F9F8F6] border border-[#E7E5E0]'
+                    ? 'bg-[#DC2626] text-[#FFFFFF] shadow-2xs'
+                    : 'bg-[#FFFFFF] text-[#111113] hover:bg-[#111113] hover:text-white border border-[#E5E7EB]'
                 }`}
               >
                 {pageNum}
@@ -318,7 +334,7 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
             type="button"
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="px-3 py-2 rounded-md bg-[#FFFFFF] text-xs font-semibold text-[#111113] hover:bg-[#F9F8F6] disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1 border border-[#E7E5E0] shadow-2xs transition-colors cursor-pointer"
+            className="px-3 py-2 rounded-[2px] bg-[#FFFFFF] text-xs font-bold uppercase tracking-wider text-[#111113] hover:bg-[#111113] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1 border border-[#E5E7EB] shadow-2xs transition-colors cursor-pointer"
           >
             <span>Next</span>
             <ChevronRight className="w-3.5 h-3.5" />

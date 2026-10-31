@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { ProductCard } from '@/components/ProductCard';
+import { CatalogSkeletonGrid } from '@/components/ProductCardSkeleton';
 import { Hero } from '../components/Hero';
 import { SEOHead } from '@/components/SEOHead';
 import { TRANSLATIONS } from '@/data/translations';
@@ -52,11 +53,12 @@ import { triggerLuxuryConfetti } from '@/utils/confetti';
  * - Radii: Cards 8px (rounded-lg), Controls 6px (rounded-md)
  */
 export const HomePage: React.FC = () => {
-  const { products, storeConfig, language } = useStore();
+  const { products, storeConfig, language, isCatalogLoading } = useStore();
   const t = (TRANSLATIONS[language] || TRANSLATIONS.en) as any;
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState<'all' | 'counter' | 'exercise' | 'bahasha' | 'wholesale'>('all');
+  const [isTabLoading, setIsTabLoading] = useState<boolean>(false);
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<'all' | 'counter' | 'exercise' | 'bahasha'>('all');
 
   // Wholesale calculator state
@@ -65,23 +67,32 @@ export const HomePage: React.FC = () => {
 
   const currency = storeConfig.currencySymbol || 'TSh';
 
-  // Dynamic products lookup
-  const q2Prod = useMemo(() => products.find((p) => p.sku === 'OMG-CB-Q2' || p.id === 'prod-omega-cb-q2' || p.name.includes('Q2')), [products]);
-  const q3Prod = useMemo(() => products.find((p) => p.sku === 'OMG-CB-Q3' || p.id === 'prod-omega-cb-q3' || p.name.includes('Q3')), [products]);
-  const q4Prod = useMemo(() => products.find((p) => p.sku === 'OMG-CB-Q4' || p.id === 'prod-omega-cb-q4' || p.name.includes('Q4')), [products]);
-  const ex200Prod = useMemo(() => products.find((p) => p.sku === 'OMG-EX-200SL' || p.id === 'prod-omega-ex-200sl' || p.name.includes('200 Pages')), [products]);
-  const ex100Prod = useMemo(() => products.find((p) => p.sku === 'OMG-EX-100SL' || p.id === 'prod-omega-ex-100sl' || p.name.includes('100 Pages')), [products]);
-  const ex80Prod = useMemo(() => products.find((p) => p.sku === 'OMG-EX-80' || p.id === 'prod-omega-ex-80' || p.name.includes('80 Pages')), [products]);
+  // Dynamic products lookup with strict mutual exclusion to avoid duplicate references
+  const q2Prod = useMemo(() => products.find((p) => p.sku === 'OMG-CB-Q2' || p.id === 'prod-omega-cb-q2' || (p.name.includes('Q2') && p.category === 'Counter Books')), [products]);
+  const q3Prod = useMemo(() => products.find((p) => p.sku === 'OMG-CB-Q3' || p.id === 'prod-omega-cb-q3' || (p.name.includes('Q3') && p.category === 'Counter Books')), [products]);
+  const q4Prod = useMemo(() => products.find((p) => p.sku === 'OMG-CB-Q4' || p.id === 'prod-omega-cb-q4' || (p.name.includes('Q4') && p.category === 'Counter Books')), [products]);
+  const ex200Prod = useMemo(() => products.find((p) => (p.sku === 'OMG-EX-200SL' || p.id === 'prod-omega-ex-200sl' || (p.category === 'Exercise Books' && p.name.includes('200'))) && p.id !== 'prod-omega-stiff-200'), [products]);
+  const ex100Prod = useMemo(() => products.find((p) => (p.sku === 'OMG-EX-100SL' || p.id === 'prod-omega-ex-100sl' || (p.category === 'Exercise Books' && p.name.includes('100'))) && p.id !== 'prod-omega-stiff-200'), [products]);
+  const ex80Prod = useMemo(() => products.find((p) => p.sku === 'OMG-EX-80' || p.id === 'prod-omega-ex-80' || (p.category === 'Exercise Books' && p.name.includes('80'))), [products]);
   const bahashaProd = useMemo(() => products.find((p) => p.sku === 'OMG-BAHASHA-A4' || p.id === 'prod-omega-bahasha-a4' || p.name.includes('Bahasha')), [products]);
-  const stiffProd = useMemo(() => products.find((p) => p.id === 'prod-omega-stiff-200' || p.name.includes('Stiff')), [products]);
+  const stiffProd = useMemo(() => products.find((p) => p.id === 'prod-omega-stiff-200' || p.name.includes('Stiff Cover')), [products]);
 
   // Filter products cleanly without clutter (Hick's Law)
   const filteredProducts = useMemo(() => {
-    if (activeTab === 'counter') return products.filter((p) => p.category === 'Counter Books');
-    if (activeTab === 'exercise') return products.filter((p) => p.category === 'Exercise Books');
-    if (activeTab === 'bahasha') return products.filter((p) => p.category === 'Bahasha & Envelopes');
-    if (activeTab === 'wholesale') return products.filter((p) => Boolean(p.wholesalePrice));
-    return products.slice(0, 8);
+    let result: typeof products = [];
+    if (activeTab === 'counter') result = products.filter((p) => p.category === 'Counter Books');
+    else if (activeTab === 'exercise') result = products.filter((p) => p.category === 'Exercise Books');
+    else if (activeTab === 'bahasha') result = products.filter((p) => p.category === 'Bahasha & Envelopes');
+    else if (activeTab === 'wholesale') result = products.filter((p) => Boolean(p.wholesalePrice));
+    else result = products.slice(0, 8);
+
+    // Deduplicate items by ID
+    const seen = new Set<string>();
+    return result.filter((p) => {
+      if (!p?.id || seen.has(p.id)) return false;
+      seen.add(p.id);
+      return true;
+    });
   }, [products, activeTab]);
 
   const cleanWhatsappDigits = storeConfig.whatsappNumber
@@ -94,10 +105,11 @@ export const HomePage: React.FC = () => {
       : 'Hello OMEGA Stationery, I would like to inquire about wholesale catalog pricing.'
   )}`;
 
-  // Deals of the day
+  // Deals of the day - Guaranteed distinct keys and target product navigation
   const dealsOfTheDay = useMemo(() => [
     {
-      id: q2Prod?.id || 'prod-omega-cb-q2',
+      id: 'deal-q2-192p',
+      productId: q2Prod?.id || 'prod-omega-cb-q2',
       name: language === 'sw' ? 'Counter Book Q2 (Kurasa 192)' : 'Counter Book Q2 (192p)',
       spec: language === 'sw' ? 'Mshono wa Uzi · 48 pcs/katoni' : 'Smyth-Sewn · 48 pcs/box',
       price: q2Prod?.price || 1500,
@@ -108,7 +120,8 @@ export const HomePage: React.FC = () => {
       carton: language === 'sw' ? 'TSh 56,000 / katoni' : 'TSh 56,000 / ctn',
     },
     {
-      id: ex200Prod?.id || 'prod-omega-ex-200sl',
+      id: 'deal-ex-200p',
+      productId: ex200Prod?.id || 'prod-omega-ex-200sl',
       name: language === 'sw' ? 'Daftari Kurasa 200 (Wanafunzi)' : '200p Exercise Book',
       spec: language === 'sw' ? '70 GSM Bond · 36 pcs/katoni' : '70 GSM Bond · 36 pcs/box',
       price: ex200Prod?.price || 1600,
@@ -119,7 +132,8 @@ export const HomePage: React.FC = () => {
       carton: language === 'sw' ? 'TSh 48,000 / katoni' : 'TSh 48,000 / ctn',
     },
     {
-      id: q3Prod?.id || 'prod-omega-cb-q3',
+      id: 'deal-q3-288p',
+      productId: q3Prod?.id || 'prod-omega-cb-q3',
       name: language === 'sw' ? 'Counter Book Q3 (Kurasa 288)' : 'Counter Book Q3 (288p)',
       spec: language === 'sw' ? 'Jalada Gumu · 36 pcs/katoni' : 'Hardcover · 36 pcs/box',
       price: q3Prod?.price || 2000,
@@ -130,7 +144,8 @@ export const HomePage: React.FC = () => {
       carton: language === 'sw' ? 'TSh 57,000 / katoni' : 'TSh 57,000 / ctn',
     },
     {
-      id: stiffProd?.id || 'prod-omega-stiff-200',
+      id: 'deal-stiff-200p',
+      productId: stiffProd?.id || 'prod-omega-stiff-200',
       name: language === 'sw' ? 'Stiff Cover Kurasa 200' : 'Stiff Cover 200p Ledger',
       spec: language === 'sw' ? 'Poly Spine Imara · 36 pcs/katoni' : 'Reinforced Poly Spine · 36 pcs/box',
       price: stiffProd?.price || 1700,
@@ -141,7 +156,8 @@ export const HomePage: React.FC = () => {
       carton: language === 'sw' ? 'TSh 52,000 / katoni' : 'TSh 52,000 / ctn',
     },
     {
-      id: q4Prod?.id || 'prod-omega-cb-q4',
+      id: 'deal-q4-384p',
+      productId: q4Prod?.id || 'prod-omega-cb-q4',
       name: language === 'sw' ? 'Counter Book Q4 (Kurasa 384)' : 'Counter Book Q4 (384p)',
       spec: language === 'sw' ? 'Mshono wa Uzi · 24 pcs/katoni' : 'Smyth-Sewn · 24 pcs/box',
       price: q4Prod?.price || 2600,
@@ -152,7 +168,8 @@ export const HomePage: React.FC = () => {
       carton: language === 'sw' ? 'TSh 60,000 / katoni' : 'TSh 60,000 / ctn',
     },
     {
-      id: bahashaProd?.id || 'prod-omega-bahasha-a4',
+      id: 'deal-bahasha-a4',
+      productId: bahashaProd?.id || 'prod-omega-bahasha-a4',
       name: language === 'sw' ? 'Kraft Bahasha A4 Nzito' : 'A4 Heavy Kraft Bahasha',
       spec: language === 'sw' ? '120 GSM Kraft · 100 pcs/pakiti' : '120 GSM Tear-Proof · 100 pcs/pk',
       price: bahashaProd?.price || 350,
@@ -228,7 +245,7 @@ export const HomePage: React.FC = () => {
   ];
 
   return (
-    <div className="w-full bg-[#F9F8F6] min-h-screen text-[#111113] space-y-10 sm:space-y-14 pb-16">
+    <div className="w-full bg-paper-base min-h-screen text-charcoal-ink pb-16">
       <SEOHead
         title={
           language === 'sw'
@@ -242,288 +259,299 @@ export const HomePage: React.FC = () => {
         }
       />
 
-      {/* 1. HERO SECTION (1360px Centered) */}
+      {/* 1. HERO SECTION (Flush edge-to-edge) */}
       <Hero whatsappGreetingUrl={whatsappGreetingUrl} />
 
-      {/* 2. FOUR PRIMARY B2B CATEGORY CARDS (Centered 1360px Grid) */}
-      <section className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 text-left">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[4px] bg-[#F2EFEB] text-[#8C7355] border border-[#E7E5E0] font-mono text-[10px] font-semibold uppercase tracking-wider">
-                <Sparkles className="w-3 h-3 text-[#8C7355]" />
-                <span>KIWANDA CHA MBEYA SOWETO SIDO</span>
-              </div>
-              <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-semibold text-[#111113] tracking-tight mt-2">
-                {language === 'sw' ? 'Kategoria Kuu za Kiwandani' : 'Core Manufacturing Product Lines'}
-              </h2>
-              <p className="text-xs sm:text-sm text-[#6E6B66] mt-1 max-w-2xl font-normal">
-                {language === 'sw'
-                  ? 'Madaftari na vifaa vilivyotengenezwa mahususi kwa shule za sekondari, vyuo vikuu na vituo vya jumla Tanzania.'
-                  : 'Engineered specifically for schools, universities, institutional tenders, and nationwide commercial stockists.'}
-              </p>
-            </div>
-
-            <Link
-              to="/catalog"
-              className="px-5 py-2.5 rounded-md bg-[#111113] hover:bg-[#262524] text-[#FFFFFF] text-xs font-sans font-semibold uppercase tracking-wider inline-flex items-center gap-1.5 self-start sm:self-auto shadow-2xs transition-all active:scale-97 cursor-pointer"
-            >
-              <span>{language === 'sw' ? 'Katalogi Kamili' : 'Full Catalog'}</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-            {primaryB2BCategories.map((cat, idx) => (
-              <motion.div
-                key={idx}
-                whileHover={{ y: -4, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
-                onClick={() => navigate(cat.link)}
-                className="bg-[#FFFFFF] rounded-lg p-5 shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04)] hover:shadow-[0_12px_28px_-6px_rgba(35,27,18,0.08)] transition-all flex flex-col justify-between cursor-pointer group text-left h-full border border-[#E7E5E0] hover:border-[#8C7355]/60"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="text-[9px] font-mono font-semibold text-[#111113] bg-[#F2EFEB] border border-[#E7E5E0] px-2 py-0.5 rounded-[4px]">
-                      {cat.badge}
-                    </span>
-                    <span className="text-xs font-mono font-bold text-[#8C7355]">
-                      {language === 'sw' ? cat.priceSw : cat.price}
-                    </span>
-                  </div>
-
-                  {/* Centered, balanced image container */}
-                  <div className="aspect-square w-full bg-[#F9F8F6] rounded-md p-4 flex items-center justify-center overflow-hidden mb-3 border border-[#E7E5E0]">
-                    <img
-                      src={cat.image}
-                      alt={cat.title}
-                      className="max-h-full max-w-full object-contain group-hover:scale-[1.025] transition-transform duration-350 ease-[cubic-bezier(0.16,1,0.3,1)] drop-shadow-2xs"
-                      loading="lazy"
-                    />
-                  </div>
-
-                  <h3 className="font-heading text-sm sm:text-base font-semibold text-[#111113] group-hover:text-[#DC2626] transition-colors leading-snug">
-                    {language === 'sw' ? cat.titleSw : cat.title}
-                  </h3>
-
-                  <p className="text-xs text-[#6E6B66] mt-1.5 leading-relaxed font-normal">
-                    {language === 'sw' ? cat.descSw : cat.desc}
-                  </p>
-                </div>
-
-                <div className="pt-3 mt-4 border-t border-[#E7E5E0] flex items-center justify-between text-xs font-mono font-semibold text-[#111113] group-hover:text-[#DC2626]">
-                  <span>{language === 'sw' ? 'Angalia Bei za Katoni' : 'Explore Carton Rates'}</span>
-                  <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 3. DEALS OF THE DAY RAIL (Centered 1360px) */}
-      <section className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#FFFFFF] rounded-lg p-5 sm:p-7 shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04)] border border-[#E7E5E0] space-y-5">
-          {/* Header */}
-          <div className="flex items-center justify-between pb-3 border-b border-[#E7E5E0]">
-            <div className="flex items-center gap-3">
-              <span className="w-10 h-10 rounded-md bg-[#F9F8F6] text-[#8C7355] border border-[#E7E5E0] flex items-center justify-center shrink-0">
-                <IconLightningDeal className="w-5 h-5 text-[#8C7355]" />
-              </span>
-              <div className="text-left">
-                <h2 className="font-heading text-base sm:text-lg font-semibold text-[#111113] tracking-tight">
-                  {t.dealsDayTitle}
-                </h2>
-                <p className="text-xs text-[#6E6B66] mt-0.5">{t.dealsDaySubtitle}</p>
-              </div>
-            </div>
-
-            <Link
-              to="/catalog"
-              className="px-4 py-2 rounded-md bg-[#111113] hover:bg-[#262524] text-white text-xs font-sans font-semibold uppercase tracking-wider inline-flex items-center gap-1.5 transition-all shadow-2xs active:scale-97 cursor-pointer"
-            >
-              <span>{t.viewAll}</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-
-          {/* Cards Rail */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
-            {dealsOfTheDay.map((deal) => (
-              <motion.div
-                key={deal.id}
-                whileHover={{ y: -3, transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] } }}
-                onClick={() => navigate(`/product/${deal.id}`)}
-                className="group p-3 bg-[#FFFFFF] rounded-lg border border-[#E7E5E0] hover:border-[#8C7355]/60 hover:shadow-xs transition-all flex flex-col justify-between cursor-pointer text-left relative h-full"
-              >
-                {/* Discount Badge */}
-                <div className="absolute top-2 left-2 px-2 py-0.5 rounded-[4px] bg-[#DC2626] text-[#FFFFFF] text-[9px] font-mono font-bold uppercase leading-tight z-10 shadow-2xs">
-                  {deal.discount}
-                </div>
-
-                {/* Image Container */}
-                <div className="aspect-square w-full bg-[#F9F8F6] rounded-md p-3 flex items-center justify-center overflow-hidden mb-2.5 border border-[#E7E5E0]">
-                  <img
-                    src={deal.image}
-                    alt={deal.name}
-                    className="max-w-full max-h-full object-contain group-hover:scale-[1.02] transition-transform duration-300"
-                    loading="lazy"
-                  />
-                </div>
-
-                {/* Info Container */}
-                <div className="flex flex-col flex-1 justify-between space-y-1.5">
-                  <div className="space-y-1">
-                    <div className="min-h-[2.2rem] flex items-start">
-                      <h3 className="font-heading font-semibold text-xs text-[#111113] group-hover:text-[#DC2626] line-clamp-2 leading-snug">
-                        {deal.name}
-                      </h3>
-                    </div>
-                    
-                    <div className="flex items-center gap-1 pt-0.5">
-                      <span className="px-1.5 py-0.5 rounded-[4px] bg-[#F2EFEB] text-[#111113] text-[9px] font-semibold font-mono flex items-center gap-0.5 leading-none">
-                        <span>{deal.rating}</span>
-                        <Star className="w-2.5 h-2.5 fill-[#8C7355] text-[#8C7355]" />
-                      </span>
-                      <span className="text-[10px] text-[#6E6B66] font-mono font-normal truncate">{deal.spec}</span>
-                    </div>
-                  </div>
-
-                  <div className="pt-2 mt-auto space-y-0.5 border-t border-[#E7E5E0]">
-                    <div className="flex items-baseline gap-1.5">
-                      <span className="font-mono font-bold text-xs sm:text-sm text-[#111113]">
-                        TSh {deal.price.toLocaleString()}
-                      </span>
-                      <span className="text-[10px] text-[#6E6B66] line-through font-mono">
-                        TSh {deal.mrp.toLocaleString()}
-                      </span>
-                    </div>
-                    <span className="text-[10px] text-[#8C7355] font-mono font-semibold block truncate">
-                      {deal.carton}
-                    </span>
-                  </div>
-                </div>
-
-              </motion.div>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
-      {/* 4. WHOLESALE & MANUFACTURER PROMISE STRIP (Centered 1360px) */}
-      <section className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#111113] rounded-lg p-6 sm:p-9 text-white shadow-[0_2px_8px_-2px_rgba(17,17,19,0.06)] border border-[#E7E5E0]/20 text-left flex flex-col lg:flex-row items-center justify-between gap-6 relative overflow-hidden">
-          <div className="space-y-2 max-w-2xl">
-            <span className="px-3 py-1 rounded-[4px] bg-[#262524] text-[#8C7355] border border-[#8C7355]/40 font-mono text-[10px] font-semibold uppercase tracking-wider inline-flex items-center gap-1.5">
-              <Sparkles className="w-3 h-3 text-[#8C7355]" />
-              <span>{language === 'sw' ? 'ZABUNI ZA SHULE NA BEI YA JUMLA' : 'DIRECT FACTORY WHOLESALE CATALOG'}</span>
-            </span>
-            <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-semibold text-white leading-tight">
-              {language === 'sw'
-                ? 'Agiza Moja kwa Moja Kiwandani Mbeya Kwa Bei ya Katoni'
-                : 'Direct Factory Dispatch: Bulk Cartons for Schools & Wholesalers'}
+      {/* 2. FULL-WIDTH CRIMSON RED CALLOUT BANNER WITH BOTTOM-LEFT WHITE UPWARD NOTCH & CHEVRON (Exact match to reference image) */}
+      <section className="relative w-full bg-[#D62828] text-white py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1180px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="text-left space-y-2 max-w-2xl">
+            <h2 className="font-heading text-xl sm:text-2xl md:text-[26px] font-extrabold uppercase tracking-wide text-white">
+              {language === 'sw' ? 'KIWANDA CHA MADAFTARI OMEGA TANZANIA' : 'OMEGA STATIONERY & BOOKS TANZANIA'}
             </h2>
-            <p className="text-xs sm:text-sm text-[#D5D2CC] leading-relaxed font-normal">
+            <p className="text-xs sm:text-[13px] text-white leading-relaxed font-normal">
               {language === 'sw'
-                ? 'Pata punguzo la hadi 18% unapoagiza kuanzia katoni 5. Ankara rasmi za TRA EFD zitatolewa na mzigo utakabidhiwa kwenye basi siku hiyo hiyo.'
-                : 'Save up to 18% on bulk carton tiers. Full institutional EFD tax invoice compliance and guaranteed same-day waybill handoff at major bus terminals.'}
+                ? 'Uzalishaji rasmi wa kiwandani Soweto SIDO Mbeya kwa shule, vyuo na maduka ya jumla. Madaftari yaliyoshonwa kwa nyuzi na ankara rasmi za TRA EFD.'
+                : 'Manufactured at Soweto SIDO Industrial Estate in Mbeya. Supplying Smyth thread-sewn counter books, 70 GSM exercise books, and kraft envelopes across all 31 regions.'}
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 shrink-0 w-full sm:w-auto">
+          <div className="flex items-center gap-3.5 shrink-0">
+            <Link
+              to="/catalog"
+              className="px-7 py-3 rounded-[2px] bg-white text-charcoal-ink hover:bg-neutral-100 font-sans font-bold text-[11px] uppercase tracking-wider shadow-xs transition-all cursor-pointer"
+            >
+              <span>{language === 'sw' ? 'NUNUA SASA' : 'BUY NOW'}</span>
+            </Link>
             <Link
               to="/wholesale"
-              className="px-5 py-3 rounded-md bg-[#8C7355] hover:bg-[#786044] text-[#FFFFFF] font-sans font-semibold text-xs uppercase tracking-wider transition-all shadow-2xs active:scale-97 flex-1 sm:flex-none text-center cursor-pointer"
+              className="px-7 py-3 rounded-[2px] bg-transparent text-white border border-white hover:bg-white hover:text-charcoal-ink font-sans font-bold text-[11px] uppercase tracking-wider transition-all cursor-pointer"
             >
-              <span>{language === 'sw' ? 'TAZAMA BEI ZA JUMLA' : 'VIEW WHOLESALE TIERS'}</span>
+              <span>{language === 'sw' ? 'JIFUNZE ZAIDI' : 'LEARN MORE'}</span>
             </Link>
-            <a
-              href={whatsappGreetingUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-5 py-3 rounded-md bg-[#25D366] hover:bg-[#20ba59] text-white font-sans font-semibold text-xs uppercase tracking-wider inline-flex items-center justify-center gap-2 transition-all shadow-2xs active:scale-97 flex-1 sm:flex-none cursor-pointer"
-            >
-              <IconWhatsAppCustom className="w-4 h-4" />
-              <span>WhatsApp Proforma</span>
-            </a>
+          </div>
+        </div>
+
+        {/* White Upward-Pointing Triangle Notch with Small Grey Chevron at Bottom-Left (Exact match to reference image) */}
+        <div className="max-w-[1180px] mx-auto relative">
+          <div className="absolute -bottom-12 sm:-bottom-16 left-6 sm:left-10 w-0 h-0 border-l-[28px] border-l-transparent border-r-[28px] border-r-transparent border-b-[20px] border-b-white z-20 pointer-events-none flex items-end justify-center">
+            <span className="text-charcoal-ink text-[10px] leading-none translate-y-[18px] font-sans">⌄</span>
           </div>
         </div>
       </section>
 
-      {/* 5. "HOW TO ORDER" 3-STEP GUIDE (Centered 1360px) */}
-      <section className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#FFFFFF] rounded-lg p-6 sm:p-9 shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04)] border border-[#E7E5E0] text-left space-y-7">
-          <div className="text-center max-w-xl mx-auto space-y-1.5">
-            <span className="px-3 py-0.5 rounded-[4px] bg-[#F2EFEB] text-[#8C7355] border border-[#E7E5E0] font-mono text-[10px] font-semibold uppercase tracking-wider inline-block">
-              {language === 'sw' ? 'UTARATIBU WA ODA' : '3 SIMPLE STEPS'}
-            </span>
-            <h2 className="font-heading text-lg sm:text-2xl font-semibold text-[#111113]">
-              {language === 'sw' ? 'Jinsi ya Kuagiza Madaftari' : 'How to Place Your Order'}
-            </h2>
-            <p className="text-xs sm:text-sm text-[#6E6B66]">
-              {language === 'sw'
-                ? 'Utaratibu wa haraka na salama wa kuagiza na kupokea mzigo wako mkoani kwako.'
-                : 'Fast, secure order placement with nationwide bus terminal dispatch within 24 hours.'}
-            </p>
+      {/* 3. "OUR SERVICES" 2-ROW ASYMMETRIC HAIRLINE GRID ON PURE WHITE (Exact match to reference image) */}
+      <section className="w-full bg-[#FFFFFF] py-16 sm:py-24">
+        <div className="max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {/* ROW 1: Left 4 cols ("Our Services" + text + wavy line) + Right 8 cols (2 bordered icon boxes) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
+            
+            {/* Col 1 (4 cols): Unbordered Editorial Intro */}
+            <div className="lg:col-span-4 pr-0 lg:pr-10 pb-8 lg:pb-0 flex flex-col justify-center text-left space-y-4">
+              <h2 className="font-heading text-2xl sm:text-[28px] font-bold text-charcoal-ink tracking-tight">
+                {language === 'sw' ? 'Huduma na Bidhaa' : 'Our Services'}
+              </h2>
+              <p className="text-xs sm:text-[13px] text-charcoal-ink leading-relaxed">
+                {language === 'sw'
+                  ? 'Kila daftari, jalada na bahasha hutengenezwa kwa umakini wa hali ya juu kukidhi mitaala ya NECTA na kumbukumbu za ofisi.'
+                  : 'We manufacture archival-grade hardcover counter books, NECTA syllabus student exercise books, and heavy kraft envelopes for institutions.'}
+              </p>
+              <div className="pt-1">
+                <svg className="w-16 h-3 text-charcoal-ink" viewBox="0 0 60 8" fill="none">
+                  <path d="M0 4 Q 5 0, 10 4 T 20 4 T 30 4 T 40 4 T 50 4 T 60 4" stroke="currentColor" strokeWidth="1.8" fill="none" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Col 2 (4 cols): Bordered Box 1 */}
+            <Link
+              to="/catalog?category=Counter+Books"
+              className="lg:col-span-4 p-10 sm:p-12 border border-[#E7E5E0] hover:border-[#DC2626] hover:shadow-sm transition-all flex flex-col items-center justify-center text-center space-y-4 group bg-white"
+            >
+              <div className="w-12 h-12 flex items-center justify-center text-charcoal-ink group-hover:text-[#DC2626] transition-colors">
+                <IconCounterBook className="w-9 h-9 stroke-[1.2]" />
+              </div>
+              <h3 className="font-sans font-semibold text-xs sm:text-[13px] text-charcoal-ink group-hover:text-[#DC2626] transition-colors">
+                {language === 'sw' ? 'Counter Books (Q1–Q4)' : 'Counter Books (Q1–Q4)'}
+              </h3>
+            </Link>
+
+            {/* Col 3 (4 cols): Bordered Box 2 */}
+            <Link
+              to="/catalog?category=Exercise+Books"
+              className="lg:col-span-4 p-10 sm:p-12 border border-[#E7E5E0] lg:border-l-0 hover:border-[#DC2626] hover:shadow-sm transition-all flex flex-col items-center justify-center text-center space-y-4 group bg-white"
+            >
+              <div className="w-12 h-12 flex items-center justify-center text-charcoal-ink group-hover:text-[#DC2626] transition-colors">
+                <IconExerciseBook className="w-9 h-9 stroke-[1.2]" />
+              </div>
+              <h3 className="font-sans font-semibold text-xs sm:text-[13px] text-charcoal-ink group-hover:text-[#DC2626] transition-colors">
+                {language === 'sw' ? 'Madaftari ya Shule' : 'School Exercise Books'}
+              </h3>
+            </Link>
+
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {/* ROW 2: 4 Equal Bordered Boxes spanning all 12 columns directly touching Row 1 */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:-mt-[1px]">
             {[
               {
-                step: '01',
-                title: language === 'sw' ? 'Chagua Madaftari & Vipimo' : 'Select Books & Carton Volume',
-                desc: language === 'sw'
-                  ? 'Angalia katalogi ya kiwandani, chagua aina ya madaftari (Q1–Q4, 80p–200p, au Bahasha) na kiasi cha katoni unazohitaji.'
-                  : 'Browse our full catalog, pick your quire sizes (Q2–Q4, 200p exercise, kraft envelopes), and specify your carton requirement.',
-                icon: Package,
+                title: language === 'sw' ? 'Mshono wa Uzi 180°' : 'Smyth-Sewn Binding',
+                icon: IconLayFlatSpine,
+                link: '/about',
               },
               {
-                step: '02',
-                title: language === 'sw' ? 'Thibitisha kwa WhatsApp / Simu' : 'Confirm via WhatsApp & Get EFD Invoice',
-                desc: language === 'sw'
-                  ? 'Bofya kitufe cha WhatsApp ili kutuma orodha yako. Meneja wetu wa mauzo atatuma ankara rasmi ya kiwanda yenye TRA EFD mara moja.'
-                  : 'Send your cart via WhatsApp with one click. Our factory sales manager issues your formal EFD proforma quote instantly.',
-                icon: MessageCircle,
+                title: language === 'sw' ? 'Karatasi Nzito 70 GSM' : '70 GSM Bleed-Proof Paper',
+                icon: IconBleedProofPaper,
+                link: '/catalog',
               },
               {
-                step: '03',
-                title: language === 'sw' ? 'Mzigo Unatumwa Kwenye Basi' : 'Same-Day Bus Terminal Waybill',
-                desc: language === 'sw'
-                  ? 'Mzigo wako unafungwa vizuri na kukabidhiwa kwenye ofisi ya basi (Abood, Shabiby, BM, New Force n.k.) na utatumiwa stakabadhi ya mzigo (waybill).'
-                  : 'Your order is strapped and handed over to your preferred bus terminal courier with immediate tracking waybill confirmation.',
-                icon: Truck,
+                title: language === 'sw' ? 'Bahasha Nzito za Kraft' : 'Heavy Kraft Bahasha',
+                icon: IconKraftBahasha,
+                link: '/catalog?category=Bahasha+%26+Envelopes',
               },
-            ].map((s, idx) => {
-              const Icon = s.icon;
+              {
+                title: language === 'sw' ? 'Mabasi Mikoa Yote 31' : '31 Regions Bus Dispatch',
+                icon: IconNationwideBus,
+                link: '/shipping-guide',
+              },
+            ].map((service, idx) => {
+              const Icon = service.icon;
               return (
-                <div key={idx} className="p-5 rounded-md bg-[#F9F8F6] border border-[#E7E5E0] hover:border-[#8C7355]/50 transition-all space-y-3 relative group">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-2xl font-bold text-[#8C7355]">{s.step}</span>
-                    <div className="w-9 h-9 rounded-md bg-[#FFFFFF] text-[#111113] border border-[#E7E5E0] flex items-center justify-center">
-                      <Icon className="w-4 h-4 text-[#8C7355]" />
-                    </div>
+                <Link
+                  key={idx}
+                  to={service.link}
+                  className={`p-10 sm:p-12 border border-[#E7E5E0] ${
+                    idx > 0 ? 'lg:border-l-0' : ''
+                  } hover:border-[#DC2626] hover:shadow-sm transition-all flex flex-col items-center justify-center text-center space-y-4 group bg-white`}
+                >
+                  <div className="w-12 h-12 flex items-center justify-center text-charcoal-ink group-hover:text-[#DC2626] transition-colors">
+                    <Icon className="w-9 h-9 stroke-[1.2]" />
                   </div>
-                  <h3 className="font-heading text-sm sm:text-base font-semibold text-[#111113]">{s.title}</h3>
-                  <p className="text-xs text-[#6E6B66] leading-relaxed font-normal">{s.desc}</p>
-                </div>
+                  <h3 className="font-sans font-semibold text-xs sm:text-[13px] text-charcoal-ink group-hover:text-[#DC2626] transition-colors">
+                    {service.title}
+                  </h3>
+                </Link>
               );
             })}
           </div>
+
         </div>
       </section>
 
-      {/* 6. BENCHMARK STATIONERY PICKS (Product Grid 1360px Centered) */}
+      {/* 4. ABOUT OMEGA EDITORIAL ROW ON PAPER-BASE #F9F8F6 (WCAG AAA charcoal-ink headings & body text) */}
+      <section className="w-full bg-paper-base py-16 sm:py-24">
+        <div className="max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start text-left">
+            
+            {/* Left Column (5 cols): Small charcoal label + Big Bold 3-line Headline */}
+            <div className="lg:col-span-5 space-y-3">
+              <span className="text-[11px] font-mono uppercase tracking-wider text-charcoal-ink font-bold block">
+                {language === 'sw' ? 'KUHUSU OMEGA' : 'ABOUT OMEGA'}
+              </span>
+              <h2 className="font-heading text-2xl sm:text-3xl md:text-[34px] font-bold text-charcoal-ink leading-[1.2] tracking-tight">
+                {language === 'sw'
+                  ? 'Uzalishaji thabiti wa kiwandani unazifanya shule na biashara kuwa zenye tija na faida'
+                  : 'Precision manufacturing makes classic schools and businesses effective and profitable'}
+              </h2>
+            </div>
+
+            {/* Right Column (7 cols): Two clean editorial paragraphs in charcoal-ink */}
+            <div className="lg:col-span-7 space-y-5 text-xs sm:text-[13px] text-charcoal-ink leading-[1.8]">
+              <p>
+                {language === 'sw'
+                  ? 'Tangu kuanzishwa kwetu mwaka 1998 katika eneo la viwanda la Soweto SIDO jijini Mbeya, OMEGA imebadilisha kabisa ubora wa madaftari ya shule na vitabu vya kumbukumbu za ofisi nchini Tanzania. Mshono wetu wa nyuzi (Smyth-sewn) pamoja na karatasi nzito ya 70 GSM vinahakikisha kurasa hazichomoki wala kuvujisha wino.'
+                  : 'Manufacturing notebooks and commercial stationery since 1998 at Soweto SIDO Industrial Estate in Mbeya has transformed how Tanzanian schools, universities, and bookstores procure reliable paper goods. Every Counter Book (Q1–Q4) is Smyth thread-sewn to open 180° flat without shedding pages.'}
+              </p>
+              <p>
+                {language === 'sw'
+                  ? 'Kuu kati ya mifumo yetu ya usambazaji ni pamoja na utoaji wa ankara rasmi za kodi za TRA EFD, punguzo kubwa la bei ya jumla kwa katoni, na usafirishaji wa siku hiyo hiyo kupitia vituo vya mabasi ya mikoani kufika mikoa yote 31 ya Tanzania.'
+                  : 'Chief among our institutional advantages are automated volume carton discounts, official TRA EFD fiscal tax invoicing, NECTA-compliant 8mm ruling, and same-day bus parcel waybill dispatch across all 31 regions of Tanzania.'}
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* 5. FEATURED PROJECT / FEATURED PRODUCT ON FACETED GEOMETRIC RED (Exact match to reference image) */}
+      <section className="relative w-full py-16 sm:py-24 bg-[#D62828] overflow-hidden text-center text-white">
+        {/* Geometric Angled Facets Matching Reference Image */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#E53935] via-[#D32F2F] to-[#B71C1C]" />
+        <div className="absolute -top-20 -left-20 w-80 h-80 bg-white/5 rotate-45 transform pointer-events-none" />
+        <div className="absolute top-1/3 left-8 w-28 h-28 bg-white/5 rotate-45 transform pointer-events-none" />
+        <div className="absolute -bottom-24 -right-16 w-96 h-96 bg-black/10 rotate-45 transform pointer-events-none" />
+        <div className="absolute top-10 right-12 w-48 h-48 bg-black/10 rotate-45 transform pointer-events-none" />
+
+        <div className="relative z-10 max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+          {/* Centered Header + Wavy White Line */}
+          <div className="space-y-3 max-w-xl mx-auto">
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white tracking-tight">
+              {language === 'sw' ? 'Bidhaa Maalum ya Kiwandani' : 'Featured Product'}
+            </h2>
+            <p className="text-xs sm:text-[13px] text-white/90 leading-relaxed font-normal">
+              {language === 'sw'
+                ? 'Vitabu vya Counter Books Q1–Q4 na madaftari ya mazoezi yenye mshono wa nyuzi na karatasi ya 70 GSM.'
+                : 'Smyth thread-sewn Hardcover Counter Books (Q1–Q4) and 70 GSM Student Exercise Books built for endurance.'}
+            </p>
+            <div className="flex justify-center pt-1">
+              <svg className="w-16 h-3 text-white" viewBox="0 0 60 8" fill="none">
+                <path d="M0 4 Q 5 0, 10 4 T 20 4 T 30 4 T 40 4 T 50 4 T 60 4" stroke="currentColor" strokeWidth="1.8" fill="none" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Wide Split Showcase Card: Left 8 Cols Flat-Lay Desk & Books + Right 4 Cols White Panel */}
+          <div className="max-w-5xl mx-auto bg-white text-[#111113] shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12 text-left">
+            
+            {/* Left 8 Cols: Studio Product Showcase on Desk Backdrop */}
+            <div
+              className="md:col-span-8 min-h-[280px] sm:min-h-[360px] bg-cover bg-center relative flex items-center justify-center p-6 sm:p-8"
+              style={{ backgroundImage: 'url(/hero-desk-bg.jpg)' }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-[#111113]/35 via-[#111113]/20 to-[#111113]/10 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-white/15 via-[#F9F8F6]/15 to-white/25 pointer-events-none" />
+              <div className="relative z-10 grid grid-cols-2 gap-4 sm:gap-6 w-full max-w-xl">
+                <Link
+                  to="/product/prod-omega-cb-4q"
+                  className="bg-white rounded-lg p-3.5 sm:p-4 shadow-xl border border-[#E7E5E0] flex flex-col items-center justify-between group hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+                >
+                  <div className="w-full aspect-square flex items-center justify-center overflow-hidden bg-white rounded-lg border border-[#E7E5E0]">
+                    <img
+                      src="/omega-products/counter-book-q4-catalog.jpeg"
+                      alt="OMEGA Hardcover Counter Book Q4"
+                      className="w-full h-full aspect-square object-cover object-center rounded-lg group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="w-full pt-3 mt-2 border-t border-[#E7E5E0] flex items-center justify-between text-[11px] font-mono">
+                    <span className="font-bold text-[#111113] truncate">Counter Book Q4</span>
+                    <span className="font-bold text-[#DC2626] shrink-0">384 Pages</span>
+                  </div>
+                </Link>
+
+                <Link
+                  to="/product/prod-omega-ex-144"
+                  className="bg-white rounded-lg p-3.5 sm:p-4 shadow-xl border border-[#E7E5E0] flex flex-col items-center justify-between group hover:-translate-y-1 transition-all duration-300 overflow-hidden"
+                >
+                  <div className="w-full aspect-square flex items-center justify-center overflow-hidden bg-white rounded-lg border border-[#E7E5E0]">
+                    <img
+                      src="/omega-products/exercise-book-144p-catalog.jpeg"
+                      alt="OMEGA Student Exercise Book"
+                      className="w-full h-full aspect-square object-cover object-center rounded-lg group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="w-full pt-3 mt-2 border-t border-[#E7E5E0] flex items-center justify-between text-[11px] font-mono">
+                    <span className="font-bold text-[#111113] truncate">Exercise Book A4</span>
+                    <span className="font-bold text-[#DC2626] shrink-0">70 GSM</span>
+                  </div>
+                </Link>
+              </div>
+            </div>
+
+            {/* Right 4 Cols: Crisp White Panel with Title, Copy & Red GET STARTED Button */}
+            <div className="md:col-span-4 p-7 sm:p-10 flex flex-col justify-center space-y-5 bg-white text-charcoal-ink">
+              <div className="space-y-3">
+                <h3 className="font-heading text-lg sm:text-xl font-bold text-charcoal-ink">
+                  {language === 'sw' ? 'Vitabu vya Ofisi & Shule' : 'Corporate & School Books'}
+                </h3>
+                <p className="text-xs sm:text-[13px] text-charcoal-ink leading-relaxed">
+                  {language === 'sw'
+                    ? 'Jalada gumu la 1.8mm, mshono wa nyuzi unaofunguka tambarare 180°, na karatasi nyeupe ya 70 GSM kwa matumizi ya shule na ofisi.'
+                    : '1.8mm laminated hardcover board, Smyth thread-sewn lay-flat spine, and 70 GSM bleed-proof paper for schools, banks, and enterprises.'}
+                </p>
+              </div>
+
+              <div className="pt-1">
+                <Link
+                  to="/catalog"
+                  className="inline-flex items-center justify-center py-3 px-7 rounded-[3px] bg-[#C62828] hover:bg-[#B71C1C] text-white font-sans font-bold text-[11px] uppercase tracking-wider shadow-xs transition-all cursor-pointer"
+                >
+                  <span>{language === 'sw' ? 'ANZA SASA' : 'GET STARTED'}</span>
+                </Link>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* 6. BENCHMARK STATIONERY PICKS (Product Grid) */}
+      <div className="space-y-12 sm:space-y-16 pt-12 sm:pt-16 bg-paper-base text-charcoal-ink">
       <section className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#FFFFFF] rounded-lg p-5 sm:p-7 shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04)] border border-[#E7E5E0] space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-[#E7E5E0]">
+        <div className="bg-[#FFFFFF] rounded-[8px] p-6 sm:p-8 shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04),0_1px_3px_0_rgba(17,17,19,0.02)] border border-[#E7E5E0] space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E7E5E0]">
             <div className="text-left">
-              <h2 className="font-heading text-base sm:text-lg font-semibold text-[#111113] tracking-tight">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-[#B91C1C] font-semibold block mb-1">
+                {language === 'sw' ? 'Mkusanyiko Maarufu' : 'Signature Collection'}
+              </span>
+              <h2 className="font-heading text-xl sm:text-2xl font-bold text-charcoal-ink tracking-tight">
                 {language === 'sw' ? 'Madaftari Yanayoongoza Tanzania' : 'Benchmark Stationery Picks'}
               </h2>
-              <p className="text-xs text-[#6E6B66] mt-0.5">
+              <p className="text-xs text-charcoal-ink mt-1 font-normal">
                 {language === 'sw'
                   ? 'Madaftari yanayoongoza kwa kuagizwa na shule, vyuo na wafanyabiashara'
-                  : "Tanzania's most requested school and accounting books"}
+                  : "Tanzania's most requested school and accounting books directly from factory production lines"}
               </p>
             </div>
 
@@ -537,11 +565,17 @@ export const HomePage: React.FC = () => {
                 <button
                   key={tab.id}
                   type="button"
-                  onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-3.5 py-1.5 rounded-[4px] text-xs font-mono font-medium uppercase whitespace-nowrap cursor-pointer transition-all ${
+                  onClick={() => {
+                    if (activeTab !== tab.id) {
+                      setIsTabLoading(true);
+                      setActiveTab(tab.id as any);
+                      setTimeout(() => setIsTabLoading(false), 240);
+                    }
+                  }}
+                  className={`px-4 py-2 rounded-[4px] text-xs font-mono font-bold uppercase tracking-wider whitespace-nowrap cursor-pointer transition-all ${
                     activeTab === tab.id
-                      ? 'bg-[#111113] text-[#FFFFFF] shadow-2xs'
-                      : 'bg-[#F9F8F6] hover:bg-[#F2EFEB] text-[#6E6B66] border border-[#E7E5E0]'
+                      ? 'bg-[#111113] text-[#FFFFFF] shadow-sm'
+                      : 'bg-paper-base hover:bg-[#F2EFEB] text-charcoal-ink border border-[#E7E5E0]'
                   }`}
                 >
                   {tab.label}
@@ -550,16 +584,20 @@ export const HomePage: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5">
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          {isCatalogLoading || isTabLoading ? (
+            <CatalogSkeletonGrid viewMode="grid" count={4} columns={4} />
+          ) : (
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              {filteredProducts.map((product, idx) => (
+                <ProductCard key={`${product.id}-${idx}`} product={product} />
+              ))}
+            </div>
+          )}
 
-          <div className="pt-3 text-center">
+          <div className="pt-4 text-center">
             <Link
               to="/catalog"
-              className="inline-flex items-center gap-2 px-7 py-3 rounded-md bg-[#111113] hover:bg-[#262524] text-white text-xs font-sans font-semibold uppercase tracking-wider shadow-2xs transition-all active:scale-97 cursor-pointer"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-[4px] bg-[#111113] hover:bg-[#262524] text-white text-xs font-sans font-semibold uppercase tracking-wider shadow-sm transition-all duration-200 cursor-pointer"
             >
               <span>{language === 'sw' ? 'Tazama Katalogi Kamili' : 'Explore Complete Catalogue (44 Items)'}</span>
               <ArrowRight className="w-4 h-4" />
@@ -570,21 +608,26 @@ export const HomePage: React.FC = () => {
 
       {/* 7. WHOLESALE CALCULATOR (Centered 1360px) */}
       <section className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#FFFFFF] text-[#111113] rounded-lg p-5 sm:p-8 shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04)] border border-[#E7E5E0] space-y-5 max-w-2xl mx-auto text-left">
-          <div className="text-center space-y-1.5">
-            <span className="px-3 py-0.5 rounded-[4px] bg-[#F2EFEB] text-[#8C7355] border border-[#E7E5E0] text-[10px] font-mono font-semibold uppercase tracking-wider inline-block">
-              {language === 'sw' ? 'BEI YA JUMLA YA KIWANDANI' : 'B2B FACTORY PRICING'}
+        <div className="bg-[#FFFFFF] text-charcoal-ink rounded-[4px] p-6 sm:p-9 shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04)] border border-[#E5E7EB] space-y-6 max-w-2xl mx-auto text-left">
+          <div className="text-center space-y-2">
+            <span className="px-3 py-1 rounded-[2px] bg-[#111113] text-[#FFFFFF] text-[10px] font-mono font-bold uppercase tracking-widest inline-block">
+              {language === 'sw' ? 'BEI YA JUMLA YA KIWANDANI' : 'B2B FACTORY PRICING ESTIMATOR'}
             </span>
-            <h2 className="font-heading text-lg sm:text-2xl font-semibold text-[#111113]">{t.bulkCalculatorTitle}</h2>
-            <p className="text-xs text-[#6E6B66] max-w-md mx-auto">{t.bulkCalculatorSubtitle}</p>
+            <h2 className="font-heading text-xl sm:text-2xl font-black text-charcoal-ink tracking-tight">{t.bulkCalculatorTitle}</h2>
+            <p className="text-xs text-charcoal-ink max-w-md mx-auto">{t.bulkCalculatorSubtitle}</p>
+            <div className="pt-1 flex justify-center">
+              <svg className="w-16 h-3 text-[#DC2626]" viewBox="0 0 60 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 5 Q 7.5 0, 15 5 T 30 5 T 45 5 T 60 5" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+              </svg>
+            </div>
           </div>
 
-          <div className="space-y-4">
-            <div className="space-y-1.5">
-              <label className="text-xs font-mono font-semibold text-[#111113] uppercase tracking-wider block">
+          <div className="space-y-5">
+            <div className="space-y-2">
+              <label className="text-xs font-mono font-bold text-charcoal-ink uppercase tracking-wider block">
                 {language === 'sw' ? 'Chagua Aina ya Kitabu' : 'Select Book Model'}
               </label>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-3 gap-2.5">
                 {[
                   { id: 'q2', name: 'Counter Book Q2', note: '192p · 48/ctn' },
                   { id: 'q3', name: 'Counter Book Q3', note: '288p · 36/ctn' },
@@ -594,14 +637,14 @@ export const HomePage: React.FC = () => {
                     key={b.id}
                     type="button"
                     onClick={() => setCalcBookType(b.id as any)}
-                    className={`p-3 rounded-md text-left transition-all cursor-pointer border ${
+                    className={`p-3.5 rounded-[2px] text-left transition-all cursor-pointer border ${
                       calcBookType === b.id
-                        ? 'bg-[#111113] text-[#FFFFFF] border-[#111113] shadow-2xs'
-                        : 'bg-[#F9F8F6] hover:bg-[#F2EFEB] text-[#111113] border-[#E7E5E0]'
+                        ? 'bg-[#DC2626] text-[#FFFFFF] border-[#DC2626] shadow-sm'
+                        : 'bg-paper-base hover:bg-[#F3F4F6] text-charcoal-ink border-[#E5E7EB]'
                     }`}
                   >
-                    <div className="font-semibold text-xs truncate">{b.name}</div>
-                    <div className={`text-[10px] font-mono mt-0.5 ${calcBookType === b.id ? 'text-[#8C7355]' : 'text-[#6E6B66]'}`}>
+                    <div className="font-bold text-xs truncate">{b.name}</div>
+                    <div className={`text-[10px] font-mono mt-1 ${calcBookType === b.id ? 'text-white' : 'text-[#3F3F46]'}`}>
                       {b.note}
                     </div>
                   </button>
@@ -609,44 +652,44 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
 
-            <div className="space-y-1.5">
-              <label className="text-xs font-mono font-semibold text-[#111113] uppercase tracking-wider block">
+            <div className="space-y-2">
+              <label className="text-xs font-mono font-bold text-charcoal-ink uppercase tracking-wider block">
                 {language === 'sw' ? 'Idadi ya Katoni (Cartons)' : 'Carton Quantity'}
               </label>
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-3">
                 <button
                   type="button"
                   onClick={() => setCalcQuantity(Math.max(1, calcQuantity - 1))}
-                  className="w-10 h-10 rounded-md bg-[#F9F8F6] hover:bg-[#F2EFEB] text-[#111113] border border-[#E7E5E0] flex items-center justify-center font-bold text-lg active:scale-95 transition-all cursor-pointer"
+                  className="w-11 h-11 rounded-[2px] bg-paper-base hover:bg-[#111113] hover:text-white text-charcoal-ink border border-[#E5E7EB] flex items-center justify-center font-bold text-lg active:scale-95 transition-all cursor-pointer"
                 >
                   <Minus className="w-4 h-4" />
                 </button>
-                <div className="flex-1 py-2 rounded-md bg-[#F9F8F6] border border-[#E7E5E0] text-center font-mono font-bold text-base text-[#111113]">
+                <div className="flex-1 py-2.5 rounded-[2px] bg-paper-base border border-[#E5E7EB] text-center font-mono font-bold text-base text-charcoal-ink">
                   {calcQuantity} {language === 'sw' ? 'Katoni' : 'Cartons'}
                 </div>
                 <button
                   type="button"
                   onClick={() => setCalcQuantity(calcQuantity + 1)}
-                  className="w-10 h-10 rounded-md bg-[#F9F8F6] hover:bg-[#F2EFEB] text-[#111113] border border-[#E7E5E0] flex items-center justify-center font-bold text-lg active:scale-95 transition-all cursor-pointer"
+                  className="w-11 h-11 rounded-[2px] bg-paper-base hover:bg-[#111113] hover:text-white text-charcoal-ink border border-[#E5E7EB] flex items-center justify-center font-bold text-lg active:scale-95 transition-all cursor-pointer"
                 >
                   <Plus className="w-4 h-4" />
                 </button>
               </div>
             </div>
 
-            {/* Total readout card (DESIGN.md: Charcoal Ink Surface) */}
-            <div className="p-4 rounded-md bg-[#111113] text-white border border-[#262524] space-y-2.5 shadow-2xs">
+            {/* Total readout card */}
+            <div className="p-5 rounded-[4px] bg-[#111113] text-white border border-[#262524] space-y-3 shadow-md">
               <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-[#D5D2CC]">{language === 'sw' ? 'Jumla ya Vitabu' : 'Total Book Units'}:</span>
-                <span className="font-bold text-white">{totalUnits.toLocaleString()} pcs</span>
+                <span className="text-[#E4E4E7]">{language === 'sw' ? 'Jumla ya Vitabu' : 'Total Book Units'}:</span>
+                <span className="font-bold text-white tabular-nums">{totalUnits.toLocaleString()} pcs</span>
               </div>
               <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-[#D5D2CC]">{language === 'sw' ? 'Bei kwa Kitabu' : 'Cost Per Book'}:</span>
-                <span className="font-bold text-[#8C7355]">TSh {Math.round(unitPrice).toLocaleString()}</span>
+                <span className="text-[#E4E4E7]">{language === 'sw' ? 'Bei kwa Kitabu' : 'Cost Per Book'}:</span>
+                <span className="font-bold text-[#F87171] tabular-nums">TSh {Math.round(unitPrice).toLocaleString()}</span>
               </div>
-              <div className="flex items-center justify-between pt-2 border-t border-[#262524]">
-                <span className="font-heading font-semibold text-sm text-white">{language === 'sw' ? 'Jumla ya Katoni' : 'Grand Total'}:</span>
-                <span className="font-mono font-bold text-xl text-white">TSh {calcTotal.toLocaleString()}</span>
+              <div className="flex items-center justify-between pt-3 border-t border-[#262524]">
+                <span className="font-heading font-bold text-sm text-[#FFFFFF]">{language === 'sw' ? 'Jumla ya Katoni' : 'Estimated Total'}:</span>
+                <span className="font-mono font-black text-2xl text-white tabular-nums">TSh {calcTotal.toLocaleString()}</span>
               </div>
             </div>
 
@@ -657,7 +700,7 @@ export const HomePage: React.FC = () => {
               onClick={() => triggerLuxuryConfetti()}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-3 rounded-md bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-sans font-semibold uppercase tracking-wider flex items-center justify-center gap-2 shadow-2xs transition-all cursor-pointer"
+              className="w-full py-3.5 rounded-[2px] bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-sans font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer"
             >
               <IconWhatsAppCustom className="w-4 h-4" />
               <span>{language === 'sw' ? 'Tuma Oda Hii WhatsApp' : 'Submit Proforma Order'}</span>
@@ -668,32 +711,37 @@ export const HomePage: React.FC = () => {
 
       {/* 8. VERIFIED TANZANIAN CUSTOMER REVIEWS (Centered 1360px) */}
       <section className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#FFFFFF] rounded-lg p-5 sm:p-8 shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04)] border border-[#E7E5E0] space-y-6 text-left">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
-            <div>
-              <span className="px-3 py-0.5 rounded-[4px] bg-[#F2EFEB] text-[#8C7355] border border-[#E7E5E0] font-mono text-[10px] font-semibold uppercase tracking-wider inline-block">
-                {language === 'sw' ? 'USHUHUDA WA WATEJA' : 'VERIFIED REVIEWS'}
+        <div className="bg-[#FFFFFF] rounded-[4px] p-6 sm:p-9 shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04)] border border-[#E5E7EB] space-y-6 text-left">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-[#E5E7EB]">
+            <div className="space-y-1.5">
+              <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#3F3F46] font-mono block">
+                {language === 'sw' ? 'USHUHUDA WA WATEJA' : 'VERIFIED INSTITUTIONAL REVIEWS'}
               </span>
-              <h2 className="font-heading text-lg sm:text-2xl font-semibold text-[#111113] mt-1.5">
+              <h2 className="font-heading text-xl sm:text-2xl font-black text-charcoal-ink tracking-tight">
                 {language === 'sw' ? 'Wateja Wetu Wanasemaje' : 'Trusted by Schools & Wholesalers'}
               </h2>
-              <p className="text-xs sm:text-sm text-[#6E6B66] mt-0.5">
+              <p className="text-xs sm:text-sm text-charcoal-ink font-normal">
                 {language === 'sw'
                   ? 'Zaidi ya vitabu 500,000+ husambazwa kila mwaka kwa shule, maduka na vyuo mikoa 31.'
                   : 'Over 500,000+ notebooks distributed annually across 1,200+ partner schools and distributors.'}
               </p>
+              <div className="pt-1">
+                <svg className="w-16 h-3 text-[#DC2626]" viewBox="0 0 60 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0 5 Q 7.5 0, 15 5 T 30 5 T 45 5 T 60 5" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                </svg>
+              </div>
             </div>
-            <div className="flex items-center gap-1.5 text-xs font-mono font-semibold">
+            <div className="flex items-center gap-2 text-xs font-mono font-semibold">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-[#8C7355] text-[#8C7355]" />
+                  <Star key={i} className="w-4 h-4 fill-[#DC2626] text-[#DC2626]" />
                 ))}
               </div>
-              <span className="text-[#111113] ml-1">4.9 / 5.0 Rating</span>
+              <span className="text-charcoal-ink ml-1 font-bold">4.9 / 5.0 Rating</span>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 border border-[#E5E7EB]">
             {[
               {
                 name: 'Mwl. Peter Mwita',
@@ -720,21 +768,26 @@ export const HomePage: React.FC = () => {
                   : 'Their A4 kraft bahasha envelopes are genuinely tear-proof even when loaded with examination records. Urgent replenishment orders reach us in under 24 hours via express bus logistics.',
               },
             ].map((rev, idx) => (
-              <div key={idx} className="p-5 rounded-md bg-[#F9F8F6] border border-[#E7E5E0] hover:border-[#8C7355]/40 transition-all space-y-3 flex flex-col justify-between">
-                <div className="space-y-2">
+              <div
+                key={idx}
+                className={`p-6 bg-[#FFFFFF] hover:bg-paper-base transition-all space-y-4 flex flex-col justify-between ${
+                  idx < 2 ? 'border-b md:border-b-0 md:border-r border-[#E5E7EB]' : ''
+                }`}
+              >
+                <div className="space-y-3">
                   <div className="flex">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-[#8C7355] text-[#8C7355]" />
+                      <Star key={i} className="w-3.5 h-3.5 fill-[#DC2626] text-[#DC2626]" />
                     ))}
                   </div>
-                  <p className="text-xs text-[#111113] leading-relaxed italic font-normal">
+                  <p className="text-xs text-charcoal-ink leading-relaxed italic font-normal">
                     "{rev.review}"
                   </p>
                 </div>
 
-                <div className="pt-2.5 border-t border-[#E7E5E0]">
-                  <div className="font-heading font-semibold text-xs text-[#111113]">{rev.name}</div>
-                  <div className="text-[11px] text-[#6E6B66]">{rev.role} · {rev.location}</div>
+                <div className="pt-3 border-t border-[#E5E7EB]">
+                  <div className="font-heading font-bold text-xs text-charcoal-ink">{rev.name}</div>
+                  <div className="text-[11px] text-[#3F3F46] font-mono mt-0.5">{rev.role} · {rev.location}</div>
                 </div>
               </div>
             ))}
@@ -744,24 +797,24 @@ export const HomePage: React.FC = () => {
 
       {/* 9. TANZANIA PAYMENT & DELIVERY LOGISTICS STRIP (Centered 1360px) */}
       <section className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#FFFFFF] rounded-lg p-5 sm:p-7 shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04)] border border-[#E7E5E0] text-left space-y-5">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-[#E7E5E0]">
+        <div className="bg-[#FFFFFF] rounded-[4px] p-6 sm:p-8 shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04)] border border-[#E5E7EB] text-left space-y-5">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-[#E5E7EB]">
             <div>
-              <span className="text-[10px] font-mono font-semibold text-[#8C7355] uppercase tracking-wider block">
+              <span className="text-[10px] font-mono font-bold text-[#B91C1C] uppercase tracking-widest block mb-0.5">
                 {language === 'sw' ? 'MALIPO & USAFIRISHAJI TANZANIA' : 'TANZANIA PAYMENTS & LOGISTICS'}
               </span>
-              <h3 className="font-heading text-sm sm:text-base font-semibold text-[#111113]">
+              <h3 className="font-heading text-sm sm:text-base font-black text-charcoal-ink">
                 {language === 'sw'
                   ? 'Mbinu za Malipo Rasmi na Usafirishaji wa Mabasi'
                   : 'Approved Payment Channels & Bus Terminal Waybills'}
               </h3>
             </div>
-            <div className="text-xs text-[#6E6B66] font-normal">
+            <div className="text-xs text-charcoal-ink font-normal">
               {language === 'sw' ? 'Stakabadhi halisi za TRA EFD zitatolewa' : 'Official TRA EFD tax invoices included with all orders'}
             </div>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 text-center">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border border-[#E5E7EB] text-center">
             {[
               { label: 'M-Pesa', sub: 'Vodacom Lipa Namba', tag: 'Mobile Money' },
               { label: 'Mixx by Yas', sub: 'Tigo Pesa Network', tag: 'Mobile Money' },
@@ -770,12 +823,15 @@ export const HomePage: React.FC = () => {
               { label: 'Pay on Delivery', sub: 'Lipa Baada ya Mzigo', tag: 'Cash on Arrival' },
               { label: 'Mabasi Mikoa 31', sub: 'Abood, Shabiby, BM', tag: 'Same-Day Dispatch' },
             ].map((p, idx) => (
-              <div key={idx} className="p-3 rounded-md bg-[#F9F8F6] border border-[#E7E5E0] hover:border-[#8C7355]/40 transition-all space-y-0.5">
-                <span className="text-[9px] font-mono font-semibold text-[#8C7355] uppercase tracking-wider block">
+              <div
+                key={idx}
+                className="p-4 bg-[#FFFFFF] hover:bg-paper-base border-r border-b border-[#E5E7EB] transition-all space-y-1"
+              >
+                <span className="text-[9px] font-mono font-bold text-[#B91C1C] uppercase tracking-wider block">
                   {p.tag}
                 </span>
-                <div className="font-heading font-semibold text-xs text-[#111113]">{p.label}</div>
-                <div className="text-[10px] text-[#6E6B66]">{p.sub}</div>
+                <div className="font-heading font-bold text-xs text-charcoal-ink">{p.label}</div>
+                <div className="text-[10px] text-[#3F3F46]">{p.sub}</div>
               </div>
             ))}
           </div>
@@ -784,50 +840,51 @@ export const HomePage: React.FC = () => {
 
       {/* 10. CONTACT & FACTORY LOCATION (Centered 1360px) */}
       <section className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#FFFFFF] rounded-lg p-5 sm:p-8 shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04)] border border-[#E7E5E0] text-left grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div className="space-y-2 bg-[#F9F8F6] rounded-md p-5 border border-[#E7E5E0]">
-            <div className="w-10 h-10 rounded-md bg-[#FFFFFF] text-[#8C7355] border border-[#E7E5E0] flex items-center justify-center">
-              <Building2 className="w-5 h-5 text-[#8C7355]" />
+        <div className="bg-[#FFFFFF] rounded-[4px] border border-[#E5E7EB] shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04)] text-left grid grid-cols-1 md:grid-cols-3">
+          <div className="space-y-3 p-6 sm:p-8 border-b md:border-b-0 md:border-r border-[#E5E7EB] hover:bg-paper-base transition-colors">
+            <div className="w-10 h-10 rounded-[2px] bg-[#111113] text-[#FFFFFF] flex items-center justify-center">
+              <Building2 className="w-5 h-5 text-[#DC2626]" />
             </div>
-            <h4 className="font-heading font-semibold text-sm text-[#111113]">
+            <h4 className="font-heading font-black text-sm text-charcoal-ink">
               {language === 'sw' ? 'Kiwanda cha Mbeya (Headquarters)' : 'Mbeya Factory (Headquarters)'}
             </h4>
-            <p className="text-xs text-[#6E6B66] leading-relaxed font-normal">
+            <p className="text-xs text-charcoal-ink leading-relaxed font-normal">
               Soweto SIDO Industrial Estate, Plot 14-B,<br />
               Mbeya Municipal, Tanzania.<br />
-              <span className="font-mono text-[#8C7355] font-semibold">Mon – Sat: 8:00 AM – 5:30 PM</span>
+              <span className="font-mono text-charcoal-ink font-bold block mt-1.5">Mon – Sat: 8:00 AM – 5:30 PM</span>
             </p>
           </div>
 
-          <div className="space-y-2 bg-[#F9F8F6] rounded-md p-5 border border-[#E7E5E0]">
-            <div className="w-10 h-10 rounded-md bg-[#FFFFFF] text-[#8C7355] border border-[#E7E5E0] flex items-center justify-center">
-              <Truck className="w-5 h-5 text-[#8C7355]" />
+          <div className="space-y-3 p-6 sm:p-8 border-b md:border-b-0 md:border-r border-[#E5E7EB] hover:bg-paper-base transition-colors">
+            <div className="w-10 h-10 rounded-[2px] bg-[#111113] text-[#FFFFFF] flex items-center justify-center">
+              <Truck className="w-5 h-5 text-[#DC2626]" />
             </div>
-            <h4 className="font-heading font-semibold text-sm text-[#111113]">
+            <h4 className="font-heading font-black text-sm text-charcoal-ink">
               {language === 'sw' ? 'Ghala la Dar es Salaam' : 'Dar es Salaam Regional Depot'}
             </h4>
-            <p className="text-xs text-[#6E6B66] leading-relaxed font-normal">
+            <p className="text-xs text-charcoal-ink leading-relaxed font-normal">
               Plot 30 Block F Kilwa Road / Kariakoo Depot,<br />
               Dar es Salaam, Tanzania.<br />
-              <span className="font-mono text-[#8C7355] font-semibold">Same-Day Bus Terminal Handoff</span>
+              <span className="font-mono text-charcoal-ink font-bold block mt-1.5">Same-Day Bus Terminal Handoff</span>
             </p>
           </div>
 
-          <div className="space-y-2 bg-[#F9F8F6] rounded-md p-5 border border-[#E7E5E0]">
-            <div className="w-10 h-10 rounded-md bg-[#FFFFFF] text-[#8C7355] border border-[#E7E5E0] flex items-center justify-center">
-              <Phone className="w-5 h-5 text-[#8C7355]" />
+          <div className="space-y-3 p-6 sm:p-8 hover:bg-paper-base transition-colors">
+            <div className="w-10 h-10 rounded-[2px] bg-[#111113] text-[#FFFFFF] flex items-center justify-center">
+              <Phone className="w-5 h-5 text-[#DC2626]" />
             </div>
-            <h4 className="font-heading font-semibold text-sm text-[#111113]">
+            <h4 className="font-heading font-black text-sm text-charcoal-ink">
               {language === 'sw' ? 'Mawasiliano ya Haraka' : 'Direct Wholesale Inquiries'}
             </h4>
-            <p className="text-xs text-[#6E6B66] leading-relaxed font-normal">
+            <p className="text-xs text-charcoal-ink leading-relaxed font-normal">
               Phone: +255 715 268 391 / +255 746 268 391<br />
               Email: indigoprinter06423@gmail.com<br />
-              <span className="font-mono text-emerald-700 font-semibold">WhatsApp Active 24/7</span>
+              <span className="font-mono text-[#B91C1C] font-bold block mt-1.5">WhatsApp Active 24/7</span>
             </p>
           </div>
         </div>
       </section>
+      </div>
 
     </div>
   );

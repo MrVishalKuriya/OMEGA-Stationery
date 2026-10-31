@@ -93,39 +93,88 @@ export const AnnouncementBar: React.FC<AnnouncementBarProps> = ({ onDismiss }) =
   return (
     <div
       role="region"
-      aria-label="Announcements"
-      className="relative z-40 bg-[#111113] text-[#F9F8F6] border-b border-[#E7E5E0]/15 shadow-xs"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      aria-label="Contact and Announcements"
+      className="relative z-40 bg-[#DC2626] text-white border-b border-[#B91C1C] text-[11px] sm:text-xs font-sans"
     >
       <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-8 sm:h-9 text-xs">
+        <div className="flex items-center justify-between h-9 text-white/95">
           
-          {/* Announcement content */}
-          <div className="flex-1 flex items-center justify-center gap-2 overflow-hidden text-center px-4">
-            <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full bg-[#8C7355] text-white font-mono shrink-0 shadow-xs">
-              <Sparkles className="w-2.5 h-2.5 text-white" />
+          {/* LEFT: Phone & Address (as shown in reference screenshot) */}
+          <div className="flex items-center gap-4 sm:gap-6 truncate">
+            <a
+              href="tel:+255715268391"
+              className="inline-flex items-center gap-1.5 hover:text-white transition-colors shrink-0"
+              title="Call Factory Hotline"
+            >
+              <span className="font-semibold tracking-wide">+255 715 268 391</span>
+            </a>
+
+            <span className="hidden md:inline-flex items-center gap-1.5 text-white/85 truncate">
+              <span>📍</span>
+              <span className="truncate">Soweto SIDO Estate, Mbeya, Tanzania</span>
+            </span>
+          </div>
+
+          {/* CENTER: Promo Announcement (hidden on small mobile) */}
+          <div className="hidden lg:flex items-center gap-2 text-center truncate px-4">
+            <span className="font-bold uppercase tracking-wider text-[10px] bg-white/20 px-2 py-0.5 rounded-[2px]">
               {current.badge}
             </span>
-
-            <Link
-              to={current.link}
-              className="text-[11px] sm:text-xs font-semibold text-[#F9F8F6] hover:text-[#C8A27A] transition-colors truncate flex items-center gap-1 group"
-            >
-              <span className="truncate">{current.text}</span>
-              <ChevronRight className="w-3.5 h-3.5 text-[#8C7355] group-hover:translate-x-0.5 transition-transform shrink-0" />
+            <Link to={current.link} className="hover:underline truncate text-white/95">
+              {current.text}
             </Link>
           </div>
 
-          {/* Dismiss button */}
-          <button
-            type="button"
-            onClick={handleDismiss}
-            aria-label="Dismiss announcement"
-            className="p-1 rounded-full text-[#A39E93] hover:text-[#F9F8F6] hover:bg-white/10 transition-colors shrink-0"
-          >
-            <X className="w-3.5 h-3.5" />
-          </button>
+          {/* RIGHT: Social Media Links (f, t, in, whatsapp) & Dismiss */}
+          <div className="flex items-center gap-3 shrink-0 ml-auto sm:ml-0">
+            <a
+              href="https://wa.me/255715268391"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp"
+              className="hover:scale-110 transition-transform text-white/90 hover:text-white"
+              title="WhatsApp Direct"
+            >
+              <span className="font-bold text-xs">WA</span>
+            </a>
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              className="hover:scale-110 transition-transform text-white/90 hover:text-white font-bold text-xs"
+            >
+              f
+            </a>
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Twitter / X"
+              className="hover:scale-110 transition-transform text-white/90 hover:text-white font-bold text-xs"
+            >
+              t
+            </a>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="hover:scale-110 transition-transform text-white/90 hover:text-white font-bold text-xs"
+            >
+              in
+            </a>
+
+            <button
+              type="button"
+              onClick={handleDismiss}
+              aria-label="Dismiss announcement"
+              className="p-1 rounded text-white/70 hover:text-white hover:bg-white/10 transition-colors shrink-0 ml-1"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
         </div>
       </div>
     </div>

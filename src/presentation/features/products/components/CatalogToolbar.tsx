@@ -64,15 +64,13 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
   language,
 }) => {
   return (
-    <div className="space-y-3">
-      {/* Search & Top Action Bar per DESIGN.md Warm Tactile Minimal */}
-      <div className="bg-[#FFFFFF] rounded-lg p-3 sm:p-3.5 border border-[#E7E5E0] shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04)] relative overflow-hidden flex flex-col sm:flex-row gap-3 items-center justify-between">
-        {/* Subtle Decorative Hairline Stitch */}
-        <div className="absolute top-0 left-0 right-0 h-[1.5px] bg-[#E7E5E0] border-t border-dashed border-[#8C7355]/30" />
+    <div className="space-y-3 text-charcoal-ink">
+      {/* Search & Top Action Bar */}
+      <div className="bg-[#FFFFFF] rounded-[4px] p-3 sm:p-3.5 border border-[#E5E7EB] shadow-[0_1px_3px_0_rgba(15,17,21,0.05)] relative overflow-hidden flex flex-col sm:flex-row gap-3 items-center justify-between">
 
-        {/* Search Input (DESIGN.md: Background #F9F8F6, Border 1px solid #D5D2CC) */}
+        {/* Search Input */}
         <div className="relative w-full sm:w-80 group">
-          <Search className="w-4 h-4 text-[#8C7355] group-focus-within:text-[#111113] absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors pointer-events-none" />
+          <Search className="w-4 h-4 text-[#3F3F46] group-focus-within:text-[#DC2626] absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors pointer-events-none" />
           <input
             type="text"
             value={searchQuery}
@@ -82,13 +80,13 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
                 ? 'Tafuta daftari, kurasa, au SKU...'
                 : 'Search notebooks, ruling, SKU...'
             }
-            className="w-full pl-10 pr-9 py-2 text-xs bg-[#F9F8F6] text-[#111113] placeholder:text-[#6E6B66] rounded-md border border-[#E7E5E0] focus:border-[#111113] focus:bg-[#FFFFFF] focus:outline-none focus:ring-1 focus:ring-[#111113] transition-all font-sans"
+            className="w-full pl-10 pr-9 py-2 text-xs bg-paper-base text-charcoal-ink placeholder:text-[#3F3F46] rounded-[2px] border border-[#E5E7EB] focus:border-[#DC2626] focus:bg-[#FFFFFF] focus:outline-none transition-all font-sans"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => onSearchChange('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#6E6B66] hover:text-[#DC2626] p-0.5 rounded-full hover:bg-stone-200/50 transition-colors cursor-pointer"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#3F3F46] hover:text-[#DC2626] p-0.5 rounded-[2px] transition-colors cursor-pointer"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -102,26 +100,26 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
             whileTap={{ scale: 0.96 }}
             type="button"
             onClick={onOpenMobileFilters}
-            className="lg:hidden px-3.5 py-2 bg-[#111113] hover:bg-[#262524] text-[#FFFFFF] text-xs font-semibold rounded-md inline-flex items-center gap-2 shadow-2xs transition-all cursor-pointer"
+            className="lg:hidden px-3.5 py-2 bg-[#111113] hover:bg-[#DC2626] text-[#FFFFFF] text-xs font-bold uppercase tracking-wider rounded-[2px] inline-flex items-center gap-2 shadow-xs transition-all cursor-pointer"
           >
-            <SlidersHorizontal className="w-3.5 h-3.5 text-[#8C7355]" />
+            <SlidersHorizontal className="w-3.5 h-3.5 text-[#DC2626]" />
             <span>Filters</span>
             {activeFilterCount > 0 && (
-              <span className="w-4 h-4 rounded-full bg-[#DC2626] text-white text-[10px] flex items-center justify-center font-bold">
+              <span className="w-4 h-4 rounded-[2px] bg-[#DC2626] text-white text-[10px] flex items-center justify-center font-bold">
                 {activeFilterCount}
               </span>
             )}
           </motion.button>
 
           {/* Sort Dropdown */}
-          <div className="flex items-center gap-1.5 text-xs text-[#6E6B66]">
-            <span className="hidden md:inline font-semibold uppercase tracking-wider text-[10px] text-[#111113]">
+          <div className="flex items-center gap-1.5 text-xs text-charcoal-ink">
+            <span className="hidden md:inline font-bold uppercase tracking-wider text-[10px] text-charcoal-ink">
               Sort:
             </span>
             <select
               value={sortBy}
               onChange={(e) => onSortChange(e.target.value as SortOption)}
-              className="px-3 py-2 bg-[#F9F8F6] rounded-md border border-[#E7E5E0] text-xs font-medium text-[#111113] focus:outline-none focus:border-[#111113] hover:border-[#8C7355]/60 cursor-pointer transition-colors"
+              className="px-3 py-2 bg-paper-base rounded-[2px] border border-[#E5E7EB] text-xs font-medium text-charcoal-ink focus:outline-none focus:border-[#DC2626] hover:border-[#D1D5DB] cursor-pointer transition-colors"
             >
               <option value="featured">Featured / Best Match</option>
               <option value="price-asc">Price: Low to High</option>
@@ -132,16 +130,16 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
           </div>
 
           {/* View Mode Segmented Controls */}
-          <div className="flex items-center bg-[#F9F8F6] p-1 rounded-md border border-[#E7E5E0] shadow-2xs">
+          <div className="flex items-center bg-paper-base p-1 rounded-[2px] border border-[#E5E7EB] shadow-xs">
             <Tooltip title="Grid View" arrow>
               <button
                 type="button"
                 onClick={() => onViewModeChange('grid')}
                 aria-label="Grid View"
-                className={`p-1.5 rounded-[4px] transition-all cursor-pointer ${
+                className={`p-1.5 rounded-[2px] transition-all cursor-pointer ${
                   viewMode === 'grid'
-                    ? 'bg-[#111113] text-[#FFFFFF] shadow-2xs'
-                    : 'text-[#6E6B66] hover:text-[#111113] hover:bg-white'
+                    ? 'bg-[#DC2626] text-[#FFFFFF] shadow-xs'
+                    : 'text-[#3F3F46] hover:text-charcoal-ink hover:bg-white'
                 }`}
               >
                 <LayoutGrid className="w-3.5 h-3.5" />
@@ -152,10 +150,10 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
                 type="button"
                 onClick={() => onViewModeChange('list')}
                 aria-label="List View"
-                className={`p-1.5 rounded-[4px] transition-all cursor-pointer ${
+                className={`p-1.5 rounded-[2px] transition-all cursor-pointer ${
                   viewMode === 'list'
-                    ? 'bg-[#111113] text-[#FFFFFF] shadow-2xs'
-                    : 'text-[#6E6B66] hover:text-[#111113] hover:bg-white'
+                    ? 'bg-[#DC2626] text-[#FFFFFF] shadow-xs'
+                    : 'text-[#3F3F46] hover:text-charcoal-ink hover:bg-white'
                 }`}
               >
                 <List className="w-3.5 h-3.5" />
@@ -165,7 +163,7 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
         </div>
       </div>
 
-      {/* Active Filter Chips per DESIGN.md (Vellum #F2EFEB, Text #111113) */}
+      {/* Active Filter Chips per Swiss Editorial */}
       <AnimatePresence>
         {activeFilterCount > 0 && (
           <motion.div
@@ -174,26 +172,26 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
             exit={{ opacity: 0, y: -4 }}
             className="flex flex-wrap items-center gap-1.5 pt-1 px-0.5"
           >
-            <span className="text-xs text-[#6E6B66] font-semibold uppercase tracking-wider text-[10px]">
+            <span className="text-xs text-charcoal-ink font-semibold uppercase tracking-wider text-[10px]">
               Active Filters ({activeFilterCount}):
             </span>
 
             {selectedCategory !== 'All' && (
               <Chip
                 size="small"
-                icon={<Bookmark className="w-3 h-3 text-[#8C7355]" />}
+                icon={<Bookmark className="w-3 h-3 text-[#B91C1C]" />}
                 label={`Category: ${selectedCategory}`}
                 onDelete={() => onClearFilter('category')}
                 sx={{
-                  bgcolor: '#F2EFEB',
-                  border: '1px solid #E7E5E0',
-                  color: '#111113',
+                  bgcolor: '#F8F9FA',
+                  border: '1px solid #E5E7EB',
+                  color: '#0F1115',
                   fontWeight: 600,
                   fontSize: '0.70rem',
                   borderRadius: '4px',
                   '& .MuiChip-deleteIcon': {
-                    color: '#6E6B66',
-                    '&:hover': { color: '#DC2626' },
+                    color: '#64748B',
+                    '&:hover': { color: '#B91C1C' },
                   },
                 }}
               />
@@ -202,19 +200,19 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
             {selectedQuire !== 'All' && (
               <Chip
                 size="small"
-                icon={<Layers className="w-3 h-3 text-[#8C7355]" />}
+                icon={<Layers className="w-3 h-3 text-[#B91C1C]" />}
                 label={`Size: ${selectedQuire}`}
                 onDelete={() => onClearFilter('quire')}
                 sx={{
-                  bgcolor: '#F2EFEB',
-                  border: '1px solid #E7E5E0',
-                  color: '#111113',
+                  bgcolor: '#F8F9FA',
+                  border: '1px solid #E5E7EB',
+                  color: '#0F1115',
                   fontWeight: 600,
                   fontSize: '0.70rem',
                   borderRadius: '4px',
                   '& .MuiChip-deleteIcon': {
-                    color: '#6E6B66',
-                    '&:hover': { color: '#DC2626' },
+                    color: '#64748B',
+                    '&:hover': { color: '#B91C1C' },
                   },
                 }}
               />
@@ -223,19 +221,19 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
             {selectedRuling !== 'All' && (
               <Chip
                 size="small"
-                icon={<FileText className="w-3 h-3 text-[#8C7355]" />}
+                icon={<FileText className="w-3 h-3 text-[#B91C1C]" />}
                 label={`Ruling: ${selectedRuling}`}
                 onDelete={() => onClearFilter('ruling')}
                 sx={{
-                  bgcolor: '#F2EFEB',
-                  border: '1px solid #E7E5E0',
-                  color: '#111113',
+                  bgcolor: '#F8F9FA',
+                  border: '1px solid #E5E7EB',
+                  color: '#0F1115',
                   fontWeight: 600,
                   fontSize: '0.70rem',
                   borderRadius: '4px',
                   '& .MuiChip-deleteIcon': {
-                    color: '#6E6B66',
-                    '&:hover': { color: '#DC2626' },
+                    color: '#64748B',
+                    '&:hover': { color: '#B91C1C' },
                   },
                 }}
               />
@@ -244,19 +242,19 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
             {selectedBinding !== 'All' && (
               <Chip
                 size="small"
-                icon={<Layers className="w-3 h-3 text-[#8C7355]" />}
+                icon={<Layers className="w-3 h-3 text-[#B91C1C]" />}
                 label={`Binding: ${selectedBinding}`}
                 onDelete={() => onClearFilter('binding')}
                 sx={{
-                  bgcolor: '#F2EFEB',
-                  border: '1px solid #E7E5E0',
-                  color: '#111113',
+                  bgcolor: '#F8F9FA',
+                  border: '1px solid #E5E7EB',
+                  color: '#0F1115',
                   fontWeight: 600,
                   fontSize: '0.70rem',
                   borderRadius: '4px',
                   '& .MuiChip-deleteIcon': {
-                    color: '#6E6B66',
-                    '&:hover': { color: '#DC2626' },
+                    color: '#64748B',
+                    '&:hover': { color: '#B91C1C' },
                   },
                 }}
               />
@@ -265,19 +263,19 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
             {(appliedPriceRange.min !== null || appliedPriceRange.max !== null) && (
               <Chip
                 size="small"
-                icon={<DollarSign className="w-3 h-3 text-[#8C7355]" />}
+                icon={<DollarSign className="w-3 h-3 text-[#B91C1C]" />}
                 label={`Price: ${appliedPriceRange.min || 0} - ${appliedPriceRange.max || '∞'}`}
                 onDelete={() => onClearFilter('price')}
                 sx={{
-                  bgcolor: '#F2EFEB',
-                  border: '1px solid #E7E5E0',
-                  color: '#111113',
+                  bgcolor: '#F8F9FA',
+                  border: '1px solid #E5E7EB',
+                  color: '#0F1115',
                   fontWeight: 600,
                   fontSize: '0.70rem',
                   borderRadius: '4px',
                   '& .MuiChip-deleteIcon': {
-                    color: '#6E6B66',
-                    '&:hover': { color: '#DC2626' },
+                    color: '#64748B',
+                    '&:hover': { color: '#B91C1C' },
                   },
                 }}
               />
@@ -307,18 +305,18 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
             {bestsellerOnly && (
               <Chip
                 size="small"
-                icon={<Flame className="w-3 h-3 text-[#DC2626]" />}
+                icon={<Flame className="w-3 h-3 text-[#B91C1C]" />}
                 label="Bestsellers Only"
                 onDelete={() => onClearFilter('bestseller')}
                 sx={{
-                  bgcolor: 'rgba(220, 38, 38, 0.08)',
-                  border: '1px solid rgba(220, 38, 38, 0.25)',
-                  color: '#DC2626',
+                  bgcolor: 'rgba(185, 28, 28, 0.08)',
+                  border: '1px solid rgba(185, 28, 28, 0.25)',
+                  color: '#B91C1C',
                   fontWeight: 600,
                   fontSize: '0.70rem',
                   borderRadius: '4px',
                   '& .MuiChip-deleteIcon': {
-                    color: '#DC2626',
+                    color: '#B91C1C',
                     '&:hover': { color: '#991B1B' },
                   },
                 }}
@@ -328,7 +326,7 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
             <button
               type="button"
               onClick={onResetFilters}
-              className="text-xs text-[#DC2626] hover:text-[#991B1B] font-semibold ml-1 inline-flex items-center gap-1 cursor-pointer transition-colors hover:underline"
+              className="text-xs text-[#B91C1C] hover:text-[#991B1B] font-semibold ml-1 inline-flex items-center gap-1 cursor-pointer transition-colors hover:underline"
             >
               <RotateCcw className="w-3 h-3" />
               <span>Clear All</span>
