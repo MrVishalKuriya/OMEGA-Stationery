@@ -1,30 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import {
-  X,
-  CheckCircle2,
-  Heart,
-  Truck,
-  ShieldCheck,
-  Cookie,
-  Server,
-  Sparkles,
-  Calculator,
-  Scale,
-  MessageCircle,
-  ArrowUp,
-  ArrowRight,
-  Package,
-  Download,
-  Phone,
-  MapPin,
-  Mail,
-  Percent,
-  Building2,
-  Clock,
-  FileText,
-  Award,
-} from 'lucide-react';
+import { useLocation } from 'react-router-dom';
+import { CheckCircle2, X, MessageCircle } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { QuickViewModal, ProductCompareModal } from '@/presentation/features/products';
 import { CartDrawer, OrderTrackingModal } from '@/presentation/features/cart';
@@ -33,8 +9,8 @@ import { AuthModal } from '@/presentation/features/auth';
 import { WholesaleCalculatorModal } from '@/presentation/features/wholesale';
 import { CookieBanner } from '../components/CookieBanner';
 import { BackendStatusModal } from '../components/BackendStatusModal';
-import { OmegaLogo } from '../components/OmegaLogo';
 import { Navbar } from './navbar';
+import { Footer } from './footer';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
@@ -43,32 +19,28 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     location.pathname.startsWith('/admin');
 
   const {
-    wishlistCount,
-    setIsWishlistModalOpen,
-    setIsTrackingModalOpen,
     isCookieBannerOpen,
-    openCookiePreferences,
     closeCookiePreferences,
     toastMessage,
     clearToast,
-    isBackendOnline,
+    storeConfig,
   } = useStore();
 
   const [isBackendModalOpen, setIsBackendModalOpen] = useState(false);
   const [isWholesaleModalOpen, setIsWholesaleModalOpen] = useState(false);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
 
+  const cleanWhatsappDigits = (storeConfig?.whatsappNumber || '255715268391').replace(/\D/g, '');
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-[#fafafa] text-[#18181b] font-sans selection:bg-[#dc2626] selection:text-white">
-      {/* Reusable Boutique Navbar (AnnouncementBar, Header, MegaMenu, SearchOverlay, AccountDropdown, MobileMenu, MobileBottomBar) */}
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-[#F9F8F6] text-[#111113] font-sans selection:bg-[#8C7355] selection:text-white">
+      {/* 1. Sleek Modern Header (AnnouncementBar, Header with Search & 2-Lang Toggle, Category Rail) */}
       <Navbar />
 
-
-      {/* ==================== 3. TOAST NOTIFICATIONS ==================== */}
+      {/* 2. Toast Notifications */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-[12px] bg-[#111113] text-white border border-[#dc2626]/50 shadow-2xl animate-in slide-in-from-bottom-5">
-          <CheckCircle2 className="w-5 h-5 text-[#dc2626] shrink-0" />
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 bg-[#111113] text-[#F9F8F6] rounded-md border border-[#E7E5E0] shadow-2xl animate-in slide-in-from-bottom-5">
+          <CheckCircle2 className="w-5 h-5 text-[#8C7355] shrink-0" />
           <span className="text-xs font-bold">{toastMessage}</span>
           <button
             onClick={clearToast}
@@ -80,338 +52,30 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         </div>
       )}
 
-      {/* ==================== 4. MAIN PAGE CONTENT ==================== */}
+      {/* 3. Main Page Content */}
       <main className="flex-1 w-full max-w-full overflow-x-hidden">
         {children}
       </main>
 
-      {/* ==================== 5. PRESTIGE ARCHITECTURAL FOOTER ==================== */}
-      <footer className="bg-[#0a0a0c] text-zinc-300 border-t border-[#dc2626]/30 relative overflow-hidden">
-        {/* Subtle Ambient Backlight */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-[#dc2626]/5 blur-3xl pointer-events-none" />
+      {/* 4. Prestige E-Commerce Footer (Trust Pillars, Directory, Hotlines, Copyright) */}
+      <Footer />
 
-        {/* 1) Trust & Manufacturing Excellence Strip (4 Responsive Pillars) */}
-        <div className="border-b border-white/10 bg-[#111114]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#dc2626]/15 border border-[#dc2626]/30 flex items-center justify-center text-[#dc2626] shrink-0">
-                  <Award className="w-5 h-5" />
-                </div>
-                <div>
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-white font-heading">
-                    Pure 70 GSM Bond
-                  </h5>
-                  <p className="text-[11px] text-zinc-400 leading-tight mt-0.5">
-                    Zero ink-bleed, smooth writing finish
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#dc2626]/15 border border-[#dc2626]/30 flex items-center justify-center text-[#dc2626] shrink-0">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <div>
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-white font-heading">
-                    Thread-Sewn Spines
-                  </h5>
-                  <p className="text-[11px] text-zinc-400 leading-tight mt-0.5">
-                    Double-stitched for extreme durability
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#dc2626]/15 border border-[#dc2626]/30 flex items-center justify-center text-[#dc2626] shrink-0">
-                  <FileText className="w-5 h-5" />
-                </div>
-                <div>
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-white font-heading">
-                    Price List #PL00001
-                  </h5>
-                  <p className="text-[11px] text-zinc-400 leading-tight mt-0.5">
-                    Factory direct transparent rates
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#dc2626]/15 border border-[#dc2626]/30 flex items-center justify-center text-[#dc2626] shrink-0">
-                  <Truck className="w-5 h-5" />
-                </div>
-                <div>
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-white font-heading">
-                    31 Regions Cargo
-                  </h5>
-                  <p className="text-[11px] text-zinc-400 leading-tight mt-0.5">
-                    Daily freight via verified bus parcels
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 3) Main Architectural Grid: 2-Column Responsive Layout */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-            {/* Col 1: Heritage & Manufacturing (6 cols) */}
-            <div className="lg:col-span-6 space-y-4">
-              {/* Brand Hallmark & Manufacturing Eyebrow */}
-              <div className="flex flex-wrap items-center gap-3">
-                <Link to="/" className="inline-block group focus-ring-gold rounded-lg">
-                  <OmegaLogo variant="badge" size="md" showSubtitle={true} />
-                </Link>
-
-                <div className="inline-flex items-center px-3 py-1 rounded-md bg-gradient-to-r from-[#dc2626]/20 via-[#dc2626]/10 to-transparent border border-[#dc2626]/40 text-[10px] font-mono font-bold text-[#ef4444] uppercase tracking-wider shadow-xs">
-                  <span>MANUFACTURED BY INDIGO PRINTED LIMITED</span>
-                </div>
-              </div>
-
-              <p className="text-xs text-zinc-300 leading-relaxed max-w-xl">
-                Tanzania&apos;s benchmark manufacturer of Counter Books (Q2, Q3, Q4), Exercise Books, Kraft Bahasha, and educational paper products. Engineered for scholars, schools, wholesale traders, and commercial enterprises nationwide.
-              </p>
-
-              {/* Manufacturing Facilities & Direct Dispatch Hubs Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-w-xl pt-1">
-                {/* 1. Main Factory & HQ */}
-                <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-[#dc2626]/40 transition-all flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-1.5 mb-1.5">
-                      <MapPin className="w-3.5 h-3.5 text-[#dc2626] shrink-0" />
-                      <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-zinc-400">
-                        Main Factory &amp; HQ
-                      </span>
-                    </div>
-                    <p className="text-xs text-white font-semibold leading-snug">
-                      Plot 30, Block F Kilwa Rd, Mwanambaya-Mkuranga
-                    </p>
-                  </div>
-                  <p className="text-[11px] text-zinc-400 mt-2 font-mono">
-                    P.O. Box 10424, Dar es Salaam
-                  </p>
-                </div>
-
-                {/* 2. Upcountry Factory Desk (Mbeya) */}
-                <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-[#dc2626]/40 transition-all flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-1.5 mb-1.5">
-                      <Building2 className="w-3.5 h-3.5 text-[#dc2626] shrink-0" />
-                      <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-zinc-400">
-                        Highlands Hub Desk
-                      </span>
-                    </div>
-                    <p className="text-xs text-white font-semibold leading-snug">
-                      Mbeya Factory Desk
-                    </p>
-                  </div>
-                  <p className="text-[11px] text-zinc-400 mt-2 font-mono">
-                    Soweto SIDO Viwandani, Mbeya
-                  </p>
-                </div>
-              </div>
-
-              {/* Official Corporate Inquiries Bar */}
-              <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/10 hover:border-[#dc2626]/40 transition-all flex items-center justify-between gap-3 max-w-xl">
-                <div className="flex items-center gap-2 min-w-0">
-                  <div className="w-7 h-7 rounded-lg bg-[#dc2626]/15 border border-[#dc2626]/30 flex items-center justify-center text-[#ef4444] shrink-0">
-                    <Mail className="w-3.5 h-3.5" />
-                  </div>
-                  <div className="min-w-0">
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block leading-tight">
-                      Official Inquiries
-                    </span>
-                    <a
-                      href="mailto:indigoprinter06423@gmail.com"
-                      className="text-xs font-mono font-bold text-zinc-200 hover:text-[#ef4444] transition-colors block truncate"
-                    >
-                      indigoprinter06423@gmail.com
-                    </a>
-                  </div>
-                </div>
-                <a
-                  href="mailto:indigoprinter06423@gmail.com"
-                  className="px-2.5 py-1 rounded-md bg-white/5 hover:bg-[#dc2626] text-zinc-300 hover:text-white text-[11px] font-mono font-semibold transition-all shrink-0"
-                >
-                  Email Us
-                </a>
-              </div>
-            </div>
-
-            {/* Col 2: Executive Factory Desks & Direct Hotlines (6 cols) */}
-            <div className="lg:col-span-6 space-y-3.5">
-              <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-white">
-                  Executive Desks &amp; Direct Hotlines
-                </h4>
-                <span className="inline-flex items-center gap-1.5 text-[9px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-md border border-emerald-500/20">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  DIRECT DESKS
-                </span>
-              </div>
-
-              {/* 4 Dedicated Direct Factory Hotlines Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {/* 1. Kanti Bhai K. Halai */}
-                <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-[#dc2626]/40 transition-all flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block truncate">Founder &amp; MD</span>
-                    <span className="text-xs font-bold text-white block truncate">Kanti Bhai K. Halai</span>
-                    <a href="tel:+255715268391" className="text-xs font-mono font-bold text-[#ef4444] hover:underline block mt-0.5 truncate">
-                      +255 715 268 391
-                    </a>
-                  </div>
-                  <a
-                    href="https://wa.me/255715268391?text=Hello%20Kanti%20Bhai,%20inquiry%20from%20website"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/30 text-emerald-400 transition-colors shrink-0"
-                    title="Chat with Kanti Bhai on WhatsApp"
-                    aria-label="Chat with Kanti Bhai on WhatsApp"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                  </a>
-                </div>
-
-                {/* 2. Vijesh K. Halai */}
-                <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-[#dc2626]/40 transition-all flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block truncate">Co-Founder &amp; MD</span>
-                    <span className="text-xs font-bold text-white block truncate">Vijesh K. Halai</span>
-                    <a href="tel:+255624265480" className="text-xs font-mono font-bold text-[#ef4444] hover:underline block mt-0.5 truncate">
-                      +255 624 265 480
-                    </a>
-                  </div>
-                  <a
-                    href="https://wa.me/255624265480?text=Hello%20Vijesh%20Bhai,%20inquiry%20from%20website"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/30 text-emerald-400 transition-colors shrink-0"
-                    title="Chat with Vijesh Bhai on WhatsApp"
-                    aria-label="Chat with Vijesh Bhai on WhatsApp"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                  </a>
-                </div>
-
-                {/* 3. Mbeya Central Factory */}
-                <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-[#dc2626]/40 transition-all flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block truncate">Soweto SIDO Estate</span>
-                    <span className="text-xs font-bold text-white block truncate">Mbeya Central Factory</span>
-                    <a href="tel:+255746268391" className="text-xs font-mono font-bold text-[#ef4444] hover:underline block mt-0.5 truncate">
-                      +255 746 268 391
-                    </a>
-                  </div>
-                  <a
-                    href="https://wa.me/255746268391?text=Hello%20Mbeya%20Branch,%20inquiry%20from%20website"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/30 text-emerald-400 transition-colors shrink-0"
-                    title="Chat with Mbeya Branch on WhatsApp"
-                    aria-label="Chat with Mbeya Branch on WhatsApp"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                  </a>
-                </div>
-
-                {/* 4. Mwanza Dispatch Hub */}
-                <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-[#dc2626]/40 transition-all flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block truncate">Lake Zone Waybills</span>
-                    <span className="text-xs font-bold text-white block truncate">Mwanza Dispatch Hub</span>
-                    <a href="tel:+255699032777" className="text-xs font-mono font-bold text-[#ef4444] hover:underline block mt-0.5 truncate">
-                      +255 699 032 777
-                    </a>
-                  </div>
-                  <a
-                    href="https://wa.me/255699032777?text=Hello%20Mwanza%20Hub,%20inquiry%20from%20website"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/30 text-emerald-400 transition-colors shrink-0"
-                    title="Chat with Mwanza Hub on WhatsApp"
-                    aria-label="Chat with Mwanza Hub on WhatsApp"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                  </a>
-                </div>
-              </div>
-
-              {/* Live Factory Dispatch Hours */}
-              <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#dc2626]/10 border border-[#dc2626]/20 text-[11px] text-zinc-300">
-                <Clock className="w-3.5 h-3.5 text-[#ef4444] shrink-0" />
-                <span>Mon – Sat: 8:00 AM – 5:30 PM (EAT) · Tanzania Nationwide Dispatch</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 4) Bottom Copyright & Utilities */}
-        <div className="border-t border-white/10 bg-[#060608] pb-24 sm:pb-5">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-zinc-400">
-            <p className="text-center md:text-left">
-              © {new Date().getFullYear()} OMEGA Writing Notebooks &amp; Stationery Tanzania. Manufactured by Indigo Printed Limited. All rights reserved.
-            </p>
-
-            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs">
-              <Link
-                to="/tracking"
-                className="hover:text-[#ef4444] transition-colors cursor-pointer"
-              >
-                Track Parcel
-              </Link>
-              <span>·</span>
-              <Link
-                to="/wholesale#calculator"
-                className="hover:text-[#ef4444] transition-colors cursor-pointer"
-              >
-                Carton Calculator
-              </Link>
-              <span>·</span>
-              <Link
-                to="/wishlist"
-                className="hover:text-[#ef4444] transition-colors cursor-pointer"
-              >
-                Wishlist ({wishlistCount})
-              </Link>
-              <span>·</span>
-              <button
-                type="button"
-                onClick={openCookiePreferences}
-                className="hover:text-[#ef4444] transition-colors cursor-pointer"
-              >
-                Cookies
-              </button>
-              <span>·</span>
-              <button
-                type="button"
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="p-1.5 rounded-lg bg-white/5 hover:bg-[#dc2626] hover:text-white text-white transition-all ml-1 cursor-pointer"
-                aria-label="Scroll to top"
-                title="Scroll to top"
-              >
-                <ArrowUp className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </footer>
-
-      {/* Floating High-Contrast WhatsApp Action Button (Hidden on Admin Portal) */}
+      {/* 5. Floating WhatsApp Sales Help Button (Hidden on Admin Portal) */}
       {!isAdminPage && (
-        <aside aria-label="WhatsApp Sales Assistance" className="fixed bottom-5 right-5 z-40 flex items-center pointer-events-auto">
+        <aside aria-label="WhatsApp Assistance" className="fixed bottom-5 right-5 z-40 flex items-center pointer-events-auto">
           <a
-            href="https://wa.me/255715268391?text=Hello%20OMEGA%20Stationery%20Tanzania,%20I%20would%20like%20to%20inquire%20about%20stationery%20and%20orders."
+            href={`https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
+              'Habari OMEGA Stationery, ninahitaji msaada wa kuagiza vifaa vya stationery.'
+            )}`}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Chat with OMEGA Stationery Sales Desk on WhatsApp"
-            className="group relative flex items-center gap-2.5 px-4 py-3 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white shadow-[0_8px_25px_rgba(37,211,102,0.4)] hover:shadow-[0_10px_30px_rgba(37,211,102,0.55)] transition-all duration-300 hover:scale-105 active:scale-95"
+            className="group relative flex items-center gap-2 p-3 sm:px-4 sm:py-3 rounded-md bg-[#25D366] hover:bg-[#20ba59] text-white shadow-[0_8px_25px_rgba(37,211,102,0.4)] hover:shadow-[0_10px_30px_rgba(37,211,102,0.55)] transition-all duration-300 hover:scale-105 active:scale-95"
+            title="Chat on WhatsApp"
           >
-            {/* Soft pulsing ring */}
-            <span className="absolute -inset-1 rounded-full bg-[#25D366]/30 animate-ping pointer-events-none" />
-            <MessageCircle className="w-5 h-5 fill-white text-transparent relative z-10 shrink-0" />
-            <span className="font-sans font-bold text-xs sm:text-sm tracking-wide relative z-10 whitespace-nowrap">
+            <MessageCircle className="w-5 h-5 fill-white text-transparent shrink-0" />
+            <span className="hidden sm:inline font-sans font-bold text-xs tracking-wider uppercase">
+              WhatsApp
             </span>
           </a>
         </aside>
@@ -430,6 +94,3 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     </div>
   );
 };
-
-
-

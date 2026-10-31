@@ -1,61 +1,76 @@
 @import "tailwindcss";
 
 :root {
-  /* ==================== OMEGA SIGNATURE BLACK & RED ARCHITECTURAL PALETTE ==================== */
-  /* Primary Obsidian Black: #111113 | Deep Pitch: #09090b | Accent Crimson Red: #dc2626 | Deep Red: #b91c1c */
-  /* Canvas: #fafafa | Hairline Border: #e4e4e7 | Deep Obsidian Text: #18181b */
-  --clr-main: #111113;              /* Signature Obsidian Black */
-  --clr-main-50: #fafafa;           /* Clean Off-white Surface */
-  --clr-main-100: #f4f4f5;          /* Soft Gray Stone */
-  --clr-main-200: #e4e4e7;          /* Hairline Architectural Panel */
-  --clr-main-300: #d4d4d8;          /* Hairline Border */
-  --clr-main-400: #a1a1aa;          /* Muted Zinc */
-  --clr-main-500: #71717a;          /* Neutral Zinc */
-  --clr-main-600: #52525b;          /* Medium Deep Zinc */
-  --clr-main-700: #27272a;          /* Charcoal Zinc */
-  --clr-main-900: #09090b;          /* Pitch Black Dark */
-  --clr-copper: #dc2626;            /* Vivid Crimson Red */
-  --clr-amber: #b91c1c;             /* Deep Rich Red */
-  --clr-copper-gradient: linear-gradient(90deg, #b91c1c, #dc2626, #ef4444);
-  --clr-glass-header: linear-gradient(90.48deg, rgba(255,255,255,.94) -4.41%, rgba(244,244,245,.94) 100.38%);
-  --clr-white: #ffffff;
-  --clr-bg: #fafafa;
-  --clr-black: #000000;
+  /* ==================== USER CUSTOM ARTISANAL PALETTE ==================== */
+  /* 1. DARK RED:    #6B140B (Deep Burgundy / Roasted Wine) */
+  /* 2. LIGHT BEIGE: #D8C3A5 (Warm Sand / Paper Linen) */
+  /* 3. SOFT ORANGE: #E9A858 (Warm Amber Apricot) */
+  /* 4. RED-ORANGE:  #9E3618 (Terracotta Rust / Burnt Sienna) */
+  /* 5. CANVAS:      #FAF6F0 (Warm Parchment Cream) */
+  /* 6. TEXT DARK:   #26130F (Deep Roasted Espresso) */
+  /* 7. BORDER:      #E5D8C8 (Warm Hairline Sand) */
+
+  --clr-dark-red: #6B140B;
+  --clr-light-beige: #D8C3A5;
+  --clr-soft-orange: #E9A858;
+  --clr-red-orange: #9E3618;
+  --clr-canvas: #FAF6F0;
+  --clr-text-dark: #26130F;
+  --clr-text-muted: #7D685E;
+  --clr-border: #E5D8C8;
+
+  --clr-main: #6B140B;
+  --clr-gold: #E9A858;
+  --clr-gold-light: #FBF4E8;
+  --clr-main-50: #FAF6F0;
+  --clr-main-100: #F3EDE2;
+  --clr-main-200: #E5D8C8;
+  --clr-main-300: #D8C3A5;
+  --clr-main-400: #A89584;
+  --clr-main-500: #7D685E;
+  --clr-main-600: #52423A;
+  --clr-main-700: #3B2822;
+  --clr-main-900: #26130F;
+  --clr-copper: #9E3618;
+  --clr-amber: #E9A858;
+  --clr-copper-gradient: linear-gradient(90deg, #6B140B, #9E3618, #E9A858);
+  --clr-white: #FFFFFF;
+  --clr-bg: #FAF6F0;
+  --clr-black: #26130F;
 
   /* Canonical Tokens */
-  --primary: #111113;               /* Obsidian Black Core */
-  --primary-light: #27272a;
-  --primary-lighter: #3f3f46;
-  --accent: #dc2626;                /* Crimson Red */
-  --accent-light: #ef4444;
-  --accent-dark: #b91c1c;
-  --bg: #fafafa;                    /* Soft Canvas - Atelier Crimson */
-  --surface: #ffffff;
-  --surface-alt: #f4f4f5;
-  --surface-dark: #e4e4e7;
-  --text: #09090b;                  /* Carbon Obsidian Deep Black */
-  --text-light: #27272a;            /* Rich Charcoal Text */
-  --muted: #4b423b;                 /* High-contrast neutral */
-  --border: #e4e4e7;
+  --primary: #9E3618;               /* Red-Orange Primary Accent */
+  --primary-dark: #6B140B;          /* Dark Red Primary Header */
+  --primary-light: #B84725;
+  --accent: #E9A858;                /* Soft Orange Warm Foil */
+  --accent-light: #F4C486;
+  --bg: #FAF6F0;                    /* Warm Linen Canvas */
+  --surface: #FFFFFF;
+  --surface-alt: #F3EDE2;
+  --surface-dark: #E5D8C8;
+  --text: #26130F;                  /* Roasted Espresso Text */
+  --text-light: #52423A;
+  --muted: #7D685E;
+  --border: #E5D8C8;
   --success: #16a34a;
-  --danger: #dc2626;
+  --danger: #9E3618;
 
-  --navy: #111113;
-  --ink: #1a1c1c;
-  --gold: #dc2626;                  /* High-Contrast Luxury Red */
+  --navy: #6B140B;
+  --ink: #26130F;
+  --gold: #9E3618;                  /* High-Contrast Luxury Red */
   --paper: #f9f9f9;
   --cream: #f3f3f3;
   --white: #ffffff;
   --line: #e4e4e7;
 
   /* Aliases mapped to Black & Red palette */
-  --clr-rustic-primary: #111113;
-  --clr-rustic-secondary: #dc2626;
+  --clr-rustic-primary: #6B140B;
+  --clr-rustic-secondary: #9E3618;
   --clr-rustic-taupe: #71717a;
   --clr-rustic-linen: #e4e4e7;
   --clr-rustic-canvas: #f9f9f9;
-  --clr-rustic-espresso: #1a1c1c;
-  --clr-rustic-dark: #09090b;
+  --clr-rustic-espresso: #26130F;
+  --clr-rustic-dark: #26130F;
 
   /* Typography - Modern Premium E-Commerce Atelier */
   --font-heading: 'Outfit', 'Plus Jakarta Sans', -apple-system, sans-serif;
@@ -117,16 +132,16 @@ input[type="search"]::-ms-reveal {
 
 /* Indra Notebook High-Contrast Components & Utilities */
 
-/* 1. Header (Obsidian Black #111113) */
+/* 1. Header (Obsidian Black #6B140B) */
 .header-ink-blue {
-  background-color: #111113;
+  background-color: #6B140B;
   color: #FFFFFF;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* 2. Vibrant Crimson Red CTA Buttons */
 .btn-indra-primary, .btn-indra-primary {
-  background-color: #dc2626 !important;
+  background-color: #9E3618 !important;
   color: #FFFFFF !important;
   font-weight: 800 !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -134,7 +149,7 @@ input[type="search"]::-ms-reveal {
 }
 
 .btn-indra-primary:hover, .btn-indra-primary:hover {
-  background-color: #b91c1c !important;
+  background-color: #6B140B !important;
   color: #FFFFFF !important;
   box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5);
   transform: translateY(-2px);
@@ -146,7 +161,7 @@ input[type="search"]::-ms-reveal {
 
 /* 3. Primary Obsidian Black Buttons */
 .btn-ink-primary, .btn-indra-secondary {
-  background-color: #111113 !important;
+  background-color: #6B140B !important;
   color: #FFFFFF !important;
   font-weight: 700 !important;
   transition: all 0.2s ease;
@@ -154,13 +169,13 @@ input[type="search"]::-ms-reveal {
 }
 
 .btn-ink-primary:hover, .btn-indra-secondary:hover {
-  background-color: #dc2626 !important;
+  background-color: #9E3618 !important;
   transform: translateY(-2px);
 }
 
 /* 4. Rounded Cards (12px) with Soft Shadows & Paper Surface */
 .card-ink-paper {
-  border-radius: 12px;
+  border-radius: 0px !important;
   background-color: #FFFFFF;
   border: 1px solid #F1EBD5;
   box-shadow: 0 2px 10px -2px rgba(30, 42, 94, 0.06);
@@ -183,7 +198,7 @@ input[type="search"]::-ms-reveal {
   background-color: #D64545;
   color: #FFFFFF;
   font-weight: 700;
-  border-radius: 9999px;
+  border-radius: 0px !important;
   padding: 0.18rem 0.6rem;
   font-size: 0.6875rem;
   letter-spacing: 0.04em;
@@ -194,7 +209,7 @@ input[type="search"]::-ms-reveal {
   background-color: #FD7E14;
   color: #084C54;
   font-weight: 700;
-  border-radius: 9999px;
+  border-radius: 0px !important;
   padding: 0.18rem 0.6rem;
   font-size: 0.6875rem;
 }
@@ -240,7 +255,7 @@ input[type="search"]::-ms-reveal {
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: var(--gold, #dc2626);
+  background-color: var(--gold, #9E3618);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -256,7 +271,7 @@ input[type="search"]::-ms-reveal {
 }
 
 .focus-ring-gold:focus-visible {
-  outline: 2px solid var(--gold, #dc2626);
+  outline: 2px solid var(--gold, #9E3618);
   outline-offset: 2px;
 }
 
@@ -360,7 +375,7 @@ input[type="search"]::-ms-reveal {
 }
 
 .heimplanet-card:hover {
-  border-color: #dc2626;
+  border-color: #9E3618;
   box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.08);
 }
 
@@ -370,7 +385,7 @@ input[type="search"]::-ms-reveal {
   font-size: 0.75rem;
   font-weight: 800;
   padding: 0.5rem 1.25rem;
-  border-radius: 9999px;
+  border-radius: 0px !important;
   transition: all 0.2s ease;
 }
 
@@ -392,18 +407,18 @@ input[type="search"]::-ms-reveal {
   background: var(--clr-main-50, #fafafa);
 }
 ::-webkit-scrollbar-thumb {
-  background: #dc2626;
-  border-radius: 999px;
+  background: #9E3618;
+  border-radius: 0px !important;
   border: 2px solid var(--clr-main-50, #fafafa);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #b91c1c;
+  background: #6B140B;
 }
 
 /* ==================== SIGNATURE BUTTONS & COMPONENTS ==================== */
 /* 1. Primary Obsidian Black Button */
 .btn-rustic-primary, .btn-ledup-mocha {
-  background-color: #111113 !important;
+  background-color: #6B140B !important;
   color: #ffffff !important;
   font-weight: 700 !important;
   border-radius: 8px !important;
@@ -412,7 +427,7 @@ input[type="search"]::-ms-reveal {
 }
 
 .btn-rustic-primary:hover, .btn-ledup-mocha:hover {
-  background-color: #dc2626 !important;
+  background-color: #9E3618 !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 8px 22px rgba(220, 38, 38, 0.4) !important;
 }
@@ -421,9 +436,9 @@ input[type="search"]::-ms-reveal {
   transform: scale(0.96) !important;
 }
 
-/* 2. Signature Crimson Red Gradient Button (#b91c1c -> #dc2626 -> #ef4444) */
+/* 2. Signature Crimson Red Gradient Button (#6B140B -> #9E3618 -> #E9A858) */
 .btn-ledup-copper, .btn-rustic-secondary {
-  background: linear-gradient(90deg, #b91c1c, #dc2626, #ef4444) !important;
+  background: linear-gradient(90deg, #6B140B, #9E3618, #E9A858) !important;
   background-size: 200% auto !important;
   color: #ffffff !important;
   font-weight: 700 !important;
@@ -445,16 +460,16 @@ input[type="search"]::-ms-reveal {
 /* 3. Hairline Architectural Outline Button */
 .btn-rustic-outline, .btn-ledup-outline {
   background-color: transparent !important;
-  color: #111113 !important;
-  border: 1.5px solid #111113 !important;
+  color: #6B140B !important;
+  border: 1.5px solid #6B140B !important;
   font-weight: 700 !important;
   border-radius: 8px !important;
   transition: all 0.2s ease !important;
 }
 
 .btn-rustic-outline:hover, .btn-ledup-outline:hover {
-  background-color: #dc2626 !important;
-  border-color: #dc2626 !important;
+  background-color: #9E3618 !important;
+  border-color: #9E3618 !important;
   color: #ffffff !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 6px 18px rgba(220, 38, 38, 0.3) !important;
@@ -462,12 +477,12 @@ input[type="search"]::-ms-reveal {
 
 /* 4. Signature Badges */
 .badge-rustic-primary, .badge-ledup-mocha {
-  background-color: #111113;
+  background-color: #6B140B;
   color: #ffffff;
 }
 
 .badge-rustic-secondary, .badge-ledup-copper {
-  background-color: #dc2626;
+  background-color: #9E3618;
   color: #ffffff;
 }
 
@@ -478,7 +493,7 @@ input[type="search"]::-ms-reveal {
 
 .badge-rustic-linen, .badge-ledup-stone {
   background-color: #f4f4f5;
-  color: #18181b;
+  color: #26130F;
 }
 
 /* B) Pill Floating Island & Glassmorphism */
@@ -486,14 +501,14 @@ input[type="search"]::-ms-reveal {
   background: linear-gradient(90.48deg, rgba(255, 255, 255, 0.92) -4.41%, rgba(244, 244, 245, 0.92) 100.38%);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-radius: 10px;
+  border-radius: 0px !important;
   border: 1px solid rgba(228, 228, 231, 0.85);
   box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.08);
 }
 
 /* C) Architectural Card (24px radius, soft drop shadow, crimson red hover) */
 .ledup-card, .card-rustic {
-  border-radius: 1.5rem;
+  border-radius: 0px !important;
   background-color: #ffffff;
   border: 1px solid #e4e4e7;
   box-shadow: 0 4px 20px -4px rgba(0, 0, 0, 0.05);
@@ -503,7 +518,7 @@ input[type="search"]::-ms-reveal {
 .ledup-card:hover, .card-rustic:hover {
   transform: translateY(-4px);
   box-shadow: 0 20px 40px -10px rgba(220, 38, 38, 0.16);
-  border-color: #dc2626;
+  border-color: #9E3618;
 }
 
 /* F) LEDUP Rotating 45-degree Arrow on Link Hover */
@@ -550,13 +565,13 @@ input[type="search"]::-ms-reveal {
 
 /* I) LEDUP Large Architectural Radius Corners (50px / 3.125rem) */
 .ledup-rounded-hero-bottom {
-  border-bottom-left-radius: 3.125rem;
-  border-bottom-right-radius: 3.125rem;
+  border-bottom-left-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
 }
 
 .ledup-rounded-footer-top {
-  border-top-left-radius: 3.125rem;
-  border-top-right-radius: 3.125rem;
+  border-top-left-radius: 0px !important;
+  border-top-right-radius: 0px !important;
 }
 
 /* ==================== OMEGA SIGNATURE LOGO & PRODUCT ANIMATIONS ==================== */
@@ -637,14 +652,14 @@ input[type="search"]::-ms-reveal {
   height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #f4f4f5;
+  background: #F3EDE2;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d4d4d8;
-  border-radius: 9999px;
+  background: #D8C3A5;
+  border-radius: 0px !important;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #dc2626;
+  background: #9E3618;
 }
 
 /* 3. Android Touch Ergonomics & Momentum Scrolling */
@@ -657,11 +672,11 @@ html {
 .stitch-card {
   background-color: #ffffff;
   border: 1px solid #e4e4e7;
-  border-radius: 1rem;
+  border-radius: 0px !important;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .stitch-card:hover {
-  border-color: #dc2626;
+  border-color: #9E3618;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
 }
 
@@ -673,15 +688,15 @@ html {
 /* ==================== STITCH ATELIER HIGH-CONTRAST READABILITY SYSTEM ==================== */
 /* Eliminates low-contrast washed out text across all pages and components */
 body {
-  color: #09090b !important;
-  background-color: #fafafa !important;
+  color: #26130F !important;
+  background-color: #FAF6F0 !important;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
 /* Ensure all headings are crisp Obsidian Black */
 h1, h2, h3, h4, h5, h6, .font-heading {
-  color: #09090b;
+  color: #26130F;
 }
 
 /* Elevate low-contrast grey text classes to high-contrast readable charcoal */
@@ -694,26 +709,188 @@ h1, h2, h3, h4, h5, h6, .font-heading {
 }
 
 /* When inside dark obsidian containers, keep text high-contrast white/light gray */
-.bg-\[\#111113\] .text-zinc-400,
-.bg-\[\#18181b\] .text-zinc-400,
-.bg-\[\#09090b\] .text-zinc-400,
+.bg-\[\#6B140B\] .text-zinc-400,
+.bg-\[\#26130F\] .text-zinc-400,
+.bg-\[\#26130F\] .text-zinc-400,
 .bg-\[\#131316\] .text-zinc-400,
 .bg-\[\#0b0b0e\] .text-zinc-400 {
   color: #e4e4e7 !important;
 }
 
-.bg-\[\#111113\] .text-stone-400,
-.bg-\[\#18181b\] .text-stone-400,
-.bg-\[\#09090b\] .text-stone-400 {
+.bg-\[\#6B140B\] .text-stone-400,
+.bg-\[\#26130F\] .text-stone-400,
+.bg-\[\#26130F\] .text-stone-400 {
   color: #e4e4e7 !important;
 }
 
-.bg-\[\#111113\] .text-\[\#71717a\],
-.bg-\[\#18181b\] .text-\[\#71717a\] {
+.bg-\[\#6B140B\] .text-\[\#71717a\],
+.bg-\[\#26130F\] .text-\[\#71717a\] {
   color: #d4d4d8 !important;
 }
 
-.bg-\[\#111113\] .text-stone-500,
-.bg-\[\#18181b\] .text-stone-500 {
+.bg-\[\#6B140B\] .text-stone-500,
+.bg-\[\#26130F\] .text-stone-500 {
   color: #e4e4e7 !important;
+}
+
+
+/* ==================== GOOGLE TRANSLATE STYLING ==================== */
+.goog-te-banner-frame.skiptranslate,
+.goog-te-banner-frame {
+  display: none !important;
+}
+body {
+  top: 0px !important;
+  position: static !important;
+}
+.goog-tooltip,
+.goog-tooltip:hover {
+  display: none !important;
+}
+.goog-text-highlight {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+#goog-gt-tt {
+  display: none !important;
+  visibility: hidden !important;
+}
+.VIpgJd-ZVi9od-aZ2wEe-wOHMyf {
+  display: none !important;
+}
+
+
+
+/* ==========================================================================
+   ENHANCED ATELIER UI/UX: SUBTLE BORDER-RADIUS, BLACK & GOLD LUXURY EFFECTS
+   "used sum boreridused and more Efects and used black colors seds and golden corls seds"
+   ========================================================================== */
+
+:root {
+  /* ==================== BLACK LUXURY SHADES ==================== */
+  --clr-obsidian-950: #08080A;   /* Purest Velvet Black */
+  --clr-obsidian-900: #0F0F13;   /* Rich Obsidian Charcoal */
+  --clr-obsidian-850: #15151B;   /* Card Surface Black */
+  --clr-obsidian-800: #1C1C24;   /* Elevated Dark Container */
+  --clr-obsidian-700: #292934;   /* Muted Dark Slate */
+  --clr-obsidian-600: #3E3E4E;   /* Hairline Dark Border */
+
+  /* ==================== GOLDEN LUXURY SHADES ==================== */
+  --clr-gold-50:  #FCF9F2;
+  --clr-gold-100: #F7EED9;
+  --clr-gold-200: #EDDBAF;
+  --clr-gold-300: #E3C582;
+  --clr-gold-400: #D8B159;
+  --clr-gold-500: #D4AF37;       /* Royal Imperial Gold Benchmark */
+  --clr-gold-600: #BF953F;       /* Warm Burnished Gold */
+  --clr-gold-700: #99732B;       /* Deep Antique Gold */
+  --clr-gold-800: #73541D;
+  --clr-gold-900: #4D3711;
+
+  /* Metallic Gold & Obsidian Gradients */
+  --gradient-gold-foil: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+  --gradient-gold-soft: linear-gradient(135deg, #E5B869 0%, #D4AF37 50%, #C5A059 100%);
+  --gradient-black-noir: linear-gradient(135deg, #1C1C24 0%, #0F0F13 50%, #08080A 100%);
+  --gradient-maroon-noir: linear-gradient(135deg, #6B140B 0%, #3B0B06 50%, #15151B 100%);
+
+  /* Ambient Gold Shadow */
+  --shadow-gold-sm: 0 2px 10px rgba(212, 175, 55, 0.16);
+  --shadow-gold-md: 0 8px 24px -4px rgba(212, 175, 55, 0.22);
+  --shadow-gold-glow: 0 0 28px rgba(212, 175, 55, 0.32);
+  --shadow-noir-md: 0 12px 32px -4px rgba(8, 8, 10, 0.45);
+}
+
+/* 1. Subtle, Modern Border-Radius Standards ("used sum boreridused") */
+/* Default form inputs, textareas, selects */
+input:not([type="checkbox"]):not([type="radio"]),
+textarea,
+select {
+  border-radius: 0.75rem !important; /* 12px smooth corners */
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 2px #D4AF37, 0 0 16px rgba(212, 175, 55, 0.22) !important;
+}
+
+/* 2. Interactive Gold Shimmer Button Animation */
+@keyframes gold-shimmer-sweep {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.btn-gold-luxury {
+  background: linear-gradient(110deg, #D4AF37 0%, #FDF7C3 28%, #D4AF37 52%, #B38728 75%, #FDF7C3 100%) !important;
+  background-size: 200% auto !important;
+  color: #08080A !important;
+  font-weight: 800 !important;
+  border-radius: 0.75rem !important;
+  box-shadow: 0 4px 18px rgba(212, 175, 55, 0.35);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-gold-luxury:hover {
+  background-position: right center !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px rgba(212, 175, 55, 0.52);
+}
+
+.btn-gold-luxury:active {
+  transform: translateY(0);
+}
+
+/* 3. Obsidian Noir Card with Gold Accent */
+.card-obsidian-gold {
+  background: linear-gradient(145deg, #15151B 0%, #0F0F13 100%);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 1rem;
+  box-shadow: 0 12px 32px rgba(8, 8, 10, 0.35);
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-obsidian-gold:hover {
+  transform: translateY(-4px);
+  border-color: rgba(212, 175, 55, 0.65);
+  box-shadow: 0 18px 40px rgba(8, 8, 10, 0.45), 0 0 20px rgba(212, 175, 55, 0.18);
+}
+
+/* 4. Luxury Hover Lift on White/Canvas Cards */
+.hover-lift-gold {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+}
+
+.hover-lift-gold:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px -4px rgba(38, 19, 15, 0.1), 0 0 14px rgba(212, 175, 55, 0.15);
+}
+
+/* 5. Golden Pill Badge */
+.badge-gold-pill {
+  background: linear-gradient(90deg, #D4AF37, #E5B869);
+  color: #08080A;
+  font-weight: 800;
+  border-radius: 9999px;
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.28);
+}
+
+/* 6. Subtle Pulse Halo */
+@keyframes gold-halo-breathe {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(212, 175, 55, 0);
+  }
+}
+
+.animate-gold-halo {
+  animation: gold-halo-breathe 2.5s infinite;
 }

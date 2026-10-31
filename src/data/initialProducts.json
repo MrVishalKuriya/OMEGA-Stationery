@@ -12,10 +12,11 @@
     "discountPrice": null,
     "featured": true,
     "gallery": [
+      "/omega-products/counter-book-q3-catalog.jpeg",
       "/omega-products/counter-book-q3-288p.jpeg",
       "/omega-products/catalog-sheet-counter-q2-q3-q4.jpeg"
     ],
-    "image": "/omega-products/counter-book-q3-288p.jpeg",
+    "image": "/omega-products/counter-book-q3-catalog.jpeg",
     "name": "OMEGA Hardcover Counter Book Q3 (288 Pages)",
     "nameSw": "OMEGA Daftari la Kaunta Q3 (Kurasa 288)",
     "pageCount": "288 Pages",
@@ -85,10 +86,11 @@
     "discountPrice": null,
     "featured": true,
     "gallery": [
+      "/omega-products/counter-book-q4-catalog.jpeg",
       "/omega-products/counter-book-q4-384p.jpeg",
       "/omega-products/catalog-sheet-counter-q2-q3-q4.jpeg"
     ],
-    "image": "/omega-products/counter-book-q4-384p.jpeg",
+    "image": "/omega-products/counter-book-q4-catalog.jpeg",
     "name": "OMEGA Hardcover Counter Book Q4 (384 Pages)",
     "nameSw": "OMEGA Daftari la Kaunta Q4 (Kurasa 384)",
     "pageCount": "384 Pages",
@@ -146,7 +148,9 @@
     "descriptionSw": "200 Pages Single Line (SL) Purple Edition",
     "discountPrice": null,
     "featured": true,
-    "gallery": [],
+    "gallery": [
+      "/omega-products/exercise-book-200p-purple.jpeg"
+    ],
     "image": "/omega-products/exercise-book-200p-purple.jpeg",
     "name": "OMEGA Student Exercise Book 200 Pages (Single Line)",
     "nameSw": "Daftari la Mazoezi la Wanafunzi OMEGA (Kurasa 200)",
@@ -192,8 +196,10 @@
     "descriptionSw": "Heavy Kraft Bahasha Size A4",
     "discountPrice": null,
     "featured": true,
-    "gallery": [],
-    "image": "/omega-products/bahasha-a4-envelope.jpeg",
+    "gallery": [
+      "/omega-products/bahasha-a4-catalog.png"
+    ],
+    "image": "/omega-products/bahasha-a4-catalog.png",
     "name": "OMEGA Heavy Kraft Bahasha Envelopes A4 (Pack of 50)",
     "nameSw": "Bahasha Nzito za OMEGA A4 (Pakiti ya 50)",
     "paperType": "120 GSM Pure Kraft Paper",
@@ -238,6 +244,7 @@
     "discountPrice": null,
     "featured": false,
     "gallery": [
+      "/omega-products/bahasha-a3-catalog.jpeg",
       "/omega-products/bahasha-a3-envelope.jpeg",
       "/omega-products/catalog-sheet-shorthand-bahasha.jpeg"
     ],
@@ -290,6 +297,7 @@
     "discountPrice": null,
     "featured": false,
     "gallery": [
+      "/omega-products/bahasha-a5-catalog.jpeg",
       "/omega-products/bahasha-a4-box.jpeg",
       "/omega-products/catalog-sheet-bahasha-manila.jpeg"
     ],
@@ -337,6 +345,7 @@
     "discountPrice": null,
     "featured": false,
     "gallery": [
+      "/omega-products/bahasha-a6-catalog.jpeg",
       "/omega-products/bahasha-a6-box.jpeg",
       "/omega-products/catalog-sheet-bahasha-manila.jpeg"
     ],
@@ -383,8 +392,10 @@
     "descriptionSw": "Attendance Register · Indigo Printed Limited",
     "discountPrice": null,
     "featured": true,
-    "gallery": [],
-    "image": "/omega-products/printer-jaradio-cover.jpeg",
+    "gallery": [
+      "/omega-products/printer-jaradio-catalog.jpeg"
+    ],
+    "image": "/omega-products/printer-jaradio-catalog.jpeg",
     "name": "OMEGA School Student Attendance Register (Hardcover)",
     "nameSw": "Rejesta ya Mahudhurio ya Wanafunzi OMEGA (Jalada Gumu)",
     "paperType": "80 GSM Ledger Bond",
@@ -427,7 +438,9 @@
     "descriptionSw": "Printer Jaradio Security Gate Visitors Register",
     "discountPrice": null,
     "featured": false,
-    "gallery": [],
+    "gallery": [
+      "/omega-products/printer-jaradio-isolated.jpeg"
+    ],
     "image": "/omega-products/printer-jaradio-isolated.jpeg",
     "name": "OMEGA Security & Gate Visitors Register (Executive Foil)",
     "nameSw": "Kitabu cha Wageni Getini OMEGA (Jalada la Dhahabu)",
@@ -466,7 +479,9 @@
     "descriptionSw": "Ruled Examination Paper · 400 Sheets, 16 Pkt",
     "discountPrice": null,
     "featured": true,
-    "gallery": [],
+    "gallery": [
+      "/omega-products/ruled-paper-catalog.jpeg"
+    ],
     "image": "/omega-products/ruled-paper-catalog.jpeg",
     "name": "OMEGA Ruled Examination Paper (400 Sheets / 16 Pkt)",
     "nameSw": "Karatasi za Mitihani za OMEGA (Rimi ya Karatasi 500)",
@@ -507,7 +522,9 @@
     "descriptionSw": "Karatasi za grafu zenye mistari sahihi ya vipimo vya milimita.",
     "discountPrice": 12500,
     "featured": false,
-    "gallery": [],
+    "gallery": [
+      "/omega-products/ruled-paper-pack.jpeg"
+    ],
     "image": "/omega-products/ruled-paper-pack.jpeg",
     "name": "OMEGA Metric Millimeter Graph Paper (Pad of 100 Sheets)",
     "nameSw": "Karatasi za Grafu za OMEGA (Pedi ya Karatasi 100)",
@@ -547,11 +564,12 @@
     "discountPrice": null,
     "featured": false,
     "gallery": [
+      "/omega-products/flipchart-catalog.jpeg",
       "/omega-products/flipchart-bundle-stack.jpeg",
       "/omega-products/flipchart-stack-large.jpeg",
       "/omega-products/catalog-sheet-flipchart-ruled-folder.jpeg"
     ],
-    "image": "/omega-products/flipchart-stack-large.jpeg",
+    "image": "/omega-products/flipchart-catalog.jpeg",
     "name": "OMEGA Presentation Flipchart Paper (Stack of 50 Sheets)",
     "nameSw": "Karatasi za Flipchart za OMEGA (Pakiti ya 50)",
     "paperType": "70 GSM Heavy Easel Paper",
@@ -595,11 +613,12 @@
     "discountPrice": null,
     "featured": false,
     "gallery": [
+      "/uploads/omega_manila_file_folders__bundle_of_1793135313970.png",
       "/omega-products/manila-file-folder-flat.jpeg",
       "/omega-products/manila-file-folder-open.jpeg",
       "/omega-products/catalog-sheet-flipchart-ruled-folder.jpeg"
     ],
-    "image": "/omega-products/manila-file-folder-flat.jpeg",
+    "image": "/uploads/omega_manila_file_folders__bundle_of_1793135313970.png",
     "name": "OMEGA Heavyweight Manila File Folders (Bundle of 100)",
     "nameSw": "Mafaili ya Manila ya OMEGA (Mfungo wa 100)",
     "paperType": "250 GSM High-Density Manila Cardstock",
@@ -642,8 +661,10 @@
     "descriptionSw": "Plastic File P.V.C",
     "discountPrice": null,
     "featured": false,
-    "gallery": [],
-    "image": "/omega-products/omega-pvc-spring-file.jpeg",
+    "gallery": [
+      "/omega-products/plastic-file-pvc-catalog.jpeg"
+    ],
+    "image": "/omega-products/plastic-file-pvc-catalog.jpeg",
     "name": "OMEGA Executive Plastic P.V.C. Spring File",
     "nameSw": "Faili la Kisasa la PVC Spring OMEGA",
     "paperType": "Heavy Rigid PVC Polypropylene Shell",
@@ -683,8 +704,10 @@
     "descriptionSw": "Oxford Compass Geometry Instruments",
     "discountPrice": null,
     "featured": true,
-    "gallery": [],
-    "image": "/omega-products/oxford-mathematical-set.jpeg",
+    "gallery": [
+      "/omega-products/oxford-compass-catalog.jpeg"
+    ],
+    "image": "/omega-products/oxford-compass-catalog.jpeg",
     "name": "Oxford Compass Mathematical Instruments Geometry Set",
     "nameSw": "Vifaa vya Jiometria vya Oxford (Math Set)",
     "paperType": "N/A (Precision Die-Cast Metal & Clear Acrylic)",
@@ -725,10 +748,11 @@
     "discountPrice": null,
     "featured": false,
     "gallery": [
+      "/omega-products/shorthand-notebook-catalog.jpeg",
       "/omega-products/omega-shorthand-notebook.jpeg",
       "/omega-products/catalog-sheet-shorthand-bahasha.jpeg"
     ],
-    "image": "/omega-products/omega-shorthand-notebook.jpeg",
+    "image": "/omega-products/shorthand-notebook-catalog.jpeg",
     "name": "OMEGA Wire-Bound Shorthand Steno Notebook (160 Pages)",
     "nameSw": "Daftari la Shorthand la OMEGA (Kurasa 160)",
     "paperType": "65 GSM High-Speed Writing Paper",
@@ -773,10 +797,11 @@
     "discountPrice": null,
     "featured": false,
     "gallery": [
+      "/uploads/omega_accounting_petty_cash_vouchers_1792587582257.png",
       "/omega-products/omega-petty-cash-voucher.jpeg",
       "/omega-products/catalog-sheet-jaradio-cash.jpeg"
     ],
-    "image": "/omega-products/omega-petty-cash-voucher.jpeg",
+    "image": "/uploads/omega_accounting_petty_cash_vouchers_1792587582257.png",
     "name": "OMEGA Accounting Petty Cash Vouchers (Pad of 100)",
     "nameSw": "Voucher za Petty Cash OMEGA (Kitabu cha 100)",
     "paperType": "60 GSM Duplicate Bond",
@@ -880,10 +905,11 @@
     "featured": true,
     "freeDelivery": true,
     "gallery": [
+      "/omega-products/exercise-book-200p-sl-catalog.jpeg",
       "/omega-products/exercise-book-200p-purple.jpeg",
       "/omega-products/catalog-sheet-exercise-200-sl-dl-sq.jpeg"
     ],
-    "image": "/omega-products/exercise-book-200p-purple.jpeg",
+    "image": "/omega-products/exercise-book-200p-sl-catalog.jpeg",
     "name": "OMEGA Exercise Book 200 Pages (Single Line - SL)",
     "packaging": "120 Pcs / Box",
     "price": 68000,
@@ -949,10 +975,11 @@
     "featured": true,
     "freeDelivery": true,
     "gallery": [
+      "/omega-products/exercise-book-200p-dl-catalog.jpeg",
       "/omega-products/exercise-book-200p-whitered.jpeg",
       "/omega-products/catalog-sheet-exercise-200-sl-dl-sq.jpeg"
     ],
-    "image": "/omega-products/exercise-book-200p-whitered.jpeg",
+    "image": "/omega-products/exercise-book-200p-dl-catalog.jpeg",
     "name": "OMEGA Exercise Book 200 Pages (Double Line - DL)",
     "packaging": "120 Pcs / Box",
     "price": 68000,
@@ -1018,9 +1045,10 @@
     "featured": false,
     "freeDelivery": true,
     "gallery": [
+      "/omega-products/exercise-book-200p-sq-catalog.jpeg",
       "/omega-products/catalog-sheet-exercise-200-sl-dl-sq.jpeg"
     ],
-    "image": "/omega-products/catalog-sheet-exercise-200-sl-dl-sq.jpeg",
+    "image": "/omega-products/exercise-book-200p-sq-catalog.jpeg",
     "name": "OMEGA Exercise Book 200 Pages (Square / Mathematics - SQ)",
     "packaging": "120 Pcs / Box",
     "price": 68000,
@@ -1091,10 +1119,11 @@
     "featured": true,
     "freeDelivery": true,
     "gallery": [
+      "/omega-products/stiff-cover-200-catalog.jpeg",
       "/omega-products/stiff-cover-200p-black.jpeg",
       "/omega-products/catalog-sheet-stiff-cover-200.jpeg"
     ],
-    "image": "/omega-products/stiff-cover-200p-black.jpeg",
+    "image": "/omega-products/stiff-cover-200-catalog.jpeg",
     "name": "OMEGA Stiff Cover Geometric Exercise Book (200 Pages)",
     "packaging": "96 Pcs / Box",
     "price": 75000,
@@ -1214,10 +1243,11 @@
     "featured": false,
     "freeDelivery": true,
     "gallery": [
+      "/uploads/omega_exercise_book_100_pages__doubl_1792587726371.png",
       "/omega-products/exercise-book-100p-catalog.jpeg",
       "/omega-products/catalog-sheet-exercise-100-80-32.jpeg"
     ],
-    "image": "/omega-products/exercise-book-100p-catalog.jpeg",
+    "image": "/uploads/omega_exercise_book_100_pages__doubl_1792587726371.png",
     "name": "OMEGA Exercise Book 100 Pages (Double Line - DL)",
     "packaging": "120 Pcs / Box",
     "price": 41000,
@@ -1388,10 +1418,11 @@
     "featured": true,
     "freeDelivery": true,
     "gallery": [
+      "/omega-products/exercise-book-80p-catalog.jpeg",
       "/omega-products/exercise-book-80p-yellow.jpeg",
       "/omega-products/catalog-sheet-exercise-100-80-32.jpeg"
     ],
-    "image": "/omega-products/exercise-book-80p-yellow.jpeg",
+    "image": "/omega-products/exercise-book-80p-catalog.jpeg",
     "name": "OMEGA Exercise Book 80 Pages (Canary Yellow)",
     "packaging": "100 Pcs / Box",
     "price": 42000,
@@ -1446,10 +1477,11 @@
     "featured": false,
     "freeDelivery": true,
     "gallery": [
+      "/omega-products/exercise-book-32p-catalog.jpeg",
       "/omega-products/exercise-book-32p-kraft.jpeg",
       "/omega-products/catalog-sheet-exercise-100-80-32.jpeg"
     ],
-    "image": "/omega-products/exercise-book-32p-kraft.jpeg",
+    "image": "/omega-products/exercise-book-32p-catalog.jpeg",
     "name": "OMEGA Classic Exercise Book 32 Pages (Single Line Kraft)",
     "packaging": "300 Pcs / Box",
     "price": 32000,
@@ -1504,11 +1536,12 @@
     "featured": true,
     "freeDelivery": true,
     "gallery": [
+      "/omega-products/bahasha-a4-catalog.png",
       "/omega-products/bahasha-a4-envelope.jpeg",
       "/omega-products/bahasha-a4-box.jpeg",
       "/omega-products/catalog-sheet-shorthand-bahasha.jpeg"
     ],
-    "image": "/omega-products/bahasha-a4-envelope.jpeg",
+    "image": "/omega-products/bahasha-a4-catalog.png",
     "name": "OMEGA Bahasha Document Envelopes (Size A4 Pack)",
     "packaging": "500 Pcs / Box",
     "price": 28000,
@@ -1574,10 +1607,11 @@
     "featured": true,
     "freeDelivery": true,
     "gallery": [
+      "/omega-products/plastic-file-pvc-catalog.jpeg",
       "/omega-products/omega-pvc-spring-file.jpeg",
       "/omega-products/catalog-sheet-file-jaradio-compass.jpeg"
     ],
-    "image": "/omega-products/omega-pvc-spring-file.jpeg",
+    "image": "/omega-products/plastic-file-pvc-catalog.jpeg",
     "name": "OMEGA Executive Plastic P.V.C. Spring File",
     "packaging": "50 Pcs / Box",
     "price": 270000,
@@ -1750,10 +1784,11 @@
     "featured": true,
     "freeDelivery": true,
     "gallery": [
+      "/omega-products/oxford-compass-catalog.jpeg",
       "/omega-products/oxford-mathematical-set.jpeg",
       "/omega-products/catalog-sheet-file-jaradio-compass.jpeg"
     ],
-    "image": "/omega-products/oxford-mathematical-set.jpeg",
+    "image": "/omega-products/oxford-compass-catalog.jpeg",
     "name": "Oxford Compass Mathematical Instruments Geometry Set",
     "packaging": "10 Sets / Outer Box",
     "price": 180000,
@@ -2112,11 +2147,12 @@
     "featured": true,
     "freeDelivery": true,
     "gallery": [
+      "/omega-products/ruled-paper-catalog.jpeg",
       "/omega-products/ruled-paper-pack.jpeg",
       "/omega-products/ruled-paper-ream-tall.jpeg",
       "/omega-products/catalog-sheet-flipchart-ruled-folder.jpeg"
     ],
-    "image": "/omega-products/ruled-paper-pack.jpeg",
+    "image": "/omega-products/ruled-paper-catalog.jpeg",
     "name": "OMEGA Ruled Examination Paper (400 Sheets / 16 Pkt)",
     "packaging": "400 Sheets / 16 Pkt",
     "price": 70000,
@@ -2182,10 +2218,11 @@
     "featured": true,
     "freeDelivery": true,
     "gallery": [
+      "/omega-products/counter-book-q2-catalog.jpeg",
       "/omega-products/counter-book-q2-192p.jpeg",
       "/omega-products/catalog-sheet-counter-q2-q3-q4.jpeg"
     ],
-    "image": "/omega-products/counter-book-q2-192p.jpeg",
+    "image": "/omega-products/counter-book-q2-catalog.jpeg",
     "name": "OMEGA Hardcover Counter Book Q2 (192 Pages)",
     "packaging": "48 Pcs / Box",
     "price": 56000,
@@ -2240,7 +2277,9 @@
     "descriptionSw": "100 Pages Standard Classroom Pack",
     "discountPrice": null,
     "featured": false,
-    "gallery": [],
+    "gallery": [
+      "/omega-products/exercise-book-100p-catalog.jpeg"
+    ],
     "image": "/omega-products/exercise-book-100p-catalog.jpeg",
     "name": "OMEGA Primary & Secondary Exercise Book 100 Pages",
     "nameSw": "Daftari la Mazoezi la OMEGA (Kurasa 100)",
@@ -2286,8 +2325,10 @@
     "descriptionSw": "80 Pages School Exercise Book",
     "discountPrice": null,
     "featured": false,
-    "gallery": [],
-    "image": "/omega-products/exercise-book-80p-yellow.jpeg",
+    "gallery": [
+      "/omega-products/exercise-book-80p-catalog.jpeg"
+    ],
+    "image": "/omega-products/exercise-book-80p-catalog.jpeg",
     "name": "OMEGA School Exercise Book 80 Pages",
     "nameSw": "Daftari la Wanafunzi OMEGA Kurasa 80",
     "pageCount": "80 Pages",
@@ -2332,8 +2373,10 @@
     "descriptionSw": "32 Pages Early Learning",
     "discountPrice": null,
     "featured": false,
-    "gallery": [],
-    "image": "/omega-products/exercise-book-32p-kraft.jpeg",
+    "gallery": [
+      "/omega-products/exercise-book-32p-catalog.jpeg"
+    ],
+    "image": "/omega-products/exercise-book-32p-catalog.jpeg",
     "name": "OMEGA Early Learning Exercise Book 32 Pages",
     "nameSw": "Daftari la Chekechea / Awali OMEGA (Kurasa 32)",
     "pageCount": "32 Pages",

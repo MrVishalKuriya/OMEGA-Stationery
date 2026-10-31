@@ -1,8 +1,8 @@
 import { Language } from '../types/store';
 
-export const TRANSLATIONS = {
+export const TRANSLATIONS: Record<Language, any> = {
   en: {
-    // Navigation
+    // Navigation & Global Header
     home: 'Home',
     catalog: 'Products Catalogue',
     about: 'About OMEGA',
@@ -10,98 +10,125 @@ export const TRANSLATIONS = {
     admin: 'Admin Dashboard',
     cart: 'Cart & WhatsApp Order',
     cartItems: 'Items',
-    searchPlaceholder: 'Search notebooks, counter books, bahasha...',
-    
-    // Header & Brand
+    searchPlaceholder: 'Search notebooks, counter books, bahasha, registers...',
+    trackOrder: 'Track Order',
+    wishlist: 'Wishlist',
+    myAccount: 'My Account',
+    myProfile: 'My Profile',
+    signIn: 'Sign In',
+    register: 'Register',
+    logOut: 'Log Out',
+    wholesaleB2B: 'Wholesale B2B',
+    schoolTenders: 'School Tenders',
+    cartons: 'Cartons',
+    saveUpTo: 'Save up to',
+
+    // Header & Brand Hallmarks
     qualityTagline: 'Quality for Every Page',
     brandSubtitle: 'PREMIER TANZANIAN WRITING NOTEBOOKS · EST. 1998',
     freeDeliveryNote: 'WHOLESALE & RETAIL ORDERS ACROSS TANZANIA | OFFICIAL OMEGA DISTRIBUTOR',
     switchLanguage: 'Kiswahili',
+    currentLanguageName: 'English',
+    otherLanguageName: 'Kiswahili',
     phoneSupport: 'Order Hotline',
-    
-    // Hero Section
-    heroBadge: 'PREMIUM TANZANIAN STATIONERY',
-    heroTitle: 'Quality for Every Page',
-    heroSubtitle:
-      'Engineered with stiff hardboard covers, high-GSM bleed-proof paper, and thread-sewn bindings. Trusted by schools, colleges, institutions, and businesses across Tanzania.',
-    exploreCatalog: 'Explore Products',
-    orderOnWhatsApp: 'Order on WhatsApp',
-    wholesaleEnquiry: 'Wholesale Enquiry',
-    hero3DHint: 'Interactive 3D Preview: Drag or rotate the OMEGA Counter Book to inspect cover & spine',
-    heroTaglineTop: 'QUALITY • TRUST • HERITAGE',
-    heroBrandTitle: 'OMEGA NOTEBOOKS',
-    heroSubheadingPrefix: 'The Benchmark in',
-    heroSubheadingAccent: 'Precision Books',
-    heroSubheadingSuffix: '& Permanent Records',
-    heroDescription:
-      'Engineered in Tanzania with double thread-sewn Smyth bindings, 70 GSM bleed-proof woodfree paper, and rigid hardboard covers. Trusted by leading schools, colleges, and enterprises across the nation.',
-    heroScriptTagline: 'Crafted for Minds That Shape Tomorrow',
-    heroView360: '360° Interactive View',
-    heroBadge1Title: 'Smyth Bound',
-    heroBadge1Sub: '180° Lay-Flat Spine',
-    heroBadge2Title: '70 GSM Bond',
-    heroBadge2Sub: 'Zero Ink Bleed',
-    heroBadge3Title: 'Bus Parcel',
-    heroBadge3Sub: 'All 31 Regions',
-    heroBadge4Title: 'Factory Direct',
-    heroBadge4Sub: 'Carton Bulk Savings',
-    heroNavWhyUs: 'Why Us',
-    heroNavPricing: 'Wholesale & Pricing',
-    heroFeat1Title: 'Hardcover Counter Books',
-    heroFeat1Desc: 'Q2, Q3, Q4 Smyth thread-sewn folio ledgers',
-    heroFeat2Title: 'Primary & Secondary Exercise',
-    heroFeat2Desc: '32p, 80p, 100p, 200p single & double line',
-    heroFeat3Title: 'Heavy Kraft Bahasha',
-    heroFeat3Desc: 'A3, A4, A5, A6 peel & seal document envelopes',
-    heroFeat4Title: 'Attendance & Log Registers',
-    heroFeat4Desc: 'Institutional hardbound record registers',
-    heroFeat5Title: 'Office Files & Ruled Paper',
-    heroFeat5Desc: 'Spring files, manila folders & ream packs',
-    heroStripCounter: 'Counter Books',
-    heroStripExercise: 'Exercise Books',
-    heroStripBahasha: 'Kraft Bahasha',
-    heroStripRegisters: 'School Registers',
-    heroStripRuled: 'Ruled Paper',
-    heroStripFiles: 'Files & Folders',
-    heroStripCartons: 'Wholesale Cartons',
-    
-    // 3D Model Controls
-    rotateAuto: 'Auto-Rotate',
-    rotatePause: 'Pause Rotation',
-    frontView: 'Front Cover',
-    spineView: 'Cloth Spine',
-    angleView: '3D Angle',
-    openView: 'Inside Pages',
-    selectQuire: 'Select Quire / Size:',
-    quire2Label: 'Q2 (192 Pages)',
-    quire3Label: 'Q3 (288 Pages)',
-    quire4Label: 'Q4 (384 Pages)',
 
-    // Positive Thinking & Writing Section
-    positiveThinkingBadge: 'POSITIVE THINKING & WRITING',
-    positiveThinkingTitle: 'Great Thoughts Begin on Clean Pages',
-    positiveThinkingSubtitle:
-      'Writing by hand sharpens intellect, organizes visions, and brings clarity to future leaders.',
-    positiveQuotes: [
-      {
-        quote:
-          '“Every great enterprise, academic distinction, and national progress begins with a single handwritten thought on a reliable page.”',
-        author: 'OMEGA Writing Philosophy',
-        role: 'Excellence in Education',
-      },
-      {
-        quote:
-          '“When you write in an OMEGA notebook, your ink never bleeds, your binding never loosens, and your dedication remains preserved.”',
-        author: 'Mwalimu & Scholar Approved',
-        role: 'High-GSM Precision Paper',
-      },
-      {
-        quote:
-          '“Mawazo chanya na uandishi bora huleta mafanikio ya kudumu. Jenga kesho yako leo kwa kalamu na daftari bora.”',
-        author: 'Dar es Salaam Stationery Guild',
-        role: 'Tanzania Heritage',
-      },
-    ],
+    // Announcements
+    announcement1: '🎉 Festival Mega Offer: Special factory discounts on School & Office Stationery cartons!',
+    announcement2: 'Wholesale & School Tenders: Save up to 40% OFF Cartons — Direct From Mbeya Factory',
+    announcement3: 'Genuine OMEGA Hardcover Counter Books (Q1, Q2, Q3, Q4) — Direct from Soweto SIDO Mbeya',
+    announcement4: 'Fast regional bus parcel waybill dispatch across all 31 regions of Tanzania',
+
+    // Category Quick-Nav (Flipkart-style)
+    catAll: 'All Items',
+    catCounter: 'Counter Books',
+    catExercise: 'Exercise Books',
+    catStiff: 'Stiff Cover',
+    catBahasha: 'Kraft Bahasha',
+    catFiles: 'Office Files',
+    catWholesale: 'Wholesale Cartons',
+    catTenders: 'School Tenders',
+
+    // Hero Section Slides
+    slide1Tag: 'FACTORY DIRECT · SOWETO SIDO MBEYA',
+    slide1TitlePrefix: 'Premium School Notebooks &',
+    slide1TitleAccent: 'Counter Books',
+    slide1Desc: 'Double-stitched Smyth-sewn binding with 70 GSM bleed-proof paper. Fast delivery across 31 regions.',
+    slide1Cta: 'SHOP WHOLESALE',
+    slide1Sec: 'VIEW CATALOG',
+    slide1Badge: 'From TSh 56,000 / Carton',
+
+    slide2Tag: '180° LAY-FLAT · ARCHIVAL BENCHMARK',
+    slide2TitlePrefix: 'Genuine Smyth-Sewn',
+    slide2TitleAccent: 'Q1–Q4 Ledgers',
+    slide2Desc: 'Rigid 1.8mm laminated hardcover with uniform 8mm NECTA indigo ruling for schools & businesses.',
+    slide2Cta: 'EXPLORE Q1–Q4',
+    slide2Sec: 'ORDER ON WHATSAPP',
+    slide2Badge: '192 to 384 Pages',
+
+    slide3Tag: 'PRIMARY & SECONDARY EDITIONS',
+    slide3TitlePrefix: 'Classroom Student',
+    slide3TitleAccent: 'Exercise Books',
+    slide3Desc: 'Single Line, Double Line & Mathematics Grid in 80p, 100p, and 200p academic year editions.',
+    slide3Cta: 'VIEW EXERCISE BOOKS',
+    slide3Sec: 'TENDER REQUISITION',
+    slide3Badge: 'From TSh 800 / Unit',
+
+    slide4Tag: 'HEAVYWEIGHT 120 GSM KRAFT',
+    slide4TitlePrefix: 'Tear-Resistant Kraft',
+    slide4TitleAccent: 'Bahasha & Envelopes',
+    slide4Desc: 'Sizes A3, A4, A5, and A6 with self-adhesive peel-and-seal strip for secure official mailings.',
+    slide4Cta: 'BROWSE BAHASHA',
+    slide4Sec: 'BULK PACKS',
+    slide4Badge: '100 Pcs / Pack Box',
+
+    // Hero Flash Deal Widget
+    flashDealTitle: 'FLASH DEAL OF THE DAY',
+    dealEndsIn: 'Ends in',
+    flashDealProdName: 'OMEGA Hardcover Counter Book Q3 (288 Pages)',
+    flashDealProdDesc: 'Factory wholesale offer for schools & shops. 36 pcs per carton with archival Smyth-sewn binding.',
+    unitPrice: 'Unit Price',
+    cartonPrice: 'Carton Price (36 pcs)',
+    addToCartBtn: 'Add to Cart',
+    dealClaimed: 'Factory Stock Available',
+
+    // Deals of the Day Rail
+    dealsDayTitle: 'Top Deals of the Day',
+    dealsDaySubtitle: 'Factory-direct wholesale pricing on top ledger & school editions',
+    viewAll: 'VIEW ALL',
+    viewDetails: 'View Details',
+    off: 'OFF',
+    perCarton: 'per ctn',
+    perBox: 'per box',
+    perPack: 'per pack',
+
+    // 3-Column Curated Grids
+    gridSchoolTitle: 'School Notebooks',
+    gridSchoolBadge: 'Min 15% Off',
+    gridSchoolLink: 'View School Line',
+    gridLedgerTitle: 'Hardcover Ledgers',
+    gridLedgerBadge: 'Smyth-Sewn',
+    gridLedgerLink: 'View Ledgers',
+    gridWholesaleTitle: 'Wholesale Cartons',
+    gridWholesaleBadge: 'B2B Volume',
+    gridWholesaleLink: 'Wholesale Price Sheet',
+
+    // Curated Notebook Lines
+    curatedTitle: 'Curated Notebook Lines',
+    curatedSubtitle: 'Select by category to explore notebook specifications and pricing',
+    filterAll: 'All',
+    filterCounter: 'Counter Books',
+    filterExercise: 'Exercise Books',
+    filterBahasha: 'Bahasha',
+    retailLabel: 'Retail',
+    wholesaleLabel: 'Wholesale',
+
+    // Bulk Calculator & Quote
+    bulkCalculatorTitle: 'Fast Wholesale & Carton Price Estimator',
+    bulkCalculatorSubtitle: 'Calculate exact carton quantities and request a stamped factory proforma invoice',
+    selectNotebookType: 'Select Notebook / Ledger:',
+    enterCartons: 'Carton Quantity:',
+    estimatedTotal: 'Estimated Total:',
+    instantWhatsAppQuote: 'Get Instant WhatsApp Quote',
 
     // Product Categories
     categoriesTitle: 'Browse By Category',
@@ -116,7 +143,7 @@ export const TRANSLATIONS = {
     schoolStationery: 'School Stationery',
     officeSupplies: 'Office Supplies',
 
-    // Product Card & Details
+    // Product Details
     quire: 'Quire',
     pages: 'Pages',
     size: 'Size',
@@ -132,12 +159,10 @@ export const TRANSLATIONS = {
     addToOrder: 'Add to Order',
     addedToOrder: 'Added to Order!',
     buyViaWhatsApp: 'Direct WhatsApp Order',
-    viewDetails: 'View Details',
     quantity: 'Quantity',
     subtotal: 'Subtotal',
     specifications: 'Specifications',
     productDescription: 'Product Description',
-    galleryView: 'Product Photography Gallery',
 
     // WhatsApp Order Flow
     whatsAppOrderingTitle: 'WhatsApp Instant Order',
@@ -148,135 +173,162 @@ export const TRANSLATIONS = {
     phoneNumber: 'Your Phone / WhatsApp Number',
     deliveryLocation: 'Delivery City / Region / Street',
     deliveryOptions: 'Fulfillment Preference',
-    homeDelivery: 'Door Delivery (Dar es Salaam)',
-    pickupStore: 'In-Store Counter Pickup (Dar es Salaam)',
-    mikoaniParcel: 'Upcountry Bus Parcel (Mikoani)',
-    paymentMethod: 'Payment Preference',
-    mobileMoney: 'Mobile Money (M-Pesa / Tigo Pesa / Airtel Money)',
-    cashOnDelivery: 'Cash on Delivery (Dar es Salaam)',
+    homeDelivery: 'Doorstep Delivery (Dar es Salaam / Mbeya)',
+    pickupStore: 'Self-Pickup at Factory Depot',
+    mikoaniParcel: 'Bus Parcel / Cargo Waybill (All 31 Regions)',
+    paymentMethod: 'Preferred Payment Method',
+    mobileMoney: 'M-Pesa / Tigo Pesa / Airtel Money',
+    cashOnDelivery: 'Cash on Delivery (Local Only)',
     bankTransfer: 'Bank Transfer (CRDB / NMB)',
-    orderNotes: 'Additional Notes / School Name / Tender Reference',
+    orderNotes: 'Order Notes / School or Institution Name',
     sendWhatsAppBtn: 'Send Order via WhatsApp',
 
     // Wholesale Section
     wholesaleTitle: 'Wholesale & Institutional Supply',
     wholesaleDesc:
-      'We supply schools, colleges, bookstores, stationery shops, government agencies, and corporate offices with factory-direct bulk pricing.',
-    wholesaleBenefit1: 'Special carton and ream bundle discounts',
-    wholesaleBenefit2: 'Reliable freight across all regions of Tanzania',
-    wholesaleBenefit3: 'Official EFD receipts & tax invoices provided',
-    requestWholesaleQuote: 'Request Wholesale Price List',
+      'Direct factory supply for schools, colleges, bookstores, and government/private organizations at wholesale carton prices.',
+    wholesaleBenefit1: 'Special bulk volume discounts on cartons and master bundles',
+    wholesaleBenefit2: 'Reliable delivery across all 31 regions of Tanzania via bus parcel',
+    wholesaleBenefit3: 'Official EFD tax receipts and stamped proforma invoices provided',
+    requestWholesaleQuote: 'Request Full Wholesale Price Sheet',
 
     // Footer
     footerAbout:
-      'OMEGA is Tanzania’s trusted manufacturer and distributor of high-quality writing notebooks, hardcover counter books, envelopes (bahasha), and educational stationery.',
+      'OMEGA is Tanzania’s trusted manufacturer and distributor of premium Smyth-sewn counter books, academic exercise notebooks, heavy kraft bahasha, and educational supplies.',
     quickLinks: 'Quick Links',
     officialContacts: 'Official Contacts',
-    workingHours: 'Business Working Hours',
+    workingHours: 'Working Hours',
     rightsReserved: 'All rights reserved. OMEGA Writing Notebooks & Stationery.',
   },
 
   sw: {
-    // Navigation
-    home: 'Mwanzo',
+    // Navigation & Global Header
+    home: 'Nyumbani',
     catalog: 'Katalogi ya Bidhaa',
     about: 'Kuhusu OMEGA',
     contact: 'Wasiliana Nasi',
-    admin: 'Dashibodi ya Wasimamizi',
-    cart: 'Kikapu na Oda ya WhatsApp',
+    admin: 'Dashibodi ya Msimamizi',
+    cart: 'Kikapu & Oda ya WhatsApp',
     cartItems: 'Bidhaa',
-    searchPlaceholder: 'Tafuta madaftari, counter books, bahasha...',
+    searchPlaceholder: 'Tafuta madaftari, counter books, bahasha, rejesta...',
+    trackOrder: 'Fuatilia Oda',
+    wishlist: 'Vitu Ninavyopenda',
+    myAccount: 'Akaunti Yangu',
+    myProfile: 'Wasifu Wangu',
+    signIn: 'Ingia',
+    register: 'Jisajili',
+    logOut: 'Toka',
+    wholesaleB2B: 'Oda za Jumla (B2B)',
+    schoolTenders: 'Zabuni za Shule',
+    cartons: 'Katoni',
+    saveUpTo: 'Okoa hadi',
 
-    // Header & Brand
-    qualityTagline: 'Ubora kwa Kila Ukurasa',
+    // Header & Brand Hallmarks
+    qualityTagline: 'Ubora Katika Kila Ukurasa',
     brandSubtitle: 'MADAFTARI BORA YA UANDISHI TANZANIA · TANGU 1998',
-    freeDeliveryNote: 'MAUZO YA JUMLA NA REJAREJA TANZANIA NZIMA | MSAMBAZAJI HALISI WA OMEGA',
+    freeDeliveryNote: 'ODA ZA JUMLA NA REJAREJA TANZANIA NZIMA | MSAMBAZAJI RASMI WA OMEGA',
     switchLanguage: 'English',
-    phoneSupport: 'Namba za Simu',
+    currentLanguageName: 'Kiswahili',
+    otherLanguageName: 'English',
+    phoneSupport: 'Namba ya Mauzo & Oda',
 
-    // Hero Section
-    heroBadge: 'STATIONERY BORA YA TANZANIA',
-    heroTitle: 'Ubora kwa Kila Ukurasa',
-    heroSubtitle:
-      'Madaftari ya OMEGA yenye majalada magumu, karatasi nene isiyopenyeza wino, na mshono imara wa nyuzi. Chaguo linaloaminika na shule, vyuo, taasisi na ofisi kote nchini Tanzania.',
-    exploreCatalog: 'Tazama Bidhaa Zote',
-    orderOnWhatsApp: 'Agiza kwa WhatsApp',
-    wholesaleEnquiry: 'Maulizo ya Bei ya Jumla',
-    hero3DHint: 'Mwonekano wa 3D: Zungusha Counter Book ya OMEGA kuona jalada, mgongo na kurasa',
-    heroTaglineTop: 'UBORA • UAMINIFU • URITHI',
-    heroBrandTitle: 'MADAFTARI YA OMEGA',
-    heroSubheadingPrefix: 'Kiwango Rasmi cha',
-    heroSubheadingAccent: 'Vitabu vya Rekodi',
-    heroSubheadingSuffix: 'na Masomo ya Kudumu',
-    heroDescription:
-      'Yametengenezwa Tanzania kwa ushonaji imara wa nyuzi za Smyth, karatasi nzito ya 70 GSM isiyopenyeza wino, na jalada gumu. Chaguo nambari moja kwa shule, vyuo, na kampuni kote nchini.',
-    heroScriptTagline: 'Uandishi Bora Hujenga Kesho Yenye Nuru',
-    heroView360: 'Mwonekano wa 360°',
-    heroBadge1Title: 'Imeshonwa Nyuzi',
-    heroBadge1Sub: 'Inafunguka 180° Flat',
-    heroBadge2Title: 'Karatasi 70 GSM',
-    heroBadge2Sub: 'Wino Haupenyezi',
-    heroBadge3Title: 'Usafirishaji Basi',
-    heroBadge3Sub: 'Mikoa Yote 31',
-    heroBadge4Title: 'Kiwandani Moja',
-    heroBadge4Sub: 'Bei Nafuu ya Katoni',
-    heroNavWhyUs: 'Kwanini Sisi',
-    heroNavPricing: 'Bei za Jumla',
-    heroFeat1Title: 'Counter Books Jalada Gumu',
-    heroFeat1Desc: 'Q2, Q3, Q4 zilizoshonwa kwa nyuzi imara',
-    heroFeat2Title: 'Madaftari ya Shule',
-    heroFeat2Desc: 'Kurasa 32, 80, 100, 200 mistari na hesabu',
-    heroFeat3Title: 'Bahasha Nzito za Kraft',
-    heroFeat3Desc: 'A3, A4, A5, A6 za nyaraka na ofisi',
-    heroFeat4Title: 'Rejesta za Mahudhurio',
-    heroFeat4Desc: 'Vitabu vya rekodi za shule na taasisi',
-    heroFeat5Title: 'Faili na Karatasi za Mistari',
-    heroFeat5Desc: 'Spring files, manila folders na ream',
-    heroStripCounter: 'Counter Books',
-    heroStripExercise: 'Madaftari',
-    heroStripBahasha: 'Kraft Bahasha',
-    heroStripRegisters: 'Rejesta',
-    heroStripRuled: 'Karatasi',
-    heroStripFiles: 'Faili & Folda',
-    heroStripCartons: 'Mabunda ya Jumla',
+    // Announcements
+    announcement1: '🎉 Ofa Maalum ya Msimu: Punguzo kubwa la bei ya kiwandani kwa katoni za madaftari ya shule na ofisi!',
+    announcement2: 'Oda za Jumla na Zabuni za Shule: Okoa hadi 40% kwa Katoni — Moja kwa Moja Kiwandani Mbeya',
+    announcement3: 'Counter Books Asilia za OMEGA (Q1, Q2, Q3, Q4) — Moja kwa Moja Kiwanda cha Soweto SIDO Mbeya',
+    announcement4: 'Usafirishaji wa haraka mikoani kwa njia ya mabasi | Ankara rasmi za EFD hutolewa',
 
-    // 3D Model Controls
-    rotateAuto: 'Zungusha Kiotomatiki',
-    rotatePause: 'Simamisha Mzunguko',
-    frontView: 'Jalada la Mbele',
-    spineView: 'Mgongo wa Kitabu',
-    angleView: 'Mwonekano wa 3D',
-    openView: 'Kurasa za Ndani',
-    selectQuire: 'Chagua Quire / Ukubwa:',
-    quire2Label: 'Q2 (Kurasa 192)',
-    quire3Label: 'Q3 (Kurasa 288)',
-    quire4Label: 'Q4 (Kurasa 384)',
+    // Category Quick-Nav (Flipkart-style)
+    catAll: 'Bidhaa Zote',
+    catCounter: 'Counter Books',
+    catExercise: 'Madaftari ya Mazoezi',
+    catStiff: 'Madaftari ya Stiff',
+    catBahasha: 'Bahasha za Kraft',
+    catFiles: 'Mafaili ya Ofisi',
+    catWholesale: 'Bei za Jumla (Katoni)',
+    catTenders: 'Zabuni za Shule',
 
-    // Positive Thinking & Writing Section
-    positiveThinkingBadge: 'MAWAZO MAZURI NA UANDISHI BORA',
-    positiveThinkingTitle: 'Mawazo Mazuri Hujengwa kwa Karatasi na Kalamu Bora',
-    positiveThinkingSubtitle:
-      'Kuandika kwa mkono kunanoa akili, kunaratibu ndoto, na huleta mwanga kwa viongozi wa kesho.',
-    positiveQuotes: [
-      {
-        quote:
-          '“Kila biashara kubwa, ufaulu mzuri wa kitaaluma, na maendeleo ya taifa huanza na wazo lililoandikwa vizuri katika ukurasa safi wa daftari.”',
-        author: 'Falsafa ya Uandishi ya OMEGA',
-        role: 'Kujituma na Elimu Bora',
-      },
-      {
-        quote:
-          '“Unapoandika kwenye daftari la OMEGA, wino haupenyezi upande wa pili, jalada halilegei, na kumbukumbu zako zinadumu miaka mingi.”',
-        author: 'Inapendwa na Walimu & Wanafunzi',
-        role: 'Karatasi Imara ya Kiwango cha Juu',
-      },
-      {
-        quote:
-          '“Mawazo chanya na uandishi bora huleta mafanikio ya kudumu. Jenga kesho yako leo kwa kalamu na daftari bora la OMEGA.”',
-        author: 'Umoja wa Wasambazaji Dar es Salaam',
-        role: 'Urithi wa Kitanzania',
-      },
-    ],
+    // Hero Section Slides
+    slide1Tag: 'MOJA KWA MOJA KIWANDANI · SOWETO SIDO MBEYA',
+    slide1TitlePrefix: 'Madaftari Bora ya Shule &',
+    slide1TitleAccent: 'Counter Books',
+    slide1Desc: 'Mshono wa uzi imara (Smyth-sewn) na karatasi ya 70 GSM isiyovujisha wino. Usafirishaji mikoa yote 31.',
+    slide1Cta: 'NUNUA KWA JUMLA',
+    slide1Sec: 'TAZAMA KATALOGI',
+    slide1Badge: 'Kuanzia TSh 56,000 / Katoni',
+
+    slide2Tag: 'YANAJIFUNGUA TAMBARARE 180° · KUMBUKUMU ZA KUDUMU',
+    slide2TitlePrefix: 'Madaftari Asilia ya',
+    slide2TitleAccent: 'Q1–Q4 ya Jalada Gumu',
+    slide2Desc: 'Jalada gumu la 1.8mm laminated lenye mistari sanifu ya 8mm ya NECTA kwa shule, vyuo na biashara.',
+    slide2Cta: 'CHAGUA Q1–Q4',
+    slide2Sec: 'AGIZA KWA WHATSAPP',
+    slide2Badge: 'Kurasa 192 hadi 384',
+
+    slide3Tag: 'MADAFTARI YA MSINGI NA SEKONDARI',
+    slide3TitlePrefix: 'Madaftari ya Mazoezi ya',
+    slide3TitleAccent: 'Wanafunzi',
+    slide3Desc: 'Single Line, Double Line na Mathematics Grid katika kurasa 80, 100, na 200 kwa mwaka wa masomo.',
+    slide3Cta: 'TAZAMA MADAFTARI',
+    slide3Sec: 'MAOMBI YA ZABUNI',
+    slide3Badge: 'Kuanzia TSh 800 / Daftari',
+
+    slide4Tag: 'BAHASHA NZITO YA 120 GSM KRAFT',
+    slide4TitlePrefix: 'Bahasha Imara za Kraft &',
+    slide4TitleAccent: 'Nyaraka Rasmi',
+    slide4Desc: 'Ukubwa wa A3, A4, A5, na A6 zenye gundi ya kubandika (peel & seal) kwa nyaraka na mitihani.',
+    slide4Cta: 'TAZAMA BAHASHA',
+    slide4Sec: 'MIFUKO YA JUMLA',
+    slide4Badge: 'Bahasha 100 kwa Boksi',
+
+    // Hero Flash Deal Widget
+    flashDealTitle: 'OFA MAALUM YA LEO',
+    dealEndsIn: 'Inamalizika baada ya',
+    flashDealProdName: 'Daftari la Jalada Gumu OMEGA Q3 (Kurasa 288)',
+    flashDealProdDesc: 'Ofa ya bei ya jumla ya kiwandani kwa shule na maduka. Daftari 36 kwa katoni zenye mshono wa uzi wa kudumu.',
+    unitPrice: 'Bei ya Rejareja',
+    cartonPrice: 'Bei ya Katoni (Daftari 36)',
+    addToCartBtn: 'Weka Kikapuni',
+    dealClaimed: 'Mzigo Upo Kiwandani',
+
+    // Deals of the Day Rail
+    dealsDayTitle: 'Ofa Maalum za Leo',
+    dealsDaySubtitle: 'Bei ya jumla ya kiwandani kwa madaftari makuu na ya wanafunzi',
+    viewAll: 'TAZAMA ZOTE',
+    viewDetails: 'Tazama Maelezo',
+    off: 'PUNGUZO',
+    perCarton: 'kwa katoni',
+    perBox: 'kwa boksi',
+    perPack: 'kwa pakiti',
+
+    // 3-Column Curated Grids
+    gridSchoolTitle: 'Madaftari ya Shule',
+    gridSchoolBadge: 'Punguzo la 15%',
+    gridSchoolLink: 'Tazama Madaftari ya Shule',
+    gridLedgerTitle: 'Madaftari ya Jalada Gumu',
+    gridLedgerBadge: 'Mshono wa Uzi',
+    gridLedgerLink: 'Tazama Madaftari ya Hesabu',
+    gridWholesaleTitle: 'Katoni za Jumla',
+    gridWholesaleBadge: 'Bei ya B2B',
+    gridWholesaleLink: 'Orodha ya Bei za Jumla',
+
+    // Curated Notebook Lines
+    curatedTitle: 'Mkusanyiko Maalum wa Madaftari',
+    curatedSubtitle: 'Chagua aina ya daftari ili uone vipimo na bei za kiwandani',
+    filterAll: 'Zote',
+    filterCounter: 'Counter Books',
+    filterExercise: 'Madaftari ya Mazoezi',
+    filterBahasha: 'Bahasha',
+    retailLabel: 'Rejareja',
+    wholesaleLabel: 'Jumla',
+
+    // Bulk Calculator & Quote
+    bulkCalculatorTitle: 'Kikokotoo cha Bei ya Jumla ya Katoni',
+    bulkCalculatorSubtitle: 'Kadiria idadi kamili ya katoni unazohitaji na upate ankara rasmi ya proforma ya kiwandani',
+    selectNotebookType: 'Chagua Aina ya Daftari:',
+    enterCartons: 'Idadi ya Katoni:',
+    estimatedTotal: 'Kadirio la Jumla:',
+    instantWhatsAppQuote: 'Pata Bei Rasmi Kupitia WhatsApp',
 
     // Product Categories
     categoriesTitle: 'Chagua kwa Aina ya Bidhaa',
@@ -291,7 +343,7 @@ export const TRANSLATIONS = {
     schoolStationery: 'Vifaa vya Shule',
     officeSupplies: 'Vifaa vya Ofisi',
 
-    // Product Card & Details
+    // Product Details
     quire: 'Quire',
     pages: 'Kurasa',
     size: 'Ukubwa',
@@ -307,30 +359,28 @@ export const TRANSLATIONS = {
     addToOrder: 'Weka Kwenye Oda',
     addedToOrder: 'Imewekwa Kwenye Oda!',
     buyViaWhatsApp: 'Agiza Moja kwa Moja WhatsApp',
-    viewDetails: 'Tazama Maelezo',
     quantity: 'Idadi',
     subtotal: 'Jumla Ndogo',
     specifications: 'Vipimo na Sifa',
     productDescription: 'Maelezo ya Kina',
-    galleryView: 'Picha za Bidhaa',
 
     // WhatsApp Order Flow
     whatsAppOrderingTitle: 'Oda ya Haraka kupitia WhatsApp',
     whatsAppOrderingDesc:
-      'Chagua bidhaa na idadi unayohitaji. Ujumbe uliopangwa vizuri utatengenezwa kiotomatiki ili kutumwa kwa wauzaji wetu.',
+      'Chagua bidhaa na idadi unayohitaji. Ujumbe uliopangwa vizuri utatengenezwa kiotomatiki ili kutumwa kwa wauzaji wetu kiwandani.',
     choosePhone: 'Chagua Namba ya Mauzo ya WhatsApp:',
     fullName: 'Jina Lako Kamili',
     phoneNumber: 'Namba Yako ya Simu / WhatsApp',
     deliveryLocation: 'Mkoa / Wilaya / Eneo la Kufikishiwa',
     deliveryOptions: 'Njia ya Kupokea Mzigo',
-    homeDelivery: 'Kufikishiwa Mlangoni (Dar es Salaam)',
-    pickupStore: 'Kufuata Dukani / Stoo (Dar es Salaam)',
-    mikoaniParcel: 'Kutumiwa kwa Basi / Mzigo (Mikoani)',
+    homeDelivery: 'Kufikishiwa Mlangoni (Dar es Salaam / Mbeya)',
+    pickupStore: 'Kufuata Dukani / Kiwandani',
+    mikoaniParcel: 'Kutumiwa kwa Basi / Mzigo (Mikoa Yote 31)',
     paymentMethod: 'Njia Unayopendelea ya Kulipa',
     mobileMoney: 'M-Pesa / Tigo Pesa / Airtel Money',
-    cashOnDelivery: 'Pesa Taslimu Mlangoni (Dar es Salaam)',
+    cashOnDelivery: 'Pesa Taslimu Mlangoni (Dar / Mbeya)',
     bankTransfer: 'Benki (CRDB / NMB)',
-    orderNotes: 'Maelezo ya Ziada / Jina la Shule / Taasisi',
+    orderNotes: 'Maelezo ya Ziada / Jina la Shule au Taasisi',
     sendWhatsAppBtn: 'Tuma Oda kwa WhatsApp Sasa',
 
     // Wholesale Section
@@ -338,179 +388,16 @@ export const TRANSLATIONS = {
     wholesaleDesc:
       'Tunasambaza kwa shule, vyuo, maduka ya vitabu, na ofisi za serikali na binafsi kwa bei nafuu ya kiwandani ya katoni na mabunda.',
     wholesaleBenefit1: 'Punguzo maalum la bei kwa katoni na mabunda makubwa',
-    wholesaleBenefit2: 'Usafirishaji wa uhakika mikoa yote ya Tanzania',
+    wholesaleBenefit2: 'Usafirishaji wa uhakika mikoa yote ya Tanzania kupitia mabasi',
     wholesaleBenefit3: 'Stakabadhi rasmi za EFD na ankara za kodi hutolewa',
     requestWholesaleQuote: 'Omba Orodha Kamili ya Bei za Jumla',
 
     // Footer
     footerAbout:
-      'OMEGA ni mtengenezaji na msambazaji anayeaminika Tanzania kwa madaftari bora ya uandishi, counter books za jalada gumu, bahasha nzito, na vifaa vya elimu.',
+      'OMEGA ni mtengenezaji na msambazaji anayeaminika Tanzania kwa madaftari bora ya uandishi, counter books za jalada gumu zenye mshono wa uzi, bahasha nzito, na vifaa vya elimu.',
     quickLinks: 'Viungo vya Haraka',
     officialContacts: 'Mawasiliano Rasmi',
     workingHours: 'Muda wa Kazi',
     rightsReserved: 'Haki zote zimehifadhiwa. OMEGA Writing Notebooks & Stationery.',
-  },
-
-  gu: {
-    // Navigation
-    home: 'મુખ્ય પૃષ્ઠ',
-    catalog: 'પ્રોડક્ટ્સ કેટલોગ',
-    about: 'ઓમેગા વિશે',
-    contact: 'સંપર્ક કરો',
-    admin: 'એડમિન ડેશબોર્ડ',
-    cart: 'કાર્ટ અને ઓર્ડર',
-    cartItems: 'વસ્તુઓ',
-    searchPlaceholder: 'નોટબુક, કાઉન્ટર બુક, કવર શોધો...',
-
-    // Header & Brand
-    qualityTagline: 'દરેક પાના માટે શ્રેષ્ઠ ગુણવત્તા',
-    brandSubtitle: 'ટાંઝાનિયાની અગ્રણી સ્ટેશનરી અને નોટબુક્સ · સ્થાપના 1998',
-    freeDeliveryNote: 'સમગ્ર ટાંઝાનિયામાં જથ્થાબંધ અને છૂટક સપ્લાય',
-    switchLanguage: 'English',
-    phoneSupport: 'ઓર્ડર હેલ્પલાઇન',
-
-    // Hero Section
-    heroBadge: 'પ્રીમિયમ ટાંઝાનિયા સ્ટેશનરી',
-    heroTitle: 'દરેક પાના માટે શ્રેષ્ઠ ગુણવત્તા',
-    heroSubtitle:
-      'મજબૂત હાર્ડબોર્ડ કવર, 70 જીએસએમ ઇંક-પ્રૂફ પેપર અને મજબૂત થ્રેડ-સીવણ સાથે ઉત્પાદિત.',
-    exploreCatalog: 'પ્રોડક્ટ્સ જુઓ',
-    orderOnWhatsApp: 'વોટ્સએપ ઓર્ડર',
-    wholesaleEnquiry: 'જથ્થાબંધ પૂછપરછ',
-    hero3DHint: '3D પ્રિવ્યૂ: કવર અને બાઈન્ડિંગ તપાસવા માટે પુસ્તક ફેરવો',
-    heroTaglineTop: 'ગુણવત્તા • વિશ્વાસ • વારસો',
-    heroBrandTitle: 'ઓમેગા સ્ટેશનરી અને નોટબુક્સ',
-    heroSubheadingPrefix: 'શ્રેષ્ઠ ગુણવત્તાવાળા',
-    heroSubheadingAccent: 'પરફેક્ટ પુસ્તકો',
-    heroSubheadingSuffix: 'અને કાયમી રેકોર્ડ્સ',
-    heroDescription:
-      'ટાંઝાનિયામાં સ્મિથ ડબલ થ્રેડ સીવણ, 70 જીએસએમ ઇંક-પ્રૂફ કાગળ અને મજબૂત હાર્ડબોર્ડ કવર સાથે ઉત્પાદિત. શાળાઓ અને ઓફિસો માટે ભરોસાપાત્ર પસંદગી.',
-    heroScriptTagline: 'ઉજ્જવળ ભવિષ્ય ઘડવા માટે ઉત્તમ લખાણ',
-    heroView360: '360° ઇન્ટરેક્ટિવ વ્યૂ',
-    heroBadge1Title: 'સ્મિથ બાઉન્ડ',
-    heroBadge1Sub: '180° ફ્લેટ ઓપનિંગ',
-    heroBadge2Title: '70 GSM પેપર',
-    heroBadge2Sub: 'શાહી ફેલાતી નથી',
-    heroBadge3Title: 'દેશવ્યાપી ડિલિવરી',
-    heroBadge3Sub: 'તમામ 31 વિસ્તારો',
-    heroBadge4Title: 'ફેક્ટરી ડાયરેક્ટ',
-    heroBadge4Sub: 'જથ્થાબંધ ડિસ્કાઉન્ટ',
-    heroNavWhyUs: 'શા માટે ઓમેગા',
-    heroNavPricing: 'જથ્થાબંધ ભાવ',
-    heroFeat1Title: 'હાર્ડકવર કાઉન્ટર બુક્સ',
-    heroFeat1Desc: 'Q2, Q3, Q4 દોરા સીવેલા ચોપડા',
-    heroFeat2Title: 'પ્રાથમિક અને માધ્યમિક નોટબુક્સ',
-    heroFeat2Desc: '32, 80, 100, 200 પાનાની લાઇનિંગ બુક્સ',
-    heroFeat3Title: 'હેવી ક્રાફ્ટ બહાશા એન્વલપ્સ',
-    heroFeat3Desc: 'A3, A4, A5, A6 દસ્તાવેજ કવર',
-    heroFeat4Title: 'હાજરી અને લેજર રજિસ્ટર',
-    heroFeat4Desc: 'શાળા અને સંસ્થાઓ માટે રજિસ્ટર',
-    heroFeat5Title: 'ઓફિસ ફાઇલ્સ અને રૂલ્ડ પેપર',
-    heroFeat5Desc: 'સ્પ્રીંગ ફાઇલ્સ, મનીલા ફોલ્ડર અને પેક',
-    heroStripCounter: 'કાઉન્ટર બુક્સ',
-    heroStripExercise: 'નોટબુક્સ',
-    heroStripBahasha: 'ક્રાફ્ટ કવર',
-    heroStripRegisters: 'સ્કૂલ રજિસ્ટર',
-    heroStripRuled: 'રૂલ્ડ પેપર',
-    heroStripFiles: 'ફાઇલ્સ અને ફોલ્ડર્સ',
-    heroStripCartons: 'જથ્થાબંધ કાર્ટન',
-
-    // 3D Model Controls
-    rotateAuto: 'ઓટો રોટેટ',
-    rotatePause: 'રોટેશન થોભાવો',
-    frontView: 'ફ્રન્ટ કવર',
-    spineView: 'સ્પાઇન વ્યુ',
-    angleView: '3D એંગલ',
-    openView: 'અંદરના પાના',
-    selectQuire: 'સાઇઝ પસંદ કરો:',
-    quire2Label: 'Q2 (192 પાના)',
-    quire3Label: 'Q3 (288 પાના)',
-    quire4Label: 'Q4 (384 પાના)',
-
-    // Positive Thinking & Writing Section
-    positiveThinkingBadge: 'સકારાત્મક વિચાર અને શ્રેષ્ઠ લેખન',
-    positiveThinkingTitle: 'મહાન વિચારો સ્વચ્છ પાનાઓથી શરૂ થાય છે',
-    positiveThinkingSubtitle:
-      'હાથેથી લખવાથી બુદ્ધિ તેજ બને છે અને વિચારો સ્પષ્ટ થાય છે.',
-    positiveQuotes: [
-      {
-        quote:
-          '“દરેક મહાન સિદ્ધિ વિશ્વસનીય પાના પર લખાયેલા એક વિચારથી શરૂ થાય છે.”',
-        author: 'ઓમેગા ફિલોસોફી',
-        role: 'શિક્ષણમાં ઉત્કૃષ્ટતા',
-      },
-    ],
-
-    // Product Categories
-    categoriesTitle: 'કેટેગરી મુજબ બ્રાઉઝ કરો',
-    allProducts: 'બધી પ્રોડક્ટ્સ',
-    counterBooks: 'કાઉન્ટર બુક્સ',
-    exerciseBooks: 'નોટબુક્સ',
-    registers: 'રજિસ્ટર',
-    bahasha: 'બહાશા અને કવર',
-    ruledPaper: 'રૂલ્ડ પેપર',
-    manilaFolders: 'મનીલા અને ફોલ્ડર્સ',
-    flipcharts: 'ફ્લિપચાર્ટ્સ',
-    schoolStationery: 'શાળા સ્ટેશનરી',
-    officeSupplies: 'ઓફિસ સપ્લાય',
-
-    // Product Card & Details
-    quire: 'ક્વાયર',
-    pages: 'પાના',
-    size: 'સાઇઝ',
-    paperType: 'પેપર પ્રકાર',
-    binding: 'બાઈન્ડિંગ',
-    retailPrice: 'છૂટક ભાવ',
-    wholesalePrice: 'જથ્થાબંધ ભાવ',
-    minOrderQty: 'ન્યૂનતમ ઓર્ડર',
-    stockStatus: 'સ્ટોક સ્થિતિ',
-    inStock: 'સ્ટોકમાં ઉપલબ્ધ',
-    lowStock: 'ઓછો સ્ટોક',
-    outOfStock: 'સ્ટોક ખાલી',
-    addToOrder: 'ઓર્ડરમાં ઉમેરો',
-    addedToOrder: 'ઉમેરાઈ ગયું!',
-    buyViaWhatsApp: 'વોટ્સએપ ઓર્ડર',
-    viewDetails: 'વિગતો જુઓ',
-    quantity: 'જથ્થો',
-    subtotal: 'કુલ રકમ',
-    specifications: 'વિશેષતાઓ',
-    productDescription: 'વિગતવાર વર્ણન',
-    galleryView: 'ફોટો ગેલેરી',
-
-    // WhatsApp Order Flow
-    whatsAppOrderingTitle: 'વોટ્સએપ ત્વરિત ઓર્ડર',
-    whatsAppOrderingDesc:
-      'તમારી પ્રોડક્ટ્સ અને જથ્થો પસંદ કરો. ઓર્ડર મેસેજ આપમેળે તૈયાર થશે.',
-    choosePhone: 'વોટ્સએપ નંબર પસંદ કરો:',
-    fullName: 'તમારું પૂરું નામ',
-    phoneNumber: 'ફોન / વોટ્સએપ નંબર',
-    deliveryLocation: 'ડિલિવરી સ્થળ / સરનામું',
-    deliveryOptions: 'ડિલિવરી પસંદગી',
-    homeDelivery: 'ડોર ડિલિવરી',
-    pickupStore: 'દુકાનેથી પિકઅપ',
-    mikoaniParcel: 'પાર્સલ સેવા',
-    paymentMethod: 'ચુકવણી પદ્ધતિ',
-    mobileMoney: 'મોબાઇલ મની',
-    cashOnDelivery: 'કેશ ઓન ડિલિવરી',
-    bankTransfer: 'બેંક ટ્રાન્સફર',
-    orderNotes: 'વધારાની વિગતો / નોંધ',
-    sendWhatsAppBtn: 'વોટ્સએપ પર ઓર્ડર મોકલો',
-
-    // Wholesale Section
-    wholesaleTitle: 'જથ્થાબંધ અને સંસ્થાકીય સપ્લાય',
-    wholesaleDesc:
-      'શાળાઓ, કોલેજો, બુકસ્ટોર અને ઓફિસો માટે ફેક્ટરી-ડાયરેક્ટ ભાવે સપ્લાય.',
-    wholesaleBenefit1: 'કાર્ટન અને બંડલ પર વિશેષ ડિસ્કાઉન્ટ',
-    wholesaleBenefit2: 'સમગ્ર ટાંઝાનિયામાં વિશ્વસનીય ડિલિવરી',
-    wholesaleBenefit3: 'સત્તાવાર ઇન્વોઇસ ઉપલબ્ધ',
-    requestWholesaleQuote: 'જથ્થાબંધ ભાવ પત્રક મેળવો',
-
-    // Footer
-    footerAbout:
-      'ઓમેગા ટાંઝાનિયાની વિશ્વસનીય અને અગ્રણી નોટબુક અને સ્ટેશનરી ઉત્પાદક છે.',
-    quickLinks: 'ઉપયોગી લિંક્સ',
-    officialContacts: 'સત્તાવાર સંપર્ક',
-    workingHours: 'કામકાજના કલાકો',
-    rightsReserved: 'સર્વાધિકાર સુરક્ષિત. ઓમેગા સ્ટેશનરી અને નોટબુક્સ.',
   },
 };

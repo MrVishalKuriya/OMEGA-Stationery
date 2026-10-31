@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Calculator, TrendingUp, MessageCircle } from 'lucide-react';
+import { Calculator, TrendingUp, MessageCircle, Sparkles } from 'lucide-react';
 import { formatPrice } from '@/types/store';
+import { triggerLuxuryConfetti } from '@/utils/confetti';
 
 export type CartonSpecKey = 'q2' | 'q3' | 'q4' | 'ex200' | 'bahasha';
 
@@ -42,53 +43,48 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
 
   const whatsappUrl = `https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
     `*OMEGA WHOLESALE CALCULATOR ORDER*\n` +
-      `Product: ${currentCarton.label}\n` +
-      `Quantity: ${calcCartons} Cartons (${totalUnits.toLocaleString()} Units)\n` +
-      `Unit Cost: ${currency} ${costPerUnit.toLocaleString()}\n` +
-      `Tier Discount: ${Math.round(discountRate * 100)}% OFF\n` +
-      `Calculated Total: ${currency} ${netTotal.toLocaleString()}\n\n` +
-      `Please prepare formal proforma invoice and confirm dispatch schedule.`
+    `Product: ${currentCarton.label}\n` +
+    `Quantity: ${calcCartons} Cartons (${totalUnits.toLocaleString()} Units)\n` +
+    `Unit Cost: ${currency} ${costPerUnit.toLocaleString()}\n` +
+    `Tier Discount: ${Math.round(discountRate * 100)}% OFF\n` +
+    `Calculated Total: ${currency} ${netTotal.toLocaleString()}\n\n` +
+    `Please prepare formal proforma invoice and confirm dispatch schedule.`
   )}`;
 
   return (
     <section
       id="calculator"
-      className="py-16 lg:py-24 bg-[#09090b] text-white border-y border-white/10 relative overflow-hidden scroll-mt-20"
+      className="py-12 lg:py-16 bg-[#F9F8F6] text-[#111113] relative overflow-hidden scroll-mt-20 text-left border-b border-[#E7E5E0]"
     >
-      {/* Ambient background lighting */}
-      <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-gradient-to-b from-[#dc2626]/12 via-[#dc2626]/5 to-transparent blur-3xl pointer-events-none"
-        aria-hidden="true"
-      />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center space-y-2.5 mb-12">
-          <div className="inline-flex items-center px-3 py-1 rounded-md text-[11px] font-bold text-[#ef4444] bg-[#dc2626]/10 border border-[#dc2626]/30 font-mono tracking-widest uppercase shadow-xs">
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center space-y-2 mb-10">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-bold rounded-md bg-[#F2EFEB] text-[#8C7355] border border-[#8C7355]/30 font-mono tracking-wider uppercase shadow-2xs">
+            <Sparkles className="w-3 h-3 text-[#8C7355]" />
             <span>DYNAMIC PROFORMA &amp; MARGIN SIMULATOR</span>
           </div>
-          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
+          <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-[#111113] tracking-tight">
             Calculate Exact Carton &amp; Profit Savings
           </h2>
-          <p className="text-xs sm:text-sm text-zinc-400 max-w-xl mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#6E6B66] max-w-xl mx-auto leading-relaxed">
             Select your product line and carton volume to calculate your net factory price, unit cost, and estimated retailer profit margins.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Interactive Inputs Column */}
-          <div className="lg:col-span-7 bg-[#111113] p-6 sm:p-8 rounded-2xl border border-white/10 space-y-7 shadow-2xl relative">
+          <div className="lg:col-span-7 bg-white rounded-lg p-6 sm:p-8 space-y-6 shadow-xs border border-[#E7E5E0] relative">
             {/* Step 1: Product Selection */}
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <span className="w-5 h-5 rounded-md bg-[#dc2626]/20 border border-[#dc2626]/40 text-[#ef4444] font-mono text-[11px] font-bold inline-flex items-center justify-center shrink-0">
+                <span className="w-6 h-6 rounded-md bg-[#111113] text-[#F9F8F6] font-mono text-xs font-bold inline-flex items-center justify-center shrink-0">
                   1
                 </span>
-                <label className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
+                <label className="text-xs font-mono font-bold uppercase tracking-wider text-[#111113]">
                   Choose Product Line:
                 </label>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                 {(
                   [
                     { key: 'q2', title: 'Q2 Counter Book', sub: '192p · 48/Box' },
@@ -104,14 +100,13 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
                       key={item.key}
                       type="button"
                       onClick={() => setCalcQuire(item.key)}
-                      className={`p-3.5 rounded-xl border text-left transition-all relative ${
-                        isSelected
-                          ? 'bg-gradient-to-br from-[#b91c1c] via-[#dc2626] to-[#991b1b] text-white border-[#ef4444]/60 shadow-[0_4px_20px_rgba(220,38,38,0.4)] ring-1 ring-[#ef4444]/40'
-                          : 'bg-[#18181b]/80 hover:bg-[#202024] text-zinc-300 border-white/10 hover:border-white/25'
-                      }`}
+                      className={`p-3.5 rounded-md text-left transition-all relative cursor-pointer border ${isSelected
+                          ? 'bg-[#111113] text-[#F9F8F6] border-[#111113] shadow-xs'
+                          : 'bg-[#F9F8F6] hover:bg-[#F2EFEB] text-[#111113] border-[#E7E5E0]'
+                        }`}
                     >
-                      <div className="text-xs sm:text-sm font-bold leading-snug">{item.title}</div>
-                      <div className={`text-[11px] mt-1 font-mono ${isSelected ? 'text-white/80' : 'text-zinc-500'}`}>
+                      <div className="text-xs font-bold leading-snug">{item.title}</div>
+                      <div className={`text-[10px] mt-0.5 font-mono ${isSelected ? 'text-[#C8A27A]' : 'text-[#6E6B66]'}`}>
                         {item.sub}
                       </div>
                     </button>
@@ -124,10 +119,10 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
             <div>
               <div className="flex justify-between items-center mb-3">
                 <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-md bg-[#dc2626]/20 border border-[#dc2626]/40 text-[#ef4444] font-mono text-[11px] font-bold inline-flex items-center justify-center shrink-0">
+                  <span className="w-6 h-6 rounded-md bg-[#111113] text-[#F9F8F6] font-mono text-xs font-bold inline-flex items-center justify-center shrink-0">
                     2
                   </span>
-                  <label className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
+                  <label className="text-xs font-mono font-bold uppercase tracking-wider text-[#111113]">
                     Select Carton Quantity:
                   </label>
                 </div>
@@ -138,9 +133,9 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
                     max={500}
                     value={calcCartons}
                     onChange={(e) => setCalcCartons(Math.max(1, parseInt(e.target.value) || 1))}
-                    className="w-20 px-3 py-1.5 text-right text-xs font-bold rounded-lg bg-[#18181b] border border-white/20 text-white font-mono focus:outline-none focus:border-[#ef4444] focus:ring-1 focus:ring-[#ef4444]"
+                    className="w-20 px-3 py-1.5 rounded-md border border-[#E7E5E0] text-right text-xs font-bold bg-[#F9F8F6] text-[#111113] font-mono focus:outline-none focus:border-[#8C7355]"
                   />
-                  <span className="text-xs font-mono text-zinc-400">Cartons</span>
+                  <span className="text-xs font-mono text-[#6E6B66]">Cartons</span>
                 </div>
               </div>
 
@@ -153,7 +148,7 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
                   step={5}
                   value={calcCartons}
                   onChange={(e) => setCalcCartons(parseInt(e.target.value))}
-                  className="w-full accent-[#ef4444] cursor-pointer h-2 bg-[#27272a] rounded-lg appearance-none"
+                  className="w-full accent-[#8C7355] cursor-pointer h-2 bg-[#F2EFEB] rounded-md appearance-none"
                 />
               </div>
 
@@ -166,11 +161,10 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
                       key={qty}
                       type="button"
                       onClick={() => setCalcCartons(qty)}
-                      className={`py-2 text-xs font-bold rounded-lg border transition-all font-mono ${
-                        isSelected
-                          ? 'bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] text-white border-transparent shadow-[0_2px_12px_rgba(220,38,38,0.4)]'
-                          : 'bg-[#18181b] text-zinc-400 hover:text-white border-white/10 hover:border-white/20'
-                      }`}
+                      className={`py-2 rounded-md text-xs font-bold transition-all font-mono cursor-pointer border ${isSelected
+                          ? 'bg-[#111113] text-[#F9F8F6] border-[#111113] shadow-xs'
+                          : 'bg-[#F9F8F6] text-[#111113] border-[#E7E5E0] hover:bg-[#F2EFEB]'
+                        }`}
                     >
                       {qty}
                     </button>
@@ -180,93 +174,90 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
             </div>
 
             {/* Specifications Box */}
-            <div className="p-4 rounded-xl bg-[#18181b]/90 border border-white/10 text-xs text-zinc-300 grid grid-cols-2 gap-4">
+            <div className="p-4 rounded-md bg-[#F9F8F6] border border-[#E7E5E0] text-xs text-[#111113] grid grid-cols-2 gap-4">
               <div>
-                <span className="text-zinc-500 block text-[11px] font-mono uppercase tracking-wider mb-0.5">
+                <span className="text-[#6E6B66] block text-[10px] font-mono uppercase tracking-wider mb-0.5 font-bold">
                   Packaging Spec:
                 </span>
-                <span className="font-semibold text-white">{currentCarton.packaging}</span>
+                <span className="font-bold text-[#111113]">{currentCarton.packaging}</span>
               </div>
               <div>
-                <span className="text-zinc-500 block text-[11px] font-mono uppercase tracking-wider mb-0.5">
+                <span className="text-[#6E6B66] block text-[10px] font-mono uppercase tracking-wider mb-0.5 font-bold">
                   Consignment Weight:
                 </span>
-                <span className="font-semibold text-white font-mono">
+                <span className="font-bold text-[#111113] font-mono">
                   Approx. {(parseFloat(currentCarton.boxWeight) * calcCartons).toFixed(0)} kg
                 </span>
               </div>
             </div>
           </div>
 
-          {/* Financial Breakdown Card (Obsidian Atelier Glass Card) */}
-          <div className="lg:col-span-5 bg-[#111113] text-white p-6 sm:p-8 rounded-2xl border border-white/15 shadow-2xl space-y-6 relative overflow-hidden">
-            {/* Top Crimson Accent Line */}
-            <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444]" />
-
-            <div className="flex items-center justify-between pb-4 border-b border-white/10">
+          {/* Financial Breakdown Card */}
+          <div className="lg:col-span-5 bg-white rounded-lg text-[#111113] p-6 sm:p-8 shadow-xs border border-[#E7E5E0] space-y-5 relative overflow-hidden">
+            <div className="flex items-center justify-between pb-3.5 border-b border-[#E7E5E0]">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#ef4444] font-mono block">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#DC2626] font-mono block">
                   CALCULATED SUMMARY
                 </span>
-                <h3 className="font-heading text-lg font-bold text-white mt-0.5">
+                <h3 className="font-heading text-base font-bold text-[#111113] mt-0.5">
                   {currentCarton.label}
                 </h3>
               </div>
-              <span className="px-3 py-1 rounded-md text-xs font-bold font-mono bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                {Math.round(discountRate * 100)}% TIER DISCOUNT
+              <span className="px-3 py-1 rounded-md text-xs font-bold font-mono bg-[#111113] text-[#F9F8F6] shadow-xs">
+                {Math.round(discountRate * 100)}% TIER OFF
               </span>
             </div>
 
-            <div className="space-y-3 text-xs">
-              <div className="flex justify-between text-zinc-400">
+            <div className="space-y-2.5 text-xs">
+              <div className="flex justify-between text-[#6E6B66]">
                 <span>Carton Quantity:</span>
-                <span className="font-bold text-white font-mono">{calcCartons} Cartons</span>
+                <span className="font-bold text-[#111113] font-mono">{calcCartons} Cartons</span>
               </div>
-              <div className="flex justify-between text-zinc-400">
+              <div className="flex justify-between text-[#6E6B66]">
                 <span>Total Individual Units:</span>
-                <span className="font-bold text-white font-mono">
+                <span className="font-bold text-[#111113] font-mono">
                   {totalUnits.toLocaleString()} Books / Pcs
                 </span>
               </div>
-              <div className="flex justify-between text-zinc-400">
+              <div className="flex justify-between text-[#6E6B66]">
                 <span>Base Factory Carton Value:</span>
-                <span className="font-mono text-zinc-300">
+                <span className="font-mono text-[#111113]">
                   {formatPrice(grossTotal, currency)}
                 </span>
               </div>
-              <div className="flex justify-between text-emerald-400 font-bold">
+              <div className="flex justify-between text-[#DC2626] font-bold">
                 <span>Factory Volume Savings:</span>
                 <span className="font-mono">- {formatPrice(savingsAmount, currency)}</span>
               </div>
 
               {/* Net Factory Wholesale Total */}
-              <div className="pt-4 border-t border-white/10">
+              <div className="pt-3 border-t border-[#E7E5E0]">
                 <div className="flex justify-between items-baseline">
-                  <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
-                    Net Factory Wholesale Total:
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#6E6B66]">
+                    Net Factory Total:
                   </span>
-                  <span className="text-2xl sm:text-3xl font-black text-white font-mono">
+                  <span className="text-2xl sm:text-3xl font-black text-[#DC2626] font-mono">
                     {formatPrice(netTotal, currency)}
                   </span>
                 </div>
-                <div className="text-[11px] text-zinc-400 text-right mt-1 font-mono">
-                  Unit Cost: <strong className="text-white font-bold">{formatPrice(costPerUnit, currency)}</strong> per book
+                <div className="text-[11px] text-[#6E6B66] text-right mt-1 font-mono">
+                  Unit Cost: <strong className="text-[#111113] font-bold">{formatPrice(costPerUnit, currency)}</strong> per book
                 </div>
               </div>
 
-              {/* Retailer Resale Profit Projection (Emerald Dark Card) */}
-              <div className="p-4 rounded-xl bg-emerald-950/25 border border-emerald-500/25 text-emerald-300 mt-3">
-                <div className="flex items-center gap-1.5 font-bold text-xs mb-1.5 text-emerald-400">
-                  <TrendingUp className="w-4 h-4 text-emerald-400" />
+              {/* Retailer Resale Profit Projection */}
+              <div className="p-4 rounded-md bg-[#111113] text-[#F9F8F6] border border-[#8C7355]/30 mt-2 space-y-1.5 shadow-xs">
+                <div className="flex items-center gap-1.5 font-bold text-xs mb-1 text-[#C8A27A]">
+                  <TrendingUp className="w-4 h-4 text-[#C8A27A]" />
                   <span className="font-mono uppercase tracking-wider text-[11px]">Projected Retail Resale Profit</span>
                 </div>
-                <div className="flex justify-between text-[11px] text-emerald-200/80">
+                <div className="flex justify-between text-[11px] text-[#A39E93]">
                   <span>At Standard Retail Price:</span>
-                  <span className="font-mono font-bold text-emerald-100">{formatPrice(projectedRetailRevenue, currency)}</span>
+                  <span className="font-mono font-bold text-[#F9F8F6]">{formatPrice(projectedRetailRevenue, currency)}</span>
                 </div>
-                <div className="flex justify-between font-bold text-xs text-emerald-400 pt-2 border-t border-emerald-500/20 mt-2">
-                  <span>Your Gross Profit:</span>
-                  <span className="font-mono text-base font-black text-emerald-300">+{formatPrice(retailerProfit, currency)}</span>
+                <div className="flex justify-between font-bold text-xs pt-2 border-t border-white/10 mt-1.5">
+                  <span className="text-[#F9F8F6]">Your Gross Profit:</span>
+                  <span className="font-mono text-base font-bold text-[#C8A27A]">+{formatPrice(retailerProfit, currency)}</span>
                 </div>
               </div>
             </div>
@@ -274,9 +265,10 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
             {/* Action Button */}
             <a
               href={whatsappUrl}
+              onClick={() => triggerLuxuryConfetti()}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-4 px-4 rounded-xl bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] hover:brightness-110 text-white font-bold font-mono text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_8px_25px_rgba(220,38,38,0.4)] min-h-[48px] active:scale-[0.98] transition-all"
+              className="w-full py-3.5 px-4 rounded-md bg-[#25D366] hover:bg-[#20ba59] text-white font-bold font-mono text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-xs min-h-[46px] transition-all cursor-pointer"
             >
               <MessageCircle className="w-4 h-4 fill-white" />
               <span>Confirm Proforma on WhatsApp</span>

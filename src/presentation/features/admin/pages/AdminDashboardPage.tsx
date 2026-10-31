@@ -198,6 +198,7 @@ export const AdminDashboardPage: React.FC = () => {
     stockStatus: 'In Stock' as StockStatus,
     stockQuantity: '150',
     image: '/omega-products/counter-book-q2-192p.jpeg',
+    description: '',
     featured: false,
     bestSeller: false,
     freeDelivery: true,

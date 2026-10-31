@@ -21,6 +21,8 @@ import { MegaMenu } from './MegaMenu';
 import { SearchOverlay } from './SearchOverlay';
 import { AccountDropdown } from './AccountDropdown';
 import { MobileMenu } from './MobileMenu';
+import { LanguageToggle } from '@/presentation/common/components/LanguageToggle';
+import { LiveUserCounter } from '@/presentation/common/components/LiveUserCounter';
 
 export const Navbar: React.FC = () => {
   const {
@@ -206,7 +208,7 @@ export const Navbar: React.FC = () => {
   // Dedicated Category Navigation Items
   const CATEGORY_NAV_ITEMS = [
     { id: 'all-catalog', label: language === 'sw' ? 'Bidhaa Zote' : 'All Products', href: '/catalog' },
-    { id: 'counter-books', label: 'Counter Books (Q2–Q4)', href: '/catalog?category=Counter+Books' },
+    { id: 'counter-books', label: 'Counter Books (Q1–Q4)', href: '/catalog?category=Counter+Books' },
     { id: 'exercise-books', label: language === 'sw' ? 'Madaftari ya Mazoezi' : 'Exercise Books', href: '/catalog?category=Exercise+Books' },
     { id: 'bahasha', label: 'Bahasha & Envelopes', href: '/catalog?category=Bahasha+%26+Envelopes' },
     { id: 'school-tenders', label: language === 'sw' ? 'Zabuni za Shule' : 'School Tenders', href: '/school-tenders', badge: 'CALCULATOR' },
@@ -221,7 +223,7 @@ export const Navbar: React.FC = () => {
       {/* Skip to Content for Accessibility */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#111113] focus:text-white focus:rounded-[8px] focus:font-bold focus:shadow-xl focus-ring-gold"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#111113] focus:text-white focus:rounded-none focus:font-bold focus:shadow-xl focus-ring-gold"
       >
         Skip to main content
       </a>
@@ -238,8 +240,8 @@ export const Navbar: React.FC = () => {
         <AnnouncementBar />
 
         {/* ================= TIER 1: BRAND LOGO + SEARCH + ACTIONS (64px) ================= */}
-        <div className="bg-white border-b border-[#e4e4e7] text-[#18181b]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-[#FFFFFF] text-[#111113] border-b border-[#E7E5E0]">
+          <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-[62px] sm:h-[68px] gap-3 sm:gap-6">
               
               {/* LEFT: Mobile Hamburger & OMEGA Brand Hallmark */}
@@ -249,7 +251,7 @@ export const Navbar: React.FC = () => {
                   type="button"
                   onClick={() => setIsMobileMenuOpen(true)}
                   aria-label="Open navigation menu"
-                  className="lg:hidden p-2 rounded-full text-[#18181b] hover:bg-[#f4f4f5] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] flex items-center justify-center shrink-0"
+                  className="lg:hidden p-2 rounded-md text-[#111113] hover:bg-[#F2EFEB] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] flex items-center justify-center shrink-0"
                 >
                   <Menu className="w-5 h-5 stroke-[1.5]" />
                 </button>
@@ -257,10 +259,10 @@ export const Navbar: React.FC = () => {
                 {/* Brand Logo & Name */}
                 <Link 
                   to="/"
-                  className="flex items-center gap-2.5 group focus-ring-gold rounded-[8px] p-0.5 shrink-0"
+                  className="flex items-center gap-2.5 group focus-ring-gold rounded-md p-0.5 shrink-0"
                   aria-label="OMEGA Stationery & Books Home"
                 >
-                  <div className="bg-white p-1 rounded-[10px] border border-[#e4e4e7] shadow-2xs group-hover:border-[#dc2626] transition-all shrink-0 flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9">
+                  <div className="bg-white p-1 rounded-md border border-[#E7E5E0] shadow-xs group-hover:border-[#8C7355] transition-all shrink-0 flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9">
                     <img
                       src="/logo-icon.png"
                       alt="OMEGA Icon"
@@ -268,10 +270,10 @@ export const Navbar: React.FC = () => {
                     />
                   </div>
                   <div className="flex flex-col shrink-0">
-                    <span className="font-heading text-sm sm:text-base font-extrabold tracking-tight text-[#111113] leading-tight group-hover:text-[#dc2626] transition-colors">
+                    <span className="font-heading text-sm sm:text-base font-extrabold tracking-tight text-[#111113] leading-tight group-hover:text-[#DC2626] transition-colors">
                       OMEGA
                     </span>
-                    <span className="text-[9px] sm:text-[10px] tracking-wider font-semibold uppercase text-[#71717a] mt-0.5 hidden min-[340px]:block">
+                    <span className="text-[9px] sm:text-[10px] tracking-wider font-semibold uppercase text-[#6E6B66] mt-0.5 hidden min-[340px]:block">
                       STATIONERY &amp; BOOKS
                     </span>
                   </div>
@@ -281,10 +283,10 @@ export const Navbar: React.FC = () => {
               {/* CENTER: Prominent Instant Search Bar (Desktop) */}
               <div
                 ref={inlineSearchRef}
-                className="relative hidden md:flex flex-1 max-w-xl lg:max-w-2xl mx-2 lg:mx-6"
+                className="relative hidden md:flex flex-1 max-w-xl lg:max-w-2xl mx-2 lg:mx-6 items-center gap-3"
               >
                 <form onSubmit={handleDesktopSearchSubmit} className="relative w-full flex items-center">
-                  <Search className="w-4 h-4 text-[#71717a] absolute left-3.5 pointer-events-none" />
+                  <Search className="w-4 h-4 text-[#6E6B66] absolute left-3.5 pointer-events-none" />
                   <input
                     type="text"
                     role="searchbox"
@@ -302,7 +304,7 @@ export const Navbar: React.FC = () => {
                         ? 'Tafuta madaftari, counter books, bahasha, rejesta...'
                         : 'Search notebooks, counter books, bahasha, registers...'
                     }
-                    className="w-full pl-10 pr-10 py-2 sm:py-2.5 text-xs sm:text-sm bg-[#fafafa] rounded-lg border border-[#e4e4e7] hover:border-[#dc2626] focus:border-[#dc2626] text-[#18181b] placeholder:text-[#71717a] transition-all shadow-2xs focus:outline-none focus:ring-1 focus:ring-[#dc2626]"
+                    className="w-full pl-10 pr-24 py-2 sm:py-2.5 text-xs sm:text-sm bg-[#F9F8F6] rounded-md border border-[#E7E5E0] text-[#111113] placeholder:text-[#6E6B66] transition-all shadow-xs focus:outline-none focus:border-[#8C7355] focus:ring-1 focus:ring-[#8C7355]/30"
                   />
                   {desktopSearchQuery && (
                     <button
@@ -311,28 +313,36 @@ export const Navbar: React.FC = () => {
                         setDesktopSearchQuery('');
                         setIsInlineSearchFocused(false);
                       }}
-                      className="absolute right-3 p-1 text-[#71717a] hover:text-[#18181b]"
+                      className="absolute right-20 p-1 text-[#6E6B66] hover:text-[#111113]"
                       aria-label="Clear search"
                     >
                       <X className="w-4 h-4" />
                     </button>
                   )}
+                  <button
+                    type="submit"
+                    aria-label="Search"
+                    className="absolute right-1 top-1 bottom-1 px-3.5 bg-[#111113] hover:bg-[#2A2926] text-white text-xs font-mono font-bold uppercase tracking-wider rounded-r-md flex items-center justify-center transition-colors cursor-pointer"
+                  >
+                    <span>{language === 'sw' ? 'Tafuta' : 'Search'}</span>
+                  </button>
                 </form>
+                <LiveUserCounter />
 
                 {/* Instant Live Search Dropdown */}
                 {isInlineSearchFocused && inlineMatches.length > 0 && (
-                  <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-[12px] border border-[#e4e4e7] shadow-2xl overflow-hidden z-50">
-                    <div className="px-4 py-2.5 bg-[#fafafa] border-b border-[#e4e4e7] flex items-center justify-between text-xs font-bold text-[#71717a]">
+                  <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-lg border border-[#E7E5E0] shadow-2xl overflow-hidden z-50">
+                    <div className="px-4 py-2.5 bg-[#F9F8F6] border-b border-[#E7E5E0] flex items-center justify-between text-xs font-bold text-[#6E6B66]">
                       <span>{language === 'sw' ? 'Bidhaa Zinazolingana' : 'Matching Products'}</span>
                       <button
                         type="button"
                         onClick={handleDesktopSearchSubmit}
-                        className="text-[#111113] hover:text-[#dc2626] flex items-center gap-1 font-semibold"
+                        className="text-[#111113] hover:text-[#DC2626] flex items-center gap-1 font-semibold"
                       >
                         {language === 'sw' ? 'Tazama zote' : 'View all'} ({inlineMatches.length}) <ArrowRight className="w-3.5 h-3.5" />
                       </button>
                     </div>
-                    <div className="max-h-72 overflow-y-auto divide-y divide-[#e4e4e7]/60">
+                    <div className="max-h-72 overflow-y-auto divide-y divide-[#E7E5E0]">
                       {inlineMatches.map((item) => (
                         <button
                           key={item.id}
@@ -342,22 +352,22 @@ export const Navbar: React.FC = () => {
                             setIsInlineSearchFocused(false);
                             setDesktopSearchQuery('');
                           }}
-                          className="w-full p-3 flex items-center gap-3 hover:bg-[#fafafa] text-left transition-colors cursor-pointer group"
+                          className="w-full p-3 flex items-center gap-3 hover:bg-[#F9F8F6] text-left transition-colors cursor-pointer group"
                         >
                           <img
                             src={item.image}
                             alt={item.name}
-                            className="w-10 h-10 object-contain rounded bg-white p-0.5 border border-[#e4e4e7] shrink-0"
+                            className="w-10 h-10 object-contain rounded-md bg-[#F9F8F6] p-0.5 border border-[#E7E5E0] shrink-0"
                           />
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs sm:text-sm font-semibold text-[#18181b] group-hover:text-[#dc2626] truncate">
+                            <p className="text-xs sm:text-sm font-semibold text-[#111113] group-hover:text-[#DC2626] truncate">
                               {language === 'sw' && item.nameSw ? item.nameSw : item.name}
                             </p>
-                            <p className="text-[11px] text-[#71717a] truncate font-mono">
+                            <p className="text-[11px] text-[#6E6B66] truncate font-mono">
                               {item.category} · {item.quire || item.pageCount || item.size || 'Stationery'}
                             </p>
                           </div>
-                          <span className="text-xs sm:text-sm font-mono font-bold text-[#dc2626] shrink-0">
+                          <span className="text-xs sm:text-sm font-mono font-bold text-[#DC2626] shrink-0">
                             TZS {(item.discountPrice || item.price).toLocaleString()}
                           </span>
                         </button>
@@ -372,49 +382,41 @@ export const Navbar: React.FC = () => {
                 {/* 1. B2B Wholesale Quote Pill Button */}
                 <Link
                   to="/wholesale"
-                  className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] hover:from-[#991b1b] hover:to-[#dc2626] text-white text-xs font-bold uppercase tracking-wider shadow-sm hover:shadow-md transition-all active:scale-95 group shrink-0"
+                  className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-md bg-[#111113] hover:bg-[#2A2926] text-[#F9F8F6] border border-[#8C7355]/40 hover:border-[#8C7355] text-xs font-bold uppercase tracking-wider shadow-xs transition-all active:scale-95 group shrink-0"
                 >
-                  <span>B2B Wholesale</span>
-                  <ArrowRight className="w-3.5 h-3.5 ledup-arrow-icon" />
+                  <Sparkles className="w-3.5 h-3.5 text-[#C8A27A]" />
+                  <span>{language === 'sw' ? 'Oda za Jumla' : 'B2B Wholesale'}</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                 </Link>
 
                 {/* 2. Track Order Quick Trigger */}
                 <button
                   type="button"
                   onClick={() => setIsTrackingModalOpen(true)}
-                  className="hidden xl:flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#e4e4e7] hover:border-[#dc2626] bg-white text-xs font-semibold text-[#18181b] transition-all hover:bg-[#fafafa] shrink-0"
+                  className="hidden xl:flex items-center gap-1.5 px-3 py-2 rounded-md border border-[#E7E5E0] bg-white text-xs font-semibold text-[#111113] transition-all hover:bg-[#F9F8F6] hover:border-[#8C7355]/50 shrink-0"
                   title="Track Parcel Delivery"
                 >
-                  <Truck className="w-3.5 h-3.5 text-[#dc2626]" />
+                  <Truck className="w-3.5 h-3.5 text-[#8C7355]" />
                   <span>{language === 'sw' ? 'Fuatilia Oda' : 'Track Order'}</span>
                 </button>
 
-                {/* 3. Language Switcher Pill (EN ⇄ SW) */}
-                <button
-                  type="button"
-                  onClick={toggleLanguage}
-                  className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-[#e4e4e7] hover:border-[#dc2626] bg-white hover:bg-[#fafafa] text-xs font-bold text-[#18181b] transition-all min-h-[34px] focus-ring-gold shadow-2xs shrink-0"
-                  title={language === 'en' ? 'Badili lugha kuwa Kiswahili' : 'Switch to English'}
-                  aria-label="Toggle language between English and Swahili"
-                >
-                  <Globe className="w-3.5 h-3.5 text-[#dc2626]" />
-                  <span className="font-mono uppercase text-[11px]">{language === 'en' ? 'SW' : 'EN'}</span>
-                </button>
+                {/* 3. Universal Google Translate Widget (Any Language) */}
+                <LanguageToggle />
 
                 {/* 4. Wishlist Icon (Heart) - Visible sm+ */}
                 <Link
                   to="/wishlist"
                   aria-label={`Wishlist (${wishlistCount} saved items)`}
-                  className="hidden sm:flex p-2 rounded-full text-[#18181b] hover:text-[#dc2626] hover:bg-[#f4f4f5] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] items-center justify-center relative shrink-0"
+                  className="hidden sm:flex p-2 rounded-md text-[#111113] hover:text-[#DC2626] hover:bg-[#F2EFEB] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] items-center justify-center relative shrink-0"
                   title="Wishlist"
                 >
                   <Heart
                     className={`w-[19px] h-[19px] stroke-[1.5] ${
-                      wishlistCount > 0 ? 'fill-[#dc2626] text-[#dc2626]' : ''
+                      wishlistCount > 0 ? 'fill-[#DC2626] text-[#DC2626]' : ''
                     }`}
                   />
                   {wishlistCount > 0 && (
-                    <span className="absolute top-1 right-1 min-w-[16px] h-[16px] px-0.5 rounded-full bg-[#dc2626] text-white text-[9px] font-bold flex items-center justify-center font-mono leading-none shadow-xs">
+                    <span className="absolute top-1 right-1 min-w-[16px] h-[16px] px-1 rounded-full bg-[#DC2626] text-white text-[9px] font-bold flex items-center justify-center font-mono leading-none shadow-xs">
                       {wishlistCount}
                     </span>
                   )}
@@ -427,11 +429,11 @@ export const Navbar: React.FC = () => {
                     onClick={() => setIsAccountOpen(!isAccountOpen)}
                     aria-label={currentUser ? `Account: ${currentUser.name}` : 'Account and Orders'}
                     aria-expanded={isAccountOpen}
-                    className="p-2 rounded-full text-[#18181b] hover:text-[#dc2626] hover:bg-[#f4f4f5] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] flex items-center justify-center"
+                    className="p-2 rounded-md text-[#111113] hover:text-[#DC2626] hover:bg-[#F2EFEB] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] flex items-center justify-center"
                     title={currentUser ? currentUser.name : 'Account'}
                   >
                     {currentUser ? (
-                      <div className="w-7 h-7 rounded-full bg-[#111113] text-[#dc2626] font-bold text-xs flex items-center justify-center font-mono shadow-2xs">
+                      <div className="w-7 h-7 rounded-full bg-[#111113] text-[#F9F8F6] border border-[#8C7355]/40 font-bold text-xs flex items-center justify-center font-mono shadow-xs">
                         {currentUser.initials}
                       </div>
                     ) : (
@@ -452,12 +454,12 @@ export const Navbar: React.FC = () => {
                   type="button"
                   onClick={() => setIsCartDrawerOpen(true)}
                   aria-label={`Shopping bag (${cartItemCount} items)`}
-                  className="p-2 rounded-full text-[#18181b] hover:text-[#dc2626] hover:bg-[#f4f4f5] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] flex items-center justify-center relative group shrink-0"
+                  className="p-2 rounded-md text-[#111113] hover:text-[#DC2626] hover:bg-[#F2EFEB] transition-colors focus-ring-gold min-w-[38px] min-h-[38px] flex items-center justify-center relative group shrink-0"
                   title="Shopping Bag"
                 >
                   <ShoppingBag className="w-[20px] h-[20px] stroke-[1.5] text-[#111113]" />
                   <span
-                    className={`absolute top-0.5 right-0.5 w-[18px] h-[18px] rounded-full bg-[#dc2626] text-white text-[10px] font-black flex items-center justify-center font-mono leading-none shadow-xs ${
+                    className={`absolute top-0.5 right-0.5 w-[18px] h-[18px] rounded-full bg-[#DC2626] text-white text-[10px] font-bold flex items-center justify-center font-mono leading-none shadow-xs ${
                       isCartBouncing ? 'animate-cart-bounce' : ''
                     }`}
                   >
@@ -470,7 +472,7 @@ export const Navbar: React.FC = () => {
             {/* Mobile Inline Search Bar (Visible on mobile screens < md) - No popup window */}
             <div className="md:hidden pb-2.5 pt-1 relative">
               <form onSubmit={handleDesktopSearchSubmit} className="relative flex items-center">
-                <Search className="w-4 h-4 text-[#a1a1aa] absolute left-3.5 pointer-events-none" />
+                <Search className="w-4 h-4 text-[#6E6B66] absolute left-3.5 pointer-events-none" />
                 <input
                   type="text"
                   role="searchbox"
@@ -484,13 +486,13 @@ export const Navbar: React.FC = () => {
                       ? 'Tafuta madaftari, counter books, bahasha...'
                       : 'Search notebooks, counter books, bahasha...'
                   }
-                  className="w-full pl-9 pr-8 py-2 text-xs bg-white rounded-lg border border-[#e4e4e7] text-[#18181b] placeholder:text-[#71717a] shadow-2xs focus:outline-none focus:border-[#dc2626] focus:ring-1 focus:ring-[#dc2626]"
+                  className="w-full pl-9 pr-8 py-2 text-xs bg-[#F9F8F6] rounded-md border border-[#E7E5E0] text-[#111113] placeholder:text-[#6E6B66] shadow-xs focus:outline-none focus:border-[#8C7355] focus:ring-1 focus:ring-[#8C7355]/30"
                 />
                 {desktopSearchQuery && (
                   <button
                     type="button"
                     onClick={() => setDesktopSearchQuery('')}
-                    className="absolute right-3 p-1 text-[#71717a]"
+                    className="absolute right-3 p-1 text-[#6E6B66]"
                     aria-label="Clear"
                   >
                     <X className="w-3.5 h-3.5" />
@@ -502,8 +504,8 @@ export const Navbar: React.FC = () => {
         </div>
 
         {/* ================= TIER 2: HORIZONTAL CATEGORY NAVIGATION BAR (Desktop lg+) ================= */}
-        <div className="hidden lg:block bg-white border-b border-[#e4e4e7] py-2">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="hidden lg:block bg-white border-b border-[#E7E5E0] py-2">
+          <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
             <nav
               role="navigation"
               aria-label="Category Navigation"
@@ -516,15 +518,15 @@ export const Navbar: React.FC = () => {
                   <Link
                     key={item.id}
                     to={item.href}
-                    className={`px-3 py-1.5 text-xs font-semibold tracking-tight rounded-md transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                    className={`px-3.5 py-1.5 text-xs font-semibold tracking-tight rounded-md transition-all whitespace-nowrap flex items-center gap-1.5 ${
                       active
-                        ? 'bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] text-white shadow-xs font-bold'
-                        : 'text-[#18181b] hover:text-[#dc2626] hover:bg-[#f4f4f5]'
+                        ? 'bg-[#111113] text-[#F9F8F6] shadow-xs font-bold'
+                        : 'text-[#111113] hover:text-[#DC2626] hover:bg-[#F2EFEB]'
                     }`}
                   >
                     <span>{item.label}</span>
                     {item.badge && (
-                      <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-sm bg-[#dc2626] text-white leading-none">
+                      <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#8C7355] text-white leading-none">
                         {item.badge}
                       </span>
                     )}

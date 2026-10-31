@@ -6,20 +6,17 @@ import {
   Clock,
   Send,
   Building2,
-  CheckCircle2,
   Truck,
   Package,
-  HelpCircle,
   ChevronDown,
   ArrowRight,
-  Sparkles,
 } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { SEOHead } from '@/components/SEOHead';
 import { TRANSLATIONS } from '@/data/translations';
 
 export const ContactPage: React.FC = () => {
-  const { storeConfig, language } = useStore();
+  const { language } = useStore();
   const t = TRANSLATIONS[language];
 
   const [inquiryName, setInquiryName] = useState('');
@@ -68,7 +65,7 @@ export const ContactPage: React.FC = () => {
     },
     {
       id: 'desk-boss-2',
-      title: language === 'sw' ? 'VIJESH K. HALAI: Co-Founder & Managing Director' : 'VIJESH K. HALAI: Co-Founder & Managing Director',
+      title: 'VIJESH K. HALAI: Co-Founder & Managing Director',
       phone: '+255 624 265 480',
       numberDigits: '255624265480',
       tag: 'VIJESH K. HALAI',
@@ -114,8 +111,8 @@ export const ContactPage: React.FC = () => {
     {
       q: language === 'sw' ? 'Njia gani za malipo zinakubalika?' : 'What payment methods do you accept?',
       a: language === 'sw'
-        ? 'Tunapokea malipo kupitia M-Pesa Lipa Namba, Airtel Money, Tigo Pesa, pamoja na akaunti za benki (CRDB Bank na NMB Bank). Stakabadhi rasmi ya TRA (EFD Receipt) inatolewa kwa kila malipo.'
-        : 'We accept M-Pesa Lipa Namba, Airtel Money, Tigo Pesa, and direct bank transfers (CRDB Bank and NMB Bank). Official TRA EFD receipts and stamped proforma invoices are issued for all orders.',
+        ? 'Tunapokea malipo kupitia M-Pesa Lipa Namba, Mixx by Yas, Airtel Money, pamoja na akaunti za benki (CRDB Bank na NMB Bank). Stakabadhi rasmi ya TRA (EFD Receipt) inatolewa kwa kila malipo.'
+        : 'We accept M-Pesa Lipa Namba, Mixx by Yas, Airtel Money, and direct bank transfers (CRDB Bank and NMB Bank). Official TRA EFD receipts and stamped proforma invoices are issued for all orders.',
     },
     {
       q: language === 'sw' ? 'Je, ninaweza kuja kuchukua mzigo wangu stoo?' : 'Can I collect my order directly from the warehouse?',
@@ -126,31 +123,28 @@ export const ContactPage: React.FC = () => {
   ];
 
   return (
-    <div className="bg-[#fafafa] min-h-screen text-[#18181b]">
+    <div className="bg-[#FAF6F0] min-h-screen text-[#26130F]">
       <SEOHead
         title="Contact Us & Official Sales Desks — OMEGA Stationery Tanzania"
         description="Official contact numbers: Kanti Bhai K. Halai (+255 715 268 391), Vijesh K. Halai (+255 624 265 480), Mbeya Branch (+255 746 268 391), Mwanza Branch (+255 699 032 777), WhatsApp ordering desks, factory depots in Mbeya and Kariakoo."
       />
 
-      {/* ==================== 1. HERO HEADER ==================== */}
-      <section className="relative overflow-hidden w-full bg-[#111113] text-white py-14 lg:py-20 border-b border-[#18181b]">
-        <div className="absolute -top-32 -right-32 w-[600px] h-[600px] bg-[#dc2626]/18 rounded-full blur-[150px] pointer-events-none" />
-        <div className="absolute -bottom-32 -left-32 w-[550px] h-[550px] bg-[#b91c1c]/15 rounded-full blur-[140px] pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      {/* 1. Hero Header */}
+      <section className="relative overflow-hidden w-full bg-gradient-to-r from-[#6B140B] via-[#852512] to-[#9E3618] text-white py-12 lg:py-16 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-left">
           <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#dc2626]/20 via-[#dc2626]/10 to-transparent border border-[#dc2626]/40 font-mono shadow-xs">
+            <div className="inline-flex items-center px-3.5 py-1.5 bg-[#E9A858] text-[#26130F] text-xs font-semibold font-mono shadow-xs">
               <span>Desks Active: Mon – Sat (08:00 – 18:00 EAT)</span>
             </div>
 
-            <h1 className="font-heading text-3xl sm:text-5xl font-light text-white leading-tight">
+            <h1 className="font-heading text-3xl sm:text-5xl font-black text-white leading-tight">
               {language === 'sw' ? 'Mawasiliano Rasmi na' : 'Official Directory &'} <br />
-              <span className="font-bold text-[#dc2626] bg-gradient-to-r from-[#dc2626] via-white to-[#dc2626] bg-clip-text text-transparent">
+              <span className="text-[#E9A858]">
                 {language === 'sw' ? 'Madawati ya Mauzo OMEGA.' : 'Ordering Desks — Tanzania.'}
               </span>
             </h1>
 
-            <p className="text-sm sm:text-base text-stone-200 leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-white/90 leading-relaxed font-normal">
               {language === 'sw'
                 ? 'Wasiliana moja kwa moja na madawati yetu ya mauzo kwa simu au WhatsApp. Tunahudumia oda za jumla na rejareja katika mikoa yote ya Tanzania kupitia vituo vyetu vya Mbeya na Kariakoo.'
                 : 'Connect directly with our dedicated phone and WhatsApp dispatch lines. We deliver wholesale carton tenders and retail stationery parcels across all 31 regions of Tanzania.'}
@@ -159,57 +153,57 @@ export const ContactPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ==================== 2. 3 DEDICATED PHONE DESKS ==================== */}
-      <section className="py-12 lg:py-16 bg-white border-b border-[#e4e4e7]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      {/* 2. Four Dedicated Hotlines */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-left">
           <div className="text-center space-y-2">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#dc2626] font-heading block">
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#9E3618] font-heading block">
               DEDICATED HOTLINES
             </span>
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#18181b]">
-              {language === 'sw' ? 'Madawati 3 Rasmi ya Simu & WhatsApp' : 'Three Direct Order & Support Hotlines'}
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#26130F]">
+              {language === 'sw' ? 'Madawati Rasmi ya Simu & WhatsApp' : 'Direct Order & Support Hotlines'}
             </h2>
-            <p className="text-xs sm:text-sm text-[#71717a] max-w-lg mx-auto">
+            <p className="text-xs sm:text-sm text-[#7D685E] max-w-lg mx-auto">
               {language === 'sw'
                 ? 'Chagua dawati husika kulingana na aina ya oda yako kwa huduma ya haraka zaidi.'
                 : 'Choose the appropriate department below for instant quotes and dispatch coordination.'}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {salesDesks.map((desk) => (
               <div
                 key={desk.id}
-                className="p-6 rounded-[20px] bg-[#fafafa] border border-[#e4e4e7] hover:border-[#dc2626] transition-all space-y-4 shadow-xs flex flex-col justify-between"
+                className="p-6 bg-[#FAF6F0] shadow-xs flex flex-col justify-between space-y-4"
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#111113] text-[#dc2626]">
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 bg-[#E9A858] text-[#26130F]">
                       {desk.tag}
                     </span>
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" title="Online" />
+                    <span className="w-2.5 h-2.5 bg-emerald-500 inline-block" title="Online" />
                   </div>
 
-                  <h3 className="font-heading font-bold text-base text-[#18181b]">
+                  <h3 className="font-heading font-bold text-sm text-[#26130F] line-clamp-2">
                     {desk.title}
                   </h3>
 
-                  <p className="font-mono text-lg font-bold text-[#111113]">
+                  <p className="font-mono text-base font-bold text-[#9E3618]">
                     {desk.phone}
                   </p>
 
-                  <p className="text-xs text-[#71717a] leading-relaxed">
+                  <p className="text-xs text-[#7D685E] leading-relaxed line-clamp-3">
                     {desk.desc}
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-[#e4e4e7] grid grid-cols-2 gap-2">
+                <div className="pt-4 border-t border-[#D8C3A5]/40 grid grid-cols-2 gap-2">
                   <a
                     href={`tel:${desk.numberDigits}`}
-                    className="py-2.5 px-3 rounded-full bg-white hover:bg-[#f5f4f4] text-[#18181b] border border-[#e4e4e7] text-xs font-bold text-center transition-colors inline-flex items-center justify-center gap-1.5"
+                    className="py-2.5 px-3 bg-white text-[#26130F] text-xs font-bold text-center transition-colors inline-flex items-center justify-center gap-1.5 shadow-xs hover:bg-[#D8C3A5]"
                   >
-                    <Phone className="w-3.5 h-3.5 text-[#111113]" />
-                    <span>Call Desk</span>
+                    <Phone className="w-3.5 h-3.5 text-[#9E3618]" />
+                    <span>Call</span>
                   </a>
 
                   <a
@@ -220,7 +214,7 @@ export const ContactPage: React.FC = () => {
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="py-2.5 px-3 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white text-xs font-bold text-center transition-all inline-flex items-center justify-center gap-1.5 shadow-xs"
+                    className="py-2.5 px-3 bg-[#9E3618] hover:bg-[#6B140B] text-white text-xs font-bold text-center transition-colors inline-flex items-center justify-center gap-1.5 shadow-xs"
                   >
                     <MessageCircle className="w-3.5 h-3.5 fill-white text-white" />
                     <span>WhatsApp</span>
@@ -232,20 +226,20 @@ export const ContactPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ==================== 3. INTERACTIVE INQUIRY FORM + DEPOT LOCATIONS ==================== */}
-      <section className="py-14 lg:py-20 bg-[#fafafa] border-b border-[#e4e4e7]">
+      {/* 3. Interactive Inquiry Form + Depot Locations */}
+      <section className="py-14 lg:py-20 bg-[#FAF6F0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 text-left">
             {/* Left: Interactive Inquiry Form */}
-            <div className="lg:col-span-7 bg-white p-7 sm:p-9 rounded-[24px] border border-[#e4e4e7] shadow-xs space-y-6">
+            <div className="lg:col-span-7 bg-white p-7 sm:p-9 shadow-xs space-y-6">
               <div className="space-y-1">
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#dc2626] font-heading block">
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#9E3618] font-heading block">
                   FAST QUOTATION
                 </span>
-                <h2 className="font-heading text-2xl font-bold text-[#18181b]">
+                <h2 className="font-heading text-2xl font-bold text-[#26130F]">
                   {language === 'sw' ? 'Tuma Ombi la Bei au Proforma' : 'Request Instant Proforma Quotation'}
                 </h2>
-                <p className="text-xs text-[#71717a]">
+                <p className="text-xs text-[#7D685E]">
                   {language === 'sw'
                     ? 'Jaza taarifa zako hapa chini kupata makadirio rasmi ya gharama yaliyofomatiwa moja kwa moja.'
                     : 'Fill out your requirements below to automatically generate an official inquiry message on WhatsApp.'}
@@ -255,48 +249,48 @@ export const ContactPage: React.FC = () => {
               <form onSubmit={handleSubmitInquiry} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-[#111113] uppercase">Your Full Name *</label>
+                    <label className="text-xs font-bold text-[#26130F] uppercase">Your Full Name *</label>
                     <input
                       type="text"
                       required
                       value={inquiryName}
                       onChange={(e) => setInquiryName(e.target.value)}
                       placeholder="e.g. Mwalimu Joseph Mwita"
-                      className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#e4e4e7] text-xs focus:ring-1 focus:ring-[#111113] focus:outline-none"
+                      className="w-full px-3.5 py-2.5 bg-[#FAF6F0] text-xs text-[#26130F] focus:outline-none"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-[#111113] uppercase">School / Business Name</label>
+                    <label className="text-xs font-bold text-[#26130F] uppercase">School / Business Name</label>
                     <input
                       type="text"
                       value={inquiryOrg}
                       onChange={(e) => setInquiryOrg(e.target.value)}
                       placeholder="e.g. St. Peter Secondary School"
-                      className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#e4e4e7] text-xs focus:ring-1 focus:ring-[#111113] focus:outline-none"
+                      className="w-full px-3.5 py-2.5 bg-[#FAF6F0] text-xs text-[#26130F] focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-[#111113] uppercase">WhatsApp Number *</label>
+                    <label className="text-xs font-bold text-[#26130F] uppercase">WhatsApp Number *</label>
                     <input
                       type="tel"
                       required
                       value={inquiryPhone}
                       onChange={(e) => setInquiryPhone(e.target.value)}
                       placeholder="e.g. 0746 268 391"
-                      className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#e4e4e7] text-xs focus:ring-1 focus:ring-[#111113] focus:outline-none"
+                      className="w-full px-3.5 py-2.5 bg-[#FAF6F0] text-xs text-[#26130F] focus:outline-none"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-[#111113] uppercase">Route To Desk</label>
+                    <label className="text-xs font-bold text-[#26130F] uppercase">Route To Desk</label>
                     <select
                       value={selectedDesk}
                       onChange={(e) => setSelectedDesk(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#e4e4e7] text-xs focus:ring-1 focus:ring-[#111113] focus:outline-none bg-white"
+                      className="w-full px-3.5 py-2.5 bg-[#FAF6F0] text-xs text-[#26130F] focus:outline-none cursor-pointer"
                     >
                       <option value="255715268391">KANTI BHAI K. HALAI (+255 715 268 391) — Co-Founder &amp; MD</option>
                       <option value="255624265480">VIJESH K. HALAI (+255 624 265 480) — Co-Founder &amp; MD</option>
@@ -307,11 +301,11 @@ export const ContactPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-[#111113] uppercase">Inquiry Topic</label>
+                  <label className="text-xs font-bold text-[#26130F] uppercase">Inquiry Topic</label>
                   <select
                     value={inquirySubject}
                     onChange={(e) => setInquirySubject(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#e4e4e7] text-xs focus:ring-1 focus:ring-[#111113] focus:outline-none bg-white"
+                    className="w-full px-3.5 py-2.5 bg-[#FAF6F0] text-xs text-[#26130F] focus:outline-none cursor-pointer"
                   >
                     <option value="B2B Wholesale Carton Pricing">B2B Wholesale Carton Pricing (5+ Boxes)</option>
                     <option value="School Syllabus Booklist Tender">School Syllabus Booklist Tender</option>
@@ -322,84 +316,81 @@ export const ContactPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-[#111113] uppercase">Your Requirements / Order Details</label>
+                  <label className="text-xs font-bold text-[#26130F] uppercase">Your Requirements / Order Details</label>
                   <textarea
                     rows={4}
                     value={inquiryMessage}
                     onChange={(e) => setInquiryMessage(e.target.value)}
                     placeholder="Specify required book types, quantities (e.g. 10 cartons of Q3 Counter Books, 5 cartons of 200p single line), and your delivery region..."
-                    className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#e4e4e7] text-xs focus:ring-1 focus:ring-[#111113] focus:outline-none"
+                    className="w-full px-3.5 py-2.5 bg-[#FAF6F0] text-xs text-[#26130F] focus:outline-none"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full py-3.5 px-6 rounded-full btn-ledup-copper text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all active:scale-95"
+                  className="w-full py-3.5 px-6 bg-[#9E3618] hover:bg-[#6B140B] text-white text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer min-h-[46px]"
                 >
                   <Send className="w-4 h-4 text-white" />
-                  <span className="text-white">{language === 'sw' ? 'Tuma Kupitia WhatsApp' : 'Send Quotation Request via WhatsApp'}</span>
-                  <ArrowRight className="w-4 h-4 text-white ledup-arrow-icon" />
+                  <span>{language === 'sw' ? 'Tuma Kupitia WhatsApp' : 'Send Quotation Request via WhatsApp'}</span>
+                  <ArrowRight className="w-4 h-4 text-white" />
                 </button>
               </form>
             </div>
 
-            {/* Right: Depot Locations & Operating Standards */}
+            {/* Right: Depot Locations */}
             <div className="lg:col-span-5 space-y-6">
-              {/* Depot 1: Mbeya */}
-              <div className="p-6 rounded-[20px] bg-white border border-[#e4e4e7] space-y-3 shadow-xs">
-                <div className="flex items-center gap-2 text-[#dc2626]">
-                  <Building2 className="w-5 h-5 text-[#111113]" />
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#111113]">
+              <div className="p-6 bg-white space-y-3 shadow-xs">
+                <div className="flex items-center gap-2 text-[#9E3618]">
+                  <Building2 className="w-5 h-5 text-[#9E3618]" />
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#9E3618]">
                     MAIN WORKS &amp; CENTRAL STOO
                   </span>
                 </div>
-                <h3 className="font-heading font-bold text-lg text-[#18181b]">
+                <h3 className="font-heading font-bold text-lg text-[#26130F]">
                   Soweto SIDO Industrial Estate
                 </h3>
-                <p className="text-xs text-[#71717a] flex items-center gap-1.5">
-                  <MapPin className="w-4 h-4 text-[#dc2626] shrink-0" />
+                <p className="text-xs text-[#7D685E] flex items-center gap-1.5">
+                  <MapPin className="w-4 h-4 text-[#9E3618] shrink-0" />
                   <span>Mbeya City, Southern Highlands, Tanzania</span>
                 </p>
-                <p className="text-xs text-[#71717a] leading-relaxed">
+                <p className="text-xs text-[#7D685E] leading-relaxed">
                   Direct factory pickup for schools and wholesalers in Mbeya, Songwe, Iringa, Ruvuma, and Rukwa.
                 </p>
-                <div className="pt-2 text-[11px] font-mono text-[#111113] flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-[#2A9D8F]" />
+                <div className="pt-2 text-[11px] font-mono text-[#26130F] flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-[#9E3618]" />
                   <span>Mon – Sat: 08:00 – 17:30 EAT</span>
                 </div>
               </div>
 
-              {/* Depot 2: Kariakoo */}
-              <div className="p-6 rounded-[20px] bg-white border border-[#e4e4e7] space-y-3 shadow-xs">
-                <div className="flex items-center gap-2 text-[#dc2626]">
-                  <Truck className="w-5 h-5 text-[#111113]" />
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#111113]">
+              <div className="p-6 bg-white space-y-3 shadow-xs">
+                <div className="flex items-center gap-2 text-[#9E3618]">
+                  <Truck className="w-5 h-5 text-[#9E3618]" />
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-[#9E3618]">
                     DISPATCH &amp; COMMERCIAL DEPOT
                   </span>
                 </div>
-                <h3 className="font-heading font-bold text-lg text-[#18181b]">
+                <h3 className="font-heading font-bold text-lg text-[#26130F]">
                   Kariakoo Commercial District
                 </h3>
-                <p className="text-xs text-[#71717a] flex items-center gap-1.5">
-                  <MapPin className="w-4 h-4 text-[#dc2626] shrink-0" />
+                <p className="text-xs text-[#7D685E] flex items-center gap-1.5">
+                  <MapPin className="w-4 h-4 text-[#9E3618] shrink-0" />
                   <span>Dar es Salaam, Coastal Region, Tanzania</span>
                 </p>
-                <p className="text-xs text-[#71717a] leading-relaxed">
+                <p className="text-xs text-[#7D685E] leading-relaxed">
                   Hub for daily bus parcel drop-offs to all upcountry routes via Magufuli Bus Terminal &amp; Kariakoo courier depots.
                 </p>
-                <div className="pt-2 text-[11px] font-mono text-[#111113] flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-[#2A9D8F]" />
+                <div className="pt-2 text-[11px] font-mono text-[#26130F] flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-[#9E3618]" />
                   <span>Mon – Sat: 08:00 – 18:00 EAT</span>
                 </div>
               </div>
 
-              {/* Logistics Assurance */}
-              <div className="p-5 rounded-[16px] bg-[#111113] text-white space-y-2">
-                <div className="flex items-center gap-2 text-[#dc2626]">
+              <div className="p-5 bg-[#6B140B] text-white space-y-2">
+                <div className="flex items-center gap-2 text-[#E9A858]">
                   <Package className="w-4 h-4" />
                   <span className="text-xs font-bold uppercase">Bus Parcel Packaging Protocol</span>
                 </div>
-                <p className="text-xs text-stone-300 leading-relaxed">
+                <p className="text-xs text-white/90 leading-relaxed">
                   Every carton is double-strapped with waterproof tape and marked with clear consignee name, destination town, and phone number before bus terminal drop-off.
                 </p>
               </div>
@@ -408,14 +399,14 @@ export const ContactPage: React.FC = () => {
         </div>
       </section>
 
-      {/* ==================== 4. FREQUENTLY ASKED QUESTIONS (FAQ) ==================== */}
-      <section className="py-14 lg:py-20 bg-white border-b border-[#e4e4e7]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      {/* 4. Frequently Asked Questions */}
+      <section className="py-14 lg:py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 text-left">
           <div className="text-center space-y-2">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#dc2626] font-heading block">
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#9E3618] font-heading block">
               HELP &amp; INQUIRIES
             </span>
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#18181b]">
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#26130F]">
               {language === 'sw' ? 'Maswali Yanayoulizwa Mara kwa Mara' : 'Frequently Asked Questions'}
             </h2>
           </div>
@@ -424,22 +415,22 @@ export const ContactPage: React.FC = () => {
             {faqs.map((faq, idx) => (
               <div
                 key={idx}
-                className="rounded-[16px] border border-[#e4e4e7] overflow-hidden bg-[#fafafa] transition-all"
+                className="bg-[#FAF6F0] shadow-xs overflow-hidden"
               >
                 <button
                   type="button"
                   onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                  className="w-full px-5 py-4 text-left font-heading font-bold text-sm text-[#18181b] flex items-center justify-between gap-4 hover:text-[#dc2626] transition-colors"
+                  className="w-full px-5 py-4 text-left font-heading font-bold text-sm text-[#26130F] flex items-center justify-between gap-4 hover:text-[#9E3618] transition-colors cursor-pointer"
                 >
                   <span>{faq.q}</span>
                   <ChevronDown
-                    className={`w-4 h-4 text-[#dc2626] shrink-0 transition-transform duration-200 ${
+                    className={`w-4 h-4 text-[#9E3618] shrink-0 transition-transform duration-200 ${
                       openFaq === idx ? 'rotate-180' : ''
                     }`}
                   />
                 </button>
                 {openFaq === idx && (
-                  <div className="px-5 pb-5 pt-1 text-xs text-[#71717a] leading-relaxed border-t border-[#e4e4e7]/60">
+                  <div className="px-5 pb-5 pt-1 text-xs text-[#7D685E] leading-relaxed border-t border-[#D8C3A5]/40">
                     {faq.a}
                   </div>
                 )}
@@ -451,3 +442,4 @@ export const ContactPage: React.FC = () => {
     </div>
   );
 };
+export default ContactPage;

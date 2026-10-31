@@ -28,7 +28,7 @@ export const CartAndCheckoutPage: React.FC = () => {
     phoneNumber: '',
     deliveryAddress: '',
     fulfillmentType: 'Home Delivery',
-    paymentPreference: 'Mobile Money (M-Pesa / Tigo / Airtel)',
+    paymentPreference: 'Mobile Money (M-Pesa / Mixx by Yas / Airtel Money)',
     orderNotes: '',
   });
 
@@ -140,58 +140,60 @@ export const CartAndCheckoutPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 w-full max-w-full overflow-hidden">
-      <SEOHead
-        title="Review Order &amp; WhatsApp Checkout — OMEGA"
-        description="Submit your writing notebooks and stationery order directly to OMEGA sales specialists in Tanzania."
-      />
+    <div className="bg-[#F9F8F6] min-h-screen text-[#111113]">
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10 w-full overflow-hidden text-left">
+        <SEOHead
+          title="Review Order &amp; WhatsApp Checkout — OMEGA"
+          description="Submit your writing notebooks and stationery order directly to OMEGA sales specialists in Tanzania."
+        />
 
-      <div className="flex items-center justify-between border-b border-slate-200 pb-5">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
-            {language === 'sw' ? 'Kikapu & Oda ya WhatsApp' : 'Cart & WhatsApp Checkout'}
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            {language === 'sw'
-              ? 'Kagua bidhaa ulizochagua kisha tuma oda moja kwa moja kwa wauzaji wetu kupitia WhatsApp.'
-              : 'Review your items and send your order directly to our sales desk on WhatsApp.'}
-          </p>
+        <div className="flex items-center justify-between border-b border-[#E7E5E0] pb-5">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-[#111113]">
+              {language === 'sw' ? 'Kikapu & Oda ya WhatsApp' : 'Cart & WhatsApp Checkout'}
+            </h1>
+            <p className="text-xs sm:text-sm text-[#6E6B66] mt-1">
+              {language === 'sw'
+                ? 'Kagua bidhaa ulizochagua kisha tuma oda moja kwa moja kwa wauzaji wetu kupitia WhatsApp.'
+                : 'Review your items and send your order directly to our sales desk on WhatsApp.'}
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={clearCart}
+            className="text-xs text-[#DC2626] hover:text-[#B91C1C] font-bold uppercase tracking-wider cursor-pointer"
+          >
+            {language === 'sw' ? 'Futa Yote' : 'Clear All'}
+          </button>
         </div>
 
-        <button
-          type="button"
-          onClick={clearCart}
-          className="text-xs text-rose-600 hover:text-rose-800 font-bold uppercase tracking-wider"
-        >
-          {language === 'sw' ? 'Futa Yote' : 'Clear All'}
-        </button>
-      </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Left Column: Cart Items List */}
+          <CartItemList
+            detailedCart={detailedCart}
+            currency={currency}
+            language={language}
+            updateCartQuantity={updateCartQuantity}
+            removeFromCart={removeFromCart}
+          />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Column: Cart Items List */}
-        <CartItemList
-          detailedCart={detailedCart}
-          currency={currency}
-          language={language}
-          updateCartQuantity={updateCartQuantity}
-          removeFromCart={removeFromCart}
-        />
-
-        {/* Right Column: Customer Info & WhatsApp Order Generator */}
-        <CheckoutForm
-          formData={formData}
-          setFormData={setFormData}
-          selectedWhatsAppNumber={selectedWhatsAppNumber}
-          setSelectedWhatsAppNumber={setSelectedWhatsAppNumber}
-          errors={errors}
-          onSubmit={handlePrepareOrderSummary}
-          subtotal={subtotal}
-          effectiveDeliveryFee={effectiveDeliveryFee}
-          finalTotal={finalTotal}
-          currency={currency}
-          language={language}
-          t={t}
-        />
+          {/* Right Column: Customer Info & WhatsApp Order Generator */}
+          <CheckoutForm
+            formData={formData}
+            setFormData={setFormData}
+            selectedWhatsAppNumber={selectedWhatsAppNumber}
+            setSelectedWhatsAppNumber={setSelectedWhatsAppNumber}
+            errors={errors}
+            onSubmit={handlePrepareOrderSummary}
+            subtotal={subtotal}
+            effectiveDeliveryFee={effectiveDeliveryFee}
+            finalTotal={finalTotal}
+            currency={currency}
+            language={language}
+            t={t}
+          />
+        </div>
       </div>
     </div>
   );

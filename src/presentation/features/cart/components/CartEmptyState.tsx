@@ -18,20 +18,20 @@ export const CartEmptyState: React.FC<CartEmptyStateProps> = ({
         title="Shopping Cart &amp; WhatsApp Order — OMEGA"
         description="View items in your order and submit directly to OMEGA sales team via WhatsApp."
       />
-      <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mx-auto text-slate-400">
+      <div className="w-16 h-16 bg-[#FAF6F0] flex items-center justify-center mx-auto text-[#9E3618] shadow-xs">
         <ShoppingBag className="w-8 h-8" />
       </div>
-      <h1 className="text-2xl sm:text-3xl font-black text-slate-900">
+      <h1 className="text-2xl sm:text-3xl font-black text-[#26130F]">
         {language === 'sw' ? 'Kikapu Chako Kiko Wazi' : 'Your Order List is Empty'}
       </h1>
-      <p className="text-sm text-slate-600 max-w-md mx-auto">
+      <p className="text-sm text-[#7D685E] max-w-md mx-auto">
         {language === 'sw'
           ? 'Bofya kitufe hapa chini kutazama madaftari yetu ya OMEGA Quire 2, 3, 4 na bahasha.'
           : 'Explore our catalog to add OMEGA writing notebooks, counter books, and stationery.'}
       </p>
       <Link
         to="/catalog"
-        className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#0f2342] text-white text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl hover:bg-[#1e3a8a] transition-all shadow-sm"
+        className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#9E3618] hover:bg-[#6B140B] text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors shadow-sm"
       >
         <span>{exploreCatalogText}</span>
       </Link>

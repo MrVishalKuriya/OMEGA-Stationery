@@ -95,6 +95,8 @@ const NotFoundPage: React.FC = () => (
 );
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider } from '@mui/material/styles';
+import { omegaMuiTheme } from './presentation/theme/omegaMuiTheme';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -115,57 +117,59 @@ export default function App() {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <StoreProvider>
-          <ServerWakingBanner />
-          <BrowserRouter>
-            <ScrollToTop />
-            <Layout>
-              <Suspense fallback={<RouteLoader />}>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/catalog" element={<CatalogPage />} />
-                <Route path="/product/:id" element={<ProductDetailsPage />} />
-                <Route path="/cart" element={<CartAndCheckoutPage />} />
-                <Route path="/wishlist" element={<WishlistPage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/contact" element={<ContactPage />} />
-                <Route path="/wholesale" element={<WholesalePage />} />
-                <Route path="/wholesale.html" element={<WholesalePage />} />
-                <Route path="/school-tenders" element={<SchoolTendersPage />} />
-                <Route path="/tenders" element={<SchoolTendersPage />} />
-                <Route path="/shipping-guide" element={<ShippingGuidePage />} />
-                <Route path="/dispatch-locations" element={<ShippingGuidePage />} />
-                <Route path="/tracking" element={<OrderTrackingPage />} />
-                <Route path="/order-tracking" element={<OrderTrackingPage />} />
-                <Route path="/track-order" element={<OrderTrackingPage />} />
+          <ThemeProvider theme={omegaMuiTheme}>
+            <ServerWakingBanner />
+            <BrowserRouter>
+              <ScrollToTop />
+              <Layout>
+                <Suspense fallback={<RouteLoader />}>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/catalog" element={<CatalogPage />} />
+                  <Route path="/product/:id" element={<ProductDetailsPage />} />
+                  <Route path="/cart" element={<CartAndCheckoutPage />} />
+                  <Route path="/wishlist" element={<WishlistPage />} />
+                  <Route path="/about" element={<AboutPage />} />
+                  <Route path="/contact" element={<ContactPage />} />
+                  <Route path="/wholesale" element={<WholesalePage />} />
+                  <Route path="/wholesale.html" element={<WholesalePage />} />
+                  <Route path="/school-tenders" element={<SchoolTendersPage />} />
+                  <Route path="/tenders" element={<SchoolTendersPage />} />
+                  <Route path="/shipping-guide" element={<ShippingGuidePage />} />
+                  <Route path="/dispatch-locations" element={<ShippingGuidePage />} />
+                  <Route path="/tracking" element={<OrderTrackingPage />} />
+                  <Route path="/order-tracking" element={<OrderTrackingPage />} />
+                  <Route path="/track-order" element={<OrderTrackingPage />} />
 
-                {/* Guest-only Authentication Routes */}
-                <Route path="/login" element={<GuestRoute><LoginPage /></GuestRoute>} />
-                <Route path="/signin" element={<GuestRoute><LoginPage /></GuestRoute>} />
-                <Route path="/sign-in" element={<GuestRoute><LoginPage /></GuestRoute>} />
-                <Route path="/loging" element={<GuestRoute><LoginPage /></GuestRoute>} />
-                <Route path="/register" element={<GuestRoute><RegisterPage /></GuestRoute>} />
-                <Route path="/registration" element={<GuestRoute><RegisterPage /></GuestRoute>} />
-                <Route path="/signup" element={<GuestRoute><RegisterPage /></GuestRoute>} />
-                <Route path="/sign-up" element={<GuestRoute><RegisterPage /></GuestRoute>} />
+                  {/* Guest-only Authentication Routes */}
+                  <Route path="/login" element={<GuestRoute><LoginPage /></GuestRoute>} />
+                  <Route path="/signin" element={<GuestRoute><LoginPage /></GuestRoute>} />
+                  <Route path="/sign-in" element={<GuestRoute><LoginPage /></GuestRoute>} />
+                  <Route path="/loging" element={<GuestRoute><LoginPage /></GuestRoute>} />
+                  <Route path="/register" element={<GuestRoute><RegisterPage /></GuestRoute>} />
+                  <Route path="/registration" element={<GuestRoute><RegisterPage /></GuestRoute>} />
+                  <Route path="/signup" element={<GuestRoute><RegisterPage /></GuestRoute>} />
+                  <Route path="/sign-up" element={<GuestRoute><RegisterPage /></GuestRoute>} />
 
-                {/* Protected Customer Account Routes */}
-                <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
-                <Route path="/my-account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
-                <Route path="/profile" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
-                <Route path="/orders" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
+                  {/* Protected Customer Account Routes */}
+                  <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
+                  <Route path="/my-account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
+                  <Route path="/profile" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
+                  <Route path="/orders" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
 
-                {/* Protected Administrative Portal */}
-                <Route path="/omega-hq-portal-2026" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
-                <Route path="/omega-hq" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
-                <Route path="/omega-hq-portal" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
+                  {/* Protected Administrative Portal */}
+                  <Route path="/omega-hq-portal-2026" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
+                  <Route path="/omega-hq" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
+                  <Route path="/omega-hq-portal" element={<AdminRoute><AdminDashboardPage /></AdminRoute>} />
 
-                {/* Catch-all 404 */}
-                <Route path="/admin" element={<NotFoundPage />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
-            </Suspense>
-          </Layout>
-        </BrowserRouter>
+                  {/* Catch-all 404 */}
+                  <Route path="/admin" element={<NotFoundPage />} />
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+              </Suspense>
+            </Layout>
+          </BrowserRouter>
+        </ThemeProvider>
       </StoreProvider>
     </QueryClientProvider>
   </ErrorBoundary>

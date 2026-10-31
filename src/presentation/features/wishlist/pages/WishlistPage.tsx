@@ -39,21 +39,21 @@ export const WishlistPage: React.FC = () => {
       />
 
       {/* Top Breadcrumb & Header */}
-      <section className="relative overflow-hidden w-full bg-[#111113] text-white py-12 lg:py-16 border-b border-[#18181b]">
-        <div className="absolute -top-32 -right-32 w-[550px] h-[550px] bg-[#dc2626]/18 rounded-full blur-[140px] pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <section className="relative overflow-hidden w-full bg-[#111113] text-white py-12 lg:py-16 border-b border-[#E7E5E0]/15">
+        <div className="absolute -top-32 -right-32 w-[550px] h-[550px] bg-[#8C7355]/15 rounded-full blur-[140px] pointer-events-none" />
+        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex items-center gap-2 text-xs text-zinc-400 font-semibold mb-2">
             <Link to="/" className="hover:text-white flex items-center gap-1 transition-colors">
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>{t.home}</span>
             </Link>
             <span>/</span>
-            <span className="text-[#ef4444] font-bold">Wishlist</span>
+            <span className="text-[#C8A27A] font-bold">Wishlist</span>
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pt-2">
             <div>
-              <div className="inline-flex items-center px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#dc2626]/20 via-[#dc2626]/10 to-transparent border border-[#dc2626]/40 font-mono shadow-xs mb-3">
+              <div className="inline-flex items-center px-3.5 py-1.5 rounded-md text-xs font-semibold text-white bg-[#8C7355] font-mono shadow-xs mb-3">
                 <span>SAVED SELECTIONS &amp; INSTITUTIONAL QUOTAS</span>
               </div>
               <h1 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-light text-white tracking-tight">
@@ -69,7 +69,7 @@ export const WishlistPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={clearWishlist}
-                  className="text-xs text-zinc-300 hover:text-white font-semibold px-3.5 py-2 rounded-lg border border-white/15 hover:border-white/30 bg-white/5 transition-all"
+                  className="text-xs text-zinc-300 hover:text-white font-semibold px-3.5 py-2 rounded-md border border-white/15 hover:border-white/30 bg-white/5 transition-all"
                 >
                   Clear Wishlist
                 </button>
@@ -77,7 +77,7 @@ export const WishlistPage: React.FC = () => {
                   href={shareWhatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-4 py-2 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-sm transition-all hover:scale-105"
+                  className="px-4 py-2 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-md text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow-xs transition-all hover:scale-105"
                 >
                   <MessageCircle className="w-4 h-4 fill-white" />
                   <span>Inquire on WhatsApp</span>
@@ -89,7 +89,7 @@ export const WishlistPage: React.FC = () => {
       </section>
 
       {/* Main Content Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
         {wishlistedProducts.length === 0 ? (
           <div className="bg-white border border-[#e4e4e7] rounded-2xl p-10 sm:p-14 text-center max-w-lg mx-auto space-y-4 shadow-xl my-6">
             <div className="w-16 h-16 rounded-2xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center mx-auto border border-[#dc2626]/20">

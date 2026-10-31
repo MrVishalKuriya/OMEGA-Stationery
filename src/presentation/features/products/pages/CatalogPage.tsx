@@ -269,7 +269,7 @@ export const CatalogPage: React.FC = () => {
   }, [filteredProducts, currentPage, ITEMS_PER_PAGE]);
 
   return (
-    <div className="bg-[#fafafa] min-h-screen text-[#18181b] pb-20">
+    <div className="bg-[#F9F8F6] min-h-screen text-[#111113] pb-20">
       <SEOHead
         title="Official Catalog — OMEGA Tanzania Counter Books & Stationery"
         description="Browse all genuine OMEGA Counter Books, Exercise Books, and heavy kraft bahasha manufactured in Soweto SIDO, Mbeya."
@@ -278,8 +278,8 @@ export const CatalogPage: React.FC = () => {
       {/* Hero Header */}
       <CatalogHero language={language} totalProductsCount={products.length} />
 
-      {/* Main Catalog Workspace */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+      {/* Main Catalog Workspace (DESIGN.md: 1360px Centered Canvas) */}
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           {/* Filter Sidebar */}
           <CatalogFilterSidebar

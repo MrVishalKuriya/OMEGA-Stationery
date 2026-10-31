@@ -133,7 +133,7 @@ export interface CustomerOrderInput {
   deliveryAddress: string;
   selectedWhatsAppIndex?: number;
   fulfillmentType: 'Home Delivery' | 'In-Store Pickup' | 'Upcountry Bus Parcel (Mikoani)';
-  paymentPreference: 'Cash on Delivery (COD)' | 'Mobile Money (M-Pesa / Tigo / Airtel)' | 'Bank Transfer (CRDB/NMB)' | 'Pay at Store Counter';
+  paymentPreference: 'Cash on Delivery (COD)' | 'Mobile Money (M-Pesa / Mixx by Yas / Airtel Money)' | 'Mobile Money (M-Pesa / Tigo / Airtel)' | 'Bank Transfer (CRDB/NMB)' | 'Pay at Store Counter';
   orderNotes: string;
 }
 

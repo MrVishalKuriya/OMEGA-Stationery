@@ -5,5 +5,6 @@ echo    Launching OMEGA Stationery High-Performance Backend
 echo    Port: 5000 ^| Node.js ^| MongoDB Atlas ^| Redis ^| AI Engine
 echo ==========================================================
 cd /d "%~dp0"
+set "PATH=C:\Users\Hp\AppData\Local\Programs\nodejs;%PATH%"
 node server/server.mjs
 pause
