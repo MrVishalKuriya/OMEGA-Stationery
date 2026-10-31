@@ -526,8 +526,8 @@ export async function fetchLiveProducts(options?: {
     if (Array.isArray(rawList)) {
       const products: Product[] = rawList.map((p) => ({
         ...p,
-        image: resolveImageUrl(p.image, p.id),
-        gallery: Array.isArray(p.gallery) ? p.gallery.map((g: string) => resolveImageUrl(g, p.id)) : p.gallery,
+        image: resolveImageUrl(p.image),
+        gallery: Array.isArray(p.gallery) ? p.gallery.map((g: string) => resolveImageUrl(g)) : p.gallery,
       }));
       clientProductCache.set(cacheKey, {
         data: products,
@@ -812,19 +812,9 @@ export async function fetchSingleProductFromDb(id: string, signal?: AbortSignal)
     signal,
   });
   if (res.ok && res.data) {
-    const rawProduct: Product = res.data.data || (res.data as any);
-    const normalizedProduct: Product = rawProduct
-      ? {
-          ...rawProduct,
-          image: resolveImageUrl(rawProduct.image, rawProduct.id || id),
-          gallery: Array.isArray(rawProduct.gallery)
-            ? rawProduct.gallery.map((g: string) => resolveImageUrl(g, rawProduct.id || id))
-            : rawProduct.gallery,
-        }
-      : rawProduct;
     return {
       success: true,
-      data: normalizedProduct,
+      data: res.data.data || (res.data as any),
       message: res.data.message,
     };
   }
@@ -1079,37 +1069,11 @@ export async function uploadProductImage(
   }
 }
 
-const DEDICATED_PRODUCT_IMAGES: Record<string, string> = {
-  'prod-omega-doms-sharpeners': '/omega-products/doms-stopper-sharpeners.jpeg',
-  'prod-omega-doms-chalk': '/omega-products/doms-dustless-chalk.jpeg',
-  'prod-omega-staples-kangaro': '/omega-products/kangaro-blue-pin-staples.jpeg',
-  'prod-omega-staples-greathall': '/omega-products/greathall-red-pin-staples.jpeg',
-};
-
 /**
- * Normalizes any product image URL to ensure clean 1:1 studio images and local asset resolution
+ * Normalizes any product image URL to ensure cross-device and cloud accessibility
  */
-export function resolveImageUrl(url?: string, productId?: string): string {
-  if (productId && DEDICATED_PRODUCT_IMAGES[productId]) {
-    if (!url || url.includes('catalog-sheet-')) {
-      return DEDICATED_PRODUCT_IMAGES[productId];
-    }
-  }
+export function resolveImageUrl(url?: string): string {
   if (!url) return '';
-  if (url.includes('catalog-sheet-doms-sharpeners.jpeg')) {
-    return '/omega-products/doms-stopper-sharpeners.jpeg';
-  }
-  if (url.includes('catalog-sheet-ruler-roll-chalk.jpeg')) {
-    return '/omega-products/doms-dustless-chalk.jpeg';
-  }
-  // Keep bundled local /uploads/omega_*.png files on local origin so they load fast without external server dependency
-  if (url.startsWith('/uploads/omega_')) {
-    return url;
-  }
-  if (url.includes('/uploads/omega_')) {
-    const idx = url.indexOf('/uploads/omega_');
-    return url.slice(idx);
-  }
   if (url.startsWith('/uploads/')) {
     return `${BACKEND_URL}${url}`;
   }

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import {
   BookOpen,
   ShoppingBag,
@@ -8,24 +7,19 @@ import {
   Heart,
   Star,
   Eye,
+  Sparkles,
+  Truck,
+  ShieldCheck,
+  Layers,
 } from 'lucide-react';
 import { Product, formatPrice } from '../types/store';
 import { useStore } from '../context/StoreContext';
 import { TRANSLATIONS } from '../data/translations';
-import { triggerCartConfetti } from '@/utils/confetti';
 
 interface ProductCardProps {
   product: Product;
 }
 
-/**
- * ProductCard — Modern Swiss Editorial Architecture
- * - 65% Dominant Image Container on Crisp Off-White Canvas (#F8F9FA)
- * - Pure White Card Surface (#FFFFFF) with 1px Hairline Border (#E5E7EB)
- * - Zero-Pill Discipline: Unboxed metadata separated by quiet dots
- * - Signature OMEGA Crimson Red (#B91C1C) Accent & Charcoal Ink (#0F1115)
- * - Tabular Numerals for Price Alignment
- */
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const {
     addToCart,
@@ -33,11 +27,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     language,
     isInWishlist,
     toggleWishlist,
+    setQuickViewProduct,
   } = useStore();
   const t = TRANSLATIONS[language] || TRANSLATIONS.en;
 
   const [imgError, setImgError] = useState(false);
-  const [imgLoaded, setImgLoaded] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
 
   const effectivePrice =
@@ -55,6 +49,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const currency = storeConfig?.currencySymbol || 'TSh';
   const isWishlisted = isInWishlist(product.id);
 
+  // Extract packaging from product.packaging or specifications
+  const packagingInfo =
+    product.packaging ||
+    product.specifications?.find(
+      (s) =>
+        s.label.toLowerCase().includes('packaging') ||
+        s.label.toLowerCase().includes('pack')
+    )?.value;
+
   const ratingVal = product.rating || 4.9;
   const reviewCountVal = product.reviewCount || 120;
 
@@ -63,7 +66,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     e.stopPropagation();
     if (isOutOfStock) return;
     addToCart(product.id, 1, false);
-    triggerCartConfetti();
     setJustAdded(true);
     setTimeout(() => setJustAdded(false), 1400);
   };
@@ -74,28 +76,32 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     toggleWishlist(product.id);
   };
 
+  const handleQuickView = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setQuickViewProduct(product);
+  };
+
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ y: -2, transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] } }}
-      className="group flex flex-col h-full bg-[#FFFFFF] rounded-lg overflow-hidden border border-[#E7E5E0] hover:border-[#DC2626] shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04)] hover:shadow-[0_12px_28px_-6px_rgba(17,17,19,0.1)] p-3.5 transition-all text-left relative"
-    >
-      {/* ================= 1. IMAGE CONTAINER ================= */}
-      <div className="relative aspect-square w-full shrink-0 bg-[#FFFFFF] rounded-lg overflow-hidden border border-[#E7E5E0] group-hover:border-[#DC2626]/40 transition-colors">
-        {/* Discount Tag */}
-        <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1 items-start pointer-events-none">
+    <article className="group flex flex-col h-full rounded-2xl overflow-hidden border border-[#e4e4e7] hover:border-[#dc2626] bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl relative">
+      {/* ================= REGION 1: PRODUCT SHOWCASE IMAGE ================= */}
+      <div className="relative block aspect-square w-full bg-[#fafafa] overflow-hidden border-b border-[#e4e4e7]">
+        {/* Top Badges (Discount & Tag) */}
+        <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1 items-start max-w-[70%]">
           {hasDiscount && (
-            <span className="bg-[#DC2626] text-[#FFFFFF] text-[10px] font-mono font-bold px-2 py-0.5 rounded-[4px] shadow-xs tracking-tight">
+            <span className="bg-[#111113] text-white text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-md shadow-sm font-mono tracking-wider border border-white/10">
               {discountPercent}% OFF
             </span>
           )}
-          {product.badge && !hasDiscount && (
-            <span className="bg-[#111113] text-[#FFFFFF] text-[9px] font-mono font-bold px-2 py-0.5 rounded-[4px] tracking-wide uppercase">
+          {product.badge ? (
+            <span className="bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] text-white text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md shadow-sm tracking-wider truncate max-w-full font-mono">
               {product.badge}
             </span>
-          )}
+          ) : product.bestSeller && !hasDiscount ? (
+            <span className="bg-[#111113] text-[#ef4444] border border-[#dc2626]/40 text-[8px] sm:text-[9px] font-bold px-2 py-0.5 rounded-md shadow-sm tracking-wider font-mono">
+              Bestseller
+            </span>
+          ) : null}
         </div>
 
         {/* Wishlist Button */}
@@ -103,161 +109,134 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           type="button"
           onClick={handleToggleWishlist}
           aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
-          className={`absolute top-2.5 right-2.5 z-10 w-7 h-7 sm:w-8 sm:h-8 rounded-md flex items-center justify-center transition-all duration-200 cursor-pointer ${
+          className={`absolute top-2.5 right-2.5 z-10 w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-all duration-200 active:scale-90 shadow-sm backdrop-blur-xs cursor-pointer ${
             isWishlisted
-              ? 'bg-[#DC2626] text-white shadow-xs'
-              : 'bg-white/95 backdrop-blur-xs text-[#111113] hover:text-[#DC2626] hover:bg-white border border-[#E7E5E0]'
+              ? 'bg-[#dc2626] text-white shadow-md scale-105'
+              : 'bg-white/95 text-[#18181b] hover:text-[#dc2626] hover:bg-white hover:scale-105 border border-[#e4e4e7]'
           }`}
         >
           <Heart
-            className={`w-3.5 h-3.5 transition-transform duration-200 ${
-              isWishlisted ? 'fill-white stroke-none scale-110' : 'stroke-[1.75]'
+            className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-200 ${
+              isWishlisted ? 'fill-white scale-110' : 'stroke-[2]'
             }`}
           />
         </button>
 
-        {/* View Details Quick Action Overlay on Hover */}
+        {/* View Details Button Hover Overlay (Desktop) */}
         <Link
           to={`/product/${product.id}`}
-          className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-10 opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-1 group-hover:translate-y-0 px-3 py-1.5 rounded-md bg-[#111113] hover:bg-[#DC2626] text-[#FFFFFF] text-[10px] font-sans font-bold uppercase tracking-wider items-center gap-1.5 shadow-md whitespace-nowrap cursor-pointer hidden sm:flex"
+          className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-10 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0 px-3 py-1.5 rounded-lg bg-[#111113]/90 hover:bg-black text-[#ef4444] text-[11px] font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-lg border border-[#dc2626]/50 backdrop-blur-sm whitespace-nowrap cursor-pointer hidden sm:flex"
         >
-          <Eye className="w-3 h-3 text-white/90" />
-          <span>{language === 'sw' ? 'Tazama' : 'View Details'}</span>
+          <Eye className="w-3.5 h-3.5 text-[#ef4444]" />
+          <span>View Details</span>
         </Link>
 
-        {/* Product Image Stage */}
+        {/* Clickable Image */}
         <Link
           to={`/product/${product.id}`}
-          className="absolute inset-0 aspect-square flex items-center justify-center overflow-hidden rounded-lg bg-[#FFFFFF]"
+          className="w-full h-full p-4 flex items-center justify-center overflow-hidden"
           style={product.imageBackground ? { backgroundColor: product.imageBackground } : undefined}
         >
           {!imgError && product.image ? (
-            <>
-              {!imgLoaded && (
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-0 aspect-square rounded-lg skeleton-paper-ink flex items-center justify-center"
-                >
-                  <div className="w-16 h-20 rounded-md border border-charcoal-ink/10 bg-paper-base/80 flex flex-col items-center justify-between p-2">
-                    <div className="w-8 h-1 rounded-xs skeleton-charcoal-bar" />
-                    <div className="w-6 h-6 rounded-xs skeleton-charcoal-bar" />
-                    <div className="w-10 h-1 rounded-xs skeleton-charcoal-bar" />
-                  </div>
-                </div>
-              )}
-              <img
-                src={product.image}
-                alt={product.name}
-                referrerPolicy="no-referrer"
-                loading="lazy"
-                decoding="async"
-                onLoad={() => setImgLoaded(true)}
-                onError={() => setImgError(true)}
-                className={`w-full h-full aspect-square object-cover object-center rounded-lg transition-all duration-300 ease-out group-hover:scale-105 ${
-                  imgLoaded ? 'opacity-100' : 'opacity-0'
-                }`}
-              />
-            </>
+            <img
+              src={product.image}
+              alt={product.name}
+              referrerPolicy="no-referrer"
+              loading="lazy"
+              decoding="async"
+              onError={() => setImgError(true)}
+              className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-500 ease-out group-hover:scale-105"
+            />
           ) : (
-            <div className="w-full h-full aspect-square flex flex-col items-center justify-center p-3 bg-[#F9F8F6] text-center rounded-lg">
-              <div className="w-14 h-20 bg-white rounded-md p-2 flex flex-col items-center justify-between border border-[#E7E5E0]">
-                <span className="text-[9px] font-bold tracking-widest text-[#111113]">OMEGA</span>
-                <BookOpen className="w-5 h-5 text-[#DC2626] stroke-[1.5]" />
-                <span className="text-[8px] text-[#6E6B66] font-mono">{product.sku}</span>
+            <div className="w-full h-full flex flex-col items-center justify-center p-4 bg-[#f4f4f5] text-center">
+              <div className="w-16 h-22 sm:w-20 sm:h-28 border-2 border-[#111113] bg-white p-2 flex flex-col items-center justify-between shadow-xs rounded-[6px]">
+                <span className="text-[9px] sm:text-[10px] font-bold tracking-widest text-[#111113]">OMEGA</span>
+                <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 text-[#111113] stroke-[1.5]" />
+                <span className="text-[8px] sm:text-[9px] text-[#71717a] font-mono">{product.sku}</span>
               </div>
             </div>
           )}
         </Link>
       </div>
 
-      {/* ================= 2. METADATA & CONTENT ================= */}
-      <div className="flex flex-col flex-1 justify-between pt-3 gap-2">
-        <div className="space-y-1.5 text-left">
-          {/* Category & Star Rating */}
-          <div className="flex items-center justify-between text-[11px] text-charcoal-ink">
-            <span className="font-mono text-[10px] uppercase tracking-wider text-[#3F3F46] font-semibold truncate max-w-[65%]">
-              {product.category || 'Stationery'}
-            </span>
-            <div className="flex items-center gap-1 text-[11px] font-medium text-charcoal-ink">
-              <Star className="w-3 h-3 fill-[#DC2626] text-[#DC2626]" />
-              <span className="font-mono font-bold">{ratingVal.toFixed(1)}</span>
-            </div>
-          </div>
-
-          {/* Product Title */}
-          <div className="min-h-[2.3rem] flex items-start">
-            <h3 className="font-sans text-xs sm:text-sm font-bold text-charcoal-ink group-hover:text-[#DC2626] transition-colors line-clamp-2 leading-snug">
-              <Link to={`/product/${product.id}`} className="focus:outline-none">
-                {language === 'sw' && product.nameSw ? product.nameSw : product.name}
-              </Link>
-            </h3>
-          </div>
-
-          {/* Unboxed Metadata Line */}
-          <div className="flex items-center gap-1.5 text-[10px] text-[#3F3F46] font-mono pt-0.5">
-            {product.quire && (
-              <>
-                <span className="font-semibold text-charcoal-ink">{product.quire}</span>
-                <span aria-hidden="true" className="text-[#71717A]">·</span>
-              </>
+      {/* ================= REGION 2: METADATA & SPECS ================= */}
+      <div className="flex flex-col flex-1 justify-between p-3.5 sm:p-4 gap-2.5 sm:gap-3 bg-white">
+        <div className="space-y-1.5">
+          {/* Row 1: Rating & Availability */}
+          <div className="flex items-center justify-between text-[10px] sm:text-[11px]">
+            {isOutOfStock ? (
+              <span className="text-[9px] font-bold text-stone-500 bg-stone-100 border border-stone-200 px-1.5 py-0.5 rounded-full">
+                Out of Stock
+              </span>
+            ) : (
+              <div className="flex items-center gap-1 text-[10px] font-bold text-[#18181b]">
+                <Star className="w-3 h-3 fill-[#dc2626] text-[#dc2626]" />
+                <span>{ratingVal.toFixed(1)}</span>
+                <span className="text-zinc-400 font-normal">({reviewCountVal})</span>
+              </div>
             )}
-            <span>70 GSM</span>
-            <span aria-hidden="true" className="text-[#71717A]">·</span>
-            <span className="truncate">{product.packaging ? product.packaging.split('/')[0] : 'Authentic'}</span>
           </div>
 
-          {/* Aligned Baseline Pricing */}
-          <div className="pt-2 mt-auto border-t border-[#E7E5E0]">
+          {/* Row 2: Product Title (2 Lines max) */}
+          <h3 className="font-heading text-xs sm:text-sm font-bold text-[#18181b] group-hover:text-[#dc2626] transition-colors line-clamp-2 leading-snug">
+            <Link to={`/product/${product.id}`} className="focus:outline-none">
+              {language === 'sw' && product.nameSw ? product.nameSw : product.name}
+            </Link>
+          </h3>
+
+          {/* Row 3: Pricing Block */}
+          <div className="pt-2 border-t border-[#e4e4e7] mt-2 space-y-1.5">
+            {/* Retail Price */}
             <div className="flex items-baseline gap-2">
-              <span className="text-sm sm:text-base font-black text-charcoal-ink font-mono tracking-tight tabular-nums">
+              <span className="text-base sm:text-lg font-black text-[#18181b] font-mono tracking-tight">
                 {formatPrice(effectivePrice, currency)}
               </span>
               {hasDiscount && (
-                <span className="text-[11px] text-[#3F3F46] line-through font-mono tabular-nums">
+                <span className="text-[11px] sm:text-xs text-[#71717a] line-through font-mono">
                   {formatPrice(product.price, currency)}
                 </span>
               )}
             </div>
-            {product.wholesalePrice ? (
-              <span className="text-[10px] text-[#B91C1C] font-mono font-bold block truncate mt-0.5">
-                Carton: {formatPrice(product.wholesalePrice, currency)}
-              </span>
-            ) : null}
+          </div>
+
+          {/* Row 4: Dispatch Guarantee (Subtle & Clean) */}
+          <div className="flex items-center gap-1.5 text-emerald-600 font-semibold text-[10px] pt-0.5">
+            <Truck className="w-3 h-3 text-emerald-600 shrink-0" />
+            <span className="truncate">Fast Dispatch Available</span>
           </div>
         </div>
 
-        {/* ================= 3. PRIMARY BUY ACTION BUTTON ================= */}
-        <div className="pt-2 mt-auto">
-          <motion.button
-            whileTap={{ scale: 0.98 }}
+        {/* ================= REGION 3: PRIMARY ACTION BUTTON ================= */}
+        <div className="pt-1">
+          <button
             type="button"
             onClick={handleQuickAdd}
             disabled={isOutOfStock}
-            className={`w-full py-2.5 px-3 rounded-[2px] text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 min-h-[38px] transition-all duration-200 cursor-pointer font-sans ${
+            className={`w-full py-2.5 px-3 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 min-h-[42px] transition-all duration-200 active:scale-95 shadow-sm cursor-pointer font-mono ${
               isOutOfStock
-                ? 'bg-[#F3F4F6] text-[#6B7280] border border-[#E5E7EB] cursor-not-allowed'
+                ? 'bg-zinc-100 text-zinc-400 cursor-not-allowed border border-[#e4e4e7]'
                 : justAdded
-                ? 'bg-[#16A34A] text-white shadow-xs'
-                : 'bg-[#111113] hover:bg-[#DC2626] text-[#FFFFFF] shadow-xs'
+                ? 'bg-emerald-600 text-white shadow-md'
+                : 'bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] hover:from-[#991b1b] hover:to-[#dc2626] text-white hover:shadow-md'
             }`}
           >
             {isOutOfStock ? (
-              <span>{language === 'sw' ? 'Imeisha' : 'Out of Stock'}</span>
+              <span>{language === 'sw' ? 'Imeisha kwa Sasa' : 'Out of Stock'}</span>
             ) : justAdded ? (
               <>
-                <Check className="w-3.5 h-3.5 text-white" />
-                <span>{language === 'sw' ? 'Imeongezwa!' : 'Added!'}</span>
+                <Check className="w-4 h-4 text-white" />
+                <span className="text-white">{language === 'sw' ? 'Imewekwa Kwenye Oda!' : 'Added to Cart!'}</span>
               </>
             ) : (
               <>
-                <ShoppingBag className="w-3.5 h-3.5 text-white/90" />
-                <span>{language === 'sw' ? 'Weka Kwenye Kikapu' : 'Add to Cart'}</span>
+                <ShoppingBag className="w-3.5 h-3.5 text-white shrink-0" />
+                <span>{language === 'sw' ? 'Weka Kwenye Oda' : 'Add to Cart'}</span>
               </>
             )}
-          </motion.button>
+          </button>
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 };
 

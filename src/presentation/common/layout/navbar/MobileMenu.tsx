@@ -2,25 +2,8 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   X,
-  User,
-  Heart,
-  Package,
-  Phone,
-  MessageCircle,
-  Globe,
   ChevronRight,
-  LogOut,
-  Info,
-  Layers,
 } from 'lucide-react';
-import { useStore } from '@/context/StoreContext';
-import {
-  IconCounterBook,
-  IconExerciseBook,
-  IconKraftBahasha,
-  IconWholesaleCarton,
-  IconSchoolTender,
-} from '@/presentation/common/components/CustomIcons';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -30,20 +13,37 @@ interface MobileMenuProps {
   onOpenTracking?: () => void;
 }
 
+interface SidebarMenuItem {
+  title: string;
+  subtitle?: string;
+  href: string;
+}
+
+const SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
+  {
+    title: 'Home',
+    href: '/',
+  },
+  {
+    title: 'All Stationery Catalogues',
+    href: '/catalog',
+  },
+  {
+    title: 'Office Stationery & Supplies',
+    href: '/catalog?category=Office+Supplies',
+  },
+  {
+    title: 'Wholesale & Bulk Orders',
+    subtitle: 'Cartons, bulk enquiries, wholesale prices',
+    href: '/wholesale',
+  },
+];
+
 export const MobileMenu: React.FC<MobileMenuProps> = ({
   isOpen,
   onClose,
 }) => {
-  const {
-    wishlistCount,
-    language,
-    toggleLanguage,
-    storeConfig,
-    currentUser,
-    logout,
-  } = useStore();
-
-  // Lock body scroll when mobile drawer is open
+  // Lock body scroll
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -57,11 +57,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
 
   if (!isOpen) return null;
 
-  const cleanWhatsappDigits = (storeConfig.whatsappNumber || '+255715268391').replace(/\D/g, '');
-  const whatsappUrl = `https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
-    'Habari OMEGA Stationery, ninahitaji msaada wa kuagiza vifaa vya stationery.'
-  )}`;
-
   return (
     <div
       role="dialog"
@@ -69,32 +64,31 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
       aria-label="Mobile Navigation"
       className="fixed inset-0 z-50 flex lg:hidden animate-in fade-in duration-200"
     >
-      {/* Dimmed Backdrop */}
+      {/* Dim Backdrop */}
       <div
         onClick={onClose}
-        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
         aria-hidden="true"
       />
 
-      {/* Slide-In Architectural Charcoal, Crimson & Pure Paper Drawer from Left */}
-      <div className="relative w-full max-w-[320px] sm:max-w-sm h-full bg-[#FFFFFF] text-[#111113] flex flex-col shadow-2xl z-10 animate-in slide-in-from-left duration-250">
-        
-        {/* 1. Header Bar: Deep Charcoal with Crimson Bottom Rule, White Logo & Close Icon */}
-        <div className="flex items-center justify-between px-4 py-3.5 bg-[#141416] text-white border-b-2 border-[#DC2626]">
+      {/* Slide-In Drawer from Left */}
+      <div className="relative w-full max-w-xs sm:max-w-sm h-full bg-[#0d0d10] text-zinc-100 flex flex-col shadow-2xl z-10 animate-in slide-in-from-left duration-250 border-r border-white/10">
+        {/* Drawer Header */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-white/10 bg-[#141418]">
           <Link to="/" onClick={onClose} className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-[2px] bg-white p-1 flex items-center justify-center shrink-0 shadow-xs">
+            <div className="w-8 h-8 rounded-lg bg-white/10 border border-white/15 p-1 flex items-center justify-center shadow-xs shrink-0">
               <img
-                src="/logo-icon.png"
-                alt="OMEGA Logo"
+                src="/logo-icon-white.png"
+                alt="OMEGA Icon"
                 className="w-full h-full object-contain"
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-heading text-base font-black tracking-wider text-white">
+              <span className="font-heading text-base font-bold tracking-wider text-white">
                 OMEGA
               </span>
-              <span className="text-[9px] font-mono tracking-widest text-[#DC2626] uppercase -mt-0.5 font-bold">
-                STATIONERY &amp; BOOKS
+              <span className="text-[9px] font-mono tracking-widest text-[#ef4444] uppercase -mt-0.5">
+                STATIONERY
               </span>
             </div>
           </Link>
@@ -103,289 +97,35 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
             type="button"
             onClick={onClose}
             aria-label="Close menu"
-            className="w-8 h-8 flex items-center justify-center rounded-[2px] text-white/90 hover:text-white hover:bg-white/15 transition-colors cursor-pointer"
+            className="w-9 h-9 flex items-center justify-center rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* 2. User Profile / Welcome Section */}
-        <div className="p-4 bg-[#F9F8F6] border-b border-[#E7E5E0]">
-          {currentUser ? (
-            <div className="flex items-center justify-between gap-3">
-              <Link
-                to="/account"
-                onClick={onClose}
-                className="flex items-center gap-2.5 min-w-0 group"
-              >
-                <div className="w-9 h-9 rounded-[2px] bg-[#DC2626] text-white font-bold text-xs flex items-center justify-center font-mono shrink-0 shadow-xs">
-                  {currentUser.initials || currentUser.name.slice(0, 2).toUpperCase()}
-                </div>
-                <div className="min-w-0">
-                  <div className="text-xs font-bold text-[#111113] truncate group-hover:text-[#DC2626] transition-colors">
-                    {currentUser.name}
-                  </div>
-                  <div className="text-[10px] text-[#4B5563] truncate">
-                    {currentUser.email}
-                  </div>
-                </div>
-              </Link>
-              <button
-                type="button"
-                onClick={() => {
-                  logout();
-                  onClose();
-                }}
-                className="text-[#4B5563] hover:text-[#DC2626] p-1.5 rounded-[2px] hover:bg-white transition-colors cursor-pointer"
-                title="Log out"
-              >
-                <LogOut className="w-4 h-4" />
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-2.5">
-              <div className="flex items-center gap-2.5 text-[#111113]">
-                <div className="w-8 h-8 rounded-[2px] bg-white border border-[#E7E5E0] flex items-center justify-center text-[#DC2626] shadow-2xs">
-                  <User className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-[#111113]">
-                    {language === 'sw' ? 'Karibu OMEGA Stationery' : 'Welcome to OMEGA'}
-                  </div>
-                  <div className="text-[10px] text-[#4B5563]">
-                    {language === 'sw' ? 'Ingia ili uone bei ya jumla ya kiwandani' : 'Sign in for wholesale carton prices'}
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2 pt-0.5">
-                <Link
-                  to="/login"
-                  onClick={onClose}
-                  className="py-2 px-3 rounded-[2px] bg-[#DC2626] hover:bg-[#B91C1C] text-xs font-bold text-center text-white shadow-xs transition-colors"
-                >
-                  {language === 'sw' ? 'Ingia' : 'Sign In'}
-                </Link>
-                <Link
-                  to="/register"
-                  onClick={onClose}
-                  className="py-2 px-3 rounded-[2px] bg-white border border-[#111113] hover:bg-[#111113] hover:text-white text-xs font-bold text-center text-[#111113] transition-colors shadow-2xs"
-                >
-                  {language === 'sw' ? 'Jisajili' : 'Register'}
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* 3. Scrollable Clean Navigation List */}
-        <div className="flex-1 overflow-y-auto px-3 py-3 space-y-4">
-          
-          {/* Shop Categories Section */}
-          <div className="space-y-1">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#DC2626] px-2.5 block mb-1.5 font-mono">
-              {language === 'sw' ? 'Bidhaa Kuu' : 'Shop Categories'}
-            </span>
-
+        {/* Sidebar Navigation Items */}
+        <nav className="flex-1 overflow-y-auto px-5 divide-y divide-white/10">
+          {SIDEBAR_MENU_ITEMS.map((item) => (
             <Link
-              to="/catalog"
+              key={item.title}
+              to={item.href}
               onClick={onClose}
-              className="flex items-center justify-between px-3 py-2.5 rounded-[2px] text-xs font-semibold text-[#111113] hover:text-[#DC2626] hover:bg-[#F9F8F6] transition-colors"
+              className="group flex items-center justify-between py-4 hover:bg-white/[0.03] -mx-2 px-2 rounded-lg transition-colors"
             >
-              <div className="flex items-center gap-2.5">
-                <Layers className="w-4 h-4 text-[#DC2626]" />
-                <span>{language === 'sw' ? 'Katalogi Nzima ya Vifaa' : 'All Stationery Catalog'}</span>
-              </div>
-              <ChevronRight className="w-3.5 h-3.5 text-[#6E6B66]" />
-            </Link>
-
-            <Link
-              to="/catalog?category=Counter+Books"
-              onClick={onClose}
-              className="flex items-center justify-between px-3 py-2.5 rounded-[2px] text-xs font-semibold text-[#111113] hover:text-[#DC2626] hover:bg-[#F9F8F6] transition-colors"
-            >
-              <div className="flex items-center gap-2.5">
-                <IconCounterBook className="w-4 h-4 text-[#DC2626]" />
-                <span>Counter Books (Q1 – Q4)</span>
-              </div>
-              <ChevronRight className="w-3.5 h-3.5 text-[#6E6B66]" />
-            </Link>
-
-            <Link
-              to="/catalog?category=Exercise+Books"
-              onClick={onClose}
-              className="flex items-center justify-between px-3 py-2.5 rounded-[2px] text-xs font-semibold text-[#111113] hover:text-[#DC2626] hover:bg-[#F9F8F6] transition-colors"
-            >
-              <div className="flex items-center gap-2.5">
-                <IconExerciseBook className="w-4 h-4 text-[#DC2626]" />
-                <span>{language === 'sw' ? 'Madaftari ya Shule' : 'Exercise Books (80p–200p)'}</span>
-              </div>
-              <ChevronRight className="w-3.5 h-3.5 text-[#6E6B66]" />
-            </Link>
-
-            <Link
-              to="/catalog?category=Bahasha+%26+Envelopes"
-              onClick={onClose}
-              className="flex items-center justify-between px-3 py-2.5 rounded-[2px] text-xs font-semibold text-[#111113] hover:text-[#DC2626] hover:bg-[#F9F8F6] transition-colors"
-            >
-              <div className="flex items-center gap-2.5">
-                <IconKraftBahasha className="w-4 h-4 text-[#DC2626]" />
-                <span>{language === 'sw' ? 'Bahasha Nzito za Kraft' : 'Kraft Bahasha & Envelopes'}</span>
-              </div>
-              <ChevronRight className="w-3.5 h-3.5 text-[#6E6B66]" />
-            </Link>
-          </div>
-
-          {/* B2B & Wholesale Section */}
-          <div className="space-y-1">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#DC2626] px-2.5 block mb-1.5 font-mono">
-              {language === 'sw' ? 'Bei za Jumla & Zabuni' : 'Wholesale & Tenders'}
-            </span>
-
-            <Link
-              to="/wholesale"
-              onClick={onClose}
-              className="flex items-center justify-between px-3 py-2.5 rounded-[2px] text-xs font-bold text-[#111113] bg-[#F9F8F6] border border-[#E7E5E0] hover:border-[#DC2626] transition-all"
-            >
-              <div className="flex items-center gap-2.5">
-                <IconWholesaleCarton className="w-4 h-4 text-[#DC2626]" />
-                <span>{language === 'sw' ? 'Oda za Jumla (Katoni)' : 'Wholesale Bulk Cartons'}</span>
-              </div>
-              <span className="text-[9px] font-black px-1.5 py-0.5 rounded-[2px] bg-[#DC2626] text-white">
-                B2B
-              </span>
-            </Link>
-
-            <Link
-              to="/school-tenders"
-              onClick={onClose}
-              className="flex items-center justify-between px-3 py-2.5 rounded-[2px] text-xs font-semibold text-[#111113] hover:text-[#DC2626] hover:bg-[#F9F8F6] transition-colors"
-            >
-              <div className="flex items-center gap-2.5">
-                <IconSchoolTender className="w-4 h-4 text-[#DC2626]" />
-                <span>{language === 'sw' ? 'Zabuni za Shule na Vyuo' : 'School Tenders'}</span>
-              </div>
-              <span className="text-[9px] text-white font-mono font-bold bg-[#111113] px-1.5 py-0.5 rounded-[2px]">
-                NECTA
-              </span>
-            </Link>
-          </div>
-
-          {/* Account, Orders & Support Section */}
-          <div className="space-y-1">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#DC2626] px-2.5 block mb-1.5 font-mono">
-              {language === 'sw' ? 'Akaunti & Huduma' : 'Account & Service'}
-            </span>
-
-            <Link
-              to={currentUser ? '/account' : '/login'}
-              onClick={onClose}
-              className="flex items-center justify-between px-3 py-2.5 rounded-[2px] text-xs font-semibold text-[#111113] hover:text-[#DC2626] hover:bg-[#F9F8F6] transition-colors"
-            >
-              <div className="flex items-center gap-2.5">
-                <User className="w-4 h-4 text-[#DC2626]" />
-                <span>{language === 'sw' ? 'Wasifu Wangu (Profile)' : 'My Profile & Account'}</span>
-              </div>
-              <ChevronRight className="w-3.5 h-3.5 text-[#6E6B66]" />
-            </Link>
-
-            <Link
-              to="/tracking"
-              onClick={onClose}
-              className="flex items-center justify-between px-3 py-2.5 rounded-[2px] text-xs font-semibold text-[#111113] hover:text-[#DC2626] hover:bg-[#F9F8F6] transition-colors"
-            >
-              <div className="flex items-center gap-2.5">
-                <Package className="w-4 h-4 text-[#DC2626]" />
-                <span>{language === 'sw' ? 'Fuatilia Mzigo / Oda' : 'Track Order Delivery'}</span>
-              </div>
-              <ChevronRight className="w-3.5 h-3.5 text-[#6E6B66]" />
-            </Link>
-
-            <Link
-              to="/wishlist"
-              onClick={onClose}
-              className="flex items-center justify-between px-3 py-2.5 rounded-[2px] text-xs font-semibold text-[#111113] hover:text-[#DC2626] hover:bg-[#F9F8F6] transition-colors"
-            >
-              <div className="flex items-center gap-2.5">
-                <Heart className="w-4 h-4 text-[#DC2626]" />
-                <span>{language === 'sw' ? 'Vitu Ninavyopenda' : 'Wishlist'}</span>
-              </div>
-              {wishlistCount > 0 ? (
-                <span className="px-2 py-0.5 rounded-[2px] bg-[#DC2626] text-white text-[10px] font-bold font-mono">
-                  {wishlistCount}
+              <div className="min-w-0 pr-3">
+                <span className="block text-[15px] font-bold text-white group-hover:text-[#ef4444] transition-colors leading-snug">
+                  {item.title}
                 </span>
-              ) : (
-                <ChevronRight className="w-3.5 h-3.5 text-[#6E6B66]" />
-              )}
-            </Link>
-
-            <Link
-              to="/contact"
-              onClick={onClose}
-              className="flex items-center justify-between px-3 py-2.5 rounded-[2px] text-xs font-semibold text-[#111113] hover:text-[#DC2626] hover:bg-[#F9F8F6] transition-colors"
-            >
-              <div className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-[#DC2626]" />
-                <span>{language === 'sw' ? 'Wasiliana Nasi (Contact)' : 'Contact Us & Factory'}</span>
+                {item.subtitle && (
+                  <span className="block text-xs text-zinc-400 truncate mt-0.5">
+                    {item.subtitle}
+                  </span>
+                )}
               </div>
-              <ChevronRight className="w-3.5 h-3.5 text-[#6E6B66]" />
+              <ChevronRight className="w-4 h-4 text-zinc-500 group-hover:text-white group-hover:translate-x-0.5 transition-all shrink-0" />
             </Link>
-
-            <Link
-              to="/about"
-              onClick={onClose}
-              className="flex items-center justify-between px-3 py-2.5 rounded-[2px] text-xs font-semibold text-[#4B5563] hover:text-[#DC2626] hover:bg-[#F9F8F6] transition-colors"
-            >
-              <div className="flex items-center gap-2.5">
-                <Info className="w-4 h-4 text-[#6E6B66]" />
-                <span>{language === 'sw' ? 'Kuhusu Kiwanda cha OMEGA' : 'About OMEGA Tanzania'}</span>
-              </div>
-              <ChevronRight className="w-3.5 h-3.5 text-[#6E6B66]" />
-            </Link>
-          </div>
-
-        </div>
-
-        {/* 4. Footer Quick Actions */}
-        <div className="p-3.5 bg-[#F9F8F6] border-t border-[#E7E5E0] space-y-2">
-          {/* Language Switcher Button */}
-          <div className="flex items-center justify-between px-3 py-2 rounded-[2px] bg-white border border-[#E7E5E0] text-xs">
-            <div className="flex items-center gap-2 text-[#111113]">
-              <Globe className="w-4 h-4 text-[#DC2626]" />
-              <span className="text-xs font-semibold">
-                {language === 'sw' ? 'Lugha' : 'Language'}
-              </span>
-            </div>
-            <button
-              type="button"
-              onClick={toggleLanguage}
-              className="px-2.5 py-1 rounded-[2px] bg-[#111113] text-white font-mono font-bold text-xs uppercase transition-colors cursor-pointer"
-            >
-              {language === 'sw' ? '🇹🇿 Kiswahili' : '🇬🇧 English'}
-            </button>
-          </div>
-
-          {/* WhatsApp Direct Order Button */}
-          <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 w-full py-2.5 rounded-[2px] bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-bold uppercase tracking-wider shadow-xs active:scale-98 transition-all"
-          >
-            <MessageCircle className="w-4 h-4 fill-white" />
-            <span>Order on WhatsApp</span>
-          </a>
-
-          {/* Hotline Phone */}
-          <a
-            href={`tel:${(storeConfig.phoneNumber || '+255715268391').replace(/\s+/g, '')}`}
-            className="flex items-center justify-center gap-2 w-full py-2 rounded-[2px] bg-white border border-[#E7E5E0] text-xs font-mono font-bold text-[#111113] hover:border-[#DC2626] active:scale-98 transition-all shadow-2xs"
-          >
-            <Phone className="w-3.5 h-3.5 text-[#DC2626]" />
-            <span>{storeConfig.phoneNumber || '+255 715 268 391'}</span>
-          </a>
-        </div>
-
+          ))}
+        </nav>
       </div>
     </div>
   );

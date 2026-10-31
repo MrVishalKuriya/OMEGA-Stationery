@@ -1,13 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Trash2, Plus, Minus } from 'lucide-react';
+import { Trash2, Minus, Plus, ArrowLeft } from 'lucide-react';
 import { DetailedCartItem } from '@/context/StoreContext';
-import { Language } from '@/types/store';
 
 interface CartItemListProps {
   detailedCart: DetailedCartItem[];
   currency: string;
-  language: Language;
+  language: string;
   updateCartQuantity: (productId: string, quantity: number) => void;
   removeFromCart: (productId: string) => void;
 }
@@ -21,102 +20,87 @@ export const CartItemList: React.FC<CartItemListProps> = ({
 }) => {
   return (
     <div className="lg:col-span-7 space-y-4">
-      {detailedCart.map(({ product, quantity, effectiveUnitPrice, lineTotal }) => {
-        const isWholesaleApplied =
-          product.wholesaleMinQty &&
-          product.wholesalePrice &&
-          quantity >= product.wholesaleMinQty;
-
-        return (
-          <div
-            key={product.id}
-            className="bg-white p-5 border border-[#E7E5E0] hover:border-[#DC2626] rounded-[4px] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all shadow-sm"
-          >
-            <div className="flex items-center gap-4 min-w-0 flex-1">
-              <Link
-                to={`/product/${product.id}`}
-                className="w-20 h-20 aspect-square bg-paper-base border border-[#E7E5E0] rounded-lg p-1.5 flex items-center justify-center shrink-0 overflow-hidden"
-              >
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full aspect-square object-cover rounded-lg"
-                />
-              </Link>
-
-              <div className="min-w-0 flex-1 space-y-1">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#B91C1C]">
-                    {product.category}
-                  </span>
-                  <span className="text-[10px] font-mono text-[#3F3F46] font-semibold">
-                    SKU: {product.sku}
-                  </span>
-                  {isWholesaleApplied && (
-                    <span className="px-2 py-0.5 bg-[#15803D] text-white text-[9px] font-bold uppercase tracking-wider rounded-[2px]">
-                      {language === 'sw' ? 'Bei ya Jumla' : 'Wholesale Tier Active'}
-                    </span>
-                  )}
-                </div>
-
-                <Link
-                  to={`/product/${product.id}`}
-                  className="text-sm sm:text-base font-bold text-charcoal-ink hover:text-[#DC2626] transition-colors line-clamp-2 block"
-                >
-                  {product.name}
-                </Link>
-
-                <p className="text-xs text-[#3F3F46] font-mono font-semibold">
-                  {currency} {effectiveUnitPrice.toLocaleString()}{' '}
-                  <span className="text-[11px] font-normal">
-                    / {product.packaging || 'unit'}
-                  </span>
-                </p>
-              </div>
+      <div className="bg-white rounded-2xl border border-slate-200 divide-y divide-slate-100 shadow-xs overflow-hidden">
+        {detailedCart.map((item) => (
+          <div key={item.product.id} className="p-4 sm:p-5 flex items-center gap-4">
+            {/* Thumbnail */}
+            <div className="w-16 h-16 rounded-xl bg-slate-50 border border-slate-200 p-1 shrink-0 flex items-center justify-center">
+              <img
+                src={item.product.image}
+                alt={item.product.name}
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-contain"
+              />
             </div>
 
-            <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4 pt-3 sm:pt-0 border-t sm:border-t-0 border-[#E7E5E0]">
-              <div className="flex items-center border border-[#D4D2CD] rounded-[4px] bg-paper-base">
-                <button
-                  type="button"
-                  onClick={() => updateCartQuantity(product.id, quantity - 1)}
-                  className="p-2 text-charcoal-ink hover:text-[#DC2626] hover:bg-white transition-colors cursor-pointer"
-                  aria-label="Decrease quantity"
-                >
-                  <Minus className="w-3.5 h-3.5" />
-                </button>
-                <span className="px-3 text-xs font-mono font-bold text-charcoal-ink">
-                  {quantity}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => updateCartQuantity(product.id, quantity + 1)}
-                  className="p-2 text-charcoal-ink hover:text-[#DC2626] hover:bg-white transition-colors cursor-pointer"
-                  aria-label="Increase quantity"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                </button>
+            {/* Details */}
+            <div className="flex-1 min-w-0">
+              <h3 className="text-sm font-bold text-slate-900 truncate">
+                {language === 'sw' && item.product.nameSw ? item.product.nameSw : item.product.name}
+              </h3>
+              <div className="flex items-center gap-2 text-xs text-slate-500 font-mono mt-0.5">
+                <span>{item.product.sku}</span>
+                {item.product.quire && (
+                  <span className="text-amber-700 font-bold bg-amber-50 px-1.5 py-0.5 rounded text-[10px]">
+                    {item.product.quire}
+                  </span>
+                )}
               </div>
+              <p className="text-xs font-bold text-slate-800 font-mono-tabular mt-1">
+                {currency} {item.effectiveUnitPrice.toLocaleString()}
+              </p>
+            </div>
 
-              <div className="text-right min-w-[100px]">
-                <p className="text-sm font-mono font-extrabold text-charcoal-ink">
-                  {currency} {lineTotal.toLocaleString()}
-                </p>
-              </div>
-
+            {/* Quantity Controls */}
+            <div className="flex items-center border border-slate-200 rounded-xl bg-slate-50">
               <button
                 type="button"
-                onClick={() => removeFromCart(product.id)}
-                className="p-2 text-[#52525B] hover:text-[#DC2626] transition-colors cursor-pointer"
-                aria-label={`Remove ${product.name}`}
+                onClick={() => updateCartQuantity(item.product.id, item.quantity - 1)}
+                className="p-1.5 text-slate-600 hover:text-slate-900"
+                aria-label="Decrease quantity"
               >
-                <Trash2 className="w-4 h-4" />
+                <Minus className="w-3.5 h-3.5" />
+              </button>
+              <span className="w-8 text-center text-xs font-bold text-slate-900 font-mono-tabular">
+                {item.quantity}
+              </span>
+              <button
+                type="button"
+                onClick={() => updateCartQuantity(item.product.id, item.quantity + 1)}
+                className="p-1.5 text-slate-600 hover:text-slate-900"
+                aria-label="Increase quantity"
+              >
+                <Plus className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Line Total */}
+            <div className="text-right shrink-0">
+              <p className="text-sm font-black text-slate-900 font-mono-tabular">
+                {currency} {item.lineTotal.toLocaleString()}
+              </p>
+              <button
+                type="button"
+                onClick={() => removeFromCart(item.product.id)}
+                className="text-slate-400 hover:text-rose-600 p-1 mt-1 transition-colors"
+                aria-label="Remove item"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
-        );
-      })}
+        ))}
+      </div>
+
+      <div className="pt-2">
+        <Link
+          to="/catalog"
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>{language === 'sw' ? 'Endelea Kuangalia Bidhaa Zingine' : 'Continue Shopping Other Products'}</span>
+        </Link>
+      </div>
     </div>
   );
 };
-export default CartItemList;

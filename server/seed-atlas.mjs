@@ -1,8 +1,4 @@
 import mongoose from 'mongoose';
-import { readFileSync } from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const MONGODB_URI = 'mongodb+srv://indigoprinteromega07_db_user:OMEGA%407016@omega.ccgcbcy.mongodb.net/omega_stationery?retryWrites=true&w=majority';
 
@@ -58,8 +54,7 @@ const userSchema = new mongoose.Schema(
   { collection: 'users', timestamps: true }
 );
 
-const ALL_OMEGA_PRODUCTS = JSON.parse(readFileSync(join(__dirname, 'products-catalog.json'), 'utf8'));
-const OLD_PRODUCTS = [
+const ALL_OMEGA_PRODUCTS = [
   {
     id: 'prod-omega-cb-q2',
     name: 'OMEGA Hardcover Counter Book Q2 (192 Pages)',

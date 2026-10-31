@@ -1,63 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { X, Sparkles, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useStore } from '@/context/StoreContext';
 
 interface AnnouncementBarProps {
   onDismiss?: () => void;
 }
 
-const ANNOUNCEMENTS = {
-  en: [
-    {
-      text: '🎉 Festival Mega Offer: Special factory discounts on School & Office Stationery cartons!',
-      link: '/catalog',
-      badge: 'Factory Offer',
-    },
-    {
-      text: 'Wholesale & School Tenders: Save up to 40% OFF Cartons — Direct From Mbeya Factory',
-      link: '/wholesale',
-      badge: 'Save 40%',
-    },
-    {
-      text: 'Genuine OMEGA Hardcover Counter Books (Q1, Q2, Q3, Q4) — Direct from Soweto SIDO Mbeya',
-      link: '/catalog?category=Counter+Books',
-      badge: 'Bestseller',
-    },
-    {
-      text: 'Fast regional bus parcel waybill dispatch across all 31 regions of Tanzania',
-      link: '/wholesale',
-      badge: 'Nationwide',
-    },
-  ],
-  sw: [
-    {
-      text: '🎉 Ofa Maalum ya Msimu: Punguzo kubwa la bei ya kiwandani kwa katoni za madaftari ya shule na ofisi!',
-      link: '/catalog',
-      badge: 'Ofa Maalum',
-    },
-    {
-      text: 'Oda za Jumla na Zabuni za Shule: Okoa hadi 40% kwa Katoni — Moja kwa Moja Kiwandani Mbeya',
-      link: '/wholesale',
-      badge: 'Okoa 40%',
-    },
-    {
-      text: 'Counter Books Asilia za OMEGA (Q1, Q2, Q3, Q4) — Moja kwa Moja Kiwanda cha Soweto SIDO Mbeya',
-      link: '/catalog?category=Counter+Books',
-      badge: 'Bora Zaidi',
-    },
-    {
-      text: 'Usafirishaji wa haraka mikoani kwa njia ya mabasi | Ankara rasmi za EFD hutolewa',
-      link: '/wholesale',
-      badge: 'Mikoa Yote',
-    },
-  ],
-};
+const ANNOUNCEMENTS = [
+  {
+    text: 'Wholesale & School Tenders: Save up to 40% OFF Cartons — Direct From Factory',
+    link: '/wholesale',
+    badge: 'Wholesale',
+  },
+  {
+    text: 'Genuine OMEGA Hardcover Counter Books (Q2, Q3, Q4) — Direct from Mbeya Factory',
+    link: '/catalog?category=Counter+Books',
+    badge: 'Bestseller',
+  },
+  {
+    text: 'Free delivery on orders over TSh 250,000 | Regional bus parcel waybill dispatch',
+    link: '/wholesale',
+    badge: 'Logistics',
+  },
+];
 
 export const AnnouncementBar: React.FC<AnnouncementBarProps> = ({ onDismiss }) => {
-  const { language } = useStore();
-  const announcementsList = ANNOUNCEMENTS[language] || ANNOUNCEMENTS.en;
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [isVisible, setIsVisible] = useState(() => {
@@ -71,10 +38,10 @@ export const AnnouncementBar: React.FC<AnnouncementBarProps> = ({ onDismiss }) =
   useEffect(() => {
     if (isPaused || !isVisible) return;
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % announcementsList.length);
+      setCurrentIndex((prev) => (prev + 1) % ANNOUNCEMENTS.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, [isPaused, isVisible, announcementsList.length]);
+  }, [isPaused, isVisible]);
 
   if (!isVisible) return null;
 
@@ -88,95 +55,43 @@ export const AnnouncementBar: React.FC<AnnouncementBarProps> = ({ onDismiss }) =
     onDismiss?.();
   };
 
-  const current = announcementsList[currentIndex] || announcementsList[0];
+  const current = ANNOUNCEMENTS[currentIndex];
 
   return (
-    <div
-      role="region"
-      aria-label="Contact and Announcements"
-      className="relative z-40 bg-[#DC2626] text-white border-b border-[#B91C1C] text-[11px] sm:text-xs font-sans"
+    <aside
+      aria-label="Announcement"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      className="relative z-50 w-full h-9 bg-[#111113] text-white text-[13px] font-sans flex items-center justify-between px-4 sm:px-6 border-b border-[#27272a] overflow-hidden select-none"
     >
-      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-9 text-white/95">
-          
-          {/* LEFT: Phone & Address (as shown in reference screenshot) */}
-          <div className="flex items-center gap-4 sm:gap-6 truncate">
-            <a
-              href="tel:+255715268391"
-              className="inline-flex items-center gap-1.5 hover:text-white transition-colors shrink-0"
-              title="Call Factory Hotline"
-            >
-              <span className="font-semibold tracking-wide">+255 715 268 391</span>
-            </a>
+      <div className="w-8 shrink-0" aria-hidden="true" />
 
-            <span className="hidden md:inline-flex items-center gap-1.5 text-white/85 truncate">
-              <span>📍</span>
-              <span className="truncate">Soweto SIDO Estate, Mbeya, Tanzania</span>
-            </span>
-          </div>
-
-          {/* CENTER: Promo Announcement (hidden on small mobile) */}
-          <div className="hidden lg:flex items-center gap-2 text-center truncate px-4">
-            <span className="font-bold uppercase tracking-wider text-[10px] bg-white/20 px-2 py-0.5 rounded-[2px]">
-              {current.badge}
-            </span>
-            <Link to={current.link} className="hover:underline truncate text-white/95">
-              {current.text}
-            </Link>
-          </div>
-
-          {/* RIGHT: Social Media Links (f, t, in, whatsapp) & Dismiss */}
-          <div className="flex items-center gap-3 shrink-0 ml-auto sm:ml-0">
-            <a
-              href="https://wa.me/255715268391"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="WhatsApp"
-              className="hover:scale-110 transition-transform text-white/90 hover:text-white"
-              title="WhatsApp Direct"
-            >
-              <span className="font-bold text-xs">WA</span>
-            </a>
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Facebook"
-              className="hover:scale-110 transition-transform text-white/90 hover:text-white font-bold text-xs"
-            >
-              f
-            </a>
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Twitter / X"
-              className="hover:scale-110 transition-transform text-white/90 hover:text-white font-bold text-xs"
-            >
-              t
-            </a>
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-              className="hover:scale-110 transition-transform text-white/90 hover:text-white font-bold text-xs"
-            >
-              in
-            </a>
-
-            <button
-              type="button"
-              onClick={handleDismiss}
-              aria-label="Dismiss announcement"
-              className="p-1 rounded text-white/70 hover:text-white hover:bg-white/10 transition-colors shrink-0 ml-1"
-            >
-              <X className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
-        </div>
+      {/* Centered Announcement with Smooth Transition */}
+      <div className="flex-1 flex items-center justify-center overflow-hidden">
+        <Link
+          to={current.link}
+          className="group inline-flex items-center gap-2 max-w-full truncate hover:text-[#ef4444] transition-colors focus-ring-gold rounded-sm px-1 py-0.5"
+        >
+          <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#dc2626] text-white shadow-xs">
+            <Sparkles className="w-2.5 h-2.5" />
+            {current.badge}
+          </span>
+          <span className="truncate tracking-tight font-medium text-[12.5px] sm:text-[13px]">
+            {current.text}
+          </span>
+          <ChevronRight className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all shrink-0" />
+        </Link>
       </div>
-    </div>
+
+      {/* Dismiss Button */}
+      <button
+        type="button"
+        onClick={handleDismiss}
+        aria-label="Dismiss announcement"
+        className="w-8 h-8 shrink-0 flex items-center justify-center rounded-full text-[#fafafa]/70 hover:text-white hover:bg-white/10 transition-colors focus-ring-gold"
+      >
+        <X className="w-3.5 h-3.5" />
+      </button>
+    </aside>
   );
 };

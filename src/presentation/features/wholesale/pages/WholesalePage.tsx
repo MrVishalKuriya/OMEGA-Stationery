@@ -113,7 +113,7 @@ export const WholesalePage: React.FC = () => {
   };
 
   return (
-    <div className="bg-paper-base min-h-screen font-sans text-charcoal-ink">
+    <div className="bg-[#fafafa] min-h-screen font-sans text-[#18181b]">
       <SEOHead
         title="Wholesale Stationery & School Tenders | OMEGA Tanzania Factory Direct"
         description="Buy genuine OMEGA Counter Books, Exercise Books, and Kraft Envelopes at wholesale carton prices direct from our Soweto SIDO factory in Mbeya. Daily parcel dispatch across Tanzania."

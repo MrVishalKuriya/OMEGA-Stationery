@@ -407,7 +407,6 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
         setIsRemovingBg(false);
         setStoreImageFit('contain'); // Auto switch to contain for clean cutout!
         setStudioPadding(8);
-        setBgPreset('transparent');
       };
       newImg.src = offCanvas.toDataURL('image/png');
     } catch {
@@ -572,20 +571,18 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
     ctx.strokeRect(cbX, cbY, cbW, cbH);
 
     // Rule of thirds grid lines
-    if (showGrid) {
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
-      ctx.lineWidth = 0.8;
-      ctx.beginPath();
-      ctx.moveTo(cbX + cbW / 3, cbY);
-      ctx.lineTo(cbX + cbW / 3, cbY + cbH);
-      ctx.moveTo(cbX + (cbW * 2) / 3, cbY);
-      ctx.lineTo(cbX + (cbW * 2) / 3, cbY + cbH);
-      ctx.moveTo(cbX, cbY + cbH / 3);
-      ctx.lineTo(cbX + cbW, cbY + cbH / 3);
-      ctx.moveTo(cbX, cbY + (cbH * 2) / 3);
-      ctx.lineTo(cbX + cbW, cbY + (cbH * 2) / 3);
-      ctx.stroke();
-    }
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+    ctx.lineWidth = 0.8;
+    ctx.beginPath();
+    ctx.moveTo(cbX + cbW / 3, cbY);
+    ctx.lineTo(cbX + cbW / 3, cbY + cbH);
+    ctx.moveTo(cbX + (cbW * 2) / 3, cbY);
+    ctx.lineTo(cbX + (cbW * 2) / 3, cbY + cbH);
+    ctx.moveTo(cbX, cbY + cbH / 3);
+    ctx.lineTo(cbX + cbW, cbY + cbH / 3);
+    ctx.moveTo(cbX, cbY + (cbH * 2) / 3);
+    ctx.lineTo(cbX + cbW, cbY + (cbH * 2) / 3);
+    ctx.stroke();
 
     // Corner brackets
     const bracketLen = 16;
@@ -636,7 +633,6 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
     warmth,
     vignette,
     cropBox,
-    showGrid,
   ]);
 
   // Generate cropped preview snippet
@@ -802,29 +798,18 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
 
     let newBox = { ...start };
 
-    const targetRatio =
-      aspectRatio === '1:1'
-        ? 1
-        : aspectRatio === '4:5'
-        ? 4 / 5
-        : aspectRatio === '16:9'
-        ? 16 / 9
-        : aspectRatio === 'original' && sourceImg
-        ? sourceImg.width / sourceImg.height
-        : null;
-
     if (dragHandle === 'move') {
       newBox.x = Math.max(0, Math.min(1 - start.width, start.x + dx));
       newBox.y = Math.max(0, Math.min(1 - start.height, start.y + dy));
     } else if (dragHandle === 'se') {
       let nw = Math.max(0.15, Math.min(1 - start.x, start.width + dx));
       let nh = Math.max(0.15, Math.min(1 - start.y, start.height + dy));
-      if (targetRatio) {
-        if (nw / nh > targetRatio) {
-          nw = nh * targetRatio;
-        } else {
-          nh = nw / targetRatio;
-        }
+      if (aspectRatio === '1:1') {
+        const side = Math.min(nw, nh);
+        nw = side;
+        nh = side;
+      } else if (aspectRatio === '4:5') {
+        nw = nh * (4 / 5);
       }
       newBox.width = nw;
       newBox.height = nh;
@@ -833,12 +818,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
       let ny = Math.max(0, Math.min(start.y + start.height - 0.15, start.y + dy));
       let nw = start.width - (nx - start.x);
       let nh = start.height - (ny - start.y);
-      if (targetRatio) {
-        if (nw / nh > targetRatio) {
-          nw = nh * targetRatio;
-        } else {
-          nh = nw / targetRatio;
-        }
+      if (aspectRatio === '1:1') {
+        const side = Math.min(nw, nh);
+        nw = side;
+        nh = side;
         nx = start.x + (start.width - nw);
         ny = start.y + (start.height - nh);
       }
@@ -848,14 +831,12 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
       newBox.height = nh;
     } else if (dragHandle === 'ne') {
       let nw = Math.max(0.15, Math.min(1 - start.x, start.width + dx));
-      let ny = Math.max(0, Math.min(start.y + start.height - 0.15, start.y + dy));
+      let ny = Math.max(0, Math.min(1 - start.y, start.height + dy));
       let nh = start.height - (ny - start.y);
-      if (targetRatio) {
-        if (nw / nh > targetRatio) {
-          nw = nh * targetRatio;
-        } else {
-          nh = nw / targetRatio;
-        }
+      if (aspectRatio === '1:1') {
+        const side = Math.min(nw, nh);
+        nw = side;
+        nh = side;
         ny = start.y + (start.height - nh);
       }
       newBox.width = nw;
@@ -864,12 +845,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
       let nx = Math.max(0, Math.min(start.x + start.width - 0.15, start.x + dx));
       let nw = start.width - (nx - start.x);
       let nh = Math.max(0.15, Math.min(1 - start.y, start.height + dy));
-      if (targetRatio) {
-        if (nw / nh > targetRatio) {
-          nw = nh * targetRatio;
-        } else {
-          nh = nw / targetRatio;
-        }
+      if (aspectRatio === '1:1') {
+        const side = Math.min(nw, nh);
+        nw = side;
+        nh = side;
         nx = start.x + (start.width - nw);
       }
       newBox.x = nx;
@@ -1176,6 +1155,21 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               />
             )}
 
+            {/* 3x3 Rule of Thirds Guide Grid Overlay */}
+            {showGrid && !isLoadingImage && !imgLoadError && (
+              <div className="absolute inset-0 pointer-events-none grid grid-cols-3 grid-rows-3 z-5">
+                <div className="border-r border-b border-white/15" />
+                <div className="border-r border-b border-white/15" />
+                <div className="border-b border-white/15" />
+                <div className="border-r border-b border-white/15" />
+                <div className="border-r border-b border-white/15" />
+                <div className="border-b border-white/15" />
+                <div className="border-r border-b border-white/15" />
+                <div className="border-r border-b border-white/15" />
+                <div />
+              </div>
+            )}
+
             {/* Corner Framing L-accents */}
             <div className="absolute top-2 left-2 w-3.5 h-3.5 border-t-2 border-l-2 border-[#dc2626] pointer-events-none z-10" />
             <div className="absolute top-2 right-2 w-3.5 h-3.5 border-t-2 border-r-2 border-[#dc2626] pointer-events-none z-10" />
@@ -1380,7 +1374,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   </div>
 
                   {/* Zoom Slider */}
-                  <div className="space-y-1.5 p-3 rounded-2xl bg-[#131318] border border-[#22222c]">
+                  <div className="space-y-1.5 p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c]">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-bold text-stone-300 flex items-center gap-1.5">
                         <ZoomIn className="w-3.5 h-3.5 text-[#dc2626]" />
@@ -1408,11 +1402,11 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       onClick={() => setFlipH((prev) => !prev)}
                       className={`py-2 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all ${
                         flipH
-                          ? 'bg-[#dc2626]/20 border-[#dc2626] text-white shadow-xs'
-                          : 'bg-[#161620] border-[#22222c] text-stone-300 hover:text-white hover:border-[#38384a]'
+                          ? 'bg-[#dc2626]/20 border-[#dc2626] text-[#dc2626]'
+                          : 'bg-[#1a1a1a] border-[#2c2c2c] text-stone-300 hover:text-white'
                       }`}
                     >
-                      <FlipHorizontal className="w-4 h-4 text-[#dc2626]" />
+                      <FlipHorizontal className="w-4 h-4" />
                       <span>Flip Horizontal</span>
                     </button>
 
@@ -1421,11 +1415,11 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       onClick={() => setFlipV((prev) => !prev)}
                       className={`py-2 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all ${
                         flipV
-                          ? 'bg-[#dc2626]/20 border-[#dc2626] text-white shadow-xs'
-                          : 'bg-[#161620] border-[#22222c] text-stone-300 hover:text-white hover:border-[#38384a]'
+                          ? 'bg-[#dc2626]/20 border-[#dc2626] text-[#dc2626]'
+                          : 'bg-[#1a1a1a] border-[#2c2c2c] text-stone-300 hover:text-white'
                       }`}
                     >
-                      <FlipVertical className="w-4 h-4 text-[#dc2626]" />
+                      <FlipVertical className="w-4 h-4" />
                       <span>Flip Vertical</span>
                     </button>
                   </div>
@@ -1441,64 +1435,45 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider block">
                         Background Canvas Style
                       </span>
-                      <span className="text-[10px] text-stone-400 font-mono">
-                        {bgPreset === 'transparent' ? 'PNG Cutout' : 'Studio Canvas'}
+                      <span className="text-[10px] text-stone-400">
+                        {bgPreset === 'transparent' ? 'Without BG (PNG)' : 'With Studio BG'}
                       </span>
                     </div>
 
                     <div className="grid grid-cols-3 gap-2">
                       {[
-                        {
-                          id: 'transparent',
-                          label: 'Transparent',
-                          note: 'No Background',
-                          swatchClass:
-                            'bg-[linear-gradient(45deg,#444_25%,transparent_25%),linear-gradient(-45deg,#444_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#444_75%),linear-gradient(-45deg,transparent_75%,#444_75%)] bg-[size:6px_6px] bg-[#222]',
-                        },
-                        { id: 'white', label: 'Clean White', note: '#ffffff Studio', swatchClass: 'bg-white border border-stone-400' },
-                        { id: 'linen', label: 'OMEGA Linen', note: '#f8f7f5 Canvas', swatchClass: 'bg-[#f8f7f5] border border-stone-400' },
-                        {
-                          id: 'spotlight',
-                          label: 'Spotlight',
-                          note: 'Radial Glow',
-                          swatchClass: 'bg-[radial-gradient(circle,#ffffff_0%,#d8d8d8_100%)] border border-stone-400',
-                        },
-                        { id: 'beige', label: 'Warm Beige', note: '#f3ede6 Classic', swatchClass: 'bg-[#f3ede6] border border-stone-400' },
-                        { id: 'dark', label: 'Dark Studio', note: '#1c1a18 Luxury', swatchClass: 'bg-[#1c1a18] border border-stone-700' },
+                        { id: 'transparent', label: 'Transparent', note: 'No Background' },
+                        { id: 'white', label: 'Clean White', note: '#ffffff Studio' },
+                        { id: 'linen', label: 'OMEGA Linen', note: '#f8f7f5 Canvas' },
+                        { id: 'spotlight', label: 'Spotlight', note: 'Radial Gradient' },
+                        { id: 'beige', label: 'Warm Beige', note: '#f3ede6 Classic' },
+                        { id: 'dark', label: 'Dark Studio', note: '#1c1a18 Luxury' },
                       ].map((item) => (
                         <button
                           key={item.id}
                           type="button"
                           onClick={() => setBgPreset(item.id as BackgroundPreset)}
-                          className={`p-2.5 rounded-xl border text-left transition-all flex flex-col justify-between gap-1.5 ${
+                          className={`p-2 rounded-xl border text-left transition-all ${
                             bgPreset === item.id
-                              ? 'border-[#dc2626] bg-[#dc2626]/15 text-white ring-1 ring-[#dc2626]/40 shadow-sm'
-                              : 'border-[#22222c] bg-[#131318] text-stone-400 hover:border-[#333342] hover:text-stone-200'
+                              ? 'border-[#dc2626] bg-[#dc2626]/20 text-white shadow-xs'
+                              : 'border-[#262626] bg-[#1a1a1a] text-stone-400 hover:border-stone-600'
                           }`}
                         >
-                          <div className="flex items-center justify-between">
-                            <div className={`w-4 h-4 rounded-full ${item.swatchClass} shrink-0`} />
-                            {bgPreset === item.id && (
-                              <span className="w-1.5 h-1.5 rounded-full bg-[#dc2626]" />
-                            )}
-                          </div>
-                          <div>
-                            <div className="font-bold text-xs leading-tight text-white">{item.label}</div>
-                            <div className="text-[10px] text-stone-400 truncate">{item.note}</div>
-                          </div>
+                          <div className="font-bold text-xs">{item.label}</div>
+                          <div className="text-[10px] text-stone-400">{item.note}</div>
                         </button>
                       ))}
                     </div>
                   </div>
 
                   {/* 3D Realistic Product Drop Shadow */}
-                  <div className="space-y-2 p-3 rounded-2xl bg-[#131318] border border-[#22222c]">
+                  <div className="space-y-2 p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c]">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-stone-300 flex items-center gap-1.5">
                         <Sparkles className="w-3.5 h-3.5 text-[#dc2626]" />
                         <span>3D Product Drop Shadow</span>
                       </span>
-                      <span className="text-[10px] text-emerald-400 font-bold uppercase font-mono bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-800">
+                      <span className="text-[10px] text-emerald-400 font-bold uppercase">
                         {shadowStyle}
                       </span>
                     </div>
@@ -1519,8 +1494,8 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                           onClick={() => setShadowStyle(s.id as ShadowStyle)}
                           className={`py-1.5 px-2 rounded-lg text-xs font-bold transition-all ${
                             shadowStyle === s.id
-                              ? 'bg-[#dc2626] text-white shadow-md shadow-[#dc2626]/30'
-                              : 'bg-[#181822] text-stone-300 hover:bg-[#20202c] border border-[#262633]'
+                              ? 'bg-[#dc2626] text-stone-900 shadow-xs'
+                              : 'bg-stone-800 text-stone-300 hover:bg-stone-700'
                           }`}
                         >
                           {s.label}
@@ -1532,7 +1507,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       <div className="pt-2 space-y-1">
                         <div className="flex items-center justify-between text-[11px]">
                           <span className="text-stone-400">Shadow Depth &amp; Strength</span>
-                          <span className="font-mono text-[#dc2626] font-bold">{shadowIntensity}%</span>
+                          <span className="font-mono text-stone-300">{shadowIntensity}%</span>
                         </div>
                         <input
                           type="range"
@@ -1547,7 +1522,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   </div>
 
                   {/* Studio Sizing & Breathing Margin (Fit any image size) */}
-                  <div className="p-3 rounded-2xl bg-[#131318] border border-[#22222c] space-y-1.5">
+                  <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1.5">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-bold text-stone-300 flex items-center gap-1.5">
                         <Box className="w-3.5 h-3.5 text-[#dc2626]" />
@@ -1571,7 +1546,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   </div>
 
                   {/* 1-Click Magic White BG Remover */}
-                  <div className="p-3.5 rounded-2xl bg-gradient-to-br from-[#1c132b]/80 via-[#13131a] to-[#25121b]/60 border border-purple-500/30 space-y-2">
+                  <div className="p-3.5 rounded-2xl bg-gradient-to-br from-purple-950/40 via-stone-900 to-amber-950/30 border border-purple-800/40 space-y-2">
                     <div className="flex items-center justify-between">
                       <span className="text-xs font-bold text-white flex items-center gap-1.5">
                         <Scissors className="w-4 h-4 text-purple-400" />
@@ -1589,7 +1564,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       type="button"
                       onClick={handleMagicRemoveWhiteBg}
                       disabled={isRemovingBg}
-                      className="w-full py-2.5 px-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 active:scale-95 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-purple-900/30 transition-all disabled:opacity-50"
+                      className="w-full py-2 px-3 bg-purple-600 hover:bg-purple-500 active:scale-95 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md transition-all disabled:opacity-50"
                     >
                       {isRemovingBg ? (
                         <>
@@ -1610,31 +1585,17 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               {/* ================= TAB 3: INSTAGRAM FILTERS ================= */}
               {studioTab === 'filter' && (
                 <div className="space-y-4 animate-in fade-in duration-150">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider block">
-                        Instagram Color Grades
-                      </span>
-                      <p className="text-[11px] text-stone-400 mt-0.5">
-                        1-Tap color filters optimized for stationery &amp; book paper.
-                      </p>
-                    </div>
-                    {selectedFilterId !== 'normal' && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setSelectedFilterId('normal');
-                          setFilterIntensity(100);
-                        }}
-                        className="text-[10px] font-bold text-red-400 hover:text-white px-2 py-1 rounded-lg bg-red-950/40 border border-red-800/60 transition"
-                      >
-                        Reset Filter
-                      </button>
-                    )}
+                  <div>
+                    <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider block">
+                      Instagram Color Grades
+                    </span>
+                    <p className="text-[11px] text-stone-400 mt-0.5">
+                      1-Tap color filters optimized for stationery &amp; book paper.
+                    </p>
                   </div>
 
                   {selectedFilterId !== 'normal' && (
-                    <div className="p-3 rounded-2xl bg-[#131318] border border-[#22222c] space-y-1">
+                    <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1">
                       <div className="flex items-center justify-between text-xs">
                         <span className="font-bold text-stone-300">Filter Intensity</span>
                         <span className="font-mono text-[#dc2626] font-bold">
@@ -1663,11 +1624,11 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                           onClick={() => setSelectedFilterId(filter.id)}
                           className={`flex flex-col items-center gap-1.5 p-2 rounded-2xl border text-center transition-all ${
                             isSelected
-                              ? 'border-[#dc2626] bg-[#dc2626]/15 ring-2 ring-[#dc2626]/40 shadow-lg shadow-[#dc2626]/20 scale-[1.02]'
-                              : 'border-[#22222c] bg-[#131318] hover:border-[#38384a]'
+                              ? 'border-[#dc2626] bg-[#dc2626]/15 shadow-md scale-[1.02]'
+                              : 'border-[#262626] bg-[#1a1a1a] hover:border-stone-600'
                           }`}
                         >
-                          <div className="w-16 h-16 rounded-xl overflow-hidden bg-stone-900 border border-white/10 shrink-0 relative">
+                          <div className="w-16 h-16 rounded-xl overflow-hidden bg-stone-800 border border-white/10 shrink-0">
                             {thumb ? (
                               <img
                                 src={thumb}
@@ -1679,15 +1640,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                                 {filter.name[0]}
                               </div>
                             )}
-                            {isSelected && (
-                              <div className="absolute top-1 right-1 w-3.5 h-3.5 rounded-full bg-[#dc2626] flex items-center justify-center text-white">
-                                <Check className="w-2.5 h-2.5" />
-                              </div>
-                            )}
                           </div>
                           <span
                             className={`text-[11px] font-bold truncate max-w-full ${
-                              isSelected ? 'text-white' : 'text-stone-300'
+                              isSelected ? 'text-[#dc2626]' : 'text-stone-300'
                             }`}
                           >
                             {filter.name}
@@ -1702,48 +1658,19 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               {/* ================= TAB 4: ADJUSTMENTS ================= */}
               {studioTab === 'adjust' && (
                 <div className="space-y-3 animate-in fade-in duration-150">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider block">
-                      Lighting &amp; Color Sliders
-                    </span>
-                    {(brightness !== 0 || contrast !== 0 || warmth !== 0 || saturation !== 0 || vignette !== 0 || sharpness !== 0) && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setBrightness(0);
-                          setContrast(0);
-                          setWarmth(0);
-                          setSaturation(0);
-                          setVignette(0);
-                          setSharpness(0);
-                        }}
-                        className="text-[10px] font-bold text-red-400 hover:text-white px-2 py-0.5 rounded-lg bg-red-950/40 border border-red-800/60 transition"
-                      >
-                        Reset All
-                      </button>
-                    )}
-                  </div>
+                  <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider block">
+                    Lighting &amp; Color Sliders
+                  </span>
 
                   {/* Brightness */}
-                  <div className="p-3 rounded-2xl bg-[#131318] border border-[#22222c] space-y-1">
+                  <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-bold text-stone-300 flex items-center gap-1.5">
                         <Sun className="w-3.5 h-3.5 text-[#dc2626]" /> Brightness
                       </span>
-                      <div className="flex items-center gap-2">
-                        {brightness !== 0 && (
-                          <button
-                            type="button"
-                            onClick={() => setBrightness(0)}
-                            className="text-[10px] text-stone-500 hover:text-white transition"
-                          >
-                            0
-                          </button>
-                        )}
-                        <span className="font-mono text-[#dc2626] font-bold">
-                          {brightness > 0 ? `+${brightness}` : brightness}
-                        </span>
-                      </div>
+                      <span className="font-mono text-stone-300 font-bold">
+                        {brightness > 0 ? `+${brightness}` : brightness}
+                      </span>
                     </div>
                     <input
                       type="range"
@@ -1756,25 +1683,14 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   </div>
 
                   {/* Contrast */}
-                  <div className="p-3 rounded-2xl bg-[#131318] border border-[#22222c] space-y-1">
+                  <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-bold text-stone-300 flex items-center gap-1.5">
                         <Contrast className="w-3.5 h-3.5 text-[#dc2626]" /> Contrast
                       </span>
-                      <div className="flex items-center gap-2">
-                        {contrast !== 0 && (
-                          <button
-                            type="button"
-                            onClick={() => setContrast(0)}
-                            className="text-[10px] text-stone-500 hover:text-white transition"
-                          >
-                            0
-                          </button>
-                        )}
-                        <span className="font-mono text-[#dc2626] font-bold">
-                          {contrast > 0 ? `+${contrast}` : contrast}
-                        </span>
-                      </div>
+                      <span className="font-mono text-stone-300 font-bold">
+                        {contrast > 0 ? `+${contrast}` : contrast}
+                      </span>
                     </div>
                     <input
                       type="range"
@@ -1787,25 +1703,14 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   </div>
 
                   {/* Warmth */}
-                  <div className="p-3 rounded-2xl bg-[#131318] border border-[#22222c] space-y-1">
+                  <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-bold text-stone-300 flex items-center gap-1.5">
                         <Palette className="w-3.5 h-3.5 text-[#dc2626]" /> Warmth / Tone
                       </span>
-                      <div className="flex items-center gap-2">
-                        {warmth !== 0 && (
-                          <button
-                            type="button"
-                            onClick={() => setWarmth(0)}
-                            className="text-[10px] text-stone-500 hover:text-white transition"
-                          >
-                            0
-                          </button>
-                        )}
-                        <span className="font-mono text-[#dc2626] font-bold">
-                          {warmth > 0 ? `+${warmth}` : warmth}
-                        </span>
-                      </div>
+                      <span className="font-mono text-stone-300 font-bold">
+                        {warmth > 0 ? `+${warmth}` : warmth}
+                      </span>
                     </div>
                     <input
                       type="range"
@@ -1818,25 +1723,14 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   </div>
 
                   {/* Saturation */}
-                  <div className="p-3 rounded-2xl bg-[#131318] border border-[#22222c] space-y-1">
+                  <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-bold text-stone-300 flex items-center gap-1.5">
                         <SlidersHorizontal className="w-3.5 h-3.5 text-[#dc2626]" /> Saturation
                       </span>
-                      <div className="flex items-center gap-2">
-                        {saturation !== 0 && (
-                          <button
-                            type="button"
-                            onClick={() => setSaturation(0)}
-                            className="text-[10px] text-stone-500 hover:text-white transition"
-                          >
-                            0
-                          </button>
-                        )}
-                        <span className="font-mono text-[#dc2626] font-bold">
-                          {saturation > 0 ? `+${saturation}` : saturation}
-                        </span>
-                      </div>
+                      <span className="font-mono text-stone-300 font-bold">
+                        {saturation > 0 ? `+${saturation}` : saturation}
+                      </span>
                     </div>
                     <input
                       type="range"
@@ -1849,23 +1743,12 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   </div>
 
                   {/* Vignette */}
-                  <div className="p-3 rounded-2xl bg-[#131318] border border-[#22222c] space-y-1">
+                  <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1">
                     <div className="flex items-center justify-between text-xs">
                       <span className="font-bold text-stone-300 flex items-center gap-1.5">
                         <Aperture className="w-3.5 h-3.5 text-[#dc2626]" /> Vignette Spotlight
                       </span>
-                      <div className="flex items-center gap-2">
-                        {vignette !== 0 && (
-                          <button
-                            type="button"
-                            onClick={() => setVignette(0)}
-                            className="text-[10px] text-stone-500 hover:text-white transition"
-                          >
-                            0
-                          </button>
-                        )}
-                        <span className="font-mono text-[#dc2626] font-bold">{vignette}%</span>
-                      </div>
+                      <span className="font-mono text-stone-300 font-bold">{vignette}%</span>
                     </div>
                     <input
                       type="range"
@@ -1873,35 +1756,6 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       max="100"
                       value={vignette}
                       onChange={(e) => setVignette(parseInt(e.target.value))}
-                      className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
-                    />
-                  </div>
-
-                  {/* Clarity & Sharpness */}
-                  <div className="p-3 rounded-2xl bg-[#131318] border border-[#22222c] space-y-1">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-bold text-stone-300 flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-[#dc2626]" /> Clarity &amp; Sharpness
-                      </span>
-                      <div className="flex items-center gap-2">
-                        {sharpness !== 0 && (
-                          <button
-                            type="button"
-                            onClick={() => setSharpness(0)}
-                            className="text-[10px] text-stone-500 hover:text-white transition"
-                          >
-                            0
-                          </button>
-                        )}
-                        <span className="font-mono text-[#dc2626] font-bold">{sharpness}%</span>
-                      </div>
-                    </div>
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={sharpness}
-                      onChange={(e) => setSharpness(parseInt(e.target.value))}
                       className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
                     />
                   </div>
@@ -1921,7 +1775,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   </div>
 
                   {/* Website Card Display Mode Toggle */}
-                  <div className="bg-[#131318] p-2.5 rounded-2xl border border-[#22222c] space-y-1.5">
+                  <div className="bg-[#1c1c1c] p-2.5 rounded-2xl border border-[#2c2c2c] space-y-1.5">
                     <span className="text-[11px] font-bold text-stone-300 block">
                       Card Display Style on Website:
                     </span>
@@ -1929,10 +1783,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       <button
                         type="button"
                         onClick={() => setStoreImageFit('cover')}
-                        className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all text-center ${
+                        className={`py-1.5 px-2 rounded-xl text-xs font-bold transition-all text-center ${
                           storeImageFit === 'cover'
-                            ? 'bg-[#dc2626] text-white shadow-md shadow-[#dc2626]/30'
-                            : 'bg-[#181822] text-stone-400 hover:text-white border border-[#262633]'
+                            ? 'bg-[#dc2626] text-stone-900 shadow-xs'
+                            : 'bg-stone-800 text-stone-400 hover:text-white'
                         }`}
                       >
                         Edge-to-Edge Cover (With BG)
@@ -1940,10 +1794,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       <button
                         type="button"
                         onClick={() => setStoreImageFit('contain')}
-                        className={`py-2 px-2.5 rounded-xl text-xs font-bold transition-all text-center ${
+                        className={`py-1.5 px-2 rounded-xl text-xs font-bold transition-all text-center ${
                           storeImageFit === 'contain'
-                            ? 'bg-[#dc2626] text-white shadow-md shadow-[#dc2626]/30'
-                            : 'bg-[#181822] text-stone-400 hover:text-white border border-[#262633]'
+                            ? 'bg-[#dc2626] text-stone-900 shadow-xs'
+                            : 'bg-stone-800 text-stone-400 hover:text-white'
                         }`}
                       >
                         Studio Pedestal Fit (Without BG)

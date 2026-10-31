@@ -1,65 +1,62 @@
 import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import {
   ArrowRight,
+  ArrowUpRight,
+  Sparkles,
+  ShoppingBag,
+  MessageCircle,
+  ShieldCheck,
+  Feather,
+  Package,
+  Layers,
   Star,
+  Check,
+  Truck,
+  Eye,
+  Percent,
+  CheckCircle2,
+  BookOpen,
+  Award,
+  Clock,
+  Compass,
+  FileText,
+  MapPin,
   ChevronRight,
+  PhoneCall,
   Plus,
   Minus,
-  CheckCircle2,
-  Phone,
-  MessageCircle,
-  Truck,
-  ShieldCheck,
-  CreditCard,
+  Navigation,
+  Quote,
   Building2,
-  FileText,
-  BadgePercent,
-  Clock,
-  Sparkles,
-  Package,
+  GraduationCap,
+  Store,
+  Phone,
+  Calculator,
+  Mail,
 } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { ProductCard } from '@/components/ProductCard';
-import { CatalogSkeletonGrid } from '@/components/ProductCardSkeleton';
 import { Hero } from '../components/Hero';
 import { SEOHead } from '@/components/SEOHead';
 import { TRANSLATIONS } from '@/data/translations';
 import { formatPrice } from '@/types/store';
-import {
-  IconLightningDeal,
-  IconWhatsAppCustom,
-  IconCounterBook,
-  IconExerciseBook,
-  IconKraftBahasha,
-  IconNationwideBus,
-  IconBleedProofPaper,
-  IconLayFlatSpine,
-  IconQualitySeal,
-} from '@/presentation/common/components/CustomIcons';
-import { triggerLuxuryConfetti } from '@/utils/confetti';
 
-/**
- * HomePage — Unified Central UI/UX Architecture
- * Built strictly according to public/uploads/DESIGN.md
- * - Canvas: #F9F8F6 (Soft Paper Base)
- * - Pure Paper Surface: #FFFFFF
- * - Charcoal Ink: #111113
- * - Wax Seal Vermilion: #DC2626
- * - Raw Leather Ochre: #8C7355
- * - Hairline Border: #E7E5E0
- * - Centered 1360px container
- * - Radii: Cards 8px (rounded-lg), Controls 6px (rounded-md)
- */
 export const HomePage: React.FC = () => {
-  const { products, storeConfig, language, isCatalogLoading } = useStore();
-  const t = (TRANSLATIONS[language] || TRANSLATIONS.en) as any;
+  const {
+    products,
+    storeConfig,
+    language,
+    addToCart,
+    setQuickViewProduct,
+    setIsTrackingModalOpen,
+  } = useStore();
+  const t = TRANSLATIONS[language] || TRANSLATIONS.en;
   const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState<'all' | 'counter' | 'exercise' | 'bahasha' | 'wholesale'>('all');
-  const [isTabLoading, setIsTabLoading] = useState<boolean>(false);
-  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<'all' | 'counter' | 'exercise' | 'bahasha'>('all');
+  const [activeTab, setActiveTab] = useState<
+    'all' | 'counter' | 'exercise' | 'bahasha' | 'registers'
+  >('all');
 
   // Wholesale calculator state
   const [calcQuantity, setCalcQuantity] = useState<number>(5);
@@ -67,33 +64,30 @@ export const HomePage: React.FC = () => {
 
   const currency = storeConfig.currencySymbol || 'TSh';
 
-  // Dynamic products lookup with strict mutual exclusion to avoid duplicate references
-  const q2Prod = useMemo(() => products.find((p) => p.sku === 'OMG-CB-Q2' || p.id === 'prod-omega-cb-q2' || (p.name.includes('Q2') && p.category === 'Counter Books')), [products]);
-  const q3Prod = useMemo(() => products.find((p) => p.sku === 'OMG-CB-Q3' || p.id === 'prod-omega-cb-q3' || (p.name.includes('Q3') && p.category === 'Counter Books')), [products]);
-  const q4Prod = useMemo(() => products.find((p) => p.sku === 'OMG-CB-Q4' || p.id === 'prod-omega-cb-q4' || (p.name.includes('Q4') && p.category === 'Counter Books')), [products]);
-  const ex200Prod = useMemo(() => products.find((p) => (p.sku === 'OMG-EX-200SL' || p.id === 'prod-omega-ex-200sl' || (p.category === 'Exercise Books' && p.name.includes('200'))) && p.id !== 'prod-omega-stiff-200'), [products]);
-  const ex100Prod = useMemo(() => products.find((p) => (p.sku === 'OMG-EX-100SL' || p.id === 'prod-omega-ex-100sl' || (p.category === 'Exercise Books' && p.name.includes('100'))) && p.id !== 'prod-omega-stiff-200'), [products]);
-  const ex80Prod = useMemo(() => products.find((p) => p.sku === 'OMG-EX-80' || p.id === 'prod-omega-ex-80' || (p.category === 'Exercise Books' && p.name.includes('80'))), [products]);
+  // Dynamic products lookup for calculators and signature cards
+  const q2Prod = useMemo(() => products.find((p) => p.sku === 'OMG-CB-Q2' || p.id === 'prod-omega-cb-q2' || p.name.includes('Q2')), [products]);
+  const q3Prod = useMemo(() => products.find((p) => p.sku === 'OMG-CB-Q3' || p.id === 'prod-omega-cb-q3' || p.name.includes('Q3')), [products]);
+  const q4Prod = useMemo(() => products.find((p) => p.sku === 'OMG-CB-Q4' || p.id === 'prod-omega-cb-q4' || p.name.includes('Q4')), [products]);
+  const ex200Prod = useMemo(() => products.find((p) => p.sku === 'OMG-EX-200SL' || p.id === 'prod-omega-ex-200sl' || p.name.includes('200 Pages')), [products]);
+  const ex100Prod = useMemo(() => products.find((p) => p.sku === 'OMG-EX-100SL' || p.id === 'prod-omega-ex-100sl' || p.name.includes('100 Pages')), [products]);
+  const ex80Prod = useMemo(() => products.find((p) => p.sku === 'OMG-EX-80' || p.id === 'prod-omega-ex-80' || p.name.includes('80 Pages')), [products]);
   const bahashaProd = useMemo(() => products.find((p) => p.sku === 'OMG-BAHASHA-A4' || p.id === 'prod-omega-bahasha-a4' || p.name.includes('Bahasha')), [products]);
-  const stiffProd = useMemo(() => products.find((p) => p.id === 'prod-omega-stiff-200' || p.name.includes('Stiff Cover')), [products]);
+  const stiffProd = useMemo(() => products.find((p) => p.id === 'prod-omega-stiff-200' || p.name.includes('Stiff')), [products]);
 
-  // Filter products cleanly without clutter (Hick's Law)
+  // Filter products dynamically for the featured catalog section
   const filteredProducts = useMemo(() => {
-    let result: typeof products = [];
-    if (activeTab === 'counter') result = products.filter((p) => p.category === 'Counter Books');
-    else if (activeTab === 'exercise') result = products.filter((p) => p.category === 'Exercise Books');
-    else if (activeTab === 'bahasha') result = products.filter((p) => p.category === 'Bahasha & Envelopes');
-    else if (activeTab === 'wholesale') result = products.filter((p) => Boolean(p.wholesalePrice));
-    else result = products.slice(0, 8);
-
-    // Deduplicate items by ID
-    const seen = new Set<string>();
-    return result.filter((p) => {
-      if (!p?.id || seen.has(p.id)) return false;
-      seen.add(p.id);
-      return true;
-    });
+    if (activeTab === 'counter') return products.filter((p) => p.category === 'Counter Books');
+    if (activeTab === 'exercise') return products.filter((p) => p.category === 'Exercise Books');
+    if (activeTab === 'bahasha') return products.filter((p) => p.category === 'Bahasha & Envelopes');
+    if (activeTab === 'registers') return products.filter((p) => p.category === 'Registers' || p.category === 'Ruled Paper');
+    
+    // Default 'all' tab: prioritize featured & best sellers, but include all latest products dynamically
+    const featured = products.filter((p) => p.featured || p.bestSeller);
+    const regular = products.filter((p) => !p.featured && !p.bestSeller);
+    return [...featured, ...regular];
   }, [products, activeTab]);
+
+  const displayedProducts = filteredProducts.slice(0, 8);
 
   const cleanWhatsappDigits = storeConfig.whatsappNumber
     ? storeConfig.whatsappNumber.replace(/\D/g, '')
@@ -101,790 +95,839 @@ export const HomePage: React.FC = () => {
 
   const whatsappGreetingUrl = `https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
     language === 'sw'
-      ? 'Habari OMEGA Stationery, ninahitaji kuulizia kuhusu bei za jumla za katalogi.'
-      : 'Hello OMEGA Stationery, I would like to inquire about wholesale catalog pricing.'
+      ? `Habari OMEGA Tanzania, ninahitaji kuagiza madaftari (Counter Books, Exercise Books na Bahasha) kwa bei ya jumla kiwandani.`
+      : `Hello OMEGA Stationery, I would like to place an order and inquire about factory wholesale carton pricing.`
   )}`;
 
-  // Deals of the day - Guaranteed distinct keys and target product navigation
-  const dealsOfTheDay = useMemo(() => [
+  // Signature category cards (Dynamically linked to live MongoDB products)
+  const signatureCategories = useMemo(() => [
     {
-      id: 'deal-q2-192p',
-      productId: q2Prod?.id || 'prod-omega-cb-q2',
-      name: language === 'sw' ? 'Counter Book Q2 (Kurasa 192)' : 'Counter Book Q2 (192p)',
-      spec: language === 'sw' ? 'Mshono wa Uzi · 48 pcs/katoni' : 'Smyth-Sewn · 48 pcs/box',
-      price: q2Prod?.price || 1500,
-      mrp: 1800,
-      discount: language === 'sw' ? 'PUNGUZO 17%' : '17% OFF',
-      rating: 4.9,
-      image: '/omega-products/counter-book-q2-catalog.jpeg',
-      carton: language === 'sw' ? 'TSh 56,000 / katoni' : 'TSh 56,000 / ctn',
+      title: q2Prod?.name || 'Counter Book Q2',
+      subtitle: language === 'sw' ? 'Q2 Jalada Gumu · Kurasa 192' : '192 Pages · Q2 Folio Ledgers',
+      desc: language === 'sw' ? '192p, ushonaji wa nyuzi madhubuti' : '192 pages, thread-sewn hardboard spine',
+      link: q2Prod ? `/product/${q2Prod.id}` : '/product/prod-omega-cb-q2',
+      image: '/omega-products/omega-counter-book-podium.png',
+      tag: 'Accounting & Schools',
+      badge: 'Bestseller',
     },
     {
-      id: 'deal-ex-200p',
-      productId: ex200Prod?.id || 'prod-omega-ex-200sl',
-      name: language === 'sw' ? 'Daftari Kurasa 200 (Wanafunzi)' : '200p Exercise Book',
-      spec: language === 'sw' ? '70 GSM Bond · 36 pcs/katoni' : '70 GSM Bond · 36 pcs/box',
-      price: ex200Prod?.price || 1600,
-      mrp: 1950,
-      discount: language === 'sw' ? 'PUNGUZO 18%' : '18% OFF',
-      rating: 4.8,
+      title: ex200Prod?.name || '200 Pages Exercise',
+      subtitle: language === 'sw' ? 'Single Line, Double Line & Hesabu' : 'Single Line, Double Line & Square',
+      desc: language === 'sw' ? 'Mistari mipana, mistari miwili na hesabu' : 'Single line, double line & mathematics squares',
+      link: ex200Prod ? `/product/${ex200Prod.id}` : '/product/prod-omega-ex-200sl',
       image: '/omega-products/exercise-book-200p-sl-catalog.jpeg',
-      carton: language === 'sw' ? 'TSh 48,000 / katoni' : 'TSh 48,000 / ctn',
+      tag: 'Primary & Secondary',
+      badge: 'Popular',
     },
     {
-      id: 'deal-q3-288p',
-      productId: q3Prod?.id || 'prod-omega-cb-q3',
-      name: language === 'sw' ? 'Counter Book Q3 (Kurasa 288)' : 'Counter Book Q3 (288p)',
-      spec: language === 'sw' ? 'Jalada Gumu · 36 pcs/katoni' : 'Hardcover · 36 pcs/box',
-      price: q3Prod?.price || 2000,
-      mrp: 2400,
-      discount: language === 'sw' ? 'PUNGUZO 16%' : '16% OFF',
-      rating: 4.9,
-      image: '/omega-products/counter-book-q3-catalog.jpeg',
-      carton: language === 'sw' ? 'TSh 57,000 / katoni' : 'TSh 57,000 / ctn',
-    },
-    {
-      id: 'deal-stiff-200p',
-      productId: stiffProd?.id || 'prod-omega-stiff-200',
-      name: language === 'sw' ? 'Stiff Cover Kurasa 200' : 'Stiff Cover 200p Ledger',
-      spec: language === 'sw' ? 'Poly Spine Imara · 36 pcs/katoni' : 'Reinforced Poly Spine · 36 pcs/box',
-      price: stiffProd?.price || 1700,
-      mrp: 2000,
-      discount: language === 'sw' ? 'PUNGUZO 15%' : '15% OFF',
-      rating: 4.8,
+      title: stiffProd?.name || 'Stiff Cover 200 Pages',
+      subtitle: language === 'sw' ? 'Jalada Ngumu ya Jiometri' : 'Geometric Semi-Rigid Edition',
+      desc: language === 'sw' ? 'Karatasi 70 GSM isiyopenyeza wino' : 'Bleed-proof 70 GSM with poly-faceted cover',
+      link: stiffProd ? `/product/${stiffProd.id}` : '/product/prod-omega-stiff-200',
       image: '/omega-products/stiff-cover-200-catalog.jpeg',
-      carton: language === 'sw' ? 'TSh 52,000 / katoni' : 'TSh 52,000 / ctn',
+      tag: 'Executive & Office',
+      badge: 'Heavy Duty',
     },
     {
-      id: 'deal-q4-384p',
-      productId: q4Prod?.id || 'prod-omega-cb-q4',
-      name: language === 'sw' ? 'Counter Book Q4 (Kurasa 384)' : 'Counter Book Q4 (384p)',
-      spec: language === 'sw' ? 'Mshono wa Uzi · 24 pcs/katoni' : 'Smyth-Sewn · 24 pcs/box',
-      price: q4Prod?.price || 2600,
-      mrp: 3000,
-      discount: language === 'sw' ? 'PUNGUZO 13%' : '13% OFF',
-      rating: 5.0,
-      image: '/omega-products/counter-book-q4-catalog.jpeg',
-      carton: language === 'sw' ? 'TSh 60,000 / katoni' : 'TSh 60,000 / ctn',
+      title: ex100Prod?.name || '100 Pages Exercise',
+      subtitle: language === 'sw' ? 'Kurasa 100 · SL, DL & Square' : '100p · SL, DL, Square & Plain',
+      desc: language === 'sw' ? 'Madaftari ya wanafunzi shuleni' : 'Standard classroom exercise books',
+      link: ex100Prod ? `/product/${ex100Prod.id}` : '/product/prod-omega-ex-100sl',
+      image: '/omega-products/exercise-book-100p-catalog.jpeg',
+      tag: 'Primary & Secondary',
+      badge: 'Classroom',
     },
     {
-      id: 'deal-bahasha-a4',
-      productId: bahashaProd?.id || 'prod-omega-bahasha-a4',
-      name: language === 'sw' ? 'Kraft Bahasha A4 Nzito' : 'A4 Heavy Kraft Bahasha',
-      spec: language === 'sw' ? '120 GSM Kraft · 100 pcs/pakiti' : '120 GSM Tear-Proof · 100 pcs/pk',
-      price: bahashaProd?.price || 350,
-      mrp: 450,
-      discount: language === 'sw' ? 'PUNGUZO 22%' : '22% OFF',
-      rating: 4.9,
+      title: ex80Prod?.name || '80 Pages Notebook',
+      subtitle: language === 'sw' ? 'Canary Yellow · Kurasa 80' : '80p Canary Yellow Notebook',
+      desc: language === 'sw' ? 'Uzito mwepesi, imara kwa marudio' : 'Lightweight and durable revision books',
+      link: ex80Prod ? `/product/${ex80Prod.id}` : '/product/prod-omega-ex-80',
+      image: '/omega-products/exercise-book-80p-catalog.jpeg',
+      tag: 'Semester & Revision',
+      badge: 'Compact',
+    },
+    {
+      title: bahashaProd?.name || 'Heavy Kraft Bahasha',
+      subtitle: language === 'sw' ? 'Size A3, A4, A5 · Peel & Seal' : 'A3, A4, A5, A6 Envelopes',
+      desc: language === 'sw' ? 'Karatasi ya kahawia isiyochanika kwa nyaraka' : 'Tear-resistant oversized document kraft',
+      link: bahashaProd ? `/product/${bahashaProd.id}` : '/product/prod-omega-bahasha-a4',
       image: '/omega-products/bahasha-a4-catalog.png',
-      carton: language === 'sw' ? 'TSh 28,000 / boksi' : 'TSh 28,000 / box',
+      tag: 'Office Mailers',
+      badge: 'Tear-Proof',
     },
-  ], [language, q2Prod, q3Prod, q4Prod, ex200Prod, stiffProd, bahashaProd]);
+  ], [q2Prod, ex200Prod, stiffProd, ex100Prod, ex80Prod, bahashaProd, language]);
 
-  // Calculator computation
-  const calcPricing = {
-    q2: { price: 56000, units: 48, name: 'Counter Book Q2' },
-    q3: { price: 57000, units: 36, name: 'Counter Book Q3' },
-    q4: { price: 60000, units: 24, name: 'Counter Book Q4' },
-  };
-  const activeBook = calcPricing[calcBookType];
-  const calcTotal = activeBook.price * calcQuantity;
-  const totalUnits = activeBook.units * calcQuantity;
-  const unitPrice = activeBook.price / activeBook.units;
+  // Calculator price computation (Dynamically derived from live MongoDB prices)
+  const calcBaseRate = useMemo(() => {
+    if (calcBookType === 'q2') return q2Prod?.wholesalePrice || 56000;
+    if (calcBookType === 'q3') return q3Prod?.wholesalePrice || 57000;
+    return q4Prod?.wholesalePrice || 60000;
+  }, [calcBookType, q2Prod, q3Prod, q4Prod]);
 
-  // 4 Primary B2B Category Cards
-  const primaryB2BCategories = [
-    {
-      title: 'Counter Books (Q1 – Q4)',
-      titleSw: 'Counter Books (Q1 – Q4)',
-      desc: 'Smyth-sewn thread binding, opens 180° flat. 192p to 384p archival accounting & ledgers.',
-      descSw: 'Mshono wa nyuzi imara, hujifungua tambarare 180°. Kurasa 192 hadi 384 za uhasibu na ofisi.',
-      specs: '1.8mm Hardcover · Smyth-Sewn · 24–48 pcs/box',
-      price: 'From TSh 1,500 / book',
-      priceSw: 'Kuanzia TSh 1,500',
-      image: '/omega-products/counter-book-q4-catalog.jpeg',
-      link: '/catalog?category=Counter+Books',
-      badge: 'ARCHIVAL GRADE',
-    },
-    {
-      title: 'Student Exercise Books',
-      titleSw: 'Madaftari ya Mazoezi ya Wanafunzi',
-      desc: '70 GSM Arctic White bleed-proof paper. Single line, double line, and square mathematics rulings.',
-      descSw: 'Karatasi nyeupe ya 70 GSM isiyovujisha wino. Mistari moja, miwili na miraba ya hisabati.',
-      specs: '70 GSM Bond · NECTA Uniform Ruling · 36–96 pcs/box',
-      price: 'From TSh 600 / book',
-      priceSw: 'Kuanzia TSh 600',
-      image: '/omega-products/exercise-book-200p-sl-catalog.jpeg',
-      link: '/catalog?category=Exercise+Books',
-      badge: 'NECTA STANDARD',
-    },
-    {
-      title: 'Kraft Bahasha & Envelopes',
-      titleSw: 'Bahasha Nzito za Kraft',
-      desc: 'Heavy-duty 120 GSM reinforced kraft envelopes. Perfect for examination papers, official transit & records.',
-      descSw: 'Karatasi nzito ya kraft 120 GSM isiyochanyika. Imara kwa mitihani, hati rasmi na posta.',
-      specs: '120 GSM Heavy Kraft · A4 / A3 · 100 pcs/pack',
-      price: 'From TSh 350 / pc',
-      priceSw: 'Kuanzia TSh 350',
-      image: '/omega-products/bahasha-a4-catalog.png',
-      link: '/catalog?category=Bahasha+%26+Envelopes',
-      badge: 'TEAR-RESISTANT',
-    },
-    {
-      title: 'Stiff Cover Ledgers & Registers',
-      titleSw: 'Stiff Cover & Rejesta za Ofisi',
-      desc: 'Geometric poly spine cover engineered for high-traffic office logging, inventory & attendance rosters.',
-      descSw: 'Jalada imara la plastiki lililoundwa kwa matumizi endelevu ya ofisi, daftari za mahudhurio na ghala.',
-      specs: 'Heavy Poly Cover · 200p · 36 pcs/box',
-      price: 'From TSh 1,700 / book',
-      priceSw: 'Kuanzia TSh 1,700',
-      image: '/omega-products/stiff-cover-200-catalog.jpeg',
-      link: '/catalog?category=Counter+Books',
-      badge: 'EXECUTIVE LOGS',
-    },
-  ];
+  const unitsPerCarton = calcBookType === 'q2' ? 48 : calcBookType === 'q3' ? 36 : 24;
+  const totalUnits = calcQuantity * unitsPerCarton;
+  const unitPrice = Math.round(calcBaseRate / unitsPerCarton);
+  const calcTotal = calcBaseRate * calcQuantity;
 
   return (
-    <div className="w-full bg-paper-base min-h-screen text-charcoal-ink pb-16">
+    <div className="bg-[#fafafa] min-h-screen font-sans text-[#18181b] selection:bg-[#dc2626]/30 selection:text-[#09090b]">
       <SEOHead
-        title={
-          language === 'sw'
-            ? 'OMEGA Stationery Tanzania | Kiwanda cha Madaftari & Bei za Jumla'
-            : 'OMEGA Stationery Tanzania | Manufacturer & Factory Wholesale Catalog'
-        }
-        description={
-          language === 'sw'
-            ? 'Kiwango cha juu cha Tanzania katika Counter Books (Q1–Q4), Madaftari ya Mazoezi, na Bahasha Nzito za Kraft. Bei ya jumla ya kiwandani mikoa yote 31.'
-            : "Tanzania's benchmark manufacturer of Counter Books (Q1-Q4), Exercise Books, Kraft Bahasha, and Office Files. Direct factory wholesale carton distribution across 31 regions."
-        }
+        title="OMEGA Writing Notebooks & Stationery | Premium Quality | Tanzania"
+        description="Tanzania's benchmark in Counter Books (Q2, Q3, Q4), Exercise Books, Kraft Bahasha, and Office Files. Factory-direct wholesale and upcountry bus parcel delivery."
       />
 
-      {/* 1. HERO SECTION (Flush edge-to-edge) */}
+      {/* ========================================================================= */}
+      {/* 1. HERO SECTION: 3-COLUMN SHOWCASE & NAVIGATION */}
+      {/* ========================================================================= */}
       <Hero whatsappGreetingUrl={whatsappGreetingUrl} />
 
-      {/* 2. FULL-WIDTH CRIMSON RED CALLOUT BANNER WITH BOTTOM-LEFT WHITE UPWARD NOTCH & CHEVRON (Exact match to reference image) */}
-      <section className="relative w-full bg-[#D62828] text-white py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-[1180px] mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <div className="text-left space-y-2 max-w-2xl">
-            <h2 className="font-heading text-xl sm:text-2xl md:text-[26px] font-extrabold uppercase tracking-wide text-white">
-              {language === 'sw' ? 'KIWANDA CHA MADAFTARI OMEGA TANZANIA' : 'OMEGA STATIONERY & BOOKS TANZANIA'}
-            </h2>
-            <p className="text-xs sm:text-[13px] text-white leading-relaxed font-normal">
-              {language === 'sw'
-                ? 'Uzalishaji rasmi wa kiwandani Soweto SIDO Mbeya kwa shule, vyuo na maduka ya jumla. Madaftari yaliyoshonwa kwa nyuzi na ankara rasmi za TRA EFD.'
-                : 'Manufactured at Soweto SIDO Industrial Estate in Mbeya. Supplying Smyth thread-sewn counter books, 70 GSM exercise books, and kraft envelopes across all 31 regions.'}
-            </p>
-          </div>
+      {/* ========================================================================= */}
+      {/* 2. TRUST & SCALE METRICS BAR (Refined Architectural Cards) */}
+      {/* ========================================================================= */}
+      <section className="bg-white border-b border-[#e4e4e7] py-6 sm:py-10 relative z-20 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+            
+            {/* Metric 1 */}
+            <div className="group p-4 sm:p-5 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 flex flex-col items-start h-full">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center font-bold border border-[#dc2626]/20 group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 mb-3 shrink-0">
+                <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <span className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#111113] font-heading tracking-tight block leading-none">
+                500,000+
+              </span>
+              <h4 className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#18181b] mt-2 leading-snug">
+                Books Distributed
+              </h4>
+              <p className="text-[11px] sm:text-xs text-[#71717a] mt-1 leading-snug">
+                Annual factory supply to schools &amp; firms
+              </p>
+            </div>
 
-          <div className="flex items-center gap-3.5 shrink-0">
-            <Link
-              to="/catalog"
-              className="px-7 py-3 rounded-[2px] bg-white text-charcoal-ink hover:bg-neutral-100 font-sans font-bold text-[11px] uppercase tracking-wider shadow-xs transition-all cursor-pointer"
-            >
-              <span>{language === 'sw' ? 'NUNUA SASA' : 'BUY NOW'}</span>
-            </Link>
-            <Link
-              to="/wholesale"
-              className="px-7 py-3 rounded-[2px] bg-transparent text-white border border-white hover:bg-white hover:text-charcoal-ink font-sans font-bold text-[11px] uppercase tracking-wider transition-all cursor-pointer"
-            >
-              <span>{language === 'sw' ? 'JIFUNZE ZAIDI' : 'LEARN MORE'}</span>
-            </Link>
-          </div>
-        </div>
+            {/* Metric 2 */}
+            <div className="group p-4 sm:p-5 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 flex flex-col items-start h-full">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center font-bold border border-[#dc2626]/20 group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 mb-3 shrink-0">
+                <Truck className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <span className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#111113] font-heading tracking-tight block leading-none">
+                31 Regions
+              </span>
+              <h4 className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#18181b] mt-2 leading-snug">
+                Nationwide Parcel
+              </h4>
+              <p className="text-[11px] sm:text-xs text-[#71717a] mt-1 leading-snug">
+                Same-day waybills to all bus terminals
+              </p>
+            </div>
 
-        {/* White Upward-Pointing Triangle Notch with Small Grey Chevron at Bottom-Left (Exact match to reference image) */}
-        <div className="max-w-[1180px] mx-auto relative">
-          <div className="absolute -bottom-12 sm:-bottom-16 left-6 sm:left-10 w-0 h-0 border-l-[28px] border-l-transparent border-r-[28px] border-r-transparent border-b-[20px] border-b-white z-20 pointer-events-none flex items-end justify-center">
-            <span className="text-charcoal-ink text-[10px] leading-none translate-y-[18px] font-sans">⌄</span>
+            {/* Metric 3 */}
+            <div className="group p-4 sm:p-5 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 flex flex-col items-start h-full">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center font-bold border border-[#dc2626]/20 group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 mb-3 shrink-0">
+                <Feather className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <span className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#dc2626] font-heading tracking-tight block leading-none">
+                70 GSM
+              </span>
+              <h4 className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#18181b] mt-2 leading-snug">
+                Bleed-Proof Paper
+              </h4>
+              <p className="text-[11px] sm:text-xs text-[#71717a] mt-1 leading-snug">
+                Zero feathering with fountain &amp; gel ink
+              </p>
+            </div>
+
+            {/* Metric 4 */}
+            <div className="group p-4 sm:p-5 rounded-2xl bg-[#fafafa] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 flex flex-col items-start h-full">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center font-bold border border-[#dc2626]/20 group-hover:bg-[#dc2626] group-hover:text-white transition-colors duration-300 mb-3 shrink-0">
+                <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" />
+              </div>
+              <span className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-[#111113] font-heading tracking-tight block leading-none">
+                100%
+              </span>
+              <h4 className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-[#18181b] mt-2 leading-snug">
+                Thread-Sewn Spine
+              </h4>
+              <p className="text-[11px] sm:text-xs text-[#71717a] mt-1 leading-snug">
+                Pages never loosen or fall out over years
+              </p>
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* 3. "OUR SERVICES" 2-ROW ASYMMETRIC HAIRLINE GRID ON PURE WHITE (Exact match to reference image) */}
-      <section className="w-full bg-[#FFFFFF] py-16 sm:py-24">
-        <div className="max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ========================================================================= */}
+      {/* 3. SIGNATURE CATEGORIES SHOWCASE (Curated Minimalist Collections) */}
+      {/* ========================================================================= */}
+      <section className="py-12 sm:py-20 bg-[#fafafa] border-b border-[#e4e4e7]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
           
-          {/* ROW 1: Left 4 cols ("Our Services" + text + wavy line) + Right 8 cols (2 bordered icon boxes) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
-            
-            {/* Col 1 (4 cols): Unbordered Editorial Intro */}
-            <div className="lg:col-span-4 pr-0 lg:pr-10 pb-8 lg:pb-0 flex flex-col justify-center text-left space-y-4">
-              <h2 className="font-heading text-2xl sm:text-[28px] font-bold text-charcoal-ink tracking-tight">
-                {language === 'sw' ? 'Huduma na Bidhaa' : 'Our Services'}
-              </h2>
-              <p className="text-xs sm:text-[13px] text-charcoal-ink leading-relaxed">
-                {language === 'sw'
-                  ? 'Kila daftari, jalada na bahasha hutengenezwa kwa umakini wa hali ya juu kukidhi mitaala ya NECTA na kumbukumbu za ofisi.'
-                  : 'We manufacture archival-grade hardcover counter books, NECTA syllabus student exercise books, and heavy kraft envelopes for institutions.'}
-              </p>
-              <div className="pt-1">
-                <svg className="w-16 h-3 text-charcoal-ink" viewBox="0 0 60 8" fill="none">
-                  <path d="M0 4 Q 5 0, 10 4 T 20 4 T 30 4 T 40 4 T 50 4 T 60 4" stroke="currentColor" strokeWidth="1.8" fill="none" />
-                </svg>
-              </div>
-            </div>
-
-            {/* Col 2 (4 cols): Bordered Box 1 */}
-            <Link
-              to="/catalog?category=Counter+Books"
-              className="lg:col-span-4 p-10 sm:p-12 border border-[#E7E5E0] hover:border-[#DC2626] hover:shadow-sm transition-all flex flex-col items-center justify-center text-center space-y-4 group bg-white"
-            >
-              <div className="w-12 h-12 flex items-center justify-center text-charcoal-ink group-hover:text-[#DC2626] transition-colors">
-                <IconCounterBook className="w-9 h-9 stroke-[1.2]" />
-              </div>
-              <h3 className="font-sans font-semibold text-xs sm:text-[13px] text-charcoal-ink group-hover:text-[#DC2626] transition-colors">
-                {language === 'sw' ? 'Counter Books (Q1–Q4)' : 'Counter Books (Q1–Q4)'}
-              </h3>
-            </Link>
-
-            {/* Col 3 (4 cols): Bordered Box 2 */}
-            <Link
-              to="/catalog?category=Exercise+Books"
-              className="lg:col-span-4 p-10 sm:p-12 border border-[#E7E5E0] lg:border-l-0 hover:border-[#DC2626] hover:shadow-sm transition-all flex flex-col items-center justify-center text-center space-y-4 group bg-white"
-            >
-              <div className="w-12 h-12 flex items-center justify-center text-charcoal-ink group-hover:text-[#DC2626] transition-colors">
-                <IconExerciseBook className="w-9 h-9 stroke-[1.2]" />
-              </div>
-              <h3 className="font-sans font-semibold text-xs sm:text-[13px] text-charcoal-ink group-hover:text-[#DC2626] transition-colors">
-                {language === 'sw' ? 'Madaftari ya Shule' : 'School Exercise Books'}
-              </h3>
-            </Link>
-
-          </div>
-
-          {/* ROW 2: 4 Equal Bordered Boxes spanning all 12 columns directly touching Row 1 */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:-mt-[1px]">
-            {[
-              {
-                title: language === 'sw' ? 'Mshono wa Uzi 180°' : 'Smyth-Sewn Binding',
-                icon: IconLayFlatSpine,
-                link: '/about',
-              },
-              {
-                title: language === 'sw' ? 'Karatasi Nzito 70 GSM' : '70 GSM Bleed-Proof Paper',
-                icon: IconBleedProofPaper,
-                link: '/catalog',
-              },
-              {
-                title: language === 'sw' ? 'Bahasha Nzito za Kraft' : 'Heavy Kraft Bahasha',
-                icon: IconKraftBahasha,
-                link: '/catalog?category=Bahasha+%26+Envelopes',
-              },
-              {
-                title: language === 'sw' ? 'Mabasi Mikoa Yote 31' : '31 Regions Bus Dispatch',
-                icon: IconNationwideBus,
-                link: '/shipping-guide',
-              },
-            ].map((service, idx) => {
-              const Icon = service.icon;
-              return (
-                <Link
-                  key={idx}
-                  to={service.link}
-                  className={`p-10 sm:p-12 border border-[#E7E5E0] ${
-                    idx > 0 ? 'lg:border-l-0' : ''
-                  } hover:border-[#DC2626] hover:shadow-sm transition-all flex flex-col items-center justify-center text-center space-y-4 group bg-white`}
-                >
-                  <div className="w-12 h-12 flex items-center justify-center text-charcoal-ink group-hover:text-[#DC2626] transition-colors">
-                    <Icon className="w-9 h-9 stroke-[1.2]" />
-                  </div>
-                  <h3 className="font-sans font-semibold text-xs sm:text-[13px] text-charcoal-ink group-hover:text-[#DC2626] transition-colors">
-                    {service.title}
-                  </h3>
-                </Link>
-              );
-            })}
-          </div>
-
-        </div>
-      </section>
-
-      {/* 4. ABOUT OMEGA EDITORIAL ROW ON PAPER-BASE #F9F8F6 (WCAG AAA charcoal-ink headings & body text) */}
-      <section className="w-full bg-paper-base py-16 sm:py-24">
-        <div className="max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start text-left">
-            
-            {/* Left Column (5 cols): Small charcoal label + Big Bold 3-line Headline */}
-            <div className="lg:col-span-5 space-y-3">
-              <span className="text-[11px] font-mono uppercase tracking-wider text-charcoal-ink font-bold block">
-                {language === 'sw' ? 'KUHUSU OMEGA' : 'ABOUT OMEGA'}
-              </span>
-              <h2 className="font-heading text-2xl sm:text-3xl md:text-[34px] font-bold text-charcoal-ink leading-[1.2] tracking-tight">
-                {language === 'sw'
-                  ? 'Uzalishaji thabiti wa kiwandani unazifanya shule na biashara kuwa zenye tija na faida'
-                  : 'Precision manufacturing makes classic schools and businesses effective and profitable'}
-              </h2>
-            </div>
-
-            {/* Right Column (7 cols): Two clean editorial paragraphs in charcoal-ink */}
-            <div className="lg:col-span-7 space-y-5 text-xs sm:text-[13px] text-charcoal-ink leading-[1.8]">
-              <p>
-                {language === 'sw'
-                  ? 'Tangu kuanzishwa kwetu mwaka 1998 katika eneo la viwanda la Soweto SIDO jijini Mbeya, OMEGA imebadilisha kabisa ubora wa madaftari ya shule na vitabu vya kumbukumbu za ofisi nchini Tanzania. Mshono wetu wa nyuzi (Smyth-sewn) pamoja na karatasi nzito ya 70 GSM vinahakikisha kurasa hazichomoki wala kuvujisha wino.'
-                  : 'Manufacturing notebooks and commercial stationery since 1998 at Soweto SIDO Industrial Estate in Mbeya has transformed how Tanzanian schools, universities, and bookstores procure reliable paper goods. Every Counter Book (Q1–Q4) is Smyth thread-sewn to open 180° flat without shedding pages.'}
-              </p>
-              <p>
-                {language === 'sw'
-                  ? 'Kuu kati ya mifumo yetu ya usambazaji ni pamoja na utoaji wa ankara rasmi za kodi za TRA EFD, punguzo kubwa la bei ya jumla kwa katoni, na usafirishaji wa siku hiyo hiyo kupitia vituo vya mabasi ya mikoani kufika mikoa yote 31 ya Tanzania.'
-                  : 'Chief among our institutional advantages are automated volume carton discounts, official TRA EFD fiscal tax invoicing, NECTA-compliant 8mm ruling, and same-day bus parcel waybill dispatch across all 31 regions of Tanzania.'}
-              </p>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* 5. FEATURED PROJECT / FEATURED PRODUCT ON FACETED GEOMETRIC RED (Exact match to reference image) */}
-      <section className="relative w-full py-16 sm:py-24 bg-[#D62828] overflow-hidden text-center text-white">
-        {/* Geometric Angled Facets Matching Reference Image */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#E53935] via-[#D32F2F] to-[#B71C1C]" />
-        <div className="absolute -top-20 -left-20 w-80 h-80 bg-white/5 rotate-45 transform pointer-events-none" />
-        <div className="absolute top-1/3 left-8 w-28 h-28 bg-white/5 rotate-45 transform pointer-events-none" />
-        <div className="absolute -bottom-24 -right-16 w-96 h-96 bg-black/10 rotate-45 transform pointer-events-none" />
-        <div className="absolute top-10 right-12 w-48 h-48 bg-black/10 rotate-45 transform pointer-events-none" />
-
-        <div className="relative z-10 max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-          {/* Centered Header + Wavy White Line */}
-          <div className="space-y-3 max-w-xl mx-auto">
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white tracking-tight">
-              {language === 'sw' ? 'Bidhaa Maalum ya Kiwandani' : 'Featured Product'}
+          {/* Section Header */}
+          <div className="text-center space-y-2.5 max-w-2xl mx-auto">
+            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#18181b] tracking-tight">
+              {language === 'sw' ? 'Mkusanyiko Rasmi wa Vitabu' : 'Explore by Category'}
             </h2>
-            <p className="text-xs sm:text-[13px] text-white/90 leading-relaxed font-normal">
+            <p className="text-xs sm:text-sm text-[#71717a] leading-relaxed">
               {language === 'sw'
-                ? 'Vitabu vya Counter Books Q1–Q4 na madaftari ya mazoezi yenye mshono wa nyuzi na karatasi ya 70 GSM.'
-                : 'Smyth thread-sewn Hardcover Counter Books (Q1–Q4) and 70 GSM Student Exercise Books built for endurance.'}
+                ? 'Kuanzia madaftari ya Q2, Q3, Q4 yenye jalada gumu hadi madaftari ya shule za msingi na sekondari pamoja na bahasha imara za krafti.'
+                : 'From heavy-duty Q2–Q4 counter ledger books to standard school exercise editions and tear-resistant kraft mailers.'}
             </p>
-            <div className="flex justify-center pt-1">
-              <svg className="w-16 h-3 text-white" viewBox="0 0 60 8" fill="none">
-                <path d="M0 4 Q 5 0, 10 4 T 20 4 T 30 4 T 40 4 T 50 4 T 60 4" stroke="currentColor" strokeWidth="1.8" fill="none" />
-              </svg>
-            </div>
           </div>
 
-          {/* Wide Split Showcase Card: Left 8 Cols Flat-Lay Desk & Books + Right 4 Cols White Panel */}
-          <div className="max-w-5xl mx-auto bg-white text-[#111113] shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-12 text-left">
-            
-            {/* Left 8 Cols: Studio Product Showcase on Desk Backdrop */}
-            <div
-              className="md:col-span-8 min-h-[280px] sm:min-h-[360px] bg-cover bg-center relative flex items-center justify-center p-6 sm:p-8"
-              style={{ backgroundImage: 'url(/hero-desk-bg.jpg)' }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#111113]/35 via-[#111113]/20 to-[#111113]/10 pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-tr from-white/15 via-[#F9F8F6]/15 to-white/25 pointer-events-none" />
-              <div className="relative z-10 grid grid-cols-2 gap-4 sm:gap-6 w-full max-w-xl">
-                <Link
-                  to="/product/prod-omega-cb-4q"
-                  className="bg-white rounded-lg p-3.5 sm:p-4 shadow-xl border border-[#E7E5E0] flex flex-col items-center justify-between group hover:-translate-y-1 transition-all duration-300 overflow-hidden"
-                >
-                  <div className="w-full aspect-square flex items-center justify-center overflow-hidden bg-white rounded-lg border border-[#E7E5E0]">
-                    <img
-                      src="/omega-products/counter-book-q4-catalog.jpeg"
-                      alt="OMEGA Hardcover Counter Book Q4"
-                      className="w-full h-full aspect-square object-cover object-center rounded-lg group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="w-full pt-3 mt-2 border-t border-[#E7E5E0] flex items-center justify-between text-[11px] font-mono">
-                    <span className="font-bold text-[#111113] truncate">Counter Book Q4</span>
-                    <span className="font-bold text-[#DC2626] shrink-0">384 Pages</span>
-                  </div>
-                </Link>
+          {/* 4 Category Showcase Cards (Refined UI/UX) */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
+            {signatureCategories.slice(0, 4).map((cat, idx) => (
+              <Link
+                key={idx}
+                to={cat.link}
+                className="group flex flex-col justify-between bg-[#f4f3ef] hover:bg-white border border-[#e4e4e7] hover:border-[#dc2626] rounded-[22px] sm:rounded-[26px] p-4 sm:p-5 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 relative overflow-hidden"
+              >
+                {/* Top Header: Title Left + Arrow Icon Right */}
+                <div className="flex items-start justify-between gap-2 mb-3">
+                  <h3 className="font-heading font-bold text-xs sm:text-base text-[#111113] group-hover:text-[#dc2626] transition-colors leading-snug line-clamp-2 text-left">
+                    {cat.title}
+                  </h3>
+                  <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/80 group-hover:bg-[#111113] text-[#111113] group-hover:text-white flex items-center justify-center shrink-0 transition-all shadow-2xs">
+                    <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </span>
+                </div>
 
-                <Link
-                  to="/product/prod-omega-ex-144"
-                  className="bg-white rounded-lg p-3.5 sm:p-4 shadow-xl border border-[#E7E5E0] flex flex-col items-center justify-between group hover:-translate-y-1 transition-all duration-300 overflow-hidden"
-                >
-                  <div className="w-full aspect-square flex items-center justify-center overflow-hidden bg-white rounded-lg border border-[#E7E5E0]">
-                    <img
-                      src="/omega-products/exercise-book-144p-catalog.jpeg"
-                      alt="OMEGA Student Exercise Book"
-                      className="w-full h-full aspect-square object-cover object-center rounded-lg group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <div className="w-full pt-3 mt-2 border-t border-[#E7E5E0] flex items-center justify-between text-[11px] font-mono">
-                    <span className="font-bold text-[#111113] truncate">Exercise Book A4</span>
-                    <span className="font-bold text-[#DC2626] shrink-0">70 GSM</span>
-                  </div>
-                </Link>
-              </div>
-            </div>
-
-            {/* Right 4 Cols: Crisp White Panel with Title, Copy & Red GET STARTED Button */}
-            <div className="md:col-span-4 p-7 sm:p-10 flex flex-col justify-center space-y-5 bg-white text-charcoal-ink">
-              <div className="space-y-3">
-                <h3 className="font-heading text-lg sm:text-xl font-bold text-charcoal-ink">
-                  {language === 'sw' ? 'Vitabu vya Ofisi & Shule' : 'Corporate & School Books'}
-                </h3>
-                <p className="text-xs sm:text-[13px] text-charcoal-ink leading-relaxed">
-                  {language === 'sw'
-                    ? 'Jalada gumu la 1.8mm, mshono wa nyuzi unaofunguka tambarare 180°, na karatasi nyeupe ya 70 GSM kwa matumizi ya shule na ofisi.'
-                    : '1.8mm laminated hardcover board, Smyth thread-sewn lay-flat spine, and 70 GSM bleed-proof paper for schools, banks, and enterprises.'}
-                </p>
-              </div>
-
-              <div className="pt-1">
-                <Link
-                  to="/catalog"
-                  className="inline-flex items-center justify-center py-3 px-7 rounded-[3px] bg-[#C62828] hover:bg-[#B71C1C] text-white font-sans font-bold text-[11px] uppercase tracking-wider shadow-xs transition-all cursor-pointer"
-                >
-                  <span>{language === 'sw' ? 'ANZA SASA' : 'GET STARTED'}</span>
-                </Link>
-              </div>
-            </div>
-
+                {/* Product Photo Canvas */}
+                <div className={`aspect-square w-full ${cat.image.includes('podium') ? 'bg-black p-0' : 'bg-white p-3.5 sm:p-5'} rounded-[18px] overflow-hidden flex items-center justify-center relative border border-[#e4e4e7]/60 group-hover:border-[#dc2626]/30 transition-colors shadow-2xs`}>
+                  <img
+                    src={cat.image}
+                    alt={cat.title}
+                    className={`w-full h-full ${cat.image.includes('podium') ? 'object-cover' : 'object-contain mix-blend-multiply'} scale-100 group-hover:scale-105 transition-transform duration-500 ease-out`}
+                    loading="lazy"
+                  />
+                </div>
+              </Link>
+            ))}
           </div>
 
         </div>
       </section>
 
-      {/* 6. BENCHMARK STATIONERY PICKS (Product Grid) */}
-      <div className="space-y-12 sm:space-y-16 pt-12 sm:pt-16 bg-paper-base text-charcoal-ink">
-      <section className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#FFFFFF] rounded-[8px] p-6 sm:p-8 shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04),0_1px_3px_0_rgba(17,17,19,0.02)] border border-[#E7E5E0] space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#E7E5E0]">
-            <div className="text-left">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-[#B91C1C] font-semibold block mb-1">
-                {language === 'sw' ? 'Mkusanyiko Maarufu' : 'Signature Collection'}
+      {/* ========================================================================= */}
+      {/* 4. EDITORIAL FEATURE & PROMOTIONAL BANNERS (Replacing Anatomy Section) */}
+      {/* ========================================================================= */}
+      <section className="py-10 sm:py-16 bg-white border-b border-[#e4e4e7] relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5 sm:space-y-6 relative z-10">
+          
+          {/* BANNER 1: Editorial "OMEGA." Flagship Bestseller Showcase (matching note act. reference) */}
+          <div className="relative rounded-[26px] sm:rounded-[34px] bg-[#f5f3ef] border border-[#e4e4e7] p-6 sm:p-10 lg:p-12 overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300">
+            {/* Top-Left 3 Feature Pills */}
+            <div className="relative z-20 flex flex-wrap items-center gap-2 mb-3 sm:mb-4">
+              <span className="px-3.5 py-1 rounded-full bg-white border border-[#e4e4e7] text-[11px] font-semibold text-[#18181b] shadow-2xs">
+                {language === 'sw' ? 'Ushonaji wa Uzi' : 'Smyth-Sewn'}
               </span>
-              <h2 className="font-heading text-xl sm:text-2xl font-bold text-charcoal-ink tracking-tight">
-                {language === 'sw' ? 'Madaftari Yanayoongoza Tanzania' : 'Benchmark Stationery Picks'}
-              </h2>
-              <p className="text-xs text-charcoal-ink mt-1 font-normal">
-                {language === 'sw'
-                  ? 'Madaftari yanayoongoza kwa kuagizwa na shule, vyuo na wafanyabiashara'
-                  : "Tanzania's most requested school and accounting books directly from factory production lines"}
-              </p>
+              <span className="px-3.5 py-1 rounded-full bg-white border border-[#e4e4e7] text-[11px] font-semibold text-[#18181b] shadow-2xs">
+                {language === 'sw' ? 'Karatasi 70 GSM' : '70 GSM Bond'}
+              </span>
+              <span className="px-3.5 py-1 rounded-full bg-white border border-[#e4e4e7] text-[11px] font-semibold text-[#18181b] shadow-2xs">
+                {language === 'sw' ? 'Inafunguka 180°' : '180° Flat Lay'}
+              </span>
             </div>
 
-            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
-              {[
-                { id: 'all', label: t.catAll },
-                { id: 'counter', label: t.catCounter },
-                { id: 'exercise', label: t.catExercise },
-                { id: 'bahasha', label: t.catBahasha },
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onClick={() => {
-                    if (activeTab !== tab.id) {
-                      setIsTabLoading(true);
-                      setActiveTab(tab.id as any);
-                      setTimeout(() => setIsTabLoading(false), 240);
-                    }
-                  }}
-                  className={`px-4 py-2 rounded-[4px] text-xs font-mono font-bold uppercase tracking-wider whitespace-nowrap cursor-pointer transition-all ${
-                    activeTab === tab.id
-                      ? 'bg-[#111113] text-[#FFFFFF] shadow-sm'
-                      : 'bg-paper-base hover:bg-[#F2EFEB] text-charcoal-ink border border-[#E7E5E0]'
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {isCatalogLoading || isTabLoading ? (
-            <CatalogSkeletonGrid viewMode="grid" count={4} columns={4} />
-          ) : (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-              {filteredProducts.map((product, idx) => (
-                <ProductCard key={`${product.id}-${idx}`} product={product} />
-              ))}
-            </div>
-          )}
-
-          <div className="pt-4 text-center">
-            <Link
-              to="/catalog"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-[4px] bg-[#111113] hover:bg-[#262524] text-white text-xs font-sans font-semibold uppercase tracking-wider shadow-sm transition-all duration-200 cursor-pointer"
+            {/* Giant Bold Editorial Display Wordmark Across Background */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none select-none font-heading font-black text-[4.25rem] sm:text-[7.5rem] lg:text-[10.5rem] tracking-tight text-[#111113] leading-[0.9] my-1 sm:my-2"
             >
-              <span>{language === 'sw' ? 'Tazama Katalogi Kamili' : 'Explore Complete Catalogue (44 Items)'}</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+              omega.
+            </div>
+
+            {/* Content & Floating Angled Book Grid */}
+            <div className="relative z-20 grid grid-cols-1 lg:grid-cols-12 gap-6 items-end mt-2 sm:mt-4">
+              {/* Bottom-Left Product Info & CTA */}
+              <div className="lg:col-span-6 text-left space-y-3">
+                <span className="inline-block px-3 py-1 rounded-full bg-[#e4e2dd] text-[#111113] text-[11px] font-bold uppercase tracking-wider font-mono">
+                  {language === 'sw' ? 'OMEGA BOOK PRODUCTS' : 'OMEGA BOOK PRODUCTS'}
+                </span>
+
+                <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#111113] tracking-tight leading-[1.12]">
+                  {language === 'sw' ? (
+                    <>
+                      Vitabu Bora kwa
+                      <span className="block text-[#dc2626]">Maisha Bora</span>
+                    </>
+                  ) : (
+                    <>
+                      Premium Books
+                      <span className="block text-[#dc2626]">for a Brighter Future</span>
+                    </>
+                  )}
+                </h2>
+
+                <p className="text-xs sm:text-sm text-[#52525b] max-w-md leading-relaxed">
+                  {language === 'sw'
+                    ? 'Madaftari bora, exercise books, counter books na vifaa vya stationery — vinavyoaminika kote Tanzania.'
+                    : 'High-quality notebooks, exercise books, counter books and stationery products — trusted across Tanzania.'}
+                </p>
+
+                <div className="text-xl sm:text-2xl font-extrabold text-[#111113] font-mono pt-0.5">
+                  {formatPrice(q2Prod?.discountPrice || q2Prod?.price || 3500, currency)}
+                </div>
+
+                <div className="pt-1 flex items-center gap-3">
+                  <Link
+                    to={q2Prod ? `/product/${q2Prod.id}` : '/catalog?category=Counter+Books'}
+                    className="inline-flex items-center gap-2.5 px-6 py-3 rounded-full bg-[#111113] hover:bg-[#dc2626] text-white text-xs sm:text-sm font-bold transition-all shadow-md active:scale-95"
+                  >
+                    <span>{language === 'sw' ? 'Nunua Sasa' : 'Buy Now'}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+
+                  <Link
+                    to="/wishlist"
+                    aria-label="Wishlist"
+                    className="w-11 h-11 rounded-full bg-white border border-[#d4d4d8] hover:border-[#dc2626] text-[#111113] hover:text-[#dc2626] flex items-center justify-center transition-colors shadow-2xs"
+                  >
+                    <Star className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+
+              {/* Right Side: Overlapping Flagship Book */}
+              <div className="lg:col-span-6 flex items-center justify-center lg:justify-end lg:-mt-28">
+                <Link
+                  to={q2Prod ? `/product/${q2Prod.id}` : '/catalog?category=Counter+Books'}
+                  className="group relative w-48 sm:w-64 lg:w-72 aspect-[3/4] flex items-center justify-center"
+                >
+                  <img
+                    src="/omega-hero-book.png"
+                    alt="OMEGA Smyth-Sewn Hardcover Book"
+                    className="w-full h-full object-contain mix-blend-multiply -rotate-6 group-hover:rotate-0 group-hover:scale-105 transition-all duration-500 drop-shadow-[0_24px_35px_rgba(0,0,0,0.22)]"
+                    loading="lazy"
+                  />
+                </Link>
+              </div>
+            </div>
           </div>
+
+          {/* BANNERS 2 & 3: Dual Promotional Cards Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
+            {/* Promo Card Left: 20% OFF Wholesale Special (matching coffee promo reference) */}
+            <div className="lg:col-span-6 rounded-[24px] sm:rounded-[28px] bg-[#f4f1ea] border border-[#e4e4e7] p-6 sm:p-8 flex items-center justify-between gap-4 relative overflow-hidden shadow-xs hover:shadow-lg transition-all">
+              <div className="space-y-2 text-left relative z-10 max-w-[60%]">
+                <span className="text-[10px] sm:text-xs font-mono font-bold uppercase tracking-widest text-[#dc2626] block">
+                  {language === 'sw' ? 'OFA YA JUMLA KIWANDANI' : 'WHOLESALE SPECIAL'}
+                </span>
+                <h3 className="font-heading text-3xl sm:text-4xl font-black text-[#111113] tracking-tight leading-none">
+                  20% OFF
+                </h3>
+                <p className="text-xs sm:text-sm font-medium text-[#3f3f46]">
+                  {language === 'sw'
+                    ? 'Kwa oda zote za katoni za jumla'
+                    : 'On all wholesale carton orders'}
+                </p>
+                <div className="pt-2">
+                  <Link
+                    to="/wholesale"
+                    className="inline-flex items-center gap-2.5 pl-5 pr-2 py-2 rounded-full bg-[#111113] hover:bg-[#dc2626] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-sm"
+                  >
+                    <span>{language === 'sw' ? 'AGIZA SASA' : 'ORDER NOW'}</span>
+                    <span className="w-6 h-6 rounded-full bg-white text-[#111113] flex items-center justify-center">
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </span>
+                  </Link>
+                </div>
+              </div>
+
+              <div className="relative z-10 flex items-center gap-2 shrink-0">
+                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-white p-2 border border-[#e4e4e7] shadow-sm flex items-center justify-center">
+                  <img
+                    src="/omega-products/bahasha-a4-catalog.png"
+                    alt="OMEGA Wholesale Cartons"
+                    className="w-full h-full object-contain mix-blend-multiply"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="w-14 h-14 sm:w-16 sm:h-16 -ml-5 rounded-full bg-[#111113] text-white flex flex-col items-center justify-center font-heading font-black shadow-lg border-2 border-[#f4f1ea]">
+                  <span className="text-sm sm:text-base leading-none text-[#ef4444]">20%</span>
+                  <span className="text-[9px] uppercase tracking-wider">OFF</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Promo Card Right: Dark Exclusive Collection Banner (matching dark car banner reference) */}
+            <div className="lg:col-span-6 rounded-[24px] sm:rounded-[28px] bg-[#09090b] border border-[#27272a] p-6 sm:p-8 relative overflow-hidden flex items-center shadow-xs hover:shadow-lg transition-all min-h-[200px]">
+              {/* Single Full-Bleed Background Image */}
+              <div
+                className="absolute inset-0 bg-cover bg-right bg-no-repeat opacity-65 pointer-events-none"
+                style={{ backgroundImage: "url('/hero-desk-bg.jpg')" }}
+                aria-hidden="true"
+              />
+              <div
+                className="absolute inset-0 bg-gradient-to-r from-[#09090b] via-[#09090b]/85 to-transparent pointer-events-none"
+                aria-hidden="true"
+              />
+
+              <div className="relative z-10 space-y-2 text-left max-w-xs">
+                <span className="text-[11px] sm:text-xs font-bold text-[#ef4444] tracking-wide block">
+                  {language === 'sw' ? 'Mkusanyiko Maalum' : 'Exclusive Collection'}
+                </span>
+                <h3 className="font-heading text-xl sm:text-2xl font-black text-white leading-tight tracking-tight">
+                  {language === 'sw' ? (
+                    <>
+                      Imetengenezwa Kudumu
+                      <span className="block">Ubora wa Kiwandani</span>
+                    </>
+                  ) : (
+                    <>
+                      Built for Durability
+                      <span className="block">Driven by Quality</span>
+                    </>
+                  )}
+                </h3>
+                <p className="text-[11px] sm:text-xs text-zinc-300">
+                  {language === 'sw'
+                    ? 'Vifaa vya ofisi na shule visivyo na kifani.'
+                    : 'Archival books. Unlimited daily performance.'}
+                </p>
+                <div className="pt-2">
+                  <Link
+                    to="/catalog"
+                    className="inline-flex items-center gap-2.5 pl-5 pr-2 py-2 rounded-full bg-white hover:bg-zinc-100 text-[#111113] text-xs font-bold transition-all shadow-md"
+                  >
+                    <span>{language === 'sw' ? 'Gundua Zaidi' : 'Discover More'}</span>
+                    <span className="w-6 h-6 rounded-full bg-[#dc2626] text-white flex items-center justify-center">
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 
-      {/* 7. WHOLESALE CALCULATOR (Centered 1360px) */}
-      <section className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#FFFFFF] text-charcoal-ink rounded-[4px] p-6 sm:p-9 shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04)] border border-[#E5E7EB] space-y-6 max-w-2xl mx-auto text-left">
-          <div className="text-center space-y-2">
-            <span className="px-3 py-1 rounded-[2px] bg-[#111113] text-[#FFFFFF] text-[10px] font-mono font-bold uppercase tracking-widest inline-block">
-              {language === 'sw' ? 'BEI YA JUMLA YA KIWANDANI' : 'B2B FACTORY PRICING ESTIMATOR'}
-            </span>
-            <h2 className="font-heading text-xl sm:text-2xl font-black text-charcoal-ink tracking-tight">{t.bulkCalculatorTitle}</h2>
-            <p className="text-xs text-charcoal-ink max-w-md mx-auto">{t.bulkCalculatorSubtitle}</p>
-            <div className="pt-1 flex justify-center">
-              <svg className="w-16 h-3 text-[#DC2626]" viewBox="0 0 60 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 5 Q 7.5 0, 15 5 T 30 5 T 45 5 T 60 5" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-              </svg>
+      {/* ========================================================================= */}
+      {/* 5. FEATURED BENCHMARK PRODUCTS (Tabbed Catalog Grid) */}
+      {/* ========================================================================= */}
+      <section className="py-14 sm:py-20 bg-[#fafafa] border-b border-[#e4e4e7]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
+          
+          {/* Section Header */}
+          <div className="text-center space-y-3 max-w-2xl mx-auto">
+            <div className="inline-flex items-center px-3.5 py-1 rounded-md bg-gradient-to-r from-[#dc2626]/15 via-[#dc2626]/5 to-transparent border border-[#dc2626]/30 text-xs font-bold text-[#dc2626] font-mono uppercase tracking-widest shadow-xs">
+              <span>{language === 'sw' ? 'VINARA VYA MAUZO KIWANDANI' : 'FACTORY BENCHMARK EDITIONS'}</span>
             </div>
+            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#18181b] tracking-tight">
+              {language === 'sw' ? 'Bidhaa Zinazoongoza kwa Mauzo' : 'Benchmark Stationery Picks'}
+            </h2>
+            <p className="text-xs sm:text-sm text-[#71717a] leading-relaxed">
+              {language === 'sw'
+                ? 'Vitabu na madaftari yanayoongoza kwa mahitaji ya shule, maduka na taasisi kote Tanzania, tayari kwa usafirishaji wa haraka.'
+                : 'High-velocity ledger books and student exercise editions in high daily demand across schools, wholesale shops, and commercial offices.'}
+            </p>
           </div>
 
-          <div className="space-y-5">
-            <div className="space-y-2">
-              <label className="text-xs font-mono font-bold text-charcoal-ink uppercase tracking-wider block">
-                {language === 'sw' ? 'Chagua Aina ya Kitabu' : 'Select Book Model'}
-              </label>
-              <div className="grid grid-cols-3 gap-2.5">
-                {[
-                  { id: 'q2', name: 'Counter Book Q2', note: '192p · 48/ctn' },
-                  { id: 'q3', name: 'Counter Book Q3', note: '288p · 36/ctn' },
-                  { id: 'q4', name: 'Counter Book Q4', note: '384p · 24/ctn' },
-                ].map((b) => (
+          {/* Filter Bar & Quick Catalog Access */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3.5 sm:gap-4 pt-1">
+            {/* Filter Pills (Smooth scrollable on mobile, natural left alignment, no clipping) */}
+            <div className="w-full sm:w-auto overflow-x-auto no-scrollbar py-1.5 -mx-4 px-4 sm:mx-0 sm:px-0 flex items-center justify-start gap-2">
+              {[
+                { id: 'all', label: t.allProducts || 'All Products' },
+                { id: 'counter', label: 'Counter Books' },
+                { id: 'exercise', label: 'Exercise Books' },
+                { id: 'bahasha', label: 'Bahasha & Envelopes' },
+                { id: 'registers', label: 'Registers & Paper' },
+              ].map((tab) => {
+                const isActive = activeTab === tab.id;
+                return (
                   <button
-                    key={b.id}
+                    key={tab.id}
                     type="button"
-                    onClick={() => setCalcBookType(b.id as any)}
-                    className={`p-3.5 rounded-[2px] text-left transition-all cursor-pointer border ${
-                      calcBookType === b.id
-                        ? 'bg-[#DC2626] text-[#FFFFFF] border-[#DC2626] shadow-sm'
-                        : 'bg-paper-base hover:bg-[#F3F4F6] text-charcoal-ink border-[#E5E7EB]'
+                    onClick={() => setActiveTab(tab.id as any)}
+                    className={`px-3.5 sm:px-4 py-2 text-xs font-bold rounded-xl whitespace-nowrap shrink-0 transition-all duration-200 font-mono tracking-wider uppercase ${
+                      isActive
+                        ? 'bg-[#111113] text-white shadow-sm border border-zinc-900 ring-1 ring-white/10'
+                        : 'bg-white hover:bg-zinc-50 text-zinc-600 hover:text-zinc-900 border border-zinc-200 shadow-2xs'
                     }`}
                   >
-                    <div className="font-bold text-xs truncate">{b.name}</div>
-                    <div className={`text-[10px] font-mono mt-1 ${calcBookType === b.id ? 'text-white' : 'text-[#3F3F46]'}`}>
-                      {b.note}
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* View Complete Catalogue Button */}
+            <Link
+              to="/catalog"
+              className="group inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-zinc-200 hover:border-[#dc2626] shadow-2xs text-xs font-mono font-bold uppercase tracking-wider text-[#18181b] hover:text-[#dc2626] transition-all shrink-0 self-start sm:self-auto"
+            >
+              <span>{language === 'sw' ? 'TAZAMA CATALOGUE YOTE' : 'VIEW COMPLETE CATALOGUE'}</span>
+              <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 text-[#dc2626]" />
+            </Link>
+          </div>
+
+          {/* Product Cards Grid (2 cols on mobile, 4 on desktop) */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-6">
+            {displayedProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+
+          {/* View All Products CTA Button */}
+          <div className="pt-6 sm:pt-8 flex justify-center">
+            <Link
+              to="/catalog"
+              id="view-all-products-home-btn"
+              className="inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-3.5 sm:py-4 rounded-full bg-[#111113] hover:bg-[#111113] text-white text-xs sm:text-sm font-bold tracking-wider uppercase shadow-md hover:shadow-xl transition-all duration-300 active:scale-95 group border border-[#dc2626]/30"
+            >
+              <span>{language === 'sw' ? 'Tazama Bidhaa Zote' : 'Explore Complete Catalogue'}</span>
+              <ArrowRight className="w-4 h-4 text-[#dc2626] transition-transform duration-300 group-hover:translate-x-1.5" />
+            </Link>
+          </div>
+
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 6. WHOLESALE CARTON PRICING CALCULATOR (Interactive B2B Studio) */}
+      {/* ========================================================================= */}
+      <section className="py-8 sm:py-14 bg-[#111113] text-white border-b border-[#18181b] relative overflow-hidden">
+        {/* Soft radial backlight */}
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#dc2626]/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-black/30 rounded-full blur-2xl pointer-events-none" />
+
+        <div className="max-w-3xl mx-auto px-3.5 sm:px-6 relative z-10 space-y-4 sm:space-y-5">
+          <div className="text-center space-y-1.5">
+            <span className="inline-flex items-center px-3 py-1 rounded-md text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#ef4444] bg-[#dc2626]/10 border border-[#dc2626]/20 font-mono">
+              <span>{language === 'sw' ? 'Bei za Jumla za Kiwandani' : 'B2B Factory Direct Pricing'}</span>
+            </span>
+            <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight">
+              {language === 'sw'
+                ? 'Kikokotoo cha Bei za Jumla Kiwandani'
+                : 'Wholesale Carton Pricing Calculator'}
+            </h2>
+          </div>
+
+          {/* Interactive B2B Calculator Studio */}
+          <div className="bg-[#131316] border border-white/10 p-4 sm:p-6 rounded-xl shadow-2xl space-y-4 sm:space-y-5 text-left relative overflow-hidden backdrop-blur-md">
+            {/* Subtle card glow */}
+            <div className="absolute top-0 right-0 w-48 h-48 bg-[#dc2626]/10 rounded-full blur-2xl pointer-events-none" />
+
+            {/* Step 1: Select Book Model */}
+            <div className="space-y-2 relative z-10">
+              <div className="flex items-center justify-between">
+                <label className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-red-400 font-mono flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 inline-block" />
+                  1. Select Notebook Model:
+                </label>
+                <span className="text-[11px] text-zinc-400 font-mono">
+                  Smyth-sewn hardcovers
+                </span>
+              </div>
+
+              <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
+                {[
+                  { key: 'q2', label: 'Quire 2 (Q2)', sub: '192p · 48 pcs/box', rate: formatPrice(q2Prod?.wholesalePrice || 56000, currency) },
+                  { key: 'q3', label: 'Quire 3 (Q3)', sub: '288p · 36 pcs/box', rate: formatPrice(q3Prod?.wholesalePrice || 57000, currency) },
+                  { key: 'q4', label: 'Quire 4 (Q4)', sub: '384p · 24 pcs/box', rate: formatPrice(q4Prod?.wholesalePrice || 60000, currency) },
+                ].map((item) => (
+                  <button
+                    key={item.key}
+                    type="button"
+                    onClick={() => setCalcBookType(item.key as any)}
+                    className={`p-2.5 sm:p-3 rounded-lg border text-center transition-all duration-200 cursor-pointer ${
+                      calcBookType === item.key
+                        ? 'bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] text-white font-bold border-transparent shadow-md ring-1 ring-white/20'
+                        : 'bg-[#0b0b0e] text-zinc-300 border-white/10 hover:border-white/25 hover:bg-[#111115]'
+                    }`}
+                  >
+                    <div className="text-xs sm:text-sm font-bold truncate leading-tight">{item.label}</div>
+                    <div className={`text-[10px] font-mono mt-0.5 ${calcBookType === item.key ? 'text-white/80' : 'text-zinc-400'}`}>
+                      {item.sub}
+                    </div>
+                    <div className={`text-xs mt-1 font-mono font-bold ${calcBookType === item.key ? 'text-white' : 'text-red-400'}`}>
+                      {item.rate}
                     </div>
                   </button>
                 ))}
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-xs font-mono font-bold text-charcoal-ink uppercase tracking-wider block">
-                {language === 'sw' ? 'Idadi ya Katoni (Cartons)' : 'Carton Quantity'}
-              </label>
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => setCalcQuantity(Math.max(1, calcQuantity - 1))}
-                  className="w-11 h-11 rounded-[2px] bg-paper-base hover:bg-[#111113] hover:text-white text-charcoal-ink border border-[#E5E7EB] flex items-center justify-center font-bold text-lg active:scale-95 transition-all cursor-pointer"
-                >
-                  <Minus className="w-4 h-4" />
-                </button>
-                <div className="flex-1 py-2.5 rounded-[2px] bg-paper-base border border-[#E5E7EB] text-center font-mono font-bold text-base text-charcoal-ink">
-                  {calcQuantity} {language === 'sw' ? 'Katoni' : 'Cartons'}
+            {/* Step 2: Select Quantity (Responsive Grid + Stepper) */}
+            <div className="space-y-2 relative z-10">
+              <div className="flex items-center justify-between gap-1">
+                <label className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-red-400 font-mono flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 inline-block" />
+                  2. Order Quantity ({unitsPerCarton} Pcs/Box):
+                </label>
+                <span className="text-white font-mono text-[11px] sm:text-xs font-bold bg-white/5 border border-white/10 px-2 py-0.5 rounded-md">
+                  {calcQuantity} Cartons · {totalUnits.toLocaleString()} Books
+                </span>
+              </div>
+
+              {/* Presets and Stepper row */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                <div className="grid grid-cols-5 gap-1.5 flex-1">
+                  {[1, 5, 10, 20, 50].map((qty) => (
+                    <button
+                      key={qty}
+                      type="button"
+                      onClick={() => setCalcQuantity(qty)}
+                      className={`py-2 text-xs font-bold rounded-lg border transition-all duration-200 font-mono cursor-pointer flex items-center justify-center ${
+                        calcQuantity === qty
+                          ? 'bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] text-white border-transparent shadow-sm'
+                          : 'bg-[#0b0b0e] text-zinc-300 border-white/10 hover:border-white/25 hover:text-white'
+                      }`}
+                    >
+                      {qty} {qty === 1 ? 'Box' : 'Boxes'}
+                    </button>
+                  ))}
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setCalcQuantity(calcQuantity + 1)}
-                  className="w-11 h-11 rounded-[2px] bg-paper-base hover:bg-[#111113] hover:text-white text-charcoal-ink border border-[#E5E7EB] flex items-center justify-center font-bold text-lg active:scale-95 transition-all cursor-pointer"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
+
+                {/* Manual Stepper */}
+                <div className="flex items-center justify-between sm:justify-center rounded-lg bg-[#0b0b0e] border border-white/10 p-1 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => setCalcQuantity(Math.max(1, calcQuantity - 1))}
+                    aria-label="Decrease quantity"
+                    className="w-8 h-8 rounded-md bg-white/5 hover:bg-white/15 text-white flex items-center justify-center transition-colors active:scale-95 cursor-pointer"
+                  >
+                    <Minus className="w-3.5 h-3.5" />
+                  </button>
+                  <span className="w-12 text-center font-mono font-bold text-xs text-white">
+                    {calcQuantity}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setCalcQuantity(calcQuantity + 1)}
+                    aria-label="Increase quantity"
+                    className="w-8 h-8 rounded-md bg-white/5 hover:bg-white/15 text-white flex items-center justify-center transition-colors active:scale-95 cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
             </div>
 
-            {/* Total readout card */}
-            <div className="p-5 rounded-[4px] bg-[#111113] text-white border border-[#262524] space-y-3 shadow-md">
-              <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-[#E4E4E7]">{language === 'sw' ? 'Jumla ya Vitabu' : 'Total Book Units'}:</span>
-                <span className="font-bold text-white tabular-nums">{totalUnits.toLocaleString()} pcs</span>
+            {/* Price Calculation Live Studio Breakdown */}
+            <div className="p-3.5 sm:p-4 rounded-lg bg-[#0b0b0e] border border-white/10 space-y-2 font-mono text-xs relative z-10">
+              <div className="flex justify-between text-zinc-300">
+                <span className="text-zinc-400">Factory Carton Rate:</span>
+                <span className="text-white font-bold">{formatPrice(calcBaseRate, currency)}</span>
               </div>
-              <div className="flex items-center justify-between text-xs font-mono">
-                <span className="text-[#E4E4E7]">{language === 'sw' ? 'Bei kwa Kitabu' : 'Cost Per Book'}:</span>
-                <span className="font-bold text-[#F87171] tabular-nums">TSh {Math.round(unitPrice).toLocaleString()}</span>
+              <div className="flex justify-between text-zinc-300">
+                <span className="text-zinc-400">Effective Unit Rate:</span>
+                <span className="text-emerald-400 font-bold">~{formatPrice(unitPrice, currency)} / book</span>
               </div>
-              <div className="flex items-center justify-between pt-3 border-t border-[#262524]">
-                <span className="font-heading font-bold text-sm text-[#FFFFFF]">{language === 'sw' ? 'Jumla ya Katoni' : 'Estimated Total'}:</span>
-                <span className="font-mono font-black text-2xl text-white tabular-nums">TSh {calcTotal.toLocaleString()}</span>
+              <div className="flex justify-between text-zinc-300">
+                <span className="text-zinc-400">Selected Volume:</span>
+                <span className="text-white font-bold">
+                  {calcQuantity} {calcQuantity === 1 ? 'Carton' : 'Cartons'} ({totalUnits.toLocaleString()} units)
+                </span>
+              </div>
+              <div className="flex justify-between items-baseline pt-2.5 border-t border-white/10">
+                <span className="font-sans font-semibold text-xs sm:text-sm text-zinc-200">Total Proforma Amount:</span>
+                <span className="text-xl sm:text-2xl font-black font-mono text-[#ef4444] tracking-tight">
+                  {formatPrice(calcTotal, currency)}
+                </span>
               </div>
             </div>
 
+            {/* WhatsApp Proforma Trigger */}
             <a
               href={`https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
-                `Habari OMEGA, nahitaji kuagiza katoni ${calcQuantity} za ${activeBook.name} (pcs ${totalUnits}) kwa bei ya TSh ${calcTotal.toLocaleString()}.`
+                `*OMEGA WHOLESALE PROFORMA INQUIRY*\n` +
+                `Product: Counter Book ${calcBookType.toUpperCase()}\n` +
+                `Quantity: ${calcQuantity} Cartons (${totalUnits} Units)\n` +
+                `Rate per Carton: ${formatPrice(calcBaseRate, currency)}\n` +
+                `Total Amount: ${formatPrice(calcTotal, currency)}\n\n` +
+                `Please share formal proforma invoice and dispatch waybill schedule.`
               )}`}
-              onClick={() => triggerLuxuryConfetti()}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-3.5 rounded-[2px] bg-[#DC2626] hover:bg-[#B91C1C] text-white text-xs font-sans font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer"
+              className="w-full py-3.5 px-4 rounded-lg bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] hover:from-[#991b1b] hover:to-[#dc2626] text-white text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all duration-200 active:scale-98 group cursor-pointer font-sans"
             >
-              <IconWhatsAppCustom className="w-4 h-4" />
-              <span>{language === 'sw' ? 'Tuma Oda Hii WhatsApp' : 'Submit Proforma Order'}</span>
+              <MessageCircle className="w-4 h-4 fill-white text-transparent shrink-0" />
+              <span>Request Proforma Invoice on WhatsApp</span>
+              <ArrowUpRight className="w-4 h-4 text-white transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0" />
             </a>
+
           </div>
         </div>
       </section>
 
-      {/* 8. VERIFIED TANZANIAN CUSTOMER REVIEWS (Centered 1360px) */}
-      <section className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#FFFFFF] rounded-[4px] p-6 sm:p-9 shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04)] border border-[#E5E7EB] space-y-6 text-left">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-[#E5E7EB]">
-            <div className="space-y-1.5">
-              <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#3F3F46] font-mono block">
-                {language === 'sw' ? 'USHUHUDA WA WATEJA' : 'VERIFIED INSTITUTIONAL REVIEWS'}
-              </span>
-              <h2 className="font-heading text-xl sm:text-2xl font-black text-charcoal-ink tracking-tight">
-                {language === 'sw' ? 'Wateja Wetu Wanasemaje' : 'Trusted by Schools & Wholesalers'}
-              </h2>
-              <p className="text-xs sm:text-sm text-charcoal-ink font-normal">
-                {language === 'sw'
-                  ? 'Zaidi ya vitabu 500,000+ husambazwa kila mwaka kwa shule, maduka na vyuo mikoa 31.'
-                  : 'Over 500,000+ notebooks distributed annually across 1,200+ partner schools and distributors.'}
-              </p>
-              <div className="pt-1">
-                <svg className="w-16 h-3 text-[#DC2626]" viewBox="0 0 60 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0 5 Q 7.5 0, 15 5 T 30 5 T 45 5 T 60 5" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                </svg>
-              </div>
+      {/* ========================================================================= */}
+      {/* 8. CLIENT & ENTERPRISE TESTIMONIALS (Social Proof) */}
+      {/* ========================================================================= */}
+      <section className="py-14 sm:py-20 bg-[#111113] text-white border-b border-[#18181b] relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
+          
+          {/* Header */}
+          <div className="text-center space-y-3 max-w-2xl mx-auto">
+            <div className="inline-flex items-center px-3.5 py-1 rounded-lg bg-gradient-to-r from-[#dc2626]/20 via-[#dc2626]/10 to-transparent border border-[#dc2626]/40 text-xs font-bold text-[#ef4444] font-mono uppercase tracking-widest shadow-xs">
+              <span>TESTIMONIALS &amp; CLIENT TRUST</span>
             </div>
-            <div className="flex items-center gap-2 text-xs font-mono font-semibold">
-              <div className="flex">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-[#DC2626] text-[#DC2626]" />
-                ))}
-              </div>
-              <span className="text-charcoal-ink ml-1 font-bold">4.9 / 5.0 Rating</span>
-            </div>
+            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-white tracking-tight">
+              {language === 'sw' ? 'Wateja Wetu Wanasemaje' : 'Trusted by Schools & Enterprises'}
+            </h2>
+            <p className="text-xs sm:text-sm text-stone-300">
+              {language === 'sw'
+                ? 'Walimu wakuu, wahasibu, na wamiliki wa maduka ya vifaa vya shule kote nchini wanaamini OMEGA.'
+                : 'Loved by headmasters, corporate accountants, and stationery wholesalers across all 31 regions of Tanzania.'}
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 border border-[#E5E7EB]">
-            {[
-              {
-                name: 'Mwl. Peter Mwita',
-                role: 'Headmaster, St. Joseph Secondary',
-                location: 'Mbeya, Tanzania',
-                review: language === 'sw'
-                  ? 'Madaftari ya OMEGA 200p ndiyo pekee yasiyochana kurasa katikati ya muhula. Mshono wao wa uzi na karatasi ngumu ya 70 GSM inawasaidia sana wanafunzi kuandika vizuri bila wino kupenyeza.'
-                  : 'OMEGA 200p exercise books are the only ones where pages do not fall out mid-term. The thread stitching and 70 GSM paper quality make a massive difference for student exams.',
-              },
-              {
-                name: 'Haji Kassim Ally',
-                role: 'Wholesale Stationery Stockist',
-                location: 'Kariakoo, Dar es Salaam',
-                review: language === 'sw'
-                  ? 'Tunachukua katoni 80 hadi 100 kila mwezi za Counter Books Q4 na Q2. Bei ya kiwandani ya OMEGA inatupa faida nzuri, na ankara za EFD zinafika pamoja na mzigo kwenye basi.'
-                  : 'We procure 80 to 100 cartons monthly of Q4 and Q2 counter books. OMEGA factory wholesale rates provide great margins, and EFD receipts always accompany our bus parcel dispatch.',
-              },
-              {
-                name: 'Grace Mfinanga',
-                role: 'Procurement Officer, College of Business',
-                location: 'Arusha, Tanzania',
-                review: language === 'sw'
-                  ? 'Bahasha zao za kraft A4 ni nzito sana na hazipasuki hata zikijazwa mitihani au kumbukumbu za wanafunzi. Oda za dharura zinatufikia ndani ya masaa 24 kupitia basi la Mbeya–Arusha.'
-                  : 'Their A4 kraft bahasha envelopes are genuinely tear-proof even when loaded with examination records. Urgent replenishment orders reach us in under 24 hours via express bus logistics.',
-              },
-            ].map((rev, idx) => (
-              <div
-                key={idx}
-                className={`p-6 bg-[#FFFFFF] hover:bg-paper-base transition-all space-y-4 flex flex-col justify-between ${
-                  idx < 2 ? 'border-b md:border-b-0 md:border-r border-[#E5E7EB]' : ''
-                }`}
-              >
-                <div className="space-y-3">
-                  <div className="flex">
+          {/* 3 Review Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+            
+            {/* Review 1 */}
+            <div className="p-6 rounded-2xl bg-[#18181b] border border-white/10 space-y-4 shadow-xl flex flex-col justify-between hover:border-[#dc2626]/40 transition-colors">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex gap-1 text-[#dc2626]">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-[#DC2626] text-[#DC2626]" />
+                      <Star key={i} className="w-4 h-4 fill-[#dc2626] text-[#dc2626]" />
                     ))}
                   </div>
-                  <p className="text-xs text-charcoal-ink leading-relaxed italic font-normal">
-                    "{rev.review}"
-                  </p>
+                  <Quote className="w-5 h-5 text-[#dc2626]/40" />
                 </div>
-
-                <div className="pt-3 border-t border-[#E5E7EB]">
-                  <div className="font-heading font-bold text-xs text-charcoal-ink">{rev.name}</div>
-                  <div className="text-[11px] text-[#3F3F46] font-mono mt-0.5">{rev.role} · {rev.location}</div>
+                <p className="text-xs sm:text-sm text-stone-200 italic leading-relaxed">
+                  “Daftari la OMEGA Quire 3 lina karatasi ngumu sana na jalada lisilopinda. Linanisaidia sana kwenye mahesabu ya kila mwezi bila wino kupenya.”
+                </p>
+              </div>
+              <div className="pt-4 border-t border-white/10 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#dc2626] text-white font-black flex items-center justify-center text-xs shadow-md shrink-0">
+                  EK
+                </div>
+                <div className="min-w-0">
+                  <h4 className="text-xs sm:text-sm font-bold text-white truncate">Emanuel Kiwanga</h4>
+                  <div className="flex items-center gap-1.5 text-[11px] text-stone-400">
+                    <Building2 className="w-3 h-3 text-[#dc2626]" />
+                    <span className="truncate">Chief Accountant · Dar es Salaam</span>
+                  </div>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Review 2 */}
+            <div className="p-6 rounded-2xl bg-[#18181b] border border-white/10 space-y-4 shadow-xl flex flex-col justify-between hover:border-[#dc2626]/40 transition-colors">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex gap-1 text-[#dc2626]">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-[#dc2626] text-[#dc2626]" />
+                    ))}
+                  </div>
+                  <Quote className="w-5 h-5 text-[#dc2626]/40" />
+                </div>
+                <p className="text-xs sm:text-sm text-stone-200 italic leading-relaxed">
+                  “The quality of OMEGA stationery is unmatched. Our secondary school orders 200-page single line exercise books every term without fail.”
+                </p>
+              </div>
+              <div className="pt-4 border-t border-white/10 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#dc2626] text-white font-black flex items-center justify-center text-xs shadow-md shrink-0">
+                  GM
+                </div>
+                <div className="min-w-0">
+                  <h4 className="text-xs sm:text-sm font-bold text-white truncate">Grace Mhando</h4>
+                  <div className="flex items-center gap-1.5 text-[11px] text-stone-400">
+                    <GraduationCap className="w-3 h-3 text-[#dc2626]" />
+                    <span className="truncate">Head of Academics · Arusha</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Review 3 */}
+            <div className="p-6 rounded-2xl bg-[#18181b] border border-white/10 space-y-4 shadow-xl flex flex-col justify-between hover:border-[#dc2626]/40 transition-colors">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex gap-1 text-[#dc2626]">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-[#dc2626] text-[#dc2626]" />
+                    ))}
+                  </div>
+                  <Quote className="w-5 h-5 text-[#dc2626]/40" />
+                </div>
+                <p className="text-xs sm:text-sm text-stone-200 italic leading-relaxed">
+                  “Fast bus parcel dispatch to Mwanza! The kraft envelopes and ruled reams arrived safely packed in OMEGA branded cartons within 24 hours.”
+                </p>
+              </div>
+              <div className="pt-4 border-t border-white/10 flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#dc2626] text-white font-black flex items-center justify-center text-xs shadow-md shrink-0">
+                  JM
+                </div>
+                <div className="min-w-0">
+                  <h4 className="text-xs sm:text-sm font-bold text-white truncate">Joseph Mollel</h4>
+                  <div className="flex items-center gap-1.5 text-[11px] text-stone-400">
+                    <Store className="w-3 h-3 text-[#dc2626]" />
+                    <span className="truncate">Stationery Store Owner · Mwanza</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
 
-      {/* 9. TANZANIA PAYMENT & DELIVERY LOGISTICS STRIP (Centered 1360px) */}
-      <section className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#FFFFFF] rounded-[4px] p-6 sm:p-8 shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04)] border border-[#E5E7EB] text-left space-y-5">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-[#E5E7EB]">
-            <div>
-              <span className="text-[10px] font-mono font-bold text-[#B91C1C] uppercase tracking-widest block mb-0.5">
-                {language === 'sw' ? 'MALIPO & USAFIRISHAJI TANZANIA' : 'TANZANIA PAYMENTS & LOGISTICS'}
-              </span>
-              <h3 className="font-heading text-sm sm:text-base font-black text-charcoal-ink">
-                {language === 'sw'
-                  ? 'Mbinu za Malipo Rasmi na Usafirishaji wa Mabasi'
-                  : 'Approved Payment Channels & Bus Terminal Waybills'}
-              </h3>
-            </div>
-            <div className="text-xs text-charcoal-ink font-normal">
-              {language === 'sw' ? 'Stakabadhi halisi za TRA EFD zitatolewa' : 'Official TRA EFD tax invoices included with all orders'}
-            </div>
-          </div>
+      {/* ========================================================================= */}
+      {/* 9. VIP CONCIERGE & DIRECT FACTORY HOTLINES */}
+      {/* ========================================================================= */}
+      <section className="py-12 sm:py-16 bg-gradient-to-b from-[#18181b] via-[#111114] to-[#0a0a0c] text-white relative overflow-hidden">
+        {/* Ambient Backlight Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#dc2626]/10 blur-[100px] pointer-events-none rounded-full" />
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border border-[#E5E7EB] text-center">
-            {[
-              { label: 'M-Pesa', sub: 'Vodacom Lipa Namba', tag: 'Mobile Money' },
-              { label: 'Mixx by Yas', sub: 'Tigo Pesa Network', tag: 'Mobile Money' },
-              { label: 'Airtel Money', sub: 'Pay Direct to Till', tag: 'Mobile Money' },
-              { label: 'CRDB / NMB', sub: 'Bank Wire & Cheque', tag: 'Institutional' },
-              { label: 'Pay on Delivery', sub: 'Lipa Baada ya Mzigo', tag: 'Cash on Arrival' },
-              { label: 'Mabasi Mikoa 31', sub: 'Abood, Shabiby, BM', tag: 'Same-Day Dispatch' },
-            ].map((p, idx) => (
-              <div
-                key={idx}
-                className="p-4 bg-[#FFFFFF] hover:bg-paper-base border-r border-b border-[#E5E7EB] transition-all space-y-1"
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="p-6 sm:p-10 rounded-xl bg-white/[0.03] border border-white/10 shadow-2xl backdrop-blur-sm text-center space-y-5">
+            <span className="inline-flex items-center px-3 py-1 rounded-md bg-[#dc2626]/15 border border-[#dc2626]/30 text-xs font-bold uppercase tracking-wider text-[#ef4444] font-mono">
+              VIP CONCIERGE &amp; PRICE ALERTS
+            </span>
+            <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight">
+              {language === 'sw' ? 'Jiunge na OMEGA Stationery' : 'Connect with OMEGA Stationery'}
+            </h2>
+            <p className="text-xs sm:text-sm text-zinc-300 max-w-lg mx-auto">
+              {language === 'sw'
+                ? 'Pata taarifa za bei mpya za jumla, katalogi ya 2026 na ofa maalum za vifaa vya shule na ofisi.'
+                : 'Receive official 2026 wholesale catalogs, bulk school tender announcements, and factory-direct price updates.'}
+            </p>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                alert(language === 'sw' ? 'Asante! Tumepokea mawasiliano yako.' : 'Thank you! We received your details.');
+              }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-lg mx-auto pt-2 w-full"
+            >
+              <div className="relative flex-1 w-full">
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400 pointer-events-none" />
+                <input
+                  type="text"
+                  required
+                  placeholder={language === 'sw' ? 'Namba ya simu au email...' : 'Enter your email or phone number...'}
+                  className="w-full pl-10 pr-4 py-3 rounded-lg text-xs sm:text-sm bg-black/50 text-white placeholder:text-zinc-500 border border-white/15 focus:outline-none focus:border-[#dc2626] focus:ring-1 focus:ring-[#dc2626] backdrop-blur-xs font-sans transition-all"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full sm:w-auto px-7 py-3 rounded-lg bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] hover:from-[#991b1b] hover:via-[#b91c1c] hover:to-[#dc2626] text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-lg shadow-red-900/30 shrink-0 flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
               >
-                <span className="text-[9px] font-mono font-bold text-[#B91C1C] uppercase tracking-wider block">
-                  {p.tag}
-                </span>
-                <div className="font-heading font-bold text-xs text-charcoal-ink">{p.label}</div>
-                <div className="text-[10px] text-[#3F3F46]">{p.sub}</div>
-              </div>
-            ))}
+                <span>{language === 'sw' ? 'WASILIANA' : 'SUBSCRIBE'}</span>
+                <ArrowUpRight className="w-4 h-4" />
+              </button>
+            </form>
+
+            <div className="flex flex-wrap items-center justify-center gap-4 pt-1 text-[11px] text-zinc-400">
+              <span className="flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#dc2626]" />
+                {language === 'sw' ? 'Hakuna barua taka (No Spam)' : 'Zero Spam Guarantee'}
+              </span>
+              <span className="hidden sm:inline text-zinc-600">•</span>
+              <span className="flex items-center gap-1.5">
+                <Package className="w-3.5 h-3.5 text-[#dc2626]" />
+                {language === 'sw' ? 'Katalogi ya 2026 papo hapo' : 'Instant 2026 Price Catalog'}
+              </span>
+            </div>
           </div>
         </div>
       </section>
-
-      {/* 10. CONTACT & FACTORY LOCATION (Centered 1360px) */}
-      <section className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#FFFFFF] rounded-[4px] border border-[#E5E7EB] shadow-[0_2px_8px_-2px_rgba(17,17,19,0.04)] text-left grid grid-cols-1 md:grid-cols-3">
-          <div className="space-y-3 p-6 sm:p-8 border-b md:border-b-0 md:border-r border-[#E5E7EB] hover:bg-paper-base transition-colors">
-            <div className="w-10 h-10 rounded-[2px] bg-[#111113] text-[#FFFFFF] flex items-center justify-center">
-              <Building2 className="w-5 h-5 text-[#DC2626]" />
-            </div>
-            <h4 className="font-heading font-black text-sm text-charcoal-ink">
-              {language === 'sw' ? 'Kiwanda cha Mbeya (Headquarters)' : 'Mbeya Factory (Headquarters)'}
-            </h4>
-            <p className="text-xs text-charcoal-ink leading-relaxed font-normal">
-              Soweto SIDO Industrial Estate, Plot 14-B,<br />
-              Mbeya Municipal, Tanzania.<br />
-              <span className="font-mono text-charcoal-ink font-bold block mt-1.5">Mon – Sat: 8:00 AM – 5:30 PM</span>
-            </p>
-          </div>
-
-          <div className="space-y-3 p-6 sm:p-8 border-b md:border-b-0 md:border-r border-[#E5E7EB] hover:bg-paper-base transition-colors">
-            <div className="w-10 h-10 rounded-[2px] bg-[#111113] text-[#FFFFFF] flex items-center justify-center">
-              <Truck className="w-5 h-5 text-[#DC2626]" />
-            </div>
-            <h4 className="font-heading font-black text-sm text-charcoal-ink">
-              {language === 'sw' ? 'Ghala la Dar es Salaam' : 'Dar es Salaam Regional Depot'}
-            </h4>
-            <p className="text-xs text-charcoal-ink leading-relaxed font-normal">
-              Plot 30 Block F Kilwa Road / Kariakoo Depot,<br />
-              Dar es Salaam, Tanzania.<br />
-              <span className="font-mono text-charcoal-ink font-bold block mt-1.5">Same-Day Bus Terminal Handoff</span>
-            </p>
-          </div>
-
-          <div className="space-y-3 p-6 sm:p-8 hover:bg-paper-base transition-colors">
-            <div className="w-10 h-10 rounded-[2px] bg-[#111113] text-[#FFFFFF] flex items-center justify-center">
-              <Phone className="w-5 h-5 text-[#DC2626]" />
-            </div>
-            <h4 className="font-heading font-black text-sm text-charcoal-ink">
-              {language === 'sw' ? 'Mawasiliano ya Haraka' : 'Direct Wholesale Inquiries'}
-            </h4>
-            <p className="text-xs text-charcoal-ink leading-relaxed font-normal">
-              Phone: +255 715 268 391 / +255 746 268 391<br />
-              Email: indigoprinter06423@gmail.com<br />
-              <span className="font-mono text-[#B91C1C] font-bold block mt-1.5">WhatsApp Active 24/7</span>
-            </p>
-          </div>
-        </div>
-      </section>
-      </div>
 
     </div>
   );

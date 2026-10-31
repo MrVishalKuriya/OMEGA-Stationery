@@ -56,38 +56,38 @@ export const AccountPage: React.FC = () => {
 
   if (!currentUser) {
     return (
-      <div className="min-h-[75vh] flex items-center justify-center py-16 px-4 bg-[#F7F7F7]">
+      <div className="min-h-[75vh] flex items-center justify-center py-16 px-4 bg-[#fafafa]">
         <SEOHead
           title="Account Portal | OMEGA Stationery & Books"
           description="Sign in or register to access your OMEGA member account, order history and wholesale pricing."
         />
-        <div className="max-w-md w-full bg-white rounded-[2px] border border-[#EEEEEE] p-8 text-center space-y-6">
-          <div className="w-16 h-16 rounded-[2px] bg-[#F7F7F7] border border-[#EEEEEE] text-[#111113] flex items-center justify-center mx-auto">
+        <div className="max-w-md w-full bg-white rounded-[16px] border border-[#e4e4e7] shadow-boutique p-8 text-center space-y-6">
+          <div className="w-16 h-16 rounded-full bg-[#fafafa] border border-[#e4e4e7] text-[#111113] flex items-center justify-center mx-auto shadow-xs">
             <User className="w-8 h-8" />
           </div>
           <div>
-            <h1 className="text-2xl font-extrabold text-[#111113]">
+            <h1 className="text-2xl font-serif font-bold text-[#14182B]">
               Sign In to Your Account
             </h1>
-            <p className="text-xs text-[#77767B] mt-2">
+            <p className="text-xs text-[#6B7280] mt-2">
               Sign in to view your real-time order history, download business VAT receipts, and manage institutional quotas.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-3 pt-2">
             <Link
               to="/login"
-              className="py-3 px-4 rounded-[2px] bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5"
+              className="py-3 px-4 rounded-[8px] btn-indra-primary font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs"
             >
               Sign In
             </Link>
             <Link
               to="/register"
-              className="py-3 px-4 rounded-[2px] bg-white border border-[#E5E7EB] hover:bg-[#F7F7F7] font-bold text-xs uppercase tracking-wider text-[#111113] flex items-center justify-center gap-1.5"
+              className="py-3 px-4 rounded-[8px] bg-white border border-[#e4e4e7] hover:bg-[#fafafa] font-bold text-xs text-[#111113] flex items-center justify-center gap-1.5"
             >
               Register
             </Link>
           </div>
-          <div className="text-[11px] text-[#77767B] pt-2 border-t border-[#EEEEEE]">
+          <div className="text-[11px] text-[#6B7280] pt-2 border-t border-[#e4e4e7]">
             Fast 1-click test login available for Wholesale (Mussa Juma) &amp; School (Dar Academy).
           </div>
         </div>
@@ -110,7 +110,7 @@ export const AccountPage: React.FC = () => {
       : 'Standard Retail Pricing';
 
   return (
-    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 bg-[#F7F7F7]">
+    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 bg-[#fafafa]">
       <SEOHead
         title={`${currentUser.name} | Account Profile | OMEGA Stationery`}
         description="Manage your OMEGA account, real-time orders, and procurement discounts."
@@ -118,37 +118,31 @@ export const AccountPage: React.FC = () => {
 
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Profile Hero Header Card */}
-        <div className="bg-white rounded-[2px] border border-[#EEEEEE] overflow-hidden">
-          <div className="relative overflow-hidden bg-[#1B1B1E] text-white p-6 sm:p-8 border-b-4 border-[#DC2626]">
-            <div
-              className="absolute inset-0 bg-cover bg-center opacity-75 brightness-110 contrast-105 pointer-events-none"
-              style={{ backgroundImage: `url('/hero-desk-bg.jpg')` }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#111113]/65 via-[#111113]/45 to-[#111113]/20 pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-[#F9F8F6]/15 to-white/25 mix-blend-soft-light pointer-events-none" />
-            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+        <div className="bg-white rounded-[16px] border border-[#e4e4e7] shadow-boutique overflow-hidden">
+          <div className="bg-[#111113] text-white p-6 sm:p-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
               <div className="flex items-center gap-4 sm:gap-5">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[2px] bg-[#DC2626] text-white font-bold text-xl sm:text-2xl flex items-center justify-center font-mono shrink-0">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white text-[#111113] font-bold text-xl sm:text-2xl flex items-center justify-center font-mono shrink-0 shadow-md ring-4 ring-white/10">
                   {currentUser.initials}
                 </div>
                 <div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <h1 className="text-xl sm:text-2xl font-extrabold text-white">
+                    <h1 className="text-xl sm:text-2xl font-serif font-bold text-white">
                       {currentUser.name}
                     </h1>
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-[2px] text-[11px] font-bold bg-[#DC2626] text-white">
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#dc2626] text-white">
                       <ShieldCheck className="w-3.5 h-3.5" />
                       {tierName}
                     </span>
                   </div>
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-white/85 mt-1 font-mono">
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-stone-300 mt-1 font-mono">
                     <span className="flex items-center gap-1">
-                      <Mail className="w-3.5 h-3.5 text-[#DC2626]" />
+                      <Mail className="w-3.5 h-3.5 text-[#dc2626]" />
                       {currentUser.email}
                     </span>
                     {currentUser.phone && (
                       <span className="flex items-center gap-1">
-                        <Phone className="w-3.5 h-3.5 text-[#DC2626]" />
+                        <Phone className="w-3.5 h-3.5 text-[#dc2626]" />
                         {currentUser.phone}
                       </span>
                     )}
@@ -161,7 +155,7 @@ export const AccountPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="px-4 py-2.5 rounded-[2px] bg-white/15 hover:bg-[#DC2626] text-white border border-white/25 backdrop-blur-xs text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-colors cursor-pointer"
+                  className="px-4 py-2.5 rounded-[8px] bg-white/10 hover:bg-red-600/30 text-white hover:text-red-200 border border-white/20 text-xs font-bold flex items-center gap-2 transition-colors"
                 >
                   <LogOut className="w-4 h-4" />
                   <span>Log Out</span>
@@ -170,41 +164,41 @@ export const AccountPage: React.FC = () => {
             </div>
 
             {/* Quick Stats Strip */}
-            <div className="relative z-10 grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-white/15 text-xs">
-              <div className="p-2.5 rounded-[2px] bg-black/35 backdrop-blur-xs border border-white/15">
-                <div className="text-white/75 text-[10px] uppercase font-mono">Orders Placed</div>
-                <div className="text-lg font-bold font-mono text-[#DC2626] mt-0.5">{demoOrders.length}</div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6 pt-6 border-t border-white/10 text-xs">
+              <div className="p-2.5 rounded-[8px] bg-white/5 border border-white/10">
+                <div className="text-stone-300 text-[10px] uppercase font-mono">Orders Placed</div>
+                <div className="text-lg font-bold font-mono text-[#dc2626] mt-0.5">{demoOrders.length}</div>
               </div>
-              <div className="p-2.5 rounded-[2px] bg-black/35 backdrop-blur-xs border border-white/15">
-                <div className="text-white/75 text-[10px] uppercase font-mono">Active Tier</div>
+              <div className="p-2.5 rounded-[8px] bg-white/5 border border-white/10">
+                <div className="text-stone-300 text-[10px] uppercase font-mono">Active Tier</div>
                 <div className="text-xs font-bold text-white mt-1 truncate">{discountRate}</div>
               </div>
-              <div className="p-2.5 rounded-[2px] bg-black/35 backdrop-blur-xs border border-white/15">
-                <div className="text-white/75 text-[10px] uppercase font-mono">Session State</div>
-                <div className="text-xs font-bold text-emerald-400 mt-1 flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                  Active Session
+              <div className="p-2.5 rounded-[8px] bg-white/5 border border-white/10">
+                <div className="text-stone-300 text-[10px] uppercase font-mono">Session State</div>
+                <div className="text-xs font-bold text-emerald-300 mt-1 flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  30-Day Cookie
                 </div>
               </div>
-              <div className="p-2.5 rounded-[2px] bg-black/35 backdrop-blur-xs border border-white/15">
-                <div className="text-white/75 text-[10px] uppercase font-mono">Account Status</div>
+              <div className="p-2.5 rounded-[8px] bg-white/5 border border-white/10">
+                <div className="text-stone-300 text-[10px] uppercase font-mono">Backend Database</div>
                 <div className="text-xs font-bold text-white mt-1 flex items-center gap-1">
-                  <Database className="w-3.5 h-3.5 text-[#DC2626]" />
-                  <span>Verified B2B</span>
+                  <Database className="w-3.5 h-3.5 text-[#dc2626]" />
+                  <span>{isBackendOnline ? 'MongoDB Atlas' : 'Local Storage DB'}</span>
                 </div>
               </div>
             </div>
           </div>
 
           {/* Navigation Tabs */}
-          <div className="flex border-b border-[#EEEEEE] overflow-x-auto bg-[#FFFFFF] px-4">
+          <div className="flex border-b border-[#e4e4e7] overflow-x-auto bg-[#fafafa] px-4">
             <button
               type="button"
               onClick={() => handleTabChange('orders')}
-              className={`py-3.5 px-4 font-bold text-xs uppercase tracking-wider flex items-center gap-2 border-b-2 whitespace-nowrap transition-colors cursor-pointer ${
+              className={`py-3.5 px-4 font-bold text-xs flex items-center gap-2 border-b-2 whitespace-nowrap transition-colors ${
                 activeTab === 'orders'
-                  ? 'border-[#DC2626] text-[#111113]'
-                  : 'border-transparent text-[#77767B] hover:text-[#111113]'
+                  ? 'border-[#111113] text-[#111113]'
+                  : 'border-transparent text-[#6B7280] hover:text-[#14182B]'
               }`}
             >
               <Package className="w-4 h-4" />
@@ -214,10 +208,10 @@ export const AccountPage: React.FC = () => {
             <button
               type="button"
               onClick={() => handleTabChange('profile')}
-              className={`py-3.5 px-4 font-bold text-xs uppercase tracking-wider flex items-center gap-2 border-b-2 whitespace-nowrap transition-colors cursor-pointer ${
+              className={`py-3.5 px-4 font-bold text-xs flex items-center gap-2 border-b-2 whitespace-nowrap transition-colors ${
                 activeTab === 'profile'
-                  ? 'border-[#DC2626] text-[#111113]'
-                  : 'border-transparent text-[#77767B] hover:text-[#111113]'
+                  ? 'border-[#111113] text-[#111113]'
+                  : 'border-transparent text-[#6B7280] hover:text-[#14182B]'
               }`}
             >
               <User className="w-4 h-4" />
@@ -227,10 +221,10 @@ export const AccountPage: React.FC = () => {
             <button
               type="button"
               onClick={() => handleTabChange('tier')}
-              className={`py-3.5 px-4 font-bold text-xs uppercase tracking-wider flex items-center gap-2 border-b-2 whitespace-nowrap transition-colors cursor-pointer ${
+              className={`py-3.5 px-4 font-bold text-xs flex items-center gap-2 border-b-2 whitespace-nowrap transition-colors ${
                 activeTab === 'tier'
-                  ? 'border-[#DC2626] text-[#111113]'
-                  : 'border-transparent text-[#77767B] hover:text-[#111113]'
+                  ? 'border-[#111113] text-[#111113]'
+                  : 'border-transparent text-[#6B7280] hover:text-[#14182B]'
               }`}
             >
               <Building2 className="w-4 h-4" />
@@ -240,14 +234,14 @@ export const AccountPage: React.FC = () => {
             <button
               type="button"
               onClick={() => handleTabChange('security')}
-              className={`py-3.5 px-4 font-bold text-xs uppercase tracking-wider flex items-center gap-2 border-b-2 whitespace-nowrap transition-colors cursor-pointer ${
+              className={`py-3.5 px-4 font-bold text-xs flex items-center gap-2 border-b-2 whitespace-nowrap transition-colors ${
                 activeTab === 'security'
-                  ? 'border-[#DC2626] text-[#111113]'
-                  : 'border-transparent text-[#77767B] hover:text-[#111113]'
+                  ? 'border-[#111113] text-[#111113]'
+                  : 'border-transparent text-[#6B7280] hover:text-[#14182B]'
               }`}
             >
               <Key className="w-4 h-4" />
-              <span>Security &amp; Preferences</span>
+              <span>Security &amp; Backend Sync</span>
             </button>
           </div>
         </div>
@@ -257,7 +251,7 @@ export const AccountPage: React.FC = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-serif font-bold text-[#0f172a]">
+                <h2 className="text-lg font-serif font-bold text-[#14182B]">
                   Your Recent Purchases &amp; Orders
                 </h2>
                 <p className="text-xs text-[#6B7280]">
@@ -266,7 +260,7 @@ export const AccountPage: React.FC = () => {
               </div>
               <Link
                 to="/catalog"
-                className="py-2 px-3.5 rounded-[8px] bg-[#dc2626] hover:bg-[#b91c1c] text-white text-xs font-bold flex items-center gap-1.5 shadow-xs"
+                className="py-2 px-3.5 rounded-[8px] btn-indra-primary text-xs font-bold flex items-center gap-1.5 shadow-xs"
               >
                 <ShoppingBag className="w-3.5 h-3.5" />
                 <span>Shop Catalog</span>
@@ -277,14 +271,14 @@ export const AccountPage: React.FC = () => {
               <div className="bg-white rounded-[16px] border border-[#e4e4e7] p-12 text-center space-y-4">
                 <Package className="w-12 h-12 text-[#6B7280] mx-auto opacity-40" />
                 <div>
-                  <h3 className="text-base font-bold text-[#0f172a]">No Orders Yet</h3>
+                  <h3 className="text-base font-bold text-[#14182B]">No Orders Yet</h3>
                   <p className="text-xs text-[#6B7280] max-w-sm mx-auto mt-1">
                     You haven't placed any stationery orders yet. Browse our 35+ premium items including calculators, register books, and geometry kits.
                   </p>
                 </div>
                 <Link
                   to="/catalog"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[8px] bg-[#dc2626] hover:bg-[#b91c1c] text-white font-bold text-xs shadow-xs"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[8px] btn-indra-primary font-bold text-xs shadow-xs"
                 >
                   <span>Start Shopping</span>
                   <ArrowRight className="w-4 h-4" />
@@ -300,7 +294,7 @@ export const AccountPage: React.FC = () => {
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#e4e4e7]">
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="font-mono font-bold text-sm text-[#0f172a]">
+                          <span className="font-mono font-bold text-sm text-[#111113]">
                             {order.orderReference}
                           </span>
                           <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#2A9D8F]/10 text-[#2A9D8F] flex items-center gap-1">
@@ -314,7 +308,7 @@ export const AccountPage: React.FC = () => {
                       </div>
                       <div className="text-right">
                         <span className="text-xs text-[#6B7280] block font-mono">Total Paid</span>
-                        <span className="text-base font-bold text-[#0f172a] font-mono">
+                        <span className="text-base font-bold text-[#14182B] font-mono">
                           TZS {order.totalAmount.toLocaleString()}
                         </span>
                       </div>
@@ -328,10 +322,10 @@ export const AccountPage: React.FC = () => {
                           className="flex items-center justify-between text-xs py-1 px-2 rounded-[6px] bg-[#fafafa]"
                         >
                           <div className="flex items-center gap-2">
-                            <span className="font-mono text-[11px] font-bold text-[#0f172a]">
+                            <span className="font-mono text-[11px] font-bold text-[#111113]">
                               {item.quantity}x
                             </span>
-                            <span className="font-medium text-[#0f172a]">{item.name}</span>
+                            <span className="font-medium text-[#14182B]">{item.name}</span>
                           </div>
                           <span className="font-mono text-[#6B7280]">
                             TZS {item.lineTotal.toLocaleString()}
@@ -343,13 +337,13 @@ export const AccountPage: React.FC = () => {
                     {/* Logistics & Delivery Info */}
                     <div className="flex flex-wrap items-center justify-between gap-2 pt-2 text-[11px] text-[#6B7280] border-t border-[#e4e4e7]/60">
                       <span className="flex items-center gap-1 font-medium">
-                        <Truck className="w-3.5 h-3.5 text-[#0f172a]" />
+                        <Truck className="w-3.5 h-3.5 text-[#111113]" />
                         Fulfillment: {order.fulfillmentType} ({order.deliveryAddress || 'Kariakoo Flagship Store Pickup'})
                       </span>
                       <button
                         type="button"
                         onClick={() => showToast(`Invoice generated for ${order.orderReference}`)}
-                        className="text-[#0f172a] font-bold hover:underline flex items-center gap-1"
+                        className="text-[#111113] font-bold hover:underline flex items-center gap-1"
                       >
                         <FileText className="w-3.5 h-3.5" />
                         Download PDF VAT Receipt
@@ -366,7 +360,7 @@ export const AccountPage: React.FC = () => {
         {activeTab === 'profile' && (
           <div className="bg-white rounded-[16px] border border-[#e4e4e7] p-6 sm:p-8 space-y-6 shadow-xs">
             <div>
-              <h2 className="text-lg font-serif font-bold text-[#0f172a]">
+              <h2 className="text-lg font-serif font-bold text-[#14182B]">
                 Profile &amp; Default Delivery Address
               </h2>
               <p className="text-xs text-[#6B7280] mt-1">
@@ -376,29 +370,29 @@ export const AccountPage: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-xs">
               <div className="space-y-1">
-                <label className="font-bold text-[#0f172a] block">Full Name</label>
-                <div className="p-3 rounded-[8px] bg-[#fafafa] border border-[#e4e4e7] font-medium text-[#0f172a]">
+                <label className="font-bold text-[#14182B] block">Full Name</label>
+                <div className="p-3 rounded-[8px] bg-[#fafafa] border border-[#e4e4e7] font-medium text-[#14182B]">
                   {currentUser.name}
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="font-bold text-[#0f172a] block">Email Address</label>
-                <div className="p-3 rounded-[8px] bg-[#fafafa] border border-[#e4e4e7] font-mono text-[#0f172a]">
+                <label className="font-bold text-[#14182B] block">Email Address</label>
+                <div className="p-3 rounded-[8px] bg-[#fafafa] border border-[#e4e4e7] font-mono text-[#14182B]">
                   {currentUser.email}
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="font-bold text-[#0f172a] block">Primary Phone / WhatsApp</label>
-                <div className="p-3 rounded-[8px] bg-[#fafafa] border border-[#e4e4e7] font-mono text-[#0f172a]">
+                <label className="font-bold text-[#14182B] block">Primary Phone / WhatsApp</label>
+                <div className="p-3 rounded-[8px] bg-[#fafafa] border border-[#e4e4e7] font-mono text-[#14182B]">
                   {currentUser.phone || '+255 715 268 391'}
                 </div>
               </div>
 
               <div className="space-y-1">
-                <label className="font-bold text-[#0f172a] block">Member Category</label>
-                <div className="p-3 rounded-[8px] bg-[#fafafa] border border-[#e4e4e7] font-bold text-[#0f172a]">
+                <label className="font-bold text-[#14182B] block">Member Category</label>
+                <div className="p-3 rounded-[8px] bg-[#fafafa] border border-[#e4e4e7] font-bold text-[#111113]">
                   {tierName}
                 </div>
               </div>
@@ -408,7 +402,7 @@ export const AccountPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => showToast('Profile details are synced and up to date.')}
-                className="py-2.5 px-4 rounded-[8px] bg-[#dc2626] hover:bg-[#b91c1c] text-white font-bold text-xs shadow-xs"
+                className="py-2.5 px-4 rounded-[8px] btn-indra-primary font-bold text-xs shadow-xs"
               >
                 Save Changes
               </button>
@@ -420,7 +414,7 @@ export const AccountPage: React.FC = () => {
         {activeTab === 'tier' && (
           <div className="bg-white rounded-[16px] border border-[#e4e4e7] p-6 sm:p-8 space-y-6 shadow-xs">
             <div>
-              <h2 className="text-lg font-serif font-bold text-[#0f172a]">
+              <h2 className="text-lg font-serif font-bold text-[#14182B]">
                 Account Tier Privileges &amp; Commercial Terms
               </h2>
               <p className="text-xs text-[#6B7280] mt-1">
@@ -430,30 +424,30 @@ export const AccountPage: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="p-4 rounded-[12px] bg-[#fafafa] border border-[#e4e4e7] space-y-2">
-                <div className="w-8 h-8 rounded-full bg-[#dc2626] text-[#dc2626] flex items-center justify-center font-bold">
+                <div className="w-8 h-8 rounded-full bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold">
                   %
                 </div>
-                <h3 className="font-bold text-sm text-[#0f172a]">Tier Discount</h3>
+                <h3 className="font-bold text-sm text-[#14182B]">Tier Discount</h3>
                 <p className="text-xs text-[#6B7280]">
                   Enjoy {currentUser.accountType === 'wholesale' ? '15%' : currentUser.accountType === 'school' ? '18%' : '5%'} automatic volume deduction on eligible cartons.
                 </p>
               </div>
 
               <div className="p-4 rounded-[12px] bg-[#fafafa] border border-[#e4e4e7] space-y-2">
-                <div className="w-8 h-8 rounded-full bg-[#dc2626] text-[#dc2626] flex items-center justify-center font-bold">
+                <div className="w-8 h-8 rounded-full bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold">
                   <FileText className="w-4 h-4" />
                 </div>
-                <h3 className="font-bold text-sm text-[#0f172a]">TRA EFD VAT Receipts</h3>
+                <h3 className="font-bold text-sm text-[#14182B]">TRA EFD VAT Receipts</h3>
                 <p className="text-xs text-[#6B7280]">
                   All institutional orders receive official Tanzania Revenue Authority (TRA) electronic fiscal receipts.
                 </p>
               </div>
 
               <div className="p-4 rounded-[12px] bg-[#fafafa] border border-[#e4e4e7] space-y-2">
-                <div className="w-8 h-8 rounded-full bg-[#dc2626] text-[#dc2626] flex items-center justify-center font-bold">
+                <div className="w-8 h-8 rounded-full bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold">
                   <Truck className="w-4 h-4" />
                 </div>
-                <h3 className="font-bold text-sm text-[#0f172a]">Priority Dispatch</h3>
+                <h3 className="font-bold text-sm text-[#14182B]">Priority Dispatch</h3>
                 <p className="text-xs text-[#6B7280]">
                   Orders packed and dispatched from Kariakoo within 2 hours for Dar es Salaam addresses.
                 </p>
@@ -466,7 +460,7 @@ export const AccountPage: React.FC = () => {
         {activeTab === 'security' && (
           <div className="bg-white rounded-[16px] border border-[#e4e4e7] p-6 sm:p-8 space-y-6 shadow-xs">
             <div>
-              <h2 className="text-lg font-serif font-bold text-[#0f172a]">
+              <h2 className="text-lg font-serif font-bold text-[#14182B]">
                 Security &amp; Connected Backend
               </h2>
               <p className="text-xs text-[#6B7280] mt-1">
@@ -477,7 +471,7 @@ export const AccountPage: React.FC = () => {
             <div className="space-y-4 text-xs">
               <div className="p-4 rounded-[10px] bg-[#fafafa] border border-[#e4e4e7] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                  <div className="font-bold text-[#0f172a]">Active Session Cookie</div>
+                  <div className="font-bold text-[#14182B]">Active Session Cookie</div>
                   <div className="text-[#6B7280] font-mono mt-0.5">
                     Session ID: {activeSession?.sessionId?.substring(0, 24) || 'omega-session-active'}...
                   </div>
@@ -489,7 +483,7 @@ export const AccountPage: React.FC = () => {
 
               <div className="p-4 rounded-[10px] bg-[#fafafa] border border-[#e4e4e7] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
-                  <div className="font-bold text-[#0f172a]">High-Performance Node.js &amp; MongoDB Atlas</div>
+                  <div className="font-bold text-[#14182B]">High-Performance Node.js &amp; MongoDB Atlas</div>
                   <div className="text-[#6B7280] font-mono mt-0.5">
                     Port 5000 / Render Cloud: {isBackendOnline ? 'Connected' : 'Local Standalone Mode'}
                   </div>
@@ -504,7 +498,7 @@ export const AccountPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => showToast('Password reset link sent to your email.')}
-                className="text-[#0f172a] font-bold text-xs hover:underline"
+                className="text-[#111113] font-bold text-xs hover:underline"
               >
                 Change Password
               </button>

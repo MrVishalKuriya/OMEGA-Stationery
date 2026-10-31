@@ -1,253 +1,226 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  X,
-  ShoppingBag,
-  Trash2,
-  Plus,
-  Minus,
-  ArrowRight,
-  MessageCircle,
-  Truck,
-  CheckCircle2,
-  ShieldCheck,
-} from 'lucide-react';
+import React from 'react';
+import { X, Trash2, ShoppingBag, ArrowRight, MessageCircle, Truck, CheckCircle2 } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '@/context/StoreContext';
+import { formatPrice } from '@/types/store';
 
 export const CartDrawer: React.FC = () => {
   const {
+    isCartDrawerOpen,
+    setIsCartDrawerOpen,
     detailedCart,
     cartItemCount,
     subtotal,
     estimatedDelivery,
     cartTotal,
-    isCartDrawerOpen,
-    setIsCartDrawerOpen,
     updateCartQuantity,
     removeFromCart,
+    clearCart,
     storeConfig,
     language,
   } = useStore();
 
-  const currency = storeConfig.currencySymbol || 'TSh';
-  const freeShippingThreshold = 150000;
-  const shippingProgress = Math.min(100, Math.round((subtotal / freeShippingThreshold) * 100));
-  const remainingForFreeShipping = Math.max(0, freeShippingThreshold - subtotal);
-
-  // Close on Escape key
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && isCartDrawerOpen) {
-        setIsCartDrawerOpen(false);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isCartDrawerOpen, setIsCartDrawerOpen]);
-
-  // Prevent body scroll when open
-  useEffect(() => {
-    if (isCartDrawerOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isCartDrawerOpen]);
+  const navigate = useNavigate();
 
   if (!isCartDrawerOpen) return null;
 
-  const cleanWhatsappDigits = (storeConfig.whatsappNumber || '255715268391').replace(/\D/g, '');
+  const currency = storeConfig.currencySymbol || 'TSh';
+  const freeThreshold = storeConfig.freeDeliveryThreshold || 250000;
+  const progressPercent = Math.min(100, Math.round((subtotal / freeThreshold) * 100));
+  const remainingForFree = Math.max(0, freeThreshold - subtotal);
 
-  const generateQuickWhatsAppUrl = () => {
-    const lines = [
-      `*${storeConfig.businessName} — Quick Order*`,
-      `----------------------------------------`,
-      ...detailedCart.map(
-        (item, idx) =>
-          `${idx + 1}. ${item.product.name} (${item.product.sku})\n   Qty: ${item.quantity} × ${currency} ${item.effectiveUnitPrice.toLocaleString()} = ${currency} ${item.lineTotal.toLocaleString()}`
-      ),
-      `----------------------------------------`,
-      `*Total: ${currency} ${cartTotal.toLocaleString()}*`,
-      `Please confirm availability and delivery schedule.`,
-    ];
-    return `https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(lines.join('\n'))}`;
+  // Formatted WhatsApp order message
+  const cleanWhatsappDigits = storeConfig.whatsappNumber.replace(/\D/g, '');
+  const itemsText = detailedCart
+    .map(
+      (item, idx) =>
+        `${idx + 1}. ${item.product.name} (SKU: ${item.product.sku}) - Qty: ${
+          item.quantity
+        } × ${currency} ${item.effectiveUnitPrice.toLocaleString()} = ${currency} ${item.lineTotal.toLocaleString()}`
+    )
+    .join('\n');
+
+  const whatsappCheckoutMessage = encodeURIComponent(
+    `*OMEGA STATIONERY ORDER ENQUIRY*\n` +
+      `----------------------------------------\n` +
+      `Items:\n${itemsText}\n\n` +
+      `Subtotal: ${currency} ${subtotal.toLocaleString()}\n` +
+      `Estimated Delivery: ${
+        estimatedDelivery === 0 ? 'FREE' : `${currency} ${estimatedDelivery.toLocaleString()}`
+      }\n` +
+      `*Total: ${currency} ${cartTotal.toLocaleString()}*\n` +
+      `----------------------------------------\n` +
+      `Please confirm stock availability and dispatch time to Dar es Salaam / Upcountry.`
+  );
+
+  const whatsappCheckoutUrl = `https://wa.me/${cleanWhatsappDigits}?text=${whatsappCheckoutMessage}`;
+
+  const handleCheckoutPage = () => {
+    setIsCartDrawerOpen(false);
+    navigate('/cart');
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex justify-end">
-      {/* Backdrop */}
+    <div
+      role="dialog"
+      aria-modal="true"
+      className="fixed inset-0 z-50 overflow-hidden bg-black/60 backdrop-blur-xs flex justify-end animate-fadeIn"
+      onClick={() => setIsCartDrawerOpen(false)}
+    >
       <div
-        className="fixed inset-0 bg-[#111113]/65 backdrop-blur-sm transition-opacity"
-        onClick={() => setIsCartDrawerOpen(false)}
-        aria-hidden="true"
-      />
-
-      {/* Drawer Panel - Global OMEGA Charcoal & Paper Theme */}
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label={language === 'sw' ? 'Kikapu chako' : 'Shopping Bag'}
-        className="relative w-full max-w-md bg-paper-base text-charcoal-ink h-full shadow-2xl flex flex-col z-10 animate-in slide-in-from-right duration-300 border-l border-[#E7E5E0]"
+        className="relative w-full max-w-md bg-[#fafafa] h-full shadow-2xl flex flex-col justify-between overflow-hidden animate-slideInRight border-l border-[#e4e4e7]"
+        onClick={(e) => e.stopPropagation()}
       >
-        {/* Header - Global OMEGA Charcoal (#111113) & Crimson (#DC2626) */}
-        <div className="px-6 py-5 bg-[#111113] text-white border-b-2 border-[#DC2626] flex items-center justify-between">
-          <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-[4px] bg-[#DC2626] flex items-center justify-center text-white shadow-sm shrink-0">
-              <ShoppingBag className="w-5 h-5" />
+        {/* Drawer Header: Deep Studio Brown #111113 */}
+        <div className="bg-[#111113] text-white px-5 py-4 border-b border-[#3b342e] flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-[#dc2626] flex items-center justify-center text-white shadow-xs">
+              <ShoppingBag className="w-4 h-4 text-white" />
             </div>
             <div>
-              <h2 className="font-display font-bold text-white text-lg tracking-wider uppercase leading-tight">
-                {language === 'sw' ? 'Kikapu Chako' : 'Shopping Bag'}
+              <h2 className="text-sm font-bold tracking-wide uppercase font-heading text-white">
+                Shopping Bag
               </h2>
-              <p className="text-xs font-mono font-bold text-[#E4E4E7] mt-0.5">
-                {cartItemCount}{' '}
-                {language === 'sw'
-                  ? 'bidhaa zimechaguliwa'
-                  : cartItemCount === 1
-                  ? 'item'
-                  : 'items'}
-              </p>
+              <span className="text-[11px] text-[#e5a962] font-mono">
+                {cartItemCount} {cartItemCount === 1 ? 'item' : 'items'}
+              </span>
             </div>
           </div>
           <button
             onClick={() => setIsCartDrawerOpen(false)}
-            className="p-2 rounded-[4px] bg-[#1C1C20] hover:bg-[#DC2626] text-white transition-colors border border-[#2E2E34] cursor-pointer"
-            aria-label="Close shopping bag"
+            className="p-1.5 rounded-full text-stone-300 hover:text-white hover:bg-white/10 transition-colors"
+            aria-label="Close cart"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Free Delivery Progress Bar */}
-        {detailedCart.length > 0 && (
-          <div className="px-6 py-3.5 bg-white border-b border-[#E7E5E0]">
-            <div className="flex items-center justify-between text-xs mb-2">
-              <span className="flex items-center gap-1.5 font-bold text-charcoal-ink">
-                <Truck className="w-4 h-4 text-[#DC2626]" />
-                {remainingForFreeShipping === 0 ? (
-                  <span className="text-[#15803D] flex items-center gap-1 font-bold">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    {language === 'sw'
-                      ? 'Usafiri wa BURE umefunguliwa!'
-                      : 'You unlocked FREE Delivery!'}
-                  </span>
-                ) : (
-                  <span>
-                    {language === 'sw'
-                      ? `Ongeza ${currency} ${remainingForFreeShipping.toLocaleString()} kupata usafiri BURE`
-                      : `Add ${currency} ${remainingForFreeShipping.toLocaleString()} more for FREE Delivery`}
-                  </span>
-                )}
-              </span>
-              <span className="font-mono font-bold text-[#B91C1C]">{shippingProgress}%</span>
-            </div>
-            <div className="w-full h-2 bg-[#E7E5E0] rounded-full overflow-hidden">
-              <div
-                className={`h-full transition-all duration-500 rounded-full ${
-                  remainingForFreeShipping === 0 ? 'bg-[#15803D]' : 'bg-[#DC2626]'
-                }`}
-                style={{ width: `${shippingProgress}%` }}
-              />
-            </div>
+        {/* Free Shipping Progress Meter */}
+        <div className="bg-white border-b border-[#e4e4e7] px-5 py-3 shadow-2xs">
+          <div className="flex items-center justify-between text-xs font-semibold text-[#18181b] mb-1.5">
+            <span className="flex items-center gap-1.5 font-bold">
+              <Truck className="w-4 h-4 text-[#111113]" />
+              {remainingForFree > 0 ? (
+                <span>
+                  Add <strong className="text-[#dc2626]">{formatPrice(remainingForFree, currency)}</strong> for FREE Delivery!
+                </span>
+              ) : (
+                <span className="text-[#2A9D8F] flex items-center gap-1">
+                  <CheckCircle2 className="w-4 h-4" /> You unlocked FREE Delivery!
+                </span>
+              )}
+            </span>
+            <span className="font-mono text-[11px] text-[#111113] font-bold">{progressPercent}%</span>
           </div>
-        )}
+          <div className="w-full bg-[#f0eee9] rounded-full h-2 overflow-hidden">
+            <div
+              className="bg-gradient-to-r from-[#dc2626] to-[#2A9D8F] h-2 rounded-full transition-all duration-500"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+        </div>
 
-        {/* Cart Items Body */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-paper-base">
+        {/* Items List */}
+        <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-3.5">
           {detailedCart.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-center py-12">
-              <div className="w-20 h-20 rounded-full bg-white border border-[#E7E5E0] flex items-center justify-center mb-4 text-charcoal-ink shadow-sm">
-                <ShoppingBag className="w-9 h-9 text-[#DC2626]" />
+            <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-4">
+              <div className="w-16 h-16 rounded-full bg-white border border-[#e4e4e7] flex items-center justify-center text-[#a1a1aa] shadow-xs">
+                <ShoppingBag className="w-8 h-8 stroke-[1.5]" />
               </div>
-              <h3 className="font-display text-xl font-bold text-charcoal-ink mb-2">
-                {language === 'sw' ? 'Kikapu chako ni tupu' : 'Your shopping bag is empty'}
-              </h3>
-              <p className="text-sm text-[#3F3F46] font-medium max-w-xs mb-6 leading-relaxed">
-                {language === 'sw'
-                  ? 'Ongeza madaftari ya OMEGA, counter books, au bahasha za jumla na rejareja kuanza oda yako.'
-                  : 'Explore our catalog of OMEGA counter books, student exercise books, and stationery supplies.'}
-              </p>
-              <Link
-                to="/catalog"
-                onClick={() => setIsCartDrawerOpen(false)}
-                className="px-6 py-3 bg-[#DC2626] hover:bg-[#B91C1C] text-white font-bold text-xs uppercase tracking-wider rounded-[4px] transition-colors shadow-sm inline-flex items-center gap-2"
+              <div>
+                <h3 className="font-bold text-[#18181b] text-base font-heading">Your shopping bag is empty</h3>
+                <p className="text-xs text-[#a1a1aa] mt-1 max-w-xs">
+                  Explore our authentic OMEGA Counter Books, Exercise Books, and Bahasha envelopes.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsCartDrawerOpen(false);
+                  navigate('/catalog');
+                }}
+                className="px-6 py-2.5 rounded-full bg-[#111113] hover:bg-[#111113] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-sm"
               >
-                <span>{language === 'sw' ? 'Angalia Bidhaa' : 'Browse Catalog'}</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+                Browse Catalog
+              </button>
             </div>
           ) : (
             detailedCart.map((item) => (
               <div
                 key={item.product.id}
-                className="flex gap-4 p-4 rounded-[4px] bg-white border border-[#E7E5E0] hover:border-[#DC2626] transition-all shadow-sm"
+                className="flex gap-3.5 p-3.5 rounded-2xl bg-white border border-[#e4e4e7] shadow-2xs hover:border-[#dc2626] transition-all group"
               >
-                <Link
-                  to={`/product/${item.product.id}`}
-                  onClick={() => setIsCartDrawerOpen(false)}
-                  className="w-20 h-20 aspect-square rounded-lg bg-paper-base border border-[#E7E5E0] p-1.5 shrink-0 flex items-center justify-center overflow-hidden"
-                >
+                {/* Clean Product Thumbnail - pure white background, mix-blend-multiply, scale-110 to eliminate white letterboxing */}
+                <div className="w-16 h-16 rounded-xl bg-white p-1 border border-[#e4e4e7] shrink-0 flex items-center justify-center overflow-hidden">
                   <img
                     src={item.product.image}
                     alt={item.product.name}
-                    className="w-full h-full aspect-square object-cover rounded-lg"
+                    className="w-full h-full object-contain mix-blend-multiply scale-110 group-hover:scale-120 transition-transform duration-300"
+                    loading="lazy"
                   />
-                </Link>
+                </div>
 
                 <div className="flex-1 min-w-0 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-start justify-between gap-2">
-                      <Link
-                        to={`/product/${item.product.id}`}
-                        onClick={() => setIsCartDrawerOpen(false)}
-                        className="font-bold text-sm text-charcoal-ink hover:text-[#DC2626] transition-colors line-clamp-2 leading-snug"
-                      >
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0">
+                      <h4 className="text-xs sm:text-[13px] font-bold text-[#18181b] line-clamp-2 leading-snug">
                         {item.product.name}
-                      </Link>
-                      <button
-                        onClick={() => removeFromCart(item.product.id)}
-                        className="text-[#52525B] hover:text-[#DC2626] transition-colors p-1 -mr-1 shrink-0 cursor-pointer"
-                        aria-label={`Remove ${item.product.name}`}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                      </h4>
+                      <div className="flex items-center gap-2 mt-0.5 text-[10px] text-stone-500 font-mono">
+                        <span>SKU: {item.product.sku}</span>
+                        {item.product.category && (
+                          <>
+                            <span>·</span>
+                            <span className="text-[#dc2626] font-semibold">{item.product.category}</span>
+                          </>
+                        )}
+                      </div>
                     </div>
-                    <p className="text-[11px] text-[#3F3F46] font-mono font-semibold mt-0.5">
-                      SKU: {item.product.sku} ·{' '}
-                      <span className="text-[#B91C1C] font-bold">{item.product.category}</span>
-                    </p>
+
+                    <button
+                      type="button"
+                      onClick={() => removeFromCart(item.product.id)}
+                      className="text-stone-400 hover:text-[#d9534f] p-1 rounded-md hover:bg-stone-50 transition-colors shrink-0"
+                      title="Remove item"
+                      aria-label="Remove item"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
                   </div>
 
-                  <div className="flex items-center justify-between mt-3 pt-2 border-t border-[#E7E5E0]">
-                    {/* Quantity Stepper */}
-                    <div className="flex items-center border border-[#D4D2CD] rounded-[4px] bg-paper-base">
+                  <div className="flex items-center justify-between pt-2 mt-1 border-t border-stone-100">
+                    {/* Stepper with comfortable tap targets */}
+                    <div className="inline-flex items-center border border-[#e4e4e7] rounded-lg bg-[#fafafa]">
                       <button
+                        type="button"
                         onClick={() => updateCartQuantity(item.product.id, item.quantity - 1)}
-                        className="p-1.5 text-charcoal-ink hover:text-[#DC2626] hover:bg-white transition-colors cursor-pointer"
+                        className="w-7 h-7 flex items-center justify-center text-xs font-bold text-stone-600 hover:text-[#18181b] hover:bg-white transition-colors rounded-l-md"
                         aria-label="Decrease quantity"
                       >
-                        <Minus className="w-3.5 h-3.5" />
+                        -
                       </button>
-                      <span className="px-3 text-xs font-mono font-bold text-charcoal-ink">
+                      <span className="w-7 text-center text-xs font-mono font-bold text-[#18181b]">
                         {item.quantity}
                       </span>
                       <button
+                        type="button"
                         onClick={() => updateCartQuantity(item.product.id, item.quantity + 1)}
-                        className="p-1.5 text-charcoal-ink hover:text-[#DC2626] hover:bg-white transition-colors cursor-pointer"
+                        className="w-7 h-7 flex items-center justify-center text-xs font-bold text-stone-600 hover:text-[#18181b] hover:bg-white transition-colors rounded-r-md"
                         aria-label="Increase quantity"
                       >
-                        <Plus className="w-3.5 h-3.5" />
+                        +
                       </button>
                     </div>
 
-                    {/* Line Total */}
                     <div className="text-right">
-                      <span className="font-mono font-bold text-sm text-charcoal-ink">
-                        {currency} {item.lineTotal.toLocaleString()}
+                      <span className="text-xs sm:text-sm font-bold font-mono text-[#111113]">
+                        {formatPrice(item.lineTotal, currency)}
                       </span>
+                      {item.quantity > 1 && (
+                        <span className="text-[10px] text-stone-400 font-mono block">
+                          ({formatPrice(item.effectiveUnitPrice, currency)} ea)
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -256,76 +229,51 @@ export const CartDrawer: React.FC = () => {
           )}
         </div>
 
-        {/* Footer Actions */}
+        {/* Footer Summary & Checkout Actions */}
         {detailedCart.length > 0 && (
-          <div className="p-6 bg-white border-t-2 border-[#E7E5E0] space-y-4">
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs text-[#3F3F46] font-medium">
-                <span>{language === 'sw' ? 'Jumla Ndogo' : 'Subtotal'}</span>
-                <span className="font-mono font-bold text-charcoal-ink">
-                  {currency} {subtotal.toLocaleString()}
+          <div className="p-4 sm:p-5 bg-white border-t border-[#e4e4e7] space-y-3.5 shadow-md">
+            <div className="space-y-1.5 text-xs">
+              <div className="flex justify-between text-[#71717a]">
+                <span>Subtotal</span>
+                <span className="font-mono font-bold text-[#18181b]">
+                  {formatPrice(subtotal, currency)}
                 </span>
               </div>
-              <div className="flex items-center justify-between text-xs text-[#3F3F46] font-medium">
-                <span>
-                  {language === 'sw'
-                    ? 'Usafiri (Dar es Salaam / Mikoani)'
-                    : 'Delivery (Dar es Salaam / Upcountry)'}
-                </span>
-                <span className="font-mono font-bold text-[#15803D]">
-                  {estimatedDelivery === 0
-                    ? language === 'sw'
-                      ? 'BURE'
-                      : 'FREE'
-                    : `${currency} ${estimatedDelivery.toLocaleString()}`}
+              <div className="flex justify-between text-[#71717a]">
+                <span>Delivery (Dar es Salaam / Upcountry)</span>
+                <span className="font-mono font-bold text-[#2A9D8F]">
+                  {estimatedDelivery === 0 ? 'FREE' : formatPrice(estimatedDelivery, currency)}
                 </span>
               </div>
-              <div className="flex items-center justify-between pt-2.5 border-t border-[#E7E5E0]">
-                <span className="font-display font-bold text-charcoal-ink text-base uppercase tracking-wide">
-                  {language === 'sw' ? 'Jumla Kuu' : 'Estimated Total'}
-                </span>
-                <span className="font-mono font-bold text-xl text-charcoal-ink">
-                  {currency} {cartTotal.toLocaleString()}
+              <div className="flex justify-between text-sm font-bold text-[#18181b] pt-2 border-t border-[#e4e4e7]">
+                <span className="font-heading">Estimated Total</span>
+                <span className="font-mono text-base sm:text-lg font-black text-[#111113]">
+                  {formatPrice(cartTotal, currency)}
                 </span>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-2.5">
+            <div className="space-y-2 pt-1">
+              {/* WhatsApp Checkout Button (Official WhatsApp Green #25D366) */}
               <a
-                href={generateQuickWhatsAppUrl()}
+                href={whatsappCheckoutUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-3.5 px-4 bg-[#25D366] hover:bg-[#1ebe5d] text-white font-bold text-xs uppercase tracking-wider rounded-[4px] flex items-center justify-center gap-2 transition-colors shadow-sm"
+                className="w-full py-3.5 px-4 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98]"
               >
-                <MessageCircle className="w-4 h-4 fill-white text-transparent" />
-                <span>
-                  {language === 'sw'
-                    ? 'Agiza Haraka kupitia WhatsApp'
-                    : 'Instant Order via WhatsApp'}
-                </span>
+                <MessageCircle className="w-4 h-4 fill-white" />
+                <span>Instant Order via WhatsApp</span>
               </a>
 
-              <Link
-                to="/cart"
-                onClick={() => setIsCartDrawerOpen(false)}
-                className="w-full py-3.5 px-4 bg-[#111113] hover:bg-[#DC2626] text-white font-bold text-xs uppercase tracking-wider rounded-[4px] flex items-center justify-center gap-2 transition-colors shadow-sm"
+              {/* View Full Cart Button (Architectural Studio Copper/Brown) */}
+              <button
+                type="button"
+                onClick={handleCheckoutPage}
+                className="w-full py-3.5 px-4 rounded-xl bg-[#111113] hover:bg-[#27272a] text-white text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-sm group active:scale-[0.98]"
               >
-                <span>
-                  {language === 'sw'
-                    ? 'Kagua Kikapu & Maelezo ya Ankara'
-                    : 'Review Cart & Invoice Details'}
-                </span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-
-            <div className="flex items-center justify-center gap-1.5 text-[11px] text-[#3F3F46] font-medium pt-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#DC2626]" />
-              <span>
-                {language === 'sw'
-                  ? 'Risiti rasmi ya EFD inatolewa kwa kila oda'
-                  : 'Official TRA EFD tax invoice included with every dispatch'}
-              </span>
+                <span>Review Cart &amp; Invoice Details</span>
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </button>
             </div>
           </div>
         )}
@@ -333,4 +281,5 @@ export const CartDrawer: React.FC = () => {
     </div>
   );
 };
+
 export default CartDrawer;

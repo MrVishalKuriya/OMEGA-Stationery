@@ -10,8 +10,7 @@ export type ProductCategory =
   | 'Office Supplies'
   | 'Packaging & Cartons'
   | 'Files & Folders'
-  | 'Bulk & Wholesale Paper'
-  | (string & {});
+  | 'Bulk & Wholesale Paper';
 
 export const PRODUCT_CATEGORIES: ProductCategory[] = [
   'Counter Books',
@@ -28,7 +27,7 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   'Bulk & Wholesale Paper',
 ];
 
-export type StockStatus = 'In Stock' | 'Low Stock' | 'Out of Stock' | (string & {});
+export type StockStatus = 'In Stock' | 'Low Stock' | 'Out of Stock';
 export type Language = 'en' | 'sw';
 
 export interface ProductSpecification {
@@ -133,7 +132,7 @@ export interface CustomerOrderInput {
   deliveryAddress: string;
   selectedWhatsAppIndex?: number;
   fulfillmentType: 'Home Delivery' | 'In-Store Pickup' | 'Upcountry Bus Parcel (Mikoani)';
-  paymentPreference: 'Cash on Delivery (COD)' | 'Mobile Money (M-Pesa / Mixx by Yas / Airtel Money)' | 'Mobile Money (M-Pesa / Tigo / Airtel)' | 'Bank Transfer (CRDB/NMB)' | 'Pay at Store Counter';
+  paymentPreference: 'Cash on Delivery (COD)' | 'Mobile Money (M-Pesa / Tigo / Airtel)' | 'Bank Transfer (CRDB/NMB)' | 'Pay at Store Counter';
   orderNotes: string;
 }
 

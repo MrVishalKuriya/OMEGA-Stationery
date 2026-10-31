@@ -412,10 +412,10 @@ export const MegaMenu: React.FC<MegaMenuProps> = ({ activeId, onClose }) => {
       ref={containerRef}
       role="region"
       aria-label={`${category.name} Menu`}
-      className="absolute top-full left-0 w-full bg-[#FFFFFF] text-[#111113] border-b border-[#E7E5E0] shadow-2xl z-40 transition-all duration-200 ease-out animate-in fade-in slide-in-from-top-1"
+      className="absolute top-full left-0 w-full bg-[#fafafa] text-[#14182B] border-b border-[#e4e4e7] shadow-boutique-soft z-40 transition-all duration-200 ease-out animate-in fade-in slide-in-from-top-1"
       onMouseLeave={onClose}
     >
-      <div className="max-w-[1360px] mx-auto px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
         {/* Top subtle category banner */}
         <div className="flex items-center justify-between pb-5 mb-6 border-b border-[#e4e4e7]">
           <div className="flex items-center gap-3">
