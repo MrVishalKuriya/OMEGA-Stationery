@@ -339,10 +339,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               </div>
 
               {/* Live Factory Dispatch Hours */}
-              <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-[#dc2626]/10 border border-[#dc2626]/20 text-[11px] text-zinc-300">
-                <Clock className="w-3.5 h-3.5 text-[#ef4444] shrink-0" />
-                <span>Mon – Sat: 8:00 AM – 5:30 PM (EAT) · Tanzania Nationwide Dispatch</span>
-              </div>
+
             </div>
           </div>
         </div>

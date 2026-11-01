@@ -297,43 +297,43 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   </a>
                 </div>
 
-                {/* 3. Mbeya Central Factory */}
+                {/* 3. Mbeya Branch Manager - Gupta Alok */}
                 <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-[#dc2626]/40 transition-all flex items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block truncate">Soweto SIDO Estate</span>
-                    <span className="text-xs font-bold text-white block truncate">Mbeya Central Factory</span>
+                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block truncate">Mbeya Branch Manager</span>
+                    <span className="text-xs font-bold text-white block truncate">Gupta Alok</span>
                     <a href="tel:+255746268391" className="text-xs font-mono font-bold text-[#ef4444] hover:underline block mt-0.5 truncate">
                       +255 746 268 391
                     </a>
                   </div>
                   <a
-                    href="https://wa.me/255746268391?text=Hello%20Mbeya%20Branch,%20inquiry%20from%20website"
+                    href="https://wa.me/255746268391?text=Hello%20Alok%20Gupta,%20inquiry%20from%20website"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/30 text-emerald-400 transition-colors shrink-0"
-                    title="Chat with Mbeya Branch on WhatsApp"
-                    aria-label="Chat with Mbeya Branch on WhatsApp"
+                    title="Chat with Alok Gupta on WhatsApp"
+                    aria-label="Chat with Alok Gupta on WhatsApp"
                   >
                     <MessageCircle className="w-4 h-4" />
                   </a>
                 </div>
 
-                {/* 4. Mwanza Dispatch Hub */}
+                {/* 4. Mwanza Branch Manager - Gupta Vivek */}
                 <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-[#dc2626]/40 transition-all flex items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block truncate">Lake Zone Waybills</span>
-                    <span className="text-xs font-bold text-white block truncate">Mwanza Dispatch Hub</span>
+                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block truncate">Mwanza Branch Manager</span>
+                    <span className="text-xs font-bold text-white block truncate">Gupta Vivek</span>
                     <a href="tel:+255699032777" className="text-xs font-mono font-bold text-[#ef4444] hover:underline block mt-0.5 truncate">
                       +255 699 032 777
                     </a>
                   </div>
                   <a
-                    href="https://wa.me/255699032777?text=Hello%20Mwanza%20Hub,%20inquiry%20from%20website"
+                    href="https://wa.me/255699032777?text=Hello%20Vivek%20Gupta,%20inquiry%20from%20website"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/30 text-emerald-400 transition-colors shrink-0"
-                    title="Chat with Mwanza Hub on WhatsApp"
-                    aria-label="Chat with Mwanza Hub on WhatsApp"
+                    title="Chat with Vivek Gupta on WhatsApp"
+                    aria-label="Chat with Vivek Gupta on WhatsApp"
                   >
                     <MessageCircle className="w-4 h-4" />
                   </a>

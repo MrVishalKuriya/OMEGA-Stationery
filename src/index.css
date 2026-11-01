@@ -4,36 +4,52 @@
   /* ==================== OMEGA SIGNATURE BLACK & RED ARCHITECTURAL PALETTE ==================== */
   /* Primary Obsidian Black: #111113 | Deep Pitch: #09090b | Accent Crimson Red: #dc2626 | Deep Red: #b91c1c */
   /* Canvas: #fafafa | Hairline Border: #e4e4e7 | Deep Obsidian Text: #18181b */
-  --clr-main: #111113;              /* Signature Obsidian Black */
-  --clr-main-50: #fafafa;           /* Clean Off-white Surface */
-  --clr-main-100: #f4f4f5;          /* Soft Gray Stone */
-  --clr-main-200: #e4e4e7;          /* Hairline Architectural Panel */
-  --clr-main-300: #d4d4d8;          /* Hairline Border */
-  --clr-main-400: #a1a1aa;          /* Muted Zinc */
-  --clr-main-500: #71717a;          /* Neutral Zinc */
-  --clr-main-600: #52525b;          /* Medium Deep Zinc */
-  --clr-main-700: #27272a;          /* Charcoal Zinc */
-  --clr-main-900: #09090b;          /* Pitch Black Dark */
-  --clr-copper: #dc2626;            /* Vivid Crimson Red */
-  --clr-amber: #b91c1c;             /* Deep Rich Red */
+  --clr-main: #111113;
+  /* Signature Obsidian Black */
+  --clr-main-50: #fafafa;
+  /* Clean Off-white Surface */
+  --clr-main-100: #f4f4f5;
+  /* Soft Gray Stone */
+  --clr-main-200: #e4e4e7;
+  /* Hairline Architectural Panel */
+  --clr-main-300: #d4d4d8;
+  /* Hairline Border */
+  --clr-main-400: #a1a1aa;
+  /* Muted Zinc */
+  --clr-main-500: #71717a;
+  /* Neutral Zinc */
+  --clr-main-600: #52525b;
+  /* Medium Deep Zinc */
+  --clr-main-700: #27272a;
+  /* Charcoal Zinc */
+  --clr-main-900: #09090b;
+  /* Pitch Black Dark */
+  --clr-copper: #dc2626;
+  /* Vivid Crimson Red */
+  --clr-amber: #b91c1c;
+  /* Deep Rich Red */
   --clr-copper-gradient: linear-gradient(90deg, #b91c1c, #dc2626, #ef4444);
-  --clr-glass-header: linear-gradient(90.48deg, rgba(255,255,255,.94) -4.41%, rgba(244,244,245,.94) 100.38%);
+  --clr-glass-header: linear-gradient(90.48deg, rgba(255, 255, 255, .94) -4.41%, rgba(244, 244, 245, .94) 100.38%);
   --clr-white: #ffffff;
   --clr-bg: #fafafa;
   --clr-black: #000000;
 
   /* Canonical Tokens */
-  --primary: #111113;               /* Obsidian Black Core */
+  --primary: #111113;
+  /* Obsidian Black Core */
   --primary-light: #27272a;
   --primary-lighter: #3f3f46;
-  --accent: #dc2626;                /* Crimson Red */
+  --accent: #dc2626;
+  /* Crimson Red */
   --accent-light: #ef4444;
   --accent-dark: #b91c1c;
-  --bg: #f9f9f9;                    /* Soft Canvas - Atelier Crimson */
+  --bg: #f9f9f9;
+  /* Soft Canvas - Atelier Crimson */
   --surface: #ffffff;
   --surface-alt: #f3f3f3;
   --surface-dark: #e8e8e8;
-  --text: #1a1c1c;                  /* Carbon Obsidian Text */
+  --text: #1a1c1c;
+  /* Carbon Obsidian Text */
   --text-light: #52525b;
   --muted: #71717a;
   --border: #e4e4e7;
@@ -42,7 +58,8 @@
 
   --navy: #111113;
   --ink: #1a1c1c;
-  --gold: #dc2626;                  /* High-Contrast Luxury Red */
+  --gold: #dc2626;
+  /* High-Contrast Luxury Red */
   --paper: #f9f9f9;
   --cream: #f3f3f3;
   --white: #ffffff;
@@ -62,7 +79,8 @@
   --font-body: 'Hanken Grotesk', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-html, body {
+html,
+body {
   overflow-x: hidden !important;
   max-width: 100vw !important;
   width: 100% !important;
@@ -87,12 +105,29 @@ html, body {
   flex-direction: column;
 }
 
-h1, h2, h3, h4, h5, h6, .font-heading, .font-fraunces, .font-cinzel, .font-serif-luxury {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-heading,
+.font-fraunces,
+.font-cinzel,
+.font-serif-luxury {
   font-family: var(--font-heading) !important;
   letter-spacing: -0.015em;
 }
 
-p, span, label, input, button, select, textarea, .font-sans, .font-outfit {
+p,
+span,
+label,
+input,
+button,
+select,
+textarea,
+.font-sans,
+.font-outfit {
   font-family: var(--font-body);
 }
 
@@ -123,7 +158,8 @@ input[type="search"]::-ms-reveal {
 }
 
 /* 2. Vibrant Crimson Red CTA Buttons */
-.btn-indra-primary, .btn-indra-primary {
+.btn-indra-primary,
+.btn-indra-primary {
   background-color: #dc2626 !important;
   color: #FFFFFF !important;
   font-weight: 800 !important;
@@ -131,19 +167,22 @@ input[type="search"]::-ms-reveal {
   box-shadow: 0 4px 14px rgba(220, 38, 38, 0.35);
 }
 
-.btn-indra-primary:hover, .btn-indra-primary:hover {
+.btn-indra-primary:hover,
+.btn-indra-primary:hover {
   background-color: #b91c1c !important;
   color: #FFFFFF !important;
   box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5);
   transform: translateY(-2px);
 }
 
-.btn-indra-primary:active, .btn-indra-primary:active {
+.btn-indra-primary:active,
+.btn-indra-primary:active {
   transform: translateY(0);
 }
 
 /* 3. Primary Obsidian Black Buttons */
-.btn-ink-primary, .btn-indra-secondary {
+.btn-ink-primary,
+.btn-indra-secondary {
   background-color: #111113 !important;
   color: #FFFFFF !important;
   font-weight: 700 !important;
@@ -151,7 +190,8 @@ input[type="search"]::-ms-reveal {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
 }
 
-.btn-ink-primary:hover, .btn-indra-secondary:hover {
+.btn-ink-primary:hover,
+.btn-indra-secondary:hover {
   background-color: #dc2626 !important;
   transform: translateY(-2px);
 }
@@ -208,6 +248,7 @@ input[type="search"]::-ms-reveal {
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -215,9 +256,19 @@ input[type="search"]::-ms-reveal {
 
 /* 7. Navbar Boutique Interactions & Animations */
 @keyframes cart-bounce {
-  0%, 100% { transform: scale(1); }
-  40% { transform: scale(1.28); }
-  75% { transform: scale(0.92); }
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  40% {
+    transform: scale(1.28);
+  }
+
+  75% {
+    transform: scale(0.92);
+  }
 }
 
 .animate-cart-bounce {
@@ -292,9 +343,12 @@ input[type="search"]::-ms-reveal {
 
 /* Gentle Floating Levitation */
 @keyframes aardvark-float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px) rotate(0deg);
   }
+
   50% {
     transform: translateY(-5px) rotate(0.4deg);
   }
@@ -374,7 +428,7 @@ input[type="search"]::-ms-reveal {
 
 .heimplanet-grid-pattern {
   background-size: 28px 28px;
-  background-image: 
+  background-image:
     linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
 }
@@ -386,21 +440,25 @@ input[type="search"]::-ms-reveal {
   width: 10px;
   height: 10px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--clr-main-50, #fafafa);
 }
+
 ::-webkit-scrollbar-thumb {
   background: #dc2626;
   border-radius: 999px;
   border: 2px solid var(--clr-main-50, #fafafa);
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #b91c1c;
 }
 
 /* ==================== SIGNATURE BUTTONS & COMPONENTS ==================== */
 /* 1. Primary Obsidian Black Button */
-.btn-rustic-primary, .btn-ledup-mocha {
+.btn-rustic-primary,
+.btn-ledup-mocha {
   background-color: #111113 !important;
   color: #ffffff !important;
   font-weight: 700 !important;
@@ -409,18 +467,21 @@ input[type="search"]::-ms-reveal {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
 }
 
-.btn-rustic-primary:hover, .btn-ledup-mocha:hover {
+.btn-rustic-primary:hover,
+.btn-ledup-mocha:hover {
   background-color: #dc2626 !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 8px 22px rgba(220, 38, 38, 0.4) !important;
 }
 
-.btn-ledup-mocha:active, .btn-rustic-primary:active {
+.btn-ledup-mocha:active,
+.btn-rustic-primary:active {
   transform: scale(0.96) !important;
 }
 
 /* 2. Signature Crimson Red Gradient Button (#b91c1c -> #dc2626 -> #ef4444) */
-.btn-ledup-copper, .btn-rustic-secondary {
+.btn-ledup-copper,
+.btn-rustic-secondary {
   background: linear-gradient(90deg, #b91c1c, #dc2626, #ef4444) !important;
   background-size: 200% auto !important;
   color: #ffffff !important;
@@ -430,18 +491,21 @@ input[type="search"]::-ms-reveal {
   box-shadow: 0 4px 16px rgba(220, 38, 38, 0.35) !important;
 }
 
-.btn-ledup-copper:hover, .btn-rustic-secondary:hover {
+.btn-ledup-copper:hover,
+.btn-rustic-secondary:hover {
   background-position: right center !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 8px 24px rgba(239, 68, 68, 0.45) !important;
 }
 
-.btn-ledup-copper:active, .btn-rustic-secondary:active {
+.btn-ledup-copper:active,
+.btn-rustic-secondary:active {
   transform: scale(0.96) !important;
 }
 
 /* 3. Hairline Architectural Outline Button */
-.btn-rustic-outline, .btn-ledup-outline {
+.btn-rustic-outline,
+.btn-ledup-outline {
   background-color: transparent !important;
   color: #111113 !important;
   border: 1.5px solid #111113 !important;
@@ -450,7 +514,8 @@ input[type="search"]::-ms-reveal {
   transition: all 0.2s ease !important;
 }
 
-.btn-rustic-outline:hover, .btn-ledup-outline:hover {
+.btn-rustic-outline:hover,
+.btn-ledup-outline:hover {
   background-color: #dc2626 !important;
   border-color: #dc2626 !important;
   color: #ffffff !important;
@@ -459,22 +524,26 @@ input[type="search"]::-ms-reveal {
 }
 
 /* 4. Signature Badges */
-.badge-rustic-primary, .badge-ledup-mocha {
+.badge-rustic-primary,
+.badge-ledup-mocha {
   background-color: #111113;
   color: #ffffff;
 }
 
-.badge-rustic-secondary, .badge-ledup-copper {
+.badge-rustic-secondary,
+.badge-ledup-copper {
   background-color: #dc2626;
   color: #ffffff;
 }
 
-.badge-rustic-taupe, .badge-ledup-taupe {
+.badge-rustic-taupe,
+.badge-ledup-taupe {
   background-color: #71717a;
   color: #ffffff;
 }
 
-.badge-rustic-linen, .badge-ledup-stone {
+.badge-rustic-linen,
+.badge-ledup-stone {
   background-color: #f4f4f5;
   color: #18181b;
 }
@@ -490,7 +559,8 @@ input[type="search"]::-ms-reveal {
 }
 
 /* C) Architectural Card (24px radius, soft drop shadow, crimson red hover) */
-.ledup-card, .card-rustic {
+.ledup-card,
+.card-rustic {
   border-radius: 1.5rem;
   background-color: #ffffff;
   border: 1px solid #e4e4e7;
@@ -498,7 +568,8 @@ input[type="search"]::-ms-reveal {
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
 }
 
-.ledup-card:hover, .card-rustic:hover {
+.ledup-card:hover,
+.card-rustic:hover {
   transform: translateY(-4px);
   box-shadow: 0 20px 40px -10px rgba(220, 38, 38, 0.16);
   border-color: #dc2626;
@@ -517,10 +588,13 @@ input[type="search"]::-ms-reveal {
 
 /* G) LEDUP Ambient Illumination Glow Animation */
 @keyframes ledup-ambient-breathe {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.45;
     transform: scale(1) translate(0, 0);
   }
+
   50% {
     opacity: 0.85;
     transform: scale(1.1) translate(12px, -8px);
@@ -533,8 +607,13 @@ input[type="search"]::-ms-reveal {
 
 /* H) LEDUP Light Sheen Animation */
 @keyframes ledup-shimmer-sweep {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 .ledup-sheen {
@@ -559,21 +638,34 @@ input[type="search"]::-ms-reveal {
 
 /* ==================== OMEGA SIGNATURE LOGO & PRODUCT ANIMATIONS ==================== */
 @keyframes omega-spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes omega-spin-reverse {
-  from { transform: rotate(360deg); }
-  to { transform: rotate(0deg); }
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
 }
 
 @keyframes omega-pulse-halo {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.55;
     filter: drop-shadow(0 0 16px rgba(196, 155, 124, 0.4));
   }
+
   50% {
     transform: scale(1.08);
     opacity: 0.95;
@@ -582,18 +674,24 @@ input[type="search"]::-ms-reveal {
 }
 
 @keyframes omega-float-hero {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px) rotate(0deg);
   }
+
   50% {
     transform: translateY(-8px) rotate(0.8deg);
   }
 }
 
 @keyframes omega-logo-glow {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 20px rgba(196, 155, 124, 0.35), 0 0 45px rgba(214, 69, 69, 0.2);
   }
+
   50% {
     box-shadow: 0 0 35px rgba(196, 155, 124, 0.7), 0 0 70px rgba(214, 69, 69, 0.45);
   }
@@ -622,6 +720,7 @@ input[type="search"]::-ms-reveal {
 /* ==================== ANDROID & WINDOWS ADVANCED UX OPTIMIZATIONS (STITCH ENHANCED) ==================== */
 /* 1. Prevent Android & iOS Mobile Form Auto-Zoom when tapping inputs */
 @media screen and (max-width: 768px) {
+
   input:not([type="checkbox"]):not([type="radio"]),
   select,
   textarea {
@@ -634,13 +733,16 @@ input[type="search"]::-ms-reveal {
   width: 7px;
   height: 7px;
 }
+
 ::-webkit-scrollbar-track {
   background: #f4f4f5;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #d4d4d8;
   border-radius: 9999px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #dc2626;
 }
@@ -658,6 +760,7 @@ html {
   border-radius: 1rem;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 .stitch-card:hover {
   border-color: #dc2626;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
@@ -667,4 +770,3 @@ html {
   transform: scale(0.97);
   transition: transform 0.1s ease;
 }
-

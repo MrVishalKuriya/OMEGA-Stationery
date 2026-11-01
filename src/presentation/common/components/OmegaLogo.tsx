@@ -54,7 +54,7 @@ export const OmegaLogo: React.FC<OmegaLogoProps> = ({
               TANZANIA
             </span>
             <span className="text-[9px] tracking-wider font-bold text-zinc-400 uppercase mt-0.5 whitespace-nowrap font-sans">
-              Writing Notebooks
+              Notebooks
             </span>
           </div>
         )}
@@ -67,9 +67,8 @@ export const OmegaLogo: React.FC<OmegaLogoProps> = ({
       <img
         src="/omega-logo.png"
         alt="OMEGA Stationery"
-        className={`${heightClasses} w-auto object-contain ${
-          variant === 'dark' ? 'brightness-0 invert' : ''
-        }`}
+        className={`${heightClasses} w-auto object-contain ${variant === 'dark' ? 'brightness-0 invert' : ''
+          }`}
       />
       {showSubtitle && (
         <div className="flex flex-col border-l border-stone-300 pl-2.5">
