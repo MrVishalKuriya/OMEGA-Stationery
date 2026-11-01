@@ -11,6 +11,7 @@ import {
   Star,
   Tag,
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { Product, formatPrice } from '@/types/store';
 import { useStore } from '@/context/StoreContext';
 import { TRANSLATIONS } from '@/data/translations';
@@ -25,6 +26,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     language,
     isInWishlist,
     toggleWishlist,
+    setIsCartDrawerOpen,
   } = useStore();
   const t = TRANSLATIONS[language] || TRANSLATIONS.en;
 
@@ -55,6 +57,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     addToCart(product.id, 1);
     setJustAdded(true);
     setTimeout(() => setJustAdded(false), 1500);
+
+    toast.success(language === 'sw' ? 'Imeongezwa kwenye kikapu' : 'Added to cart', {
+      description: productName,
+      action: {
+        label: language === 'sw' ? 'Tazama Kikapu' : 'View Cart',
+        onClick: () => setIsCartDrawerOpen(true),
+      },
+    });
   };
 
   const handleWishlistToggle = (e: React.MouseEvent) => {
