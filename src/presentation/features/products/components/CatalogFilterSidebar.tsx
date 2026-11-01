@@ -73,7 +73,7 @@ export const CatalogFilterSidebar: React.FC<CatalogFilterSidebarProps> = ({
       <div className="flex items-center justify-between pb-3 border-b border-stone-200">
         <div className="flex items-center gap-2">
           <Filter className="w-4 h-4 text-[#111113]" />
-          <h2 className="text-xs font-bold uppercase tracking-wider text-[#18181b]">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-[#111113]">
             {language === 'sw' ? 'Chuja Bidhaa' : 'Filter Products'}
           </h2>
         </div>
@@ -257,7 +257,7 @@ export const CatalogFilterSidebar: React.FC<CatalogFilterSidebarProps> = ({
           <div className="fixed inset-0 bg-black/50 backdrop-blur-xs" onClick={onCloseMobile} />
           <div className="relative ml-auto w-full max-w-xs bg-white h-full p-5 shadow-2xl overflow-y-auto z-10">
             <div className="flex justify-between items-center pb-4 mb-4 border-b border-stone-200">
-              <span className="font-heading font-bold text-base text-[#18181b]">Filter Catalog</span>
+              <span className="font-heading font-bold text-base text-[#111113]">Filter Catalog</span>
               <button type="button" onClick={onCloseMobile} className="p-1 rounded-lg text-stone-500 hover:bg-stone-100">
                 <X className="w-5 h-5" />
               </button>

@@ -50,7 +50,7 @@ export const OmegaLogo: React.FC<OmegaLogoProps> = ({
         </div>
         {showSubtitle && (
           <div className="flex flex-col border-l border-white/20 pl-2.5">
-            <span className="text-[10px] sm:text-xs font-black tracking-[0.2em] text-[#ef4444] uppercase leading-none font-mono">
+            <span className="text-[10px] sm:text-xs font-black tracking-[0.2em] text-[#DC2626] uppercase leading-none font-mono">
               TANZANIA
             </span>
             <span className="text-[9px] tracking-wider font-bold text-zinc-400 uppercase mt-0.5 whitespace-nowrap font-sans">

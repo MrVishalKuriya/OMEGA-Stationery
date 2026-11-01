@@ -60,7 +60,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-[#fafafa] text-[#18181b] font-sans selection:bg-[#dc2626] selection:text-white">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-[#F9F8F6] text-[#111113] font-sans selection:bg-[#dc2626] selection:text-white">
       {/* Reusable Boutique Navbar (AnnouncementBar, Header, MegaMenu, SearchOverlay, AccountDropdown, MobileMenu, MobileBottomBar) */}
       <Navbar />
 
@@ -164,7 +164,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   <OmegaLogo variant="badge" size="md" showSubtitle={true} />
                 </Link>
 
-                <div className="inline-flex items-center px-3 py-1 rounded-md bg-gradient-to-r from-[#dc2626]/20 via-[#dc2626]/10 to-transparent border border-[#dc2626]/40 text-[10px] font-mono font-bold text-[#ef4444] uppercase tracking-wider shadow-xs">
+                <div className="inline-flex items-center px-3 py-1 rounded-md bg-gradient-to-r from-[#dc2626]/20 via-[#dc2626]/10 to-transparent border border-[#dc2626]/40 text-[10px] font-mono font-bold text-[#DC2626] uppercase tracking-wider shadow-xs">
                   <span>MANUFACTURED BY INDIGO PRINTED LIMITED</span>
                 </div>
               </div>
@@ -215,7 +215,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               {/* Official Corporate Inquiries Bar */}
               <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/10 hover:border-[#dc2626]/40 transition-all flex items-center justify-between gap-3 max-w-xl">
                 <div className="flex items-center gap-2 min-w-0">
-                  <div className="w-7 h-7 rounded-lg bg-[#dc2626]/15 border border-[#dc2626]/30 flex items-center justify-center text-[#ef4444] shrink-0">
+                  <div className="w-7 h-7 rounded-lg bg-[#dc2626]/15 border border-[#dc2626]/30 flex items-center justify-center text-[#DC2626] shrink-0">
                     <Mail className="w-3.5 h-3.5" />
                   </div>
                   <div className="min-w-0">
@@ -224,7 +224,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                     </span>
                     <a
                       href="mailto:indigoprinter06423@gmail.com"
-                      className="text-xs font-mono font-bold text-zinc-200 hover:text-[#ef4444] transition-colors block truncate"
+                      className="text-xs font-mono font-bold text-zinc-200 hover:text-[#DC2626] transition-colors block truncate"
                     >
                       indigoprinter06423@gmail.com
                     </a>
@@ -258,7 +258,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   <div className="min-w-0">
                     <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block truncate">Founder &amp; MD</span>
                     <span className="text-xs font-bold text-white block truncate">Kanti Bhai K. Halai</span>
-                    <a href="tel:+255715268391" className="text-xs font-mono font-bold text-[#ef4444] hover:underline block mt-0.5 truncate">
+                    <a href="tel:+255715268391" className="text-xs font-mono font-bold text-[#DC2626] hover:underline block mt-0.5 truncate">
                       +255 715 268 391
                     </a>
                   </div>
@@ -279,7 +279,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   <div className="min-w-0">
                     <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block truncate">Co-Founder &amp; MD</span>
                     <span className="text-xs font-bold text-white block truncate">Vijesh K. Halai</span>
-                    <a href="tel:+255624265480" className="text-xs font-mono font-bold text-[#ef4444] hover:underline block mt-0.5 truncate">
+                    <a href="tel:+255624265480" className="text-xs font-mono font-bold text-[#DC2626] hover:underline block mt-0.5 truncate">
                       +255 624 265 480
                     </a>
                   </div>
@@ -300,7 +300,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   <div className="min-w-0">
                     <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block truncate">Soweto SIDO Estate</span>
                     <span className="text-xs font-bold text-white block truncate">Mbeya Central Factory</span>
-                    <a href="tel:+255746268391" className="text-xs font-mono font-bold text-[#ef4444] hover:underline block mt-0.5 truncate">
+                    <a href="tel:+255746268391" className="text-xs font-mono font-bold text-[#DC2626] hover:underline block mt-0.5 truncate">
                       +255 746 268 391
                     </a>
                   </div>
@@ -321,7 +321,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   <div className="min-w-0">
                     <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block truncate">Lake Zone Waybills</span>
                     <span className="text-xs font-bold text-white block truncate">Mwanza Dispatch Hub</span>
-                    <a href="tel:+255699032777" className="text-xs font-mono font-bold text-[#ef4444] hover:underline block mt-0.5 truncate">
+                    <a href="tel:+255699032777" className="text-xs font-mono font-bold text-[#DC2626] hover:underline block mt-0.5 truncate">
                       +255 699 032 777
                     </a>
                   </div>
@@ -354,21 +354,21 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
             <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-xs">
               <Link
                 to="/tracking"
-                className="hover:text-[#ef4444] transition-colors cursor-pointer"
+                className="hover:text-[#DC2626] transition-colors cursor-pointer"
               >
                 Track Parcel
               </Link>
               <span>·</span>
               <Link
                 to="/wholesale#calculator"
-                className="hover:text-[#ef4444] transition-colors cursor-pointer"
+                className="hover:text-[#DC2626] transition-colors cursor-pointer"
               >
                 Carton Calculator
               </Link>
               <span>·</span>
               <Link
                 to="/wishlist"
-                className="hover:text-[#ef4444] transition-colors cursor-pointer"
+                className="hover:text-[#DC2626] transition-colors cursor-pointer"
               >
                 Wishlist ({wishlistCount})
               </Link>
@@ -376,7 +376,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               <button
                 type="button"
                 onClick={openCookiePreferences}
-                className="hover:text-[#ef4444] transition-colors cursor-pointer"
+                className="hover:text-[#DC2626] transition-colors cursor-pointer"
               >
                 Cookies
               </button>

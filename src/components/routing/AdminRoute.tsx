@@ -86,7 +86,7 @@ export const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
 
   if (!isAdmin) {
     return (
-      <div className="min-h-[80vh] flex items-center justify-center py-16 px-4 bg-[#fafafa]">
+      <div className="min-h-[80vh] flex items-center justify-center py-16 px-4 bg-[#F9F8F6]">
         <SEOHead
           title="OMEGA HQ Administrative Clearance | Portal Gate"
           description="Access to the OMEGA HQ executive portal requires verified administrative clearance."
@@ -101,7 +101,7 @@ export const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
               <ShieldCheck className="w-3.5 h-3.5 text-[#dc2626]" />
               <span>HQ INTERNAL SYSTEM</span>
             </div>
-            <h1 className="text-2xl font-heading font-bold text-[#18181b]">
+            <h1 className="text-2xl font-heading font-bold text-[#111113]">
               Administrative Clearance Required
             </h1>
             <p className="text-xs text-stone-600 mt-2 leading-relaxed">

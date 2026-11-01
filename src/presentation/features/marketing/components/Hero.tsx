@@ -190,7 +190,7 @@ export const Hero: React.FC<HeroProps> = () => {
             <span className="block">
               {language === 'sw' ? activeSlide.line2Sw : activeSlide.line2En}
             </span>
-            <span className="block text-[#ef4444] drop-shadow-[0_2px_18px_rgba(220,38,38,0.45)]">
+            <span className="block text-[#DC2626] drop-shadow-[0_2px_18px_rgba(220,38,38,0.45)]">
               {language === 'sw' ? activeSlide.line3Sw : activeSlide.line3En}
             </span>
           </h1>
@@ -204,7 +204,7 @@ export const Hero: React.FC<HeroProps> = () => {
           <div className="pt-2">
             <Link
               to={activeSlide.href}
-              className="group inline-flex items-center gap-3.5 pl-6 pr-2.5 py-2.5 rounded-full bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] hover:from-[#991b1b] hover:to-[#dc2626] text-white font-bold text-xs sm:text-sm shadow-[0_8px_24px_rgba(220,38,38,0.35)] transition-all active:scale-95"
+              className="group inline-flex items-center gap-3.5 pl-6 pr-2.5 py-2.5 rounded-full bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#DC2626] hover:from-[#991b1b] hover:to-[#dc2626] text-white font-bold text-xs sm:text-sm shadow-[0_8px_24px_rgba(220,38,38,0.35)] transition-all active:scale-95"
             >
               <span>
                 {language === 'sw' ? activeSlide.ctaTextSw : activeSlide.ctaTextEn}

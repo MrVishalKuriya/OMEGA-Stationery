@@ -156,7 +156,7 @@ export const CookieBanner: React.FC<CookieBannerProps> = ({ forceOpen, onClose }
             aria-hidden="true"
           />
 
-          <div className="relative w-full max-w-xl bg-[#fafafa] text-[#14182B] rounded-[12px] border border-[#e4e4e7] shadow-2xl overflow-hidden z-10 flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200 font-sans">
+          <div className="relative w-full max-w-xl bg-[#F9F8F6] text-[#14182B] rounded-[12px] border border-[#E7E5E0] shadow-2xl overflow-hidden z-10 flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200 font-sans">
             {/* Modal Header */}
             <div className="bg-[#111113] text-white p-5 flex items-center justify-between">
               <div className="flex items-center gap-2.5">
@@ -186,7 +186,7 @@ export const CookieBanner: React.FC<CookieBannerProps> = ({ forceOpen, onClose }
 
               <div className="space-y-3 pt-2">
                 {/* 1. Necessary Cookies (Always On) */}
-                <div className="p-3.5 rounded-[8px] bg-white border border-[#e4e4e7] flex items-start justify-between gap-3 shadow-2xs">
+                <div className="p-3.5 rounded-[8px] bg-white border border-[#E7E5E0] flex items-start justify-between gap-3 shadow-2xs">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-heading font-bold text-xs sm:text-sm text-[#14182B]">
@@ -210,7 +210,7 @@ export const CookieBanner: React.FC<CookieBannerProps> = ({ forceOpen, onClose }
                 </div>
 
                 {/* 2. Functional Cookies */}
-                <div className="p-3.5 rounded-[8px] bg-white border border-[#e4e4e7] flex items-start justify-between gap-3 shadow-2xs">
+                <div className="p-3.5 rounded-[8px] bg-white border border-[#E7E5E0] flex items-start justify-between gap-3 shadow-2xs">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-heading font-bold text-xs sm:text-sm text-[#14182B]">
@@ -239,7 +239,7 @@ export const CookieBanner: React.FC<CookieBannerProps> = ({ forceOpen, onClose }
                 </div>
 
                 {/* 3. Analytics Cookies */}
-                <div className="p-3.5 rounded-[8px] bg-white border border-[#e4e4e7] flex items-start justify-between gap-3 shadow-2xs">
+                <div className="p-3.5 rounded-[8px] bg-white border border-[#E7E5E0] flex items-start justify-between gap-3 shadow-2xs">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-heading font-bold text-xs sm:text-sm text-[#14182B]">
@@ -268,7 +268,7 @@ export const CookieBanner: React.FC<CookieBannerProps> = ({ forceOpen, onClose }
                 </div>
 
                 {/* 4. Marketing & B2B Tenders */}
-                <div className="p-3.5 rounded-[8px] bg-white border border-[#e4e4e7] flex items-start justify-between gap-3 shadow-2xs">
+                <div className="p-3.5 rounded-[8px] bg-white border border-[#E7E5E0] flex items-start justify-between gap-3 shadow-2xs">
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
                       <span className="font-heading font-bold text-xs sm:text-sm text-[#14182B]">
@@ -299,7 +299,7 @@ export const CookieBanner: React.FC<CookieBannerProps> = ({ forceOpen, onClose }
             </div>
 
             {/* Modal Actions Footer */}
-            <div className="p-4 border-t border-[#e4e4e7] bg-white flex items-center justify-between gap-3">
+            <div className="p-4 border-t border-[#E7E5E0] bg-white flex items-center justify-between gap-3">
               <button
                 type="button"
                 onClick={handleAcceptAll}
@@ -315,7 +315,7 @@ export const CookieBanner: React.FC<CookieBannerProps> = ({ forceOpen, onClose }
                     setIsPreferencesOpen(false);
                     onClose?.();
                   }}
-                  className="px-3 py-2 rounded-[8px] bg-white border border-[#e4e4e7] hover:bg-[#F3EEE2] text-xs font-bold text-[#14182B]"
+                  className="px-3 py-2 rounded-[8px] bg-white border border-[#E7E5E0] hover:bg-[#F3EEE2] text-xs font-bold text-[#14182B]"
                 >
                   Cancel
                 </button>

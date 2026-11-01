@@ -62,7 +62,7 @@ export const AnnouncementBar: React.FC<AnnouncementBarProps> = ({ onDismiss }) =
       aria-label="Announcement"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      className="relative z-50 w-full h-9 bg-[#111113] text-white text-[13px] font-sans flex items-center justify-between px-4 sm:px-6 border-b border-[#e4e4e7]/20 overflow-hidden select-none"
+      className="relative z-50 w-full h-9 bg-[#111113] text-white text-[13px] font-sans flex items-center justify-between px-4 sm:px-6 border-b border-[#E7E5E0]/20 overflow-hidden select-none"
     >
       <div className="w-8 shrink-0" aria-hidden="true" />
 
@@ -88,7 +88,7 @@ export const AnnouncementBar: React.FC<AnnouncementBarProps> = ({ onDismiss }) =
         type="button"
         onClick={handleDismiss}
         aria-label="Dismiss announcement"
-        className="w-8 h-8 shrink-0 flex items-center justify-center rounded-full text-[#fafafa]/70 hover:text-white hover:bg-white/10 transition-colors focus-ring-gold"
+        className="w-8 h-8 shrink-0 flex items-center justify-center rounded-full text-[#F9F8F6]/70 hover:text-white hover:bg-white/10 transition-colors focus-ring-gold"
       >
         <X className="w-3.5 h-3.5" />
       </button>

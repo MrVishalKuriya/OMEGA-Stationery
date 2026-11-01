@@ -32,14 +32,14 @@ export const WishlistPage: React.FC = () => {
   const shareWhatsappUrl = `https://wa.me/${cleanWhatsappDigits}?text=${shareText}`;
 
   return (
-    <div className="min-h-screen bg-[#fafafa] text-[#18181b]">
+    <div className="min-h-screen bg-[#F9F8F6] text-[#111113]">
       <SEOHead
         title="My Wishlist | OMEGA Stationery Tanzania"
         description="Your saved writing notebooks, counter books, and school stationery products."
       />
 
       {/* Top Breadcrumb & Header */}
-      <section className="relative overflow-hidden w-full bg-[#111113] text-white py-12 lg:py-16 border-b border-[#18181b]">
+      <section className="relative overflow-hidden w-full bg-[#111113] text-white py-12 lg:py-16 border-b border-[#111113]">
         <div className="absolute -top-32 -right-32 w-[550px] h-[550px] bg-[#dc2626]/18 rounded-full blur-[140px] pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex items-center gap-2 text-xs text-zinc-400 font-semibold mb-2">
@@ -48,7 +48,7 @@ export const WishlistPage: React.FC = () => {
               <span>{t.home}</span>
             </Link>
             <span>/</span>
-            <span className="text-[#ef4444] font-bold">Wishlist</span>
+            <span className="text-[#DC2626] font-bold">Wishlist</span>
           </div>
 
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pt-2">
@@ -91,18 +91,18 @@ export const WishlistPage: React.FC = () => {
       {/* Main Content Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
         {wishlistedProducts.length === 0 ? (
-          <div className="bg-white border border-[#e4e4e7] rounded-2xl p-10 sm:p-14 text-center max-w-lg mx-auto space-y-4 shadow-xl my-6">
+          <div className="bg-white border border-[#E7E5E0] rounded-2xl p-10 sm:p-14 text-center max-w-lg mx-auto space-y-4 shadow-xl my-6">
             <div className="w-16 h-16 rounded-2xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center mx-auto border border-[#dc2626]/20">
               <Heart className="w-8 h-8 stroke-[1.5]" />
             </div>
-            <h2 className="text-xl font-bold text-[#18181b] font-heading">Your wishlist is currently empty</h2>
-            <p className="text-xs sm:text-sm text-[#71717a] max-w-sm mx-auto leading-relaxed">
+            <h2 className="text-xl font-bold text-[#111113] font-heading">Your wishlist is currently empty</h2>
+            <p className="text-xs sm:text-sm text-[#6E6B66] max-w-sm mx-auto leading-relaxed">
               Browse our authentic factory catalog and tap the heart icon on any notebook, counter book, or envelope to save it here.
             </p>
             <div className="pt-3">
               <Link
                 to="/catalog"
-                className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] hover:from-[#991b1b] hover:to-[#dc2626] text-white text-xs font-bold uppercase tracking-wider inline-flex items-center gap-2 transition-all shadow-md active:scale-95"
+                className="px-6 py-3 rounded-xl bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#DC2626] hover:from-[#991b1b] hover:to-[#dc2626] text-white text-xs font-bold uppercase tracking-wider inline-flex items-center gap-2 transition-all shadow-md active:scale-95"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>Browse Master Catalog</span>
@@ -117,9 +117,9 @@ export const WishlistPage: React.FC = () => {
               return (
                 <div
                   key={p.id}
-                  className="bg-white border border-[#e4e4e7] rounded-2xl overflow-hidden hover:shadow-xl hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-between group"
+                  className="bg-white border border-[#E7E5E0] rounded-2xl overflow-hidden hover:shadow-xl hover:border-[#dc2626] transition-all duration-300 flex flex-col justify-between group"
                 >
-                  <div className="p-4 bg-[#fafafa] aspect-square flex items-center justify-center relative border-b border-[#e4e4e7]">
+                  <div className="p-4 bg-[#F9F8F6] aspect-square flex items-center justify-center relative border-b border-[#E7E5E0]">
                     <button
                       onClick={() => toggleWishlist(p.id)}
                       className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-[#111113]/80 hover:bg-[#dc2626] text-white flex items-center justify-center shadow-xs transition-colors cursor-pointer"
@@ -139,19 +139,19 @@ export const WishlistPage: React.FC = () => {
                       <span className="text-[10px] font-bold uppercase tracking-wider text-[#dc2626] font-mono">
                         {p.category}
                       </span>
-                      <h3 className="text-xs sm:text-sm font-bold text-[#18181b] line-clamp-2 mt-0.5">
+                      <h3 className="text-xs sm:text-sm font-bold text-[#111113] line-clamp-2 mt-0.5">
                         <Link to={`/product/${p.id}`} className="hover:text-[#dc2626] transition-colors">
                           {language === 'sw' && p.nameSw ? p.nameSw : p.name}
                         </Link>
                       </h3>
                     </div>
 
-                    <div className="pt-2 border-t border-[#e4e4e7] flex items-baseline justify-between">
-                      <span className="text-sm sm:text-base font-black text-[#18181b] font-mono">
+                    <div className="pt-2 border-t border-[#E7E5E0] flex items-baseline justify-between">
+                      <span className="text-sm sm:text-base font-black text-[#111113] font-mono">
                         {formatPrice(effectivePrice, currency)}
                       </span>
                       {p.discountPrice && p.discountPrice < p.price && (
-                        <span className="text-xs text-[#71717a] line-through font-mono">
+                        <span className="text-xs text-[#6E6B66] line-through font-mono">
                           {formatPrice(p.price, currency)}
                         </span>
                       )}
@@ -163,7 +163,7 @@ export const WishlistPage: React.FC = () => {
                         addToCart(p.id, 1, true);
                         toggleWishlist(p.id);
                       }}
-                      className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] hover:from-[#991b1b] hover:to-[#dc2626] text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-xs active:scale-95 cursor-pointer font-mono"
+                      className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#DC2626] hover:from-[#991b1b] hover:to-[#dc2626] text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-xs active:scale-95 cursor-pointer font-mono"
                     >
                       <ShoppingBag className="w-3.5 h-3.5" />
                       <span>Move to Cart</span>

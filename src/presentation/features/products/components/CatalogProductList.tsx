@@ -37,11 +37,11 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
 }) => {
   if (products.length === 0) {
     return (
-      <div className="bg-white border border-[#e4e4e7] rounded-2xl p-12 text-center space-y-4 shadow-xs">
-        <div className="w-16 h-16 rounded-full bg-[#f5f4f4] border border-[#e4e4e7] flex items-center justify-center mx-auto text-[#a1a1aa]">
+      <div className="bg-white border border-[#E7E5E0] rounded-2xl p-12 text-center space-y-4 shadow-xs">
+        <div className="w-16 h-16 rounded-full bg-[#f5f4f4] border border-[#E7E5E0] flex items-center justify-center mx-auto text-[#a1a1aa]">
           <Search className="w-7 h-7" />
         </div>
-        <h3 className="font-heading text-xl font-bold text-[#18181b]">
+        <h3 className="font-heading text-xl font-bold text-[#111113]">
           {language === 'sw' ? 'Hakuna Bidhaa Iliyopatikana' : 'No Notebooks or Products Found'}
         </h3>
         <p className="text-xs sm:text-sm text-[#a1a1aa] max-w-md mx-auto">
@@ -52,7 +52,7 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
         <button
           type="button"
           onClick={onResetFilters}
-          className="px-6 py-2.5 rounded-full bg-[#111113] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#18181b] transition-all"
+          className="px-6 py-2.5 rounded-full bg-[#111113] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#111113] transition-all"
         >
           Clear All Filters
         </button>
@@ -81,10 +81,10 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
             return (
               <div
                 key={p.id}
-                className="bg-white border border-[#e4e4e7] hover:border-[#dc2626] rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-center justify-between gap-5 transition-all shadow-xs ledup-card ledup-sheen"
+                className="bg-white border border-[#E7E5E0] hover:border-[#dc2626] rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-center justify-between gap-5 transition-all shadow-xs ledup-card ledup-sheen"
               >
                 {/* Image Thumbnail */}
-                <div className="w-full md:w-36 h-36 bg-[#fafafa] rounded-xl border border-[#e4e4e7] p-2 flex items-center justify-center shrink-0 overflow-hidden relative">
+                <div className="w-full md:w-36 h-36 bg-[#F9F8F6] rounded-xl border border-[#E7E5E0] p-2 flex items-center justify-center shrink-0 overflow-hidden relative">
                   {p.badge && (
                     <span className="absolute top-2 left-2 z-10 bg-[#dc2626] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-2xs">
                       {p.badge}
@@ -112,7 +112,7 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                     </span>
                   </div>
 
-                  <h3 className="font-heading text-base font-bold text-[#18181b]">
+                  <h3 className="font-heading text-base font-bold text-[#111113]">
                     <Link to={`/product/${p.id}`} className="hover:text-[#dc2626] transition-colors">
                       {language === 'sw' && p.nameSw ? p.nameSw : p.name}
                     </Link>
@@ -125,22 +125,22 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                   {/* Technical Specs Tags */}
                   <div className="flex flex-wrap items-center gap-2 pt-1 text-[11px] text-[#111113]">
                     {p.quire && (
-                      <span className="px-2 py-0.5 rounded bg-[#f5f4f4] font-medium border border-[#e4e4e7]">
+                      <span className="px-2 py-0.5 rounded bg-[#f5f4f4] font-medium border border-[#E7E5E0]">
                         {p.quire}
                       </span>
                     )}
                     {p.pageCount && (
-                      <span className="px-2 py-0.5 rounded bg-[#f5f4f4] font-medium border border-[#e4e4e7]">
+                      <span className="px-2 py-0.5 rounded bg-[#f5f4f4] font-medium border border-[#E7E5E0]">
                         {p.pageCount}
                       </span>
                     )}
                     {p.paperType && (
-                      <span className="px-2 py-0.5 rounded bg-[#f5f4f4] font-medium border border-[#e4e4e7]">
+                      <span className="px-2 py-0.5 rounded bg-[#f5f4f4] font-medium border border-[#E7E5E0]">
                         {p.paperType}
                       </span>
                     )}
                     {p.packaging && (
-                      <span className="px-2 py-0.5 rounded bg-[#f5f4f4] font-medium border border-[#e4e4e7]">
+                      <span className="px-2 py-0.5 rounded bg-[#f5f4f4] font-medium border border-[#E7E5E0]">
                         Box: {p.packaging}
                       </span>
                     )}
@@ -148,9 +148,9 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                 </div>
 
                 {/* Price & Action Column */}
-                <div className="flex flex-row md:flex-col items-center md:items-end justify-between w-full md:w-44 gap-3 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-[#e4e4e7]">
+                <div className="flex flex-row md:flex-col items-center md:items-end justify-between w-full md:w-44 gap-3 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-[#E7E5E0]">
                   <div className="text-left md:text-right">
-                    <div className="text-lg font-bold font-mono text-[#18181b]">
+                    <div className="text-lg font-bold font-mono text-[#111113]">
                       {formatPrice(effectivePrice, currency)}
                     </div>
                     {hasDiscount && (
@@ -179,7 +179,7 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                       href={directWhatsappUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 rounded-full bg-[#111113] hover:bg-[#18181b] text-white transition-colors"
+                      className="p-2 rounded-full bg-[#111113] hover:bg-[#111113] text-white transition-colors"
                       title="Order on WhatsApp"
                     >
                       <MessageCircle className="w-3.5 h-3.5" />
@@ -197,13 +197,13 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
         <nav
           role="navigation"
           aria-label="Pagination"
-          className="flex items-center justify-center gap-2 pt-8 border-t border-[#e4e4e7]"
+          className="flex items-center justify-center gap-2 pt-8 border-t border-[#E7E5E0]"
         >
           <button
             type="button"
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="px-3 py-2 rounded-lg border border-[#e4e4e7] bg-white text-xs font-bold text-[#111113] hover:bg-[#f5f4f4] disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1"
+            className="px-3 py-2 rounded-lg border border-[#E7E5E0] bg-white text-xs font-bold text-[#111113] hover:bg-[#f5f4f4] disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1"
           >
             <ChevronLeft className="w-3.5 h-3.5" />
             <span>Prev</span>
@@ -220,7 +220,7 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                 className={`w-9 h-9 rounded-lg text-xs font-bold font-mono transition-all ${
                   isCurrent
                     ? 'bg-[#111113] text-white shadow-xs'
-                    : 'bg-white border border-[#e4e4e7] text-[#18181b] hover:bg-[#f5f4f4]'
+                    : 'bg-white border border-[#E7E5E0] text-[#111113] hover:bg-[#f5f4f4]'
                 }`}
               >
                 {pageNum}
@@ -232,7 +232,7 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
             type="button"
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="px-3 py-2 rounded-lg border border-[#e4e4e7] bg-white text-xs font-bold text-[#111113] hover:bg-[#f5f4f4] disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1"
+            className="px-3 py-2 rounded-lg border border-[#E7E5E0] bg-white text-xs font-bold text-[#111113] hover:bg-[#f5f4f4] disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-1"
           >
             <span>Next</span>
             <ChevronRight className="w-3.5 h-3.5" />

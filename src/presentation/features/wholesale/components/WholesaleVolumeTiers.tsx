@@ -12,7 +12,7 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
         <div className="inline-flex items-center px-3.5 py-1 rounded-lg bg-gradient-to-r from-[#dc2626]/15 via-[#dc2626]/5 to-transparent border border-[#dc2626]/30 text-xs font-bold text-[#dc2626] font-mono uppercase tracking-widest shadow-xs">
           <span>TRANSPARENT VOLUME ARCHITECTURE</span>
         </div>
-        <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#18181b] tracking-tight">
+        <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#111113] tracking-tight">
           Wholesale Discount Tiers
         </h2>
         <p className="text-sm text-stone-600 max-w-lg mx-auto">
@@ -30,7 +30,7 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
               </span>
               <span className="text-xs font-semibold text-stone-600">5 — 19 Cartons</span>
             </div>
-            <h3 className="font-heading text-2xl font-bold text-[#18181b]">Retailers &amp; Kiosks</h3>
+            <h3 className="font-heading text-2xl font-bold text-[#111113]">Retailers &amp; Kiosks</h3>
             <div className="my-5 pb-5 border-b border-stone-200">
               <div className="flex items-baseline gap-1.5">
                 <span className="text-4xl font-black text-[#111113] font-mono">20%</span>
@@ -76,7 +76,7 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
 
         {/* Tier 2: Business (Most Popular) */}
         <div className="relative bg-[#111113] text-white p-7 sm:p-8 flex flex-col justify-between border-2 border-[#dc2626] rounded-2xl shadow-[0_12px_40px_rgba(220,38,38,0.25)] md:-translate-y-2">
-          <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-md bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] text-white text-[10px] font-black uppercase tracking-widest shadow-md flex items-center gap-1.5 whitespace-nowrap">
+          <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-md bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#DC2626] text-white text-[10px] font-black uppercase tracking-widest shadow-md flex items-center gap-1.5 whitespace-nowrap">
             <Sparkles className="w-3 h-3 text-white" />
             <span>MOST POPULAR · BEST VALUE</span>
           </div>
@@ -141,7 +141,7 @@ export const WholesaleVolumeTiers: React.FC<WholesaleVolumeTiersProps> = ({ onSe
               </span>
               <span className="text-xs font-semibold text-stone-600">50+ Cartons</span>
             </div>
-            <h3 className="font-heading text-2xl font-bold text-[#18181b]">Tenders &amp; Importers</h3>
+            <h3 className="font-heading text-2xl font-bold text-[#111113]">Tenders &amp; Importers</h3>
             <div className="my-5 pb-5 border-b border-stone-200">
               <div className="flex items-baseline gap-1.5">
                 <span className="text-4xl font-black text-[#111113] font-mono">40%</span>

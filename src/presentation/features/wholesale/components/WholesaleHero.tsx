@@ -16,7 +16,7 @@ export const WholesaleHero: React.FC<WholesaleHeroProps> = ({
   language,
 }) => {
   return (
-    <section className="relative overflow-hidden w-full bg-[#18181b] text-white py-12 lg:py-16 border-b border-[#18181b] shadow-2xl">
+    <section className="relative overflow-hidden w-full bg-[#111113] text-white py-12 lg:py-16 border-b border-[#111113] shadow-2xl">
       {/* Soft Ambient Warm Glows */}
       <div className="absolute top-1/4 right-1/4 w-[500px] h-[500px] bg-[#dc2626]/18 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-0 left-10 w-[450px] h-[450px] bg-[#b91c1c]/15 rounded-full blur-[120px] pointer-events-none" />

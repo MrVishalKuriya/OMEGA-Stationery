@@ -62,8 +62,8 @@ export class ErrorBoundary extends Component<Props, State> {
   public render() {
     if (this.state.isOffline) {
       return (
-        <div className="min-h-screen bg-[#fafafa] flex items-center justify-center p-6 text-[#18181b] font-sans">
-          <div className="max-w-md w-full bg-white rounded-3xl border border-[#e4e4e7] p-8 shadow-2xl text-center space-y-6">
+        <div className="min-h-screen bg-[#F9F8F6] flex items-center justify-center p-6 text-[#111113] font-sans">
+          <div className="max-w-md w-full bg-white rounded-3xl border border-[#E7E5E0] p-8 shadow-2xl text-center space-y-6">
             <div className="w-16 h-16 rounded-2xl bg-amber-500/10 text-amber-700 flex items-center justify-center mx-auto shadow-md border border-amber-200">
               <WifiOff className="w-8 h-8 text-amber-600" />
             </div>
@@ -72,7 +72,7 @@ export class ErrorBoundary extends Component<Props, State> {
               <span className="text-[11px] font-mono font-bold tracking-widest uppercase text-amber-700">
                 [ NETWORK OFFLINE // OMEGA ]
               </span>
-              <h2 className="font-heading text-2xl font-bold text-[#18181b]">
+              <h2 className="font-heading text-2xl font-bold text-[#111113]">
                 No Internet Connection
               </h2>
               <p className="text-xs text-[#a1a1aa] leading-relaxed">
@@ -100,8 +100,8 @@ export class ErrorBoundary extends Component<Props, State> {
       const isServerColdStart = errStr.includes('502') || errStr.includes('503') || errStr.includes('504') || errStr.includes('timeout');
 
       return (
-        <div className="min-h-screen bg-[#fafafa] flex items-center justify-center p-6 text-[#18181b] font-sans">
-          <div className="max-w-md w-full bg-white rounded-3xl border border-[#e4e4e7] p-8 shadow-2xl text-center space-y-6">
+        <div className="min-h-screen bg-[#F9F8F6] flex items-center justify-center p-6 text-[#111113] font-sans">
+          <div className="max-w-md w-full bg-white rounded-3xl border border-[#E7E5E0] p-8 shadow-2xl text-center space-y-6">
             <div className="w-16 h-16 rounded-2xl bg-[#111113] text-[#dc2626] flex items-center justify-center mx-auto shadow-md border border-[#dc2626]/40">
               {isRateLimit ? (
                 <Clock className="w-8 h-8 text-[#dc2626]" />
@@ -122,7 +122,7 @@ export class ErrorBoundary extends Component<Props, State> {
                   ? '[ SERVER RE-ENGAGING // OMEGA ]'
                   : '[ SYSTEM RECOVERY // OMEGA ]'}
               </span>
-              <h2 className="font-heading text-2xl font-bold text-[#18181b]">
+              <h2 className="font-heading text-2xl font-bold text-[#111113]">
                 {isAuthError
                   ? 'Session Expired'
                   : isRateLimit
@@ -143,7 +143,7 @@ export class ErrorBoundary extends Component<Props, State> {
             </div>
 
             {this.state.error && !isAuthError && (
-              <div className="p-3 rounded-xl bg-[#f5f4f4] border border-[#e4e4e7] text-[11px] text-[#71717a] font-mono text-left max-h-24 overflow-y-auto">
+              <div className="p-3 rounded-xl bg-[#f5f4f4] border border-[#E7E5E0] text-[11px] text-[#6E6B66] font-mono text-left max-h-24 overflow-y-auto">
                 {this.state.error.message}
               </div>
             )}
@@ -167,7 +167,7 @@ export class ErrorBoundary extends Component<Props, State> {
               </button>
             </div>
 
-            <div className="pt-2 border-t border-[#e4e4e7]/60 flex items-center justify-between text-xs text-[#a1a1aa]">
+            <div className="pt-2 border-t border-[#E7E5E0]/60 flex items-center justify-between text-xs text-[#a1a1aa]">
               <a href="/" className="hover:text-black inline-flex items-center gap-1 font-semibold">
                 <Home className="w-3.5 h-3.5" />
                 <span>Store Home</span>

@@ -1806,17 +1806,17 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   </div>
 
                   {/* Realistic Mini OMEGA Product Card */}
-                  <div className="max-w-[260px] mx-auto w-full bg-white text-[#18181b] rounded-[22px] border border-[#e4e4e7] shadow-xl overflow-hidden flex flex-col">
+                  <div className="max-w-[260px] mx-auto w-full bg-white text-[#111113] rounded-[22px] border border-[#E7E5E0] shadow-xl overflow-hidden flex flex-col">
                     {/* Region 1: Adaptive display */}
                     <div
-                      className={`relative aspect-square w-full bg-[#f8f7f5] overflow-hidden border-b border-[#e4e4e7] ${
+                      className={`relative aspect-square w-full bg-[#f8f7f5] overflow-hidden border-b border-[#E7E5E0] ${
                         storeImageFit === 'contain' ? 'p-3 flex items-center justify-center' : ''
                       }`}
                     >
                       <span className="absolute top-2 left-2 z-10 bg-[#111113] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm tracking-wider">
                         7% OFF
                       </span>
-                      <div className="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-white/95 text-[#111113] border border-[#e4e4e7] flex items-center justify-center shadow-xs">
+                      <div className="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-white/95 text-[#111113] border border-[#E7E5E0] flex items-center justify-center shadow-xs">
                         <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
                       </div>
 
@@ -1848,7 +1848,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                         </span>
                       </div>
 
-                      <h4 className="text-xs font-bold text-[#18181b] line-clamp-1 leading-tight">
+                      <h4 className="text-xs font-bold text-[#111113] line-clamp-1 leading-tight">
                         {productName || 'OMEGA Exercise Book 200 Pages'}
                       </h4>
 
@@ -1862,7 +1862,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       </div>
 
                       <div>
-                        <div className="text-sm font-extrabold text-[#18181b]">TSh 25,500</div>
+                        <div className="text-sm font-extrabold text-[#111113]">TSh 25,500</div>
                         <div className="text-[10px] font-semibold text-[#a1a1aa]">
                           Wholesale: TSh 23,000
                         </div>

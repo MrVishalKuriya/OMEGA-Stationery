@@ -70,14 +70,14 @@ export const SchoolTendersPage: React.FC = () => {
   )}`;
 
   return (
-    <div className="bg-[#fafafa] min-h-screen text-[#18181b]">
+    <div className="bg-[#F9F8F6] min-h-screen text-[#111113]">
       <SEOHead
         title="School Booklist Tenders & Bulk Educational Procurement | OMEGA Tanzania"
         description="Official school tender portal for Tanzanian primary and secondary schools. Calculate exercise books, counter books, and exam pads with up to 20% tender discounts."
       />
 
       {/* ==================== 1. HERO HEADER ==================== */}
-      <section className="relative overflow-hidden w-full bg-[#111113] text-white py-14 lg:py-20 border-b border-[#18181b]">
+      <section className="relative overflow-hidden w-full bg-[#111113] text-white py-14 lg:py-20 border-b border-[#111113]">
         <div className="absolute -top-32 -right-32 w-[600px] h-[600px] bg-[#dc2626]/18 rounded-full blur-[150px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -108,12 +108,12 @@ export const SchoolTendersPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
             {/* Left: Input Form Studio */}
-            <div className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-[24px] border border-[#e4e4e7] shadow-xs space-y-6">
+            <div className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-[24px] border border-[#E7E5E0] shadow-xs space-y-6">
               <div className="space-y-1">
                 <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#dc2626] font-heading block">
                   STEP 1: ENROLLMENT &amp; DETAILS
                 </span>
-                <h2 className="font-heading text-xl sm:text-2xl font-bold text-[#18181b]">
+                <h2 className="font-heading text-xl sm:text-2xl font-bold text-[#111113]">
                   School Specification Calculator
                 </h2>
               </div>
@@ -126,7 +126,7 @@ export const SchoolTendersPage: React.FC = () => {
                     value={schoolName}
                     onChange={(e) => setSchoolName(e.target.value)}
                     placeholder="e.g. Alliance Boys High School"
-                    className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#e4e4e7] text-xs focus:ring-1 focus:ring-[#111113] focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#E7E5E0] text-xs focus:ring-1 focus:ring-[#111113] focus:outline-none"
                   />
                 </div>
 
@@ -135,7 +135,7 @@ export const SchoolTendersPage: React.FC = () => {
                   <select
                     value={schoolRegion}
                     onChange={(e) => setSchoolRegion(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#e4e4e7] text-xs focus:ring-1 focus:ring-[#111113] focus:outline-none bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#E7E5E0] text-xs focus:ring-1 focus:ring-[#111113] focus:outline-none bg-white"
                   >
                     {[
                       'Dar es Salaam', 'Arusha', 'Mwanza', 'Dodoma', 'Mbeya', 'Kilimanjaro (Moshi)',
@@ -164,7 +164,7 @@ export const SchoolTendersPage: React.FC = () => {
                       className={`p-3 rounded-[12px] border text-left transition-all ${
                         levelTier === tier.key
                           ? 'btn-ledup-copper text-[#09090b] font-bold border-transparent shadow-xs'
-                          : 'bg-[#fafafa] text-[#18181b] border-[#e4e4e7] hover:border-[#dc2626]'
+                          : 'bg-[#F9F8F6] text-[#111113] border-[#E7E5E0] hover:border-[#dc2626]'
                       }`}
                     >
                       <div className="text-xs font-bold">{tier.label}</div>
@@ -191,7 +191,7 @@ export const SchoolTendersPage: React.FC = () => {
                   onChange={(e) => setStudentCount(Number(e.target.value))}
                   className="w-full accent-[#dc2626] cursor-pointer"
                 />
-                <div className="flex justify-between text-[10px] text-[#71717a] font-mono">
+                <div className="flex justify-between text-[10px] text-[#6E6B66] font-mono">
                   <span>50 Students</span>
                   <span>500 Students (20% Discount)</span>
                   <span>1,500+ Students</span>
@@ -233,7 +233,7 @@ export const SchoolTendersPage: React.FC = () => {
               </div>
 
               {/* Cost Calculation */}
-              <div className="p-4 rounded-[14px] bg-[#18181b] border border-white/15 space-y-1.5 font-mono text-xs">
+              <div className="p-4 rounded-[14px] bg-[#111113] border border-white/15 space-y-1.5 font-mono text-xs">
                 <div className="flex justify-between text-stone-300">
                   <span>Standard Retail Total:</span>
                   <span className="line-through">{formatPrice(totalGross, currency)}</span>
@@ -281,31 +281,31 @@ export const SchoolTendersPage: React.FC = () => {
       </section>
 
       {/* ==================== 3. FOUR INSTITUTIONAL GUARANTEES ==================== */}
-      <section className="py-14 bg-white border-t border-[#e4e4e7]">
+      <section className="py-14 bg-white border-t border-[#E7E5E0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="p-5 rounded-[16px] bg-[#fafafa] border border-[#e4e4e7] space-y-2">
+            <div className="p-5 rounded-[16px] bg-[#F9F8F6] border border-[#E7E5E0] space-y-2">
               <ShieldCheck className="w-6 h-6 text-[#111113]" />
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#18181b]">NECTA Syllabus Standard</h4>
-              <p className="text-[11px] text-[#71717a]">Approved 8mm ruling and margin guides compliant with Tanzanian primary and secondary exams.</p>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#111113]">NECTA Syllabus Standard</h4>
+              <p className="text-[11px] text-[#6E6B66]">Approved 8mm ruling and margin guides compliant with Tanzanian primary and secondary exams.</p>
             </div>
 
-            <div className="p-5 rounded-[16px] bg-[#fafafa] border border-[#e4e4e7] space-y-2">
+            <div className="p-5 rounded-[16px] bg-[#F9F8F6] border border-[#E7E5E0] space-y-2">
               <Package className="w-6 h-6 text-[#111113]" />
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#18181b]">Reinforced Carton Packs</h4>
-              <p className="text-[11px] text-[#71717a]">Packed in heavy-duty OMEGA 5-ply cartons with water-resistant strapping to prevent transit losses.</p>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#111113]">Reinforced Carton Packs</h4>
+              <p className="text-[11px] text-[#6E6B66]">Packed in heavy-duty OMEGA 5-ply cartons with water-resistant strapping to prevent transit losses.</p>
             </div>
 
-            <div className="p-5 rounded-[16px] bg-[#fafafa] border border-[#e4e4e7] space-y-2">
+            <div className="p-5 rounded-[16px] bg-[#F9F8F6] border border-[#E7E5E0] space-y-2">
               <Truck className="w-6 h-6 text-[#111113]" />
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#18181b]">Direct Bus Parcel Drop-off</h4>
-              <p className="text-[11px] text-[#71717a]">Waybill receipts sent via WhatsApp with same-day drop-off at your region's bus terminal.</p>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#111113]">Direct Bus Parcel Drop-off</h4>
+              <p className="text-[11px] text-[#6E6B66]">Waybill receipts sent via WhatsApp with same-day drop-off at your region's bus terminal.</p>
             </div>
 
-            <div className="p-5 rounded-[16px] bg-[#fafafa] border border-[#e4e4e7] space-y-2">
+            <div className="p-5 rounded-[16px] bg-[#F9F8F6] border border-[#E7E5E0] space-y-2">
               <FileText className="w-6 h-6 text-[#111113]" />
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#18181b]">TRA EFD Invoicing</h4>
-              <p className="text-[11px] text-[#71717a]">Official fiscal receipts with school TIN/VRN compliance for government audit satisfaction.</p>
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#111113]">TRA EFD Invoicing</h4>
+              <p className="text-[11px] text-[#6E6B66]">Official fiscal receipts with school TIN/VRN compliance for government audit satisfaction.</p>
             </div>
           </div>
         </div>

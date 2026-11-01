@@ -56,13 +56,13 @@ export const AccountPage: React.FC = () => {
 
   if (!currentUser) {
     return (
-      <div className="min-h-[75vh] flex items-center justify-center py-16 px-4 bg-[#fafafa]">
+      <div className="min-h-[75vh] flex items-center justify-center py-16 px-4 bg-[#F9F8F6]">
         <SEOHead
           title="Account Portal | OMEGA Stationery & Books"
           description="Sign in or register to access your OMEGA member account, order history and wholesale pricing."
         />
-        <div className="max-w-md w-full bg-white rounded-[16px] border border-[#e4e4e7] shadow-boutique p-8 text-center space-y-6">
-          <div className="w-16 h-16 rounded-full bg-[#fafafa] border border-[#e4e4e7] text-[#111113] flex items-center justify-center mx-auto shadow-xs">
+        <div className="max-w-md w-full bg-white rounded-[16px] border border-[#E7E5E0] shadow-boutique p-8 text-center space-y-6">
+          <div className="w-16 h-16 rounded-full bg-[#F9F8F6] border border-[#E7E5E0] text-[#111113] flex items-center justify-center mx-auto shadow-xs">
             <User className="w-8 h-8" />
           </div>
           <div>
@@ -82,12 +82,12 @@ export const AccountPage: React.FC = () => {
             </Link>
             <Link
               to="/register"
-              className="py-3 px-4 rounded-[8px] bg-white border border-[#e4e4e7] hover:bg-[#fafafa] font-bold text-xs text-[#111113] flex items-center justify-center gap-1.5"
+              className="py-3 px-4 rounded-[8px] bg-white border border-[#E7E5E0] hover:bg-[#F9F8F6] font-bold text-xs text-[#111113] flex items-center justify-center gap-1.5"
             >
               Register
             </Link>
           </div>
-          <div className="text-[11px] text-[#6B7280] pt-2 border-t border-[#e4e4e7]">
+          <div className="text-[11px] text-[#6B7280] pt-2 border-t border-[#E7E5E0]">
             Fast 1-click test login available for Wholesale (Mussa Juma) &amp; School (Dar Academy).
           </div>
         </div>
@@ -110,7 +110,7 @@ export const AccountPage: React.FC = () => {
       : 'Standard Retail Pricing';
 
   return (
-    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 bg-[#fafafa]">
+    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-8 bg-[#F9F8F6]">
       <SEOHead
         title={`${currentUser.name} | Account Profile | OMEGA Stationery`}
         description="Manage your OMEGA account, real-time orders, and procurement discounts."
@@ -118,7 +118,7 @@ export const AccountPage: React.FC = () => {
 
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Profile Hero Header Card */}
-        <div className="bg-white rounded-[16px] border border-[#e4e4e7] shadow-boutique overflow-hidden">
+        <div className="bg-white rounded-[16px] border border-[#E7E5E0] shadow-boutique overflow-hidden">
           <div className="bg-[#111113] text-white p-6 sm:p-8">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
               <div className="flex items-center gap-4 sm:gap-5">
@@ -191,7 +191,7 @@ export const AccountPage: React.FC = () => {
           </div>
 
           {/* Navigation Tabs */}
-          <div className="flex border-b border-[#e4e4e7] overflow-x-auto bg-[#fafafa] px-4">
+          <div className="flex border-b border-[#E7E5E0] overflow-x-auto bg-[#F9F8F6] px-4">
             <button
               type="button"
               onClick={() => handleTabChange('orders')}
@@ -268,7 +268,7 @@ export const AccountPage: React.FC = () => {
             </div>
 
             {demoOrders.length === 0 ? (
-              <div className="bg-white rounded-[16px] border border-[#e4e4e7] p-12 text-center space-y-4">
+              <div className="bg-white rounded-[16px] border border-[#E7E5E0] p-12 text-center space-y-4">
                 <Package className="w-12 h-12 text-[#6B7280] mx-auto opacity-40" />
                 <div>
                   <h3 className="text-base font-bold text-[#14182B]">No Orders Yet</h3>
@@ -289,9 +289,9 @@ export const AccountPage: React.FC = () => {
                 {demoOrders.map((order, idx) => (
                   <div
                     key={order.orderReference || idx}
-                    className="bg-white rounded-[12px] border border-[#e4e4e7] p-5 shadow-xs space-y-3"
+                    className="bg-white rounded-[12px] border border-[#E7E5E0] p-5 shadow-xs space-y-3"
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#e4e4e7]">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#E7E5E0]">
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="font-mono font-bold text-sm text-[#111113]">
@@ -319,7 +319,7 @@ export const AccountPage: React.FC = () => {
                       {order.items.map((item, itemIdx) => (
                         <div
                           key={itemIdx}
-                          className="flex items-center justify-between text-xs py-1 px-2 rounded-[6px] bg-[#fafafa]"
+                          className="flex items-center justify-between text-xs py-1 px-2 rounded-[6px] bg-[#F9F8F6]"
                         >
                           <div className="flex items-center gap-2">
                             <span className="font-mono text-[11px] font-bold text-[#111113]">
@@ -335,7 +335,7 @@ export const AccountPage: React.FC = () => {
                     </div>
 
                     {/* Logistics & Delivery Info */}
-                    <div className="flex flex-wrap items-center justify-between gap-2 pt-2 text-[11px] text-[#6B7280] border-t border-[#e4e4e7]/60">
+                    <div className="flex flex-wrap items-center justify-between gap-2 pt-2 text-[11px] text-[#6B7280] border-t border-[#E7E5E0]/60">
                       <span className="flex items-center gap-1 font-medium">
                         <Truck className="w-3.5 h-3.5 text-[#111113]" />
                         Fulfillment: {order.fulfillmentType} ({order.deliveryAddress || 'Kariakoo Flagship Store Pickup'})
@@ -358,7 +358,7 @@ export const AccountPage: React.FC = () => {
 
         {/* Tab 2: Profile & Delivery Address */}
         {activeTab === 'profile' && (
-          <div className="bg-white rounded-[16px] border border-[#e4e4e7] p-6 sm:p-8 space-y-6 shadow-xs">
+          <div className="bg-white rounded-[16px] border border-[#E7E5E0] p-6 sm:p-8 space-y-6 shadow-xs">
             <div>
               <h2 className="text-lg font-serif font-bold text-[#14182B]">
                 Profile &amp; Default Delivery Address
@@ -371,34 +371,34 @@ export const AccountPage: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-xs">
               <div className="space-y-1">
                 <label className="font-bold text-[#14182B] block">Full Name</label>
-                <div className="p-3 rounded-[8px] bg-[#fafafa] border border-[#e4e4e7] font-medium text-[#14182B]">
+                <div className="p-3 rounded-[8px] bg-[#F9F8F6] border border-[#E7E5E0] font-medium text-[#14182B]">
                   {currentUser.name}
                 </div>
               </div>
 
               <div className="space-y-1">
                 <label className="font-bold text-[#14182B] block">Email Address</label>
-                <div className="p-3 rounded-[8px] bg-[#fafafa] border border-[#e4e4e7] font-mono text-[#14182B]">
+                <div className="p-3 rounded-[8px] bg-[#F9F8F6] border border-[#E7E5E0] font-mono text-[#14182B]">
                   {currentUser.email}
                 </div>
               </div>
 
               <div className="space-y-1">
                 <label className="font-bold text-[#14182B] block">Primary Phone / WhatsApp</label>
-                <div className="p-3 rounded-[8px] bg-[#fafafa] border border-[#e4e4e7] font-mono text-[#14182B]">
+                <div className="p-3 rounded-[8px] bg-[#F9F8F6] border border-[#E7E5E0] font-mono text-[#14182B]">
                   {currentUser.phone || '+255 715 268 391'}
                 </div>
               </div>
 
               <div className="space-y-1">
                 <label className="font-bold text-[#14182B] block">Member Category</label>
-                <div className="p-3 rounded-[8px] bg-[#fafafa] border border-[#e4e4e7] font-bold text-[#111113]">
+                <div className="p-3 rounded-[8px] bg-[#F9F8F6] border border-[#E7E5E0] font-bold text-[#111113]">
                   {tierName}
                 </div>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-[#e4e4e7] flex justify-end">
+            <div className="pt-4 border-t border-[#E7E5E0] flex justify-end">
               <button
                 type="button"
                 onClick={() => showToast('Profile details are synced and up to date.')}
@@ -412,7 +412,7 @@ export const AccountPage: React.FC = () => {
 
         {/* Tab 3: Tier Privileges */}
         {activeTab === 'tier' && (
-          <div className="bg-white rounded-[16px] border border-[#e4e4e7] p-6 sm:p-8 space-y-6 shadow-xs">
+          <div className="bg-white rounded-[16px] border border-[#E7E5E0] p-6 sm:p-8 space-y-6 shadow-xs">
             <div>
               <h2 className="text-lg font-serif font-bold text-[#14182B]">
                 Account Tier Privileges &amp; Commercial Terms
@@ -423,7 +423,7 @@ export const AccountPage: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="p-4 rounded-[12px] bg-[#fafafa] border border-[#e4e4e7] space-y-2">
+              <div className="p-4 rounded-[12px] bg-[#F9F8F6] border border-[#E7E5E0] space-y-2">
                 <div className="w-8 h-8 rounded-full bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold">
                   %
                 </div>
@@ -433,7 +433,7 @@ export const AccountPage: React.FC = () => {
                 </p>
               </div>
 
-              <div className="p-4 rounded-[12px] bg-[#fafafa] border border-[#e4e4e7] space-y-2">
+              <div className="p-4 rounded-[12px] bg-[#F9F8F6] border border-[#E7E5E0] space-y-2">
                 <div className="w-8 h-8 rounded-full bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold">
                   <FileText className="w-4 h-4" />
                 </div>
@@ -443,7 +443,7 @@ export const AccountPage: React.FC = () => {
                 </p>
               </div>
 
-              <div className="p-4 rounded-[12px] bg-[#fafafa] border border-[#e4e4e7] space-y-2">
+              <div className="p-4 rounded-[12px] bg-[#F9F8F6] border border-[#E7E5E0] space-y-2">
                 <div className="w-8 h-8 rounded-full bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold">
                   <Truck className="w-4 h-4" />
                 </div>
@@ -458,7 +458,7 @@ export const AccountPage: React.FC = () => {
 
         {/* Tab 4: Security */}
         {activeTab === 'security' && (
-          <div className="bg-white rounded-[16px] border border-[#e4e4e7] p-6 sm:p-8 space-y-6 shadow-xs">
+          <div className="bg-white rounded-[16px] border border-[#E7E5E0] p-6 sm:p-8 space-y-6 shadow-xs">
             <div>
               <h2 className="text-lg font-serif font-bold text-[#14182B]">
                 Security &amp; Connected Backend
@@ -469,7 +469,7 @@ export const AccountPage: React.FC = () => {
             </div>
 
             <div className="space-y-4 text-xs">
-              <div className="p-4 rounded-[10px] bg-[#fafafa] border border-[#e4e4e7] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="p-4 rounded-[10px] bg-[#F9F8F6] border border-[#E7E5E0] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
                   <div className="font-bold text-[#14182B]">Active Session Cookie</div>
                   <div className="text-[#6B7280] font-mono mt-0.5">
@@ -481,7 +481,7 @@ export const AccountPage: React.FC = () => {
                 </span>
               </div>
 
-              <div className="p-4 rounded-[10px] bg-[#fafafa] border border-[#e4e4e7] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="p-4 rounded-[10px] bg-[#F9F8F6] border border-[#E7E5E0] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div>
                   <div className="font-bold text-[#14182B]">High-Performance Node.js &amp; MongoDB Atlas</div>
                   <div className="text-[#6B7280] font-mono mt-0.5">
@@ -494,7 +494,7 @@ export const AccountPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-[#e4e4e7] flex justify-between items-center">
+            <div className="pt-4 border-t border-[#E7E5E0] flex justify-between items-center">
               <button
                 type="button"
                 onClick={() => showToast('Password reset link sent to your email.')}

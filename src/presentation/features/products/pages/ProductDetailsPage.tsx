@@ -220,7 +220,7 @@ export const ProductDetailsPage: React.FC = () => {
   )}`;
 
   return (
-    <div className="bg-[#fafafa] min-h-screen text-[#18181b]">
+    <div className="bg-[#F9F8F6] min-h-screen text-[#111113]">
       <SEOHead
         title={`${product.name} (${currency} ${effectivePrice.toLocaleString()}) — OMEGA Stationery`}
         description={product.description}
@@ -255,7 +255,7 @@ export const ProductDetailsPage: React.FC = () => {
         {/* Breadcrumb Navigation */}
         <nav
           aria-label="Breadcrumb"
-          className="flex items-center gap-2 text-xs text-[#71717a] flex-wrap"
+          className="flex items-center gap-2 text-xs text-[#6E6B66] flex-wrap"
         >
           <Link to="/" className="hover:text-[#111113] font-semibold transition-colors">
             {t.home}
@@ -272,7 +272,7 @@ export const ProductDetailsPage: React.FC = () => {
             {product.category}
           </Link>
           <span aria-hidden="true" className="text-stone-300">/</span>
-          <span className="text-[#18181b] font-bold truncate max-w-sm">
+          <span className="text-[#111113] font-bold truncate max-w-sm">
             {language === 'sw' && product.nameSw ? product.nameSw : product.name}
           </span>
         </nav>
@@ -286,13 +286,13 @@ export const ProductDetailsPage: React.FC = () => {
           <div className="lg:col-span-6 space-y-5 lg:sticky lg:top-24">
             
             {/* Primary Visual Display Box */}
-            <div className="w-full aspect-square bg-white rounded-2xl border border-[#e4e4e7] shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex items-center justify-center p-6 sm:p-10 group">
+            <div className="w-full aspect-square bg-white rounded-2xl border border-[#E7E5E0] shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex items-center justify-center p-6 sm:p-10 group">
               
               {/* Badges on Visual */}
               <div className="absolute top-4 left-4 z-10 flex flex-col gap-1.5 items-start">
                 {product.badge && (
-                  <span className="px-2.5 py-1 rounded-md bg-[#111113] text-[#ef4444] border border-[#dc2626]/30 text-[11px] font-bold uppercase tracking-wider shadow-sm flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-[#ef4444]" />
+                  <span className="px-2.5 py-1 rounded-md bg-[#111113] text-[#DC2626] border border-[#dc2626]/30 text-[11px] font-bold uppercase tracking-wider shadow-sm flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-[#DC2626]" />
                     <span>{product.badge}</span>
                   </span>
                 )}
@@ -305,7 +305,7 @@ export const ProductDetailsPage: React.FC = () => {
 
               <div className="absolute top-4 right-4 z-10 flex flex-col gap-1.5 items-end">
                 {hasDiscount && (
-                  <span className="px-2.5 py-1 rounded-md bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] text-white text-xs font-bold shadow-sm tracking-wide">
+                  <span className="px-2.5 py-1 rounded-md bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#DC2626] text-white text-xs font-bold shadow-sm tracking-wide">
                     {Math.round(((product.price - effectivePrice) / product.price) * 100)}% OFF
                   </span>
                 )}
@@ -332,7 +332,7 @@ export const ProductDetailsPage: React.FC = () => {
               ) : (
                 /* Specification Sheet Preview fallback */
                 <div className="w-full h-full p-4 flex items-center justify-center">
-                  <div className="w-full max-w-sm border-2 border-[#111113] bg-[#fafafa] p-5 space-y-3 rounded-xl shadow-xs">
+                  <div className="w-full max-w-sm border-2 border-[#111113] bg-[#F9F8F6] p-5 space-y-3 rounded-xl shadow-xs">
                     <div className="text-center border-b border-stone-300 pb-2">
                       <p className="text-lg font-bold tracking-widest text-[#111113] font-heading">
                         OMEGA STATIONERY
@@ -386,7 +386,7 @@ export const ProductDetailsPage: React.FC = () => {
                   className={`w-20 h-16 rounded-xl overflow-hidden border-2 shrink-0 transition-all bg-white p-1 flex items-center justify-center ${
                     selectedImageIdx === index
                       ? 'border-[#111113] ring-2 ring-[#dc2626] shadow-sm'
-                      : 'border-[#e4e4e7] hover:border-stone-400'
+                      : 'border-[#E7E5E0] hover:border-stone-400'
                   }`}
                 >
                   <img
@@ -404,7 +404,7 @@ export const ProductDetailsPage: React.FC = () => {
                 className={`h-16 px-3.5 rounded-xl border-2 shrink-0 flex flex-col items-center justify-center bg-white text-[11px] font-bold transition-all ${
                   selectedImageIdx === galleryImages.length
                     ? 'border-[#111113] text-[#111113] ring-2 ring-[#dc2626]'
-                    : 'border-[#e4e4e7] text-stone-600 hover:border-stone-400'
+                    : 'border-[#E7E5E0] text-stone-600 hover:border-stone-400'
                 }`}
               >
                 <FileText className="w-4 h-4 mb-0.5 text-[#dc2626]" />
@@ -414,7 +414,7 @@ export const ProductDetailsPage: React.FC = () => {
 
             {/* 4 Contextual Feature Pills under Visual */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 text-center">
-              <div className="p-2.5 rounded-xl bg-white border border-[#e4e4e7] shadow-2xs">
+              <div className="p-2.5 rounded-xl bg-white border border-[#E7E5E0] shadow-2xs">
                 {product.category?.includes('Bahasha') ? (
                   <ShieldCheck className="w-4 h-4 text-[#2A9D8F] mx-auto mb-1" />
                 ) : product.category?.includes('File') || product.name.includes('Jaradio') ? (
@@ -438,7 +438,7 @@ export const ProductDetailsPage: React.FC = () => {
                 </span>
               </div>
 
-              <div className="p-2.5 rounded-xl bg-white border border-[#e4e4e7] shadow-2xs">
+              <div className="p-2.5 rounded-xl bg-white border border-[#E7E5E0] shadow-2xs">
                 <FileText className="w-4 h-4 text-[#111113] mx-auto mb-1" />
                 <span className="text-[11px] font-bold text-[#111113] block truncate">
                   {product.paperType ? 'Pure Paper' : 'Factory Grade'}
@@ -448,7 +448,7 @@ export const ProductDetailsPage: React.FC = () => {
                 </span>
               </div>
 
-              <div className="p-2.5 rounded-xl bg-white border border-[#e4e4e7] shadow-2xs">
+              <div className="p-2.5 rounded-xl bg-white border border-[#E7E5E0] shadow-2xs">
                 <Package className="w-4 h-4 text-[#dc2626] mx-auto mb-1" />
                 <span className="text-[11px] font-bold text-[#111113] block truncate">
                   {product.packaging ? 'Master Box' : 'Wholesale'}
@@ -458,7 +458,7 @@ export const ProductDetailsPage: React.FC = () => {
                 </span>
               </div>
 
-              <div className="p-2.5 rounded-xl bg-white border border-[#e4e4e7] shadow-2xs">
+              <div className="p-2.5 rounded-xl bg-white border border-[#E7E5E0] shadow-2xs">
                 <ShieldCheck className="w-4 h-4 text-[#2A9D8F] mx-auto mb-1" />
                 <span className="text-[11px] font-bold text-[#111113] block truncate">Genuine</span>
                 <span className="text-[10px] text-stone-500 block truncate">Indigo Printed Ltd</span>
@@ -473,7 +473,7 @@ export const ProductDetailsPage: React.FC = () => {
           <div className="lg:col-span-6 space-y-6">
             
             {/* Header, Title & Tags */}
-            <div className="space-y-3 border-b border-[#e4e4e7] pb-5">
+            <div className="space-y-3 border-b border-[#E7E5E0] pb-5">
               <div className="flex items-center gap-2 flex-wrap text-xs">
                 <span className="px-2.5 py-1 rounded-md bg-[#111113] text-white font-mono font-bold">
                   OFFICIAL FACTORY
@@ -486,7 +486,7 @@ export const ProductDetailsPage: React.FC = () => {
                 </span>
               </div>
 
-              <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#18181b] leading-tight">
+              <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#111113] leading-tight">
                 {language === 'sw' && product.nameSw ? product.nameSw : product.name}
               </h1>
 
@@ -515,7 +515,7 @@ export const ProductDetailsPage: React.FC = () => {
                       product.stockStatus === 'In Stock'
                         ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/25'
                         : product.stockStatus === 'Low Stock'
-                        ? 'bg-[#dc2626]/20 text-[#ef4444] border border-[#dc2626]/30'
+                        ? 'bg-[#dc2626]/20 text-[#DC2626] border border-[#dc2626]/30'
                         : 'bg-red-500/15 text-red-400 border border-red-500/25'
                     }`}
                   >
@@ -531,7 +531,7 @@ export const ProductDetailsPage: React.FC = () => {
             </div>
 
             {/* Price Box with Wholesale Tier Indicator */}
-            <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#e4e4e7] shadow-xs space-y-4">
+            <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#E7E5E0] shadow-xs space-y-4">
               <div className="flex flex-wrap items-baseline justify-between gap-4">
                 <div>
                   <span className="text-xs uppercase tracking-wider text-stone-500 font-bold block mb-1">
@@ -614,7 +614,7 @@ export const ProductDetailsPage: React.FC = () => {
             </div>
 
             {/* Quantity Selector, Subtotal & Live Order Action Box */}
-            <div className="bg-white border border-[#e4e4e7] rounded-2xl p-5 space-y-4 shadow-xs">
+            <div className="bg-white border border-[#E7E5E0] rounded-2xl p-5 space-y-4 shadow-xs">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div className="space-y-1">
                   <label
@@ -623,7 +623,7 @@ export const ProductDetailsPage: React.FC = () => {
                   >
                     Select Quantity ({unitLabel})
                   </label>
-                  <div className="inline-flex items-center border border-[#e4e4e7] rounded-xl bg-[#fafafa]">
+                  <div className="inline-flex items-center border border-[#E7E5E0] rounded-xl bg-[#F9F8F6]">
                     <button
                       type="button"
                       onClick={() => setQuantity((q) => Math.max(1, q - 1))}
@@ -646,7 +646,7 @@ export const ProductDetailsPage: React.FC = () => {
                         }
                       }}
                       disabled={isOutOfStock}
-                      className="w-16 text-center text-sm font-bold text-[#18181b] font-mono focus:outline-none bg-transparent"
+                      className="w-16 text-center text-sm font-bold text-[#111113] font-mono focus:outline-none bg-transparent"
                     />
                     <button
                       type="button"
@@ -774,7 +774,7 @@ export const ProductDetailsPage: React.FC = () => {
               </div>
 
               {/* 1. OVERVIEW & PROTECTION BENEFITS */}
-              <div className="border border-[#e4e4e7] rounded-2xl bg-white overflow-hidden shadow-2xs">
+              <div className="border border-[#E7E5E0] rounded-2xl bg-white overflow-hidden shadow-2xs">
                 <button
                   type="button"
                   onClick={() => toggleAccordion('overview')}
@@ -799,7 +799,7 @@ export const ProductDetailsPage: React.FC = () => {
                     </p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                      <div className="p-3 rounded-xl bg-[#fafafa] border border-stone-200/80 flex items-start gap-2.5">
+                      <div className="p-3 rounded-xl bg-[#F9F8F6] border border-stone-200/80 flex items-start gap-2.5">
                         <CheckCircle2 className="w-4 h-4 text-[#2A9D8F] shrink-0 mt-0.5" />
                         <div>
                           <strong className="block text-[#111113]">
@@ -811,7 +811,7 @@ export const ProductDetailsPage: React.FC = () => {
                         </div>
                       </div>
 
-                      <div className="p-3 rounded-xl bg-[#fafafa] border border-stone-200/80 flex items-start gap-2.5">
+                      <div className="p-3 rounded-xl bg-[#F9F8F6] border border-stone-200/80 flex items-start gap-2.5">
                         <CheckCircle2 className="w-4 h-4 text-[#2A9D8F] shrink-0 mt-0.5" />
                         <div>
                           <strong className="block text-[#111113]">
@@ -823,7 +823,7 @@ export const ProductDetailsPage: React.FC = () => {
                         </div>
                       </div>
 
-                      <div className="p-3 rounded-xl bg-[#fafafa] border border-stone-200/80 flex items-start gap-2.5">
+                      <div className="p-3 rounded-xl bg-[#F9F8F6] border border-stone-200/80 flex items-start gap-2.5">
                         <CheckCircle2 className="w-4 h-4 text-[#2A9D8F] shrink-0 mt-0.5" />
                         <div>
                           <strong className="block text-[#111113]">Master Packaging</strong>
@@ -833,7 +833,7 @@ export const ProductDetailsPage: React.FC = () => {
                         </div>
                       </div>
 
-                      <div className="p-3 rounded-xl bg-[#fafafa] border border-stone-200/80 flex items-start gap-2.5">
+                      <div className="p-3 rounded-xl bg-[#F9F8F6] border border-stone-200/80 flex items-start gap-2.5">
                         <CheckCircle2 className="w-4 h-4 text-[#2A9D8F] shrink-0 mt-0.5" />
                         <div>
                           <strong className="block text-[#111113]">Indigo Printed Limited Hallmark</strong>
@@ -848,7 +848,7 @@ export const ProductDetailsPage: React.FC = () => {
               </div>
 
               {/* 2. COMPLETE TECHNICAL SPECIFICATIONS ACCORDION */}
-              <div className="border border-[#e4e4e7] rounded-2xl bg-white overflow-hidden shadow-2xs">
+              <div className="border border-[#E7E5E0] rounded-2xl bg-white overflow-hidden shadow-2xs">
                 <button
                   type="button"
                   onClick={() => toggleAccordion('specs')}
@@ -880,7 +880,7 @@ export const ProductDetailsPage: React.FC = () => {
                           <th className="py-2.5 px-3 font-semibold text-stone-600 bg-stone-50">
                             Category
                           </th>
-                          <td className="py-2.5 px-3 text-[#18181b]">
+                          <td className="py-2.5 px-3 text-[#111113]">
                             {product.category}
                           </td>
                         </tr>
@@ -889,7 +889,7 @@ export const ProductDetailsPage: React.FC = () => {
                             <th className="py-2.5 px-3 font-semibold text-stone-600 bg-stone-50">
                               Packaging Unit
                             </th>
-                            <td className="py-2.5 px-3 text-[#18181b]">
+                            <td className="py-2.5 px-3 text-[#111113]">
                               {product.packaging}
                             </td>
                           </tr>
@@ -899,7 +899,7 @@ export const ProductDetailsPage: React.FC = () => {
                             <th className="py-2.5 px-3 font-semibold text-stone-600 bg-stone-50">
                               {spec.label}
                             </th>
-                            <td className="py-2.5 px-3 font-medium text-[#18181b]">
+                            <td className="py-2.5 px-3 font-medium text-[#111113]">
                               {spec.value}
                             </td>
                           </tr>
@@ -908,7 +908,7 @@ export const ProductDetailsPage: React.FC = () => {
                           <th className="py-2.5 px-3 font-semibold text-stone-600 bg-stone-50">
                             Manufacturer &amp; Factory
                           </th>
-                          <td className="py-2.5 px-3 text-[#18181b]">
+                          <td className="py-2.5 px-3 text-[#111113]">
                             Indigo Printed Limited · Plot 30, Block F Kilwa Rd, Mkuranga, Dar es Salaam
                           </td>
                         </tr>
@@ -927,7 +927,7 @@ export const ProductDetailsPage: React.FC = () => {
               </div>
 
               {/* 3. WHOLESALE, SCHOOL TENDERS & TRA INVOICING */}
-              <div className="border border-[#e4e4e7] rounded-2xl bg-white overflow-hidden shadow-2xs">
+              <div className="border border-[#E7E5E0] rounded-2xl bg-white overflow-hidden shadow-2xs">
                 <button
                   type="button"
                   onClick={() => toggleAccordion('wholesale')}
@@ -959,7 +959,7 @@ export const ProductDetailsPage: React.FC = () => {
               </div>
 
               {/* 4. BUS CARGO & UPCOUNTRY REGIONAL DISPATCH */}
-              <div className="border border-[#e4e4e7] rounded-2xl bg-white overflow-hidden shadow-2xs">
+              <div className="border border-[#E7E5E0] rounded-2xl bg-white overflow-hidden shadow-2xs">
                 <button
                   type="button"
                   onClick={() => toggleAccordion('delivery')}
@@ -998,7 +998,7 @@ export const ProductDetailsPage: React.FC = () => {
               </div>
 
               {/* 5. APPLICATION & COVERING GUIDE */}
-              <div className="border border-[#e4e4e7] rounded-2xl bg-white overflow-hidden shadow-2xs">
+              <div className="border border-[#E7E5E0] rounded-2xl bg-white overflow-hidden shadow-2xs">
                 <button
                   type="button"
                   onClick={() => toggleAccordion('guide')}
@@ -1036,13 +1036,13 @@ export const ProductDetailsPage: React.FC = () => {
         {/* RELATED COMPLEMENTARY PRODUCTS SECTION */}
         {/* ===================================================================== */}
         {relatedProducts.length > 0 && (
-          <section className="pt-12 border-t border-[#e4e4e7] space-y-6">
+          <section className="pt-12 border-t border-[#E7E5E0] space-y-6">
             <div className="flex items-center justify-between">
               <div>
                 <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#dc2626] font-heading block">
                   Frequently Purchased Together
                 </span>
-                <h2 className="font-heading text-xl sm:text-2xl font-bold text-[#18181b] tracking-tight">
+                <h2 className="font-heading text-xl sm:text-2xl font-bold text-[#111113] tracking-tight">
                   Complementary Books &amp; Stationery
                 </h2>
               </div>

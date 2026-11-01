@@ -96,7 +96,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           type="button"
           onClick={handleToggleWishlist}
           aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
-          className="w-7 h-7 flex items-center justify-center text-[#71717a] hover:text-[#dc2626] transition-colors cursor-pointer"
+          className="w-7 h-7 flex items-center justify-center text-[#6E6B66] hover:text-[#dc2626] transition-colors cursor-pointer"
         >
           <Heart
             className={`w-4 h-4 transition-transform ${
@@ -124,7 +124,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         ) : (
           <div className="w-full h-full flex flex-col items-center justify-center p-3 bg-[#f9f8f6] rounded">
             <BookOpen className="w-8 h-8 text-[#111113]/40 stroke-[1.5]" />
-            <span className="text-[9px] text-[#71717a] font-mono mt-1">{product.sku}</span>
+            <span className="text-[9px] text-[#6E6B66] font-mono mt-1">{product.sku}</span>
           </div>
         )}
       </Link>
@@ -139,7 +139,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </h3>
 
         {/* Small Tracked Category / Spec Subtitle */}
-        <p className="text-[10px] sm:text-[11px] font-mono tracking-widest text-[#71717a] uppercase truncate">
+        <p className="text-[10px] sm:text-[11px] font-mono tracking-widest text-[#6E6B66] uppercase truncate">
           {subtitle}
         </p>
 
@@ -149,7 +149,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {formatPrice(effectivePrice, currency)}
           </span>
           {hasDiscount && (
-            <span className="text-[10px] sm:text-[11px] text-[#71717a] line-through font-mono">
+            <span className="text-[10px] sm:text-[11px] text-[#6E6B66] line-through font-mono">
               {formatPrice(product.price, currency)}
             </span>
           )}

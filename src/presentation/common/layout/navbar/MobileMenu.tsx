@@ -87,7 +87,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
               <span className="font-heading text-base font-bold tracking-wider text-white">
                 OMEGA
               </span>
-              <span className="text-[9px] font-mono tracking-widest text-[#ef4444] uppercase -mt-0.5">
+              <span className="text-[9px] font-mono tracking-widest text-[#DC2626] uppercase -mt-0.5">
                 STATIONERY
               </span>
             </div>
@@ -113,7 +113,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
               className="group flex items-center justify-between py-4 hover:bg-white/[0.03] -mx-2 px-2 rounded-lg transition-colors"
             >
               <div className="min-w-0 pr-3">
-                <span className="block text-[15px] font-bold text-white group-hover:text-[#ef4444] transition-colors leading-snug">
+                <span className="block text-[15px] font-bold text-white group-hover:text-[#DC2626] transition-colors leading-snug">
                   {item.title}
                 </span>
                 {item.subtitle && (

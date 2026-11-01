@@ -21,14 +21,14 @@ export const OrderTrackingPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#fafafa] text-[#18181b]">
+    <div className="min-h-screen bg-[#F9F8F6] text-[#111113]">
       <SEOHead
         title="Track Order Dispatch & Bus Waybills | OMEGA Stationery Tanzania"
         description="Track your real-time stationery orders, counter book bulk dispatches, and upcountry bus parcel waybills across Tanzania."
       />
 
       {/* Header Banner */}
-      <section className="relative overflow-hidden w-full bg-[#111113] text-white py-14 lg:py-20 border-b border-[#18181b]">
+      <section className="relative overflow-hidden w-full bg-[#111113] text-white py-14 lg:py-20 border-b border-[#111113]">
         <div className="absolute -top-32 -right-32 w-[600px] h-[600px] bg-[#dc2626]/18 rounded-full blur-[150px] pointer-events-none" />
         <div className="absolute -bottom-32 -left-32 w-[550px] h-[550px] bg-[#b91c1c]/15 rounded-full blur-[140px] pointer-events-none" />
 
@@ -40,7 +40,7 @@ export const OrderTrackingPage: React.FC = () => {
                 <span>{t.home}</span>
               </Link>
               <span>/</span>
-              <span className="text-[#ef4444] font-bold">Order Tracking</span>
+              <span className="text-[#DC2626] font-bold">Order Tracking</span>
             </div>
 
             <div className="inline-flex items-center px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#dc2626]/20 via-[#dc2626]/10 to-transparent border border-[#dc2626]/40 font-mono shadow-xs">
@@ -67,9 +67,9 @@ export const OrderTrackingPage: React.FC = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-8">
         
         {/* Search Card */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-white border border-[#e4e4e7] shadow-xl space-y-6">
+        <div className="p-6 sm:p-8 rounded-2xl bg-white border border-[#E7E5E0] shadow-xl space-y-6">
           <form onSubmit={handleSearch} className="space-y-4">
-            <label className="text-xs font-bold text-[#18181b] uppercase tracking-wider block font-mono">
+            <label className="text-xs font-bold text-[#111113] uppercase tracking-wider block font-mono">
               Enter Order Reference or Mobile Number:
             </label>
             <div className="flex flex-col sm:flex-row gap-3">
@@ -79,29 +79,29 @@ export const OrderTrackingPage: React.FC = () => {
                   value={orderRef}
                   onChange={(e) => setOrderRef(e.target.value)}
                   placeholder="e.g. OMG-2026-4891 or 0715 268 391"
-                  className="w-full px-4 py-3.5 rounded-xl border border-[#e4e4e7] bg-[#fafafa] focus:bg-white focus:outline-none focus:border-[#dc2626] font-mono text-sm uppercase text-[#18181b] transition-all"
+                  className="w-full px-4 py-3.5 rounded-xl border border-[#E7E5E0] bg-[#F9F8F6] focus:bg-white focus:outline-none focus:border-[#dc2626] font-mono text-sm uppercase text-[#111113] transition-all"
                 />
               </div>
               <button
                 type="submit"
-                className="px-7 py-3.5 rounded-xl bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] hover:from-[#991b1b] hover:to-[#dc2626] text-white text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer"
+                className="px-7 py-3.5 rounded-xl bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#DC2626] hover:from-[#991b1b] hover:to-[#dc2626] text-white text-xs sm:text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer"
               >
                 <Search className="w-4 h-4" />
                 <span>Track Waybill</span>
               </button>
             </div>
-            <p className="text-xs text-[#71717a]">
+            <p className="text-xs text-[#6E6B66]">
               Tip: You can use your proforma reference number, invoice ID, or WhatsApp contact number.
             </p>
           </form>
 
           {/* Results Timeline */}
           {searched && (
-            <div className="p-6 rounded-2xl bg-[#fafafa] border border-[#e4e4e7] space-y-6 animate-in fade-in duration-300">
-              <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#e4e4e7]">
+            <div className="p-6 rounded-2xl bg-[#F9F8F6] border border-[#E7E5E0] space-y-6 animate-in fade-in duration-300">
+              <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-[#E7E5E0]">
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-[#71717a] font-mono">Order Tracking ID:</span>
-                  <p className="text-base font-black font-mono text-[#18181b]">{orderRef.toUpperCase() || 'OMG-DEMO-7842'}</p>
+                  <span className="text-[10px] uppercase font-bold text-[#6E6B66] font-mono">Order Tracking ID:</span>
+                  <p className="text-base font-black font-mono text-[#111113]">{orderRef.toUpperCase() || 'OMG-DEMO-7842'}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-emerald-500/15 text-emerald-700 border border-emerald-500/30 font-mono">
@@ -117,8 +117,8 @@ export const OrderTrackingPage: React.FC = () => {
                     <CheckCircle2 className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-[#18181b]">Order Confirmed &amp; Stamped Proforma Issued</h4>
-                    <p className="text-xs text-[#71717a] mt-0.5">Stock confirmed directly at Soweto SIDO Central Factory &amp; Kariakoo Hub.</p>
+                    <h4 className="text-sm font-bold text-[#111113]">Order Confirmed &amp; Stamped Proforma Issued</h4>
+                    <p className="text-xs text-[#6E6B66] mt-0.5">Stock confirmed directly at Soweto SIDO Central Factory &amp; Kariakoo Hub.</p>
                     <span className="text-[10px] text-zinc-400 font-mono">Stage 1 · Verified</span>
                   </div>
                 </div>
@@ -128,8 +128,8 @@ export const OrderTrackingPage: React.FC = () => {
                     <PackageCheck className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-[#18181b]">Packed in Reinforced OMEGA Heavy Cartons</h4>
-                    <p className="text-xs text-[#71717a] mt-0.5">Strapped with tamper-evident security banding for cross-regional road transport.</p>
+                    <h4 className="text-sm font-bold text-[#111113]">Packed in Reinforced OMEGA Heavy Cartons</h4>
+                    <p className="text-xs text-[#6E6B66] mt-0.5">Strapped with tamper-evident security banding for cross-regional road transport.</p>
                     <span className="text-[10px] text-zinc-400 font-mono">Stage 2 · Quality Checked</span>
                   </div>
                 </div>
@@ -139,16 +139,16 @@ export const OrderTrackingPage: React.FC = () => {
                     <Truck className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-[#18181b]">Handed over to Regional Bus Terminal</h4>
-                    <p className="text-xs text-[#71717a] mt-0.5">Consignment booked onto scheduled upcountry bus service with registered parcel waybill.</p>
+                    <h4 className="text-sm font-bold text-[#111113]">Handed over to Regional Bus Terminal</h4>
+                    <p className="text-xs text-[#6E6B66] mt-0.5">Consignment booked onto scheduled upcountry bus service with registered parcel waybill.</p>
                     <span className="text-[10px] text-[#dc2626] font-mono font-bold">Stage 3 · Live Waybill Active</span>
                   </div>
                 </div>
               </div>
 
               {/* Direct WhatsApp Callout */}
-              <div className="pt-4 border-t border-[#e4e4e7] flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="text-xs text-[#71717a]">
+              <div className="pt-4 border-t border-[#E7E5E0] flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="text-xs text-[#6E6B66]">
                   Need live bus driver contacts or the printed waybill receipt photo?
                 </div>
                 <a
@@ -169,22 +169,22 @@ export const OrderTrackingPage: React.FC = () => {
 
         {/* Informational Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="p-6 rounded-2xl bg-white border border-[#e4e4e7] shadow-xs space-y-3">
+          <div className="p-6 rounded-2xl bg-white border border-[#E7E5E0] shadow-xs space-y-3">
             <div className="w-10 h-10 rounded-lg bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center">
               <Clock className="w-5 h-5" />
             </div>
-            <h3 className="font-heading font-bold text-base text-[#18181b]">Expected Delivery Times</h3>
-            <p className="text-xs sm:text-sm text-[#71717a] leading-relaxed">
+            <h3 className="font-heading font-bold text-base text-[#111113]">Expected Delivery Times</h3>
+            <p className="text-xs sm:text-sm text-[#6E6B66] leading-relaxed">
               Standard bus dispatches from Mbeya and Dar es Salaam arrive within <strong>24 to 48 hours</strong> to major regional terminals across Tanzania including Arusha, Mwanza, Dodoma, Morogoro, and Iringa.
             </p>
           </div>
 
-          <div className="p-6 rounded-2xl bg-white border border-[#e4e4e7] shadow-xs space-y-3">
+          <div className="p-6 rounded-2xl bg-white border border-[#E7E5E0] shadow-xs space-y-3">
             <div className="w-10 h-10 rounded-lg bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center">
               <ShieldCheck className="w-5 h-5" />
             </div>
-            <h3 className="font-heading font-bold text-base text-[#18181b]">Official EFD Receipts</h3>
-            <p className="text-xs sm:text-sm text-[#71717a] leading-relaxed">
+            <h3 className="font-heading font-bold text-base text-[#111113]">Official EFD Receipts</h3>
+            <p className="text-xs sm:text-sm text-[#6E6B66] leading-relaxed">
               Every dispatched carton contains your printed TRA EFD tax invoice and signed packing slip inside the waterproof pouch on the lead carton.
             </p>
           </div>

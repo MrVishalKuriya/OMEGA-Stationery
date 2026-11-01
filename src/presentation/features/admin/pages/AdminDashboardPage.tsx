@@ -1404,7 +1404,7 @@ export const AdminDashboardPage: React.FC = () => {
   // =========================================================================
   if (isProductModalOpen) {
     return (
-      <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-8 space-y-6 font-sans text-[#18181b] animate-in fade-in duration-200">
+      <div className="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-8 space-y-6 font-sans text-[#111113] animate-in fade-in duration-200">
         <SEOHead
           title={`${
             modalMode === 'add'
@@ -1417,7 +1417,7 @@ export const AdminDashboardPage: React.FC = () => {
         />
 
         {/* Full-Page Sticky Top Bar */}
-        <div className="sticky top-0 z-30 bg-[#fafafa]/95 backdrop-blur-md py-3.5 -mx-3 sm:-mx-6 lg:-mx-8 px-3 sm:px-6 lg:px-8 border-b border-stone-200 shadow-2xs">
+        <div className="sticky top-0 z-30 bg-[#F9F8F6]/95 backdrop-blur-md py-3.5 -mx-3 sm:-mx-6 lg:-mx-8 px-3 sm:px-6 lg:px-8 border-b border-stone-200 shadow-2xs">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
               <button
@@ -1442,7 +1442,7 @@ export const AdminDashboardPage: React.FC = () => {
                     Direct MongoDB Atlas CRUD
                   </span>
                 </div>
-                <h1 className="font-heading text-lg sm:text-xl font-bold text-[#18181b] mt-0.5 truncate max-w-xs sm:max-w-md md:max-w-xl">
+                <h1 className="font-heading text-lg sm:text-xl font-bold text-[#111113] mt-0.5 truncate max-w-xs sm:max-w-md md:max-w-xl">
                   {modalMode === 'add'
                     ? 'Create Product Master Record'
                     : modalMode === 'clone'
@@ -1569,7 +1569,7 @@ export const AdminDashboardPage: React.FC = () => {
             {modalActiveTab === 'info' && (
               <div className="space-y-4">
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-[#111113] uppercase tracking-wider">
                     Product Title *
                   </label>
                   <input
@@ -1584,7 +1584,7 @@ export const AdminDashboardPage: React.FC = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-[#111113] uppercase tracking-wider">
                       Category *
                     </label>
                     <select
@@ -1604,7 +1604,7 @@ export const AdminDashboardPage: React.FC = () => {
 
                   <div className="space-y-1">
                     <div className="flex items-center justify-between">
-                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                      <label className="block text-xs font-bold text-[#111113] uppercase tracking-wider">
                         SKU Code *
                       </label>
                       <button
@@ -1637,7 +1637,7 @@ export const AdminDashboardPage: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <div className="flex items-center justify-between">
-                      <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                      <label className="block text-xs font-bold text-[#111113] uppercase tracking-wider">
                         Barcode (EAN-13 / GS1)
                       </label>
                       <button
@@ -1660,7 +1660,7 @@ export const AdminDashboardPage: React.FC = () => {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-[#111113] uppercase tracking-wider">
                       Dispatch Time Guarantee
                     </label>
                     <input
@@ -1676,7 +1676,7 @@ export const AdminDashboardPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-[#111113] uppercase tracking-wider">
                     Product Description
                   </label>
                   <textarea
@@ -1697,7 +1697,7 @@ export const AdminDashboardPage: React.FC = () => {
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-[#111113] uppercase tracking-wider">
                       Retail MSRP (TSh) *
                     </label>
                     <input
@@ -1711,7 +1711,7 @@ export const AdminDashboardPage: React.FC = () => {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-[#111113] uppercase tracking-wider">
                       Discount Price (TSh)
                     </label>
                     <input
@@ -1744,7 +1744,7 @@ export const AdminDashboardPage: React.FC = () => {
                 </div>
 
                 <div className="space-y-1 max-w-xs">
-                  <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-[#111113] uppercase tracking-wider">
                     Min Wholesale Quantity (Pcs/Box) *
                   </label>
                   <input
@@ -1771,7 +1771,7 @@ export const AdminDashboardPage: React.FC = () => {
                   <div className="grid grid-cols-3 gap-3 text-xs pt-1">
                     <div>
                       <span className="text-[10px] text-stone-500 block uppercase font-bold">Carton Wholesale Cost:</span>
-                      <span className="font-mono font-bold text-[#18181b]">
+                      <span className="font-mono font-bold text-[#111113]">
                         {formatPrice(modalCartonWholesaleTotal, currency)}
                       </span>
                     </div>
@@ -1797,7 +1797,7 @@ export const AdminDashboardPage: React.FC = () => {
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-[#111113] uppercase tracking-wider">
                       Packaging Spec (e.g. 48 Pcs / Box)
                     </label>
                     <input
@@ -1812,7 +1812,7 @@ export const AdminDashboardPage: React.FC = () => {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-[#111113] uppercase tracking-wider">
                       Quire Classification
                     </label>
                     <select
@@ -1831,7 +1831,7 @@ export const AdminDashboardPage: React.FC = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-[#111113] uppercase tracking-wider">
                       Page Count
                     </label>
                     <select
@@ -1856,7 +1856,7 @@ export const AdminDashboardPage: React.FC = () => {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-[#111113] uppercase tracking-wider">
                       Ruling / Grid Pattern
                     </label>
                     <select
@@ -1877,7 +1877,7 @@ export const AdminDashboardPage: React.FC = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-[#111113] uppercase tracking-wider">
                       Paper Weight / Quality
                     </label>
                     <input
@@ -1892,7 +1892,7 @@ export const AdminDashboardPage: React.FC = () => {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-[#111113] uppercase tracking-wider">
                       Binding Type
                     </label>
                     <input
@@ -1914,7 +1914,7 @@ export const AdminDashboardPage: React.FC = () => {
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-[#111113] uppercase tracking-wider">
                       Stock Status
                     </label>
                     <select
@@ -1931,7 +1931,7 @@ export const AdminDashboardPage: React.FC = () => {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                    <label className="block text-xs font-bold text-[#111113] uppercase tracking-wider">
                       Physical Stock Quantity on Hand (Units)
                     </label>
                     <input
@@ -2037,7 +2037,7 @@ export const AdminDashboardPage: React.FC = () => {
                       </div>
 
                       <div>
-                        <p className="text-xs font-bold text-[#18181b]">
+                        <p className="text-xs font-bold text-[#111113]">
                           Drag &amp; Drop product photo here, or{' '}
                           <label
                             htmlFor="product-image-file-input"
@@ -2054,7 +2054,7 @@ export const AdminDashboardPage: React.FC = () => {
                       <div className="flex items-center gap-2 pt-1">
                         <label
                           htmlFor="product-image-file-input"
-                          className="px-3.5 py-1.5 bg-[#111113] hover:bg-[#18181b] text-white text-[11px] font-bold rounded-xl cursor-pointer inline-flex items-center gap-1.5 shadow-2xs active:scale-95 transition-all"
+                          className="px-3.5 py-1.5 bg-[#111113] hover:bg-[#111113] text-white text-[11px] font-bold rounded-xl cursor-pointer inline-flex items-center gap-1.5 shadow-2xs active:scale-95 transition-all"
                         >
                           <Upload className="w-3.5 h-3.5 text-[#dc2626]" />
                           <span>Select from Computer / Mobile</span>
@@ -2104,7 +2104,7 @@ export const AdminDashboardPage: React.FC = () => {
 
                     <div className="text-xs min-w-0 space-y-0.5">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <p className="font-bold text-[#18181b]">Active Product Photo</p>
+                        <p className="font-bold text-[#111113]">Active Product Photo</p>
                         <span className="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800">
                           Ready for Database
                         </span>
@@ -2124,7 +2124,7 @@ export const AdminDashboardPage: React.FC = () => {
                       type="button"
                       onClick={handleOpenCurrentInEditor}
                       disabled={!productForm.image}
-                      className="px-3.5 py-2 bg-[#111113] hover:bg-[#18181b] text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition-all active:scale-95 disabled:opacity-50"
+                      className="px-3.5 py-2 bg-[#111113] hover:bg-[#111113] text-white text-xs font-bold rounded-xl flex items-center gap-1.5 shadow-xs transition-all active:scale-95 disabled:opacity-50"
                       title="Open Image Cropper & Editing Studio"
                     >
                       <Crop className="w-4 h-4 text-[#dc2626]" />
@@ -2136,7 +2136,7 @@ export const AdminDashboardPage: React.FC = () => {
                 {/* Card Display Adaptation (With vs Without Background) */}
                 <div className="p-3 bg-stone-50 rounded-xl border border-stone-200 space-y-2">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-bold text-[#18181b] uppercase tracking-wider block">
+                    <label className="text-xs font-bold text-[#111113] uppercase tracking-wider block">
                       Website Card Display Mode (Background Adaptation)
                     </label>
                     <span className="text-[10px] font-bold text-[#dc2626] bg-[#dc2626]/10 px-2 py-0.5 rounded-full font-mono">
@@ -2150,7 +2150,7 @@ export const AdminDashboardPage: React.FC = () => {
                       onClick={() => setProductForm({ ...productForm, imageFit: 'cover' })}
                       className={`p-2.5 rounded-xl border text-left flex items-start gap-2 transition-all ${
                         (productForm.imageFit || 'cover') === 'cover'
-                          ? 'border-[#dc2626] bg-amber-50/60 shadow-2xs text-[#18181b]'
+                          ? 'border-[#dc2626] bg-amber-50/60 shadow-2xs text-[#111113]'
                           : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300'
                       }`}
                     >
@@ -2170,7 +2170,7 @@ export const AdminDashboardPage: React.FC = () => {
                       onClick={() => setProductForm({ ...productForm, imageFit: 'contain' })}
                       className={`p-2.5 rounded-xl border text-left flex items-start gap-2 transition-all ${
                         productForm.imageFit === 'contain'
-                          ? 'border-[#dc2626] bg-amber-50/60 shadow-2xs text-[#18181b]'
+                          ? 'border-[#dc2626] bg-amber-50/60 shadow-2xs text-[#111113]'
                           : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300'
                       }`}
                     >
@@ -2189,7 +2189,7 @@ export const AdminDashboardPage: React.FC = () => {
 
                 {/* Manual Image URL Path */}
                 <div className="space-y-1">
-                  <label className="block text-xs font-bold text-[#18181b] uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-[#111113] uppercase tracking-wider">
                     Or Direct Image URL / Path
                   </label>
                   <input
@@ -2290,7 +2290,7 @@ export const AdminDashboardPage: React.FC = () => {
   // =========================================================================
   if (inspectingProduct) {
     return (
-      <div className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-8 space-y-6 font-sans text-[#18181b] animate-in fade-in duration-200">
+      <div className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 py-8 space-y-6 font-sans text-[#111113] animate-in fade-in duration-200">
         <SEOHead
           title={`ERP Master: ${inspectingProduct.name} | OMEGA HQ`}
           description="Enterprise Master Record Inspection"
@@ -2370,7 +2370,7 @@ export const AdminDashboardPage: React.FC = () => {
                   Units on Hand
                 </span>
               </div>
-              <h2 className="font-heading text-xl sm:text-2xl font-bold text-[#18181b]">
+              <h2 className="font-heading text-xl sm:text-2xl font-bold text-[#111113]">
                 {inspectingProduct.name}
               </h2>
               <div className="flex items-center gap-3 text-xs text-stone-500 font-mono flex-wrap">
@@ -2389,7 +2389,7 @@ export const AdminDashboardPage: React.FC = () => {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
             <div className="p-3.5 bg-stone-50 rounded-xl border border-stone-200/80">
               <span className="text-[10px] text-stone-500 uppercase font-bold block mb-1">Retail Price (MSRP)</span>
-              <span className="font-mono text-base font-bold text-[#18181b]">
+              <span className="font-mono text-base font-bold text-[#111113]">
                 {formatPrice(inspectingProduct.price, currency)}
               </span>
             </div>
@@ -2431,14 +2431,14 @@ export const AdminDashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 font-sans text-[#18181b]">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 font-sans text-[#111113]">
       <SEOHead
         title="OMEGA HQ Enterprise ERP Portal | Central Management System"
         description="Comprehensive Enterprise Resource Planning (ERP) suite for OMEGA Stationery Tanzania: Direct MongoDB Atlas CRUD operations, catalog handles, CMS web content, and logistics waybills."
       />
 
       {/* Top Security & ERP Telemetry Banner */}
-      <div className="bg-[#18181b] text-stone-200 border border-[#18181b] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+      <div className="bg-[#111113] text-stone-200 border border-[#111113] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[#dc2626] text-white flex items-center justify-center shrink-0 shadow-sm">
             <Lock className="w-5 h-5 text-white" />
@@ -2484,7 +2484,7 @@ export const AdminDashboardPage: React.FC = () => {
             </span>
             <span className="text-xs text-stone-500 font-mono">v4.2 · Direct Cloud Database CRUD</span>
           </div>
-          <h1 className="font-heading text-3xl font-bold text-[#18181b]">
+          <h1 className="font-heading text-3xl font-bold text-[#111113]">
             Store Operations &amp; Database Controls
           </h1>
           <p className="text-sm text-stone-600 mt-1">
@@ -2555,7 +2555,7 @@ export const AdminDashboardPage: React.FC = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs">
               <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">Total Active SKUs</span>
-              <p className="text-2xl font-black text-[#18181b] font-mono mt-1">{products.length}</p>
+              <p className="text-2xl font-black text-[#111113] font-mono mt-1">{products.length}</p>
               <span className="text-[11px] text-stone-500">Live MongoDB documents</span>
             </div>
 
@@ -2585,7 +2585,7 @@ export const AdminDashboardPage: React.FC = () => {
           </div>
 
           {/* Database Master Source of Truth Live Indicator */}
-          <div className="bg-linear-to-r from-[#1c2e24] via-[#242b26] to-[#18181b] text-white p-3.5 rounded-2xl border border-emerald-700/40 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+          <div className="bg-linear-to-r from-[#1c2e24] via-[#242b26] to-[#111113] text-white p-3.5 rounded-2xl border border-emerald-700/40 flex flex-wrap items-center justify-between gap-3 shadow-sm">
             <div className="flex items-center gap-3">
               <div className="relative flex items-center justify-center">
                 <div className="w-3 h-3 rounded-full bg-emerald-400" />
@@ -2670,7 +2670,7 @@ export const AdminDashboardPage: React.FC = () => {
 
           {/* ERP Floating Bulk Action Bar (Visible when rows are selected) */}
           {selectedProductIds.length > 0 && (
-            <div className="bg-[#111113] text-white p-4 rounded-2xl shadow-lg border border-[#18181b] flex flex-wrap items-center justify-between gap-4 animate-in fade-in duration-200">
+            <div className="bg-[#111113] text-white p-4 rounded-2xl shadow-lg border border-[#111113] flex flex-wrap items-center justify-between gap-4 animate-in fade-in duration-200">
               <div className="flex items-center gap-3">
                 <span className="w-7 h-7 rounded-full bg-[#dc2626] text-white flex items-center justify-center font-bold text-xs">
                   {selectedProductIds.length}
@@ -2855,7 +2855,7 @@ export const AdminDashboardPage: React.FC = () => {
           ) : filteredInventory.length === 0 ? (
             <div className="p-12 text-center bg-white border border-stone-200 rounded-2xl shadow-xs space-y-3">
               <Package className="w-10 h-10 text-stone-300 mx-auto" />
-              <h3 className="text-sm font-bold text-[#18181b]">No Products Found</h3>
+              <h3 className="text-sm font-bold text-[#111113]">No Products Found</h3>
               <p className="text-xs text-stone-500 max-w-sm mx-auto">
                 {debouncedSearchQuery
                   ? `No product matches "${debouncedSearchQuery}". Try adjusting your keywords or category filters.`
@@ -2883,7 +2883,7 @@ export const AdminDashboardPage: React.FC = () => {
               <div className="block md:hidden space-y-3.5">
                 {/* Mobile Select All Header */}
                 <div className="flex items-center justify-between p-3 bg-white rounded-xl border border-stone-200 shadow-2xs text-xs">
-                  <label className="flex items-center gap-2 cursor-pointer font-bold text-[#18181b]">
+                  <label className="flex items-center gap-2 cursor-pointer font-bold text-[#111113]">
                     <input
                       type="checkbox"
                       checked={
@@ -2966,7 +2966,7 @@ export const AdminDashboardPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => handleOpenInspectProduct(product)}
-                            className="font-bold text-sm text-[#18181b] hover:text-[#dc2626] text-left leading-snug line-clamp-2 transition-colors block"
+                            className="font-bold text-sm text-[#111113] hover:text-[#dc2626] text-left leading-snug line-clamp-2 transition-colors block"
                           >
                             {product.name}
                           </button>
@@ -3056,7 +3056,7 @@ export const AdminDashboardPage: React.FC = () => {
                               Retail Price
                             </span>
                             <div className="flex items-baseline gap-1.5 mt-0.5">
-                              <span className="font-mono font-bold text-[#18181b]">
+                              <span className="font-mono font-bold text-[#111113]">
                                 {formatPrice(product.discountPrice ?? product.price, currency)}
                               </span>
                               {product.discountPrice && (
@@ -3153,7 +3153,7 @@ export const AdminDashboardPage: React.FC = () => {
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse text-xs">
                     <thead>
-                      <tr className="bg-[#18181b] text-white uppercase tracking-wider text-[11px] font-heading">
+                      <tr className="bg-[#111113] text-white uppercase tracking-wider text-[11px] font-heading">
                         <th className="py-3 px-4 w-10 text-center">
                           <input
                             type="checkbox"
@@ -3231,7 +3231,7 @@ export const AdminDashboardPage: React.FC = () => {
                                   <button
                                     type="button"
                                     onClick={() => handleOpenInspectProduct(product)}
-                                    className="font-bold text-[#18181b] hover:text-[#dc2626] text-left line-clamp-1 transition-colors"
+                                    className="font-bold text-[#111113] hover:text-[#dc2626] text-left line-clamp-1 transition-colors"
                                   >
                                     {product.name}
                                   </button>
@@ -3280,7 +3280,7 @@ export const AdminDashboardPage: React.FC = () => {
                                 </div>
                               ) : (
                                 <div className="flex flex-col">
-                                  <span className="font-bold text-[#18181b]">
+                                  <span className="font-bold text-[#111113]">
                                     {formatPrice(product.discountPrice ?? product.price, currency)}
                                   </span>
                                   {product.discountPrice && (
@@ -3435,7 +3435,7 @@ export const AdminDashboardPage: React.FC = () => {
           {/* Header & Description */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h2 className="font-heading text-xl font-bold text-[#18181b]">
+              <h2 className="font-heading text-xl font-bold text-[#111113]">
                 Customer Orders &amp; Wholesale Logistics Pipeline
               </h2>
               <p className="text-xs text-stone-600 mt-0.5">
@@ -3471,7 +3471,7 @@ export const AdminDashboardPage: React.FC = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs">
               <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">Total Consignments</span>
-              <p className="text-2xl font-black text-[#18181b] font-mono mt-1">{orderAnalytics.totalCount}</p>
+              <p className="text-2xl font-black text-[#111113] font-mono mt-1">{orderAnalytics.totalCount}</p>
               <span className="text-[11px] text-stone-500">Live MongoDB documents</span>
             </div>
 
@@ -3499,7 +3499,7 @@ export const AdminDashboardPage: React.FC = () => {
           </div>
 
           {/* Real-Time Database Polling Indicator & Auto-Sync Bar */}
-          <div className="bg-linear-to-r from-[#1c2e24] via-[#242b26] to-[#18181b] text-white p-3.5 rounded-2xl border border-emerald-700/40 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+          <div className="bg-linear-to-r from-[#1c2e24] via-[#242b26] to-[#111113] text-white p-3.5 rounded-2xl border border-emerald-700/40 flex flex-wrap items-center justify-between gap-3 shadow-sm">
             <div className="flex items-center gap-3">
               <div className="relative flex items-center justify-center">
                 <div className="w-3 h-3 rounded-full bg-emerald-400" />
@@ -3601,7 +3601,7 @@ export const AdminDashboardPage: React.FC = () => {
           ) : allOrdersCombined.length === 0 ? (
             <div className="bg-white p-12 text-center rounded-2xl border border-stone-200 shadow-xs space-y-3">
               <ShoppingBag className="w-10 h-10 text-stone-300 mx-auto" />
-              <h3 className="text-sm font-bold text-[#18181b]">No Orders Matching Filters</h3>
+              <h3 className="text-sm font-bold text-[#111113]">No Orders Matching Filters</h3>
               <p className="text-xs text-stone-500 max-w-sm mx-auto">
                 {ordersSearchQuery
                   ? `No orders match "${ordersSearchQuery}". Try clearing search keywords.`
@@ -3672,7 +3672,7 @@ export const AdminDashboardPage: React.FC = () => {
                     <div className="space-y-1.5 text-xs">
                       <div className="flex justify-between">
                         <span className="text-stone-500">Customer:</span>
-                        <span className="font-bold text-[#18181b]">{custName}</span>
+                        <span className="font-bold text-[#111113]">{custName}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-stone-500">Phone:</span>
@@ -3832,7 +3832,7 @@ export const AdminDashboardPage: React.FC = () => {
                 </span>
                 <span className="text-xs text-stone-500 font-mono">Live MongoDB Configuration</span>
               </div>
-              <h2 className="font-heading text-xl font-bold text-[#18181b] mt-1">
+              <h2 className="font-heading text-xl font-bold text-[#111113] mt-1">
                 Web Content, Store Handles &amp; Tanzanian Contacts
               </h2>
               <p className="text-xs sm:text-sm text-stone-600 mt-0.5">
@@ -4312,7 +4312,7 @@ export const AdminDashboardPage: React.FC = () => {
                   <Server className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-heading text-sm font-bold text-[#18181b]">Cloud API Gateway &amp; Backend Origin</h3>
+                  <h3 className="font-heading text-sm font-bold text-[#111113]">Cloud API Gateway &amp; Backend Origin</h3>
                   <p className="text-[11px] text-stone-500">Cross-Origin Resource Sharing (CORS) &amp; Render Cloud Connection</p>
                 </div>
               </div>
@@ -4368,7 +4368,7 @@ export const AdminDashboardPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleSaveCustomBackend}
-                    className="px-4 py-2 bg-[#18181b] hover:bg-black text-white text-xs font-bold rounded-xl transition-colors shrink-0"
+                    className="px-4 py-2 bg-[#111113] hover:bg-black text-white text-xs font-bold rounded-xl transition-colors shrink-0"
                   >
                     Connect URL
                   </button>
@@ -4403,7 +4403,7 @@ export const AdminDashboardPage: React.FC = () => {
                     <Database className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-heading text-sm font-bold text-[#18181b]">MongoDB Atlas Cloud</h3>
+                    <h3 className="font-heading text-sm font-bold text-[#111113]">MongoDB Atlas Cloud</h3>
                     <p className="text-[11px] text-stone-500">Mongoose ODM · Persistent Cloud Database</p>
                   </div>
                 </div>
@@ -4415,11 +4415,11 @@ export const AdminDashboardPage: React.FC = () => {
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div className="p-3 bg-stone-50 rounded-xl">
                   <span className="text-stone-400 block text-[10px] uppercase font-bold">Cluster Engine</span>
-                  <span className="font-bold text-[#18181b]">MongoDB Atlas (Cloud)</span>
+                  <span className="font-bold text-[#111113]">MongoDB Atlas (Cloud)</span>
                 </div>
                 <div className="p-3 bg-stone-50 rounded-xl">
                   <span className="text-stone-400 block text-[10px] uppercase font-bold">Target Database</span>
-                  <span className="font-bold text-[#18181b] font-mono">omega_stationery</span>
+                  <span className="font-bold text-[#111113] font-mono">omega_stationery</span>
                 </div>
                 <div className="p-3 bg-stone-50 rounded-xl">
                   <span className="text-stone-400 block text-[10px] uppercase font-bold">Cloud Products Count</span>
@@ -4429,7 +4429,7 @@ export const AdminDashboardPage: React.FC = () => {
                 </div>
                 <div className="p-3 bg-stone-50 rounded-xl">
                   <span className="text-stone-400 block text-[10px] uppercase font-bold">Orders Recorded</span>
-                  <span className="font-bold text-[#18181b] font-mono">
+                  <span className="font-bold text-[#111113] font-mono">
                     {liveOrders.length} Orders
                   </span>
                 </div>
@@ -4456,7 +4456,7 @@ export const AdminDashboardPage: React.FC = () => {
                     <Zap className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-heading text-sm font-bold text-[#18181b]">Redis &amp; Memory Cache</h3>
+                    <h3 className="font-heading text-sm font-bold text-[#111113]">Redis &amp; Memory Cache</h3>
                     <p className="text-[11px] text-stone-500">Sub-millisecond Edge Response Cache</p>
                   </div>
                 </div>
@@ -4492,7 +4492,7 @@ export const AdminDashboardPage: React.FC = () => {
 
                 <div className="p-3 bg-stone-50 rounded-xl">
                   <span className="text-stone-400 block text-[10px] uppercase font-bold">Active Engine</span>
-                  <span className="font-bold text-[#18181b] font-mono text-xs truncate block">
+                  <span className="font-bold text-[#111113] font-mono text-xs truncate block">
                     {backendHealth?.cache?.engine || 'Sub-millisecond Edge LRU'}
                   </span>
                   <span className="block text-[10px] text-stone-400 mt-0.5">
@@ -4502,7 +4502,7 @@ export const AdminDashboardPage: React.FC = () => {
 
                 <div className="p-3 bg-stone-50 rounded-xl">
                   <span className="text-stone-400 block text-[10px] uppercase font-bold">Cached Query Keys</span>
-                  <span className="font-bold text-[#18181b] font-mono text-sm">
+                  <span className="font-bold text-[#111113] font-mono text-sm">
                     {backendHealth?.cache?.cachedKeysCount ?? 0} Keys
                   </span>
                   <span className="block text-[10px] text-stone-400 mt-0.5">Auto-evicted via TTL</span>
@@ -4622,7 +4622,7 @@ export const AdminDashboardPage: React.FC = () => {
             return (
               <div
                 key={item.product.id}
-                className="pointer-events-auto bg-[#18181b] border-2 border-[#dc2626]/70 text-white rounded-2xl p-4 shadow-2xl backdrop-blur-xl animate-in slide-in-from-bottom-4 duration-300 space-y-3"
+                className="pointer-events-auto bg-[#111113] border-2 border-[#dc2626]/70 text-white rounded-2xl p-4 shadow-2xl backdrop-blur-xl animate-in slide-in-from-bottom-4 duration-300 space-y-3"
               >
                 {/* Header Info & Countdown */}
                 <div className="flex items-start justify-between gap-3">

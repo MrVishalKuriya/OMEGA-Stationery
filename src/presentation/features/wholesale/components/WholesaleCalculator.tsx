@@ -63,7 +63,7 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center space-y-2.5 mb-12">
-          <div className="inline-flex items-center px-3 py-1 rounded-md text-[11px] font-bold text-[#ef4444] bg-[#dc2626]/10 border border-[#dc2626]/30 font-mono tracking-widest uppercase shadow-xs">
+          <div className="inline-flex items-center px-3 py-1 rounded-md text-[11px] font-bold text-[#DC2626] bg-[#dc2626]/10 border border-[#dc2626]/30 font-mono tracking-widest uppercase shadow-xs">
             <span>DYNAMIC PROFORMA &amp; MARGIN SIMULATOR</span>
           </div>
           <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
@@ -80,7 +80,7 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
             {/* Step 1: Product Selection */}
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <span className="w-5 h-5 rounded-md bg-[#dc2626]/20 border border-[#dc2626]/40 text-[#ef4444] font-mono text-[11px] font-bold inline-flex items-center justify-center shrink-0">
+                <span className="w-5 h-5 rounded-md bg-[#dc2626]/20 border border-[#dc2626]/40 text-[#DC2626] font-mono text-[11px] font-bold inline-flex items-center justify-center shrink-0">
                   1
                 </span>
                 <label className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
@@ -106,8 +106,8 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
                       onClick={() => setCalcQuire(item.key)}
                       className={`p-3.5 rounded-xl border text-left transition-all relative ${
                         isSelected
-                          ? 'bg-gradient-to-br from-[#b91c1c] via-[#dc2626] to-[#991b1b] text-white border-[#ef4444]/60 shadow-[0_4px_20px_rgba(220,38,38,0.4)] ring-1 ring-[#ef4444]/40'
-                          : 'bg-[#18181b]/80 hover:bg-[#202024] text-zinc-300 border-white/10 hover:border-white/25'
+                          ? 'bg-gradient-to-br from-[#b91c1c] via-[#dc2626] to-[#991b1b] text-white border-[#DC2626]/60 shadow-[0_4px_20px_rgba(220,38,38,0.4)] ring-1 ring-[#DC2626]/40'
+                          : 'bg-[#111113]/80 hover:bg-[#202024] text-zinc-300 border-white/10 hover:border-white/25'
                       }`}
                     >
                       <div className="text-xs sm:text-sm font-bold leading-snug">{item.title}</div>
@@ -124,7 +124,7 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
             <div>
               <div className="flex justify-between items-center mb-3">
                 <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-md bg-[#dc2626]/20 border border-[#dc2626]/40 text-[#ef4444] font-mono text-[11px] font-bold inline-flex items-center justify-center shrink-0">
+                  <span className="w-5 h-5 rounded-md bg-[#dc2626]/20 border border-[#dc2626]/40 text-[#DC2626] font-mono text-[11px] font-bold inline-flex items-center justify-center shrink-0">
                     2
                   </span>
                   <label className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
@@ -138,7 +138,7 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
                     max={500}
                     value={calcCartons}
                     onChange={(e) => setCalcCartons(Math.max(1, parseInt(e.target.value) || 1))}
-                    className="w-20 px-3 py-1.5 text-right text-xs font-bold rounded-lg bg-[#18181b] border border-white/20 text-white font-mono focus:outline-none focus:border-[#ef4444] focus:ring-1 focus:ring-[#ef4444]"
+                    className="w-20 px-3 py-1.5 text-right text-xs font-bold rounded-lg bg-[#111113] border border-white/20 text-white font-mono focus:outline-none focus:border-[#DC2626] focus:ring-1 focus:ring-[#DC2626]"
                   />
                   <span className="text-xs font-mono text-zinc-400">Cartons</span>
                 </div>
@@ -153,7 +153,7 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
                   step={5}
                   value={calcCartons}
                   onChange={(e) => setCalcCartons(parseInt(e.target.value))}
-                  className="w-full accent-[#ef4444] cursor-pointer h-2 bg-[#27272a] rounded-lg appearance-none"
+                  className="w-full accent-[#DC2626] cursor-pointer h-2 bg-[#27272a] rounded-lg appearance-none"
                 />
               </div>
 
@@ -168,8 +168,8 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
                       onClick={() => setCalcCartons(qty)}
                       className={`py-2 text-xs font-bold rounded-lg border transition-all font-mono ${
                         isSelected
-                          ? 'bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] text-white border-transparent shadow-[0_2px_12px_rgba(220,38,38,0.4)]'
-                          : 'bg-[#18181b] text-zinc-400 hover:text-white border-white/10 hover:border-white/20'
+                          ? 'bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#DC2626] text-white border-transparent shadow-[0_2px_12px_rgba(220,38,38,0.4)]'
+                          : 'bg-[#111113] text-zinc-400 hover:text-white border-white/10 hover:border-white/20'
                       }`}
                     >
                       {qty}
@@ -180,7 +180,7 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
             </div>
 
             {/* Specifications Box */}
-            <div className="p-4 rounded-xl bg-[#18181b]/90 border border-white/10 text-xs text-zinc-300 grid grid-cols-2 gap-4">
+            <div className="p-4 rounded-xl bg-[#111113]/90 border border-white/10 text-xs text-zinc-300 grid grid-cols-2 gap-4">
               <div>
                 <span className="text-zinc-500 block text-[11px] font-mono uppercase tracking-wider mb-0.5">
                   Packaging Spec:
@@ -201,11 +201,11 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
           {/* Financial Breakdown Card (Obsidian Atelier Glass Card) */}
           <div className="lg:col-span-5 bg-[#111113] text-white p-6 sm:p-8 rounded-2xl border border-white/15 shadow-2xl space-y-6 relative overflow-hidden">
             {/* Top Crimson Accent Line */}
-            <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444]" />
+            <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#DC2626]" />
 
             <div className="flex items-center justify-between pb-4 border-b border-white/10">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#ef4444] font-mono block">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-[#DC2626] font-mono block">
                   CALCULATED SUMMARY
                 </span>
                 <h3 className="font-heading text-lg font-bold text-white mt-0.5">
@@ -276,7 +276,7 @@ export const WholesaleCalculator: React.FC<WholesaleCalculatorProps> = ({
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-4 px-4 rounded-xl bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#ef4444] hover:brightness-110 text-white font-bold font-mono text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_8px_25px_rgba(220,38,38,0.4)] min-h-[48px] active:scale-[0.98] transition-all"
+              className="w-full py-4 px-4 rounded-xl bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#DC2626] hover:brightness-110 text-white font-bold font-mono text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_8px_25px_rgba(220,38,38,0.4)] min-h-[48px] active:scale-[0.98] transition-all"
             >
               <MessageCircle className="w-4 h-4 fill-white" />
               <span>Confirm Proforma on WhatsApp</span>

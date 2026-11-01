@@ -119,7 +119,7 @@ export const WholesaleCalculatorModal: React.FC<WholesaleCalculatorModalProps> =
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
       <div
-        className="w-full max-w-3xl bg-[#fafafa] rounded-2xl shadow-2xl border border-[#e4e4e7] flex flex-col max-h-[90vh] overflow-hidden"
+        className="w-full max-w-3xl bg-[#F9F8F6] rounded-2xl shadow-2xl border border-[#E7E5E0] flex flex-col max-h-[90vh] overflow-hidden"
         role="dialog"
         aria-modal="true"
       >
@@ -157,18 +157,18 @@ export const WholesaleCalculatorModal: React.FC<WholesaleCalculatorModalProps> =
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
           {/* Discount Tier Banner */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-            <div className={`p-3 rounded-xl border transition-all ${totalBoxes < 5 ? 'bg-white border-[#111113] ring-2 ring-[#dc2626]' : 'bg-white/70 border-[#e4e4e7]'}`}>
+            <div className={`p-3 rounded-xl border transition-all ${totalBoxes < 5 ? 'bg-white border-[#111113] ring-2 ring-[#dc2626]' : 'bg-white/70 border-[#E7E5E0]'}`}>
               <p className="font-bold text-[#111113]">Tier 1: 1–4 Boxes</p>
               <p className="text-[11px] text-stone-500">Standard factory wholesale rates</p>
             </div>
-            <div className={`p-3 rounded-xl border transition-all ${totalBoxes >= 5 && totalBoxes < 20 ? 'bg-white border-[#2A9D8F] ring-2 ring-[#2A9D8F]' : 'bg-white/70 border-[#e4e4e7]'}`}>
+            <div className={`p-3 rounded-xl border transition-all ${totalBoxes >= 5 && totalBoxes < 20 ? 'bg-white border-[#2A9D8F] ring-2 ring-[#2A9D8F]' : 'bg-white/70 border-[#E7E5E0]'}`}>
               <div className="flex items-center justify-between">
                 <p className="font-bold text-[#2A9D8F]">Tier 2: 5–19 Boxes</p>
                 <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-[#2A9D8F]/15 font-bold text-[#2A9D8F]">5% OFF</span>
               </div>
               <p className="text-[11px] text-stone-500">For retail shops &amp; primary schools</p>
             </div>
-            <div className={`p-3 rounded-xl border transition-all ${totalBoxes >= 20 ? 'bg-white border-[#dc2626] ring-2 ring-[#dc2626]' : 'bg-white/70 border-[#e4e4e7]'}`}>
+            <div className={`p-3 rounded-xl border transition-all ${totalBoxes >= 20 ? 'bg-white border-[#dc2626] ring-2 ring-[#dc2626]' : 'bg-white/70 border-[#E7E5E0]'}`}>
               <div className="flex items-center justify-between">
                 <p className="font-bold text-[#111113]">Tier 3: 20+ Boxes</p>
                 <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-[#dc2626] font-bold text-[#111113]">10% OFF</span>
@@ -178,8 +178,8 @@ export const WholesaleCalculatorModal: React.FC<WholesaleCalculatorModalProps> =
           </div>
 
           {/* Product Items Table */}
-          <div className="bg-white rounded-xl border border-[#e4e4e7] overflow-hidden shadow-2xs">
-            <div className="p-3 bg-[#fafafa] border-b border-[#e4e4e7] flex items-center justify-between text-xs font-bold text-[#111113]">
+          <div className="bg-white rounded-xl border border-[#E7E5E0] overflow-hidden shadow-2xs">
+            <div className="p-3 bg-[#F9F8F6] border-b border-[#E7E5E0] flex items-center justify-between text-xs font-bold text-[#111113]">
               <span>Select Product Lines</span>
               <a
                 href="/sheet/Indigo_Printed_Price_List.xlsx"
@@ -191,13 +191,13 @@ export const WholesaleCalculatorModal: React.FC<WholesaleCalculatorModalProps> =
               </a>
             </div>
 
-            <div className="divide-y divide-[#e4e4e7] max-h-72 overflow-y-auto">
+            <div className="divide-y divide-[#E7E5E0] max-h-72 overflow-y-auto">
               {OFFICIAL_WHOLESALE_ITEMS.map((item) => {
                 const boxes = quantities[item.id] || 0;
                 return (
                   <div
                     key={item.id}
-                    className="p-3 sm:px-4 flex items-center justify-between gap-3 text-xs hover:bg-[#fafafa]/60 transition-colors"
+                    className="p-3 sm:px-4 flex items-center justify-between gap-3 text-xs hover:bg-[#F9F8F6]/60 transition-colors"
                   >
                     <div className="min-w-0 flex-1">
                       <p className="font-bold text-[#14182B] truncate">{item.name}</p>
@@ -207,7 +207,7 @@ export const WholesaleCalculatorModal: React.FC<WholesaleCalculatorModalProps> =
                     </div>
 
                     <div className="flex items-center gap-3 shrink-0">
-                      <div className="flex items-center border border-[#e4e4e7] rounded-lg bg-white">
+                      <div className="flex items-center border border-[#E7E5E0] rounded-lg bg-white">
                         <button
                           type="button"
                           onClick={() => handleQtyChange(item.id, boxes - 1)}
@@ -272,7 +272,7 @@ export const WholesaleCalculatorModal: React.FC<WholesaleCalculatorModalProps> =
         </div>
 
         {/* Footer Actions */}
-        <div className="p-4 bg-white border-t border-[#e4e4e7] flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
+        <div className="p-4 bg-white border-t border-[#E7E5E0] flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
           <div className="flex items-center gap-2 text-xs text-stone-500">
             <Truck className="w-4 h-4 text-[#2A9D8F]" />
             <span>Bus freight dispatch to Dar, Mbeya, Arusha &amp; all regions</span>

@@ -85,10 +85,10 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
       aria-label="Account Menu"
       onMouseDown={(e) => e.stopPropagation()}
       onClick={(e) => e.stopPropagation()}
-      className="absolute right-0 top-full mt-2 w-72 rounded-[12px] bg-white text-[#14182B] border border-[#e4e4e7] shadow-2xl z-[100] p-2 animate-in fade-in slide-in-from-top-1 font-sans pointer-events-auto"
+      className="absolute right-0 top-full mt-2 w-72 rounded-[12px] bg-white text-[#14182B] border border-[#E7E5E0] shadow-2xl z-[100] p-2 animate-in fade-in slide-in-from-top-1 font-sans pointer-events-auto"
     >
       {/* Header Profile Info */}
-      <div className="p-3 rounded-[8px] bg-[#fafafa] border border-[#e4e4e7]/50 mb-2">
+      <div className="p-3 rounded-[8px] bg-[#F9F8F6] border border-[#E7E5E0]/50 mb-2">
         {currentUser ? (
           <div>
             <div className="flex items-center gap-3">
@@ -115,7 +115,7 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
 
             {/* Active Session Token Indicator */}
             {activeSession && (
-              <div className="mt-2 pt-2 border-t border-[#e4e4e7]/60 flex items-center justify-between text-[10px] text-[#6B7280]">
+              <div className="mt-2 pt-2 border-t border-[#E7E5E0]/60 flex items-center justify-between text-[10px] text-[#6B7280]">
                 <span className="flex items-center gap-1 text-[#2A9D8F] font-bold">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#2A9D8F] animate-pulse" />
                   Active Secure Session
@@ -143,7 +143,7 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
           <Link
             to="/account"
             onClick={onClose}
-            className="w-full flex items-center justify-between p-2.5 rounded-[8px] hover:bg-[#F3EEE2] text-[#14182B] hover:text-[#111113] transition-colors group focus-ring-gold font-bold bg-[#fafafa]/60 border border-[#e4e4e7]/50"
+            className="w-full flex items-center justify-between p-2.5 rounded-[8px] hover:bg-[#F3EEE2] text-[#14182B] hover:text-[#111113] transition-colors group focus-ring-gold font-bold bg-[#F9F8F6]/60 border border-[#E7E5E0]/50"
           >
             <div className="flex items-center gap-2.5">
               <User className="w-4 h-4 text-[#111113]" />
@@ -182,7 +182,7 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
             <Heart className="w-4 h-4 text-[#D64545]" />
             <span>Saved Wishlist</span>
           </div>
-          <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded-full bg-[#fafafa] border border-[#e4e4e7] text-[#14182B]">
+          <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded-full bg-[#F9F8F6] border border-[#E7E5E0] text-[#14182B]">
             {wishlistCount}
           </span>
         </button>
@@ -204,7 +204,7 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
         </button>
 
 
-        <div className="my-1.5 border-t border-[#e4e4e7]" />
+        <div className="my-1.5 border-t border-[#E7E5E0]" />
 
         {/* Login / Register or Logout */}
         {currentUser ? (
@@ -240,7 +240,7 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
                   e.stopPropagation();
                   handleOpenRegister();
                 }}
-                className="w-full py-2.5 px-3 rounded-[8px] bg-white border border-[#e4e4e7] hover:bg-[#F3EEE2] text-xs font-bold text-center text-[#111113] flex items-center justify-center gap-1.5 cursor-pointer hover:border-[#111113] active:scale-95 transition-all select-none"
+                className="w-full py-2.5 px-3 rounded-[8px] bg-white border border-[#E7E5E0] hover:bg-[#F3EEE2] text-xs font-bold text-center text-[#111113] flex items-center justify-center gap-1.5 cursor-pointer hover:border-[#111113] active:scale-95 transition-all select-none"
               >
                 <UserPlus className="w-3.5 h-3.5 pointer-events-none" />
                 <span className="pointer-events-none">Register</span>

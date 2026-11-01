@@ -62,12 +62,12 @@ export const LoginPage: React.FC = () => {
 
   if (currentUser) {
     return (
-      <div className="min-h-[70vh] flex items-center justify-center py-16 px-4 bg-[#fafafa]">
+      <div className="min-h-[70vh] flex items-center justify-center py-16 px-4 bg-[#F9F8F6]">
         <SEOHead
           title="Account Active | OMEGA Stationery & Books"
           description="Manage your OMEGA account, order history and wholesale profile."
         />
-        <div className="max-w-md w-full bg-white rounded-[16px] border border-[#e4e4e7] shadow-boutique p-8 text-center space-y-6">
+        <div className="max-w-md w-full bg-white rounded-[16px] border border-[#E7E5E0] shadow-boutique p-8 text-center space-y-6">
           <div className="w-16 h-16 rounded-full bg-[#111113] text-[#dc2626] font-bold text-xl flex items-center justify-center font-mono mx-auto shadow-sm">
             {currentUser.initials}
           </div>
@@ -93,7 +93,7 @@ export const LoginPage: React.FC = () => {
             </Link>
             <Link
               to="/catalog"
-              className="w-full py-2.5 px-4 rounded-[8px] bg-white border border-[#e4e4e7] hover:bg-[#fafafa] text-[#111113] text-xs font-bold block"
+              className="w-full py-2.5 px-4 rounded-[8px] bg-white border border-[#E7E5E0] hover:bg-[#F9F8F6] text-[#111113] text-xs font-bold block"
             >
               Browse Catalog
             </Link>
@@ -104,7 +104,7 @@ export const LoginPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center py-12 px-4 bg-[#fafafa]">
+    <div className="min-h-[80vh] flex items-center justify-center py-12 px-4 bg-[#F9F8F6]">
       <SEOHead
         title="Sign In | OMEGA Stationery & Books Tanzania"
         description="Sign in to your OMEGA account to access order tracking, institutional quotas, and wholesale pricing."
@@ -112,7 +112,7 @@ export const LoginPage: React.FC = () => {
 
       <div className="max-w-lg w-full">
         {/* Main Card */}
-        <div className="bg-white rounded-[16px] border border-[#e4e4e7] shadow-boutique overflow-hidden">
+        <div className="bg-white rounded-[16px] border border-[#E7E5E0] shadow-boutique overflow-hidden">
           {/* Card Header */}
           <div className="bg-[#111113] text-white p-6 sm:p-8">
             <div className="flex items-center justify-between">
@@ -141,7 +141,7 @@ export const LoginPage: React.FC = () => {
 
           <div className="p-6 sm:p-8 space-y-5">
             {/* 1-Click Demo Logins */}
-            <div className="p-3.5 rounded-[10px] bg-[#fafafa] border border-[#e4e4e7]">
+            <div className="p-3.5 rounded-[10px] bg-[#F9F8F6] border border-[#E7E5E0]">
               <div className="flex items-center gap-2 mb-2 text-xs font-bold text-[#14182B]">
                 <Sparkles className="w-4 h-4 text-[#dc2626]" />
                 <span>Quick Test Accounts (1-Click Fill)</span>
@@ -161,7 +161,7 @@ export const LoginPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => handleDemoFill('mussa.juma@omega.co.tz', 'password123')}
-                  className="p-2 rounded-[6px] bg-white border border-[#e4e4e7] hover:border-[#111113] text-left transition-colors text-xs"
+                  className="p-2 rounded-[6px] bg-white border border-[#E7E5E0] hover:border-[#111113] text-left transition-colors text-xs"
                 >
                   <div className="font-bold text-[#111113]">Mussa Juma</div>
                   <div className="text-[10px] text-[#6B7280]">Wholesale Partner</div>
@@ -169,7 +169,7 @@ export const LoginPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => handleDemoFill('purchasing@daracademy.sc.tz', 'school123')}
-                  className="p-2 rounded-[6px] bg-white border border-[#e4e4e7] hover:border-[#111113] text-left transition-colors text-xs"
+                  className="p-2 rounded-[6px] bg-white border border-[#E7E5E0] hover:border-[#111113] text-left transition-colors text-xs"
                 >
                   <div className="font-bold text-[#111113]">Dar Academy</div>
                   <div className="text-[10px] text-[#6B7280]">School / Tender</div>
@@ -199,7 +199,7 @@ export const LoginPage: React.FC = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="e.g. mussa.juma@omega.co.tz"
-                    className="w-full pl-9 pr-3 py-2.5 rounded-[8px] bg-white border border-[#e4e4e7] text-xs focus:border-[#111113] focus:outline-none"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-[8px] bg-white border border-[#E7E5E0] text-xs focus:border-[#111113] focus:outline-none"
                   />
                 </div>
               </div>
@@ -221,7 +221,7 @@ export const LoginPage: React.FC = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter account password"
-                    className="w-full pl-9 pr-10 py-2.5 rounded-[8px] bg-white border border-[#e4e4e7] text-xs focus:border-[#111113] focus:outline-none"
+                    className="w-full pl-9 pr-10 py-2.5 rounded-[8px] bg-white border border-[#E7E5E0] text-xs focus:border-[#111113] focus:outline-none"
                   />
                   <button
                     type="button"
@@ -239,7 +239,7 @@ export const LoginPage: React.FC = () => {
                     type="checkbox"
                     checked={rememberMe}
                     onChange={(e) => setRememberMe(e.target.checked)}
-                    className="rounded border-[#e4e4e7] text-[#111113] focus:ring-[#dc2626]"
+                    className="rounded border-[#E7E5E0] text-[#111113] focus:ring-[#dc2626]"
                   />
                   <span>Remember me for 30 days</span>
                 </label>
@@ -265,7 +265,7 @@ export const LoginPage: React.FC = () => {
             </form>
 
             {/* Footer switcher */}
-            <div className="pt-4 border-t border-[#e4e4e7] text-center text-xs text-[#6B7280]">
+            <div className="pt-4 border-t border-[#E7E5E0] text-center text-xs text-[#6B7280]">
               Don't have an account yet?{' '}
               <Link
                 to="/register"

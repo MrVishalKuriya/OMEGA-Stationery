@@ -11,7 +11,7 @@ export const CatalogHero: React.FC<CatalogHeroProps> = ({
   totalProductsCount,
 }) => {
   return (
-    <div className="bg-[#18181b] text-white py-10 lg:py-14 border-b border-[#18181b] relative overflow-hidden">
+    <div className="bg-[#111113] text-white py-10 lg:py-14 border-b border-[#111113] relative overflow-hidden">
       {/* Warm Ambient Glows */}
       <div className="absolute top-0 right-10 w-96 h-96 bg-[#dc2626]/15 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 left-10 w-80 h-80 bg-[#b91c1c]/15 rounded-full blur-[90px] pointer-events-none" />

@@ -69,7 +69,7 @@ export const HomePage: React.FC = () => {
       sub: 'Archival Smyth-Sewn',
       link: '/catalog?category=Counter+Books',
       image: '/omega-products/omega-counter-book-podium.png',
-      bgTone: 'bg-[#18181b]',
+      bgTone: 'bg-[#111113]',
     },
     {
       title: language === 'sw' ? 'EXERCISE BOOKS' : 'EXERCISE BOOKS',
@@ -213,7 +213,7 @@ export const HomePage: React.FC = () => {
                 key={idx}
                 to={col.link}
                 className="group relative h-48 sm:h-56 rounded-lg overflow-hidden border border-[#E7E5E0] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-5 text-white"
-                style={{ backgroundColor: '#18181b' }}
+                style={{ backgroundColor: '#111113' }}
               >
                 {/* Background Image with Dark Vignette Overlay */}
                 <div className="absolute inset-0 z-0">

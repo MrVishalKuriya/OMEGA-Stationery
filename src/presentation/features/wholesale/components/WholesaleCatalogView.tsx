@@ -59,7 +59,7 @@ export const WholesaleCatalogView: React.FC<WholesaleCatalogViewProps> = ({
           <div className="inline-flex items-center px-3 py-1 rounded-md bg-[#dc2626]/10 border border-[#dc2626]/30 text-[11px] font-bold text-[#dc2626] font-mono uppercase tracking-widest shadow-xs">
             <span>OFFICIAL FACTORY PRICE SCHEDULE</span>
           </div>
-          <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-[#18181b] tracking-tight mt-1.5">
+          <h2 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-[#111113] tracking-tight mt-1.5">
             Wholesale Master Catalog
           </h2>
           <p className="text-xs sm:text-sm text-zinc-500 mt-1 max-w-xl">
@@ -102,7 +102,7 @@ export const WholesaleCatalogView: React.FC<WholesaleCatalogViewProps> = ({
           <button
             type="button"
             onClick={onExportCSV}
-            className="px-3.5 py-2 rounded-xl border border-zinc-200 bg-white hover:bg-zinc-50 text-xs font-bold font-mono tracking-wider text-[#18181b] inline-flex items-center gap-1.5 shadow-xs transition-colors"
+            className="px-3.5 py-2 rounded-xl border border-zinc-200 bg-white hover:bg-zinc-50 text-xs font-bold font-mono tracking-wider text-[#111113] inline-flex items-center gap-1.5 shadow-xs transition-colors"
           >
             <Download className="w-3.5 h-3.5 text-[#dc2626]" />
             <span className="hidden min-[400px]:inline">Export CSV</span>
@@ -120,7 +120,7 @@ export const WholesaleCatalogView: React.FC<WholesaleCatalogViewProps> = ({
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search products, SKU, or specs..."
-            className="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-zinc-200 focus:outline-none focus:border-[#dc2626] focus:ring-1 focus:ring-[#dc2626] bg-zinc-50 text-[#18181b] placeholder:text-zinc-400 transition-all font-sans"
+            className="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-zinc-200 focus:outline-none focus:border-[#dc2626] focus:ring-1 focus:ring-[#dc2626] bg-zinc-50 text-[#111113] placeholder:text-zinc-400 transition-all font-sans"
           />
         </div>
 
@@ -156,7 +156,7 @@ export const WholesaleCatalogView: React.FC<WholesaleCatalogViewProps> = ({
       {wholesaleProducts.length === 0 ? (
         <div className="bg-white p-12 text-center rounded-2xl border border-zinc-200 text-zinc-500 shadow-xs">
           <Package className="w-10 h-10 text-zinc-400 mx-auto mb-3" />
-          <p className="text-sm font-semibold text-[#18181b]">No wholesale products found matching your filter.</p>
+          <p className="text-sm font-semibold text-[#111113]">No wholesale products found matching your filter.</p>
           <button
             type="button"
             onClick={() => {
@@ -218,7 +218,7 @@ export const WholesaleCatalogView: React.FC<WholesaleCatalogViewProps> = ({
 
                       <Link
                         to={`/product/${p.id}`}
-                        className="font-bold text-sm text-[#18181b] hover:text-[#dc2626] transition-colors leading-snug block line-clamp-2"
+                        className="font-bold text-sm text-[#111113] hover:text-[#dc2626] transition-colors leading-snug block line-clamp-2"
                       >
                         {p.name}
                       </Link>
@@ -252,7 +252,7 @@ export const WholesaleCatalogView: React.FC<WholesaleCatalogViewProps> = ({
                         {savePct}% OFF
                       </span>
                       <span className="text-[11px] text-zinc-600 font-medium block">
-                        Min: <strong className="text-[#18181b]">{minOrderQty}</strong>
+                        Min: <strong className="text-[#111113]">{minOrderQty}</strong>
                       </span>
                     </div>
                   </div>
@@ -263,7 +263,7 @@ export const WholesaleCatalogView: React.FC<WholesaleCatalogViewProps> = ({
                       href={directWa}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 py-2.5 px-3 rounded-xl bg-[#111113] hover:bg-[#18181b] text-white text-xs font-bold font-mono uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-xs transition-colors"
+                      className="flex-1 py-2.5 px-3 rounded-xl bg-[#111113] hover:bg-[#111113] text-white text-xs font-bold font-mono uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-xs transition-colors"
                     >
                       <MessageCircle className="w-3.5 h-3.5 fill-white" />
                       <span>Order on WhatsApp</span>
@@ -293,13 +293,13 @@ export const WholesaleCatalogView: React.FC<WholesaleCatalogViewProps> = ({
                     <th className="py-4 px-5 font-bold">Product</th>
                     <th className="py-4 px-4 font-bold">Category</th>
                     <th className="py-4 px-4 font-bold text-zinc-400">Retail MSRP</th>
-                    <th className="py-4 px-4 font-bold text-[#ef4444]">Wholesale Price</th>
+                    <th className="py-4 px-4 font-bold text-[#DC2626]">Wholesale Price</th>
                     <th className="py-4 px-4 font-bold">Min Order</th>
                     <th className="py-4 px-4 font-bold">Savings</th>
                     <th className="py-4 px-5 font-bold text-center">Procurement</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-100 text-[#18181b]">
+                <tbody className="divide-y divide-zinc-100 text-[#111113]">
                   {wholesaleProducts.map((p) => {
                     const wholesalePrice = p.wholesalePrice || Math.round(p.price * 0.7);
                     const saving = p.price - wholesalePrice;
