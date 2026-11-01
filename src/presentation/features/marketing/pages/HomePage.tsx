@@ -2,21 +2,19 @@ import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   ArrowRight,
-  ShoppingBag,
+  ArrowUpRight,
   ShieldCheck,
   Feather,
   Package,
   Layers,
   Star,
-  Check,
   Truck,
   BookOpen,
-  Award,
   ChevronRight,
   ChevronLeft,
-  Quote,
   Building2,
   Mail,
+  Award,
 } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { ProductCard } from '@/components/ProductCard';
@@ -27,7 +25,6 @@ import { TRANSLATIONS } from '@/data/translations';
 export const HomePage: React.FC = () => {
   const {
     products,
-    storeConfig,
     language,
   } = useStore();
   const t = TRANSLATIONS[language] || TRANSLATIONS.en;
@@ -36,16 +33,6 @@ export const HomePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
     'all' | 'counter' | 'exercise' | 'bahasha' | 'registers'
   >('all');
-
-  const cleanWhatsappDigits = storeConfig.whatsappNumber
-    ? storeConfig.whatsappNumber.replace(/\D/g, '')
-    : '255746268391';
-
-  const whatsappGreetingUrl = `https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
-    language === 'sw'
-      ? `Habari OMEGA Tanzania, ninahitaji kuagiza madaftari (Counter Books, Exercise Books na Bahasha) kwa bei ya jumla kiwandani.`
-      : `Hello OMEGA Stationery, I would like to place an order and inquire about factory wholesale carton pricing.`
-  )}`;
 
   // Filter products dynamically for the featured catalog section
   const filteredProducts = useMemo(() => {
@@ -69,7 +56,6 @@ export const HomePage: React.FC = () => {
       sub: 'Archival Smyth-Sewn',
       link: '/catalog?category=Counter+Books',
       image: '/omega-products/omega-counter-book-podium.png',
-      bgTone: 'bg-[#111113]',
     },
     {
       title: language === 'sw' ? 'EXERCISE BOOKS' : 'EXERCISE BOOKS',
@@ -77,7 +63,6 @@ export const HomePage: React.FC = () => {
       sub: 'Single & Double Line',
       link: '/catalog?category=Exercise+Books',
       image: '/omega-products/exercise-book-200p-sl-catalog.jpeg',
-      bgTone: 'bg-[#2a2421]',
     },
     {
       title: language === 'sw' ? 'KRAFT BAHASHA' : 'KRAFT BAHASHA',
@@ -85,7 +70,6 @@ export const HomePage: React.FC = () => {
       sub: 'Peel & Seal Security',
       link: '/catalog?category=Bahasha+%26+Envelopes',
       image: '/omega-products/bahasha-a4-catalog.png',
-      bgTone: 'bg-[#211a16]',
     },
     {
       title: language === 'sw' ? 'OFFICE REGISTERS' : 'OFFICE REGISTERS',
@@ -93,24 +77,23 @@ export const HomePage: React.FC = () => {
       sub: '70 GSM Pure White',
       link: '/catalog?category=Registers',
       image: '/omega-products/stiff-cover-200-catalog.jpeg',
-      bgTone: 'bg-[#1f1f23]',
     },
   ], [language]);
 
   return (
-    <div className="bg-[#FAF9F7] min-h-screen font-sans text-[#111113] selection:bg-[#dc2626]/20 selection:text-[#111113]">
+    <div className="bg-[#FAF9F7] min-h-screen font-sans text-[#111113] selection:bg-[#DC2626]/20 selection:text-[#111113]">
       <SEOHead
         title="OMEGA Writing Notebooks & Stationery | Premium Quality | Tanzania"
         description="Tanzania's benchmark in Counter Books (Q2, Q3, Q4), Exercise Books, Kraft Bahasha, and Office Files. Factory-direct wholesale and upcountry bus parcel delivery."
       />
 
       {/* ========================================================================= */}
-      {/* 1. HERO SECTION (Untouched as requested) */}
+      {/* 1. HERO SHOWCASE SLIDER */}
       {/* ========================================================================= */}
-      <Hero whatsappGreetingUrl={whatsappGreetingUrl} />
+      <Hero />
 
       {/* ========================================================================= */}
-      {/* 2. FOUR-PILLAR HALLMARK STRIP (Text In Front of Logo / Horizontal Row) */}
+      {/* 2. FOUR-PILLAR HALLMARK TRUST STRIP */}
       {/* ========================================================================= */}
       <section className="bg-white border-b border-[#E7E5E0] py-4 sm:py-6">
         <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -118,8 +101,8 @@ export const HomePage: React.FC = () => {
             
             {/* 1. Books Distributed */}
             <div className="flex items-center gap-2.5 sm:gap-3 text-left">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center font-bold border border-[#dc2626]/20 shrink-0">
-                <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#DC2626]/10 text-[#DC2626] flex items-center justify-center font-bold border border-[#DC2626]/20 shrink-0">
+                <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.75]" />
               </div>
               <div className="min-w-0">
                 <div className="text-sm sm:text-lg font-black text-[#111113] font-heading tracking-tight leading-none">
@@ -128,7 +111,7 @@ export const HomePage: React.FC = () => {
                 <h4 className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-[#111113] mt-1 leading-snug truncate">
                   Books Distributed
                 </h4>
-                <p className="text-[9.5px] text-[#6E6B66] hidden sm:block mt-0.5 truncate">
+                <p className="text-[9.5px] text-[#6E6B66] hidden sm:block mt-0.5 truncate font-sans">
                   Annual supply to schools &amp; firms
                 </p>
               </div>
@@ -136,8 +119,8 @@ export const HomePage: React.FC = () => {
 
             {/* 2. Nationwide Parcel */}
             <div className="flex items-center gap-2.5 sm:gap-3 text-left">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center font-bold border border-[#dc2626]/20 shrink-0">
-                <Truck className="w-4 h-4 sm:w-5 sm:h-5" />
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#DC2626]/10 text-[#DC2626] flex items-center justify-center font-bold border border-[#DC2626]/20 shrink-0">
+                <Truck className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.75]" />
               </div>
               <div className="min-w-0">
                 <div className="text-sm sm:text-lg font-black text-[#111113] font-heading tracking-tight leading-none">
@@ -146,7 +129,7 @@ export const HomePage: React.FC = () => {
                 <h4 className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-[#111113] mt-1 leading-snug truncate">
                   Nationwide Parcel
                 </h4>
-                <p className="text-[9.5px] text-[#6E6B66] hidden sm:block mt-0.5 truncate">
+                <p className="text-[9.5px] text-[#6E6B66] hidden sm:block mt-0.5 truncate font-sans">
                   Same-day waybills to bus terminals
                 </p>
               </div>
@@ -154,17 +137,17 @@ export const HomePage: React.FC = () => {
 
             {/* 3. Bleed-Proof Paper */}
             <div className="flex items-center gap-2.5 sm:gap-3 text-left">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center font-bold border border-[#dc2626]/20 shrink-0">
-                <Feather className="w-4 h-4 sm:w-5 sm:h-5" />
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#DC2626]/10 text-[#DC2626] flex items-center justify-center font-bold border border-[#DC2626]/20 shrink-0">
+                <Feather className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.75]" />
               </div>
               <div className="min-w-0">
-                <div className="text-sm sm:text-lg font-black text-[#dc2626] font-heading tracking-tight leading-none">
+                <div className="text-sm sm:text-lg font-black text-[#DC2626] font-heading tracking-tight leading-none">
                   70 GSM
                 </div>
                 <h4 className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-[#111113] mt-1 leading-snug truncate">
                   Bleed-Proof Paper
                 </h4>
-                <p className="text-[9.5px] text-[#6E6B66] hidden sm:block mt-0.5 truncate">
+                <p className="text-[9.5px] text-[#6E6B66] hidden sm:block mt-0.5 truncate font-sans">
                   Zero feathering with fountain &amp; gel ink
                 </p>
               </div>
@@ -172,8 +155,8 @@ export const HomePage: React.FC = () => {
 
             {/* 4. Thread-Sewn Spine */}
             <div className="flex items-center gap-2.5 sm:gap-3 text-left">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#dc2626]/10 text-[#dc2626] flex items-center justify-center font-bold border border-[#dc2626]/20 shrink-0">
-                <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" />
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#DC2626]/10 text-[#DC2626] flex items-center justify-center font-bold border border-[#DC2626]/20 shrink-0">
+                <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.75]" />
               </div>
               <div className="min-w-0">
                 <div className="text-sm sm:text-lg font-black text-[#111113] font-heading tracking-tight leading-none">
@@ -182,7 +165,7 @@ export const HomePage: React.FC = () => {
                 <h4 className="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-[#111113] mt-1 leading-snug truncate">
                   Thread-Sewn Spine
                 </h4>
-                <p className="text-[9.5px] text-[#6E6B66] hidden sm:block mt-0.5 truncate">
+                <p className="text-[9.5px] text-[#6E6B66] hidden sm:block mt-0.5 truncate font-sans">
                   Pages never loosen or fall out
                 </p>
               </div>
@@ -193,10 +176,10 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* ========================================================================= */}
-      {/* 3. SHOP BY COLLECTION (4 Horizontal Cards Matching Reference Layout) */}
+      {/* 3. SHOP BY COLLECTION (4 Editorial Cards) */}
       {/* ========================================================================= */}
-      <section className="py-14 sm:py-20 bg-[#FAF9F7]">
-        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
+      <section className="py-12 sm:py-16 bg-[#FAF9F7]">
+        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
 
           {/* Centered Editorial Header */}
           <div className="text-center space-y-2">
@@ -204,6 +187,11 @@ export const HomePage: React.FC = () => {
               {language === 'sw' ? 'MKUSANYIKO WA VITABU' : 'SHOP BY COLLECTION'}
             </h2>
             <div className="w-12 h-0.5 bg-[#8C7355] mx-auto opacity-60" />
+            <p className="text-xs sm:text-sm text-[#6E6B66] max-w-xl mx-auto pt-1 font-sans">
+              {language === 'sw'
+                ? 'Gundua aina zote za madaftari ya OMEGA yaliyotengenezwa kwa viwango vya juu vya kimataifa.'
+                : 'Explore archival counter folios, classroom exercise books, and tear-resistant kraft mailers.'}
+            </p>
           </div>
 
           {/* 4 Collection Cards Grid */}
@@ -212,10 +200,10 @@ export const HomePage: React.FC = () => {
               <Link
                 key={idx}
                 to={col.link}
-                className="group relative h-48 sm:h-56 rounded-lg overflow-hidden border border-[#E7E5E0] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-5 text-white"
+                className="group relative h-52 sm:h-60 rounded-xl overflow-hidden border border-[#E7E5E0] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-5 text-white"
                 style={{ backgroundColor: '#111113' }}
               >
-                {/* Background Image with Dark Vignette Overlay */}
+                {/* Background Image with Dark Gradient Scrim */}
                 <div className="absolute inset-0 z-0">
                   <img
                     src={col.image}
@@ -223,14 +211,17 @@ export const HomePage: React.FC = () => {
                     className="w-full h-full object-cover object-center opacity-40 group-hover:scale-105 group-hover:opacity-50 transition-all duration-500 ease-out"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/20" />
                 </div>
 
-                {/* Top Badge / Subtitle */}
-                <div className="relative z-10">
-                  <span className="text-[10px] font-mono tracking-widest uppercase text-[#c8a27a] block">
+                {/* Top Badge */}
+                <div className="relative z-10 flex items-center justify-between">
+                  <span className="text-[10px] font-mono tracking-widest uppercase text-[#c8a27a] block font-bold">
                     {col.sub}
                   </span>
+                  <div className="w-7 h-7 rounded-full bg-white/10 group-hover:bg-[#DC2626] backdrop-blur-xs flex items-center justify-center text-white transition-colors">
+                    <ArrowUpRight className="w-3.5 h-3.5 stroke-[1.75]" />
+                  </div>
                 </div>
 
                 {/* Bottom Title & Action */}
@@ -238,13 +229,13 @@ export const HomePage: React.FC = () => {
                   <h3 className="font-heading text-base sm:text-lg font-bold tracking-wide uppercase text-white leading-snug">
                     {col.title}
                   </h3>
-                  <p className="text-[11px] text-zinc-300 line-clamp-1">
+                  <p className="text-[11px] text-zinc-300 line-clamp-1 font-sans">
                     {col.desc}
                   </p>
                   <div className="pt-2">
                     <span className="inline-flex items-center gap-1.5 text-[10.5px] font-mono tracking-widest uppercase text-white font-bold group-hover:text-[#c8a27a] border-b border-white/60 group-hover:border-[#c8a27a] pb-0.5 transition-all">
                       <span>SHOP NOW</span>
-                      <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
+                      <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1 stroke-[1.75]" />
                     </span>
                   </div>
                 </div>
@@ -256,9 +247,9 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* ========================================================================= */}
-      {/* 4. FEATURED NOTEBOOKS & BOOKS ("FEATURED FRAGRANCES" Reference Layout) */}
+      {/* 4. FEATURED NOTEBOOKS & BOOKS (5-Column Grid with Red ADD TO CART Only) */}
       {/* ========================================================================= */}
-      <section className="py-14 sm:py-20 bg-white border-y border-[#E7E5E0]">
+      <section className="py-12 sm:py-16 bg-white border-y border-[#E7E5E0]">
         <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
 
           {/* Centered Editorial Header */}
@@ -267,7 +258,7 @@ export const HomePage: React.FC = () => {
               {language === 'sw' ? 'Mkusanyiko Bora' : 'FEATURED STATIONERY'}
             </h2>
             <div className="w-12 h-0.5 bg-[#8C7355] mx-auto opacity-60" />
-            <p className="text-xs sm:text-sm text-[#6E6B66] max-w-xl mx-auto pt-1">
+            <p className="text-xs sm:text-sm text-[#6E6B66] max-w-xl mx-auto pt-1 font-sans">
               {language === 'sw'
                 ? 'Vitabu na madaftari yenye viwango vya juu vya ubora vinavyopendwa kote Tanzania.'
                 : 'Benchmark ledger books, classroom exercise books and tear-resistant kraft mailers.'}
@@ -289,8 +280,8 @@ export const HomePage: React.FC = () => {
                   key={tab.id}
                   type="button"
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-3.5 py-1.5 text-[11px] font-mono tracking-wider uppercase rounded-sm transition-all duration-200 cursor-pointer ${isActive
-                      ? 'bg-[#111113] text-white font-bold'
+                  className={`px-3.5 py-1.5 text-[11px] font-mono tracking-wider uppercase rounded-md transition-all duration-200 cursor-pointer ${isActive
+                      ? 'bg-[#111113] text-white font-bold shadow-xs'
                       : 'bg-transparent text-[#6E6B66] hover:text-[#111113] hover:bg-[#FAF9F7]'
                     }`}
                 >
@@ -300,21 +291,21 @@ export const HomePage: React.FC = () => {
             })}
           </div>
 
-          {/* Reference-Style Cards Grid (5 columns on large desktop, 2 on mobile) */}
+          {/* Product Cards Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-5">
             {displayedProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
 
-          {/* Centered "VIEW ALL PRODUCTS" link (matching reference layout) */}
+          {/* Centered "VIEW ALL PRODUCTS" link */}
           <div className="pt-4 text-center">
             <Link
               to="/catalog"
-              className="inline-flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase text-[#111113] hover:text-[#8C7355] border-b-2 border-[#111113] hover:border-[#8C7355] pb-1 transition-all group"
+              className="inline-flex items-center gap-2 text-xs font-mono font-bold tracking-widest uppercase text-[#111113] hover:text-[#DC2626] border-b-2 border-[#111113] hover:border-[#DC2626] pb-1 transition-all group"
             >
               <span>{language === 'sw' ? 'TAZAMA BIDHAA ZOTE' : 'VIEW ALL PRODUCTS'}</span>
-              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1 stroke-[1.75]" />
             </Link>
           </div>
 
@@ -322,9 +313,9 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* ========================================================================= */}
-      {/* 5. "OUR STORY" EDITORIAL HERITAGE (Matching Reference Editorial Split) */}
+      {/* 5. "OUR STORY" EDITORIAL HERITAGE (Veloura & Note Act Split Layout) */}
       {/* ========================================================================= */}
-      <section className="py-16 sm:py-24 bg-[#FAF9F7] border-b border-[#E7E5E0] overflow-hidden">
+      <section className="py-14 sm:py-20 bg-[#FAF9F7] border-b border-[#E7E5E0] overflow-hidden">
         <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
 
@@ -349,59 +340,59 @@ export const HomePage: React.FC = () => {
                 </h2>
               </div>
 
-              <p className="text-xs sm:text-sm text-[#6E6B66] leading-relaxed max-w-lg">
+              <p className="text-xs sm:text-sm text-[#6E6B66] leading-relaxed max-w-lg font-sans">
                 {language === 'sw'
-                  ? 'Kiwandani OMEGA, kila daftari ni kazi ya usanifu unaozingatia uimara — lililoundwa Tanzania kwa karatasi ngumu ya 70 GSM isiyopenyeza wino, ushonaji thabiti wa nyuzi, na jalada linalodumu kwa miaka. Tunaamini katika thamani ya kudumu na heshima ya kazi halisi za nyumbani.'
-                  : 'At OMEGA Stationery, every book is a work of precision — crafted with pride in Tanzania using 70 GSM bleed-proof bond, Smyth-sewn archival bookbinding, and enduring hardboard covers. We believe in uncompromised factory integrity, tangible paper craft, and the quiet authority that only genuine stationery delivers.'}
+                  ? 'Kiwandani OMEGA, kila daftari ni kazi ya usanifu unaozingatia uimara — lililoundwa Tanzania kwa karatasi ngumu ya 70 GSM isiyopenyeza wino, ushonaji thabiti wa nyuzi, na jalada linalodumu kwa miaka.'
+                  : 'At OMEGA Stationery, every book is a work of precision — crafted with pride in Tanzania using 70 GSM bleed-proof bond, Smyth-sewn archival bookbinding, and enduring hardboard covers.'}
               </p>
 
               <div>
                 <Link
                   to="/about"
-                  className="inline-flex items-center justify-center px-6 py-3 rounded-md bg-[#111113] hover:bg-[#8C7355] text-white text-xs font-mono font-bold tracking-wider uppercase transition-colors shadow-xs"
+                  className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-[#111113] hover:bg-[#8C7355] text-white text-xs font-mono font-bold tracking-wider uppercase transition-colors shadow-xs"
                 >
                   <span>{language === 'sw' ? 'GUNDUA ZAIDI' : 'DISCOVER OUR CRAFT'}</span>
                 </Link>
               </div>
 
-              {/* 4 Hallmark Icons Matching Reference Layout */}
+              {/* 4 Hallmark Icons Grid */}
               <div className="pt-6 border-t border-[#E7E5E0] grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div className="space-y-1">
-                  <Feather className="w-4 h-4 text-[#8C7355]" />
+                  <Feather className="w-4 h-4 text-[#8C7355] stroke-[1.75]" />
                   <h5 className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#111113]">
                     Pure 70 GSM
                   </h5>
-                  <p className="text-[9.5px] text-[#6E6B66] leading-tight">
+                  <p className="text-[9.5px] text-[#6E6B66] leading-tight font-sans">
                     Bleed-proof bond paper
                   </p>
                 </div>
 
                 <div className="space-y-1">
-                  <BookOpen className="w-4 h-4 text-[#8C7355]" />
+                  <BookOpen className="w-4 h-4 text-[#8C7355] stroke-[1.75]" />
                   <h5 className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#111113]">
                     Master Sewn
                   </h5>
-                  <p className="text-[9.5px] text-[#6E6B66] leading-tight">
+                  <p className="text-[9.5px] text-[#6E6B66] leading-tight font-sans">
                     Smyth-threaded spine
                   </p>
                 </div>
 
                 <div className="space-y-1">
-                  <Building2 className="w-4 h-4 text-[#8C7355]" />
+                  <Building2 className="w-4 h-4 text-[#8C7355] stroke-[1.75]" />
                   <h5 className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#111113]">
                     Factory Direct
                   </h5>
-                  <p className="text-[9.5px] text-[#6E6B66] leading-tight">
+                  <p className="text-[9.5px] text-[#6E6B66] leading-tight font-sans">
                     Direct from Mkuranga &amp; Mbeya
                   </p>
                 </div>
 
                 <div className="space-y-1">
-                  <ShieldCheck className="w-4 h-4 text-[#8C7355]" />
+                  <ShieldCheck className="w-4 h-4 text-[#8C7355] stroke-[1.75]" />
                   <h5 className="text-[10px] font-mono font-bold uppercase tracking-wider text-[#111113]">
                     Archival Build
                   </h5>
-                  <p className="text-[9.5px] text-[#6E6B66] leading-tight">
+                  <p className="text-[9.5px] text-[#6E6B66] leading-tight font-sans">
                     Preserves records for years
                   </p>
                 </div>
@@ -411,7 +402,7 @@ export const HomePage: React.FC = () => {
 
             {/* Right Column: Visual Product Editorial Frame */}
             <div className="lg:col-span-6 flex items-center justify-center">
-              <div className="relative w-full max-w-md aspect-[4/3] rounded-lg overflow-hidden border border-[#E7E5E0] bg-[#111113] p-8 flex items-center justify-center shadow-lg group">
+              <div className="relative w-full max-w-md aspect-[4/3] rounded-2xl overflow-hidden border border-[#E7E5E0] bg-[#111113] p-8 flex items-center justify-center shadow-lg group">
                 <div
                   className="absolute inset-0 bg-cover bg-center opacity-30 pointer-events-none group-hover:scale-105 transition-transform duration-700"
                   style={{ backgroundImage: "url('/hero-desk-bg.jpg')" }}
@@ -434,18 +425,17 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* ========================================================================= */}
-      {/* 6. PROMOTIONAL 20% OFF LUXURY BANNER (Matching Reference Layout) */}
+      {/* 6. PROMOTIONAL WHOLESALE CARTON RATES BANNER (Veloura Reference) */}
       {/* ========================================================================= */}
       <section className="bg-[#111113] text-white border-y border-[#27272a] py-8 sm:py-10 relative overflow-hidden">
-        {/* Subtle Ochre Radial Glow */}
-        <div className="absolute top-0 right-1/4 w-80 h-80 bg-[#8C7355]/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-1/4 w-80 h-80 bg-[#DC2626]/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
 
-            {/* Left: Giant 20% OFF */}
+            {/* Left: 20% OFF Cartons */}
             <div className="flex items-center gap-4 shrink-0">
-              <div className="font-heading font-bold text-4xl sm:text-5xl lg:text-6xl text-[#c8a27a] tracking-tight leading-none">
+              <div className="font-heading font-bold text-4xl sm:text-5xl lg:text-6xl text-[#DC2626] tracking-tight leading-none">
                 20<span className="text-xl sm:text-2xl font-sans">%</span>
                 <span className="block text-[11px] font-mono font-normal tracking-widest uppercase text-white/80">
                   OFF CARTONS
@@ -461,10 +451,10 @@ export const HomePage: React.FC = () => {
                   ? 'Kwa sababu taasisi yako inastahili ubora usio na kifani.'
                   : 'Because your institution deserves genuine lasting quality.'}
               </h3>
-              <p className="text-xs text-zinc-400">
+              <p className="text-xs text-zinc-400 font-sans">
                 {language === 'sw'
-                  ? 'Furahia punguzo la 20% kwa oda zote za jumla za katoni za vitabu na bahasha kiwandani.'
-                  : 'Enjoy special factory carton rates on all bulk counter books and exercise reams for a limited time.'}
+                  ? 'Furahia punguzo la kiwandani kwa oda zote za jumla za katoni za vitabu na bahasha.'
+                  : 'Enjoy special factory carton rates on all bulk counter books and exercise reams for schools and tenders.'}
               </p>
             </div>
 
@@ -472,9 +462,9 @@ export const HomePage: React.FC = () => {
             <div className="shrink-0">
               <Link
                 to="/wholesale"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-md bg-white hover:bg-[#c8a27a] text-[#111113] text-xs font-mono font-bold tracking-wider uppercase transition-colors shadow-md"
+                className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-white hover:bg-[#DC2626] hover:text-white text-[#111113] text-xs font-mono font-bold tracking-wider uppercase transition-colors shadow-md cursor-pointer"
               >
-                <span>{language === 'sw' ? 'AGIZA KWA BEI YA JUMLA' : 'SHOP WHOLESALE CARTONS'}</span>
+                <span>{language === 'sw' ? 'BEI ZA JUMLA' : 'SHOP WHOLESALE CARTONS'}</span>
               </Link>
             </div>
 
@@ -483,53 +473,34 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* ========================================================================= */}
-      {/* 7. "LOVED BY OUR CLIENTS" (Matching Reference Review Cards) */}
+      {/* 7. "LOVED BY OUR CLIENTS" (Veloura Reference Testimonials) */}
       {/* ========================================================================= */}
-      <section className="py-16 sm:py-20 bg-white border-b border-[#E7E5E0]">
+      <section className="py-14 sm:py-20 bg-white border-b border-[#E7E5E0]">
         <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
 
-          {/* Header with Navigation Indicator */}
-          <div className="flex items-center justify-between">
-            <div className="w-10 hidden sm:block" />
-            <div className="text-center space-y-1 flex-1">
-              <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-semibold tracking-wider uppercase text-[#111113]">
-                {language === 'sw' ? 'WATEJA WETU WANASEMAJE' : 'LOVED BY OUR CLIENTS'}
-              </h2>
-              <div className="w-12 h-0.5 bg-[#8C7355] mx-auto opacity-60" />
-            </div>
-            <div className="flex items-center gap-1.5 shrink-0">
-              <button
-                type="button"
-                aria-label="Previous testimonial"
-                className="w-8 h-8 rounded-full border border-[#E7E5E0] flex items-center justify-center text-[#111113] hover:bg-[#FAF9F7] transition-colors"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button
-                type="button"
-                aria-label="Next testimonial"
-                className="w-8 h-8 rounded-full border border-[#E7E5E0] flex items-center justify-center text-[#111113] hover:bg-[#FAF9F7] transition-colors"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
+          {/* Header */}
+          <div className="text-center space-y-2">
+            <h2 className="font-heading text-xl sm:text-2xl md:text-3xl font-semibold tracking-wider uppercase text-[#111113]">
+              {language === 'sw' ? 'WATEJA WETU WANASEMAJE' : 'LOVED BY OUR CLIENTS'}
+            </h2>
+            <div className="w-12 h-0.5 bg-[#8C7355] mx-auto opacity-60" />
           </div>
 
-          {/* 3 Review Cards Matching Reference Styling */}
+          {/* 3 Review Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
 
             {/* Review 1 */}
-            <div className="p-6 rounded-lg bg-[#FAF9F7] border border-[#E7E5E0] space-y-4 flex flex-col justify-between">
+            <div className="p-6 rounded-2xl bg-[#FAF9F7] border border-[#E7E5E0] space-y-4 flex flex-col justify-between">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="font-heading text-2xl text-[#8C7355] leading-none">“</span>
-                  <div className="flex gap-0.5 text-[#8C7355]">
+                  <div className="flex gap-0.5 text-[#DC2626]">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-[#8C7355] text-[#8C7355]" />
+                      <Star key={i} className="w-3.5 h-3.5 fill-[#DC2626] text-[#DC2626]" />
                     ))}
                   </div>
                 </div>
-                <p className="text-xs sm:text-sm text-[#47464A] italic leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#47464A] italic leading-relaxed font-sans">
                   “Daftari la OMEGA Quire 3 lina karatasi ngumu sana na jalada lisilopinda. Linanisaidia sana kwenye mahesabu ya kila mwezi bila wino kupenya kabisa.”
                 </p>
               </div>
@@ -547,17 +518,17 @@ export const HomePage: React.FC = () => {
             </div>
 
             {/* Review 2 */}
-            <div className="p-6 rounded-lg bg-[#FAF9F7] border border-[#E7E5E0] space-y-4 flex flex-col justify-between">
+            <div className="p-6 rounded-2xl bg-[#FAF9F7] border border-[#E7E5E0] space-y-4 flex flex-col justify-between">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="font-heading text-2xl text-[#8C7355] leading-none">“</span>
-                  <div className="flex gap-0.5 text-[#8C7355]">
+                  <div className="flex gap-0.5 text-[#DC2626]">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-[#8C7355] text-[#8C7355]" />
+                      <Star key={i} className="w-3.5 h-3.5 fill-[#DC2626] text-[#DC2626]" />
                     ))}
                   </div>
                 </div>
-                <p className="text-xs sm:text-sm text-[#47464A] italic leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#47464A] italic leading-relaxed font-sans">
                   “The Smyth-sewn binding of OMEGA exercise books is truly unmatched. Our secondary school orders 200-page single line books every term without fail.”
                 </p>
               </div>
@@ -575,17 +546,17 @@ export const HomePage: React.FC = () => {
             </div>
 
             {/* Review 3 */}
-            <div className="p-6 rounded-lg bg-[#FAF9F7] border border-[#E7E5E0] space-y-4 flex flex-col justify-between">
+            <div className="p-6 rounded-2xl bg-[#FAF9F7] border border-[#E7E5E0] space-y-4 flex flex-col justify-between">
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="font-heading text-2xl text-[#8C7355] leading-none">“</span>
-                  <div className="flex gap-0.5 text-[#8C7355]">
+                  <div className="flex gap-0.5 text-[#DC2626]">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-[#8C7355] text-[#8C7355]" />
+                      <Star key={i} className="w-3.5 h-3.5 fill-[#DC2626] text-[#DC2626]" />
                     ))}
                   </div>
                 </div>
-                <p className="text-xs sm:text-sm text-[#47464A] italic leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#47464A] italic leading-relaxed font-sans">
                   “Fast bus parcel dispatch to Mwanza! The kraft envelopes and ruled reams arrived safely packed in OMEGA branded cartons within 24 hours.”
                 </p>
               </div>
@@ -607,52 +578,67 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* ========================================================================= */}
-      {/* 8. NEWSLETTER STRIP ("Stay inspired & be the first to know" Reference Layout) */}
+      {/* 8. VIP CONCIERGE & PRICE ALERTS (Matching User Uploaded Image) */}
       {/* ========================================================================= */}
-      <section className="py-8 sm:py-10 bg-[#111113] text-white border-t border-[#27272a] relative overflow-hidden">
-        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
-
-            {/* Left: Heading & Description */}
-            <div className="flex items-center gap-4 text-center lg:text-left">
-              <div className="w-10 h-10 rounded-md bg-[#8C7355]/20 border border-[#8C7355]/30 flex items-center justify-center text-[#c8a27a] shrink-0 hidden sm:flex">
-                <Mail className="w-5 h-5" />
-              </div>
-              <div className="space-y-0.5">
-                <h3 className="font-heading text-base sm:text-lg font-medium text-white tracking-wide">
-                  {language === 'sw'
-                    ? 'Pata taarifa za bei mpya & matoleo ya kiwandani'
-                    : 'Stay inspired & be the first to know'}
-                </h3>
-                <p className="text-xs text-zinc-400">
-                  {language === 'sw'
-                    ? 'Katalogi rasmi ya 2026, bei za zabuni za shule na ofa za madaftari.'
-                    : 'Exclusive offers, new catalog releases, and factory tender schedules.'}
-                </p>
-              </div>
+      <section className="py-14 sm:py-18 bg-[#18181b] text-white relative overflow-hidden border-t border-[#27272a]">
+        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-2xl mx-auto text-center space-y-4">
+            
+            {/* Red Badge */}
+            <div className="inline-flex items-center justify-center px-4 py-1 rounded-full border border-[#DC2626]/40 bg-[#DC2626]/10 text-[#DC2626] text-[11px] font-mono font-bold uppercase tracking-widest">
+              VIP CONCIERGE &amp; PRICE ALERTS
             </div>
 
-            {/* Right: Input and Button */}
+            {/* Headline */}
+            <h2 className="font-heading text-2xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
+              {language === 'sw' ? 'Ungana na OMEGA Stationery' : 'Connect with OMEGA Stationery'}
+            </h2>
+
+            {/* Description */}
+            <p className="text-xs sm:text-sm text-stone-300 max-w-lg mx-auto leading-relaxed font-sans">
+              {language === 'sw'
+                ? 'Pata taarifa za bei mpya za jumla, katalogi ya 2026 na ofa maalum za vifaa vya shule na ofisi.'
+                : 'Receive official 2026 wholesale catalogs, bulk school tender announcements, and factory-direct price updates.'}
+            </p>
+
+            {/* Form */}
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 alert(language === 'sw' ? 'Asante! Tumepokea mawasiliano yako.' : 'Thank you! We received your details.');
               }}
-              className="flex items-center gap-2 w-full max-w-md shrink-0"
+              className="flex flex-col sm:flex-row items-center justify-center gap-2.5 max-w-md mx-auto pt-3"
             >
-              <input
-                type="text"
-                required
-                placeholder={language === 'sw' ? 'Namba ya simu au email...' : 'Enter your email address'}
-                className="flex-1 px-4 py-2.5 rounded-md text-xs bg-white text-[#111113] placeholder:text-zinc-500 border border-transparent focus:outline-none focus:ring-1 focus:ring-[#8C7355] font-sans"
-              />
+              <div className="relative w-full">
+                <Mail className="w-4 h-4 text-stone-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none stroke-[1.75]" />
+                <input
+                  type="text"
+                  required
+                  placeholder={language === 'sw' ? 'Weka namba au barua pepe...' : 'Enter your email or phone number...'}
+                  className="w-full pl-11 pr-4 py-3 rounded-xl text-xs sm:text-sm bg-white/[0.08] text-white placeholder:text-stone-400 border border-white/20 focus:outline-none focus:border-[#DC2626] focus:ring-1 focus:ring-[#DC2626] transition-all font-sans"
+                />
+              </div>
               <button
                 type="submit"
-                className="px-5 py-2.5 rounded-md bg-[#8C7355] hover:bg-[#a08462] text-white text-xs font-mono font-bold uppercase tracking-wider transition-colors shrink-0 cursor-pointer"
+                className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#DC2626] hover:bg-[#b91c1c] text-white text-xs sm:text-sm font-bold uppercase tracking-wider font-mono transition-all shadow-md shrink-0 flex items-center justify-center gap-1.5 active:scale-95 cursor-pointer"
               >
-                {language === 'sw' ? 'JIUNGE' : 'SIGN ME UP'}
+                <span>{language === 'sw' ? 'JIUNGE' : 'SUBSCRIBE'}</span>
+                <ArrowUpRight className="w-4 h-4 stroke-[1.75]" />
               </button>
             </form>
+
+            {/* Bottom Guarantee Indicators */}
+            <div className="flex items-center justify-center gap-4 pt-3 text-[11px] font-mono text-stone-400">
+              <span className="flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#DC2626] stroke-[1.75]" />
+                <span>Zero Spam Guarantee</span>
+              </span>
+              <span>•</span>
+              <span className="flex items-center gap-1.5">
+                <Package className="w-3.5 h-3.5 text-[#DC2626] stroke-[1.75]" />
+                <span>Instant 2026 Price Catalog</span>
+              </span>
+            </div>
 
           </div>
         </div>

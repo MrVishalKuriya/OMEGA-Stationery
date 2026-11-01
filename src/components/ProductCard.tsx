@@ -2,11 +2,14 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   BookOpen,
+  Layers,
+  ShieldCheck,
+  Heart,
   ShoppingBag,
   Check,
-  Heart,
+  Truck,
   Star,
-  Eye,
+  Tag,
 } from 'lucide-react';
 import { Product, formatPrice } from '../types/store';
 import { useStore } from '../context/StoreContext';
@@ -19,11 +22,9 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const {
     addToCart,
-    storeConfig,
     language,
     isInWishlist,
     toggleWishlist,
-    setQuickViewProduct,
   } = useStore();
   const t = TRANSLATIONS[language] || TRANSLATIONS.en;
 
@@ -35,154 +36,203 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       ? product.discountPrice
       : product.price;
 
-  const hasDiscount = effectivePrice < product.price;
-  const discountPercent =
-    hasDiscount && product.price > 0
-      ? Math.round(((product.price - effectivePrice) / product.price) * 100)
-      : 0;
+  const hasDiscount =
+    product.discountPrice && product.discountPrice > 0 && product.discountPrice < product.price;
 
+  const discountPercentage = hasDiscount
+    ? Math.round(((product.price - (product.discountPrice || 0)) / product.price) * 100)
+    : 0;
+
+  const isFavorited = isInWishlist ? isInWishlist(product.id) : false;
   const isOutOfStock = product.stockStatus === 'Out of Stock';
-  const currency = storeConfig?.currencySymbol || 'TSh';
-  const isWishlisted = isInWishlist(product.id);
+
+  const productName = language === 'sw' && product.nameSw ? product.nameSw : product.name;
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (isOutOfStock) return;
-    addToCart(product.id, 1, false);
+    addToCart(product.id, 1);
     setJustAdded(true);
-    setTimeout(() => setJustAdded(false), 1400);
+    setTimeout(() => setJustAdded(false), 1500);
   };
 
-  const handleToggleWishlist = (e: React.MouseEvent) => {
+  const handleWishlistToggle = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    toggleWishlist(product.id);
+    if (toggleWishlist) {
+      toggleWishlist(product.id);
+    }
   };
-
-  const handleQuickView = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setQuickViewProduct(product);
-  };
-
-  // Subtitle formulation for reference-style cards (e.g. "QUIRE 2 · 192 PAGES")
-  const subtitle = product.specifications?.find((s) => s.label.toLowerCase().includes('pages') || s.label.toLowerCase().includes('quire'))?.value
-    || product.category
-    || 'STATIONERY';
 
   return (
-    <article className="group flex flex-col justify-between h-full bg-white rounded-lg border border-[#e7e5e0] hover:border-[#111113]/40 transition-all duration-300 hover:shadow-md relative p-4 text-center">
-      {/* Top Controls: Badges Left, Heart Right */}
-      <div className="flex items-center justify-between w-full relative z-10 min-h-[24px]">
-        <div>
+    <div className="group relative bg-white rounded-lg border border-[#E7E5E0] hover:border-[#111113]/30 transition-all duration-300 hover:shadow-md flex flex-col p-3 text-left h-full">
+      {/* 1:1 Aspect Ratio Image Container */}
+      <div className="relative w-full aspect-square bg-[#F9F8F6] rounded-md overflow-hidden flex items-center justify-center p-3 border border-[#E7E5E0]/60">
+        <Link
+          to={`/product/${product.id}`}
+          className="w-full h-full flex items-center justify-center"
+          aria-label={productName}
+        >
+          {product.image && !imgError ? (
+            <img
+              src={product.image}
+              alt={productName}
+              loading="lazy"
+              onError={() => setImgError(true)}
+              className="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
+            />
+          ) : (
+            <div className="flex flex-col items-center justify-center text-[#6E6B66]">
+              <BookOpen size={32} strokeWidth={1.75} />
+              <span className="text-[10px] font-mono mt-1">OMEGA</span>
+            </div>
+          )}
+        </Link>
+
+        {/* Top-Left Badge (Discount or Best Seller) */}
+        <div className="absolute top-2 left-2 flex flex-col gap-1 pointer-events-none">
           {hasDiscount ? (
-            <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-[#dc2626] bg-[#dc2626]/10 px-2 py-0.5 rounded-sm">
-              -{discountPercent}%
-            </span>
-          ) : product.badge ? (
-            <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-[#111113] bg-[#f4f3ef] px-2 py-0.5 rounded-sm">
-              {product.badge}
+            <span className="px-2 py-0.5 rounded-sm bg-[#DC2626] text-white text-[10px] font-mono font-bold uppercase tracking-wider shadow-xs">
+              -{discountPercentage}%
             </span>
           ) : product.bestSeller ? (
-            <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-[#8c7355] bg-[#8c7355]/10 px-2 py-0.5 rounded-sm">
-              Bestseller
+            <span className="px-2 py-0.5 rounded-sm bg-[#111113] text-white text-[10px] font-mono font-bold uppercase tracking-wider shadow-xs">
+              {language === 'sw' ? 'BORA' : 'BEST SELLER'}
             </span>
           ) : null}
         </div>
 
-        {/* Minimalist Heart Outline / Filled Wishlist Button */}
+        {/* Top-Right Wishlist Heart Button */}
         <button
           type="button"
-          onClick={handleToggleWishlist}
-          aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
-          className="w-7 h-7 flex items-center justify-center text-[#6E6B66] hover:text-[#dc2626] transition-colors cursor-pointer"
+          onClick={handleWishlistToggle}
+          aria-label={isFavorited ? `Remove ${productName} from wishlist` : `Add ${productName} to wishlist`}
+          title={isFavorited ? 'Remove from wishlist' : 'Save to wishlist'}
+          className="absolute top-1 right-1 w-11 h-11 flex items-center justify-center rounded-full text-[#111113] hover:text-[#DC2626] bg-white/80 backdrop-blur-xs transition-colors cursor-pointer"
         >
           <Heart
-            className={`w-4 h-4 transition-transform ${
-              isWishlisted ? 'fill-[#dc2626] text-[#dc2626] scale-110' : 'stroke-[1.5]'
+            size={18}
+            strokeWidth={1.75}
+            className={`transition-transform duration-200 hover:scale-110 ${
+              isFavorited ? 'fill-[#DC2626] text-[#DC2626]' : 'text-[#111113]'
             }`}
           />
         </button>
       </div>
 
-      {/* Product Image Canvas */}
-      <Link
-        to={`/product/${product.id}`}
-        className="block aspect-square w-full my-3 p-2 relative flex items-center justify-center overflow-hidden"
-      >
-        {!imgError && product.image ? (
-          <img
-            src={product.image}
-            alt={product.name}
-            referrerPolicy="no-referrer"
-            loading="lazy"
-            decoding="async"
-            onError={() => setImgError(true)}
-            className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-500 ease-out group-hover:scale-105"
-          />
-        ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center p-3 bg-[#f9f8f6] rounded">
-            <BookOpen className="w-8 h-8 text-[#111113]/40 stroke-[1.5]" />
-            <span className="text-[9px] text-[#6E6B66] font-mono mt-1">{product.sku}</span>
-          </div>
-        )}
-      </Link>
+      {/* Product Title (Max 2 lines) */}
+      <div className="mt-2.5 min-h-[2.5rem]">
+        <Link
+          to={`/product/${product.id}`}
+          className="font-heading text-xs sm:text-sm font-bold text-[#111113] hover:text-[#DC2626] line-clamp-2 leading-snug transition-colors"
+          title={productName}
+        >
+          {productName}
+        </Link>
+      </div>
 
-      {/* Centered Editorial Typography */}
-      <div className="space-y-1 my-2">
-        {/* Product Title (Bodoni / Heading Font uppercase/capitalized) */}
-        <h3 className="font-heading font-bold text-xs sm:text-sm text-[#111113] tracking-wide uppercase line-clamp-1 group-hover:text-[#8c7355] transition-colors">
-          <Link to={`/product/${product.id}`} className="focus:outline-none">
-            {language === 'sw' && product.nameSw ? product.nameSw : product.name}
-          </Link>
-        </h3>
-
-        {/* Small Tracked Category / Spec Subtitle */}
-        <p className="text-[10px] sm:text-[11px] font-mono tracking-widest text-[#6E6B66] uppercase truncate">
-          {subtitle}
-        </p>
-
-        {/* Centered Price */}
-        <div className="flex items-center justify-center gap-2 pt-1">
-          <span className="text-xs sm:text-sm font-mono font-bold text-[#111113]">
-            {formatPrice(effectivePrice, currency)}
+      {/* Icon Metadata Chips */}
+      <div className="flex flex-wrap items-center gap-1.5 mt-2 py-1">
+        {product.quire && (
+          <span
+            className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-sm bg-[#F2EFEB] text-[#111113] text-[10px] font-mono font-medium"
+            title={`Quire / Model: ${product.quire}`}
+          >
+            <BookOpen size={12} strokeWidth={1.75} className="text-[#8C7355]" />
+            <span>{product.quire}</span>
           </span>
-          {hasDiscount && (
-            <span className="text-[10px] sm:text-[11px] text-[#6E6B66] line-through font-mono">
-              {formatPrice(product.price, currency)}
+        )}
+
+        {product.pageCount && (
+          <span
+            className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-sm bg-[#F2EFEB] text-[#111113] text-[10px] font-mono font-medium"
+            title={`Page count: ${product.pageCount}`}
+          >
+            <Layers size={12} strokeWidth={1.75} className="text-[#8C7355]" />
+            <span>{product.pageCount}</span>
+          </span>
+        )}
+
+        <span
+          className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-sm bg-[#F2EFEB] text-[#111113] text-[10px] font-mono font-medium"
+          title="70 GSM Bleed-Proof"
+        >
+          <ShieldCheck size={12} strokeWidth={1.75} className="text-[#8C7355]" />
+          <span>70 GSM</span>
+        </span>
+      </div>
+
+      {/* Price & Delivery Strip */}
+      <div className="flex items-center justify-between gap-2 pt-1 border-t border-[#E7E5E0] mt-1">
+        <div>
+          {effectivePrice > 0 ? (
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-xs sm:text-sm font-mono font-bold text-[#111113]">
+                {formatPrice(effectivePrice, 'TSh')}
+              </span>
+              {hasDiscount && (
+                <span className="text-[10px] text-[#6E6B66] line-through font-mono">
+                  {formatPrice(product.price, 'TSh')}
+                </span>
+              )}
+            </div>
+          ) : (
+            <span className="inline-flex items-center gap-1 text-[11px] font-mono font-bold text-[#8C7355]">
+              <Tag size={13} strokeWidth={1.75} />
+              <span>Ask price</span>
             </span>
           )}
         </div>
+
+        {/* Small Delivery Truck Icon */}
+        <div className="flex items-center gap-1 shrink-0">
+          {product.rating && product.rating > 0 ? (
+            <span className="inline-flex items-center gap-0.5 text-[10px] font-mono font-bold text-[#111113] mr-1">
+              <Star size={11} strokeWidth={1.75} className="fill-[#DC2626] text-[#DC2626]" />
+              <span>{product.rating.toFixed(1)}</span>
+            </span>
+          ) : null}
+          <span
+            title="Nationwide Bus Parcel Dispatch Available"
+            aria-label="Nationwide Bus Parcel Dispatch Available"
+            className="text-emerald-700 p-0.5"
+          >
+            <Truck size={15} strokeWidth={1.75} />
+          </span>
+        </div>
       </div>
 
-      {/* Full-width "ADD TO CART" Button */}
-      <div className="pt-2 mt-auto">
+      {/* Single Red Full-Width Button: ADD TO CART (Pushed to bottom with mt-auto, touch target >= 44px) */}
+      <div className="mt-auto pt-3">
         <button
           type="button"
           onClick={handleQuickAdd}
           disabled={isOutOfStock}
-          className={`w-full py-2.5 px-3 rounded-md text-[11px] sm:text-xs font-mono font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-200 active:scale-98 cursor-pointer ${
+          aria-label={isOutOfStock ? 'Out of stock' : `Add ${productName} to cart`}
+          title={isOutOfStock ? 'Out of stock' : 'Add to cart'}
+          className={`w-full min-h-[44px] px-4 rounded-xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-200 active:scale-95 cursor-pointer shadow-md ${
             isOutOfStock
-              ? 'bg-zinc-100 text-zinc-400 cursor-not-allowed border border-[#e7e5e0]'
+              ? 'bg-zinc-200 text-zinc-500 cursor-not-allowed border border-[#E7E5E0]'
               : justAdded
-              ? 'bg-emerald-700 text-white shadow-sm'
-              : 'bg-[#111113] hover:bg-[#8c7355] text-white shadow-xs'
+              ? 'bg-emerald-600 text-white shadow-sm'
+              : 'bg-[#DC2626] hover:bg-[#b91c1c] text-white hover:shadow-lg'
           }`}
         >
-          {isOutOfStock ? (
-            <span>{language === 'sw' ? 'Imeisha' : 'Out of Stock'}</span>
-          ) : justAdded ? (
+          {justAdded ? (
             <>
-              <Check className="w-3.5 h-3.5 text-white" />
-              <span>{language === 'sw' ? 'Imewekwa!' : 'Added!'}</span>
+              <Check size={18} strokeWidth={1.75} />
+              <span>{language === 'sw' ? 'IMEWEKWA' : 'ADDED TO CART'}</span>
             </>
           ) : (
-            <span>{language === 'sw' ? 'Weka Kwenye Oda' : 'Add to Cart'}</span>
+            <>
+              <ShoppingBag size={18} strokeWidth={1.75} />
+              <span>{language === 'sw' ? 'WEKA KWENYE KIKAPU' : 'ADD TO CART'}</span>
+            </>
           )}
         </button>
       </div>
-    </article>
+    </div>
   );
 };
 
