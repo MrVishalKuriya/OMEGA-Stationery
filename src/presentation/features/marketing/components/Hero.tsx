@@ -25,30 +25,13 @@ interface HeroSlide {
 
 const HERO_SLIDES: HeroSlide[] = [
   {
-    id: 'slide-q1',
-    quire: 'Q1',
-    pages: 96,
-    badgeEn: '1 QUIRE · 96 PAGES · COMPACT FOLIO',
-    badgeSw: 'QUIRE 1 · KURASA 96 · DAFTARI IMARA',
-    headlinePrefix: 'Feel the Power.',
-    headlineGradient: 'Own the Race.',
-    subEn: '1 Quire (96 Pages) slim hardcover counter book. Pure 70 GSM bleed-proof bond engineered for daily classroom and store records.',
-    subSw: 'Counter Book ya Quire 1 (Kurasa 96) yenye jalada gumu na karatasi ya 70 GSM isiyopenyeza wino.',
-    ctaEn: 'Shop Counter Books',
-    ctaSw: 'Nunua Vitabu Sasa',
-    href: '/catalog?category=Counter+Books',
-    productImage: '/omega-hero-q1.png',
-    productWebp: '/omega-hero-q1.webp',
-    label: '1Quire · 96 Pages',
-  },
-  {
     id: 'slide-q2',
     quire: 'Q2',
     pages: 192,
     badgeEn: '2 QUIRE · 192 PAGES · COMMERCIAL LEDGER',
     badgeSw: 'QUIRE 2 · KURASA 192 · DAFTARI LA OFISI',
-    headlinePrefix: 'Premium Books for a',
-    headlineGradient: 'Brighter Future.',
+    headlinePrefix: 'Feel the Power.',
+    headlineGradient: 'Own the Race.',
     subEn: '2 Quire (192 Pages) Smyth-sewn hardcover counter book — trusted by students, shops, and institutions across Tanzania.',
     subSw: 'Counter Book ya Quire 2 (Kurasa 192) yenye mshono imara wa nyuzi unaofunguka 180° bila kuchanika.',
     ctaEn: 'Shop Q2 Counter Book',
@@ -63,9 +46,9 @@ const HERO_SLIDES: HeroSlide[] = [
     quire: 'Q3',
     pages: 288,
     badgeEn: '3 QUIRE · 288 PAGES · ★ BEST SELLER',
-    badgeSw: 'QUIRE 3 · KURASA 288 · ★ INAYopendwa ZAIDI',
-    headlinePrefix: 'Archival Ledgers.',
-    headlineGradient: 'Built to Last.',
+    badgeSw: 'QUIRE 3 · KURASA 288 · ★ INAYOPENDWA ZAIDI',
+    headlinePrefix: 'Premium Books for a',
+    headlineGradient: 'Brighter Future.',
     subEn: '3 Quire (288 Pages) institutional benchmark counter book with reinforced crimson spine and 70 GSM archival white paper.',
     subSw: 'Counter Book ya Quire 3 (Kurasa 288) inayotumika shuleni, vyuoni na maofisini kote Tanzania.',
     ctaEn: 'Shop Q3 Counter Book',
@@ -91,40 +74,6 @@ const HERO_SLIDES: HeroSlide[] = [
     productImage: '/omega-hero-q4.png',
     productWebp: '/omega-hero-q4.webp',
     label: '4Quire · 384 Pages',
-  },
-  {
-    id: 'slide-q5',
-    quire: 'Q5',
-    pages: 480,
-    badgeEn: '5 QUIRE · 480 PAGES · AUDIT & TENDER EDITION',
-    badgeSw: 'QUIRE 5 · KURASA 480 · KUMBUKUMBU KUU',
-    headlinePrefix: 'Master Volume.',
-    headlineGradient: 'Zero Ink Bleed.',
-    subEn: '5 Quire (480 Pages) extended archival ledger built for corporate accounting, hospital registries, and government tenders.',
-    subSw: 'Counter Book ya Quire 5 (Kurasa 480) maalum kwa kumbukumbu za muda mrefu za hesabu na ofisi.',
-    ctaEn: 'Shop Counter Ledgers',
-    ctaSw: 'Tazama Katalogi',
-    href: '/catalog?category=Counter+Books',
-    productImage: '/omega-hero-q5.png',
-    productWebp: '/omega-hero-q5.webp',
-    label: '5Quire · 480 Pages',
-  },
-  {
-    id: 'slide-q6',
-    quire: 'Q6',
-    pages: 576,
-    badgeEn: '6 QUIRE · 576 PAGES · MAXIMUM CAPACITY',
-    badgeSw: 'QUIRE 6 · KURASA 576 · UJAZO MKUBWA ZAIDI',
-    headlinePrefix: 'Maximum Pages.',
-    headlineGradient: 'Built to Endure.',
-    subEn: '6 Quire (576 Pages) ultra-thick Smyth-sewn master folio with extra-wide crimson spine for full-year institutional records.',
-    subSw: 'Counter Book kubwa zaidi ya Quire 6 (Kurasa 576) yenye mgongo mpana na imara.',
-    ctaEn: 'Explore Full Range',
-    ctaSw: 'Nunua Vitabu Vyote',
-    href: '/catalog?category=Counter+Books',
-    productImage: '/omega-hero-q6.png',
-    productWebp: '/omega-hero-q6.webp',
-    label: '6Quire · 576 Pages',
   },
 ];
 
@@ -327,12 +276,6 @@ export const Hero: React.FC = () => {
                 transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 className="space-y-4 sm:space-y-5"
               >
-                {/* Quire & Page Count Badge */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#D63A3A]/10 border border-[#D63A3A]/25 text-[#D63A3A] text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-widest">
-                  <span className="w-2 h-2 rounded-full bg-[#D63A3A] animate-pulse" />
-                  <span>{language === 'sw' ? slide.badgeSw : slide.badgeEn}</span>
-                </div>
-
                 {/* Headline: Serif + Gradient Sans */}
                 <h1 className="font-serif text-3xl sm:text-5xl lg:text-[56px] font-bold tracking-tight text-[var(--text)] leading-[1.12]">
                   <span>{slide.headlinePrefix}</span>
@@ -347,10 +290,10 @@ export const Hero: React.FC = () => {
                   {language === 'sw' ? slide.subSw : slide.subEn}
                 </p>
 
-                {/* Interactive Quire Size Switcher Pills (Q1 to Q6) */}
+                {/* Interactive Quire Size Switcher Pills (Q2 to Q4) */}
                 <div className="pt-1 space-y-2">
                   <div className="text-[10px] font-mono uppercase tracking-widest text-[var(--text-muted)]">
-                    {language === 'sw' ? 'CHAGUA UKUBWA WA KITABU (Q1 – Q6):' : 'SELECT QUIRE & PAGE THICKNESS (Q1 – Q6):'}
+                    {language === 'sw' ? 'CHAGUA UKUBWA WA KITABU (Q2 – Q4):' : 'SELECT QUIRE & PAGE THICKNESS (Q2 – Q4):'}
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
                     {HERO_SLIDES.map((s, idx) => {

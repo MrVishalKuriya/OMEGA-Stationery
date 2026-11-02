@@ -188,8 +188,8 @@ export async function apiFetch<T = any>(
   }
 
   const promise = (async () => {
-    const maxRetries = options.retries ?? (method === 'GET' ? 3 : 1);
-    const timeoutMs = options.timeoutMs ?? 15000;
+    const maxRetries = options.retries ?? (method === 'GET' ? 1 : 1);
+    const timeoutMs = options.timeoutMs ?? 4000;
     let attempt = 0;
 
     // Filter out forbidden headers that fail CORS preflight
@@ -325,8 +325,8 @@ export async function checkBackendHealth(): Promise<{ online: boolean; data?: Ba
 
   const res = await apiFetch<BackendApiResponse<BackendHealthData>>('/api/health', {
     method: 'GET',
-    timeoutMs: 15000,
-    retries: 2,
+    timeoutMs: 3500,
+    retries: 0,
   });
 
   if (res.ok && res.data) {
@@ -513,12 +513,16 @@ export async function fetchLiveProducts(options?: {
   if (options?.category && options.category !== 'All') params.append('category', options.category);
   if (options?.search) params.append('search', options.search);
   if (options?.featured) params.append('featured', 'true');
-  if (options?.forceRefresh) params.append('force', 'true');
-  params.append('_t', String(Date.now()));
+  if (options?.forceRefresh) {
+    params.append('force', 'true');
+    params.append('_t', String(Date.now()));
+  }
 
-  const res = await apiFetch<BackendApiResponse<Product[]>>(`/api/products?${params.toString()}`, {
+  const qs = params.toString();
+  const res = await apiFetch<BackendApiResponse<Product[]>>(`/api/products${qs ? `?${qs}` : ''}`, {
     method: 'GET',
-    retries: options?.retries ?? 3,
+    timeoutMs: 3500,
+    retries: options?.retries ?? 1,
   });
 
   if (res.ok && res.data) {
@@ -531,7 +535,7 @@ export async function fetchLiveProducts(options?: {
       }));
       clientProductCache.set(cacheKey, {
         data: products,
-        expiresAt: Date.now() + 5_000,
+        expiresAt: Date.now() + 1000 * 60 * 5,
       });
       return products;
     }

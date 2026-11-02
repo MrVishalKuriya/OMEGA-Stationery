@@ -217,8 +217,11 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   useEffect(() => {
-    refreshBackendHealth();
-    syncConfigFromDb();
+    const timer = setTimeout(() => {
+      refreshBackendHealth();
+      syncConfigFromDb();
+    }, 1800);
+    return () => clearTimeout(timer);
   }, []);
 
   // Language toggle

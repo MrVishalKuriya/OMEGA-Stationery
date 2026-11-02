@@ -58,17 +58,28 @@ function canonicalizeProducts(liveList: Product[]): Product[] {
   return merged;
 }
 
+function getInitialProducts(): Product[] {
+  try {
+    localStorage.removeItem('omega_products_v2');
+    localStorage.removeItem('omega_products_v3');
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return canonicalizeProducts(parsed);
+      }
+    }
+  } catch {}
+  return INITIAL_PRODUCTS;
+}
+
 export const useProductsQuery = () => {
   const queryClient = useQueryClient();
 
   const query = useQuery<Product[]>({
     queryKey: PRODUCTS_QUERY_KEY,
     queryFn: async () => {
-      try {
-        localStorage.removeItem('omega_products_v2');
-        localStorage.removeItem('omega_products_v3');
-      } catch {}
-      const res = await fetchLiveProducts({ forceRefresh: true });
+      const res = await fetchLiveProducts({ forceRefresh: false, retries: 1 });
       if (res && res.length > 0) {
         const canonicalized = canonicalizeProducts(res);
         try {
@@ -76,26 +87,13 @@ export const useProductsQuery = () => {
         } catch {}
         return canonicalized;
       }
-      return INITIAL_PRODUCTS;
+      return getInitialProducts();
     },
-    placeholderData: () => {
-      try {
-        localStorage.removeItem('omega_products_v2');
-        localStorage.removeItem('omega_products_v3');
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            return canonicalizeProducts(parsed);
-          }
-        }
-      } catch {}
-      return INITIAL_PRODUCTS;
-    },
-    staleTime: 5000,
-    gcTime: 1000 * 60 * 15,
-    refetchOnMount: true,
-    refetchOnWindowFocus: true,
+    initialData: getInitialProducts,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   // Optimistic Product Create Mutation
