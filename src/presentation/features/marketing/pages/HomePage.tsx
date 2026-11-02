@@ -11,7 +11,6 @@ import {
   BookOpen,
   Mail,
   CheckCircle2,
-  Heart,
   MessageCircle,
   Award,
   FileText,
@@ -45,7 +44,6 @@ export const HomePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
     'all' | 'counter' | 'exercise' | 'bahasha' | 'registers'
   >('all');
-  const [bannerFavorited, setBannerFavorited] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [activeCollectionSlide, setActiveCollectionSlide] = useState(0);
   const [selectedCollection, setSelectedCollection] = useState<any | null>(null);
@@ -105,9 +103,9 @@ export const HomePage: React.FC = () => {
         brand: 'Brand: OMEGA',
         cta: language === 'sw' ? 'EXPLORE' : 'EXPLORE',
         link: '/product/prod-omega-cb-q3',
-        image: '/omega-hero-book.png',
+        image: '/omega-hero-book.webp',
         gallery: [
-          '/omega-hero-book.png',
+          '/omega-hero-book.webp',
           '/products/omega-hardcover-counter-book-q3-288-pages-800.webp',
           '/omega-products/counter-book-q3-288p.jpeg',
           '/omega-products/counter-book-q4-catalog.jpeg',
@@ -747,22 +745,6 @@ export const HomePage: React.FC = () => {
                   <span>BUY NOW</span>
                   <ArrowRight size={15} strokeWidth={2} />
                 </motion.button>
-
-                {/* Secondary Wishlist Button */}
-                <motion.button
-                  whileHover={{ scale: 1.08 }}
-                  whileTap={{ scale: 0.92 }}
-                  type="button"
-                  onClick={() => setBannerFavorited(!bannerFavorited)}
-                  aria-label="Save to wishlist"
-                  className="w-11 h-11 rounded-full bg-[var(--surface-2)] border border-[var(--border)] hover:border-[var(--gold)] text-[var(--text)] hover:text-[var(--gold)] flex items-center justify-center transition-all shadow-xs cursor-pointer"
-                >
-                  <Heart
-                    size={18}
-                    strokeWidth={1.75}
-                    className={bannerFavorited ? 'fill-[var(--red)] text-[var(--red)]' : ''}
-                  />
-                </motion.button>
               </div>
 
             </div>
@@ -775,7 +757,7 @@ export const HomePage: React.FC = () => {
                 className="relative w-full max-w-md aspect-square flex items-center justify-center cursor-pointer"
               >
                 <ProductImage
-                  src="/omega-hero-book.png"
+                  src="/omega-hero-book.webp"
                   alt="OMEGA Hardcover Counter Book Cutout"
                   variant="hero"
                   bg="transparent"

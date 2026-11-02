@@ -7,6 +7,8 @@ import { HaikeiBlobGlow, HaikeiPaperLines } from '@/components/HaikeiBackgrounds
 
 interface HeroSlide {
   id: string;
+  quire: string;
+  pages: number;
   badgeEn: string;
   badgeSw: string;
   headlinePrefix: string;
@@ -17,65 +19,112 @@ interface HeroSlide {
   ctaSw: string;
   href: string;
   productImage: string;
+  productWebp: string;
   label: string;
 }
 
 const HERO_SLIDES: HeroSlide[] = [
   {
-    id: 'slide-1',
-    badgeEn: 'EST. 1998 · ARCHIVAL SMYTH-SEWN',
-    badgeSw: 'TANGU 1998 · MSHONO THABITI WA NYUZI',
+    id: 'slide-q1',
+    quire: 'Q1',
+    pages: 96,
+    badgeEn: '1 QUIRE · 96 PAGES · COMPACT FOLIO',
+    badgeSw: 'QUIRE 1 · KURASA 96 · DAFTARI IMARA',
     headlinePrefix: 'Feel the Power.',
     headlineGradient: 'Own the Race.',
-    subEn: 'Explore Tanzania’s benchmark writing companion. Pure 70 GSM bleed-proof bond engineered to endure.',
-    subSw: 'Chunguza daftari bora na thabiti zaidi la masomo na kazi kote Tanzania.',
+    subEn: '1 Quire (96 Pages) slim hardcover counter book. Pure 70 GSM bleed-proof bond engineered for daily classroom and store records.',
+    subSw: 'Counter Book ya Quire 1 (Kurasa 96) yenye jalada gumu na karatasi ya 70 GSM isiyopenyeza wino.',
     ctaEn: 'Shop Counter Books',
     ctaSw: 'Nunua Vitabu Sasa',
     href: '/catalog?category=Counter+Books',
-    productImage: '/omega-hero-book.png',
-    label: 'Counter Book 2Q',
+    productImage: '/omega-hero-q1.png',
+    productWebp: '/omega-hero-q1.webp',
+    label: '1Quire · 96 Pages',
   },
   {
-    id: 'slide-2',
-    badgeEn: 'CLASSROOM KRAFT EDITION',
-    badgeSw: 'TOLEO MAALUM LA SHULE',
+    id: 'slide-q2',
+    quire: 'Q2',
+    pages: 192,
+    badgeEn: '2 QUIRE · 192 PAGES · COMMERCIAL LEDGER',
+    badgeSw: 'QUIRE 2 · KURASA 192 · DAFTARI LA OFISI',
     headlinePrefix: 'Premium Books for a',
     headlineGradient: 'Brighter Future.',
-    subEn: 'High-quality notebooks, exercise books, counter books and stationery products — trusted across Tanzania.',
-    subSw: 'Madaftari yenye ubora wa juu yanayoaminika shuleni na maofisini kote Tanzania.',
-    ctaEn: 'Explore All Products',
-    ctaSw: 'Tazama Bidhaa Zetu',
-    href: '/catalog',
-    productImage: '/omega-hero-book-brown.png',
-    label: 'Kraft Exercise 32P',
+    subEn: '2 Quire (192 Pages) Smyth-sewn hardcover counter book — trusted by students, shops, and institutions across Tanzania.',
+    subSw: 'Counter Book ya Quire 2 (Kurasa 192) yenye mshono imara wa nyuzi unaofunguka 180° bila kuchanika.',
+    ctaEn: 'Shop Q2 Counter Book',
+    ctaSw: 'Nunua Quire 2',
+    href: '/catalog?category=Counter+Books',
+    productImage: '/omega-hero-q2.png',
+    productWebp: '/omega-hero-q2.webp',
+    label: '2Quire · 192 Pages',
   },
   {
-    id: 'slide-3',
-    badgeEn: '31 REGIONS DISPATCH',
-    badgeSw: 'USAFIRISHAJI MIKOA YOTE 31',
+    id: 'slide-q3',
+    quire: 'Q3',
+    pages: 288,
+    badgeEn: '3 QUIRE · 288 PAGES · ★ BEST SELLER',
+    badgeSw: 'QUIRE 3 · KURASA 288 · ★ INAYopendwa ZAIDI',
     headlinePrefix: 'Archival Ledgers.',
     headlineGradient: 'Built to Last.',
-    subEn: '200-page Indigo Printer exercise books and Smyth-threaded counter books engineered for schools and institutions.',
-    subSw: 'Karatasi ya 70 GSM isiyopenyeza wino kabisa kwa kalamu zote.',
-    ctaEn: 'Explore Catalogue',
-    ctaSw: 'Tazama Mkusanyiko',
-    href: '/catalog',
-    productImage: '/omega-hero-book-navy.png',
-    label: 'Exercise Book 200P',
+    subEn: '3 Quire (288 Pages) institutional benchmark counter book with reinforced crimson spine and 70 GSM archival white paper.',
+    subSw: 'Counter Book ya Quire 3 (Kurasa 288) inayotumika shuleni, vyuoni na maofisini kote Tanzania.',
+    ctaEn: 'Shop Q3 Counter Book',
+    ctaSw: 'Nunua Quire 3',
+    href: '/catalog?category=Counter+Books',
+    productImage: '/omega-hero-q3.png',
+    productWebp: '/omega-hero-q3.webp',
+    label: '3Quire · 288 Pages',
   },
   {
-    id: 'slide-4',
-    badgeEn: 'FACTORY DIRECT WHOLESALE',
-    badgeSw: 'BEI ZA KIWANDANI ZA JUMLA',
+    id: 'slide-q4',
+    quire: 'Q4',
+    pages: 384,
+    badgeEn: '4 QUIRE · 384 PAGES · HEAVYWEIGHT FOLIO',
+    badgeSw: 'QUIRE 4 · KURASA 384 · JALADA GUMU ZAIDI',
     headlinePrefix: 'Engineered for',
     headlineGradient: 'Every Page.',
-    subEn: '288-page Quire 3 and 384-page Quire 4 hardcover counter books with reinforced crimson spines and 180° lay-flat binding.',
-    subSw: 'Vitabu vya Quire 3 na Quire 4 vyenye mshono imara wa kudumu miaka mingi.',
-    ctaEn: 'Shop Counter Ledgers',
-    ctaSw: 'Nunua Counter Books',
+    subEn: '4 Quire (384 Pages) heavy-duty hardcover counter book with reinforced crimson stitched spine and 180° lay-flat binding.',
+    subSw: 'Counter Book ya Quire 4 (Kurasa 384) yenye mshono imara wa kudumu miaka mingi.',
+    ctaEn: 'Shop Q4 Counter Book',
+    ctaSw: 'Nunua Quire 4',
     href: '/catalog?category=Counter+Books',
-    productImage: '/omega-hero-book-black.png',
-    label: 'Counter Book 3Q',
+    productImage: '/omega-hero-q4.png',
+    productWebp: '/omega-hero-q4.webp',
+    label: '4Quire · 384 Pages',
+  },
+  {
+    id: 'slide-q5',
+    quire: 'Q5',
+    pages: 480,
+    badgeEn: '5 QUIRE · 480 PAGES · AUDIT & TENDER EDITION',
+    badgeSw: 'QUIRE 5 · KURASA 480 · KUMBUKUMBU KUU',
+    headlinePrefix: 'Master Volume.',
+    headlineGradient: 'Zero Ink Bleed.',
+    subEn: '5 Quire (480 Pages) extended archival ledger built for corporate accounting, hospital registries, and government tenders.',
+    subSw: 'Counter Book ya Quire 5 (Kurasa 480) maalum kwa kumbukumbu za muda mrefu za hesabu na ofisi.',
+    ctaEn: 'Shop Counter Ledgers',
+    ctaSw: 'Tazama Katalogi',
+    href: '/catalog?category=Counter+Books',
+    productImage: '/omega-hero-q5.png',
+    productWebp: '/omega-hero-q5.webp',
+    label: '5Quire · 480 Pages',
+  },
+  {
+    id: 'slide-q6',
+    quire: 'Q6',
+    pages: 576,
+    badgeEn: '6 QUIRE · 576 PAGES · MAXIMUM CAPACITY',
+    badgeSw: 'QUIRE 6 · KURASA 576 · UJAZO MKUBWA ZAIDI',
+    headlinePrefix: 'Maximum Pages.',
+    headlineGradient: 'Built to Endure.',
+    subEn: '6 Quire (576 Pages) ultra-thick Smyth-sewn master folio with extra-wide crimson spine for full-year institutional records.',
+    subSw: 'Counter Book kubwa zaidi ya Quire 6 (Kurasa 576) yenye mgongo mpana na imara.',
+    ctaEn: 'Explore Full Range',
+    ctaSw: 'Nunua Vitabu Vyote',
+    href: '/catalog?category=Counter+Books',
+    productImage: '/omega-hero-q6.png',
+    productWebp: '/omega-hero-q6.webp',
+    label: '6Quire · 576 Pages',
   },
 ];
 
@@ -221,6 +270,7 @@ const CircularMotionWaves: React.FC = () => {
 
 export const Hero: React.FC = () => {
   const { language } = useStore();
+  // Start on Q1 (96 Pages) and cycle through Q1 -> Q2 -> Q3 -> Q4 -> Q5 -> Q6
   const [currentIdx, setCurrentIdx] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -228,7 +278,7 @@ export const Hero: React.FC = () => {
     if (isPaused) return;
     const interval = setInterval(() => {
       setCurrentIdx((prev) => (prev + 1) % HERO_SLIDES.length);
-    }, 5500);
+    }, 4200);
     return () => clearInterval(interval);
   }, [isPaused]);
 
@@ -247,7 +297,7 @@ export const Hero: React.FC = () => {
       aria-label="Hero Showcase"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      className="relative w-full overflow-hidden bg-[var(--bg)] min-h-[420px] sm:min-h-[520px] lg:min-h-[600px] flex items-center border-b border-[var(--border)] transition-colors duration-200"
+      className="relative w-full overflow-hidden bg-[var(--bg)] min-h-[440px] sm:min-h-[540px] lg:min-h-[620px] flex items-center border-b border-[var(--border)] transition-colors duration-200"
     >
       {/* Clean Light Luxury Paper Canvas */}
       <div
@@ -271,12 +321,18 @@ export const Hero: React.FC = () => {
             <AnimatePresence mode="wait">
               <motion.div
                 key={slide.id}
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 className="space-y-4 sm:space-y-5"
               >
+                {/* Quire & Page Count Badge */}
+                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#D63A3A]/10 border border-[#D63A3A]/25 text-[#D63A3A] text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-widest">
+                  <span className="w-2 h-2 rounded-full bg-[#D63A3A] animate-pulse" />
+                  <span>{language === 'sw' ? slide.badgeSw : slide.badgeEn}</span>
+                </div>
+
                 {/* Headline: Serif + Gradient Sans */}
                 <h1 className="font-serif text-3xl sm:text-5xl lg:text-[56px] font-bold tracking-tight text-[var(--text)] leading-[1.12]">
                   <span>{slide.headlinePrefix}</span>
@@ -290,6 +346,35 @@ export const Hero: React.FC = () => {
                 <p className="text-xs sm:text-base text-[var(--text-muted)] max-w-lg leading-relaxed font-sans">
                   {language === 'sw' ? slide.subSw : slide.subEn}
                 </p>
+
+                {/* Interactive Quire Size Switcher Pills (Q1 to Q6) */}
+                <div className="pt-1 space-y-2">
+                  <div className="text-[10px] font-mono uppercase tracking-widest text-[var(--text-muted)]">
+                    {language === 'sw' ? 'CHAGUA UKUBWA WA KITABU (Q1 – Q6):' : 'SELECT QUIRE & PAGE THICKNESS (Q1 – Q6):'}
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    {HERO_SLIDES.map((s, idx) => {
+                      const active = idx === currentIdx;
+                      return (
+                        <button
+                          key={s.id}
+                          type="button"
+                          onClick={() => setCurrentIdx(idx)}
+                          className={`px-3 py-1.5 rounded-xl font-mono text-xs font-bold transition-all duration-200 cursor-pointer flex items-center gap-1.5 border ${
+                            active
+                              ? 'bg-[#D63A3A] text-white border-[#D63A3A] shadow-md shadow-red-600/25 scale-105'
+                              : 'bg-[var(--surface-1)] text-[var(--text)] border-[var(--border)] hover:border-[#D63A3A]/40'
+                          }`}
+                        >
+                          <span>{s.quire}</span>
+                          <span className={`text-[10px] ${active ? 'text-white/90' : 'text-[var(--text-muted)]'}`}>
+                            ({s.pages}P)
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
 
                 {/* Quick Specs Micro-Pills */}
                 <div className="flex flex-wrap items-center gap-2.5 text-[11px] font-mono text-[var(--text)]">
@@ -324,33 +409,61 @@ export const Hero: React.FC = () => {
             </AnimatePresence>
           </div>
 
-          {/* Right Column: Circular Motion Graphics Wave Ring + Transparent Cutout Book (5 cols) */}
-          <div className="lg:col-span-5 flex items-center justify-center relative">
+          {/* Right Column: Circular Motion Graphics Wave Ring + Pre-Mounted 0ms Instant 3D Books (5 cols) */}
+          <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
             <div className="relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[460px] aspect-square flex items-center justify-center">
               
               {/* Animated 3D Circular Spirograph Wave Rings Behind Book */}
               <CircularMotionWaves />
 
-              {/* Floating Transparent Cutout Book in Front */}
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={slide.id}
-                  initial={{ opacity: 0, scale: 0.88, y: 18, rotate: -2 }}
-                  animate={{ opacity: 1, scale: 1, y: [0, -8, 0], rotate: 0 }}
-                  exit={{ opacity: 0, scale: 0.92, y: -14, rotate: 2 }}
-                  transition={{
-                    opacity: { duration: 0.35 },
-                    scale: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
-                    y: { duration: 4.5, repeat: Infinity, ease: 'easeInOut' },
-                  }}
-                  whileHover={{ scale: 1.06, rotate: 1.5 }}
-                  src={slide.productImage}
-                  alt={slide.label}
-                  onClick={handleNext}
-                  className="relative z-10 max-h-[78%] max-w-[78%] object-contain drop-shadow-[0_26px_36px_rgba(0,0,0,0.34)] cursor-pointer select-none"
-                  loading="eager"
-                />
-              </AnimatePresence>
+              {/* All 6 Q1-Q6 3D Books Mounted Simultaneously for 0ms Instant Switching */}
+              {HERO_SLIDES.map((s, idx) => {
+                const isActive = idx === currentIdx;
+                return (
+                  <motion.div
+                    key={s.id}
+                    initial={false}
+                    animate={{
+                      opacity: isActive ? 1 : 0,
+                      scale: isActive ? 1 : 0.88,
+                      y: isActive ? [0, -7, 0] : 14,
+                      rotate: isActive ? 0 : -3,
+                    }}
+                    transition={{
+                      opacity: { duration: 0.22, ease: 'easeOut' },
+                      scale: { duration: 0.28, ease: [0.16, 1, 0.3, 1] },
+                      rotate: { duration: 0.28 },
+                      y: isActive
+                        ? { duration: 4.2, repeat: Infinity, ease: 'easeInOut' }
+                        : { duration: 0.2 },
+                    }}
+                    onClick={handleNext}
+                    style={{ pointerEvents: isActive ? 'auto' : 'none' }}
+                    className="absolute inset-0 z-10 flex items-center justify-center cursor-pointer select-none"
+                  >
+                    <picture className="w-full h-full flex items-center justify-center">
+                      <source srcSet={s.productWebp} type="image/webp" />
+                      <img
+                        src={s.productImage}
+                        alt={s.label}
+                        width={720}
+                        height={720}
+                        loading="eager"
+                        decoding="sync"
+                        fetchPriority={idx <= 1 ? 'high' : 'auto'}
+                        className="max-h-[82%] max-w-[82%] object-contain drop-shadow-[0_26px_36px_rgba(0,0,0,0.34)] transition-transform duration-300 hover:scale-105"
+                      />
+                    </picture>
+                  </motion.div>
+                );
+              })}
+
+              {/* Floating Live Quire & Page Thickness Pill Badge Below Book */}
+              <div className="absolute -bottom-2 z-20 px-4 py-1.5 rounded-full bg-[#111111]/90 text-white font-mono text-xs font-bold tracking-wider shadow-lg border border-white/15 flex items-center gap-2 backdrop-blur-md">
+                <span className="text-[#EF4444] font-black">{slide.quire}</span>
+                <span className="text-white/40">•</span>
+                <span>{slide.pages} Pages</span>
+              </div>
 
             </div>
           </div>
@@ -381,7 +494,7 @@ export const Hero: React.FC = () => {
         <ChevronRight className="w-5 h-5 stroke-[2]" />
       </motion.button>
 
-      {/* Pagination Indicators */}
+      {/* Pagination Indicators with Active Slide Animated Progress Fill */}
       <div
         role="tablist"
         aria-label="Hero slider pagination"
@@ -395,12 +508,22 @@ export const Hero: React.FC = () => {
               type="button"
               role="tab"
               aria-selected={isActive}
-              aria-label={`Go to slide ${idx + 1}`}
+              aria-label={`Go to ${s.quire} (${s.pages} Pages)`}
               onClick={() => setCurrentIdx(idx)}
-              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                isActive ? 'w-8 bg-[#D63A3A] shadow-xs' : 'w-2 bg-[var(--text-muted)]/30 hover:bg-[var(--text-muted)]/60'
+              className={`relative h-2 rounded-full overflow-hidden transition-all duration-300 cursor-pointer ${
+                isActive ? 'w-10 bg-[#D63A3A]/25 shadow-xs' : 'w-2 bg-[var(--text-muted)]/30 hover:bg-[var(--text-muted)]/60'
               }`}
-            />
+            >
+              {isActive && (
+                <motion.span
+                  key={`progress-${slide.id}-${isPaused}`}
+                  initial={{ width: '0%' }}
+                  animate={{ width: '100%' }}
+                  transition={{ duration: isPaused ? 0.2 : 4.2, ease: 'linear' }}
+                  className="absolute inset-y-0 left-0 bg-[#D63A3A] rounded-full"
+                />
+              )}
+            </button>
           );
         })}
       </div>
