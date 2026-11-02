@@ -2560,41 +2560,6 @@ export const AdminDashboardPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Database Master Source of Truth Live Indicator */}
-          <div className="bg-linear-to-r from-[#1c2e24] via-[#242b26] to-[#111113] text-white p-3.5 rounded-2xl border border-emerald-700/40 flex flex-wrap items-center justify-between gap-3 shadow-sm">
-            <div className="flex items-center gap-3">
-              <div className="relative flex items-center justify-center">
-                <div className="w-3 h-3 rounded-full bg-emerald-400" />
-                <div className="absolute w-5 h-5 rounded-full bg-emerald-400/30 animate-ping" />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-black tracking-wider uppercase text-emerald-300">
-                    Live Database Source of Truth
-                  </span>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-900/80 text-emerald-200 border border-emerald-600/50">
-                    MongoDB Atlas: omega_stationery.products
-                  </span>
-                </div>
-                <p className="text-[11px] text-stone-300 mt-0.5">
-                  All catalog records, pricing, and stock updates are read and written directly to your cloud database in real time.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={handleReloadCatalog}
-                disabled={isReloadingCatalog}
-                className="px-3 py-1.5 bg-emerald-700/80 hover:bg-emerald-600 text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5 transition-colors shadow-xs active:scale-95"
-                title="Fetch authoritative catalog state directly from MongoDB Atlas"
-              >
-                <RefreshCw className={`w-3.5 h-3.5 ${isReloadingCatalog ? 'animate-spin' : ''}`} />
-                <span>{isReloadingCatalog ? 'Reloading...' : 'Reload from DB'}</span>
-              </button>
-            </div>
-          </div>
 
           {/* Quick Filter Status Pills */}
           <div className="flex flex-wrap items-center gap-2">

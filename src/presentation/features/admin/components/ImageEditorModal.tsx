@@ -565,85 +565,109 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
     ctx.fillRect(0, cbY, cbX, cbH);
     ctx.fillRect(cbX + cbW, cbY, w - (cbX + cbW), cbH);
 
-    // Instagram white hairline border
-    ctx.strokeStyle = '#ffffff';
+    // Instagram/WhatsApp crisp boundary border
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.85)';
     ctx.lineWidth = 1.5;
     ctx.strokeRect(cbX, cbY, cbW, cbH);
 
-    // Rule of thirds grid lines
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
-    ctx.lineWidth = 0.8;
-    ctx.beginPath();
-    ctx.moveTo(cbX + cbW / 3, cbY);
-    ctx.lineTo(cbX + cbW / 3, cbY + cbH);
-    ctx.moveTo(cbX + (cbW * 2) / 3, cbY);
-    ctx.lineTo(cbX + (cbW * 2) / 3, cbY + cbH);
-    ctx.moveTo(cbX, cbY + cbH / 3);
-    ctx.lineTo(cbX + cbW, cbY + cbH / 3);
-    ctx.moveTo(cbX, cbY + (cbH * 2) / 3);
-    ctx.lineTo(cbX + cbW, cbY + (cbH * 2) / 3);
-    ctx.stroke();
+    // Rule of thirds grid lines (visible during drag or when guide enabled)
+    if (isDraggingCrop || showGrid) {
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.moveTo(cbX + cbW / 3, cbY);
+      ctx.lineTo(cbX + cbW / 3, cbY + cbH);
+      ctx.moveTo(cbX + (cbW * 2) / 3, cbY);
+      ctx.lineTo(cbX + (cbW * 2) / 3, cbY + cbH);
+      ctx.moveTo(cbX, cbY + cbH / 3);
+      ctx.lineTo(cbX + cbW, cbY + cbH / 3);
+      ctx.moveTo(cbX, cbY + (cbH * 2) / 3);
+      ctx.lineTo(cbX + cbW, cbY + (cbH * 2) / 3);
+      ctx.stroke();
+    }
 
-    // WhatsApp-style bold corner brackets (L-shapes)
+    // WhatsApp-style high-contrast corner brackets (L-shapes) with dark under-stroke
     const bracketLen = 22;
-    ctx.strokeStyle = '#ffffff';
-    ctx.lineWidth = 3.5;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
-    // Top-left
-    ctx.beginPath();
-    ctx.moveTo(cbX, cbY + bracketLen);
-    ctx.lineTo(cbX, cbY);
-    ctx.lineTo(cbX + bracketLen, cbY);
-    ctx.stroke();
+    const drawBracketPaths = () => {
+      // Top-left
+      ctx.beginPath();
+      ctx.moveTo(cbX, cbY + bracketLen);
+      ctx.lineTo(cbX, cbY);
+      ctx.lineTo(cbX + bracketLen, cbY);
+      ctx.stroke();
 
-    // Top-right
-    ctx.beginPath();
-    ctx.moveTo(cbX + cbW - bracketLen, cbY);
-    ctx.lineTo(cbX + cbW, cbY);
-    ctx.lineTo(cbX + cbW, cbY + bracketLen);
-    ctx.stroke();
+      // Top-right
+      ctx.beginPath();
+      ctx.moveTo(cbX + cbW - bracketLen, cbY);
+      ctx.lineTo(cbX + cbW, cbY);
+      ctx.lineTo(cbX + cbW, cbY + bracketLen);
+      ctx.stroke();
 
-    // Bottom-left
-    ctx.beginPath();
-    ctx.moveTo(cbX, cbY + cbH - bracketLen);
-    ctx.lineTo(cbX, cbY + cbH);
-    ctx.lineTo(cbX + bracketLen, cbY + cbH);
-    ctx.stroke();
+      // Bottom-left
+      ctx.beginPath();
+      ctx.moveTo(cbX, cbY + cbH - bracketLen);
+      ctx.lineTo(cbX, cbY + cbH);
+      ctx.lineTo(cbX + bracketLen, cbY + cbH);
+      ctx.stroke();
 
-    // Bottom-right
-    ctx.beginPath();
-    ctx.moveTo(cbX + cbW - bracketLen, cbY + cbH);
-    ctx.lineTo(cbX + cbW, cbY + cbH);
-    ctx.lineTo(cbX + cbW, cbY + cbH - bracketLen);
-    ctx.stroke();
+      // Bottom-right
+      ctx.beginPath();
+      ctx.moveTo(cbX + cbW - bracketLen, cbY + cbH);
+      ctx.lineTo(cbX + cbW, cbY + cbH);
+      ctx.lineTo(cbX + cbW, cbY + cbH - bracketLen);
+      ctx.stroke();
+    };
 
-    // WhatsApp-style center edge bars
+    // 1. Dark contrast halo under-stroke (visible on pure white images)
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.75)';
+    ctx.lineWidth = 6;
+    drawBracketPaths();
+
+    // 2. Crisp solid white top-stroke
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 3.5;
+    drawBracketPaths();
+
+    // WhatsApp-style center edge bars with dark under-stroke
     const edgeBarLen = 20;
-    // Top edge center
-    ctx.beginPath();
-    ctx.moveTo(cbX + cbW / 2 - edgeBarLen / 2, cbY);
-    ctx.lineTo(cbX + cbW / 2 + edgeBarLen / 2, cbY);
-    ctx.stroke();
+    const drawEdgeBarPaths = () => {
+      // Top center
+      ctx.beginPath();
+      ctx.moveTo(cbX + cbW / 2 - edgeBarLen / 2, cbY);
+      ctx.lineTo(cbX + cbW / 2 + edgeBarLen / 2, cbY);
+      ctx.stroke();
 
-    // Bottom edge center
-    ctx.beginPath();
-    ctx.moveTo(cbX + cbW / 2 - edgeBarLen / 2, cbY + cbH);
-    ctx.lineTo(cbX + cbW / 2 + edgeBarLen / 2, cbY + cbH);
-    ctx.stroke();
+      // Bottom center
+      ctx.beginPath();
+      ctx.moveTo(cbX + cbW / 2 - edgeBarLen / 2, cbY + cbH);
+      ctx.lineTo(cbX + cbW / 2 + edgeBarLen / 2, cbY + cbH);
+      ctx.stroke();
 
-    // Left edge center
-    ctx.beginPath();
-    ctx.moveTo(cbX, cbY + cbH / 2 - edgeBarLen / 2);
-    ctx.lineTo(cbX, cbY + cbH / 2 + edgeBarLen / 2);
-    ctx.stroke();
+      // Left center
+      ctx.beginPath();
+      ctx.moveTo(cbX, cbY + cbH / 2 - edgeBarLen / 2);
+      ctx.lineTo(cbX, cbY + cbH / 2 + edgeBarLen / 2);
+      ctx.stroke();
 
-    // Right edge center
-    ctx.beginPath();
-    ctx.moveTo(cbX + cbW, cbY + cbH / 2 - edgeBarLen / 2);
-    ctx.lineTo(cbX + cbW, cbY + cbH / 2 + edgeBarLen / 2);
-    ctx.stroke();
+      // Right center
+      ctx.beginPath();
+      ctx.moveTo(cbX + cbW, cbY + cbH / 2 - edgeBarLen / 2);
+      ctx.lineTo(cbX + cbW, cbY + cbH / 2 + edgeBarLen / 2);
+      ctx.stroke();
+    };
+
+    // Dark contrast halo for center bars
+    ctx.strokeStyle = 'rgba(0, 0, 0, 0.75)';
+    ctx.lineWidth = 6;
+    drawEdgeBarPaths();
+
+    // Solid white top-stroke for center bars
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 3.5;
+    drawEdgeBarPaths();
   }, [
     sourceImg,
     rotation,
@@ -1291,11 +1315,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
         <div className="h-[36vh] xs:h-[40vh] sm:h-[44vh] lg:h-auto lg:col-span-7 xl:col-span-8 p-2 xs:p-3 sm:p-5 lg:p-8 flex flex-col items-center justify-center border-b lg:border-b-0 lg:border-r border-zinc-200 relative bg-zinc-100/70 shrink-0 min-h-0 overflow-hidden">
           <div
             ref={containerRef}
-            className={`relative w-full h-full max-h-[32vh] xs:max-h-[36vh] sm:max-h-[40vh] lg:max-h-[min(72vh,680px)] aspect-square rounded-2xl overflow-hidden shadow-sm flex items-center justify-center select-none border border-zinc-200/80 bg-white ${
-              bgPreset === 'transparent'
-                ? 'bg-[linear-gradient(45deg,#e4e4e7_25%,transparent_25%),linear-gradient(-45deg,#e4e4e7_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#e4e4e7_75%),linear-gradient(-45deg,transparent_75%,#e4e4e7_75%)] bg-[size:16px_16px] bg-[position:0_0,0_8px,8px_-8px,-8px_0px] bg-white'
-                : 'bg-white'
-            }`}
+            className="relative w-full h-full max-h-[32vh] xs:max-h-[36vh] sm:max-h-[40vh] lg:max-h-[min(72vh,680px)] aspect-square rounded-2xl overflow-hidden shadow-sm flex items-center justify-center select-none border border-zinc-700/60 bg-[#141416]"
           >
             {isLoadingImage ? (
               <div className="flex flex-col items-center gap-2 text-zinc-500">
@@ -1316,27 +1336,6 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                 className="w-full h-full object-contain touch-none select-none"
               />
             )}
-
-            {/* 3x3 Rule of Thirds Guide Grid Overlay */}
-            {showGrid && !isLoadingImage && !imgLoadError && (
-              <div className="absolute inset-0 pointer-events-none grid grid-cols-3 grid-rows-3 z-5">
-                <div className="border-r border-b border-black/15" />
-                <div className="border-r border-b border-black/15" />
-                <div className="border-b border-black/15" />
-                <div className="border-r border-b border-black/15" />
-                <div className="border-r border-b border-black/15" />
-                <div className="border-b border-black/15" />
-                <div className="border-r border-b border-black/15" />
-                <div className="border-r border-b border-black/15" />
-                <div />
-              </div>
-            )}
-
-            {/* Corner Framing L-accents */}
-            <div className="absolute top-2 left-2 w-3.5 h-3.5 border-t-2 border-l-2 border-[var(--red)] pointer-events-none z-10" />
-            <div className="absolute top-2 right-2 w-3.5 h-3.5 border-t-2 border-r-2 border-[var(--red)] pointer-events-none z-10" />
-            <div className="absolute bottom-2 left-2 w-3.5 h-3.5 border-b-2 border-l-2 border-[var(--red)] pointer-events-none z-10" />
-            <div className="absolute bottom-2 right-2 w-3.5 h-3.5 border-b-2 border-r-2 border-[var(--red)] pointer-events-none z-10" />
 
             {/* Floating Live Zoom Pill */}
             <div className="absolute top-2.5 left-2.5 z-10 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full border border-zinc-200 text-[10px] font-mono font-bold text-zinc-900 shadow-xs pointer-events-none">
