@@ -2432,36 +2432,36 @@ export const AdminDashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 font-sans text-[#111113]">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 font-sans text-zinc-900">
       <SEOHead
         title="OMEGA HQ Enterprise ERP Portal | Central Management System"
         description="Comprehensive Enterprise Resource Planning (ERP) suite for OMEGA Stationery Tanzania: Direct MongoDB Atlas CRUD operations, catalog handles, CMS web content, and logistics waybills."
       />
 
       {/* Top Security & ERP Telemetry Banner */}
-      <div className="bg-[#111113] text-stone-200 border border-[#111113] rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+      <div className="bg-white text-zinc-900 border border-zinc-200/80 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#dc2626] text-white flex items-center justify-center shrink-0 shadow-sm">
-            <Lock className="w-5 h-5 text-white" />
+          <div className="w-10 h-10 rounded-xl bg-[var(--red)]/10 text-[var(--red)] border border-[var(--red)]/20 flex items-center justify-center shrink-0 shadow-2xs">
+            <Lock className="w-5 h-5 stroke-[2.2]" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-white font-bold text-xs uppercase tracking-wider">
+              <span className="text-zinc-900 font-bold text-xs uppercase tracking-wider font-mono">
                 OMEGA HQ ENTERPRISE ERP ENGINE
               </span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/10 text-[#dc2626] font-mono font-bold">
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-100 border border-zinc-200 text-[var(--red)] font-mono font-bold">
                 /omega-hq-portal-2026
               </span>
             </div>
-            <p className="text-xs text-stone-300 mt-0.5">
+            <p className="text-xs text-zinc-500 mt-0.5">
               Direct Database CRUD Operations · Live MongoDB Atlas Connection · Central Operations Desk · Mbeya
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2.5 shrink-0">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold text-emerald-400">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-xs font-semibold text-emerald-700">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span>Atlas Live (omega_stationery)</span>
           </span>
           <button
@@ -2469,7 +2469,7 @@ export const AdminDashboardPage: React.FC = () => {
             onClick={handleReloadCatalog}
             disabled={isReloadingCatalog}
             title="Reload latest catalog directly from database"
-            className="p-1.5 bg-white/10 hover:bg-white/20 rounded-lg text-stone-200 transition-colors"
+            className="p-1.5 bg-zinc-100 hover:bg-zinc-200/80 rounded-lg text-zinc-700 transition-colors cursor-pointer"
           >
             <RefreshCw className={`w-4 h-4 ${isReloadingCatalog ? 'animate-spin' : ''}`} />
           </button>
@@ -2477,73 +2477,73 @@ export const AdminDashboardPage: React.FC = () => {
       </div>
 
       {/* Header & Tabs */}
-      <div className="border-b border-stone-200 pb-6 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+      <div className="border-b border-zinc-200/80 pb-6 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
         <div>
           <div className="flex items-center gap-2.5 mb-1.5">
-            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-[#111113] text-[#dc2626]">
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-[var(--surface-2)] border border-[var(--border)] text-[var(--gold)]">
               ERP OPERATIONS
             </span>
-            <span className="text-xs text-stone-500 font-mono">v4.2 · Direct Cloud Database CRUD</span>
+            <span className="text-xs text-zinc-500 font-mono">v4.2 · Direct Cloud Database CRUD</span>
           </div>
-          <h1 className="font-heading text-3xl font-bold text-[#111113]">
+          <h1 className="font-serif text-3xl font-bold text-zinc-900 tracking-tight">
             Store Operations &amp; Database Controls
           </h1>
-          <p className="text-sm text-stone-600 mt-1">
+          <p className="text-sm text-zinc-600 mt-1 max-w-2xl leading-relaxed">
             Perform real-time CRUD operations directly on MongoDB Atlas: Catalog master records, SKU duplication, bulk price adjustments, web CMS content, and carton logistics.
           </p>
         </div>
 
-        {/* Tab Buttons */}
-        <div className="inline-flex items-center gap-1 p-1 bg-stone-100 border border-stone-200 rounded-xl self-start overflow-x-auto max-w-full shadow-2xs">
+        {/* Tab Buttons styled with shadcn Tabs */}
+        <div className="inline-flex items-center gap-1 p-1 bg-zinc-100 border border-zinc-200/80 rounded-xl self-start overflow-x-auto max-w-full shadow-2xs">
           <button
             type="button"
             onClick={() => setActiveTab('inventory')}
-            className={`px-4 py-2 text-xs font-bold rounded-lg transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
+            className={`px-4 py-2 text-xs font-bold rounded-lg transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 cursor-pointer ${
               activeTab === 'inventory'
-                ? 'bg-white text-[#111113] shadow-xs'
-                : 'text-stone-600 hover:text-black'
+                ? 'bg-white text-zinc-900 shadow-xs ring-1 ring-black/5'
+                : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200/50'
             }`}
           >
-            <Package className="w-4 h-4 text-[#dc2626]" />
+            <Package className="w-4 h-4 text-[var(--red)]" />
             <span>Product Inventory ({products.length})</span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveTab('orders')}
-            className={`px-4 py-2 text-xs font-bold rounded-lg transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
+            className={`px-4 py-2 text-xs font-bold rounded-lg transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 cursor-pointer ${
               activeTab === 'orders'
-                ? 'bg-white text-[#111113] shadow-xs'
-                : 'text-stone-600 hover:text-black'
+                ? 'bg-white text-zinc-900 shadow-xs ring-1 ring-black/5'
+                : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200/50'
             }`}
           >
-            <ShoppingBag className="w-4 h-4 text-[#dc2626]" />
+            <ShoppingBag className="w-4 h-4 text-[var(--red)]" />
             <span>Orders &amp; Logistics ({allOrdersCombined.length})</span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveTab('cms_handles')}
-            className={`px-4 py-2 text-xs font-bold rounded-lg transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
+            className={`px-4 py-2 text-xs font-bold rounded-lg transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 cursor-pointer ${
               activeTab === 'cms_handles'
-                ? 'bg-white text-[#111113] shadow-xs'
-                : 'text-stone-600 hover:text-black'
+                ? 'bg-white text-zinc-900 shadow-xs ring-1 ring-black/5'
+                : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200/50'
             }`}
           >
-            <Globe className="w-4 h-4 text-[#dc2626]" />
+            <Globe className="w-4 h-4 text-[var(--red)]" />
             <span>Web Content &amp; Handles (CMS)</span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveTab('architecture')}
-            className={`px-4 py-2 text-xs font-bold rounded-lg transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
+            className={`px-4 py-2 text-xs font-bold rounded-lg transition-all whitespace-nowrap shrink-0 flex items-center gap-1.5 cursor-pointer ${
               activeTab === 'architecture'
-                ? 'bg-white text-[#111113] shadow-xs'
-                : 'text-stone-600 hover:text-black'
+                ? 'bg-white text-zinc-900 shadow-xs ring-1 ring-black/5'
+                : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200/50'
             }`}
           >
-            <Server className="w-4 h-4 text-[#dc2626]" />
+            <Server className="w-4 h-4 text-[var(--red)]" />
             <span>Cloud &amp; Telemetry</span>
           </button>
         </div>
