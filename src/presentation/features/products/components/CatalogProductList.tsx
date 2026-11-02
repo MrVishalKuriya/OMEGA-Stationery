@@ -5,7 +5,6 @@ import {
   ChevronLeft,
   ChevronRight,
   ShoppingBag,
-  MessageCircle,
 } from 'lucide-react';
 import { Product, formatPrice } from '@/types/store';
 import { ProductCard } from '@/components/ProductCard';
@@ -75,9 +74,6 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
             const effectivePrice =
               p.discountPrice && p.discountPrice < p.price ? p.discountPrice : p.price;
             const hasDiscount = effectivePrice < p.price;
-            const directWhatsappUrl = `https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
-              `Hello OMEGA Tanzania, I would like to order: ${p.name} (SKU: ${p.sku}) - Price: ${currency} ${effectivePrice.toLocaleString()}. Please confirm availability and delivery.`
-            )}`;
 
             return (
               <div
@@ -174,15 +170,6 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                       <ShoppingBag className="w-3.5 h-3.5" />
                       <span>Add</span>
                     </button>
-                    <a
-                      href={directWhatsappUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 rounded-full bg-[#25D366] hover:bg-[#16a34a] text-white transition-colors cursor-pointer"
-                      title="Order on WhatsApp"
-                    >
-                      <MessageCircle className="w-3.5 h-3.5" />
-                    </a>
                   </div>
                 </div>
               </div>

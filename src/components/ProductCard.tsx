@@ -6,7 +6,6 @@ import {
   Check,
   Plus,
   Minus,
-  MessageCircle,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { toast } from 'sonner';
@@ -100,16 +99,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     }
   };
 
-  const handleWhatsAppOrder = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const phone = '255746268391';
-    const text = encodeURIComponent(
-      `Habari OMEGA Stationery, ningependa kuagiza:\n- ${productName}\n- Bei: TSh ${effectivePrice.toLocaleString()}\n- ID: ${product.id}`
-    );
-    window.open(`https://wa.me/${phone}?text=${text}`, '_blank', 'noopener,noreferrer');
-  };
-
   return (
     <motion.div
       whileHover={{ y: -5, transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] } }}
@@ -199,20 +188,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         {/* Action Group */}
         <div className="flex items-center gap-1.5 shrink-0">
-          
-          {/* WhatsApp Direct Action */}
-          <motion.button
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.92 }}
-            type="button"
-            onClick={handleWhatsAppOrder}
-            title="Order directly on WhatsApp"
-            aria-label="Order on WhatsApp"
-            className="w-9 h-9 rounded-full bg-[#25D366] hover:bg-[#16a34a] text-white flex items-center justify-center shadow-xs transition-colors cursor-pointer"
-          >
-            <MessageCircle size={16} strokeWidth={2} />
-          </motion.button>
-
           {/* Stepper or Filled Red Action Button */}
           {inCartQty > 0 ? (
             <div className="flex items-center gap-1 bg-[var(--surface-2)] border border-[var(--gold)]/60 rounded-xl px-1.5 py-0.5 shadow-xs">
