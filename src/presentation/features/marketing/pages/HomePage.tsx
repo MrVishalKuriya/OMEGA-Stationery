@@ -90,6 +90,9 @@ export const HomePage: React.FC = () => {
     () => [
       {
         id: 'counter-books',
+        number: '1',
+        numBadge: '01',
+        productId: 'prod-omega-cb-q3',
         badge: language === 'sw' ? 'JALADA GUMU' : 'ARCHIVAL SMYTH-SEWN',
         tag: 'QUIRE 2 - 4',
         title: language === 'sw' ? 'COUNTER BOOKS' : 'COUNTER BOOKS',
@@ -101,10 +104,10 @@ export const HomePage: React.FC = () => {
         ],
         brand: 'Brand: OMEGA',
         cta: language === 'sw' ? 'EXPLORE' : 'EXPLORE',
-        link: '/catalog?category=Counter+Books',
-        image: '/omega-products/counter-book-q2-catalog.jpeg',
+        link: '/product/prod-omega-cb-q3',
+        image: '/products/omega-hardcover-counter-book-q3-288-pages-800.webp',
         gallery: [
-          '/omega-products/counter-book-q2-catalog.jpeg',
+          '/products/omega-hardcover-counter-book-q3-288-pages-800.webp',
           '/omega-products/counter-book-q3-288p.jpeg',
           '/omega-products/counter-book-q4-catalog.jpeg',
           '/omega-products/catalog-sheet-counter-q2-q3-q4.jpeg',
@@ -124,6 +127,9 @@ export const HomePage: React.FC = () => {
       },
       {
         id: 'exercise-books',
+        number: '2',
+        numBadge: '02',
+        productId: 'prod-omega-ex-200p-purple',
         badge: language === 'sw' ? 'VIWANGO VYA DARASA' : 'CLASSROOM BENCHMARK',
         tag: '70 GSM BOND',
         title: language === 'sw' ? 'EXERCISE BOOKS' : 'EXERCISE BOOKS',
@@ -135,13 +141,13 @@ export const HomePage: React.FC = () => {
         ],
         brand: 'Brand: OMEGA',
         cta: language === 'sw' ? 'EXPLORE' : 'EXPLORE',
-        link: '/catalog?category=Exercise+Books',
-        image: '/omega-products/exercise-book-200p-sl-catalog.jpeg',
+        link: '/product/prod-omega-ex-200p-purple',
+        image: '/products/omega-student-exercise-book-200-pages-single-line-800.webp',
         gallery: [
+          '/products/omega-student-exercise-book-200-pages-single-line-800.webp',
           '/omega-products/exercise-book-200p-sl-catalog.jpeg',
           '/omega-products/exercise-book-100p-catalog.jpeg',
           '/omega-products/exercise-book-80p-catalog.jpeg',
-          '/omega-products/exercise-book-200p-purple.jpeg',
         ],
         variants: [
           { name: '200 Pages (Single Line / Double Line / Grid)', pages: '200 Pages', price: 'TSh 2,500', badge: 'POPULAR', desc: 'Secondary & College High-Volume Note Taking' },
@@ -158,6 +164,9 @@ export const HomePage: React.FC = () => {
       },
       {
         id: 'kraft-bahasha',
+        number: '3',
+        numBadge: '03',
+        productId: 'prod-omega-bahasha-a4-pack',
         badge: language === 'sw' ? 'USALAMA WA HATI' : 'PEEL & SEAL SECURITY',
         tag: 'TEAR-PROOF',
         title: language === 'sw' ? 'KRAFT BAHASHA' : 'KRAFT BAHASHA',
@@ -169,13 +178,13 @@ export const HomePage: React.FC = () => {
         ],
         brand: 'Brand: OMEGA',
         cta: language === 'sw' ? 'EXPLORE' : 'EXPLORE',
-        link: '/catalog?category=Bahasha+%26+Envelopes',
-        image: '/omega-products/bahasha-a4-catalog.png',
+        link: '/product/prod-omega-bahasha-a4-pack',
+        image: '/products/omega-heavy-kraft-bahasha-envelopes-a4-pack-of-50-800.webp',
         gallery: [
+          '/products/omega-heavy-kraft-bahasha-envelopes-a4-pack-of-50-800.webp',
           '/omega-products/bahasha-a4-catalog.png',
           '/omega-products/bahasha-a3-catalog.jpeg',
           '/omega-products/bahasha-a5-catalog.jpeg',
-          '/omega-products/bahasha-a4-box.jpeg',
         ],
         variants: [
           { name: 'A3 Heavy Kraft Bahasha', pages: 'Box of 250', price: 'TSh 35,000 / Box', desc: 'Tenders, Architectural Folios & Contracts' },
@@ -191,6 +200,9 @@ export const HomePage: React.FC = () => {
       },
       {
         id: 'registers',
+        number: '4',
+        numBadge: '04',
+        productId: 'prod-omega-visitors-reg',
         badge: language === 'sw' ? 'KUMBUKUMBU ZA OFISI' : 'OFFICE & INSTITUTION',
         tag: 'GOLD FOIL',
         title: language === 'sw' ? 'OFFICE REGISTERS' : 'OFFICE REGISTERS',
@@ -202,12 +214,12 @@ export const HomePage: React.FC = () => {
         ],
         brand: 'Brand: OMEGA',
         cta: language === 'sw' ? 'EXPLORE' : 'EXPLORE',
-        link: '/catalog?category=Registers',
-        image: '/omega-products/stiff-cover-200-catalog.jpeg',
+        link: '/product/prod-omega-visitors-reg',
+        image: '/products/omega-security-gate-visitors-register-executive-foil-800.webp',
         gallery: [
+          '/products/omega-security-gate-visitors-register-executive-foil-800.webp',
           '/omega-products/stiff-cover-200-catalog.jpeg',
           '/omega-products/catalog-sheet-stiff-cover-200.jpeg',
-          '/omega-products/catalog-sheet-jaradio-cash.jpeg',
         ],
         variants: [
           { name: 'Visitor Gate Register', pages: '200 Pages', price: 'TSh 9,500', desc: 'Security Gate, Check-In & Time Logs' },
@@ -376,7 +388,7 @@ export const HomePage: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* Collection Cards: Mobile Single-Slide Carousel + Desktop 4-Col Grid (Stitch Minimal UI/UX) */}
+          {/* Collection Cards: Mobile Single-Slide Carousel + Desktop 4-Col Grid (Borderless Minimal UI/UX) */}
           <div
             ref={collectionScrollRef}
             onScroll={handleCollectionScroll}
@@ -394,36 +406,42 @@ export const HomePage: React.FC = () => {
                   setSelectedCollection(col);
                   setSelectedGalleryImg(col.image);
                 }}
-                className="w-[86vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-white rounded-2xl border border-[#E7E5E0] hover:border-[var(--gold)]/80 transition-all duration-300 p-5 sm:p-6 flex flex-col justify-between shadow-[0_2px_10px_rgba(17,17,19,0.03)] hover:shadow-[0_12px_28px_-6px_rgba(35,27,18,0.07)] group text-left cursor-pointer"
+                className="w-[86vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-white rounded-3xl p-5 sm:p-6 flex flex-col justify-between shadow-[0_4px_24px_rgba(22,21,24,0.04)] hover:shadow-[0_16px_36px_rgba(214,58,58,0.08)] group text-left cursor-pointer transition-all duration-300 border-0"
               >
                 <div className="flex flex-col justify-between h-full">
                   <div>
-                    {/* 1. TOP MINIMAL METADATA */}
-                    <div className="flex items-center justify-between gap-2 mb-2.5">
-                      <span className="text-[10px] font-mono tracking-widest uppercase text-[var(--gold)] font-bold">
-                        {col.badge}
-                      </span>
-                      <span className="text-[9.5px] font-mono text-[#8C7355] font-semibold bg-[#FAF8F5] px-2 py-0.5 rounded border border-[#E7E5E0]">
+                    {/* 1. TOP METADATA WITH NUMBERS 1, 2, 3, 4 */}
+                    <div className="flex items-center justify-between gap-2 mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="w-7 h-7 rounded-lg bg-[var(--surface-2)] text-[var(--gold)] font-mono font-black text-xs flex items-center justify-center shadow-2xs">
+                          0{idx + 1}
+                        </span>
+                        <span className="text-[10.5px] font-mono tracking-widest uppercase text-[var(--gold)] font-bold">
+                          {col.badge}
+                        </span>
+                      </div>
+                      <span className="text-[10px] font-mono text-[#8C7355] font-semibold bg-[#FAF8F5] px-2.5 py-1 rounded-md">
                         {col.tag}
                       </span>
                     </div>
 
-                    {/* 2. BOOK TITLE AT TOP (Clean Bodoni/Serif) */}
+                    {/* 2. BOOK TITLE WITH NUMBER (Clean Bodoni/Serif) */}
                     <div className="mb-3">
                       <h3 className="font-serif text-lg sm:text-xl font-bold tracking-tight text-[#161311] group-hover:text-[var(--red)] transition-colors leading-tight">
+                        <span className="text-[var(--gold)] font-mono font-black mr-1.5">{idx + 1}.</span>
                         {col.title}
                       </h3>
-                      <p className="text-xs text-[#6E6B66] font-sans mt-0.5 line-clamp-1">
+                      <p className="text-xs text-[#6E6B66] font-sans mt-1 line-clamp-1">
                         {col.subtitle}
                       </p>
                     </div>
 
-                    {/* 3. PRODUCT IMAGE (Seamless Multiply Blend - No White Box) */}
-                    <div className="w-full aspect-[4/3] rounded-xl bg-[#FAF8F5] border border-[#E7E5E0] overflow-hidden flex items-center justify-center p-3.5 my-3 relative group-hover:border-[var(--gold)]/40 transition-colors">
+                    {/* 3. PRODUCT IMAGE SAHI SE PROPER (No Border, High-Res WebP, Perfectly Scaled) */}
+                    <div className="w-full aspect-[4/3] rounded-2xl bg-[#FAF8F5] overflow-hidden flex items-center justify-center p-3 my-3 relative border-0">
                       <img
                         src={col.image}
                         alt={col.title}
-                        className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-106"
+                        className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-108 filter drop-shadow-sm"
                         loading="lazy"
                       />
                     </div>
@@ -439,20 +457,16 @@ export const HomePage: React.FC = () => {
                     </ul>
                   </div>
 
-                  {/* 5. MINIMAL EXPLORE ACTION & BRAND HALLMARK */}
-                  <div className="pt-3 border-t border-[#E7E5E0] flex items-center justify-between gap-2 mt-auto">
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedCollection(col);
-                        setSelectedGalleryImg(col.image);
-                      }}
-                      className="inline-flex items-center gap-2 px-4.5 py-2 rounded-lg bg-[#111113] hover:bg-[#D63A3A] active:scale-95 text-white font-mono text-xs font-bold tracking-wider uppercase transition-all duration-200 shadow-2xs hover:shadow-xs cursor-pointer group/btn"
+                  {/* 5. EXPLORE BUTTON: OPENS PARTICULAR PRODUCT SINGLE PAGE DIRECTLY */}
+                  <div className="pt-3 flex items-center justify-between gap-2 mt-auto">
+                    <Link
+                      to={col.link}
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#111113] hover:bg-[#D63A3A] active:scale-95 text-white font-mono text-xs font-bold tracking-wider uppercase transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer group/btn"
                     >
                       <span>{col.cta}</span>
                       <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
-                    </button>
+                    </Link>
                     
                     <span className="text-[11px] font-mono text-[#6E6B66]">
                       {col.brand}
@@ -638,7 +652,7 @@ export const HomePage: React.FC = () => {
                   onClick={() => setSelectedCollection(null)}
                   className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-[#D63A3A] hover:bg-[#b91c1c] text-white text-xs sm:text-sm font-bold tracking-wide transition-all shadow-md cursor-pointer"
                 >
-                  <span>Explore In Full Catalog</span>
+                  <span>View Product Details & Order</span>
                   <ArrowRight size={16} />
                 </Link>
                 <div className="flex items-center justify-between text-[11px] text-[var(--text-muted)] font-mono px-1">
