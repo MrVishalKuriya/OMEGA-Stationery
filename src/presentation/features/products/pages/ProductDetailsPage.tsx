@@ -36,8 +36,13 @@ import { ProductCard } from '@/components/ProductCard';
 import { ProductImage, getProductImageSrc } from '@/components/ProductImage';
 import { SEOHead } from '@/components/SEOHead';
 import { TRANSLATIONS } from '@/data/translations';
-import { Product } from '@/types/store';
+import { Product, formatPrice } from '@/types/store';
 import { fetchSingleProductFromDb } from '@/services/api';
+import {
+  getProductFamilyOptions,
+  applyOptionToProduct,
+  ResolvedProductOption,
+} from '@/utils/productVariants';
 
 export const ProductDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -47,9 +52,29 @@ export const ProductDetailsPage: React.FC = () => {
 
   const [dbProduct, setDbProduct] = useState<Product | null>(null);
   const [isLoadingDirect, setIsLoadingDirect] = useState<boolean>(false);
+  const [selectedInlineVariantId, setSelectedInlineVariantId] = useState<string | null>(null);
 
   const productFromStore = products.find((p) => p.id === id);
-  const product = dbProduct || productFromStore;
+  const baseProduct = dbProduct || productFromStore;
+
+  const familyOptions = useMemo(() => {
+    if (!baseProduct) return [];
+    return getProductFamilyOptions(baseProduct, products);
+  }, [baseProduct, products]);
+
+  const activeOption = useMemo<ResolvedProductOption | null>(() => {
+    if (!baseProduct || familyOptions.length === 0) return null;
+    if (selectedInlineVariantId) {
+      const found = familyOptions.find((o) => o.id === selectedInlineVariantId);
+      if (found) return found;
+    }
+    return familyOptions.find((o) => o.id === baseProduct.id) || familyOptions[0];
+  }, [baseProduct, familyOptions, selectedInlineVariantId]);
+
+  const product = useMemo(() => {
+    if (!baseProduct) return undefined;
+    return activeOption ? applyOptionToProduct(baseProduct, activeOption) : baseProduct;
+  }, [baseProduct, activeOption]);
 
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedImageIdx, setSelectedImageIdx] = useState<number>(0);
@@ -101,14 +126,29 @@ export const ProductDetailsPage: React.FC = () => {
   };
 
   useEffect(() => {
+    setDbProduct(null);
     setQuantity(1);
     setSelectedImageIdx(0);
     setImgError(false);
     setIsLightboxOpen(false);
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (productFromStore?.variants && productFromStore.variants.length > 0) {
+      setSelectedInlineVariantId(productFromStore.variants[0].id);
+    } else {
+      setSelectedInlineVariantId(null);
     }
   }, [id]);
+
+  const handleSelectVariantOption = (opt: ResolvedProductOption) => {
+    setImgError(false);
+    setSelectedImageIdx(0);
+    if (opt.targetProduct) {
+      setSelectedInlineVariantId(null);
+      setDbProduct(null);
+      navigate(`/product/${opt.targetProduct.id}`, { replace: true });
+    } else {
+      setSelectedInlineVariantId(opt.id);
+    }
+  };
 
   // Fetch directly from MongoDB for live prices/stock
   useEffect(() => {
@@ -334,8 +374,8 @@ export const ProductDetailsPage: React.FC = () => {
 
               <div className="absolute top-4 right-4 z-10 flex flex-col gap-1.5 items-end">
                 {hasDiscount && (
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-[#D63A3A] text-white text-xs font-mono font-bold shadow-2xs">
-                    {Math.round(((product.price - effectivePrice) / product.price) * 100)}% OFF
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#F4F1EA] text-[#7A6852] text-[10px] font-sans font-bold uppercase tracking-wider">
+                    -{Math.round(((product.price - effectivePrice) / product.price) * 100)}%
                   </span>
                 )}
                 <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 text-[10px] font-mono font-bold border border-zinc-200/80">
@@ -586,6 +626,66 @@ export const ProductDetailsPage: React.FC = () => {
                 </div>
               </div>
             </div>
+
+            {/* Unified Category / Variant Switcher (Compact, Icon-First, Minimal Text) */}
+            {familyOptions.length > 1 && (
+              <div className="p-3 rounded-xl border border-zinc-200/90 bg-white shadow-2xs space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-800 flex items-center gap-1.5">
+                    <Layers className="w-3.5 h-3.5 text-[#D63A3A]" />
+                    {language === 'sw' ? 'Chagua Toleo' : 'Edition'}
+                  </span>
+                  <span className="text-[10px] font-mono text-zinc-400">
+                    {familyOptions.length}
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  {familyOptions.map((opt) => {
+                    const isSelected = activeOption?.id === opt.id;
+                    const optEffectivePrice =
+                      opt.discountPrice && opt.discountPrice > 0 && opt.discountPrice < opt.price
+                        ? opt.discountPrice
+                        : opt.price;
+                    return (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => handleSelectVariantOption(opt)}
+                        className={`px-3 py-1.5 rounded-lg border transition-all cursor-pointer inline-flex items-center gap-2 ${
+                          isSelected
+                            ? 'bg-zinc-900 text-white border-zinc-900 shadow-2xs'
+                            : 'bg-zinc-50 text-zinc-900 border-zinc-200/80 hover:border-zinc-900 hover:bg-white'
+                        }`}
+                      >
+                        <BookOpen
+                          className={`w-3 h-3 ${
+                            isSelected ? 'text-[#f87171]' : 'text-[#D63A3A]'
+                          }`}
+                        />
+                        <span className="text-xs font-mono font-extrabold">
+                          {opt.shortLabel}
+                        </span>
+                        <span
+                          className={`text-[10.5px] font-mono ${
+                            isSelected ? 'text-zinc-300' : 'text-zinc-500'
+                          }`}
+                        >
+                          {opt.subLabel}
+                        </span>
+                        <span
+                          className={`text-xs font-mono font-black ${
+                            isSelected ? 'text-[#f87171]' : 'text-[#D63A3A]'
+                          }`}
+                        >
+                          {formatPrice(optEffectivePrice, currency)}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Price Box with Wholesale Tier Indicator - shadcn Card */}
             <div className="p-5 rounded-2xl border border-zinc-200/80 bg-white shadow-xs space-y-4">
@@ -955,30 +1055,28 @@ export const ProductDetailsPage: React.FC = () => {
                               </td>
                             </tr>
                           )}
-                          {product.specifications.map((spec) => (
-                            <tr key={spec.label} className="bg-white">
-                              <th className="py-2.5 px-3.5 font-mono font-semibold text-zinc-500 bg-zinc-50/80">
-                                {spec.label}
-                              </th>
-                              <td className="py-2.5 px-3.5 font-medium text-zinc-900">
-                                {spec.value}
-                              </td>
-                            </tr>
-                          ))}
+                          {product.specifications
+                            .filter(
+                              (spec) =>
+                                !spec.label.toLowerCase().includes('price list') &&
+                                !spec.value.toLowerCase().includes('pl00001')
+                            )
+                            .map((spec) => (
+                              <tr key={spec.label} className="bg-white">
+                                <th className="py-2.5 px-3.5 font-mono font-semibold text-zinc-500 bg-zinc-50/80">
+                                  {spec.label}
+                                </th>
+                                <td className="py-2.5 px-3.5 font-medium text-zinc-900">
+                                  {spec.value}
+                                </td>
+                              </tr>
+                            ))}
                           <tr className="bg-white">
                             <th className="py-2.5 px-3.5 font-mono font-semibold text-zinc-500 bg-zinc-50/80">
                               Manufacturer &amp; Factory
                             </th>
                             <td className="py-2.5 px-3.5 text-zinc-700">
                               Indigo Printed Limited · Plot 30, Block F Kilwa Rd, Mkuranga
-                            </td>
-                          </tr>
-                          <tr className="bg-white">
-                            <th className="py-2.5 px-3.5 font-mono font-semibold text-zinc-500 bg-zinc-50/80">
-                              Price List Reference
-                            </th>
-                            <td className="py-2.5 px-3.5 font-mono text-[#8C7355] font-bold">
-                              PL00001 (Official Factory Benchmark)
                             </td>
                           </tr>
                         </tbody>

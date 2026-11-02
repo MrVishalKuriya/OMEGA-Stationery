@@ -51,11 +51,29 @@ export interface ProductImageMeta {
   alt: string;
 }
 
+export interface ProductVariantOption {
+  id: string;
+  label: string;
+  quire?: string;
+  pageCount?: string;
+  size?: string;
+  price: number;
+  discountPrice?: number;
+  wholesalePrice: number;
+  packaging?: string;
+  sku?: string;
+  image?: string;
+  description?: string;
+  stockStatus?: StockStatus;
+}
+
 export interface Product {
   id: string;
   name: string;
   nameSw?: string;
   category: ProductCategory;
+  variantGroup?: string; // Shared family/group ID so sibling products (e.g. Q2, Q3, Q4) appear under one product view
+  variants?: ProductVariantOption[]; // Optional multi-variant pricing & details defined at upload time
   image: string | ProductImageMeta;
   gallery?: string[];
   description: string;

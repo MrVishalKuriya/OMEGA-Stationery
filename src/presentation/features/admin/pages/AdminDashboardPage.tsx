@@ -58,11 +58,17 @@ import { ImageEditorModal } from '@/components/admin/ImageEditorModal';
 import { useStore } from '@/context/StoreContext';
 import {
   Product,
+  ProductVariantOption,
   PRODUCT_CATEGORIES,
   ProductCategory,
   StockStatus,
   formatPrice,
 } from '@/types/store';
+import {
+  VARIANT_GROUP_PRESETS,
+  getPresetVariantsForCategory,
+  getProductFamilyOptions,
+} from '@/utils/productVariants';
 import { IMAGES, INITIAL_STORE_CONFIG } from '@/data/products';
 import { SEOHead } from '@/components/SEOHead';
 import { getProductImageSrc } from '@/components/ProductImage';
@@ -183,6 +189,9 @@ export const AdminDashboardPage: React.FC = () => {
   const [productForm, setProductForm] = useState({
     name: '',
     category: 'Counter Books' as ProductCategory,
+    customCategory: '',
+    variantGroup: 'OMEGA Counter Books (Q2, Q3, Q4)',
+    variants: [] as ProductVariantOption[],
     sku: '',
     barcode: '',
     price: '56000',
@@ -877,6 +886,9 @@ export const AdminDashboardPage: React.FC = () => {
     setProductForm({
       name: '',
       category: 'Counter Books',
+      customCategory: '',
+      variantGroup: 'OMEGA Counter Books (Q2, Q3, Q4)',
+      variants: [],
       sku: autoSku,
       barcode: autoBarcode,
       price: '56000',
@@ -919,6 +931,9 @@ export const AdminDashboardPage: React.FC = () => {
     setProductForm({
       name: product.name,
       category: product.category,
+      customCategory: '',
+      variantGroup: product.variantGroup || product.category || '',
+      variants: product.variants ? [...product.variants] : [],
       sku: product.sku,
       barcode: product.barcode || generateEan13Barcode(),
       price: String(product.price),
@@ -961,6 +976,9 @@ export const AdminDashboardPage: React.FC = () => {
     setProductForm({
       name: `${product.name} (Variant)`,
       category: product.category,
+      customCategory: '',
+      variantGroup: product.variantGroup || product.category || '',
+      variants: product.variants ? [...product.variants] : [],
       sku: autoSku,
       barcode: autoBarcode,
       price: String(product.price),
@@ -996,6 +1014,20 @@ export const AdminDashboardPage: React.FC = () => {
     e.preventDefault();
     if (isSavingProduct) return;
 
+    const finalCategory = (productForm.customCategory?.trim() || productForm.category) as ProductCategory;
+    const finalVariantGroup = productForm.variantGroup?.trim() || finalCategory;
+    const sanitizedVariants: ProductVariantOption[] = (productForm.variants || [])
+      .filter((v) => v.label.trim().length > 0)
+      .map((v) => ({
+        ...v,
+        label: v.label.trim(),
+        price: Math.max(1, Math.round(Number(v.price) || Number(productForm.price) || 1)),
+        wholesalePrice: Math.max(
+          1,
+          Math.round(Number(v.wholesalePrice) || Number(v.price) || Number(productForm.wholesalePrice) || 1)
+        ),
+      }));
+
     const priceNum = Math.round(Number(productForm.price));
     const discountNum = productForm.discountPrice.trim()
       ? Math.round(Number(productForm.discountPrice))
@@ -1013,7 +1045,7 @@ export const AdminDashboardPage: React.FC = () => {
     // Strict Zod Form Validation
     const validationResult = productFormSchema.safeParse({
       name: productForm.name.trim(),
-      category: productForm.category,
+      category: finalCategory,
       sku: productForm.sku.trim().toUpperCase(),
       barcode: productForm.barcode.trim(),
       price: priceNum,
@@ -1063,6 +1095,8 @@ export const AdminDashboardPage: React.FC = () => {
             ...existing,
             name: validated.name,
             category: validated.category as any,
+            variantGroup: finalVariantGroup,
+            variants: sanitizedVariants.length > 0 ? sanitizedVariants : undefined,
             sku: validated.sku,
             barcode: validated.barcode,
             price: validated.price,
@@ -1092,6 +1126,8 @@ export const AdminDashboardPage: React.FC = () => {
         const createdObj = addProduct({
           name: validated.name,
           category: validated.category as any,
+          variantGroup: finalVariantGroup,
+          variants: sanitizedVariants.length > 0 ? sanitizedVariants : undefined,
           sku: validated.sku,
           barcode: validated.barcode,
           price: validated.price,
@@ -1590,17 +1626,43 @@ export const AdminDashboardPage: React.FC = () => {
                     </label>
                     <select
                       value={productForm.category}
-                      onChange={(e) =>
-                        setProductForm({ ...productForm, category: e.target.value as ProductCategory })
-                      }
+                      onChange={(e) => {
+                        const nextCat = e.target.value as ProductCategory;
+                        const matchingPreset = VARIANT_GROUP_PRESETS.find(
+                          (g) => g.category.toLowerCase() === nextCat.toLowerCase()
+                        );
+                        setProductForm({
+                          ...productForm,
+                          category: nextCat,
+                          variantGroup: matchingPreset ? matchingPreset.id : nextCat,
+                        });
+                      }}
                       className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs bg-stone-50 focus:outline-none focus:border-[#111113]"
                     >
-                      {PRODUCT_CATEGORIES.map((cat) => (
+                      {Array.from(
+                        new Set([
+                          ...PRODUCT_CATEGORIES,
+                          ...products.map((p) => p.category).filter(Boolean),
+                        ])
+                      ).map((cat) => (
                         <option key={cat} value={cat}>
                           {cat}
                         </option>
                       ))}
                     </select>
+                    <input
+                      type="text"
+                      value={productForm.customCategory}
+                      onChange={(e) =>
+                        setProductForm({
+                          ...productForm,
+                          customCategory: e.target.value,
+                          variantGroup: e.target.value.trim() || productForm.variantGroup,
+                        })
+                      }
+                      placeholder="+ Or type a new custom category name..."
+                      className="w-full mt-1.5 px-3 py-1.5 border border-dashed border-stone-300 rounded-lg text-[11px] bg-white focus:outline-none focus:border-[#dc2626]"
+                    />
                   </div>
 
                   <div className="space-y-1">
@@ -1614,7 +1676,7 @@ export const AdminDashboardPage: React.FC = () => {
                           setProductForm({
                             ...productForm,
                             sku: generateSkuCode(
-                              productForm.category,
+                              productForm.customCategory || productForm.category,
                               productForm.quire,
                               productForm.pageCount
                             ),
@@ -1632,6 +1694,86 @@ export const AdminDashboardPage: React.FC = () => {
                       onChange={(e) => setProductForm({ ...productForm, sku: e.target.value })}
                       className="w-full px-3.5 py-2.5 border border-stone-200 rounded-xl text-xs font-mono bg-stone-50 focus:outline-none focus:border-[#111113]"
                     />
+                  </div>
+                </div>
+
+                {/* Unified Category / Variant Group Linking (Same-Category Switcher Manager) */}
+                <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200 space-y-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                      <label className="text-xs font-extrabold text-[#111113] uppercase tracking-wider flex items-center gap-1.5">
+                        <Layers className="w-3.5 h-3.5 text-[#dc2626]" />
+                        <span>Unified Category / Variant Family Group (e.g. Q2, Q3, Q4)</span>
+                      </label>
+                      <p className="text-[11px] text-stone-500 mt-0.5">
+                        Products sharing the same Category / Variant Group automatically appear together when any book is opened, letting customers switch between Q2, Q3, Q4 (with their own price &amp; details) inside one view.
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {VARIANT_GROUP_PRESETS.slice(0, 3).map((preset) => (
+                        <button
+                          key={preset.id}
+                          type="button"
+                          onClick={() =>
+                            setProductForm({
+                              ...productForm,
+                              category: preset.category as ProductCategory,
+                              variantGroup: preset.id,
+                            })
+                          }
+                          className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold border transition-all cursor-pointer ${
+                            productForm.variantGroup === preset.id
+                              ? 'bg-[#111113] text-white border-[#111113]'
+                              : 'bg-white text-stone-700 border-stone-200 hover:border-[#111113]'
+                          }`}
+                        >
+                          {preset.label.replace('OMEGA ', '')}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <span className="text-[10px] font-mono uppercase text-stone-500 font-bold block mb-1">
+                        Variant Family Group Name
+                      </span>
+                      <input
+                        type="text"
+                        value={productForm.variantGroup}
+                        onChange={(e) =>
+                          setProductForm({ ...productForm, variantGroup: e.target.value })
+                        }
+                        placeholder="e.g. OMEGA Counter Books (Q2, Q3, Q4)"
+                        className="w-full px-3 py-2 border border-stone-200 rounded-xl text-xs bg-white focus:outline-none focus:border-[#111113]"
+                      />
+                    </div>
+                    <div className="flex flex-col justify-end">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const presets = getPresetVariantsForCategory(
+                            productForm.customCategory || productForm.category
+                          );
+                          setProductForm({
+                            ...productForm,
+                            variants: presets,
+                          });
+                          setModalActiveTab('pricing');
+                          showToast(
+                            `Loaded ${presets.length} category variants (${presets
+                              .map((p) => p.label)
+                              .join(', ')}) for price & details editing!`
+                          );
+                        }}
+                        className="px-3.5 py-2 rounded-xl bg-[#111113] hover:bg-[#dc2626] text-white text-xs font-bold transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer"
+                      >
+                        <Sparkles className="w-3.5 h-3.5" />
+                        <span>
+                          Configure Multi-Variant Prices &amp; Details (Q2 / Q3 / Q4) →
+                        </span>
+                      </button>
+                    </div>
                   </div>
                 </div>
 
@@ -1695,7 +1837,7 @@ export const AdminDashboardPage: React.FC = () => {
 
             {/* SECTION 2: Pricing, Margins & Wholesale Tiers */}
             {modalActiveTab === 'pricing' && (
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="space-y-1">
                     <label className="block text-xs font-bold text-[#111113] uppercase tracking-wider">
@@ -1789,6 +1931,225 @@ export const AdminDashboardPage: React.FC = () => {
                       </span>
                     </div>
                   </div>
+                </div>
+
+                {/* ============================================================== */}
+                {/* MULTI-VARIANT / CATEGORY OPTIONS PRICE & DETAILS BUILDER (Q2, Q3, Q4) */}
+                {/* ============================================================== */}
+                <div className="p-4 sm:p-5 rounded-2xl border-2 border-[#111113]/15 bg-[#fafaf9] space-y-4">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="px-2 py-0.5 rounded bg-[#dc2626] text-white text-[10px] font-mono font-extrabold uppercase">
+                          Multi-Variant Pricing
+                        </span>
+                        <h3 className="text-xs sm:text-sm font-extrabold text-[#111113] uppercase tracking-wider">
+                          Category Variants &amp; Edition Switcher (e.g. Q2, Q3, Q4)
+                        </h3>
+                      </div>
+                      <p className="text-[11px] text-stone-600 mt-1">
+                        Define multiple options (like Q2, Q3, Q4 or different page counts/sizes) under this product so when a customer opens the book, they can switch editions and see the exact Price, Wholesale Rate, Page Count &amp; Packaging for each option.
+                      </p>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const presets = getPresetVariantsForCategory('Counter Books');
+                          setProductForm({ ...productForm, variants: presets });
+                        }}
+                        className="px-2.5 py-1.5 rounded-xl bg-white border border-stone-300 hover:border-[#111113] text-[11px] font-mono font-bold text-[#111113] transition-all cursor-pointer"
+                      >
+                        ⚡ Load Q2, Q3, Q4 Preset
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const presets = getPresetVariantsForCategory(
+                            productForm.customCategory || productForm.category
+                          );
+                          setProductForm({ ...productForm, variants: presets });
+                        }}
+                        className="px-2.5 py-1.5 rounded-xl bg-white border border-stone-300 hover:border-[#111113] text-[11px] font-mono font-bold text-stone-700 transition-all cursor-pointer"
+                      >
+                        ⚡ Auto-Fill {productForm.category}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const nextIdx = (productForm.variants?.length || 0) + 2;
+                          const newVar: ProductVariantOption = {
+                            id: `var-${Date.now()}`,
+                            label: `Q${nextIdx} · ${nextIdx * 96} Pages`,
+                            quire: `Q${nextIdx}`,
+                            pageCount: `${nextIdx * 96} Pages`,
+                            price: Number(productForm.price) || 56000,
+                            wholesalePrice: Number(productForm.wholesalePrice) || 38000,
+                            packaging: productForm.packaging || '36 Pcs / Box',
+                            sku: `${productForm.sku || 'OMG-CB'}-Q${nextIdx}`,
+                            image: productForm.image,
+                            stockStatus: 'In Stock',
+                          };
+                          setProductForm({
+                            ...productForm,
+                            variants: [...(productForm.variants || []), newVar],
+                          });
+                        }}
+                        className="px-3 py-1.5 rounded-xl bg-[#111113] hover:bg-[#dc2626] text-white text-[11px] font-mono font-bold transition-all inline-flex items-center gap-1 cursor-pointer"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Add Option</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {productForm.variants && productForm.variants.length > 0 ? (
+                    <div className="space-y-2.5">
+                      {productForm.variants.map((v, idx) => (
+                        <div
+                          key={v.id || idx}
+                          className="p-3 rounded-xl bg-white border border-stone-200 shadow-2xs grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end"
+                        >
+                          <div className="sm:col-span-2">
+                            <label className="block text-[10px] font-mono font-bold uppercase text-stone-500 mb-1">
+                              Option Badge *
+                            </label>
+                            <input
+                              type="text"
+                              value={v.label}
+                              onChange={(e) => {
+                                const next = [...productForm.variants];
+                                next[idx] = { ...next[idx], label: e.target.value };
+                                setProductForm({ ...productForm, variants: next });
+                              }}
+                              placeholder="e.g. Q2 · 192 Pages"
+                              className="w-full px-2.5 py-1.5 border border-stone-200 rounded-lg text-xs font-bold bg-stone-50"
+                            />
+                          </div>
+
+                          <div className="sm:col-span-2">
+                            <label className="block text-[10px] font-mono font-bold uppercase text-stone-500 mb-1">
+                              Quire / Size
+                            </label>
+                            <input
+                              type="text"
+                              value={v.quire || v.size || ''}
+                              onChange={(e) => {
+                                const next = [...productForm.variants];
+                                next[idx] = { ...next[idx], quire: e.target.value };
+                                setProductForm({ ...productForm, variants: next });
+                              }}
+                              placeholder="Q2 / Q3 / Q4"
+                              className="w-full px-2.5 py-1.5 border border-stone-200 rounded-lg text-xs font-mono bg-stone-50"
+                            />
+                          </div>
+
+                          <div className="sm:col-span-2">
+                            <label className="block text-[10px] font-mono font-bold uppercase text-stone-500 mb-1">
+                              Page Count
+                            </label>
+                            <input
+                              type="text"
+                              value={v.pageCount || ''}
+                              onChange={(e) => {
+                                const next = [...productForm.variants];
+                                next[idx] = { ...next[idx], pageCount: e.target.value };
+                                setProductForm({ ...productForm, variants: next });
+                              }}
+                              placeholder="192 Pages"
+                              className="w-full px-2.5 py-1.5 border border-stone-200 rounded-lg text-xs bg-stone-50"
+                            />
+                          </div>
+
+                          <div className="sm:col-span-2">
+                            <label className="block text-[10px] font-mono font-bold uppercase text-[#dc2626] mb-1">
+                              Retail Price (TSh)
+                            </label>
+                            <input
+                              type="number"
+                              min={1}
+                              value={v.price}
+                              onChange={(e) => {
+                                const next = [...productForm.variants];
+                                next[idx] = { ...next[idx], price: Number(e.target.value) || 0 };
+                                setProductForm({ ...productForm, variants: next });
+                              }}
+                              className="w-full px-2.5 py-1.5 border border-stone-200 rounded-lg text-xs font-mono font-bold bg-stone-50"
+                            />
+                          </div>
+
+                          <div className="sm:col-span-2">
+                            <label className="block text-[10px] font-mono font-bold uppercase text-emerald-700 mb-1">
+                              Wholesale (TSh)
+                            </label>
+                            <input
+                              type="number"
+                              min={1}
+                              value={v.wholesalePrice}
+                              onChange={(e) => {
+                                const next = [...productForm.variants];
+                                next[idx] = {
+                                  ...next[idx],
+                                  wholesalePrice: Number(e.target.value) || 0,
+                                };
+                                setProductForm({ ...productForm, variants: next });
+                              }}
+                              className="w-full px-2.5 py-1.5 border border-stone-200 rounded-lg text-xs font-mono font-bold text-emerald-800 bg-stone-50"
+                            />
+                          </div>
+
+                          <div className="sm:col-span-2 flex items-center gap-1.5">
+                            <div className="flex-1 min-w-0">
+                              <label className="block text-[10px] font-mono font-bold uppercase text-stone-500 mb-1">
+                                Box Pack
+                              </label>
+                              <input
+                                type="text"
+                                value={v.packaging || ''}
+                                onChange={(e) => {
+                                  const next = [...productForm.variants];
+                                  next[idx] = { ...next[idx], packaging: e.target.value };
+                                  setProductForm({ ...productForm, variants: next });
+                                }}
+                                placeholder="36 Pcs / Box"
+                                className="w-full px-2 py-1.5 border border-stone-200 rounded-lg text-[11px] bg-stone-50"
+                              />
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const next = productForm.variants.filter((_, i) => i !== idx);
+                                setProductForm({ ...productForm, variants: next });
+                              }}
+                              title="Remove variant option"
+                              className="p-2 rounded-lg text-stone-400 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer shrink-0"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="p-3.5 rounded-xl bg-white border border-dashed border-stone-300 text-xs text-stone-600 flex flex-wrap items-center justify-between gap-2">
+                      <span>
+                        No inline variants added yet — this product will automatically group with other products in the <strong>{productForm.variantGroup || productForm.category}</strong> category (e.g. Q2, Q3, Q4).
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const presets = getPresetVariantsForCategory(
+                            productForm.customCategory || productForm.category
+                          );
+                          setProductForm({ ...productForm, variants: presets });
+                        }}
+                        className="text-[#dc2626] font-mono font-bold hover:underline cursor-pointer"
+                      >
+                        + Add Inline Q2 / Q3 / Q4 Variants Now
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

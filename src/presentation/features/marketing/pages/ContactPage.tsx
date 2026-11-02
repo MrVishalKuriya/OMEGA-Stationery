@@ -78,23 +78,23 @@ export const ContactPage: React.FC = () => {
     },
     {
       id: 'desk-branch-mbeya',
-      title: language === 'sw' ? 'Tawi la Mbeya: Kiwanda cha Soweto SIDO' : 'Mbeya Branch: Soweto SIDO Factory Depot',
+      title: language === 'sw' ? 'GUPTA ALOK: Mbeya Branch Manager' : 'GUPTA ALOK: Mbeya Branch Manager',
       phone: '+255 746 268 391',
       numberDigits: '255746268391',
-      tag: 'Mbeya Branch',
+      tag: 'Mbeya Branch Manager',
       desc: language === 'sw'
-        ? 'Ofisi ya kiwandani Soweto SIDO Viwandani Mbeya. Mauzo ya rejareja, stoo kuu, na vifurushi vya mabasi mikoani.'
-        : 'Main production facility depot in Soweto SIDO Viwandani, Mbeya. Retail walk-ins, stock checks, and regional bus dispatch.',
+        ? 'Meneja wa Tawi la Mbeya (Soweto SIDO Viwandani). Mauzo ya rejareja, stoo kuu, na vifurushi vya mabasi mikoani.'
+        : 'Mbeya Branch Manager at Soweto SIDO Viwandani. Retail walk-ins, stock checks, and regional bus dispatch.',
     },
     {
       id: 'desk-branch-mwanza',
-      title: language === 'sw' ? 'Tawi la Mwanza: Usambazaji Kanda ya Ziwa' : 'Mwanza Branch: Lake Zone Regional Desk',
+      title: language === 'sw' ? 'GUPTA VIVEK: Mwanza Branch Manager' : 'GUPTA VIVEK: Mwanza Branch Manager',
       phone: '+255 699 032 777',
       numberDigits: '255699032777',
-      tag: 'Mwanza Branch',
+      tag: 'Mwanza Branch Manager',
       desc: language === 'sw'
-        ? 'Tawi letu la Mwanza linalohudumia mikoa ya Ziwa (Mwanza, Geita, Mara, Kagera, Simiyu, Shinyanga).'
-        : 'Dedicated regional branch hub for Lake Zone fulfillment across Mwanza, Geita, Mara, Kagera, and Shinyanga.',
+        ? 'Meneja wa Tawi la Mwanza anayehudumia mikoa ya Ziwa (Mwanza, Geita, Mara, Kagera, Simiyu, Shinyanga).'
+        : 'Mwanza Branch Manager for Lake Zone fulfillment across Mwanza, Geita, Mara, Kagera, and Shinyanga.',
     },
   ];
 
@@ -167,7 +167,7 @@ export const ContactPage: React.FC = () => {
               DEDICATED HOTLINES
             </span>
             <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[var(--text)]">
-              {language === 'sw' ? 'Madawati 3 Rasmi ya Simu & WhatsApp' : 'Three Direct Order & Support Hotlines'}
+              {language === 'sw' ? 'Madawati 4 Rasmi ya Simu & WhatsApp' : 'Four Direct Order & Support Hotlines'}
             </h2>
             <p className="text-xs sm:text-sm text-[var(--text-muted)] max-w-lg mx-auto">
               {language === 'sw'
@@ -176,7 +176,7 @@ export const ContactPage: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {salesDesks.map((desk) => (
               <div
                 key={desk.id}
@@ -300,8 +300,8 @@ export const ContactPage: React.FC = () => {
                     >
                       <option value="255715268391">KANTI BHAI K. HALAI (+255 715 268 391) — Co-Founder &amp; MD</option>
                       <option value="255624265480">VIJESH K. HALAI (+255 624 265 480) — Co-Founder &amp; MD</option>
-                      <option value="255746268391">Mbeya Branch (+255 746 268 391) — SIDO Factory</option>
-                      <option value="255699032777">Mwanza Branch (+255 699 032 777) — Lake Zone</option>
+                      <option value="255746268391">GUPTA ALOK (+255 746 268 391) — Mbeya Branch Manager</option>
+                      <option value="255699032777">GUPTA VIVEK (+255 699 032 777) — Mwanza Branch Manager</option>
                     </select>
                   </div>
                 </div>

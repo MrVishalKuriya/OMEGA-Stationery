@@ -140,7 +140,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* Badges: Best Seller, New, or Discount */}
         <div className="absolute top-1.5 left-1.5 z-20 flex flex-col gap-1 pointer-events-none">
           {hasDiscount ? (
-            <span className="px-2.5 py-1 rounded-full bg-[#D63A3A] text-white text-[10px] font-sans font-extrabold uppercase tracking-wider leading-none">
+            <span className="px-2.5 py-1 rounded-full bg-[#F4F1EA] text-[#7A6852] text-[9.5px] sm:text-[10px] font-sans font-bold uppercase tracking-wider leading-none">
               -{discountPercentage}%
             </span>
           ) : product.bestSeller ? (

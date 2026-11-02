@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import {
   X,
@@ -19,9 +19,15 @@ import {
 } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { formatPrice } from '@/types/store';
+import {
+  getProductFamilyOptions,
+  applyOptionToProduct,
+  ResolvedProductOption,
+} from '@/utils/productVariants';
 
 export const QuickViewModal: React.FC = () => {
   const {
+    products,
     quickViewProduct,
     setQuickViewProduct,
     addToCart,
@@ -35,6 +41,7 @@ export const QuickViewModal: React.FC = () => {
   const [selectedImageIdx, setSelectedImageIdx] = useState<number>(0);
   const [justAdded, setJustAdded] = useState<boolean>(false);
   const [imgError, setImgError] = useState<boolean>(false);
+  const [selectedInlineVariantId, setSelectedInlineVariantId] = useState<string | null>(null);
 
   useEffect(() => {
     if (quickViewProduct) {
@@ -42,6 +49,11 @@ export const QuickViewModal: React.FC = () => {
       setSelectedImageIdx(0);
       setImgError(false);
       setJustAdded(false);
+      if (quickViewProduct.variants && quickViewProduct.variants.length > 0) {
+        setSelectedInlineVariantId(quickViewProduct.variants[0].id);
+      } else {
+        setSelectedInlineVariantId(null);
+      }
     }
   }, [quickViewProduct]);
 
@@ -61,9 +73,37 @@ export const QuickViewModal: React.FC = () => {
     };
   }, [quickViewProduct, setQuickViewProduct]);
 
+  const familyOptions = useMemo(() => {
+    if (!quickViewProduct) return [];
+    return getProductFamilyOptions(quickViewProduct, products);
+  }, [quickViewProduct, products]);
+
+  const activeOption = useMemo<ResolvedProductOption | null>(() => {
+    if (!quickViewProduct || familyOptions.length === 0) return null;
+    if (selectedInlineVariantId) {
+      const found = familyOptions.find((o) => o.id === selectedInlineVariantId);
+      if (found) return found;
+    }
+    return familyOptions.find((o) => o.id === quickViewProduct.id) || familyOptions[0];
+  }, [quickViewProduct, familyOptions, selectedInlineVariantId]);
+
   if (!quickViewProduct) return null;
 
-  const product = quickViewProduct;
+  const product = activeOption
+    ? applyOptionToProduct(quickViewProduct, activeOption)
+    : quickViewProduct;
+
+  const handleSelectVariantOption = (opt: ResolvedProductOption) => {
+    setImgError(false);
+    setSelectedImageIdx(0);
+    if (opt.targetProduct) {
+      setSelectedInlineVariantId(null);
+      setQuickViewProduct(opt.targetProduct);
+    } else {
+      setSelectedInlineVariantId(opt.id);
+    }
+  };
+
   const currency = storeConfig?.currencySymbol || 'TSh';
   const isWishlisted = isInWishlist(product.id);
   const isOutOfStock = product.stockStatus === 'Out of Stock';
@@ -93,7 +133,9 @@ export const QuickViewModal: React.FC = () => {
   const totalAmount = appliedUnitPrice * quantity;
 
   const rawGallery =
-    product.gallery && product.gallery.length > 0
+    activeOption?.inlineVariant?.image
+      ? [activeOption.inlineVariant.image, ...(product.gallery || [])]
+      : product.gallery && product.gallery.length > 0
       ? product.gallery
       : [product.image];
 
@@ -111,6 +153,8 @@ export const QuickViewModal: React.FC = () => {
     `*Product:* ${product.name}`,
     `*SKU:* ${product.sku}`,
     product.category ? `*Category:* ${product.category}` : null,
+    product.quire ? `*Quire / Edition:* ${product.quire}` : null,
+    product.pageCount ? `*Page Count:* ${product.pageCount}` : null,
     product.packaging ? `*Packaging:* ${product.packaging}` : null,
     `*Quantity:* ${quantity} ${quantity === 1 ? 'Unit' : 'Units'}`,
     `*Unit Price:* ${formatPrice(appliedUnitPrice, currency)}`,
@@ -139,7 +183,11 @@ export const QuickViewModal: React.FC = () => {
     product.pageCount ? { label: 'Pages', value: `${product.pageCount}` } : null,
     product.paperType ? { label: 'Paper / Ruling', value: product.paperType } : null,
     product.packaging ? { label: 'Carton Pack', value: product.packaging } : null,
-    ...(product.specifications || []),
+    ...(product.specifications || []).filter(
+      (s) =>
+        !s.label.toLowerCase().includes('price list') &&
+        !s.value.toLowerCase().includes('pl00001')
+    ),
   ]
     .filter((item): item is { label: string; value: string } => Boolean(item))
     .slice(0, 4);
@@ -173,8 +221,8 @@ export const QuickViewModal: React.FC = () => {
             <div className="flex items-center justify-between gap-2 mb-3">
               <div className="flex flex-wrap items-center gap-1.5">
                 {hasDiscount && (
-                  <span className="bg-[#111113] text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-mono">
-                    -{discountPercent}% OFF
+                  <span className="bg-[#F4F1EA] text-[#7A6852] text-[10px] font-bold px-2.5 py-1 rounded-full font-sans uppercase tracking-wider">
+                    -{discountPercent}%
                   </span>
                 )}
                 {product.badge ? (
@@ -346,6 +394,60 @@ export const QuickViewModal: React.FC = () => {
                   </div>
                 )}
               </div>
+
+              {/* Unified Category / Variant Switcher (Compact, Icon-First, Minimal Text) */}
+              {familyOptions.length > 1 && (
+                <div className="p-2.5 rounded-xl bg-zinc-50 border border-[#e4e4e7] space-y-1.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-[#111113] flex items-center gap-1">
+                      <Layers className="w-3 h-3 text-[#dc2626]" />
+                      {language === 'sw' ? 'Toleo' : 'Edition'}
+                    </span>
+                    <span className="text-[10px] font-mono text-[#71717a]">
+                      {familyOptions.length}
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    {familyOptions.map((opt) => {
+                      const isSelected = activeOption?.id === opt.id;
+                      const optEffectivePrice =
+                        opt.discountPrice && opt.discountPrice > 0 && opt.discountPrice < opt.price
+                          ? opt.discountPrice
+                          : opt.price;
+                      return (
+                        <button
+                          key={opt.id}
+                          type="button"
+                          onClick={() => handleSelectVariantOption(opt)}
+                          className={`px-2.5 py-1.5 rounded-lg border transition-all cursor-pointer inline-flex items-center gap-2 ${
+                            isSelected
+                              ? 'bg-[#111113] text-white border-[#111113] shadow-2xs'
+                              : 'bg-white text-[#18181b] border-[#e4e4e7] hover:border-[#111113]'
+                          }`}
+                        >
+                          <span className="text-xs font-extrabold font-mono">
+                            {opt.shortLabel}
+                          </span>
+                          <span
+                            className={`text-[10px] font-mono ${
+                              isSelected ? 'text-zinc-300' : 'text-[#71717a]'
+                            }`}
+                          >
+                            {opt.subLabel}
+                          </span>
+                          <span
+                            className={`text-[11px] font-mono font-black ${
+                              isSelected ? 'text-[#f87171]' : 'text-[#dc2626]'
+                            }`}
+                          >
+                            {formatPrice(optEffectivePrice, currency)}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
               {/* Description */}
               <p className="text-xs sm:text-sm text-[#52525b] leading-relaxed line-clamp-3">

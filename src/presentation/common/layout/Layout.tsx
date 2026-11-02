@@ -11,6 +11,9 @@ import {
   MapPin,
   Phone,
   WifiOff,
+  Mail,
+  Clock,
+  Building2,
 } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { QuickViewModal, ProductCompareModal } from '@/presentation/features/products';
@@ -226,7 +229,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 Contact our factory representatives directly for bulk tenders or immediate upcountry bus parcel delivery.
               </p>
               
-              <div className="pt-2 space-y-2">
+              <div className="pt-2 space-y-2.5">
                 <a
                   href="https://wa.me/255746268391?text=Habari%20OMEGA%20Stationery,%20nahitaji%20bei%20za%20jumla."
                   target="_blank"
@@ -237,11 +240,45 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   <span>WhatsApp: +255 746 268 391</span>
                 </a>
                 
-                <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] pt-1">
-                  <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)]" />
-                  <a href="tel:+255715268391" className="hover:underline font-mono text-[var(--text)]">
-                    +255 715 268 391 (MD Desk)
-                  </a>
+                {/* Direct Phone Numbers List (Same to Same Format) */}
+                <div className="space-y-2 pt-1">
+                  <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
+                    <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)]" />
+                    <a href="tel:+255715268391" className="hover:underline font-mono text-[var(--text)]">
+                      +255 715 268 391 (MD Desk)
+                    </a>
+                  </div>
+
+                  <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
+                    <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)]" />
+                    <a href="tel:+255624265480" className="hover:underline font-mono text-[var(--text)]">
+                      +255 624 265 480 (Co-Founder &amp; MD · Vijesh K. Halai)
+                    </a>
+                  </div>
+
+                  <div className="pt-0.5">
+                    <span className="text-[10.5px] font-sans font-semibold text-[var(--text-muted)] block pl-5 leading-tight">
+                      Mwanza Branch Manager · <strong className="text-[var(--text)]">Gupta Vivek</strong>
+                    </span>
+                    <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] mt-0.5">
+                      <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)]" />
+                      <a href="tel:+255699032777" className="hover:underline font-mono text-[var(--text)]">
+                        +255 699 032 777
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="pt-0.5">
+                    <span className="text-[10.5px] font-sans font-semibold text-[var(--text-muted)] block pl-5 leading-tight">
+                      Mbeya Branch Manager · <strong className="text-[var(--text)]">Gupta Alok</strong>
+                    </span>
+                    <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] mt-0.5">
+                      <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)]" />
+                      <a href="tel:+255746268391" className="hover:underline font-mono text-[var(--text)]">
+                        +255 746 268 391
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

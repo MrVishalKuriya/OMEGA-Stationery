@@ -236,7 +236,16 @@ export const HomePage: React.FC = () => {
   );
 
   const handleBannerBuyNow = () => {
-    const featuredProd = products.find((p) => p.quire === 'Q3' || p.bestSeller) || products[0];
+    const featuredProd =
+      products.find(
+        (p) =>
+          p.id === 'prod-omega-cb-q3' ||
+          p.sku === 'OMG-CB-Q3' ||
+          p.quire === 'Q3' ||
+          p.quire === '3 Quire'
+      ) ||
+      products.find((p) => p.category === 'Counter Books') ||
+      products[0];
     if (featuredProd) {
       addToCart(featuredProd.id, 1);
       setIsCartDrawerOpen(true);
@@ -307,7 +316,7 @@ export const HomePage: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* 3. Price List #PL00001 */}
+            {/* 3. Factory Direct Pricing */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -320,10 +329,10 @@ export const HomePage: React.FC = () => {
               </div>
               <div className="min-w-0">
                 <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[var(--text)] font-heading leading-tight">
-                  PRICE LIST #PL00001
+                  FACTORY DIRECT RATES
                 </h4>
                 <p className="text-[11px] text-[var(--text-muted)] leading-tight mt-0.5 font-sans">
-                  Factory direct transparent rates
+                  Transparent wholesale &amp; retail value
                 </p>
               </div>
             </motion.div>
@@ -356,13 +365,13 @@ export const HomePage: React.FC = () => {
       {/* ========================================================================= */}
       {/* 3. SHOP BY COLLECTION (With Motion & Haikei Blobs) */}
       {/* ========================================================================= */}
-      <section className="py-14 sm:py-20 bg-[var(--bg)] relative overflow-hidden transition-colors duration-200">
+      <section className="pt-10 sm:pt-14 pb-3 sm:pb-5 bg-[var(--bg)] relative overflow-hidden transition-colors duration-200">
         
         {/* Haikei Organic Blob Glow Accent */}
         <HaikeiBlobGlow color="gold" position="top-right" size="md" className="opacity-25" />
         <HaikeiBlobGlow color="red" position="bottom-left" size="lg" className="opacity-20" />
 
-        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10 relative z-10">
+        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 relative z-10">
 
           {/* Centered Editorial Header with Gold Hairline */}
           <motion.div
@@ -670,14 +679,14 @@ export const HomePage: React.FC = () => {
       {/* ========================================================================= */}
       <section
         aria-label="Signature Banner"
-        className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-14"
+        className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-8 sm:pb-12"
       >
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.55 }}
-          className="relative w-full rounded-2xl overflow-hidden bg-[var(--surface-1)] border border-[var(--border)] p-6 sm:p-12 lg:p-16 shadow-2xl transition-colors duration-200"
+          transition={{ duration: 0.45 }}
+          className="relative w-full rounded-2xl overflow-hidden bg-[var(--surface-1)] border border-[var(--border)] p-5 sm:p-8 lg:p-10 shadow-2xl transition-colors duration-200"
         >
           {/* Giant Serif "omega." Wordmark */}
           <div
@@ -1335,30 +1344,27 @@ export const HomePage: React.FC = () => {
               whileHover={{ y: -4 }}
               className="p-6 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)]/40 space-y-4 flex flex-col justify-between transition-colors shadow-sm"
             >
-              <div className="space-y-3 text-left">
-                <div className="flex items-center justify-between">
-                  <span className="font-serif text-2xl text-[var(--gold)] leading-none">“</span>
-                  <div className="flex gap-0.5 text-[var(--gold)]">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-[var(--gold)] text-[var(--gold)]" />
-                    ))}
+              <div className="pb-3.5 border-b border-[var(--border)] flex items-center justify-between gap-3 text-left">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-9 h-9 rounded-full bg-[var(--surface-2)] text-[var(--gold)] font-mono font-bold flex items-center justify-center text-xs shrink-0 border border-[var(--border)]">
+                    EK
+                  </div>
+                  <div className="min-w-0">
+                    <h4 className="text-xs font-bold text-[var(--text)] truncate">Emanuel Kiwanga</h4>
+                    <p className="text-[10.5px] text-[var(--text-muted)] font-mono truncate">
+                      Chief Accountant · Dar es Salaam
+                    </p>
                   </div>
                 </div>
-                <p className="text-xs sm:text-sm text-[var(--text)] italic leading-relaxed font-sans">
-                  “Daftari la OMEGA Quire 3 lina karatasi ngumu sana na jalada lisilopinda. Linanisaidia sana kwenye mahesabu ya kila mwezi bila wino kupenya kabisa.”
-                </p>
-              </div>
-              <div className="pt-4 border-t border-[var(--border)] flex items-center gap-3 text-left">
-                <div className="w-9 h-9 rounded-full bg-[var(--surface-2)] text-[var(--gold)] font-mono font-bold flex items-center justify-center text-xs shrink-0 border border-[var(--border)]">
-                  EK
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-[var(--text)]">Emanuel Kiwanga</h4>
-                  <p className="text-[10.5px] text-[var(--text-muted)] font-mono">
-                    Chief Accountant · Dar es Salaam
-                  </p>
+                <div className="flex gap-0.5 text-[var(--gold)] shrink-0">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-3.5 h-3.5 fill-[var(--gold)] text-[var(--gold)]" />
+                  ))}
                 </div>
               </div>
+              <p className="text-xs sm:text-sm text-[var(--text)] italic leading-relaxed font-sans text-left">
+                “Daftari la OMEGA Quire 3 lina karatasi ngumu sana na jalada lisilopinda. Linanisaidia sana kwenye mahesabu ya kila mwezi bila wino kupenya kabisa.”
+              </p>
             </motion.div>
 
             {/* Review 2 */}
@@ -1370,30 +1376,27 @@ export const HomePage: React.FC = () => {
               whileHover={{ y: -4 }}
               className="p-6 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)]/40 space-y-4 flex flex-col justify-between transition-colors shadow-sm"
             >
-              <div className="space-y-3 text-left">
-                <div className="flex items-center justify-between">
-                  <span className="font-serif text-2xl text-[var(--gold)] leading-none">“</span>
-                  <div className="flex gap-0.5 text-[var(--gold)]">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-[var(--gold)] text-[var(--gold)]" />
-                    ))}
+              <div className="pb-3.5 border-b border-[var(--border)] flex items-center justify-between gap-3 text-left">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-9 h-9 rounded-full bg-[var(--surface-2)] text-[var(--gold)] font-mono font-bold flex items-center justify-center text-xs shrink-0 border border-[var(--border)]">
+                    GM
+                  </div>
+                  <div className="min-w-0">
+                    <h4 className="text-xs font-bold text-[var(--text)] truncate">Grace Mhando</h4>
+                    <p className="text-[10.5px] text-[var(--text-muted)] font-mono truncate">
+                      Head of Academics · Arusha
+                    </p>
                   </div>
                 </div>
-                <p className="text-xs sm:text-sm text-[var(--text)] italic leading-relaxed font-sans">
-                  “The Smyth-sewn binding of OMEGA exercise books is truly unmatched. Our secondary school orders 200-page single line books every term without fail.”
-                </p>
-              </div>
-              <div className="pt-4 border-t border-[var(--border)] flex items-center gap-3 text-left">
-                <div className="w-9 h-9 rounded-full bg-[var(--surface-2)] text-[var(--gold)] font-mono font-bold flex items-center justify-center text-xs shrink-0 border border-[var(--border)]">
-                  GM
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-[var(--text)]">Grace Mhando</h4>
-                  <p className="text-[10.5px] text-[var(--text-muted)] font-mono">
-                    Head of Academics · Arusha
-                  </p>
+                <div className="flex gap-0.5 text-[var(--gold)] shrink-0">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-3.5 h-3.5 fill-[var(--gold)] text-[var(--gold)]" />
+                  ))}
                 </div>
               </div>
+              <p className="text-xs sm:text-sm text-[var(--text)] italic leading-relaxed font-sans text-left">
+                “The Smyth-sewn binding of OMEGA exercise books is truly unmatched. Our secondary school orders 200-page single line books every term without fail.”
+              </p>
             </motion.div>
 
             {/* Review 3 */}
@@ -1405,30 +1408,27 @@ export const HomePage: React.FC = () => {
               whileHover={{ y: -4 }}
               className="p-6 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)]/40 space-y-4 flex flex-col justify-between transition-colors shadow-sm"
             >
-              <div className="space-y-3 text-left">
-                <div className="flex items-center justify-between">
-                  <span className="font-serif text-2xl text-[var(--gold)] leading-none">“</span>
-                  <div className="flex gap-0.5 text-[var(--gold)]">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-[var(--gold)] text-[var(--gold)]" />
-                    ))}
+              <div className="pb-3.5 border-b border-[var(--border)] flex items-center justify-between gap-3 text-left">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-9 h-9 rounded-full bg-[var(--surface-2)] text-[var(--gold)] font-mono font-bold flex items-center justify-center text-xs shrink-0 border border-[var(--border)]">
+                    JM
+                  </div>
+                  <div className="min-w-0">
+                    <h4 className="text-xs font-bold text-[var(--text)] truncate">Joseph Mollel</h4>
+                    <p className="text-[10.5px] text-[var(--text-muted)] font-mono truncate">
+                      Stationery Store Owner · Mwanza
+                    </p>
                   </div>
                 </div>
-                <p className="text-xs sm:text-sm text-[var(--text)] italic leading-relaxed font-sans">
-                  “Fast bus parcel dispatch to Mwanza! The kraft envelopes and ruled reams arrived safely packed in OMEGA branded cartons within 24 hours.”
-                </p>
-              </div>
-              <div className="pt-4 border-t border-[var(--border)] flex items-center gap-3 text-left">
-                <div className="w-9 h-9 rounded-full bg-[var(--surface-2)] text-[var(--gold)] font-mono font-bold flex items-center justify-center text-xs shrink-0 border border-[var(--border)]">
-                  JM
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-[var(--text)]">Joseph Mollel</h4>
-                  <p className="text-[10.5px] text-[var(--text-muted)] font-mono">
-                    Stationery Store Owner · Mwanza
-                  </p>
+                <div className="flex gap-0.5 text-[var(--gold)] shrink-0">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-3.5 h-3.5 fill-[var(--gold)] text-[var(--gold)]" />
+                  ))}
                 </div>
               </div>
+              <p className="text-xs sm:text-sm text-[var(--text)] italic leading-relaxed font-sans text-left">
+                “Fast bus parcel dispatch to Mwanza! The kraft envelopes and ruled reams arrived safely packed in OMEGA branded cartons within 24 hours.”
+              </p>
             </motion.div>
 
           </div>

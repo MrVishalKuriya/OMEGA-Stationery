@@ -9,15 +9,27 @@ import {
   CheckCircle2,
   Copy,
   Check,
+  Package,
+  Layers,
+  BookOpen,
+  FileText,
+  Plus,
+  Minus,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '@/context/StoreContext';
 import { formatPrice } from '@/types/store';
 import { toast } from 'sonner';
-import { ProductImage } from '@/components/ProductImage';
+import { getProductImageSrc } from '@/components/ProductImage';
+import {
+  getProductFamilyOptions,
+  normalizeQuireBadge,
+  ResolvedProductOption,
+} from '@/utils/productVariants';
 
 export const CartDrawer: React.FC = () => {
   const {
+    products,
     isCartDrawerOpen,
     setIsCartDrawerOpen,
     detailedCart,
@@ -27,6 +39,7 @@ export const CartDrawer: React.FC = () => {
     cartTotal,
     updateCartQuantity,
     removeFromCart,
+    clearCart,
     addToCart,
     storeConfig,
     language,
@@ -38,32 +51,26 @@ export const CartDrawer: React.FC = () => {
   if (!isCartDrawerOpen) return null;
 
   const currency = storeConfig.currencySymbol || 'TSh';
-  const freeThreshold = storeConfig.freeDeliveryThreshold || 250000;
+  const freeThreshold = storeConfig.freeDeliveryThreshold || 150000;
   const progressPercent = Math.min(100, Math.round((subtotal / freeThreshold) * 100));
   const remainingForFree = Math.max(0, freeThreshold - subtotal);
 
   // Formatted WhatsApp order message
-  const cleanWhatsappDigits = (storeConfig.whatsappNumber || '255746268391').replace(/\D/g, '');
+  const cleanWhatsappDigits = (storeConfig.whatsappNumber || '255715268391').replace(/\D/g, '');
   const itemsText = detailedCart
     .map(
       (item, idx) =>
-        `${idx + 1}. ${item.product.name} (SKU: ${item.product.sku}) - Qty: ${
-          item.quantity
-        } × ${currency} ${item.effectiveUnitPrice.toLocaleString()} = ${currency} ${item.lineTotal.toLocaleString()}`
+        `${idx + 1}. ${item.product.name} (SKU: ${item.product.sku}) — Qty: ${item.quantity} × ${currency} ${item.effectiveUnitPrice.toLocaleString()} = ${currency} ${item.lineTotal.toLocaleString()}`
     )
     .join('\n');
 
   const rawOrderSummary =
-    `*OMEGA STATIONERY ORDER*\n` +
+    `*${storeConfig.businessName || 'OMEGA STATIONERY'} — ORDER*\n` +
     `----------------------------------------\n` +
-    `Items:\n${itemsText}\n\n` +
+    `${itemsText}\n\n` +
     `Subtotal: ${currency} ${subtotal.toLocaleString()}\n` +
-    `Estimated Delivery: ${
-      estimatedDelivery === 0 ? 'FREE' : `${currency} ${estimatedDelivery.toLocaleString()}`
-    }\n` +
-    `*Total: ${currency} ${cartTotal.toLocaleString()}*\n` +
-    `----------------------------------------\n` +
-    `Please confirm stock availability and bus parcel dispatch.`;
+    `Delivery: ${estimatedDelivery === 0 ? 'FREE' : `${currency} ${estimatedDelivery.toLocaleString()}`}\n` +
+    `*Total: ${currency} ${cartTotal.toLocaleString()}*`;
 
   const whatsappCheckoutUrl = `https://wa.me/${cleanWhatsappDigits}?text=${encodeURIComponent(
     rawOrderSummary
@@ -73,12 +80,12 @@ export const CartDrawer: React.FC = () => {
     navigator.clipboard.writeText(rawOrderSummary);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-    toast.success('Order summary copied to clipboard!');
+    toast.success('Copied!');
   };
 
   const handleRemoveWithUndo = (productId: string, productName: string, qty: number) => {
     removeFromCart(productId);
-    toast('Removed from cart', {
+    toast('Removed', {
       description: productName,
       action: {
         label: 'Undo',
@@ -87,270 +94,353 @@ export const CartDrawer: React.FC = () => {
     });
   };
 
+  const handleSwitchCartItemVariant = (
+    currentProductId: string,
+    currentQty: number,
+    targetOption: ResolvedProductOption
+  ) => {
+    if (!targetOption.targetProduct || targetOption.targetProduct.id === currentProductId) return;
+    removeFromCart(currentProductId);
+    addToCart(targetOption.targetProduct.id, currentQty);
+    toast.success(`${targetOption.shortLabel} · ${formatPrice(targetOption.price, currency)}`);
+  };
+
   return (
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 overflow-hidden bg-black/75 backdrop-blur-xs flex justify-end animate-fadeIn"
+      aria-label="Shopping Bag"
+      className="fixed inset-0 z-50 overflow-hidden bg-black/60 backdrop-blur-xs flex justify-end animate-fadeIn"
       onClick={() => setIsCartDrawerOpen(false)}
     >
       <div
-        className="relative w-full max-w-md bg-[var(--surface-1)] h-full shadow-2xl flex flex-col justify-between overflow-hidden border-l border-[var(--border)] text-[var(--text)]"
+        className="relative w-full max-w-[360px] sm:max-w-[380px] bg-[#F9F8F6] h-full shadow-2xl flex flex-col justify-between overflow-hidden border-l border-stone-200/90 text-[#111113]"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Drawer Header */}
-        <div className="bg-[var(--surface-1)] px-5 sm:px-6 py-4 border-b border-[var(--border)] flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <h2 className="font-serif text-base sm:text-lg font-bold text-[var(--text)] tracking-tight">
-              {language === 'sw' ? 'Kikapu Chako' : 'Shopping Bag'}
+        {/* ================= 1. COMPACT ICON HEADER ================= */}
+        <div className="bg-white px-3.5 py-2.5 border-b border-stone-200/80 flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-[#111113] text-white flex items-center justify-center">
+              <ShoppingBag className="w-3.5 h-3.5 text-[#dc2626]" />
+            </div>
+            <h2 className="font-serif text-sm font-bold text-[#111113] tracking-tight">
+              {language === 'sw' ? 'Kikapu' : 'Bag'}
             </h2>
-            <span className="min-w-[22px] h-[22px] px-1.5 rounded-full bg-[var(--surface-2)] border border-[var(--border)] text-[11px] font-mono font-bold text-[var(--gold)] flex items-center justify-center">
+            <span className="min-w-[20px] h-[18px] px-1.5 rounded-full bg-[#dc2626]/10 text-[10px] font-mono font-extrabold text-[#dc2626] flex items-center justify-center">
               {cartItemCount}
             </span>
           </div>
-          <button
-            onClick={() => setIsCartDrawerOpen(false)}
-            className="w-8 h-8 rounded-full text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-2)] flex items-center justify-center transition-colors cursor-pointer"
-            aria-label="Close cart"
-          >
-            <X className="w-4 h-4 stroke-[2]" />
-          </button>
+
+          <div className="flex items-center gap-1">
+            {detailedCart.length > 0 && (
+              <button
+                type="button"
+                onClick={() => {
+                  clearCart();
+                  toast('Bag cleared');
+                }}
+                title="Clear bag"
+                aria-label="Clear bag"
+                className="w-7 h-7 rounded-lg text-stone-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => setIsCartDrawerOpen(false)}
+              className="w-7 h-7 rounded-lg bg-stone-100 hover:bg-[#111113] text-stone-600 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+              aria-label="Close"
+            >
+              <X className="w-3.5 h-3.5 stroke-[2.2]" />
+            </button>
+          </div>
         </div>
 
-        {/* Free Shipping Progress Meter */}
-        <div className="bg-[var(--surface-2)]/60 px-5 sm:px-6 py-3 border-b border-[var(--border)]">
-          <div className="flex items-center justify-between text-xs text-[var(--text)] mb-1.5 font-sans">
-            <span className="flex items-center gap-1.5 font-medium">
-              <Truck className="w-3.5 h-3.5 text-[var(--gold)] shrink-0" />
-              {remainingForFree > 0 ? (
-                <span>
-                  {language === 'sw' ? 'Ongeza ' : 'Add '}
-                  <strong className="font-mono text-[var(--red)] font-bold">
-                    {formatPrice(remainingForFree, currency)}
-                  </strong>
-                  {language === 'sw' ? ' upate Usafirishaji BURE!' : ' for FREE Delivery!'}
-                </span>
-              ) : (
-                <span className="text-[#25D366] font-bold flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  {language === 'sw' ? 'Umepata Usafirishaji BURE!' : 'FREE Nationwide Delivery Unlocked!'}
-                </span>
-              )}
-            </span>
-            <span className="font-mono text-[11px] font-bold text-[var(--gold)] tabular-nums">
-              {progressPercent}%
-            </span>
-          </div>
-          <div className="w-full bg-[var(--border)] rounded-full h-1.5 overflow-hidden">
+        {/* ================= 2. SLIM 1-LINE DELIVERY BAR ================= */}
+        <div className="bg-white/90 px-3.5 py-1.5 border-b border-stone-200/70 flex items-center gap-2 shrink-0">
+          {remainingForFree > 0 ? (
+            <Truck className="w-3.5 h-3.5 text-[#8C7355] shrink-0" />
+          ) : (
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+          )}
+          <div className="flex-1 bg-stone-200 rounded-full h-1 overflow-hidden">
             <div
-              className="bg-gradient-to-r from-[var(--gold)] to-[var(--red)] h-full rounded-full transition-all duration-500"
+              className="bg-gradient-to-r from-emerald-500 to-[#dc2626] h-full rounded-full transition-all duration-500"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
+          <span className="text-[10px] font-mono font-bold text-emerald-700 shrink-0">
+            {remainingForFree > 0 ? `+${formatPrice(remainingForFree, currency)}` : 'Free Ship'}
+          </span>
         </div>
 
-        {/* Items List */}
-        <div className="flex-1 overflow-y-auto px-5 sm:px-6 py-2 divide-y divide-[var(--border)]">
+        {/* ================= 3. COMPACT CART ITEMS LIST ================= */}
+        <div className="flex-1 overflow-y-auto px-3 py-2.5 space-y-2">
           {detailedCart.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-5">
-              <div className="w-16 h-16 rounded-3xl bg-[var(--surface-2)] border border-[var(--gold)]/40 flex items-center justify-center text-[var(--gold)] shadow-lg">
-                <ShoppingBag className="w-8 h-8 stroke-[1.75]" />
+            <div className="h-full flex flex-col items-center justify-center text-center p-4 space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-white border border-stone-200 flex items-center justify-center text-[#dc2626] shadow-2xs">
+                <ShoppingBag className="w-5 h-5 stroke-[1.75]" />
               </div>
-              <div className="space-y-1.5">
-                <span className="text-[10px] font-mono tracking-widest uppercase text-[var(--gold)] font-bold block">
-                  {language === 'sw' ? 'KIKAPU KIKO WAZI' : 'BAG IS EMPTY'}
-                </span>
-                <h3 className="font-heading font-bold text-[var(--text)] text-lg">
-                  {language === 'sw' ? 'Kikapu Chako Kiko Wazi' : 'Your Cart is Empty'}
-                </h3>
-                <p className="text-xs text-[var(--text-muted)] max-w-xs font-sans leading-relaxed">
-                  {language === 'sw'
-                    ? 'Hujaweka madaftari bado. Gundua vitabu bora vya OMEGA (Q1-Q6) na bahasha za kudumu.'
-                    : 'Explore authentic OMEGA Smyth-sewn Counter Books, Exercise Books, and heavy kraft Bahasha.'}
-                </p>
-              </div>
-
-              {/* Single Red Primary Action Button */}
+              <p className="text-xs font-bold text-stone-600">
+                {language === 'sw' ? 'Kikapu Kiko Wazi' : 'Empty Bag'}
+              </p>
               <button
                 type="button"
                 onClick={() => {
                   setIsCartDrawerOpen(false);
                   navigate('/catalog');
                 }}
-                className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-[#D63A3A] hover:bg-[#b91c1c] text-white text-xs font-mono font-bold uppercase tracking-wider transition-all shadow-lg shadow-red-950/40 cursor-pointer group"
-                style={{ backgroundColor: '#D63A3A', color: '#FFFFFF' }}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#111113] hover:bg-[#dc2626] text-white text-[11px] font-mono font-bold uppercase tracking-wider transition-all cursor-pointer"
               >
-                <span>{language === 'sw' ? 'ANZA KUNUNUA' : 'START SHOPPING'}</span>
-                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>{language === 'sw' ? 'Katalogi' : 'Catalog'}</span>
+                <ArrowRight className="w-3 h-3" />
               </button>
+            </div>
+          ) : (
+            detailedCart.map((item) => {
+              const imgSrc = getProductImageSrc(item.product.image);
+              const familyOptions = getProductFamilyOptions(item.product, products).filter(
+                (opt) => opt.targetProduct
+              );
+              const qBadge = normalizeQuireBadge(
+                item.product.quire,
+                item.product.name,
+                item.product.category
+              );
+              const shortPages = item.product.pageCount
+                ? item.product.pageCount.replace(/\s*Pages/i, 'P')
+                : null;
+              const shortPack = item.product.packaging
+                ? item.product.packaging.match(/(\d+)\s*(?:Pcs|Boxes|Pkts|Sheets|Sets|Rolls)/i)?.[1]
+                : null;
 
-              {/* Quick Category Chips */}
-              <div className="pt-2 w-full space-y-2">
-                <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-bold block">
-                  {language === 'sw' ? 'VIWANGO VINAVYOONGOZA' : 'POPULAR CATEGORIES'}
-                </span>
-                <div className="flex flex-wrap items-center justify-center gap-1.5">
-                  {[
-                    { label: 'Counter Books', href: '/catalog?category=Counter+Books' },
-                    { label: 'Exercise Books', href: '/catalog?category=Exercise+Books' },
-                    { label: 'Kraft Bahasha', href: '/catalog?category=Bahasha+%26+Envelopes' },
-                    { label: 'Registers', href: '/catalog?category=Registers' },
-                  ].map((cat) => (
+              return (
+                <div
+                  key={item.product.id}
+                  className="p-2.5 rounded-xl bg-white border border-stone-200/80 shadow-2xs hover:border-stone-300 transition-all space-y-2"
+                >
+                  <div className="flex gap-2.5 items-center">
+                    {/* Compact 52x52 Thumbnail */}
                     <button
-                      key={cat.label}
                       type="button"
                       onClick={() => {
                         setIsCartDrawerOpen(false);
-                        navigate(cat.href);
+                        navigate(`/product/${item.product.id}`);
                       }}
-                      className="px-3 py-1 rounded-full bg-[var(--surface-2)] hover:border-[var(--gold)] border border-[var(--border)] text-[11px] font-mono font-bold text-[var(--text)] transition-colors cursor-pointer"
+                      className="w-13 h-13 rounded-lg bg-[#FAF8F5] border border-stone-200/80 p-1 shrink-0 flex items-center justify-center overflow-hidden hover:border-[#dc2626] transition-colors cursor-pointer"
                     >
-                      {cat.label}
+                      <img
+                        src={imgSrc}
+                        alt={item.product.name}
+                        className="max-w-full max-h-full object-contain mix-blend-multiply"
+                        loading="lazy"
+                      />
                     </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ) : (
-            detailedCart.map((item) => (
-              <div
-                key={item.product.id}
-                className="py-4 flex gap-3.5 items-start first:pt-3 group"
-              >
-                {/* Product Thumbnail on paper surface */}
-                <div className="w-16 h-20 rounded-xl bg-[var(--paper)] p-1.5 shrink-0 border border-[var(--border)] shadow-2xs flex items-center justify-center">
-                  <ProductImage
-                    image={item.product.image}
-                    alt={item.product.name}
-                    variant="thumb"
-                    className="w-full h-full object-contain drop-shadow-xs"
-                  />
-                </div>
 
-                <div className="flex-1 min-w-0 flex flex-col justify-between self-stretch">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <h4 className="text-xs sm:text-[13px] font-bold text-[var(--text)] line-clamp-2 leading-snug">
-                        {item.product.name}
-                      </h4>
-                      <p className="text-[10.5px] text-[var(--gold)] font-mono font-bold mt-0.5">
-                        {item.product.quire || item.product.pageCount || item.product.category}
-                      </p>
-                    </div>
+                    {/* Compact Info & Controls */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsCartDrawerOpen(false);
+                            navigate(`/product/${item.product.id}`);
+                          }}
+                          className="text-left text-xs font-bold text-[#111113] hover:text-[#dc2626] transition-colors truncate cursor-pointer"
+                        >
+                          {language === 'sw' && item.product.nameSw
+                            ? item.product.nameSw
+                            : item.product.name}
+                        </button>
 
-                    <button
-                      type="button"
-                      onClick={() =>
-                        handleRemoveWithUndo(item.product.id, item.product.name, item.quantity)
-                      }
-                      className="text-[var(--text-muted)] hover:text-[var(--red)] p-1 rounded-md transition-colors shrink-0 cursor-pointer"
-                      title="Remove item"
-                      aria-label="Remove item"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-2">
-                    {/* Compact Tactile Stepper */}
-                    <div className="inline-flex items-center border border-[var(--border)] rounded-full bg-[var(--surface-2)] h-7 px-1">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (item.quantity <= 1) {
-                            handleRemoveWithUndo(item.product.id, item.product.name, item.quantity);
-                          } else {
-                            updateCartQuantity(item.product.id, item.quantity - 1);
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleRemoveWithUndo(
+                              item.product.id,
+                              item.product.name,
+                              item.quantity
+                            )
                           }
-                        }}
-                        className="w-6 h-6 flex items-center justify-center text-xs font-bold text-[var(--text)] hover:text-[var(--red)] transition-colors rounded-full cursor-pointer"
-                        aria-label="Decrease quantity"
-                      >
-                        -
-                      </button>
-                      <span className="w-6 text-center text-xs font-mono font-bold text-[var(--text)] tabular-nums">
-                        {item.quantity}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => updateCartQuantity(item.product.id, Math.min(999, item.quantity + 1))}
-                        className="w-6 h-6 flex items-center justify-center text-xs font-bold text-[var(--text)] hover:text-[var(--red)] transition-colors rounded-full cursor-pointer"
-                        aria-label="Increase quantity"
-                      >
-                        +
-                      </button>
-                    </div>
+                          className="text-stone-400 hover:text-red-600 p-0.5 rounded transition-colors shrink-0 cursor-pointer"
+                          title="Remove"
+                          aria-label="Remove"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </button>
+                      </div>
 
-                    <div className="text-right">
-                      <span className="text-xs sm:text-sm font-bold font-mono text-[var(--text)] tabular-nums">
-                        {formatPrice(item.lineTotal, currency)}
-                      </span>
+                      {/* Micro Icon Chips (Minimum Text) */}
+                      <div className="flex flex-wrap items-center gap-1 mt-1">
+                        {qBadge && (
+                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded bg-[#dc2626]/10 text-[#dc2626] text-[9.5px] font-mono font-bold">
+                            <BookOpen className="w-2.5 h-2.5" />
+                            {qBadge}
+                          </span>
+                        )}
+                        {shortPages && (
+                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded bg-stone-100 text-stone-600 text-[9.5px] font-mono">
+                            <FileText className="w-2.5 h-2.5" />
+                            {shortPages}
+                          </span>
+                        )}
+                        {shortPack && (
+                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded bg-stone-100 text-stone-600 text-[9.5px] font-mono">
+                            <Package className="w-2.5 h-2.5 text-[#8C7355]" />
+                            {shortPack}/Box
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Stepper & Price on 1 Compact Line */}
+                      <div className="flex items-center justify-between gap-2 mt-1.5">
+                        <div className="inline-flex items-center border border-stone-200 rounded-lg bg-stone-50 h-6 px-0.5">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (item.quantity <= 1) {
+                                handleRemoveWithUndo(
+                                  item.product.id,
+                                  item.product.name,
+                                  item.quantity
+                                );
+                              } else {
+                                updateCartQuantity(item.product.id, item.quantity - 1);
+                              }
+                            }}
+                            className="w-5 h-5 flex items-center justify-center text-stone-600 hover:text-[#111113] hover:bg-white rounded transition-all cursor-pointer"
+                            aria-label="Decrease"
+                          >
+                            <Minus className="w-2.5 h-2.5" />
+                          </button>
+                          <span className="w-6 text-center text-[11px] font-mono font-extrabold text-[#111113] tabular-nums">
+                            {item.quantity}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              updateCartQuantity(
+                                item.product.id,
+                                Math.min(999, item.quantity + 1)
+                              )
+                            }
+                            className="w-5 h-5 flex items-center justify-center text-stone-600 hover:text-[#111113] hover:bg-white rounded transition-all cursor-pointer"
+                            aria-label="Increase"
+                          >
+                            <Plus className="w-2.5 h-2.5" />
+                          </button>
+                        </div>
+
+                        <span className="text-xs font-black font-mono text-[#111113] tabular-nums">
+                          {formatPrice(item.lineTotal, currency)}
+                        </span>
+                      </div>
                     </div>
                   </div>
+
+                  {/* Ultra-Compact 1-Line Edition Pill Bar (e.g. Q2 | Q3 | Q4) */}
+                  {familyOptions.length > 1 && (
+                    <div className="pt-1.5 border-t border-stone-100 flex items-center justify-between gap-1.5">
+                      <span className="text-[9.5px] font-mono font-bold text-stone-400 inline-flex items-center gap-1 shrink-0">
+                        <Layers className="w-2.5 h-2.5 text-[#dc2626]" />
+                      </span>
+                      <div className="flex items-center gap-1 overflow-x-auto scrollbar-none">
+                        {familyOptions.map((opt) => {
+                          const isCurrent = opt.id === item.product.id;
+                          return (
+                            <button
+                              key={opt.id}
+                              type="button"
+                              onClick={() =>
+                                handleSwitchCartItemVariant(
+                                  item.product.id,
+                                  item.quantity,
+                                  opt
+                                )
+                              }
+                              title={`${opt.shortLabel} · ${formatPrice(opt.price, currency)}`}
+                              className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold border transition-all cursor-pointer whitespace-nowrap ${
+                                isCurrent
+                                  ? 'bg-[#111113] text-white border-[#111113]'
+                                  : 'bg-stone-50 text-stone-700 border-stone-200 hover:border-[#111113]'
+                              }`}
+                            >
+                              {opt.shortLabel}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
 
-        {/* Footer Summary & Streamlined Actions */}
+        {/* ================= 4. COMPACT ICON FOOTER ================= */}
         {detailedCart.length > 0 && (
-          <div className="p-5 sm:p-6 bg-[var(--surface-1)] border-t border-[var(--border)] space-y-4 shadow-xl">
-            <div className="space-y-1.5 text-xs font-sans">
-              <div className="flex justify-between text-[var(--text-muted)]">
-                <span>{language === 'sw' ? 'Jumla Ndogo' : 'Subtotal'}</span>
-                <span className="font-mono font-bold text-[var(--text)] tabular-nums">
-                  {formatPrice(subtotal, currency)}
+          <div className="p-3 bg-white border-t border-stone-200/90 space-y-2.5 shrink-0">
+            {/* Compact 1-Row Total Bar */}
+            <div className="px-3 py-2 rounded-xl bg-[#F9F8F6] border border-stone-200/80 flex items-center justify-between">
+              <div className="flex items-center gap-2 text-[11px] font-mono text-stone-600">
+                <span className="inline-flex items-center gap-1 font-bold text-[#111113]">
+                  <Package className="w-3.5 h-3.5 text-[#8C7355]" />
+                  {cartItemCount}
+                </span>
+                <span>·</span>
+                <span className="inline-flex items-center gap-1 text-emerald-700 font-bold">
+                  <Truck className="w-3.5 h-3.5" />
+                  {estimatedDelivery === 0 ? 'Free' : formatPrice(estimatedDelivery, currency)}
                 </span>
               </div>
-              <div className="flex justify-between text-[var(--text-muted)]">
-                <span>{language === 'sw' ? 'Usafirishaji (Mizigo ya Mabasi)' : 'Delivery (Nationwide Bus Parcel)'}</span>
-                <span className="font-mono font-bold text-[#25D366] tabular-nums">
-                  {estimatedDelivery === 0 ? 'FREE' : formatPrice(estimatedDelivery, currency)}
-                </span>
-              </div>
-              <div className="flex justify-between text-sm font-bold text-[var(--text)] pt-2 border-t border-[var(--border)]">
-                <span className="font-heading">{language === 'sw' ? 'Jumla Kuu' : 'Estimated Total'}</span>
-                <span className="font-mono text-base sm:text-lg font-black text-[var(--red)] tabular-nums">
+
+              <div className="text-right">
+                <span className="font-mono text-sm sm:text-base font-black text-[#dc2626] tabular-nums">
                   {formatPrice(cartTotal, currency)}
                 </span>
               </div>
             </div>
 
-            <div className="space-y-2.5 pt-1">
-              {/* PRIMARY ACTION: Single Red Button for Checkout */}
+            {/* Compact Action Buttons Row */}
+            <div className="grid grid-cols-12 gap-1.5">
               <button
                 type="button"
                 onClick={() => {
                   setIsCartDrawerOpen(false);
                   navigate('/cart');
                 }}
-                className="w-full h-12 px-5 rounded-full bg-[#D63A3A] hover:bg-[#b91c1c] text-white text-xs sm:text-sm font-mono font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-red-950/40 transition-all active:scale-[0.98] cursor-pointer"
-                style={{ backgroundColor: '#D63A3A', color: '#FFFFFF' }}
+                className="col-span-6 h-9 px-3 rounded-lg bg-[#111113] hover:bg-[#dc2626] text-white text-[11px] font-mono font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-pointer"
               >
-                <span>{language === 'sw' ? 'KAGUA & KUKAMILISHA ODA' : 'REVIEW CART & CHECKOUT'}</span>
-                <ArrowRight className="w-4 h-4" />
+                <ShoppingBag className="w-3.5 h-3.5" />
+                <span>{language === 'sw' ? 'Kagua' : 'Checkout'}</span>
+                <ArrowRight className="w-3 h-3" />
               </button>
 
-              {/* SECONDARY ACTION: Direct WhatsApp Order */}
               <a
                 href={whatsappCheckoutUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full h-10 px-4 rounded-full bg-[#25D366]/10 hover:bg-[#25D366]/20 border border-[#25D366]/30 text-[#25D366] text-xs font-mono font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
+                className="col-span-5 h-9 px-3 rounded-lg bg-[#25D366] hover:bg-[#20bd5a] text-white text-[11px] font-mono font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all"
               >
-                <MessageCircle className="w-3.5 h-3.5 fill-[#25D366]" />
-                <span>{language === 'sw' ? 'Tuma Oda WhatsApp' : 'Quick Order via WhatsApp'}</span>
+                <MessageCircle className="w-3.5 h-3.5 fill-white" />
+                <span>WhatsApp</span>
               </a>
 
-              {/* SUBTLE FALLBACK: Copy Order Text Link */}
               <button
                 type="button"
                 onClick={handleCopyOrder}
-                className="text-[11px] font-mono text-[var(--text-muted)] hover:text-[var(--text)] flex items-center justify-center gap-1.5 mx-auto pt-0.5 cursor-pointer transition-colors"
+                title={copied ? 'Copied!' : 'Copy order summary'}
+                aria-label="Copy order summary"
+                className="col-span-1 h-9 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 flex items-center justify-center transition-colors cursor-pointer"
               >
-                {copied ? <Check size={12} className="text-[#25D366]" /> : <Copy size={12} />}
-                <span>{copied ? 'Order Text Copied!' : 'Copy order summary text'}</span>
+                {copied ? (
+                  <Check className="w-3.5 h-3.5 text-emerald-600" />
+                ) : (
+                  <Copy className="w-3.5 h-3.5" />
+                )}
               </button>
             </div>
           </div>
