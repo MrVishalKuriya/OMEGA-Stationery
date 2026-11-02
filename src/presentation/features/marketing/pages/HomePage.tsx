@@ -44,6 +44,27 @@ export const HomePage: React.FC = () => {
   >('all');
   const [bannerFavorited, setBannerFavorited] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [activeCollectionSlide, setActiveCollectionSlide] = useState(0);
+  const collectionScrollRef = React.useRef<HTMLDivElement>(null);
+
+  const scrollToSlide = (index: number) => {
+    setActiveCollectionSlide(index);
+    if (collectionScrollRef.current) {
+      const cardWidth = collectionScrollRef.current.clientWidth;
+      collectionScrollRef.current.scrollTo({
+        left: index * cardWidth,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  const handleCollectionScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const container = e.currentTarget;
+    const slideIndex = Math.round(container.scrollLeft / container.clientWidth);
+    if (slideIndex !== activeCollectionSlide && slideIndex >= 0 && slideIndex < 4) {
+      setActiveCollectionSlide(slideIndex);
+    }
+  };
 
   // Filter products for the catalog showcase
   const filteredProducts = useMemo(() => {
@@ -64,46 +85,49 @@ export const HomePage: React.FC = () => {
     () => [
       {
         id: 'counter-books',
-        badge: language === 'sw' ? 'JALADA GUMU LA KUDUMU' : 'ARCHIVAL SMYTH-SEWN',
+        badge: language === 'sw' ? 'JALADA GUMU' : 'ARCHIVAL SMYTH-SEWN',
         tag: 'QUIRE 2 - 4',
-        title: language === 'sw' ? 'OMEGA COUNTER BOOK – 2 / 3 / 4 QUIRE' : 'OMEGA COUNTER BOOK – 2 / 3 / 4 QUIRE',
+        title: language === 'sw' ? 'COUNTER BOOKS' : 'COUNTER BOOKS',
+        subtitle: language === 'sw' ? 'Jalada Gumu la Archival, Q2, Q3 & Q4' : 'Hardcover Ledger Folios, Q2–Q4',
         features: [
           language === 'sw' ? 'Kurasa 192, 288 & 384' : '192, 288 & 384 Pages',
-          language === 'sw' ? 'Quire 2, 3 & 4 Zilizoshonwa kwa Nyuzi' : '2, 3 & 4 Quire Smyth-Sewn Spines',
-          language === 'sw' ? 'Jalada Imara Jeusi & Nyekundu' : 'Attractive Black & Red Cover',
+          language === 'sw' ? 'Smyth-Sewn 180° Flat' : 'Smyth-Sewn 180° Lay-Flat',
+          language === 'sw' ? 'Karatasi ya 70 GSM Bond' : 'Pure 70 GSM Archival Bond',
         ],
         brand: 'Brand: OMEGA',
-        cta: language === 'sw' ? 'Explore' : 'Explore',
+        cta: language === 'sw' ? 'EXPLORE' : 'EXPLORE',
         link: '/catalog?category=Counter+Books',
         image: '/omega-products/counter-book-q2-catalog.jpeg',
       },
       {
         id: 'exercise-books',
-        badge: language === 'sw' ? 'VIWANGO VYA DARASANI' : 'CLASSROOM BENCHMARK',
+        badge: language === 'sw' ? 'VIWANGO VYA DARASA' : 'CLASSROOM BENCHMARK',
         tag: '70 GSM BOND',
-        title: language === 'sw' ? 'OMEGA EXERCISE BOOKS – CLASSROOM' : 'OMEGA EXERCISE BOOKS – CLASSROOM',
+        title: language === 'sw' ? 'EXERCISE BOOKS' : 'EXERCISE BOOKS',
+        subtitle: language === 'sw' ? 'Madaftari ya Shule na Vyuo' : 'School & Classroom Editions',
         features: [
           language === 'sw' ? 'Kurasa 200, 100 & 80' : '200, 100 & 80 Pages',
-          language === 'sw' ? 'Mistari Moja na Mistari Miwili' : 'Single & Double Line Ruling',
+          language === 'sw' ? 'Mistari Moja na Miwili' : 'Single & Double Line Ruling',
           language === 'sw' ? 'Jalada Ngumu lenye Ramani' : 'Durable Stiff Cover with Map',
         ],
         brand: 'Brand: OMEGA',
-        cta: language === 'sw' ? 'Explore' : 'Explore',
+        cta: language === 'sw' ? 'EXPLORE' : 'EXPLORE',
         link: '/catalog?category=Exercise+Books',
         image: '/omega-products/exercise-book-200p-sl-catalog.jpeg',
       },
       {
         id: 'kraft-bahasha',
-        badge: language === 'sw' ? 'KUFUNGUKA KWA USALAMA' : 'PEEL & SEAL SECURITY',
+        badge: language === 'sw' ? 'USALAMA WA HATI' : 'PEEL & SEAL SECURITY',
         tag: 'TEAR-PROOF',
-        title: language === 'sw' ? 'OMEGA KRAFT BAHASHA – PEEL & SEAL' : 'OMEGA KRAFT BAHASHA – PEEL & SEAL',
+        title: language === 'sw' ? 'KRAFT BAHASHA' : 'KRAFT BAHASHA',
+        subtitle: language === 'sw' ? 'Bahasha za Hati Zisizochanika' : 'Tear-Resistant Document Mailers',
         features: [
-          language === 'sw' ? 'Ukubwa wa A3, A4, A5 & A6' : 'A3, A4, A5 & A6 Standard Sizes',
-          language === 'sw' ? 'Karatasi Imara Isiyochanika' : 'Heavy Tear-Resistant Kraft Paper',
+          language === 'sw' ? 'Vipimo vya A3, A4, A5 & A6' : 'A3, A4, A5 & A6 Standard Sizes',
+          language === 'sw' ? 'Karatasi Imara ya Kraft' : 'Heavy Tear-Resistant Kraft Paper',
           language === 'sw' ? 'Gundi ya Kujifunga Yenyewe' : 'Self-Adhesive Peel & Seal Strip',
         ],
         brand: 'Brand: OMEGA',
-        cta: language === 'sw' ? 'Explore' : 'Explore',
+        cta: language === 'sw' ? 'EXPLORE' : 'EXPLORE',
         link: '/catalog?category=Bahasha+%26+Envelopes',
         image: '/omega-products/bahasha-a4-catalog.png',
       },
@@ -111,14 +135,15 @@ export const HomePage: React.FC = () => {
         id: 'registers',
         badge: language === 'sw' ? 'KUMBUKUMBU ZA OFISI' : 'OFFICE & INSTITUTION',
         tag: 'GOLD FOIL',
-        title: language === 'sw' ? 'OMEGA OFFICE & SCHOOL REGISTERS' : 'OMEGA OFFICE & SCHOOL REGISTERS',
+        title: language === 'sw' ? 'OFFICE REGISTERS' : 'OFFICE REGISTERS',
+        subtitle: language === 'sw' ? 'Daftari za Wageni na Mahudhurio' : 'Institutional Ledger Folios',
         features: [
-          language === 'sw' ? 'Daftari za Wageni na Mahudhurio' : 'Visitor Gate & Student Attendance',
+          language === 'sw' ? 'Wageni Getini na Mahudhurio' : 'Visitor Gate & Student Attendance',
           language === 'sw' ? 'Karatasi Maalum ya 70 GSM' : '70 GSM Pure White Bond Paper',
           language === 'sw' ? 'Jalada Imara la Kudumu' : 'Rigid Foil Stamped Hardcover',
         ],
         brand: 'Brand: OMEGA',
-        cta: language === 'sw' ? 'Explore' : 'Explore',
+        cta: language === 'sw' ? 'EXPLORE' : 'EXPLORE',
         link: '/catalog?category=Registers',
         image: '/omega-products/stiff-cover-200-catalog.jpeg',
       },
@@ -277,8 +302,12 @@ export const HomePage: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* Collection Cards Grid matching user mockup reference */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-7">
+          {/* Collection Cards: Mobile Single-Slide Carousel + Desktop 4-Col Grid */}
+          <div
+            ref={collectionScrollRef}
+            onScroll={handleCollectionScroll}
+            className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 overflow-x-auto snap-x snap-mandatory pb-4 md:pb-0 scrollbar-none scroll-smooth px-1"
+          >
             {collections.map((col, idx) => (
               <motion.div
                 key={col.id}
@@ -287,79 +316,97 @@ export const HomePage: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: idx * 0.08 }}
                 whileHover={{ y: -5, transition: { duration: 0.25 } }}
-                className="relative overflow-hidden bg-gradient-to-br from-white via-[#FCFAF8] to-[#F7F3EC] rounded-3xl border border-[#E6E0D4] hover:border-[var(--red)]/50 transition-all duration-300 p-6 sm:p-7 flex flex-col justify-between shadow-[0_4px_24px_rgba(22,21,24,0.04)] hover:shadow-[0_20px_48px_rgba(214,58,58,0.12)] group"
+                className="w-[86vw] sm:w-[320px] md:w-auto shrink-0 snap-center relative overflow-hidden bg-white rounded-3xl border border-[#E6E0D4] hover:border-[var(--red)]/50 transition-all duration-300 p-5 sm:p-6 flex flex-col justify-between shadow-[0_4px_24px_rgba(22,21,24,0.04)] hover:shadow-[0_16px_40px_rgba(214,58,58,0.12)] group text-left"
               >
                 {/* Subtle Ambient Glow */}
-                <div className="absolute -top-12 -right-12 w-44 h-44 bg-[var(--gold)]/10 rounded-full blur-3xl group-hover:bg-[var(--red)]/10 transition-colors duration-500 pointer-events-none" />
+                <div className="absolute -top-10 -right-10 w-36 h-36 bg-[var(--gold)]/10 rounded-full blur-2xl group-hover:bg-[var(--red)]/10 transition-colors duration-500 pointer-events-none" />
 
-                <div className="flex flex-col sm:flex-row items-center sm:items-stretch justify-between gap-6 h-full relative z-10">
-                  {/* Left Column: Category Badge, Title, Bullet Features, Brand, Explore Button */}
-                  <div className="flex-1 flex flex-col justify-between text-left space-y-4 min-w-0">
-                    <div>
-                      {/* Top Micro-Pill Category Badge */}
-                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase text-[var(--gold)] bg-[var(--surface-2)] border border-[var(--gold)]/30 shadow-2xs mb-2.5">
+                <div className="flex flex-col justify-between h-full relative z-10">
+                  <div>
+                    {/* 1. TOP BADGE & TAG */}
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9.5px] font-mono font-bold tracking-wider uppercase text-[var(--gold)] bg-[var(--surface-2)] border border-[var(--gold)]/25 shadow-2xs">
                         <Sparkles className="w-3 h-3 text-[var(--gold)]" />
                         <span>{col.badge}</span>
-                      </div>
+                      </span>
+                      <span className="text-[10px] font-mono font-bold text-[var(--gold)] bg-[var(--gold)]/10 px-2 py-0.5 rounded-md border border-[var(--gold)]/20">
+                        {col.tag}
+                      </span>
+                    </div>
 
-                      {/* Editorial Title */}
-                      <h3 className="font-heading font-black text-lg sm:text-xl text-[var(--text)] group-hover:text-[var(--red)] transition-colors leading-snug tracking-tight">
+                    {/* 2. BOOK KA NAME UPAR (Book Title at Top) */}
+                    <div className="mb-3">
+                      <h3 className="font-heading font-black text-lg sm:text-xl text-[var(--text)] group-hover:text-[var(--red)] transition-colors leading-tight tracking-tight">
                         {col.title}
                       </h3>
-                      
-                      {/* Refined Features List with Custom Check Micro-Badges */}
-                      <ul className="mt-3.5 space-y-2.5 text-xs sm:text-[13px] text-[var(--text)]">
-                        {col.features.map((feat, fIdx) => (
-                          <li key={fIdx} className="flex items-center gap-2.5">
-                            <span className="w-4.5 h-4.5 rounded-full bg-[var(--red)]/10 text-[var(--red)] flex items-center justify-center shrink-0 border border-[var(--red)]/20 shadow-2xs">
-                              <CheckCircle2 className="w-3 h-3 stroke-[2.5]" />
-                            </span>
-                            <span className="font-medium text-[var(--text)] leading-snug">{feat}</span>
-                          </li>
-                        ))}
-                      </ul>
+                      <p className="text-[11.5px] text-[var(--text-muted)] font-medium mt-1 line-clamp-1">
+                        {col.subtitle}
+                      </p>
                     </div>
 
-                    {/* Brand Hallmark & Explore Button */}
-                    <div className="pt-3 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--border)]/60">
-                      <Link
-                        to={col.link}
-                        className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#161518] hover:bg-[#D63A3A] active:scale-95 text-white font-sans text-xs sm:text-sm font-bold tracking-wide transition-all duration-200 shadow-sm hover:shadow-md hover:shadow-red-950/20 cursor-pointer group/btn"
-                      >
-                        <span>{col.cta}</span>
-                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
-                      </Link>
-                      
-                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--surface-2)]/80 border border-[var(--border)] text-[11px] font-mono font-bold text-[var(--text-muted)]">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--gold)]" />
-                        <span>{col.brand}</span>
-                      </div>
+                    {/* 3. PRODUCT IMAGE SAHI SE SET (Centered, Sharp & Tactile) */}
+                    <div className="w-full aspect-[4/3] rounded-2xl bg-gradient-to-b from-[#FAF8F5] via-[#F4EFEA] to-[#EBE4D7] border border-[#DDD5C7] overflow-hidden flex items-center justify-center p-3.5 mb-4 relative shadow-inner group-hover:border-[var(--gold)]/60 transition-all duration-300">
+                      {/* Ambient Radial Spotlight */}
+                      <div className="absolute inset-0 bg-radial from-white/90 via-white/20 to-transparent pointer-events-none" />
+
+                      {/* Tactile Book Cutout with Drop Shadow and Hover Scale */}
+                      <img
+                        src={col.image}
+                        alt={col.title}
+                        className="relative z-1 max-h-full max-w-full object-contain filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.18)] transition-all duration-400 ease-out group-hover:scale-108 group-hover:-rotate-1"
+                        loading="lazy"
+                      />
+
+                      {/* Pedestal Surface Shadow */}
+                      <div className="absolute bottom-1.5 inset-x-8 h-2.5 bg-black/15 blur-sm rounded-full pointer-events-none" />
                     </div>
+
+                    {/* 4. SHIRF WAHI DETAILS (Concise Clean Specifications) */}
+                    <ul className="space-y-2 text-xs text-[var(--text)] mb-4">
+                      {col.features.map((feat, fIdx) => (
+                        <li key={fIdx} className="flex items-center gap-2">
+                          <span className="w-4 h-4 rounded-full bg-[var(--red)]/10 text-[var(--red)] flex items-center justify-center shrink-0 border border-[var(--red)]/20 shadow-2xs">
+                            <CheckCircle2 className="w-2.5 h-2.5 stroke-[2.5]" />
+                          </span>
+                          <span className="font-medium text-[var(--text)] text-[12px] leading-snug">{feat}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
 
-                  {/* Right Column: Editorial Product Showcase Stage with 3D Depth */}
-                  <div className="relative w-44 sm:w-48 md:w-52 aspect-[3/4] sm:aspect-auto sm:self-stretch rounded-2xl bg-gradient-to-b from-[#FAF8F5] via-[#F4EFEA] to-[#EBE4D7] border border-[#DDD5C7] overflow-hidden flex items-center justify-center p-3.5 shrink-0 group-hover:border-[var(--gold)]/50 transition-all duration-300 shadow-inner">
-                    {/* Ambient Glow Center */}
-                    <div className="absolute inset-0 bg-radial from-white/90 via-white/20 to-transparent pointer-events-none" />
+                  {/* 5. EXPLORE ACTION & BRAND HALLMARK */}
+                  <div className="pt-3 border-t border-[var(--border)]/60 flex items-center justify-between gap-2 mt-auto">
+                    <Link
+                      to={col.link}
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#161518] hover:bg-[#D63A3A] active:scale-95 text-white font-sans text-xs font-bold tracking-wide transition-all duration-200 shadow-sm hover:shadow-md hover:shadow-red-950/20 cursor-pointer group/btn"
+                    >
+                      <span>{col.cta}</span>
+                      <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
+                    </Link>
                     
-                    {/* Floating Authentic Chip */}
-                    <div className="absolute top-2.5 right-2.5 z-10 px-2 py-0.5 rounded-md bg-white/95 backdrop-blur-xs text-[9px] font-mono font-black uppercase tracking-wider text-[var(--gold)] border border-[var(--gold)]/30 shadow-2xs">
-                      {col.tag}
-                    </div>
-
-                    {/* Tactile Book Cutout with Drop Shadow and Hover Scale */}
-                    <img
-                      src={col.image}
-                      alt={col.title}
-                      className="relative z-1 max-h-full max-w-full object-contain filter drop-shadow-[0_12px_22px_rgba(0,0,0,0.18)] transition-all duration-500 ease-out group-hover:scale-108 group-hover:-rotate-1"
-                      loading="lazy"
-                    />
-
-                    {/* Pedestal Surface Shadow */}
-                    <div className="absolute bottom-2 inset-x-6 h-3 bg-black/15 blur-md rounded-full pointer-events-none" />
+                    <span className="text-[10.5px] font-mono font-bold text-[var(--text-muted)]">
+                      {col.brand}
+                    </span>
                   </div>
                 </div>
               </motion.div>
+            ))}
+          </div>
+
+          {/* Mobile Carousel Single-Slide Indicators (Dots) */}
+          <div className="flex md:hidden items-center justify-center gap-2 pt-1 pb-2">
+            {collections.map((_, dotIdx) => (
+              <button
+                key={dotIdx}
+                type="button"
+                onClick={() => scrollToSlide(dotIdx)}
+                aria-label={`Go to slide ${dotIdx + 1}`}
+                className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                  activeCollectionSlide === dotIdx
+                    ? 'w-7 bg-[var(--red)] shadow-2xs'
+                    : 'w-2 bg-[var(--border)] hover:bg-[var(--gold)]'
+                }`}
+              />
             ))}
           </div>
 
