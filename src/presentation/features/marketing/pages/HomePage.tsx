@@ -880,7 +880,7 @@ export const HomePage: React.FC = () => {
       {/* ========================================================================= */}
       {/* 5.5. THE ANATOMY OF AN OMEGA SMYTH-SEWN BOOK (Motion & Watermelon UI) */}
       {/* ========================================================================= */}
-      <section className="py-16 sm:py-24 bg-[var(--surface-1)] border-b border-[var(--border)] relative overflow-hidden transition-colors duration-200">
+      <section className="py-16 sm:py-24 bg-[var(--surface-1)] border-b border-[var(--border)] relative overflow-hidden transition-colors duration-200 scroll-mt-24">
         
         {/* Haikei Contour Lines for Craftsmanship */}
         <HaikeiPaperLines opacity={0.05} />
@@ -931,8 +931,8 @@ export const HomePage: React.FC = () => {
                     <Layers className="w-5 h-5 stroke-[2]" />
                   </div>
                   <div className="min-w-0 text-left">
-                    <span className="text-[10px] font-mono font-bold tracking-wider text-[#8C7355] uppercase block truncate">
-                      PART 01 · FOUNDATION
+                    <span className="text-xs font-mono font-bold tracking-wider text-[#8C7355] block">
+                      01
                     </span>
                     <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight truncate">
                       1.8mm Rigid Greyboard
@@ -967,8 +967,8 @@ export const HomePage: React.FC = () => {
                     <BookOpen className="w-5 h-5 stroke-[2]" />
                   </div>
                   <div className="min-w-0 text-left">
-                    <span className="text-[10px] font-mono font-bold tracking-wider text-[#8C7355] uppercase block truncate">
-                      PART 02 · SPINE
+                    <span className="text-xs font-mono font-bold tracking-wider text-[#8C7355] block">
+                      02
                     </span>
                     <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight truncate">
                       Smyth Thread Sewing
@@ -1003,8 +1003,8 @@ export const HomePage: React.FC = () => {
                     <Feather className="w-5 h-5 stroke-[2]" />
                   </div>
                   <div className="min-w-0 text-left">
-                    <span className="text-[10px] font-mono font-bold tracking-wider text-[#8C7355] uppercase block truncate">
-                      PART 03 · PAPER CORE
+                    <span className="text-xs font-mono font-bold tracking-wider text-[#8C7355] block">
+                      03
                     </span>
                     <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight truncate">
                       70 GSM Bleed-Proof Bond
@@ -1039,8 +1039,8 @@ export const HomePage: React.FC = () => {
                     <FileCheck2 className="w-5 h-5 stroke-[2]" />
                   </div>
                   <div className="min-w-0 text-left">
-                    <span className="text-[10px] font-mono font-bold tracking-wider text-[#8C7355] uppercase block truncate">
-                      PART 04 · PRECISION
+                    <span className="text-xs font-mono font-bold tracking-wider text-[#8C7355] block">
+                      04
                     </span>
                     <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight truncate">
                       NECTA &amp; Standard Ruling
