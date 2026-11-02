@@ -388,11 +388,11 @@ export const HomePage: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* Collection Cards: Mobile Single-Slide Carousel + Desktop 4-Col Grid (Borderless Minimal UI/UX) */}
+          {/* Collection Cards: shadcn/ui Inspired 2-Column Grid + Mobile Single-Slide Carousel */}
           <div
             ref={collectionScrollRef}
             onScroll={handleCollectionScroll}
-            className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 overflow-x-auto snap-x snap-mandatory pb-4 md:pb-0 scrollbar-none scroll-smooth px-1"
+            className="flex lg:grid lg:grid-cols-2 gap-6 overflow-x-auto snap-x snap-mandatory pb-4 lg:pb-0 scrollbar-none scroll-smooth px-1"
           >
             {collections.map((col, idx) => (
               <motion.div
@@ -401,77 +401,79 @@ export const HomePage: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.35, delay: idx * 0.06 }}
-                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                whileHover={{ y: -3, transition: { duration: 0.2 } }}
                 onClick={() => {
                   setSelectedCollection(col);
                   setSelectedGalleryImg(col.image);
                 }}
-                className="w-[86vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-white rounded-3xl p-5 sm:p-6 flex flex-col justify-between shadow-[0_4px_24px_rgba(22,21,24,0.04)] hover:shadow-[0_16px_36px_rgba(214,58,58,0.08)] group text-left cursor-pointer transition-all duration-300 border-0"
+                className="w-[88vw] sm:w-[520px] lg:w-auto shrink-0 snap-center relative rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-7 shadow-xs hover:shadow-xl hover:border-zinc-300/90 group text-left cursor-pointer transition-all duration-300 flex flex-col sm:flex-row items-center justify-between gap-6 overflow-hidden"
               >
-                <div className="flex flex-col justify-between h-full">
+                {/* Right Side: Number & Action Link (shadcn Badge) */}
+                <div className="absolute top-5 right-5 sm:top-6 sm:right-6 z-20 flex items-center gap-2">
+                  <span className="inline-flex items-center justify-center rounded-md border border-zinc-200/80 bg-zinc-50 px-2.5 py-1 font-mono text-xs font-bold text-zinc-700 shadow-2xs">
+                    0{idx + 1}
+                  </span>
+                  <div className="w-8 h-8 rounded-full border border-zinc-200/80 bg-zinc-50 text-zinc-700 group-hover:bg-zinc-900 group-hover:text-white transition-colors flex items-center justify-center shadow-2xs">
+                    <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  </div>
+                </div>
+
+                {/* Left Side: Product Details */}
+                <div className="flex-1 min-w-0 pr-0 sm:pr-4 flex flex-col justify-between self-stretch z-10">
                   <div>
-                    {/* 1. TOP METADATA WITH NUMBERS 1, 2, 3, 4 */}
-                    <div className="flex items-center justify-between gap-2 mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className="w-7 h-7 rounded-lg bg-[var(--surface-2)] text-[var(--gold)] font-mono font-black text-xs flex items-center justify-center shadow-2xs">
-                          0{idx + 1}
-                        </span>
-                        <span className="text-[10.5px] font-mono tracking-widest uppercase text-[var(--gold)] font-bold">
-                          {col.badge}
-                        </span>
-                      </div>
-                      <span className="text-[10px] font-mono text-[#8C7355] font-semibold bg-[#FAF8F5] px-2.5 py-1 rounded-md">
+                    {/* Badge & Tag (shadcn UI Badges) */}
+                    <div className="flex items-center gap-2 mb-2.5">
+                      <span className="inline-flex items-center rounded-full border border-zinc-200/80 bg-zinc-50 px-2.5 py-0.5 text-[10.5px] font-mono font-bold tracking-wider uppercase text-zinc-700">
+                        {col.badge}
+                      </span>
+                      <span className="text-[10px] font-mono text-[#8C7355] font-semibold bg-[#FAF8F5] px-2 py-0.5 rounded border border-[#EBE7DF]">
                         {col.tag}
                       </span>
                     </div>
 
-                    {/* 2. BOOK TITLE WITH NUMBER (Clean Bodoni/Serif) */}
-                    <div className="mb-3">
-                      <h3 className="font-serif text-lg sm:text-xl font-bold tracking-tight text-[#161311] group-hover:text-[var(--red)] transition-colors leading-tight">
-                        <span className="text-[var(--gold)] font-mono font-black mr-1.5">{idx + 1}.</span>
-                        {col.title}
-                      </h3>
-                      <p className="text-xs text-[#6E6B66] font-sans mt-1 line-clamp-1">
-                        {col.subtitle}
-                      </p>
-                    </div>
+                    {/* Book Title */}
+                    <h3 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 group-hover:text-[var(--red)] transition-colors leading-tight">
+                      {col.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-zinc-500 font-sans mt-1.5 mb-4 line-clamp-1">
+                      {col.subtitle}
+                    </p>
 
-                    {/* 3. PRODUCT IMAGE SAHI SE PROPER (No Border, High-Res WebP, Perfectly Scaled) */}
-                    <div className="w-full aspect-[4/3] rounded-2xl bg-[#FAF8F5] overflow-hidden flex items-center justify-center p-3 my-3 relative border-0">
-                      <img
-                        src={col.image}
-                        alt={col.title}
-                        className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-108 filter drop-shadow-sm"
-                        loading="lazy"
-                      />
-                    </div>
-
-                    {/* 4. REFINED MINIMALIST SPECIFICATIONS */}
-                    <ul className="space-y-2 text-xs text-[#47464A] mb-4">
+                    {/* Refined Feature Checklist */}
+                    <ul className="space-y-2 text-xs text-zinc-600 mb-5">
                       {col.features.map((feat, fIdx) => (
-                        <li key={fIdx} className="flex items-center gap-2.5">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[var(--gold)] shrink-0" />
-                          <span className="font-sans text-[12.5px] text-[#1A1C1B] leading-snug">{feat}</span>
+                        <li key={fIdx} className="flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#8C7355] shrink-0" />
+                          <span className="font-sans text-xs text-zinc-700 leading-snug">{feat}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
-                  {/* 5. EXPLORE BUTTON: OPENS PARTICULAR PRODUCT SINGLE PAGE DIRECTLY */}
-                  <div className="pt-3 flex items-center justify-between gap-2 mt-auto">
+                  {/* shadcn Button: Explore Single Product Direct Page */}
+                  <div className="pt-2 flex items-center gap-4 mt-auto">
                     <Link
                       to={col.link}
                       onClick={(e) => e.stopPropagation()}
-                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#111113] hover:bg-[#D63A3A] active:scale-95 text-white font-mono text-xs font-bold tracking-wider uppercase transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer group/btn"
+                      className="inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-900 hover:bg-[#D63A3A] active:scale-95 text-white font-mono text-xs font-bold tracking-wider uppercase px-5 py-2.5 shadow-xs hover:shadow-md transition-all duration-200 group/btn"
                     >
                       <span>{col.cta}</span>
                       <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
                     </Link>
-                    
-                    <span className="text-[11px] font-mono text-[#6E6B66]">
+                    <span className="text-[11px] font-mono text-zinc-400">
                       {col.brand}
                     </span>
                   </div>
+                </div>
+
+                {/* Right Side: Product Image (No Inner Box Div - Full Flex Natural Blend) */}
+                <div className="w-full sm:w-[48%] h-52 sm:h-64 relative flex items-center justify-center shrink-0">
+                  <img
+                    src={col.image}
+                    alt={col.title}
+                    className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-106 filter drop-shadow-md"
+                    loading="lazy"
+                  />
                 </div>
               </motion.div>
             ))}
@@ -815,33 +817,37 @@ export const HomePage: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* Watermelon UI Responsive Category Filter Strip */}
-          <div className="w-full overflow-x-auto no-scrollbar py-3 mb-6 sm:mb-8 touch-pan-x">
-            <div className="flex items-center justify-start sm:justify-center gap-2.5 min-w-max mx-auto px-4">
-              {[
-                { id: 'all', label: t.allProducts || 'All Products' },
-                { id: 'counter', label: 'Counter Books' },
-                { id: 'exercise', label: 'Exercise Books' },
-                { id: 'bahasha', label: 'Kraft Bahasha' },
-                { id: 'registers', label: 'Registers' },
-              ].map((tab) => {
-                const isActive = activeTab === tab.id;
-                return (
-                  <motion.button
-                    whileTap={{ scale: 0.94 }}
-                    key={tab.id}
-                    type="button"
-                    onClick={() => setActiveTab(tab.id as any)}
-                    className={`px-4.5 py-2.5 text-[11px] font-mono font-bold tracking-wider uppercase rounded-full transition-all duration-200 cursor-pointer shrink-0 shadow-2xs ${
-                      isActive
-                        ? 'bg-[#D63A3A] text-white shadow-md'
-                        : 'bg-[var(--surface-1)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--gold)]'
-                    }`}
-                  >
-                    {tab.label}
-                  </motion.button>
-                );
-              })}
+          {/* shadcn/ui Tabs Style Category Filter Strip */}
+          <div className="w-full overflow-x-auto no-scrollbar py-2 mb-6 sm:mb-8 touch-pan-x">
+            <div className="flex items-center justify-start sm:justify-center min-w-max mx-auto px-4">
+              <div className="inline-flex h-11 items-center justify-center rounded-xl bg-zinc-100 p-1 border border-zinc-200/80 shadow-2xs gap-1">
+                {[
+                  { id: 'all', label: t.allProducts || 'All Products' },
+                  { id: 'counter', label: 'Counter Books' },
+                  { id: 'exercise', label: 'Exercise Books' },
+                  { id: 'bahasha', label: 'Kraft Bahasha' },
+                  { id: 'registers', label: 'Registers' },
+                ].map((tab) => {
+                  const isActive = activeTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      type="button"
+                      onClick={() => setActiveTab(tab.id as any)}
+                      className={`inline-flex items-center justify-center whitespace-nowrap rounded-lg px-4 py-2 text-xs font-mono font-bold tracking-wider uppercase transition-all duration-200 cursor-pointer ${
+                        isActive
+                          ? 'bg-white text-zinc-900 shadow-xs ring-1 ring-black/5'
+                          : 'text-zinc-600 hover:text-zinc-900 hover:bg-white/60'
+                      }`}
+                    >
+                      {isActive && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#8C7355] mr-2 inline-block shrink-0" />
+                      )}
+                      <span>{tab.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
 

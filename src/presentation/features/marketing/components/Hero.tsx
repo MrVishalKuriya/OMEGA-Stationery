@@ -50,7 +50,7 @@ const HERO_SLIDES: HeroSlide[] = [
     id: 'slide-3',
     badgeEn: 'FACTORY DIRECT WHOLESALE',
     badgeSw: 'BEI ZA KIWANDANI ZA JUMLA',
-    headlinePrefix: 'Archival Ledger Folios.',
+    headlinePrefix: 'Archival Ledgers.',
     headlineGradient: 'Built to Last.',
     subEn: 'Double Smyth-threaded spines engineered for commercial accounts, schools, and government tenders.',
     subSw: 'Karatasi ya 70 GSM isiyopenyeza wino kabisa kwa kalamu zote.',
@@ -116,7 +116,7 @@ export const Hero: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
           
           {/* Left Column: Clean Typography & Action (7 cols) */}
-          <div className="lg:col-span-7 max-w-xl text-left space-y-4 sm:space-y-6">
+          <div className="lg:col-span-7 max-w-2xl text-left">
             <AnimatePresence mode="wait">
               <motion.div
                 key={slide.id}
@@ -124,10 +124,10 @@ export const Hero: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                className="space-y-4 sm:space-y-6"
+                className="space-y-4 sm:space-y-5"
               >
                 {/* Headline: White Serif + Gradient Sans */}
-                <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--text)] leading-[1.14]">
+                <h1 className="font-serif text-3xl sm:text-5xl lg:text-[56px] font-bold tracking-tight text-[var(--text)] leading-[1.12]">
                   <span>{slide.headlinePrefix}</span>
                   <br />
                   <span className="font-sans font-extrabold text-gradient-headline">
@@ -141,7 +141,7 @@ export const Hero: React.FC = () => {
                 </p>
 
                 {/* Watermelon UI Quick Specs Micro-Pills */}
-                <div className="flex flex-wrap items-center gap-2.5 pt-2 pb-1 text-[11px] font-mono text-[var(--text)]">
+                <div className="flex flex-wrap items-center gap-2.5 text-[11px] font-mono text-[var(--text)]">
                   <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[var(--surface-1)] border border-[var(--border)] shadow-2xs">
                     <Feather size={12} className="text-[var(--red)]" />
                     <span>70 GSM Bleed-Proof</span>
@@ -153,11 +153,11 @@ export const Hero: React.FC = () => {
                 </div>
 
                 {/* Primary Action Button: Filled Red Pill with Motion Tap Physics */}
-                <div className="pt-3">
+                <div className="pt-1">
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.96 }} className="inline-block">
                     <Link
                       to={slide.href}
-                      className="inline-flex items-center gap-2.5 px-8 py-3.5 min-h-[48px] rounded-full bg-[#D63A3A] hover:bg-[#b91c1c] active:scale-95 text-white font-mono text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-200 shadow-xl shadow-red-950/40 group cursor-pointer border border-red-400/30"
+                      className="inline-flex items-center gap-2.5 px-8 py-3.5 min-h-[48px] rounded-full bg-[#D63A3A] hover:bg-[#b91c1c] active:scale-95 text-white font-mono text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-200 shadow-[0_10px_24px_rgba(214,58,58,0.32)] hover:shadow-[0_14px_32px_rgba(214,58,58,0.42)] group cursor-pointer border border-red-400/30"
                       style={{ backgroundColor: '#D63A3A', color: '#FFFFFF' }}
                     >
                       <span>{language === 'sw' ? slide.ctaSw : slide.ctaEn}</span>
@@ -197,7 +197,7 @@ export const Hero: React.FC = () => {
                   src={slide.productImage}
                   alt={slide.headlinePrefix}
                   className="relative z-10 max-h-[85%] max-w-[85%] object-contain drop-shadow-[0_25px_40px_rgba(0,0,0,0.65)] cursor-pointer"
-                  priority={true}
+                  loading="eager"
                 />
               </motion.div>
             </AnimatePresence>
