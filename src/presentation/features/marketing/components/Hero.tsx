@@ -91,16 +91,9 @@ export const Hero: React.FC = () => {
       onMouseLeave={() => setIsPaused(false)}
       className="relative w-full overflow-hidden bg-[var(--bg)] min-h-[380px] sm:min-h-[520px] lg:min-h-[600px] flex items-center border-b border-[var(--border)] transition-colors duration-200"
     >
-      {/* Clean Texture Background (No Baked-In Text) */}
+      {/* Clean Light Luxury Paper Canvas */}
       <div
-        className="absolute inset-0 bg-cover bg-center sm:bg-right bg-no-repeat pointer-events-none opacity-20 transition-opacity duration-700"
-        style={{ backgroundImage: "url('/hero-luxury-bg.jpg')" }}
-        aria-hidden="true"
-      />
-
-      {/* Light Luxury Paper Gradient Overlay */}
-      <div
-        className="absolute inset-0 pointer-events-none bg-gradient-to-r from-[#FAF8F5] via-[#FAF8F5]/96 sm:via-[#FAF8F5]/88 to-[#FAF8F5]/50"
+        className="absolute inset-0 pointer-events-none bg-gradient-to-r from-[#FAF8F5] via-[#FAF8F5] to-[#F5EFE6]"
         aria-hidden="true"
       />
 
@@ -186,17 +179,17 @@ export const Hero: React.FC = () => {
               >
                 {/* Soft Radial Ambient Glow */}
                 <div
-                  className="absolute inset-4 rounded-full bg-gradient-to-tr from-[var(--red)]/20 via-[var(--gold)]/15 to-transparent blur-3xl pointer-events-none"
+                  className="absolute inset-4 rounded-full bg-gradient-to-tr from-[var(--red)]/10 via-[var(--gold)]/10 to-transparent blur-2xl pointer-events-none"
                   aria-hidden="true"
                 />
 
-                {/* Cutout Product Image with Rich Soft Shadow */}
+                {/* Cutout Product Image with Soft Elegant Shadow */}
                 <motion.img
                   whileHover={{ scale: 1.05, rotate: 1 }}
                   transition={{ duration: 0.3 }}
                   src={slide.productImage}
                   alt={slide.headlinePrefix}
-                  className="relative z-10 max-h-[85%] max-w-[85%] object-contain drop-shadow-[0_25px_40px_rgba(0,0,0,0.65)] cursor-pointer"
+                  className="relative z-10 max-h-[85%] max-w-[85%] object-contain drop-shadow-[0_20px_25px_rgba(0,0,0,0.18)] cursor-pointer"
                   loading="eager"
                 />
               </motion.div>
