@@ -109,14 +109,6 @@ export const AboutPage: React.FC = () => {
             transition={{ duration: 0.55 }}
             className="max-w-3xl space-y-6"
           >
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[var(--gold)] bg-[var(--surface-2)] border border-[var(--border)] backdrop-blur-md font-mono shadow-xs">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-              </span>
-              <span>Soweto SIDO Mbeya &amp; Kariakoo Hub · Est. 1998</span>
-            </div>
-
             <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-[var(--text)] leading-[1.12] tracking-tight">
               {language === 'sw' ? 'Historia na Ubora wa' : '28 Years of Precision'} <br />
               <span className="font-bold text-[var(--red)]">
