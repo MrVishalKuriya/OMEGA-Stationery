@@ -84,7 +84,7 @@ export const ProductImage: React.FC<ProductImageProps> = ({
   switch (variant) {
     case 'card':
       aspectClass = 'aspect-square';
-      paddingStyle = 'clamp(8px, 6%, 20px)';
+      paddingStyle = '2px';
       objectPosition = 'center';
       defaultSizes = '(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw';
       break;
