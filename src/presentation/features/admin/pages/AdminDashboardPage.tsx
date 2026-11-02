@@ -2438,44 +2438,6 @@ export const AdminDashboardPage: React.FC = () => {
         description="Comprehensive Enterprise Resource Planning (ERP) suite for OMEGA Stationery Tanzania: Direct MongoDB Atlas CRUD operations, catalog handles, CMS web content, and logistics waybills."
       />
 
-      {/* Top Security & ERP Telemetry Banner */}
-      <div className="bg-white text-zinc-900 border border-zinc-200/80 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[var(--red)]/10 text-[var(--red)] border border-[var(--red)]/20 flex items-center justify-center shrink-0 shadow-2xs">
-            <Lock className="w-5 h-5 stroke-[2.2]" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-zinc-900 font-bold text-xs uppercase tracking-wider font-mono">
-                OMEGA HQ ENTERPRISE ERP ENGINE
-              </span>
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-zinc-100 border border-zinc-200 text-[var(--red)] font-mono font-bold">
-                /omega-hq-portal-2026
-              </span>
-            </div>
-            <p className="text-xs text-zinc-500 mt-0.5">
-              Direct Database CRUD Operations · Live MongoDB Atlas Connection · Central Operations Desk · Mbeya
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2.5 shrink-0">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-xs font-semibold text-emerald-700">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Atlas Live (omega_stationery)</span>
-          </span>
-          <button
-            type="button"
-            onClick={handleReloadCatalog}
-            disabled={isReloadingCatalog}
-            title="Reload latest catalog directly from database"
-            className="p-1.5 bg-zinc-100 hover:bg-zinc-200/80 rounded-lg text-zinc-700 transition-colors cursor-pointer"
-          >
-            <RefreshCw className={`w-4 h-4 ${isReloadingCatalog ? 'animate-spin' : ''}`} />
-          </button>
-        </div>
-      </div>
-
       {/* Header & Tabs */}
       <div className="border-b border-zinc-200/80 pb-6 flex flex-col lg:flex-row lg:items-end justify-between gap-6">
         <div>
@@ -2484,6 +2446,19 @@ export const AdminDashboardPage: React.FC = () => {
               ERP OPERATIONS
             </span>
             <span className="text-xs text-zinc-500 font-mono">v4.2 · Direct Cloud Database CRUD</span>
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-[11px] font-semibold text-emerald-700">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Atlas Live</span>
+            </span>
+            <button
+              type="button"
+              onClick={handleReloadCatalog}
+              disabled={isReloadingCatalog}
+              title="Reload latest catalog directly from database"
+              className="p-1 bg-zinc-100 hover:bg-zinc-200/80 rounded-md text-zinc-600 transition-colors cursor-pointer"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isReloadingCatalog ? 'animate-spin' : ''}`} />
+            </button>
           </div>
           <h1 className="font-serif text-3xl font-bold text-zinc-900 tracking-tight">
             Store Operations &amp; Database Controls
@@ -2808,7 +2783,7 @@ export const AdminDashboardPage: React.FC = () => {
                 type="button"
                 onClick={handleExportCSV}
                 title="Export current view to Excel CSV format"
-                className="px-2.5 sm:px-3 py-2 bg-stone-100 hover:bg-stone-200 text-[#111113] border border-stone-200 text-xs font-bold rounded-xl inline-flex items-center justify-center gap-1.5 transition-colors shadow-2xs font-mono"
+                className="px-2.5 sm:px-3 py-2 bg-zinc-50 hover:bg-zinc-100 text-zinc-800 border border-zinc-200 text-xs font-bold rounded-xl inline-flex items-center justify-center gap-1.5 transition-colors shadow-2xs font-mono cursor-pointer"
               >
                 <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-700" />
                 <span className="truncate">CSV</span>
@@ -2819,16 +2794,16 @@ export const AdminDashboardPage: React.FC = () => {
                 onClick={handleSyncDatabase}
                 disabled={syncingDb}
                 title="Synchronize and seed all official catalog products to MongoDB Atlas"
-                className="px-2.5 sm:px-3.5 py-2 bg-stone-100 hover:bg-stone-200 text-[#111113] border border-stone-200 text-xs font-bold rounded-xl inline-flex items-center justify-center gap-1.5 transition-colors shadow-2xs font-mono"
+                className="px-2.5 sm:px-3.5 py-2 bg-zinc-50 hover:bg-zinc-100 text-zinc-800 border border-zinc-200 text-xs font-bold rounded-xl inline-flex items-center justify-center gap-1.5 transition-colors shadow-2xs font-mono cursor-pointer"
               >
-                <RefreshCw className={`w-3.5 h-3.5 text-[#dc2626] ${syncingDb ? 'animate-spin' : ''}`} />
+                <RefreshCw className={`w-3.5 h-3.5 text-[var(--red)] ${syncingDb ? 'animate-spin' : ''}`} />
                 <span className="truncate">Sync DB</span>
               </button>
 
               <button
                 type="button"
                 onClick={openAddProductModal}
-                className="px-3 sm:px-4 py-2 btn-ledup-copper text-white text-xs font-bold uppercase tracking-wider rounded-xl inline-flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all font-mono"
+                className="px-3 sm:px-4 py-2 bg-[var(--red)] hover:bg-[var(--red-hover)] text-white text-xs font-bold uppercase tracking-wider rounded-xl inline-flex items-center justify-center gap-1.5 shadow-xs active:scale-95 transition-all font-mono cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 <span className="truncate">Add Product</span>

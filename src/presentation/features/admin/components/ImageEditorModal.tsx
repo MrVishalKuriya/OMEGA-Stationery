@@ -1002,15 +1002,15 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 w-screen h-screen bg-[#0e0e0e] text-white flex flex-col overflow-hidden select-none animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-50 w-screen h-screen bg-[#FAF8F5] text-zinc-900 flex flex-col overflow-hidden select-none animate-in fade-in duration-150 font-sans">
       {/* ================= TOP APP BAR (STITCH DESIGN) ================= */}
-      <header className="sticky top-0 z-40 bg-[#0d0d10]/95 backdrop-blur-md border-b border-[#1f1f26] px-3 xs:px-4 sm:px-6 py-2.5 flex items-center justify-between shrink-0">
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-zinc-200 px-3 xs:px-4 sm:px-6 py-2.5 flex items-center justify-between shrink-0 shadow-2xs">
         {/* Left: Back Button */}
         <button
           type="button"
           onClick={onClose}
           disabled={isProcessing}
-          className="w-8 h-8 xs:w-9 xs:h-9 rounded-full bg-[#18181d] border border-[#272730] flex items-center justify-center text-neutral-300 hover:text-white hover:bg-[#202028] transition active:scale-95 shrink-0"
+          className="w-8 h-8 xs:w-9 xs:h-9 rounded-full bg-zinc-100 border border-zinc-200 flex items-center justify-center text-zinc-700 hover:text-zinc-900 hover:bg-zinc-200 transition active:scale-95 shrink-0 cursor-pointer"
           title="Return to Product Form"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -1019,12 +1019,12 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
         {/* Center: Brand Title + Status */}
         <div className="flex flex-col items-center min-w-0 mx-2">
           <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-[#dc2626] animate-pulse shrink-0" />
-            <h1 className="text-xs xs:text-sm font-bold tracking-wider font-mono uppercase text-white flex items-center gap-1 truncate">
-              OMEGA <span className="text-[#dc2626] font-extrabold text-[10px] xs:text-[11px] px-1.5 py-0.5 rounded bg-[#dc2626]/15 border border-[#dc2626]/30">STUDIO PRO</span>
+            <span className="w-2 h-2 rounded-full bg-[var(--red)] animate-pulse shrink-0" />
+            <h1 className="text-xs xs:text-sm font-bold tracking-wider font-mono uppercase text-zinc-900 flex items-center gap-1 truncate">
+              OMEGA <span className="text-[var(--red)] font-extrabold text-[10px] xs:text-[11px] px-1.5 py-0.5 rounded bg-[var(--red)]/10 border border-[var(--red)]/20">STUDIO PRO</span>
             </h1>
           </div>
-          <p className="text-[9px] xs:text-[10px] text-neutral-400 font-mono tracking-tight mt-0.5 truncate max-w-[140px] xs:max-w-xs sm:max-w-md">
+          <p className="text-[9px] xs:text-[10px] text-zinc-500 font-mono tracking-tight mt-0.5 truncate max-w-[140px] xs:max-w-xs sm:max-w-md">
             {fileName} {sourceImg ? `• ${sourceImg.width}×${sourceImg.height}px` : ''}
           </p>
         </div>
@@ -1034,7 +1034,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
           <button
             type="button"
             onClick={handleResetAll}
-            className="text-xs font-medium text-neutral-400 hover:text-neutral-200 px-2 py-1.5 transition active:scale-95 flex items-center gap-1"
+            className="text-xs font-semibold text-zinc-500 hover:text-zinc-900 px-2.5 py-1.5 transition active:scale-95 flex items-center gap-1 cursor-pointer font-mono"
             title="Reset All Edits"
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -1045,7 +1045,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
             type="button"
             onClick={handleApplyExport}
             disabled={isProcessing || !sourceImg}
-            className="bg-[#dc2626] hover:bg-red-500 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-md shadow-[#dc2626]/30 transition flex items-center gap-1.5 active:scale-95 disabled:opacity-50"
+            className="bg-[var(--red)] hover:bg-[var(--red-hover)] text-white text-xs font-bold px-3.5 py-1.5 rounded-xl shadow-xs transition flex items-center gap-1.5 active:scale-95 disabled:opacity-50 cursor-pointer font-mono"
           >
             {isProcessing ? (
               <>
@@ -1063,9 +1063,9 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
       </header>
 
       {/* ================= RATIO & FRAMING HUD BAR (STITCH) ================= */}
-      <div className="bg-[#0e0e12] border-b border-[#1f1f26] px-3 py-2 flex items-center justify-between gap-2 overflow-x-auto no-scrollbar shrink-0">
+      <div className="bg-zinc-50 border-b border-zinc-200 px-3 py-2 flex items-center justify-between gap-2 overflow-x-auto no-scrollbar shrink-0">
         <div className="flex items-center gap-1.5 shrink-0">
-          <span className="text-[10px] uppercase font-bold text-stone-500 tracking-wider mr-1 hidden xs:inline">Ratio</span>
+          <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-wider mr-1 hidden xs:inline font-mono">Ratio</span>
           {[
             { id: '1:1', label: '1:1 Sq' },
             { id: '4:5', label: '4:5 Insta' },
@@ -1076,10 +1076,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               key={r.id}
               type="button"
               onClick={() => handleRatioChange(r.id as AspectRatioMode)}
-              className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all shrink-0 ${
+              className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all shrink-0 cursor-pointer font-mono ${
                 aspectRatio === r.id
-                  ? 'bg-white text-black font-bold shadow-xs'
-                  : 'bg-[#18181f] text-stone-400 hover:text-white border border-[#272733]'
+                  ? 'bg-zinc-900 text-white font-bold shadow-xs'
+                  : 'bg-white text-zinc-700 hover:text-zinc-900 border border-zinc-200 shadow-2xs'
               }`}
             >
               {r.label}
@@ -1091,31 +1091,31 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
           <button
             type="button"
             onClick={() => setShowGrid((prev) => !prev)}
-            className={`px-2 py-1 rounded-lg text-[11px] font-medium flex items-center gap-1 border transition-all ${
+            className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold flex items-center gap-1 border transition-all cursor-pointer font-mono ${
               showGrid
-                ? 'bg-[#dc2626]/20 border-[#dc2626] text-red-300'
-                : 'bg-[#18181f] border-[#272733] text-stone-400 hover:text-white'
+                ? 'bg-[var(--red)]/10 border-[var(--red)] text-[var(--red)]'
+                : 'bg-white border-zinc-200 text-zinc-700 hover:text-zinc-900 shadow-2xs'
             }`}
             title="Toggle 3x3 Rule of Thirds Grid"
           >
-            <Grid className="w-3 h-3 text-[#dc2626]" />
+            <Grid className="w-3 h-3 text-[var(--red)]" />
             <span className="hidden sm:inline">3x3 Grid</span>
           </button>
 
           <button
             type="button"
             onClick={() => setFitMode((prev) => (prev === 'fill' ? 'fit' : 'fill'))}
-            className="px-2 py-1 rounded-lg text-[11px] font-medium flex items-center gap-1 bg-[#18181f] border border-[#272733] text-stone-400 hover:text-white transition-all"
+            className="px-2.5 py-1 rounded-lg text-[11px] font-semibold flex items-center gap-1 bg-white border border-zinc-200 text-zinc-700 hover:text-zinc-900 shadow-2xs transition-all cursor-pointer font-mono"
             title={fitMode === 'fill' ? 'Switch to Fit Entire Object' : 'Switch to Fill Edge'}
           >
             {fitMode === 'fill' ? (
               <>
-                <Minimize className="w-3 h-3 text-[#dc2626]" />
+                <Minimize className="w-3 h-3 text-[var(--red)]" />
                 <span className="hidden sm:inline">Fit</span>
               </>
             ) : (
               <>
-                <Maximize className="w-3 h-3 text-[#dc2626]" />
+                <Maximize className="w-3 h-3 text-[var(--red)]" />
                 <span className="hidden sm:inline">Fill</span>
               </>
             )}
@@ -1125,24 +1125,24 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
 
       {/* ================= MAIN STUDIO VIEWPORT & CONTROLS ================= */}
       {/* On mobile: Upper half fixed preview, Lower half scrollable controls; On desktop: 2-column grid */}
-      <div className="flex-1 min-h-0 flex flex-col lg:grid lg:grid-cols-12 overflow-hidden bg-[#09090b]">
+      <div className="flex-1 min-h-0 flex flex-col lg:grid lg:grid-cols-12 overflow-hidden bg-zinc-100/60">
         {/* UPPER (Mobile) / LEFT (Desktop): Viewport */}
-        <div className="h-[36vh] xs:h-[40vh] sm:h-[44vh] lg:h-auto lg:col-span-7 xl:col-span-8 p-2 xs:p-3 sm:p-5 lg:p-8 flex flex-col items-center justify-center border-b lg:border-b-0 lg:border-r border-[#1f1f26] relative bg-[#09090c] shrink-0 min-h-0 overflow-hidden">
+        <div className="h-[36vh] xs:h-[40vh] sm:h-[44vh] lg:h-auto lg:col-span-7 xl:col-span-8 p-2 xs:p-3 sm:p-5 lg:p-8 flex flex-col items-center justify-center border-b lg:border-b-0 lg:border-r border-zinc-200 relative bg-zinc-100/70 shrink-0 min-h-0 overflow-hidden">
           <div
             ref={containerRef}
-            className={`relative w-full h-full max-h-[32vh] xs:max-h-[36vh] sm:max-h-[40vh] lg:max-h-[min(72vh,680px)] aspect-square rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center select-none border border-[#1f1f26] ${
+            className={`relative w-full h-full max-h-[32vh] xs:max-h-[36vh] sm:max-h-[40vh] lg:max-h-[min(72vh,680px)] aspect-square rounded-2xl overflow-hidden shadow-sm flex items-center justify-center select-none border border-zinc-200/80 bg-white ${
               bgPreset === 'transparent'
-                ? 'bg-[linear-gradient(45deg,#1f1f26_25%,transparent_25%),linear-gradient(-45deg,#1f1f26_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#1f1f26_75%),linear-gradient(-45deg,transparent_75%,#1f1f26_75%)] bg-[size:16px_16px] bg-[position:0_0,0_8px,8px_-8px,-8px_0px] bg-[#121217]'
-                : 'bg-[#121217]'
+                ? 'bg-[linear-gradient(45deg,#e4e4e7_25%,transparent_25%),linear-gradient(-45deg,#e4e4e7_25%,transparent_25%),linear-gradient(45deg,transparent_75%,#e4e4e7_75%),linear-gradient(-45deg,transparent_75%,#e4e4e7_75%)] bg-[size:16px_16px] bg-[position:0_0,0_8px,8px_-8px,-8px_0px] bg-white'
+                : 'bg-white'
             }`}
           >
             {isLoadingImage ? (
-              <div className="flex flex-col items-center gap-2 text-stone-400">
-                <RefreshCw className="w-8 h-8 text-[#dc2626] animate-spin" />
-                <span className="text-xs font-bold">Loading Photo...</span>
+              <div className="flex flex-col items-center gap-2 text-zinc-500">
+                <RefreshCw className="w-8 h-8 text-[var(--red)] animate-spin" />
+                <span className="text-xs font-bold font-mono">Loading Photo...</span>
               </div>
             ) : imgLoadError ? (
-              <div className="p-4 text-center text-red-400 text-xs font-bold">
+              <div className="p-4 text-center text-red-600 text-xs font-bold font-mono">
                 {imgLoadError}
               </div>
             ) : (
@@ -1158,36 +1158,36 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
             {/* 3x3 Rule of Thirds Guide Grid Overlay */}
             {showGrid && !isLoadingImage && !imgLoadError && (
               <div className="absolute inset-0 pointer-events-none grid grid-cols-3 grid-rows-3 z-5">
-                <div className="border-r border-b border-white/15" />
-                <div className="border-r border-b border-white/15" />
-                <div className="border-b border-white/15" />
-                <div className="border-r border-b border-white/15" />
-                <div className="border-r border-b border-white/15" />
-                <div className="border-b border-white/15" />
-                <div className="border-r border-b border-white/15" />
-                <div className="border-r border-b border-white/15" />
+                <div className="border-r border-b border-black/15" />
+                <div className="border-r border-b border-black/15" />
+                <div className="border-b border-black/15" />
+                <div className="border-r border-b border-black/15" />
+                <div className="border-r border-b border-black/15" />
+                <div className="border-b border-black/15" />
+                <div className="border-r border-b border-black/15" />
+                <div className="border-r border-b border-black/15" />
                 <div />
               </div>
             )}
 
             {/* Corner Framing L-accents */}
-            <div className="absolute top-2 left-2 w-3.5 h-3.5 border-t-2 border-l-2 border-[#dc2626] pointer-events-none z-10" />
-            <div className="absolute top-2 right-2 w-3.5 h-3.5 border-t-2 border-r-2 border-[#dc2626] pointer-events-none z-10" />
-            <div className="absolute bottom-2 left-2 w-3.5 h-3.5 border-b-2 border-l-2 border-[#dc2626] pointer-events-none z-10" />
-            <div className="absolute bottom-2 right-2 w-3.5 h-3.5 border-b-2 border-r-2 border-[#dc2626] pointer-events-none z-10" />
+            <div className="absolute top-2 left-2 w-3.5 h-3.5 border-t-2 border-l-2 border-[var(--red)] pointer-events-none z-10" />
+            <div className="absolute top-2 right-2 w-3.5 h-3.5 border-t-2 border-r-2 border-[var(--red)] pointer-events-none z-10" />
+            <div className="absolute bottom-2 left-2 w-3.5 h-3.5 border-b-2 border-l-2 border-[var(--red)] pointer-events-none z-10" />
+            <div className="absolute bottom-2 right-2 w-3.5 h-3.5 border-b-2 border-r-2 border-[var(--red)] pointer-events-none z-10" />
 
             {/* Floating Live Zoom Pill */}
-            <div className="absolute top-2.5 left-2.5 z-10 bg-black/80 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/15 text-[10px] font-mono font-bold text-white shadow-md pointer-events-none">
+            <div className="absolute top-2.5 left-2.5 z-10 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-full border border-zinc-200 text-[10px] font-mono font-bold text-zinc-900 shadow-xs pointer-events-none">
               {Math.round(zoom * 100)}%
             </div>
 
             {/* Floating Quick Transform Bar (Stitch) */}
-            <div className="absolute bottom-2.5 right-2.5 z-10 flex items-center gap-1 bg-black/80 backdrop-blur-md p-1 rounded-xl border border-white/15 shadow-lg">
+            <div className="absolute bottom-2.5 right-2.5 z-10 flex items-center gap-1 bg-white/90 backdrop-blur-md p-1 rounded-xl border border-zinc-200 shadow-sm">
               <button
                 type="button"
                 onClick={() => setFlipH((prev) => !prev)}
-                className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
-                  flipH ? 'bg-[#dc2626] text-white' : 'text-stone-300 hover:text-white hover:bg-white/10'
+                className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all cursor-pointer ${
+                  flipH ? 'bg-[var(--red)] text-white' : 'text-zinc-700 hover:text-zinc-900 hover:bg-zinc-100'
                 }`}
                 title="Flip Horizontally"
               >
@@ -1196,8 +1196,8 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               <button
                 type="button"
                 onClick={() => setFlipV((prev) => !prev)}
-                className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
-                  flipV ? 'bg-[#dc2626] text-white' : 'text-stone-300 hover:text-white hover:bg-white/10'
+                className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all cursor-pointer ${
+                  flipV ? 'bg-[var(--red)] text-white' : 'text-zinc-700 hover:text-zinc-900 hover:bg-zinc-100'
                 }`}
                 title="Flip Vertically"
               >
@@ -1206,7 +1206,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               <button
                 type="button"
                 onClick={() => setRotation((prev) => (prev + 90) % 360)}
-                className="w-7 h-7 rounded-lg text-stone-300 hover:text-white hover:bg-white/10 flex items-center justify-center transition-all"
+                className="w-7 h-7 rounded-lg text-zinc-700 hover:text-zinc-900 hover:bg-zinc-100 flex items-center justify-center transition-all cursor-pointer"
                 title="Rotate 90° Clockwise"
               >
                 <RotateCw className="w-3.5 h-3.5" />
@@ -1214,24 +1214,24 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
             </div>
           </div>
 
-          <p className="text-[10px] sm:text-[11px] text-stone-500 font-medium mt-1.5 hidden xs:flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#dc2626]" />
+          <p className="text-[10px] sm:text-[11px] text-zinc-500 font-medium mt-1.5 hidden xs:flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[var(--red)]" />
             <span>Pinch / wheel to zoom · Drag center to reposition · Drag corners to crop</span>
           </p>
         </div>
 
         {/* LOWER (Mobile) / RIGHT (Desktop): Tabs & Controls */}
-        <div className="flex-1 min-h-0 flex flex-col lg:col-span-5 xl:col-span-4 bg-[#0f0f13] overflow-hidden">
+        <div className="flex-1 min-h-0 flex flex-col lg:col-span-5 xl:col-span-4 bg-white overflow-hidden border-l border-zinc-200">
           {/* Segmented Studio Navigation Tabs Header (Stitch) */}
-          <div className="p-2 border-b border-[#1f1f26] bg-[#0c0c10] shrink-0">
-            <div className="grid grid-cols-5 p-1 bg-[#15151b] rounded-xl border border-[#22222c] gap-1">
+          <div className="p-2 border-b border-zinc-200 bg-zinc-50 shrink-0">
+            <div className="grid grid-cols-5 p-1 bg-zinc-100 rounded-xl border border-zinc-200/80 gap-1">
               <button
                 type="button"
                 onClick={() => setStudioTab('crop')}
-                className={`py-1.5 px-1 rounded-lg flex flex-col items-center justify-center gap-0.5 transition-all ${
+                className={`py-1.5 px-1 rounded-lg flex flex-col items-center justify-center gap-0.5 transition-all cursor-pointer ${
                   studioTab === 'crop'
-                    ? 'bg-[#dc2626] text-white font-bold shadow-md shadow-[#dc2626]/20'
-                    : 'text-stone-400 hover:text-stone-200'
+                    ? 'bg-[var(--red)] text-white font-bold shadow-xs'
+                    : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200/50'
                 }`}
               >
                 <Crop className="w-3.5 h-3.5" />
@@ -1241,10 +1241,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               <button
                 type="button"
                 onClick={() => setStudioTab('studio')}
-                className={`py-1.5 px-1 rounded-lg flex flex-col items-center justify-center gap-0.5 transition-all ${
+                className={`py-1.5 px-1 rounded-lg flex flex-col items-center justify-center gap-0.5 transition-all cursor-pointer ${
                   studioTab === 'studio'
-                    ? 'bg-[#dc2626] text-white font-bold shadow-md shadow-[#dc2626]/20'
-                    : 'text-stone-400 hover:text-stone-200'
+                    ? 'bg-[var(--red)] text-white font-bold shadow-xs'
+                    : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200/50'
                 }`}
               >
                 <Paintbrush className="w-3.5 h-3.5" />
@@ -1254,10 +1254,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               <button
                 type="button"
                 onClick={() => setStudioTab('filter')}
-                className={`py-1.5 px-1 rounded-lg flex flex-col items-center justify-center gap-0.5 transition-all ${
+                className={`py-1.5 px-1 rounded-lg flex flex-col items-center justify-center gap-0.5 transition-all cursor-pointer ${
                   studioTab === 'filter'
-                    ? 'bg-[#dc2626] text-white font-bold shadow-md shadow-[#dc2626]/20'
-                    : 'text-stone-400 hover:text-stone-200'
+                    ? 'bg-[var(--red)] text-white font-bold shadow-xs'
+                    : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200/50'
                 }`}
               >
                 <Wand2 className="w-3.5 h-3.5" />
@@ -1267,10 +1267,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               <button
                 type="button"
                 onClick={() => setStudioTab('adjust')}
-                className={`py-1.5 px-1 rounded-lg flex flex-col items-center justify-center gap-0.5 transition-all ${
+                className={`py-1.5 px-1 rounded-lg flex flex-col items-center justify-center gap-0.5 transition-all cursor-pointer ${
                   studioTab === 'adjust'
-                    ? 'bg-[#dc2626] text-white font-bold shadow-md shadow-[#dc2626]/20'
-                    : 'text-stone-400 hover:text-stone-200'
+                    ? 'bg-[var(--red)] text-white font-bold shadow-xs'
+                    : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200/50'
                 }`}
               >
                 <Sliders className="w-3.5 h-3.5" />
@@ -1280,10 +1280,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               <button
                 type="button"
                 onClick={() => setStudioTab('preview')}
-                className={`py-1.5 px-1 rounded-lg flex flex-col items-center justify-center gap-0.5 transition-all ${
+                className={`py-1.5 px-1 rounded-lg flex flex-col items-center justify-center gap-0.5 transition-all cursor-pointer ${
                   studioTab === 'preview'
-                    ? 'bg-[#dc2626] text-white font-bold shadow-md shadow-[#dc2626]/20'
-                    : 'text-stone-400 hover:text-stone-200'
+                    ? 'bg-[var(--red)] text-white font-bold shadow-xs'
+                    : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-200/50'
                 }`}
               >
                 <Eye className="w-3.5 h-3.5" />
@@ -1298,7 +1298,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               {studioTab === 'crop' && (
                 <div className="space-y-4 animate-in fade-in duration-150">
                   <div className="space-y-2">
-                    <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider block">
+                    <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider block font-mono">
                       Aspect Ratio Preset
                     </span>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -1313,33 +1313,33 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                           key={ratio.id}
                           type="button"
                           onClick={() => handleRatioChange(ratio.id as AspectRatioMode)}
-                          className={`p-2.5 rounded-xl border text-left transition-all ${
+                          className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
                             aspectRatio === ratio.id
-                              ? 'border-[#dc2626] bg-[#dc2626]/15 text-white shadow-xs'
-                              : 'border-[#2c2c2c] bg-[#1a1a1a] text-stone-400 hover:text-stone-200'
+                              ? 'border-[var(--red)] bg-[var(--red)]/5 text-[var(--red)] shadow-xs ring-1 ring-[var(--red)]/20'
+                              : 'border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50'
                           }`}
                         >
                           <div className="font-bold text-xs">{ratio.label}</div>
-                          <div className="text-[10px] text-stone-400">{ratio.note}</div>
+                          <div className="text-[10px] text-zinc-500">{ratio.note}</div>
                         </button>
                       ))}
                     </div>
                   </div>
 
                   {/* Straighten Angle with -1° and +1° micro adjust */}
-                  <div className="space-y-1.5 p-3 rounded-2xl bg-[#15151b] border border-[#22222c]">
+                  <div className="space-y-1.5 p-3 rounded-2xl bg-zinc-50 border border-zinc-200">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="font-bold text-stone-300 flex items-center gap-1.5">
-                        <Compass className="w-3.5 h-3.5 text-[#dc2626]" />
+                      <span className="font-bold text-zinc-800 flex items-center gap-1.5">
+                        <Compass className="w-3.5 h-3.5 text-[var(--red)]" />
                         <span>Straighten Leveler</span>
                       </span>
-                      <span className="font-mono font-bold text-[#dc2626]">{fineAngle > 0 ? `+${fineAngle}` : fineAngle}°</span>
+                      <span className="font-mono font-bold text-[var(--red)]">{fineAngle > 0 ? `+${fineAngle}` : fineAngle}°</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <button
                         type="button"
                         onClick={() => setFineAngle((prev) => Math.max(-45, +(prev - 1).toFixed(1)))}
-                        className="w-7 h-7 rounded-lg bg-[#202029] hover:bg-[#2a2a36] text-stone-300 text-xs font-bold shrink-0 transition"
+                        className="w-7 h-7 rounded-lg bg-white border border-zinc-200 hover:bg-zinc-100 text-zinc-800 text-xs font-bold shrink-0 transition cursor-pointer"
                       >
                         -1°
                       </button>
@@ -1350,22 +1350,22 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                         step="0.5"
                         value={fineAngle}
                         onChange={(e) => setFineAngle(parseFloat(e.target.value))}
-                        className="flex-1 accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                        className="flex-1 accent-[var(--red)] h-1.5 bg-zinc-200 rounded-lg cursor-pointer"
                       />
                       <button
                         type="button"
                         onClick={() => setFineAngle((prev) => Math.min(45, +(prev + 1).toFixed(1)))}
-                        className="w-7 h-7 rounded-lg bg-[#202029] hover:bg-[#2a2a36] text-stone-300 text-xs font-bold shrink-0 transition"
+                        className="w-7 h-7 rounded-lg bg-white border border-zinc-200 hover:bg-zinc-100 text-zinc-800 text-xs font-bold shrink-0 transition cursor-pointer"
                       >
                         +1°
                       </button>
                     </div>
-                    <div className="flex justify-between text-[10px] text-stone-500 font-mono">
+                    <div className="flex justify-between text-[10px] text-zinc-500 font-mono">
                       <span>-45°</span>
                       <button
                         type="button"
                         onClick={() => setFineAngle(0)}
-                        className="hover:text-white"
+                        className="hover:text-zinc-900 cursor-pointer"
                       >
                         0° Center
                       </button>
@@ -1374,13 +1374,13 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   </div>
 
                   {/* Zoom Slider */}
-                  <div className="space-y-1.5 p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c]">
+                  <div className="space-y-1.5 p-3 rounded-2xl bg-zinc-50 border border-zinc-200">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="font-bold text-stone-300 flex items-center gap-1.5">
-                        <ZoomIn className="w-3.5 h-3.5 text-[#dc2626]" />
+                      <span className="font-bold text-zinc-800 flex items-center gap-1.5">
+                        <ZoomIn className="w-3.5 h-3.5 text-[var(--red)]" />
                         <span>Scale &amp; Zoom</span>
                       </span>
-                      <span className="font-mono font-bold text-[#dc2626]">
+                      <span className="font-mono font-bold text-[var(--red)]">
                         {Math.round(zoom * 100)}%
                       </span>
                     </div>
@@ -1391,7 +1391,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       step="0.05"
                       value={zoom}
                       onChange={(e) => setZoom(parseFloat(e.target.value))}
-                      className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                      className="w-full accent-[var(--red)] h-1.5 bg-zinc-200 rounded-lg cursor-pointer"
                     />
                   </div>
 
@@ -1400,10 +1400,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                     <button
                       type="button"
                       onClick={() => setFlipH((prev) => !prev)}
-                      className={`py-2 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all ${
+                      className={`py-2 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                         flipH
-                          ? 'bg-[#dc2626]/20 border-[#dc2626] text-[#dc2626]'
-                          : 'bg-[#1a1a1a] border-[#2c2c2c] text-stone-300 hover:text-white'
+                          ? 'bg-[var(--red)]/10 border-[var(--red)] text-[var(--red)]'
+                          : 'bg-white border-zinc-200 text-zinc-700 hover:bg-zinc-50 hover:border-zinc-300'
                       }`}
                     >
                       <FlipHorizontal className="w-4 h-4" />
@@ -1413,10 +1413,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                     <button
                       type="button"
                       onClick={() => setFlipV((prev) => !prev)}
-                      className={`py-2 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all ${
+                      className={`py-2 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                         flipV
-                          ? 'bg-[#dc2626]/20 border-[#dc2626] text-[#dc2626]'
-                          : 'bg-[#1a1a1a] border-[#2c2c2c] text-stone-300 hover:text-white'
+                          ? 'bg-[var(--red)]/10 border-[var(--red)] text-[var(--red)]'
+                          : 'bg-white border-zinc-200 text-zinc-700 hover:bg-zinc-50 hover:border-zinc-300'
                       }`}
                     >
                       <FlipVertical className="w-4 h-4" />
@@ -1432,10 +1432,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   {/* Background Presets: With / Without Background */}
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider block">
+                      <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider block font-mono">
                         Background Canvas Style
                       </span>
-                      <span className="text-[10px] text-stone-400">
+                      <span className="text-[10px] text-zinc-500 font-mono">
                         {bgPreset === 'transparent' ? 'Without BG (PNG)' : 'With Studio BG'}
                       </span>
                     </div>
@@ -1453,31 +1453,31 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                           key={item.id}
                           type="button"
                           onClick={() => setBgPreset(item.id as BackgroundPreset)}
-                          className={`p-2 rounded-xl border text-left transition-all ${
+                          className={`p-2 rounded-xl border text-left transition-all cursor-pointer ${
                             bgPreset === item.id
-                              ? 'border-[#dc2626] bg-[#dc2626]/20 text-white shadow-xs'
-                              : 'border-[#262626] bg-[#1a1a1a] text-stone-400 hover:border-stone-600'
+                              ? 'border-[var(--red)] bg-[var(--red)]/5 text-[var(--red)] shadow-xs ring-1 ring-[var(--red)]/20'
+                              : 'border-zinc-200 bg-white text-zinc-700 hover:border-zinc-300 hover:bg-zinc-50'
                           }`}
                         >
                           <div className="font-bold text-xs">{item.label}</div>
-                          <div className="text-[10px] text-stone-400">{item.note}</div>
+                          <div className="text-[10px] text-zinc-500">{item.note}</div>
                         </button>
                       ))}
                     </div>
                   </div>
 
                   {/* 3D Realistic Product Drop Shadow */}
-                  <div className="space-y-2 p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c]">
+                  <div className="space-y-2 p-3 rounded-2xl bg-zinc-50 border border-zinc-200">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-stone-300 flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-[#dc2626]" />
+                      <span className="text-xs font-bold text-zinc-800 flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-[var(--red)]" />
                         <span>3D Product Drop Shadow</span>
                       </span>
-                      <span className="text-[10px] text-emerald-400 font-bold uppercase">
+                      <span className="text-[10px] text-emerald-700 font-bold uppercase font-mono">
                         {shadowStyle}
                       </span>
                     </div>
-                    <p className="text-[11px] text-stone-400">
+                    <p className="text-[11px] text-zinc-500">
                       Gives isolated products and transparent cutouts physical depth as if sitting on a table.
                     </p>
 
@@ -1492,10 +1492,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                           key={s.id}
                           type="button"
                           onClick={() => setShadowStyle(s.id as ShadowStyle)}
-                          className={`py-1.5 px-2 rounded-lg text-xs font-bold transition-all ${
+                          className={`py-1.5 px-2 rounded-lg text-xs font-bold transition-all cursor-pointer font-mono ${
                             shadowStyle === s.id
-                              ? 'bg-[#dc2626] text-stone-900 shadow-xs'
-                              : 'bg-stone-800 text-stone-300 hover:bg-stone-700'
+                              ? 'bg-[var(--red)] text-white shadow-xs'
+                              : 'bg-white text-zinc-700 hover:bg-zinc-100 border border-zinc-200 shadow-2xs'
                           }`}
                         >
                           {s.label}
@@ -1506,8 +1506,8 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                     {shadowStyle !== 'none' && (
                       <div className="pt-2 space-y-1">
                         <div className="flex items-center justify-between text-[11px]">
-                          <span className="text-stone-400">Shadow Depth &amp; Strength</span>
-                          <span className="font-mono text-stone-300">{shadowIntensity}%</span>
+                          <span className="text-zinc-600">Shadow Depth &amp; Strength</span>
+                          <span className="font-mono text-zinc-900 font-bold">{shadowIntensity}%</span>
                         </div>
                         <input
                           type="range"
@@ -1515,24 +1515,24 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                           max="100"
                           value={shadowIntensity}
                           onChange={(e) => setShadowIntensity(parseInt(e.target.value))}
-                          className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                          className="w-full accent-[var(--red)] h-1.5 bg-zinc-200 rounded-lg cursor-pointer"
                         />
                       </div>
                     )}
                   </div>
 
                   {/* Studio Sizing & Breathing Margin (Fit any image size) */}
-                  <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1.5">
+                  <div className="p-3 rounded-2xl bg-zinc-50 border border-zinc-200 space-y-1.5">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="font-bold text-stone-300 flex items-center gap-1.5">
-                        <Box className="w-3.5 h-3.5 text-[#dc2626]" />
+                      <span className="font-bold text-zinc-800 flex items-center gap-1.5">
+                        <Box className="w-3.5 h-3.5 text-[var(--red)]" />
                         <span>Studio Framing Margin</span>
                       </span>
-                      <span className="font-mono text-[#dc2626] font-bold">
+                      <span className="font-mono text-[var(--red)] font-bold">
                         {studioPadding}% padding
                       </span>
                     </div>
-                    <p className="text-[11px] text-stone-400">
+                    <p className="text-[11px] text-zinc-500">
                       Ensures tall notebooks, wide paper reams or pens fit 100% inside card without border clipping.
                     </p>
                     <input
@@ -1541,22 +1541,22 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       max="25"
                       value={studioPadding}
                       onChange={(e) => setStudioPadding(parseInt(e.target.value))}
-                      className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                      className="w-full accent-[var(--red)] h-1.5 bg-zinc-200 rounded-lg cursor-pointer"
                     />
                   </div>
 
                   {/* 1-Click Magic White BG Remover */}
-                  <div className="p-3.5 rounded-2xl bg-gradient-to-br from-purple-950/40 via-stone-900 to-amber-950/30 border border-purple-800/40 space-y-2">
+                  <div className="p-3.5 rounded-2xl bg-purple-50/80 border border-purple-200 space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                        <Scissors className="w-4 h-4 text-purple-400" />
+                      <span className="text-xs font-bold text-purple-900 flex items-center gap-1.5">
+                        <Scissors className="w-4 h-4 text-purple-600" />
                         <span>1-Click Magic Cutout</span>
                       </span>
-                      <span className="text-[10px] text-purple-300 bg-purple-900/60 px-2 py-0.5 rounded-full font-mono">
+                      <span className="text-[10px] text-purple-700 bg-purple-100 border border-purple-200 px-2 py-0.5 rounded-full font-mono font-bold">
                         Auto Cutout
                       </span>
                     </div>
-                    <p className="text-[11px] text-stone-300">
+                    <p className="text-[11px] text-purple-800">
                       Turns solid white or plain background photos into a clean transparent PNG cutout instantly!
                     </p>
 
@@ -1564,7 +1564,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       type="button"
                       onClick={handleMagicRemoveWhiteBg}
                       disabled={isRemovingBg}
-                      className="w-full py-2 px-3 bg-purple-600 hover:bg-purple-500 active:scale-95 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-md transition-all disabled:opacity-50"
+                      className="w-full py-2 px-3 bg-purple-700 hover:bg-purple-800 active:scale-95 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-xs transition-all disabled:opacity-50 cursor-pointer font-mono"
                     >
                       {isRemovingBg ? (
                         <>
@@ -1586,19 +1586,19 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               {studioTab === 'filter' && (
                 <div className="space-y-4 animate-in fade-in duration-150">
                   <div>
-                    <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider block">
+                    <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider block font-mono">
                       Instagram Color Grades
                     </span>
-                    <p className="text-[11px] text-stone-400 mt-0.5">
+                    <p className="text-[11px] text-zinc-500 mt-0.5">
                       1-Tap color filters optimized for stationery &amp; book paper.
                     </p>
                   </div>
 
                   {selectedFilterId !== 'normal' && (
-                    <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1">
+                    <div className="p-3 rounded-2xl bg-zinc-50 border border-zinc-200 space-y-1">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="font-bold text-stone-300">Filter Intensity</span>
-                        <span className="font-mono text-[#dc2626] font-bold">
+                        <span className="font-bold text-zinc-800">Filter Intensity</span>
+                        <span className="font-mono text-[var(--red)] font-bold">
                           {filterIntensity}%
                         </span>
                       </div>
@@ -1608,7 +1608,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                         max="100"
                         value={filterIntensity}
                         onChange={(e) => setFilterIntensity(parseInt(e.target.value))}
-                        className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                        className="w-full accent-[var(--red)] h-1.5 bg-zinc-200 rounded-lg cursor-pointer"
                       />
                     </div>
                   )}
@@ -1622,13 +1622,13 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                           key={filter.id}
                           type="button"
                           onClick={() => setSelectedFilterId(filter.id)}
-                          className={`flex flex-col items-center gap-1.5 p-2 rounded-2xl border text-center transition-all ${
+                          className={`flex flex-col items-center gap-1.5 p-2 rounded-2xl border text-center transition-all cursor-pointer ${
                             isSelected
-                              ? 'border-[#dc2626] bg-[#dc2626]/15 shadow-md scale-[1.02]'
-                              : 'border-[#262626] bg-[#1a1a1a] hover:border-stone-600'
+                              ? 'border-[var(--red)] bg-[var(--red)]/5 shadow-xs scale-[1.02] ring-1 ring-[var(--red)]/20'
+                              : 'border-zinc-200 bg-white hover:border-zinc-300 hover:bg-zinc-50'
                           }`}
                         >
-                          <div className="w-16 h-16 rounded-xl overflow-hidden bg-stone-800 border border-white/10 shrink-0">
+                          <div className="w-16 h-16 rounded-xl overflow-hidden bg-zinc-100 border border-zinc-200 shrink-0">
                             {thumb ? (
                               <img
                                 src={thumb}
@@ -1636,14 +1636,14 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                                 className="w-full h-full object-cover"
                               />
                             ) : (
-                              <div className="w-full h-full flex items-center justify-center text-[10px] text-stone-400">
+                              <div className="w-full h-full flex items-center justify-center text-[10px] text-zinc-400 font-mono">
                                 {filter.name[0]}
                               </div>
                             )}
                           </div>
                           <span
-                            className={`text-[11px] font-bold truncate max-w-full ${
-                              isSelected ? 'text-[#dc2626]' : 'text-stone-300'
+                            className={`text-[11px] font-bold truncate max-w-full font-mono ${
+                              isSelected ? 'text-[var(--red)]' : 'text-zinc-700'
                             }`}
                           >
                             {filter.name}
@@ -1658,17 +1658,17 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               {/* ================= TAB 4: ADJUSTMENTS ================= */}
               {studioTab === 'adjust' && (
                 <div className="space-y-3 animate-in fade-in duration-150">
-                  <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider block">
+                  <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider block font-mono">
                     Lighting &amp; Color Sliders
                   </span>
 
                   {/* Brightness */}
-                  <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1">
+                  <div className="p-3 rounded-2xl bg-zinc-50 border border-zinc-200 space-y-1">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="font-bold text-stone-300 flex items-center gap-1.5">
-                        <Sun className="w-3.5 h-3.5 text-[#dc2626]" /> Brightness
+                      <span className="font-bold text-zinc-800 flex items-center gap-1.5">
+                        <Sun className="w-3.5 h-3.5 text-[var(--red)]" /> Brightness
                       </span>
-                      <span className="font-mono text-stone-300 font-bold">
+                      <span className="font-mono text-zinc-900 font-bold">
                         {brightness > 0 ? `+${brightness}` : brightness}
                       </span>
                     </div>
@@ -1678,17 +1678,17 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       max="100"
                       value={brightness}
                       onChange={(e) => setBrightness(parseInt(e.target.value))}
-                      className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                      className="w-full accent-[var(--red)] h-1.5 bg-zinc-200 rounded-lg cursor-pointer"
                     />
                   </div>
 
                   {/* Contrast */}
-                  <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1">
+                  <div className="p-3 rounded-2xl bg-zinc-50 border border-zinc-200 space-y-1">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="font-bold text-stone-300 flex items-center gap-1.5">
-                        <Contrast className="w-3.5 h-3.5 text-[#dc2626]" /> Contrast
+                      <span className="font-bold text-zinc-800 flex items-center gap-1.5">
+                        <Contrast className="w-3.5 h-3.5 text-[var(--red)]" /> Contrast
                       </span>
-                      <span className="font-mono text-stone-300 font-bold">
+                      <span className="font-mono text-zinc-900 font-bold">
                         {contrast > 0 ? `+${contrast}` : contrast}
                       </span>
                     </div>
@@ -1698,17 +1698,17 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       max="100"
                       value={contrast}
                       onChange={(e) => setContrast(parseInt(e.target.value))}
-                      className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                      className="w-full accent-[var(--red)] h-1.5 bg-zinc-200 rounded-lg cursor-pointer"
                     />
                   </div>
 
                   {/* Warmth */}
-                  <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1">
+                  <div className="p-3 rounded-2xl bg-zinc-50 border border-zinc-200 space-y-1">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="font-bold text-stone-300 flex items-center gap-1.5">
-                        <Palette className="w-3.5 h-3.5 text-[#dc2626]" /> Warmth / Tone
+                      <span className="font-bold text-zinc-800 flex items-center gap-1.5">
+                        <Palette className="w-3.5 h-3.5 text-[var(--red)]" /> Warmth / Tone
                       </span>
-                      <span className="font-mono text-stone-300 font-bold">
+                      <span className="font-mono text-zinc-900 font-bold">
                         {warmth > 0 ? `+${warmth}` : warmth}
                       </span>
                     </div>
@@ -1718,17 +1718,17 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       max="100"
                       value={warmth}
                       onChange={(e) => setWarmth(parseInt(e.target.value))}
-                      className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                      className="w-full accent-[var(--red)] h-1.5 bg-zinc-200 rounded-lg cursor-pointer"
                     />
                   </div>
 
                   {/* Saturation */}
-                  <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1">
+                  <div className="p-3 rounded-2xl bg-zinc-50 border border-zinc-200 space-y-1">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="font-bold text-stone-300 flex items-center gap-1.5">
-                        <SlidersHorizontal className="w-3.5 h-3.5 text-[#dc2626]" /> Saturation
+                      <span className="font-bold text-zinc-800 flex items-center gap-1.5">
+                        <SlidersHorizontal className="w-3.5 h-3.5 text-[var(--red)]" /> Saturation
                       </span>
-                      <span className="font-mono text-stone-300 font-bold">
+                      <span className="font-mono text-zinc-900 font-bold">
                         {saturation > 0 ? `+${saturation}` : saturation}
                       </span>
                     </div>
@@ -1738,17 +1738,17 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       max="100"
                       value={saturation}
                       onChange={(e) => setSaturation(parseInt(e.target.value))}
-                      className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                      className="w-full accent-[var(--red)] h-1.5 bg-zinc-200 rounded-lg cursor-pointer"
                     />
                   </div>
 
                   {/* Vignette */}
-                  <div className="p-3 rounded-2xl bg-[#1c1c1c] border border-[#2c2c2c] space-y-1">
+                  <div className="p-3 rounded-2xl bg-zinc-50 border border-zinc-200 space-y-1">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="font-bold text-stone-300 flex items-center gap-1.5">
-                        <Aperture className="w-3.5 h-3.5 text-[#dc2626]" /> Vignette Spotlight
+                      <span className="font-bold text-zinc-800 flex items-center gap-1.5">
+                        <Aperture className="w-3.5 h-3.5 text-[var(--red)]" /> Vignette Spotlight
                       </span>
-                      <span className="font-mono text-stone-300 font-bold">{vignette}%</span>
+                      <span className="font-mono text-zinc-900 font-bold">{vignette}%</span>
                     </div>
                     <input
                       type="range"
@@ -1756,7 +1756,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       max="100"
                       value={vignette}
                       onChange={(e) => setVignette(parseInt(e.target.value))}
-                      className="w-full accent-[#dc2626] h-1.5 bg-stone-700 rounded-lg cursor-pointer"
+                      className="w-full accent-[var(--red)] h-1.5 bg-zinc-200 rounded-lg cursor-pointer"
                     />
                   </div>
                 </div>
@@ -1766,27 +1766,27 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
               {studioTab === 'preview' && (
                 <div className="space-y-3 animate-in fade-in duration-150">
                   <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-bold text-stone-400 uppercase tracking-wider block">
+                    <span className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider block font-mono">
                       Live Store Card Preview
                     </span>
-                    <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-800">
+                    <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 font-mono">
                       Perfect Display
                     </span>
                   </div>
 
                   {/* Website Card Display Mode Toggle */}
-                  <div className="bg-[#1c1c1c] p-2.5 rounded-2xl border border-[#2c2c2c] space-y-1.5">
-                    <span className="text-[11px] font-bold text-stone-300 block">
+                  <div className="bg-zinc-50 p-2.5 rounded-2xl border border-zinc-200 space-y-1.5">
+                    <span className="text-[11px] font-bold text-zinc-800 block">
                       Card Display Style on Website:
                     </span>
                     <div className="grid grid-cols-2 gap-1.5">
                       <button
                         type="button"
                         onClick={() => setStoreImageFit('cover')}
-                        className={`py-1.5 px-2 rounded-xl text-xs font-bold transition-all text-center ${
+                        className={`py-1.5 px-2 rounded-xl text-xs font-bold transition-all text-center cursor-pointer font-mono ${
                           storeImageFit === 'cover'
-                            ? 'bg-[#dc2626] text-stone-900 shadow-xs'
-                            : 'bg-stone-800 text-stone-400 hover:text-white'
+                            ? 'bg-[var(--red)] text-white shadow-xs'
+                            : 'bg-white border border-zinc-200 text-zinc-700 hover:bg-zinc-100'
                         }`}
                       >
                         Edge-to-Edge Cover (With BG)
@@ -1794,10 +1794,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       <button
                         type="button"
                         onClick={() => setStoreImageFit('contain')}
-                        className={`py-1.5 px-2 rounded-xl text-xs font-bold transition-all text-center ${
+                        className={`py-1.5 px-2 rounded-xl text-xs font-bold transition-all text-center cursor-pointer font-mono ${
                           storeImageFit === 'contain'
-                            ? 'bg-[#dc2626] text-stone-900 shadow-xs'
-                            : 'bg-stone-800 text-stone-400 hover:text-white'
+                            ? 'bg-[var(--red)] text-white shadow-xs'
+                            : 'bg-white border border-zinc-200 text-zinc-700 hover:bg-zinc-100'
                         }`}
                       >
                         Studio Pedestal Fit (Without BG)
@@ -1806,17 +1806,17 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                   </div>
 
                   {/* Realistic Mini OMEGA Product Card */}
-                  <div className="max-w-[260px] mx-auto w-full bg-white text-[#111113] rounded-[22px] border border-[#E7E5E0] shadow-xl overflow-hidden flex flex-col">
+                  <div className="max-w-[260px] mx-auto w-full bg-white text-zinc-900 rounded-2xl border border-zinc-200/80 shadow-sm overflow-hidden flex flex-col">
                     {/* Region 1: Adaptive display */}
                     <div
-                      className={`relative aspect-square w-full bg-[#f8f7f5] overflow-hidden border-b border-[#E7E5E0] ${
+                      className={`relative aspect-square w-full bg-white overflow-hidden border-b border-zinc-100 ${
                         storeImageFit === 'contain' ? 'p-3 flex items-center justify-center' : ''
                       }`}
                     >
-                      <span className="absolute top-2 left-2 z-10 bg-[#111113] text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm tracking-wider">
+                      <span className="absolute top-2 left-2 z-10 bg-zinc-900 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-xs tracking-wider font-mono">
                         7% OFF
                       </span>
-                      <div className="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-white/95 text-[#111113] border border-[#E7E5E0] flex items-center justify-center shadow-xs">
+                      <div className="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-white/95 text-zinc-900 border border-zinc-200 flex items-center justify-center shadow-xs">
                         <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
                       </div>
 
@@ -1826,12 +1826,12 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                           alt="Live Instagram Preview"
                           className={`w-full h-full transition-transform duration-300 ${
                             storeImageFit === 'contain'
-                              ? 'object-contain filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.14)]'
+                              ? 'object-contain'
                               : 'object-cover'
                           }`}
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-stone-400 text-xs">
+                        <div className="w-full h-full flex items-center justify-center text-zinc-400 text-xs font-mono">
                           Generating card...
                         </div>
                       )}
@@ -1840,20 +1840,20 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                     {/* Region 2: Metadata */}
                     <div className="p-3 flex flex-col gap-1.5">
                       <div className="flex items-center justify-between text-[9px]">
-                        <span className="text-stone-400 font-bold uppercase truncate max-w-[65%]">
+                        <span className="text-zinc-500 font-bold uppercase truncate max-w-[65%] font-mono">
                           OMEGA · Official
                         </span>
-                        <span className="text-[#2A9D8F] bg-emerald-50 border border-emerald-200/60 font-bold px-1.5 py-0.5 rounded-full text-[9px]">
+                        <span className="text-emerald-700 bg-emerald-50 border border-emerald-200/60 font-bold px-1.5 py-0.5 rounded-full text-[9px] font-mono">
                           In Stock
                         </span>
                       </div>
 
-                      <h4 className="text-xs font-bold text-[#111113] line-clamp-1 leading-tight">
+                      <h4 className="text-xs font-bold text-zinc-900 line-clamp-1 leading-tight font-serif">
                         {productName || 'OMEGA Exercise Book 200 Pages'}
                       </h4>
 
-                      <div className="flex items-center gap-1.5 text-[10px] text-stone-500">
-                        <span className="bg-amber-50 border border-amber-200 text-amber-800 px-1.5 py-0.2 rounded font-bold">
+                      <div className="flex items-center gap-1.5 text-[10px] text-zinc-500">
+                        <span className="bg-amber-50 border border-amber-200 text-amber-800 px-1.5 py-0.2 rounded font-bold font-mono">
                           4.9 ★
                         </span>
                         <span className="text-emerald-700 font-bold flex items-center gap-0.5">
@@ -1862,20 +1862,20 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                       </div>
 
                       <div>
-                        <div className="text-sm font-extrabold text-[#111113]">TSh 25,500</div>
-                        <div className="text-[10px] font-semibold text-[#a1a1aa]">
+                        <div className="text-sm font-extrabold text-zinc-900 font-mono">TSh 25,500</div>
+                        <div className="text-[10px] font-semibold text-zinc-500 font-mono">
                           Wholesale: TSh 23,000
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-1 text-[#2A9D8F] font-semibold text-[10px]">
-                        <Truck className="w-3 h-3 text-[#2A9D8F]" />
+                      <div className="flex items-center gap-1 text-emerald-700 font-semibold text-[10px]">
+                        <Truck className="w-3 h-3 text-emerald-600" />
                         <span>Fast Dispatch</span>
                       </div>
 
                       {/* Region 3: Single Add to Cart */}
                       <div className="pt-1">
-                        <div className="w-full py-2 px-3 rounded-full text-xs font-bold uppercase tracking-wider btn-ledup-copper text-white flex items-center justify-center gap-1.5 shadow-xs">
+                        <div className="w-full py-2 px-3 rounded-xl text-xs font-bold uppercase tracking-wider bg-[var(--red)] text-white flex items-center justify-center gap-1.5 shadow-xs font-mono cursor-pointer">
                           <ShoppingBag className="w-3.5 h-3.5 text-white" />
                           <span>Add to Cart</span>
                         </div>
@@ -1889,17 +1889,17 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
         </div>
 
       {/* ================= STUDIO BOTTOM STATUS BAR (STITCH) ================= */}
-      <div className="px-3 xs:px-4 sm:px-6 py-2.5 bg-[#0d0d12] border-t border-[#1f1f26] flex items-center justify-between gap-2 xs:gap-3 text-xs text-stone-400 shrink-0">
-        <div className="flex items-center gap-1.5 xs:gap-2 sm:gap-3 text-[10px] sm:text-xs min-w-0 truncate">
+      <div className="px-3 xs:px-4 sm:px-6 py-2.5 bg-white border-t border-zinc-200 flex items-center justify-between gap-2 xs:gap-3 text-xs text-zinc-600 shrink-0 shadow-2xs">
+        <div className="flex items-center gap-1.5 xs:gap-2 sm:gap-3 text-[10px] sm:text-xs min-w-0 truncate font-mono">
           <span className="truncate">
-            Mode: <strong className="text-white">{storeImageFit === 'contain' ? 'Studio' : 'Cover'}</strong>
+            Mode: <strong className="text-zinc-900">{storeImageFit === 'contain' ? 'Studio' : 'Cover'}</strong>
           </span>
-          <span className="text-stone-700">·</span>
+          <span className="text-zinc-300">·</span>
           <span className="truncate">
-            BG: <strong className="text-white">{bgPreset.toUpperCase()}</strong>
+            BG: <strong className="text-zinc-900">{bgPreset.toUpperCase()}</strong>
           </span>
-          <span className="hidden sm:inline text-stone-700">·</span>
-          <span className="hidden sm:inline text-stone-400 text-[11px] font-mono">1200×1200px • Lossless PNG • 300 DPI</span>
+          <span className="hidden sm:inline text-zinc-300">·</span>
+          <span className="hidden sm:inline text-zinc-500 text-[11px] font-mono">1200×1200px • Lossless PNG • 300 DPI</span>
         </div>
 
         <div className="flex items-center gap-1.5 xs:gap-2 sm:gap-3 shrink-0 ml-auto">
@@ -1907,7 +1907,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
             type="button"
             onClick={onClose}
             disabled={isProcessing}
-            className="px-3 sm:px-4 py-1.5 text-xs font-semibold text-stone-400 hover:text-white rounded-lg hover:bg-[#1c1c24] border border-transparent hover:border-[#272733] transition-colors"
+            className="px-3.5 sm:px-4 py-2 text-xs font-semibold text-zinc-600 hover:text-zinc-900 rounded-xl bg-zinc-100 hover:bg-zinc-200 border border-zinc-200/80 transition-colors cursor-pointer font-mono"
           >
             Cancel
           </button>
@@ -1916,7 +1916,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
             type="button"
             onClick={handleApplyExport}
             disabled={isProcessing || !sourceImg}
-            className="px-3.5 sm:px-5 py-2 rounded-xl text-xs font-bold text-white bg-[#dc2626] hover:bg-red-500 shadow-md shadow-[#dc2626]/30 active:scale-95 transition-all flex items-center gap-1.5 disabled:opacity-50"
+            className="px-4 sm:px-5 py-2 rounded-xl text-xs font-bold text-white bg-[var(--red)] hover:bg-[var(--red-hover)] shadow-xs active:scale-95 transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer font-mono"
           >
             {isProcessing ? (
               <>
