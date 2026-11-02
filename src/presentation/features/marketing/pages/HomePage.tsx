@@ -59,34 +59,66 @@ export const HomePage: React.FC = () => {
 
   const displayedProducts = filteredProducts.slice(0, 10);
 
-  // 4 Collections matching reference architecture
+  // 4 Collections matching user reference architecture (Horizontal card with features & book)
   const collections = useMemo(
     () => [
       {
-        title: language === 'sw' ? 'COUNTER BOOKS' : 'COUNTER BOOKS',
-        desc: language === 'sw' ? 'Jalada Gumu, Q2, Q3 & Q4' : 'Hardcover Ledger Folios',
-        sub: 'Archival Smyth-Sewn',
+        id: 'counter-books',
+        badge: language === 'sw' ? 'JALADA GUMU LA KUDUMU' : 'ARCHIVAL SMYTH-SEWN',
+        tag: 'QUIRE 2 - 4',
+        title: language === 'sw' ? 'OMEGA COUNTER BOOK – 2 / 3 / 4 QUIRE' : 'OMEGA COUNTER BOOK – 2 / 3 / 4 QUIRE',
+        features: [
+          language === 'sw' ? 'Kurasa 192, 288 & 384' : '192, 288 & 384 Pages',
+          language === 'sw' ? 'Quire 2, 3 & 4 Zilizoshonwa kwa Nyuzi' : '2, 3 & 4 Quire Smyth-Sewn Spines',
+          language === 'sw' ? 'Jalada Imara Jeusi & Nyekundu' : 'Attractive Black & Red Cover',
+        ],
+        brand: 'Brand: OMEGA',
+        cta: language === 'sw' ? 'Explore' : 'Explore',
         link: '/catalog?category=Counter+Books',
-        image: '/omega-products/omega-counter-book-podium.png',
+        image: '/omega-products/counter-book-q2-catalog.jpeg',
       },
       {
-        title: language === 'sw' ? 'EXERCISE BOOKS' : 'EXERCISE BOOKS',
-        desc: language === 'sw' ? 'Kurasa 200, 100 & 80' : 'School & Classroom Editions',
-        sub: 'Single & Double Line',
+        id: 'exercise-books',
+        badge: language === 'sw' ? 'VIWANGO VYA DARASANI' : 'CLASSROOM BENCHMARK',
+        tag: '70 GSM BOND',
+        title: language === 'sw' ? 'OMEGA EXERCISE BOOKS – CLASSROOM' : 'OMEGA EXERCISE BOOKS – CLASSROOM',
+        features: [
+          language === 'sw' ? 'Kurasa 200, 100 & 80' : '200, 100 & 80 Pages',
+          language === 'sw' ? 'Mistari Moja na Mistari Miwili' : 'Single & Double Line Ruling',
+          language === 'sw' ? 'Jalada Ngumu lenye Ramani' : 'Durable Stiff Cover with Map',
+        ],
+        brand: 'Brand: OMEGA',
+        cta: language === 'sw' ? 'Explore' : 'Explore',
         link: '/catalog?category=Exercise+Books',
         image: '/omega-products/exercise-book-200p-sl-catalog.jpeg',
       },
       {
-        title: language === 'sw' ? 'KRAFT BAHASHA' : 'KRAFT BAHASHA',
-        desc: language === 'sw' ? 'A3, A4, A5 & A6' : 'Tear-Resistant Document Mailers',
-        sub: 'Peel & Seal Security',
+        id: 'kraft-bahasha',
+        badge: language === 'sw' ? 'KUFUNGUKA KWA USALAMA' : 'PEEL & SEAL SECURITY',
+        tag: 'TEAR-PROOF',
+        title: language === 'sw' ? 'OMEGA KRAFT BAHASHA – PEEL & SEAL' : 'OMEGA KRAFT BAHASHA – PEEL & SEAL',
+        features: [
+          language === 'sw' ? 'Ukubwa wa A3, A4, A5 & A6' : 'A3, A4, A5 & A6 Standard Sizes',
+          language === 'sw' ? 'Karatasi Imara Isiyochanika' : 'Heavy Tear-Resistant Kraft Paper',
+          language === 'sw' ? 'Gundi ya Kujifunga Yenyewe' : 'Self-Adhesive Peel & Seal Strip',
+        ],
+        brand: 'Brand: OMEGA',
+        cta: language === 'sw' ? 'Explore' : 'Explore',
         link: '/catalog?category=Bahasha+%26+Envelopes',
         image: '/omega-products/bahasha-a4-catalog.png',
       },
       {
-        title: language === 'sw' ? 'OFFICE REGISTERS' : 'OFFICE REGISTERS',
-        desc: language === 'sw' ? 'Semi-Rigid & Bond Reams' : 'Commercial Paper Products',
-        sub: '70 GSM Pure White',
+        id: 'registers',
+        badge: language === 'sw' ? 'KUMBUKUMBU ZA OFISI' : 'OFFICE & INSTITUTION',
+        tag: 'GOLD FOIL',
+        title: language === 'sw' ? 'OMEGA OFFICE & SCHOOL REGISTERS' : 'OMEGA OFFICE & SCHOOL REGISTERS',
+        features: [
+          language === 'sw' ? 'Daftari za Wageni na Mahudhurio' : 'Visitor Gate & Student Attendance',
+          language === 'sw' ? 'Karatasi Maalum ya 70 GSM' : '70 GSM Pure White Bond Paper',
+          language === 'sw' ? 'Jalada Imara la Kudumu' : 'Rigid Foil Stamped Hardcover',
+        ],
+        brand: 'Brand: OMEGA',
+        cta: language === 'sw' ? 'Explore' : 'Explore',
         link: '/catalog?category=Registers',
         image: '/omega-products/stiff-cover-200-catalog.jpeg',
       },
@@ -100,14 +132,6 @@ export const HomePage: React.FC = () => {
       addToCart(featuredProd.id, 1);
       setIsCartDrawerOpen(true);
     }
-  };
-
-  const handleBannerWhatsApp = () => {
-    const phone = '255746268391';
-    const text = encodeURIComponent(
-      'Habari OMEGA Stationery, ningependa kuagiza OMEGA Counter Book Q3 (288 Pages) kwa bei ya TSh 8,500.'
-    );
-    window.open(`https://wa.me/${phone}?text=${text}`, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -253,57 +277,88 @@ export const HomePage: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* 4 Collection Cards Grid with Clean Light-Theme Layout */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          {/* Collection Cards Grid matching user mockup reference */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-7">
             {collections.map((col, idx) => (
               <motion.div
-                key={idx}
+                key={col.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: idx * 0.08 }}
-                whileHover={{ y: -6, transition: { duration: 0.25 } }}
+                whileHover={{ y: -5, transition: { duration: 0.25 } }}
+                className="relative overflow-hidden bg-gradient-to-br from-white via-[#FCFAF8] to-[#F7F3EC] rounded-3xl border border-[#E6E0D4] hover:border-[var(--red)]/50 transition-all duration-300 p-6 sm:p-7 flex flex-col justify-between shadow-[0_4px_24px_rgba(22,21,24,0.04)] hover:shadow-[0_20px_48px_rgba(214,58,58,0.12)] group"
               >
-                <Link
-                  to={col.link}
-                  className="group relative rounded-2xl overflow-hidden border border-[var(--border)] bg-white hover:border-[var(--gold)] hover:shadow-xl transition-all duration-300 flex flex-col p-4 sm:p-5 h-full text-left block shadow-xs"
-                >
-                  {/* Top Row: Category Tag & Arrow Badge */}
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-[10px] font-mono tracking-widest uppercase text-[var(--gold)] font-bold">
-                      {col.sub}
-                    </span>
-                    <div className="w-8 h-8 rounded-full bg-[var(--surface-2)] text-[var(--text)] group-hover:bg-[var(--red)] group-hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs border border-[var(--border)] group-hover:border-transparent shrink-0">
-                      <ArrowUpRight className="w-4 h-4 stroke-[2]" />
+                {/* Subtle Ambient Glow */}
+                <div className="absolute -top-12 -right-12 w-44 h-44 bg-[var(--gold)]/10 rounded-full blur-3xl group-hover:bg-[var(--red)]/10 transition-colors duration-500 pointer-events-none" />
+
+                <div className="flex flex-col sm:flex-row items-center sm:items-stretch justify-between gap-6 h-full relative z-10">
+                  {/* Left Column: Category Badge, Title, Bullet Features, Brand, Explore Button */}
+                  <div className="flex-1 flex flex-col justify-between text-left space-y-4 min-w-0">
+                    <div>
+                      {/* Top Micro-Pill Category Badge */}
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase text-[var(--gold)] bg-[var(--surface-2)] border border-[var(--gold)]/30 shadow-2xs mb-2.5">
+                        <Sparkles className="w-3 h-3 text-[var(--gold)]" />
+                        <span>{col.badge}</span>
+                      </div>
+
+                      {/* Editorial Title */}
+                      <h3 className="font-heading font-black text-lg sm:text-xl text-[var(--text)] group-hover:text-[var(--red)] transition-colors leading-snug tracking-tight">
+                        {col.title}
+                      </h3>
+                      
+                      {/* Refined Features List with Custom Check Micro-Badges */}
+                      <ul className="mt-3.5 space-y-2.5 text-xs sm:text-[13px] text-[var(--text)]">
+                        {col.features.map((feat, fIdx) => (
+                          <li key={fIdx} className="flex items-center gap-2.5">
+                            <span className="w-4.5 h-4.5 rounded-full bg-[var(--red)]/10 text-[var(--red)] flex items-center justify-center shrink-0 border border-[var(--red)]/20 shadow-2xs">
+                              <CheckCircle2 className="w-3 h-3 stroke-[2.5]" />
+                            </span>
+                            <span className="font-medium text-[var(--text)] leading-snug">{feat}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Brand Hallmark & Explore Button */}
+                    <div className="pt-3 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--border)]/60">
+                      <Link
+                        to={col.link}
+                        className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#161518] hover:bg-[#D63A3A] active:scale-95 text-white font-sans text-xs sm:text-sm font-bold tracking-wide transition-all duration-200 shadow-sm hover:shadow-md hover:shadow-red-950/20 cursor-pointer group/btn"
+                      >
+                        <span>{col.cta}</span>
+                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
+                      </Link>
+                      
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--surface-2)]/80 border border-[var(--border)] text-[11px] font-mono font-bold text-[var(--text-muted)]">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--gold)]" />
+                        <span>{col.brand}</span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Centered Crisp Product Showcase Panel */}
-                  <div className="w-full aspect-[4/3] rounded-xl bg-[#F7F4EE] border border-[var(--border)]/60 overflow-hidden flex items-center justify-center p-3 relative mb-4 group-hover:border-[var(--gold)]/40 transition-colors">
+                  {/* Right Column: Editorial Product Showcase Stage with 3D Depth */}
+                  <div className="relative w-44 sm:w-48 md:w-52 aspect-[3/4] sm:aspect-auto sm:self-stretch rounded-2xl bg-gradient-to-b from-[#FAF8F5] via-[#F4EFEA] to-[#EBE4D7] border border-[#DDD5C7] overflow-hidden flex items-center justify-center p-3.5 shrink-0 group-hover:border-[var(--gold)]/50 transition-all duration-300 shadow-inner">
+                    {/* Ambient Glow Center */}
+                    <div className="absolute inset-0 bg-radial from-white/90 via-white/20 to-transparent pointer-events-none" />
+                    
+                    {/* Floating Authentic Chip */}
+                    <div className="absolute top-2.5 right-2.5 z-10 px-2 py-0.5 rounded-md bg-white/95 backdrop-blur-xs text-[9px] font-mono font-black uppercase tracking-wider text-[var(--gold)] border border-[var(--gold)]/30 shadow-2xs">
+                      {col.tag}
+                    </div>
+
+                    {/* Tactile Book Cutout with Drop Shadow and Hover Scale */}
                     <img
                       src={col.image}
                       alt={col.title}
-                      className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-108"
+                      className="relative z-1 max-h-full max-w-full object-contain filter drop-shadow-[0_12px_22px_rgba(0,0,0,0.18)] transition-all duration-500 ease-out group-hover:scale-108 group-hover:-rotate-1"
                       loading="lazy"
                     />
-                  </div>
 
-                  {/* Bottom Content: Title, Description, & Explore Link */}
-                  <div className="mt-auto space-y-1">
-                    <h3 className="font-serif text-base sm:text-lg font-bold tracking-tight text-[var(--text)] group-hover:text-[var(--red)] transition-colors leading-snug">
-                      {col.title}
-                    </h3>
-                    <p className="text-[11.5px] text-[var(--text-muted)] font-sans line-clamp-1">
-                      {col.desc}
-                    </p>
-                    <div className="pt-2">
-                      <span className="inline-flex items-center gap-1.5 text-[10.5px] font-mono font-bold tracking-wider uppercase text-[var(--gold)] group-hover:text-[var(--red)] transition-colors">
-                        <span>EXPLORE</span>
-                        <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1 stroke-[2]" />
-                      </span>
-                    </div>
+                    {/* Pedestal Surface Shadow */}
+                    <div className="absolute bottom-2 inset-x-6 h-3 bg-black/15 blur-md rounded-full pointer-events-none" />
                   </div>
-                </Link>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -406,19 +461,6 @@ export const HomePage: React.FC = () => {
                     strokeWidth={1.75}
                     className={bannerFavorited ? 'fill-[var(--red)] text-[var(--red)]' : ''}
                   />
-                </motion.button>
-
-                {/* WhatsApp Button */}
-                <motion.button
-                  whileHover={{ scale: 1.08 }}
-                  whileTap={{ scale: 0.92 }}
-                  type="button"
-                  onClick={handleBannerWhatsApp}
-                  title="Inquire directly on WhatsApp"
-                  aria-label="Inquire on WhatsApp"
-                  className="w-11 h-11 rounded-full bg-[#25D366] hover:bg-[#16a34a] text-white flex items-center justify-center transition-all shadow-xs cursor-pointer"
-                >
-                  <MessageCircle size={18} strokeWidth={2} />
                 </motion.button>
               </div>
 
