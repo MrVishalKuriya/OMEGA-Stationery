@@ -15,7 +15,16 @@
       "/omega-products/counter-book-q3-288p.jpeg",
       "/omega-products/catalog-sheet-counter-q2-q3-q4.jpeg"
     ],
-    "image": "/omega-products/counter-book-q3-288p.jpeg",
+    "image": {
+      "src": "/products/omega-hardcover-counter-book-q3-288-pages-1200.webp",
+      "src400": "/products/omega-hardcover-counter-book-q3-288-pages-400.webp",
+      "src800": "/products/omega-hardcover-counter-book-q3-288-pages-800.webp",
+      "src1200": "/products/omega-hardcover-counter-book-q3-288-pages-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Hardcover Counter Book Q3 (288 Pages)"
+    },
     "name": "OMEGA Hardcover Counter Book Q3 (288 Pages)",
     "nameSw": "OMEGA Daftari la Kaunta Q3 (Kurasa 288)",
     "pageCount": "288 Pages",
@@ -88,7 +97,16 @@
       "/omega-products/counter-book-q4-384p.jpeg",
       "/omega-products/catalog-sheet-counter-q2-q3-q4.jpeg"
     ],
-    "image": "/omega-products/counter-book-q4-384p.jpeg",
+    "image": {
+      "src": "/products/omega-hardcover-counter-book-q4-384-pages-1200.webp",
+      "src400": "/products/omega-hardcover-counter-book-q4-384-pages-400.webp",
+      "src800": "/products/omega-hardcover-counter-book-q4-384-pages-800.webp",
+      "src1200": "/products/omega-hardcover-counter-book-q4-384-pages-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Hardcover Counter Book Q4 (384 Pages)"
+    },
     "name": "OMEGA Hardcover Counter Book Q4 (384 Pages)",
     "nameSw": "OMEGA Daftari la Kaunta Q4 (Kurasa 384)",
     "pageCount": "384 Pages",
@@ -147,7 +165,16 @@
     "discountPrice": null,
     "featured": true,
     "gallery": [],
-    "image": "/omega-products/exercise-book-200p-purple.jpeg",
+    "image": {
+      "src": "/products/omega-student-exercise-book-200-pages-single-line-1200.webp",
+      "src400": "/products/omega-student-exercise-book-200-pages-single-line-400.webp",
+      "src800": "/products/omega-student-exercise-book-200-pages-single-line-800.webp",
+      "src1200": "/products/omega-student-exercise-book-200-pages-single-line-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Student Exercise Book 200 Pages (Single Line)"
+    },
     "name": "OMEGA Student Exercise Book 200 Pages (Single Line)",
     "nameSw": "Daftari la Mazoezi la Wanafunzi OMEGA (Kurasa 200)",
     "pageCount": "200 Pages",
@@ -193,7 +220,16 @@
     "discountPrice": null,
     "featured": true,
     "gallery": [],
-    "image": "/omega-products/bahasha-a4-envelope.jpeg",
+    "image": {
+      "src": "/products/omega-heavy-kraft-bahasha-envelopes-a4-pack-of-50-1200.webp",
+      "src400": "/products/omega-heavy-kraft-bahasha-envelopes-a4-pack-of-50-400.webp",
+      "src800": "/products/omega-heavy-kraft-bahasha-envelopes-a4-pack-of-50-800.webp",
+      "src1200": "/products/omega-heavy-kraft-bahasha-envelopes-a4-pack-of-50-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Heavy Kraft Bahasha Envelopes A4 (Pack of 50)"
+    },
     "name": "OMEGA Heavy Kraft Bahasha Envelopes A4 (Pack of 50)",
     "nameSw": "Bahasha Nzito za OMEGA A4 (Pakiti ya 50)",
     "paperType": "120 GSM Pure Kraft Paper",
@@ -241,7 +277,16 @@
       "/omega-products/bahasha-a3-envelope.jpeg",
       "/omega-products/catalog-sheet-shorthand-bahasha.jpeg"
     ],
-    "image": "/omega-products/bahasha-a3-catalog.jpeg",
+    "image": {
+      "src": "/products/omega-extra-large-bahasha-envelopes-a3-pack-of-25-1200.webp",
+      "src400": "/products/omega-extra-large-bahasha-envelopes-a3-pack-of-25-400.webp",
+      "src800": "/products/omega-extra-large-bahasha-envelopes-a3-pack-of-25-800.webp",
+      "src1200": "/products/omega-extra-large-bahasha-envelopes-a3-pack-of-25-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Extra-Large Bahasha Envelopes A3 (Pack of 25)"
+    },
     "name": "OMEGA Extra-Large Bahasha Envelopes A3 (Pack of 25)",
     "nameSw": "Bahasha Kubwa za OMEGA A3 (Pakiti ya 25)",
     "paperType": "140 GSM Extra-Heavy Kraft",
@@ -293,7 +338,16 @@
       "/omega-products/bahasha-a4-box.jpeg",
       "/omega-products/catalog-sheet-bahasha-manila.jpeg"
     ],
-    "image": "/omega-products/bahasha-a5-catalog.jpeg",
+    "image": {
+      "src": "/products/omega-medium-document-bahasha-envelopes-a5-pack-of-50-1200.webp",
+      "src400": "/products/omega-medium-document-bahasha-envelopes-a5-pack-of-50-400.webp",
+      "src800": "/products/omega-medium-document-bahasha-envelopes-a5-pack-of-50-800.webp",
+      "src1200": "/products/omega-medium-document-bahasha-envelopes-a5-pack-of-50-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Medium Document Bahasha Envelopes A5 (Pack of 50)"
+    },
     "name": "OMEGA Medium Document Bahasha Envelopes A5 (Pack of 50)",
     "nameSw": "Bahasha za Saizi ya Kati OMEGA A5 (Pakiti ya 50)",
     "paperType": "110 GSM Golden Kraft",
@@ -340,7 +394,16 @@
       "/omega-products/bahasha-a6-box.jpeg",
       "/omega-products/catalog-sheet-bahasha-manila.jpeg"
     ],
-    "image": "/omega-products/bahasha-a6-catalog.jpeg",
+    "image": {
+      "src": "/products/omega-compact-pocket-bahasha-envelopes-a6-pack-of-100-1200.webp",
+      "src400": "/products/omega-compact-pocket-bahasha-envelopes-a6-pack-of-100-400.webp",
+      "src800": "/products/omega-compact-pocket-bahasha-envelopes-a6-pack-of-100-800.webp",
+      "src1200": "/products/omega-compact-pocket-bahasha-envelopes-a6-pack-of-100-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Compact Pocket Bahasha Envelopes A6 (Pack of 100)"
+    },
     "name": "OMEGA Compact Pocket Bahasha Envelopes A6 (Pack of 100)",
     "nameSw": "Bahasha Ndogo za Mfukoni OMEGA A6 (Pakiti ya 100)",
     "paperType": "90 GSM Kraft",
@@ -384,7 +447,16 @@
     "discountPrice": null,
     "featured": true,
     "gallery": [],
-    "image": "/omega-products/printer-jaradio-cover.jpeg",
+    "image": {
+      "src": "/products/omega-school-student-attendance-register-hardcover-1200.webp",
+      "src400": "/products/omega-school-student-attendance-register-hardcover-400.webp",
+      "src800": "/products/omega-school-student-attendance-register-hardcover-800.webp",
+      "src1200": "/products/omega-school-student-attendance-register-hardcover-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA School Student Attendance Register (Hardcover)"
+    },
     "name": "OMEGA School Student Attendance Register (Hardcover)",
     "nameSw": "Rejesta ya Mahudhurio ya Wanafunzi OMEGA (Jalada Gumu)",
     "paperType": "80 GSM Ledger Bond",
@@ -428,7 +500,16 @@
     "discountPrice": null,
     "featured": false,
     "gallery": [],
-    "image": "/omega-products/printer-jaradio-isolated.jpeg",
+    "image": {
+      "src": "/products/omega-security-gate-visitors-register-executive-foil-1200.webp",
+      "src400": "/products/omega-security-gate-visitors-register-executive-foil-400.webp",
+      "src800": "/products/omega-security-gate-visitors-register-executive-foil-800.webp",
+      "src1200": "/products/omega-security-gate-visitors-register-executive-foil-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Security & Gate Visitors Register (Executive Foil)"
+    },
     "name": "OMEGA Security & Gate Visitors Register (Executive Foil)",
     "nameSw": "Kitabu cha Wageni Getini OMEGA (Jalada la Dhahabu)",
     "paperType": "75 GSM Ledger",
@@ -467,7 +548,16 @@
     "discountPrice": null,
     "featured": true,
     "gallery": [],
-    "image": "/omega-products/ruled-paper-catalog.jpeg",
+    "image": {
+      "src": "/products/omega-ruled-examination-paper-400-sheets-16-pkt-1200.webp",
+      "src400": "/products/omega-ruled-examination-paper-400-sheets-16-pkt-400.webp",
+      "src800": "/products/omega-ruled-examination-paper-400-sheets-16-pkt-800.webp",
+      "src1200": "/products/omega-ruled-examination-paper-400-sheets-16-pkt-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Ruled Examination Paper (400 Sheets / 16 Pkt)"
+    },
     "name": "OMEGA Ruled Examination Paper (400 Sheets / 16 Pkt)",
     "nameSw": "Karatasi za Mitihani za OMEGA (Rimi ya Karatasi 500)",
     "paperType": "70 GSM Pure White Bond",
@@ -508,7 +598,16 @@
     "discountPrice": 12500,
     "featured": false,
     "gallery": [],
-    "image": "/omega-products/ruled-paper-pack.jpeg",
+    "image": {
+      "src": "/products/omega-metric-millimeter-graph-paper-pad-of-100-sheets-1200.webp",
+      "src400": "/products/omega-metric-millimeter-graph-paper-pad-of-100-sheets-400.webp",
+      "src800": "/products/omega-metric-millimeter-graph-paper-pad-of-100-sheets-800.webp",
+      "src1200": "/products/omega-metric-millimeter-graph-paper-pad-of-100-sheets-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Metric Millimeter Graph Paper (Pad of 100 Sheets)"
+    },
     "name": "OMEGA Metric Millimeter Graph Paper (Pad of 100 Sheets)",
     "nameSw": "Karatasi za Grafu za OMEGA (Pedi ya Karatasi 100)",
     "paperType": "80 GSM Cartographic Green/Blue Grid",
@@ -551,7 +650,16 @@
       "/omega-products/flipchart-stack-large.jpeg",
       "/omega-products/catalog-sheet-flipchart-ruled-folder.jpeg"
     ],
-    "image": "/omega-products/flipchart-stack-large.jpeg",
+    "image": {
+      "src": "/products/omega-presentation-flipchart-paper-stack-of-50-sheets-1200.webp",
+      "src400": "/products/omega-presentation-flipchart-paper-stack-of-50-sheets-400.webp",
+      "src800": "/products/omega-presentation-flipchart-paper-stack-of-50-sheets-800.webp",
+      "src1200": "/products/omega-presentation-flipchart-paper-stack-of-50-sheets-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Presentation Flipchart Paper (Stack of 50 Sheets)"
+    },
     "name": "OMEGA Presentation Flipchart Paper (Stack of 50 Sheets)",
     "nameSw": "Karatasi za Flipchart za OMEGA (Pakiti ya 50)",
     "paperType": "70 GSM Heavy Easel Paper",
@@ -599,7 +707,16 @@
       "/omega-products/manila-file-folder-open.jpeg",
       "/omega-products/catalog-sheet-flipchart-ruled-folder.jpeg"
     ],
-    "image": "/omega-products/manila-file-folder-flat.jpeg",
+    "image": {
+      "src": "/products/omega-heavyweight-manila-file-folders-bundle-of-100-1200.webp",
+      "src400": "/products/omega-heavyweight-manila-file-folders-bundle-of-100-400.webp",
+      "src800": "/products/omega-heavyweight-manila-file-folders-bundle-of-100-800.webp",
+      "src1200": "/products/omega-heavyweight-manila-file-folders-bundle-of-100-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Heavyweight Manila File Folders (Bundle of 100)"
+    },
     "name": "OMEGA Heavyweight Manila File Folders (Bundle of 100)",
     "nameSw": "Mafaili ya Manila ya OMEGA (Mfungo wa 100)",
     "paperType": "250 GSM High-Density Manila Cardstock",
@@ -643,7 +760,16 @@
     "discountPrice": null,
     "featured": false,
     "gallery": [],
-    "image": "/omega-products/omega-pvc-spring-file.jpeg",
+    "image": {
+      "src": "/products/omega-executive-plastic-p-v-c-spring-file-1200.webp",
+      "src400": "/products/omega-executive-plastic-p-v-c-spring-file-400.webp",
+      "src800": "/products/omega-executive-plastic-p-v-c-spring-file-800.webp",
+      "src1200": "/products/omega-executive-plastic-p-v-c-spring-file-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Executive Plastic P.V.C. Spring File"
+    },
     "name": "OMEGA Executive Plastic P.V.C. Spring File",
     "nameSw": "Faili la Kisasa la PVC Spring OMEGA",
     "paperType": "Heavy Rigid PVC Polypropylene Shell",
@@ -684,7 +810,16 @@
     "discountPrice": null,
     "featured": true,
     "gallery": [],
-    "image": "/omega-products/oxford-mathematical-set.jpeg",
+    "image": {
+      "src": "/products/oxford-compass-mathematical-instruments-geometry-set-1200.webp",
+      "src400": "/products/oxford-compass-mathematical-instruments-geometry-set-400.webp",
+      "src800": "/products/oxford-compass-mathematical-instruments-geometry-set-800.webp",
+      "src1200": "/products/oxford-compass-mathematical-instruments-geometry-set-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "Oxford Compass Mathematical Instruments Geometry Set"
+    },
     "name": "Oxford Compass Mathematical Instruments Geometry Set",
     "nameSw": "Vifaa vya Jiometria vya Oxford (Math Set)",
     "paperType": "N/A (Precision Die-Cast Metal & Clear Acrylic)",
@@ -728,7 +863,16 @@
       "/omega-products/omega-shorthand-notebook.jpeg",
       "/omega-products/catalog-sheet-shorthand-bahasha.jpeg"
     ],
-    "image": "/omega-products/omega-shorthand-notebook.jpeg",
+    "image": {
+      "src": "/products/omega-wire-bound-shorthand-steno-notebook-160-pages-1200.webp",
+      "src400": "/products/omega-wire-bound-shorthand-steno-notebook-160-pages-400.webp",
+      "src800": "/products/omega-wire-bound-shorthand-steno-notebook-160-pages-800.webp",
+      "src1200": "/products/omega-wire-bound-shorthand-steno-notebook-160-pages-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Wire-Bound Shorthand Steno Notebook (160 Pages)"
+    },
     "name": "OMEGA Wire-Bound Shorthand Steno Notebook (160 Pages)",
     "nameSw": "Daftari la Shorthand la OMEGA (Kurasa 160)",
     "paperType": "65 GSM High-Speed Writing Paper",
@@ -776,7 +920,16 @@
       "/omega-products/omega-petty-cash-voucher.jpeg",
       "/omega-products/catalog-sheet-jaradio-cash.jpeg"
     ],
-    "image": "/omega-products/omega-petty-cash-voucher.jpeg",
+    "image": {
+      "src": "/products/omega-accounting-petty-cash-vouchers-pad-of-100-1200.webp",
+      "src400": "/products/omega-accounting-petty-cash-vouchers-pad-of-100-400.webp",
+      "src800": "/products/omega-accounting-petty-cash-vouchers-pad-of-100-800.webp",
+      "src1200": "/products/omega-accounting-petty-cash-vouchers-pad-of-100-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Accounting Petty Cash Vouchers (Pad of 100)"
+    },
     "name": "OMEGA Accounting Petty Cash Vouchers (Pad of 100)",
     "nameSw": "Voucher za Petty Cash OMEGA (Kitabu cha 100)",
     "paperType": "60 GSM Duplicate Bond",
@@ -823,7 +976,16 @@
       "/omega-products/omega-carton-box-branded.jpeg",
       "/omega-products/omega-carton-box-plain.jpeg"
     ],
-    "image": "/omega-products/omega-carton-box-branded.jpeg",
+    "image": {
+      "src": "/products/omega-branded-corrugated-shipping-cartons-bundle-of-25-1200.webp",
+      "src400": "/products/omega-branded-corrugated-shipping-cartons-bundle-of-25-400.webp",
+      "src800": "/products/omega-branded-corrugated-shipping-cartons-bundle-of-25-800.webp",
+      "src1200": "/products/omega-branded-corrugated-shipping-cartons-bundle-of-25-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Branded Corrugated Shipping Cartons (Bundle of 25)"
+    },
     "name": "OMEGA Branded Corrugated Shipping Cartons (Bundle of 25)",
     "nameSw": "Maboksi ya Kusafirishia ya OMEGA (Mfungo wa 25)",
     "paperType": "Heavy 5-Ply Double-Wall Corrugated Flute",
@@ -883,7 +1045,16 @@
       "/omega-products/exercise-book-200p-purple.jpeg",
       "/omega-products/catalog-sheet-exercise-200-sl-dl-sq.jpeg"
     ],
-    "image": "/omega-products/exercise-book-200p-purple.jpeg",
+    "image": {
+      "src": "/products/omega-exercise-book-200-pages-single-line-sl-1200.webp",
+      "src400": "/products/omega-exercise-book-200-pages-single-line-sl-400.webp",
+      "src800": "/products/omega-exercise-book-200-pages-single-line-sl-800.webp",
+      "src1200": "/products/omega-exercise-book-200-pages-single-line-sl-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Exercise Book 200 Pages (Single Line - SL)"
+    },
     "name": "OMEGA Exercise Book 200 Pages (Single Line - SL)",
     "packaging": "120 Pcs / Box",
     "price": 68000,
@@ -952,7 +1123,16 @@
       "/omega-products/exercise-book-200p-whitered.jpeg",
       "/omega-products/catalog-sheet-exercise-200-sl-dl-sq.jpeg"
     ],
-    "image": "/omega-products/exercise-book-200p-whitered.jpeg",
+    "image": {
+      "src": "/products/omega-exercise-book-200-pages-double-line-dl-1200.webp",
+      "src400": "/products/omega-exercise-book-200-pages-double-line-dl-400.webp",
+      "src800": "/products/omega-exercise-book-200-pages-double-line-dl-800.webp",
+      "src1200": "/products/omega-exercise-book-200-pages-double-line-dl-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Exercise Book 200 Pages (Double Line - DL)"
+    },
     "name": "OMEGA Exercise Book 200 Pages (Double Line - DL)",
     "packaging": "120 Pcs / Box",
     "price": 68000,
@@ -1020,7 +1200,16 @@
     "gallery": [
       "/omega-products/catalog-sheet-exercise-200-sl-dl-sq.jpeg"
     ],
-    "image": "/omega-products/catalog-sheet-exercise-200-sl-dl-sq.jpeg",
+    "image": {
+      "src": "/products/omega-exercise-book-200-pages-square-mathematics-sq-1200.webp",
+      "src400": "/products/omega-exercise-book-200-pages-square-mathematics-sq-400.webp",
+      "src800": "/products/omega-exercise-book-200-pages-square-mathematics-sq-800.webp",
+      "src1200": "/products/omega-exercise-book-200-pages-square-mathematics-sq-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Exercise Book 200 Pages (Square / Mathematics - SQ)"
+    },
     "name": "OMEGA Exercise Book 200 Pages (Square / Mathematics - SQ)",
     "packaging": "120 Pcs / Box",
     "price": 68000,
@@ -1094,7 +1283,16 @@
       "/omega-products/stiff-cover-200p-black.jpeg",
       "/omega-products/catalog-sheet-stiff-cover-200.jpeg"
     ],
-    "image": "/omega-products/stiff-cover-200p-black.jpeg",
+    "image": {
+      "src": "/products/omega-stiff-cover-geometric-exercise-book-200-pages-1200.webp",
+      "src400": "/products/omega-stiff-cover-geometric-exercise-book-200-pages-400.webp",
+      "src800": "/products/omega-stiff-cover-geometric-exercise-book-200-pages-800.webp",
+      "src1200": "/products/omega-stiff-cover-geometric-exercise-book-200-pages-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Stiff Cover Geometric Exercise Book (200 Pages)"
+    },
     "name": "OMEGA Stiff Cover Geometric Exercise Book (200 Pages)",
     "packaging": "96 Pcs / Box",
     "price": 75000,
@@ -1158,7 +1356,16 @@
       "/omega-products/exercise-book-100p-pink.jpeg",
       "/omega-products/catalog-sheet-exercise-100-80-32.jpeg"
     ],
-    "image": "/omega-products/exercise-book-100p-catalog.jpeg",
+    "image": {
+      "src": "/products/omega-exercise-book-100-pages-single-line-sl-1200.webp",
+      "src400": "/products/omega-exercise-book-100-pages-single-line-sl-400.webp",
+      "src800": "/products/omega-exercise-book-100-pages-single-line-sl-800.webp",
+      "src1200": "/products/omega-exercise-book-100-pages-single-line-sl-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Exercise Book 100 Pages (Single Line - SL)"
+    },
     "name": "OMEGA Exercise Book 100 Pages (Single Line - SL)",
     "packaging": "120 Pcs / Box",
     "price": 41000,
@@ -1217,7 +1424,16 @@
       "/omega-products/exercise-book-100p-catalog.jpeg",
       "/omega-products/catalog-sheet-exercise-100-80-32.jpeg"
     ],
-    "image": "/omega-products/exercise-book-100p-catalog.jpeg",
+    "image": {
+      "src": "/products/omega-exercise-book-100-pages-double-line-dl-1200.webp",
+      "src400": "/products/omega-exercise-book-100-pages-double-line-dl-400.webp",
+      "src800": "/products/omega-exercise-book-100-pages-double-line-dl-800.webp",
+      "src1200": "/products/omega-exercise-book-100-pages-double-line-dl-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Exercise Book 100 Pages (Double Line - DL)"
+    },
     "name": "OMEGA Exercise Book 100 Pages (Double Line - DL)",
     "packaging": "120 Pcs / Box",
     "price": 41000,
@@ -1275,7 +1491,16 @@
       "/omega-products/exercise-book-100p-catalog.jpeg",
       "/omega-products/catalog-sheet-exercise-100-80-32.jpeg"
     ],
-    "image": "/omega-products/exercise-book-100p-catalog.jpeg",
+    "image": {
+      "src": "/products/omega-exercise-book-100-pages-square-mathematics-sq-1200.webp",
+      "src400": "/products/omega-exercise-book-100-pages-square-mathematics-sq-400.webp",
+      "src800": "/products/omega-exercise-book-100-pages-square-mathematics-sq-800.webp",
+      "src1200": "/products/omega-exercise-book-100-pages-square-mathematics-sq-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Exercise Book 100 Pages (Square / Mathematics - SQ)"
+    },
     "name": "OMEGA Exercise Book 100 Pages (Square / Mathematics - SQ)",
     "packaging": "120 Pcs / Box",
     "price": 41000,
@@ -1333,7 +1558,16 @@
       "/omega-products/exercise-book-100p-pink.jpeg",
       "/omega-products/catalog-sheet-exercise-100-80-32.jpeg"
     ],
-    "image": "/omega-products/exercise-book-100p-pink.jpeg",
+    "image": {
+      "src": "/products/omega-exercise-book-100-pages-plain-unruled-1200.webp",
+      "src400": "/products/omega-exercise-book-100-pages-plain-unruled-400.webp",
+      "src800": "/products/omega-exercise-book-100-pages-plain-unruled-800.webp",
+      "src1200": "/products/omega-exercise-book-100-pages-plain-unruled-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Exercise Book 100 Pages (Plain Unruled)"
+    },
     "name": "OMEGA Exercise Book 100 Pages (Plain Unruled)",
     "packaging": "120 Pcs / Box",
     "price": 41000,
@@ -1391,7 +1625,16 @@
       "/omega-products/exercise-book-80p-yellow.jpeg",
       "/omega-products/catalog-sheet-exercise-100-80-32.jpeg"
     ],
-    "image": "/omega-products/exercise-book-80p-yellow.jpeg",
+    "image": {
+      "src": "/products/omega-exercise-book-80-pages-canary-yellow-1200.webp",
+      "src400": "/products/omega-exercise-book-80-pages-canary-yellow-400.webp",
+      "src800": "/products/omega-exercise-book-80-pages-canary-yellow-800.webp",
+      "src1200": "/products/omega-exercise-book-80-pages-canary-yellow-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Exercise Book 80 Pages (Canary Yellow)"
+    },
     "name": "OMEGA Exercise Book 80 Pages (Canary Yellow)",
     "packaging": "100 Pcs / Box",
     "price": 42000,
@@ -1449,7 +1692,16 @@
       "/omega-products/exercise-book-32p-kraft.jpeg",
       "/omega-products/catalog-sheet-exercise-100-80-32.jpeg"
     ],
-    "image": "/omega-products/exercise-book-32p-kraft.jpeg",
+    "image": {
+      "src": "/products/omega-classic-exercise-book-32-pages-single-line-kraft-1200.webp",
+      "src400": "/products/omega-classic-exercise-book-32-pages-single-line-kraft-400.webp",
+      "src800": "/products/omega-classic-exercise-book-32-pages-single-line-kraft-800.webp",
+      "src1200": "/products/omega-classic-exercise-book-32-pages-single-line-kraft-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Classic Exercise Book 32 Pages (Single Line Kraft)"
+    },
     "name": "OMEGA Classic Exercise Book 32 Pages (Single Line Kraft)",
     "packaging": "300 Pcs / Box",
     "price": 32000,
@@ -1508,7 +1760,16 @@
       "/omega-products/bahasha-a4-box.jpeg",
       "/omega-products/catalog-sheet-shorthand-bahasha.jpeg"
     ],
-    "image": "/omega-products/bahasha-a4-envelope.jpeg",
+    "image": {
+      "src": "/products/omega-bahasha-document-envelopes-size-a4-pack-1200.webp",
+      "src400": "/products/omega-bahasha-document-envelopes-size-a4-pack-400.webp",
+      "src800": "/products/omega-bahasha-document-envelopes-size-a4-pack-800.webp",
+      "src1200": "/products/omega-bahasha-document-envelopes-size-a4-pack-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Bahasha Document Envelopes (Size A4 Pack)"
+    },
     "name": "OMEGA Bahasha Document Envelopes (Size A4 Pack)",
     "packaging": "500 Pcs / Box",
     "price": 28000,
@@ -1577,7 +1838,16 @@
       "/omega-products/omega-pvc-spring-file.jpeg",
       "/omega-products/catalog-sheet-file-jaradio-compass.jpeg"
     ],
-    "image": "/omega-products/omega-pvc-spring-file.jpeg",
+    "image": {
+      "src": "/products/omega-executive-plastic-p-v-c-spring-file-1200.webp",
+      "src400": "/products/omega-executive-plastic-p-v-c-spring-file-400.webp",
+      "src800": "/products/omega-executive-plastic-p-v-c-spring-file-800.webp",
+      "src1200": "/products/omega-executive-plastic-p-v-c-spring-file-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Executive Plastic P.V.C. Spring File"
+    },
     "name": "OMEGA Executive Plastic P.V.C. Spring File",
     "packaging": "50 Pcs / Box",
     "price": 270000,
@@ -1635,7 +1905,16 @@
       "/omega-products/orange-jaradio-roll.jpeg",
       "/omega-products/catalog-sheet-jaradio-cash.jpeg"
     ],
-    "image": "/omega-products/orange-jaradio-roll.jpeg",
+    "image": {
+      "src": "/products/omega-orange-jaradio-heavy-book-cover-roll-1200.webp",
+      "src400": "/products/omega-orange-jaradio-heavy-book-cover-roll-400.webp",
+      "src800": "/products/omega-orange-jaradio-heavy-book-cover-roll-800.webp",
+      "src1200": "/products/omega-orange-jaradio-heavy-book-cover-roll-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Orange Jaradio Heavy Book Cover (Roll)"
+    },
     "name": "OMEGA Orange Jaradio Heavy Book Cover (Roll)",
     "packaging": "Continuous Roll",
     "price": 210000,
@@ -1700,7 +1979,16 @@
       "/omega-products/printer-jaradio-cover.jpeg",
       "/omega-products/catalog-sheet-file-jaradio-compass.jpeg"
     ],
-    "image": "/omega-products/printer-jaradio-cover.jpeg",
+    "image": {
+      "src": "/products/omega-printer-jaradio-notebook-cover-with-world-map-1200.webp",
+      "src400": "/products/omega-printer-jaradio-notebook-cover-with-world-map-400.webp",
+      "src800": "/products/omega-printer-jaradio-notebook-cover-with-world-map-800.webp",
+      "src1200": "/products/omega-printer-jaradio-notebook-cover-with-world-map-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Printer Jaradio Notebook Cover with World Map"
+    },
     "name": "OMEGA Printer Jaradio Notebook Cover with World Map",
     "packaging": "100 Pcs / Pack",
     "price": 55000,
@@ -1753,7 +2041,16 @@
       "/omega-products/oxford-mathematical-set.jpeg",
       "/omega-products/catalog-sheet-file-jaradio-compass.jpeg"
     ],
-    "image": "/omega-products/oxford-mathematical-set.jpeg",
+    "image": {
+      "src": "/products/oxford-compass-mathematical-instruments-geometry-set-1200.webp",
+      "src400": "/products/oxford-compass-mathematical-instruments-geometry-set-400.webp",
+      "src800": "/products/oxford-compass-mathematical-instruments-geometry-set-800.webp",
+      "src1200": "/products/oxford-compass-mathematical-instruments-geometry-set-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "Oxford Compass Mathematical Instruments Geometry Set"
+    },
     "name": "Oxford Compass Mathematical Instruments Geometry Set",
     "packaging": "10 Sets / Outer Box",
     "price": 180000,
@@ -1806,7 +2103,16 @@
       "/omega-products/omega-school-ruler.jpeg",
       "/omega-products/catalog-sheet-ruler-roll-chalk.jpeg"
     ],
-    "image": "/omega-products/omega-school-ruler.jpeg",
+    "image": {
+      "src": "/products/omega-precision-clear-rulled-school-rulers-30cm-1200.webp",
+      "src400": "/products/omega-precision-clear-rulled-school-rulers-30cm-400.webp",
+      "src800": "/products/omega-precision-clear-rulled-school-rulers-30cm-800.webp",
+      "src1200": "/products/omega-precision-clear-rulled-school-rulers-30cm-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Precision Clear Rulled School Rulers (30cm)"
+    },
     "name": "OMEGA Precision Clear Rulled School Rulers (30cm)",
     "packaging": "50 Pcs / Box",
     "price": 110000,
@@ -1858,7 +2164,16 @@
       "/omega-products/catalog-sheet-doms-sharpeners.jpeg",
       "/omega-products/catalog-sheet-staples-doms.jpeg"
     ],
-    "image": "/omega-products/catalog-sheet-doms-sharpeners.jpeg",
+    "image": {
+      "src": "/products/doms-stopper-pencil-sharpeners-counter-tub-of-50-1200.webp",
+      "src400": "/products/doms-stopper-pencil-sharpeners-counter-tub-of-50-400.webp",
+      "src800": "/products/doms-stopper-pencil-sharpeners-counter-tub-of-50-800.webp",
+      "src1200": "/products/doms-stopper-pencil-sharpeners-counter-tub-of-50-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "DOMS Stopper Pencil Sharpeners (Counter Tub of 50)"
+    },
     "name": "DOMS Stopper Pencil Sharpeners (Counter Tub of 50)",
     "packaging": "50 Pcs / Tub",
     "price": 350000,
@@ -1910,7 +2225,16 @@
     "gallery": [
       "/omega-products/catalog-sheet-ruler-roll-chalk.jpeg"
     ],
-    "image": "/omega-products/catalog-sheet-ruler-roll-chalk.jpeg",
+    "image": {
+      "src": "/products/doms-dustless-white-chalk-1-ctn-10-box-10-pkt-1200.webp",
+      "src400": "/products/doms-dustless-white-chalk-1-ctn-10-box-10-pkt-400.webp",
+      "src800": "/products/doms-dustless-white-chalk-1-ctn-10-box-10-pkt-800.webp",
+      "src1200": "/products/doms-dustless-white-chalk-1-ctn-10-box-10-pkt-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "DOMS Dustless White Chalk (1 Ctn / 10 Box / 10 Pkt)"
+    },
     "name": "DOMS Dustless White Chalk (1 Ctn / 10 Box / 10 Pkt)",
     "packaging": "1 Ctn (10 Boxes × 10 Pkts × 10 Pcs)",
     "price": 175000,
@@ -1963,7 +2287,16 @@
       "/omega-products/tra-rolls-pack.jpeg",
       "/omega-products/catalog-sheet-ruler-roll-chalk.jpeg"
     ],
-    "image": "/omega-products/tra-rolls-pack.jpeg",
+    "image": {
+      "src": "/products/t-r-a-certified-thermal-receipt-paper-rolls-10-pkt-100-pc-1200.webp",
+      "src400": "/products/t-r-a-certified-thermal-receipt-paper-rolls-10-pkt-100-pc-400.webp",
+      "src800": "/products/t-r-a-certified-thermal-receipt-paper-rolls-10-pkt-100-pc-800.webp",
+      "src1200": "/products/t-r-a-certified-thermal-receipt-paper-rolls-10-pkt-100-pc-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "T.R.A. Certified Thermal Receipt Paper Rolls (10 Pkt / 100 Pc)"
+    },
     "name": "T.R.A. Certified Thermal Receipt Paper Rolls (10 Pkt / 100 Pc)",
     "packaging": "10 Pkts (100 Pcs / Carton)",
     "price": 125000,
@@ -2015,7 +2348,16 @@
     "gallery": [
       "/omega-products/catalog-sheet-staples-doms.jpeg"
     ],
-    "image": "/omega-products/catalog-sheet-staples-doms.jpeg",
+    "image": {
+      "src": "/products/kangaro-blue-pin-staples-24-6-1200.webp",
+      "src400": "/products/kangaro-blue-pin-staples-24-6-400.webp",
+      "src800": "/products/kangaro-blue-pin-staples-24-6-800.webp",
+      "src1200": "/products/kangaro-blue-pin-staples-24-6-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "Kangaro Blue Pin Staples 24/6"
+    },
     "name": "Kangaro Blue Pin Staples 24/6",
     "packaging": "20 Boxes / Master Pack",
     "price": 204000,
@@ -2067,7 +2409,16 @@
     "gallery": [
       "/omega-products/catalog-sheet-staples-doms.jpeg"
     ],
-    "image": "/omega-products/catalog-sheet-staples-doms.jpeg",
+    "image": {
+      "src": "/products/great-hall-red-pin-staples-model-369-1200.webp",
+      "src400": "/products/great-hall-red-pin-staples-model-369-400.webp",
+      "src800": "/products/great-hall-red-pin-staples-model-369-800.webp",
+      "src1200": "/products/great-hall-red-pin-staples-model-369-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "Great Hall Red Pin Staples Model 369"
+    },
     "name": "Great Hall Red Pin Staples Model 369",
     "packaging": "10 Boxes / Pack",
     "price": 100000,
@@ -2116,7 +2467,16 @@
       "/omega-products/ruled-paper-ream-tall.jpeg",
       "/omega-products/catalog-sheet-flipchart-ruled-folder.jpeg"
     ],
-    "image": "/omega-products/ruled-paper-pack.jpeg",
+    "image": {
+      "src": "/products/omega-ruled-examination-paper-400-sheets-16-pkt-1200.webp",
+      "src400": "/products/omega-ruled-examination-paper-400-sheets-16-pkt-400.webp",
+      "src800": "/products/omega-ruled-examination-paper-400-sheets-16-pkt-800.webp",
+      "src1200": "/products/omega-ruled-examination-paper-400-sheets-16-pkt-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Ruled Examination Paper (400 Sheets / 16 Pkt)"
+    },
     "name": "OMEGA Ruled Examination Paper (400 Sheets / 16 Pkt)",
     "packaging": "400 Sheets / 16 Pkt",
     "price": 70000,
@@ -2185,7 +2545,16 @@
       "/omega-products/counter-book-q2-192p.jpeg",
       "/omega-products/catalog-sheet-counter-q2-q3-q4.jpeg"
     ],
-    "image": "/omega-products/counter-book-q2-192p.jpeg",
+    "image": {
+      "src": "/products/omega-hardcover-counter-book-q2-192-pages-1200.webp",
+      "src400": "/products/omega-hardcover-counter-book-q2-192-pages-400.webp",
+      "src800": "/products/omega-hardcover-counter-book-q2-192-pages-800.webp",
+      "src1200": "/products/omega-hardcover-counter-book-q2-192-pages-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Hardcover Counter Book Q2 (192 Pages)"
+    },
     "name": "OMEGA Hardcover Counter Book Q2 (192 Pages)",
     "packaging": "48 Pcs / Box",
     "price": 56000,
@@ -2241,7 +2610,16 @@
     "discountPrice": null,
     "featured": false,
     "gallery": [],
-    "image": "/omega-products/exercise-book-100p-catalog.jpeg",
+    "image": {
+      "src": "/products/omega-primary-secondary-exercise-book-100-pages-1200.webp",
+      "src400": "/products/omega-primary-secondary-exercise-book-100-pages-400.webp",
+      "src800": "/products/omega-primary-secondary-exercise-book-100-pages-800.webp",
+      "src1200": "/products/omega-primary-secondary-exercise-book-100-pages-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Primary & Secondary Exercise Book 100 Pages"
+    },
     "name": "OMEGA Primary & Secondary Exercise Book 100 Pages",
     "nameSw": "Daftari la Mazoezi la OMEGA (Kurasa 100)",
     "pageCount": "100 Pages",
@@ -2287,7 +2665,16 @@
     "discountPrice": null,
     "featured": false,
     "gallery": [],
-    "image": "/omega-products/exercise-book-80p-yellow.jpeg",
+    "image": {
+      "src": "/products/omega-school-exercise-book-80-pages-1200.webp",
+      "src400": "/products/omega-school-exercise-book-80-pages-400.webp",
+      "src800": "/products/omega-school-exercise-book-80-pages-800.webp",
+      "src1200": "/products/omega-school-exercise-book-80-pages-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA School Exercise Book 80 Pages"
+    },
     "name": "OMEGA School Exercise Book 80 Pages",
     "nameSw": "Daftari la Wanafunzi OMEGA Kurasa 80",
     "pageCount": "80 Pages",
@@ -2333,7 +2720,16 @@
     "discountPrice": null,
     "featured": false,
     "gallery": [],
-    "image": "/omega-products/exercise-book-32p-kraft.jpeg",
+    "image": {
+      "src": "/products/omega-early-learning-exercise-book-32-pages-1200.webp",
+      "src400": "/products/omega-early-learning-exercise-book-32-pages-400.webp",
+      "src800": "/products/omega-early-learning-exercise-book-32-pages-800.webp",
+      "src1200": "/products/omega-early-learning-exercise-book-32-pages-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Early Learning Exercise Book 32 Pages"
+    },
     "name": "OMEGA Early Learning Exercise Book 32 Pages",
     "nameSw": "Daftari la Chekechea / Awali OMEGA (Kurasa 32)",
     "pageCount": "32 Pages",

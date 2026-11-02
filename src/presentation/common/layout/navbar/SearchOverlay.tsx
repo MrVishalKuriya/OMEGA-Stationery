@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, X, ArrowRight, Clock, Flame, Tag, BookOpen, ChevronRight, Sparkles } from 'lucide-react';
+import { Search, X, ArrowRight, Clock, Tag, ChevronRight, MessageCircle } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { formatPrice } from '@/types/store';
+import { ProductImage } from '@/components/ProductImage';
 
 interface SearchOverlayProps {
   isOpen: boolean;
@@ -11,10 +12,9 @@ interface SearchOverlayProps {
 
 const STORAGE_KEY_RECENT = 'omega_recent_searches_v1';
 const DEFAULT_RECENTS = ['Counter Book Q3', 'Exercise Book 200p', 'Kraft Bahasha A4', 'Oxford Math Set'];
-const TRENDING_SEARCHES = ['Counter Books', 'Kraft Bahasha', 'Oxford Math Set', 'PVC Spring File', 'Exercise Books'];
 
 export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose }) => {
-  const { products, storeConfig } = useStore();
+  const { products, language } = useStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedTerm, setDebouncedTerm] = useState('');
   const [recentSearches, setRecentSearches] = useState<string[]>(() => {
@@ -28,13 +28,12 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
 
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
-  const currency = storeConfig.currencySymbol || 'TSh';
 
-  // Debounce search term by 250ms
+  // Debounce search term by 200ms
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedTerm(searchTerm.trim());
-    }, 250);
+    }, 200);
     return () => clearTimeout(handler);
   }, [searchTerm]);
 
@@ -55,7 +54,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
     };
   }, [isOpen]);
 
-  // Global keyboard shortcuts: "/" to open, "Esc" to close
+  // Global keyboard shortcuts: Esc to close
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
@@ -89,15 +88,6 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
     }
   };
 
-  const clearAllRecents = () => {
-    setRecentSearches([]);
-    try {
-      localStorage.removeItem(STORAGE_KEY_RECENT);
-    } catch {
-      // ignore
-    }
-  };
-
   const executeSearch = (query: string) => {
     const trimmed = query.trim();
     if (trimmed) {
@@ -112,7 +102,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
     executeSearch(searchTerm);
   };
 
-  // E-Commerce Weighted Relevance Search Algorithm
+  // Relevance Search Algorithm
   const matchingResults = useMemo(() => {
     if (!debouncedTerm) return { products: [], categories: [] };
     const lower = debouncedTerm.toLowerCase();
@@ -126,26 +116,18 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
       const catL = p.category.toLowerCase();
       const nameSwL = p.nameSw ? p.nameSw.toLowerCase() : '';
 
-      // 1. Direct name or SKU prefix match (Top Priority)
       if (nameL.startsWith(lower) || nameSwL.startsWith(lower)) score += 60;
       else if (nameL.includes(lower) || nameSwL.includes(lower)) score += 35;
 
       if (skuL.startsWith(lower)) score += 50;
       else if (skuL.includes(lower)) score += 25;
 
-      // 2. Category match
       if (catL.startsWith(lower)) score += 30;
       else if (catL.includes(lower)) score += 15;
 
-      // 3. Technical specifications (quire, pageCount, size)
       if (p.quire && p.quire.toLowerCase().includes(lower)) score += 20;
       if (p.pageCount && p.pageCount.toLowerCase().includes(lower)) score += 15;
-      if (p.size && p.size.toLowerCase().includes(lower)) score += 10;
 
-      // 4. Secondary description match
-      if (p.description && p.description.toLowerCase().includes(lower)) score += 5;
-
-      // Merchandising boost for featured/best-seller items
       if (score > 0) {
         if (p.featured) score += 3;
         if (p.bestSeller) score += 2;
@@ -174,13 +156,13 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
       role="dialog"
       aria-modal="true"
       aria-label="Site Search"
-      className="fixed inset-0 z-[100] flex flex-col bg-[#F9F8F6] lg:bg-[#F9F8F6]/95 lg:backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 z-[100] flex flex-col bg-[var(--bg)]/95 backdrop-blur-md text-[var(--text)] animate-in fade-in duration-200"
     >
       {/* Header Bar with Search Input */}
-      <div className="w-full bg-[#F9F8F6] border-b border-[#E7E5E0] px-4 sm:px-8 py-4 sm:py-6 shadow-sm">
-        <div className="max-w-5xl mx-auto flex items-center gap-3 sm:gap-4">
+      <div className="w-full bg-[var(--surface-1)] border-b border-[var(--border)] px-4 sm:px-8 py-4 sm:py-5 shadow-sm">
+        <div className="max-w-4xl mx-auto flex items-center gap-3 sm:gap-4">
           <form onSubmit={handleSubmit} className="flex-1 relative flex items-center">
-            <Search className="w-5 h-5 sm:w-6 sm:h-6 text-[#111113] absolute left-3 sm:left-4 pointer-events-none" />
+            <Search className="w-5 h-5 text-[var(--gold)] absolute left-3.5 sm:left-4 pointer-events-none stroke-[2]" />
             <input
               ref={inputRef}
               type="text"
@@ -190,14 +172,18 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
               enterKeyHint="search"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search notebooks, pens, books, bahasha..."
-              className="w-full pl-11 sm:pl-14 pr-12 py-3 sm:py-4 text-base sm:text-xl font-heading bg-white rounded-[12px] border border-[#E7E5E0] text-[#14182B] placeholder:text-[#6B7280] focus-ring-gold shadow-xs"
+              placeholder={
+                language === 'sw'
+                  ? 'Tafuta madaftari, counter books, bahasha, rejesta...'
+                  : 'Search counter books, exercise books, kraft envelopes, registers...'
+              }
+              className="w-full pl-11 sm:pl-12 pr-10 py-3 sm:py-3.5 text-sm sm:text-base bg-[var(--surface-2)] rounded-xl border border-[var(--border)] text-[var(--text)] placeholder:text-[var(--text-muted)] focus:outline-none focus:border-[var(--red)] focus:ring-1 focus:ring-[var(--red)] shadow-xs transition-colors"
             />
             {searchTerm && (
               <button
                 type="button"
                 onClick={() => setSearchTerm('')}
-                className="absolute right-3.5 p-1 rounded-full text-[#6B7280] hover:text-[#14182B] hover:bg-[#F3EEE2]"
+                className="absolute right-3 p-1 rounded-full text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-1)] cursor-pointer"
                 aria-label="Clear search"
               >
                 <X className="w-4 h-4" />
@@ -208,28 +194,26 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
           <button
             type="button"
             onClick={onClose}
-            className="flex items-center gap-1.5 px-3 sm:px-4 py-3 rounded-[12px] bg-white border border-[#E7E5E0] hover:bg-[#F3EEE2] text-xs font-bold text-[#14182B] transition-colors focus-ring-gold"
+            className="flex items-center gap-1.5 px-4 py-3 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] hover:border-[var(--gold)] text-xs font-mono font-bold text-[var(--text)] transition-colors cursor-pointer"
           >
-            <span className="hidden sm:inline">Close</span>
-            <span className="text-[10px] text-[#6B7280] font-mono hidden sm:inline">(Esc)</span>
-            <X className="w-4 h-4 sm:hidden" />
+            <span>Close</span>
+            <span className="text-[10px] text-[var(--text-muted)] hidden sm:inline">(Esc)</span>
           </button>
         </div>
       </div>
 
       {/* Search Content Body */}
       <div className="flex-1 overflow-y-auto px-4 sm:px-8 py-6">
-        <div className="max-w-5xl mx-auto space-y-8">
-          {/* State 1: Active query with live suggestions */}
+        <div className="max-w-4xl mx-auto space-y-6">
+          
+          {/* Matching Products */}
           {debouncedTerm ? (
             <div className="space-y-6">
-              {/* Category Matches */}
               {matchingResults.categories.length > 0 && (
-                <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#6B7280] mb-3 flex items-center gap-2">
-                    <Tag className="w-3.5 h-3.5 text-[#dc2626]" />
-                    Matching Categories
-                  </h4>
+                <div className="space-y-2">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--gold)] block">
+                    MATCHING CATEGORIES
+                  </span>
                   <div className="flex flex-wrap gap-2">
                     {matchingResults.categories.map((cat) => (
                       <button
@@ -239,164 +223,155 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
                           navigate(`/catalog?category=${encodeURIComponent(cat)}`);
                           onClose();
                         }}
-                        className="px-3.5 py-1.5 rounded-full bg-white border border-[#E7E5E0] hover:border-[#dc2626] hover:text-[#111113] text-xs font-semibold text-[#14182B] transition-all flex items-center gap-1.5"
+                        className="px-3.5 py-1.5 rounded-full bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)] text-xs font-mono text-[var(--text)] transition-colors cursor-pointer flex items-center gap-1.5"
                       >
+                        <Tag className="w-3 h-3 text-[var(--red)]" />
                         <span>{cat}</span>
-                        <ChevronRight className="w-3 h-3 text-[#6B7280]" />
                       </button>
                     ))}
                   </div>
                 </div>
               )}
 
-              {/* Product Matches */}
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#6B7280] flex items-center gap-2">
-                    <BookOpen className="w-3.5 h-3.5 text-[#111113]" />
-                    Products Matching &ldquo;{debouncedTerm}&rdquo; ({matchingResults.products.length})
-                  </h4>
-                  <button
-                    onClick={() => executeSearch(debouncedTerm)}
-                    className="text-xs font-bold text-[#111113] hover:text-[#dc2626] flex items-center gap-1"
-                  >
-                    View all results <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--gold)] block">
+                    PRODUCTS ({matchingResults.products.length})
+                  </span>
+                  {matchingResults.products.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => executeSearch(debouncedTerm)}
+                      className="text-xs font-mono font-bold text-[var(--red)] hover:underline inline-flex items-center gap-1 cursor-pointer"
+                    >
+                      <span>View all results</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                 </div>
 
                 {matchingResults.products.length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                    {matchingResults.products.map((p) => (
-                      <div
-                        key={p.id}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {matchingResults.products.map((item) => (
+                      <button
+                        key={item.id}
+                        type="button"
                         onClick={() => {
-                          saveRecentSearch(p.name);
-                          navigate(`/product/${p.id}`);
+                          saveRecentSearch(item.name);
+                          navigate(`/product/${item.id}`);
                           onClose();
                         }}
-                        className="flex items-center gap-3.5 p-3 rounded-[12px] bg-white border border-[#E7E5E0] hover:border-[#dc2626] transition-all cursor-pointer group shadow-xs"
+                        className="p-3 rounded-xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)]/50 transition-colors flex items-center gap-3 text-left group cursor-pointer"
                       >
-                        <div className="w-14 h-14 rounded-[8px] bg-[#F9F8F6] overflow-hidden shrink-0 border border-[#E7E5E0]/50 p-1">
-                          <img
-                            src={p.image}
-                            alt={p.name}
-                            className="w-full h-full object-contain group-hover:scale-105 transition-transform"
+                        <div className="w-12 h-12 rounded-lg bg-[var(--paper)] overflow-hidden shrink-0">
+                          <ProductImage
+                            image={item.image}
+                            alt={item.name}
+                            variant="thumb"
+                            className="w-full h-full"
                           />
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <span className="text-[10px] font-bold uppercase tracking-wider text-[#6B7280] block truncate">
-                            {p.category}
-                          </span>
-                          <h5 className="text-xs font-bold text-[#14182B] group-hover:text-[#111113] transition-colors truncate">
-                            {p.name}
-                          </h5>
-                          <span className="text-xs font-mono font-bold text-[#111113] mt-0.5 block">
-                            {currency} {(p.discountPrice || p.price).toLocaleString()}
-                          </span>
+                        <div className="min-w-0 flex-1">
+                          <h4 className="text-xs sm:text-sm font-bold text-[var(--text)] group-hover:text-[var(--gold)] transition-colors truncate">
+                            {language === 'sw' && item.nameSw ? item.nameSw : item.name}
+                          </h4>
+                          <p className="text-[11px] text-[var(--text-muted)] font-mono truncate">
+                            {item.category} • {item.quire || item.pageCount || '70 GSM'}
+                          </p>
                         </div>
-                      </div>
+                        <span className="text-xs sm:text-sm font-mono font-black text-[var(--text)] shrink-0 tabular-nums">
+                          {formatPrice(item.discountPrice || item.price, 'TSh')}
+                        </span>
+                      </button>
                     ))}
                   </div>
                 ) : (
-                  <div className="text-center py-12 bg-white rounded-[12px] border border-[#E7E5E0] p-8">
-                    <p className="font-heading text-lg text-[#14182B]">No exact matches for &ldquo;{debouncedTerm}&rdquo;</p>
-                    <p className="text-xs text-[#6B7280] mt-1 max-w-md mx-auto">
-                      Try searching by category such as Counter Books, Exercise Books, Oxford Math Set, or Kraft Bahasha.
+                  <div className="p-8 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] text-center space-y-3">
+                    <p className="text-sm font-bold text-[var(--text)]">
+                      {language === 'sw'
+                        ? `Hakuna bidhaa iliyopatikana kwa "${debouncedTerm}"`
+                        : `No stationery products found for "${debouncedTerm}"`}
                     </p>
-                    <button
-                      onClick={() => executeSearch(debouncedTerm)}
-                      className="mt-4 px-4 py-2 text-xs font-bold rounded-[8px] btn-indra-primary"
+                    <p className="text-xs text-[var(--text-muted)] max-w-md mx-auto">
+                      Inquire directly with our dispatch desk on WhatsApp for custom factory orders.
+                    </p>
+                    <a
+                      href={`https://wa.me/255746268391?text=${encodeURIComponent('Habari OMEGA, ninatafuta: ' + debouncedTerm)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] hover:bg-[#16a34a] text-white text-xs font-mono font-bold uppercase tracking-wider shadow-sm"
                     >
-                      Search All Catalog
-                    </button>
+                      <MessageCircle className="w-4 h-4" />
+                      <span>Ask Dispatch on WhatsApp</span>
+                    </a>
                   </div>
                 )}
               </div>
             </div>
           ) : (
-            /* State 2: Empty query - Recent & Trending searches */
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Recent Searches */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-[#6B7280] flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-[#111113]" />
-                    Recent Searches
-                  </h4>
-                  {recentSearches.length > 0 && (
-                    <button
-                      type="button"
-                      onClick={clearAllRecents}
-                      className="text-[11px] font-medium text-[#6B7280] hover:text-[#D64545] transition-colors"
-                    >
-                      Clear all
-                    </button>
-                  )}
-                </div>
-
-                <div className="space-y-1.5">
-                  {recentSearches.map((term, idx) => (
-                    <div
-                      key={idx}
-                      onClick={() => executeSearch(term)}
-                      className="flex items-center justify-between p-2.5 rounded-[8px] bg-white hover:bg-[#F3EEE2] border border-[#E7E5E0] cursor-pointer text-xs font-medium text-[#14182B] group transition-colors"
-                    >
-                      <span className="group-hover:text-[#111113]">{term}</span>
-                      <button
-                        type="button"
-                        onClick={(e) => removeRecentSearch(e, term)}
-                        className="p-1 text-[#6B7280] hover:text-[#D64545] rounded-full"
-                        title="Remove"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Trending Searches & Collections */}
-              <div className="space-y-3">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-[#6B7280] flex items-center gap-1.5">
-                  <Flame className="w-3.5 h-3.5 text-[#dc2626]" />
-                  Trending Searches
-                </h4>
-
-                <div className="flex flex-wrap gap-2">
-                  {TRENDING_SEARCHES.map((item, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => executeSearch(item)}
-                      className="px-3.5 py-2 rounded-full bg-white hover:bg-[#111113] hover:text-white border border-[#E7E5E0] text-xs font-semibold text-[#14182B] transition-all flex items-center gap-1.5 shadow-xs"
-                    >
-                      <Sparkles className="w-3 h-3 text-[#dc2626]" />
-                      <span>{item}</span>
-                    </button>
-                  ))}
-                </div>
-
-                <div className="mt-6 p-4 rounded-[12px] bg-[#F3EEE2] border border-[#E7E5E0] space-y-2">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-[#111113]">
-                    Boutique Recommendation
+            /* State 2: Default Recent Searches & Quick Categories */
+            <div className="space-y-6">
+              {recentSearches.length > 0 && (
+                <div className="space-y-2">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--gold)] block">
+                    RECENT SEARCHES
                   </span>
-                  <p className="text-xs text-[#14182B]">
-                    Looking for institutional carton quantities? Browse our wholesale catalog or contact our wholesale desk directly.
-                  </p>
-                  <button
-                    onClick={() => {
-                      navigate('/catalog?category=Counter+Books');
-                      onClose();
-                    }}
-                    className="text-xs font-bold text-[#111113] hover:text-[#dc2626] inline-flex items-center gap-1"
-                  >
-                    View Wholesale Books <ArrowRight className="w-3 h-3" />
-                  </button>
+                  <div className="flex flex-wrap gap-2">
+                    {recentSearches.map((term) => (
+                      <div
+                        key={term}
+                        onClick={() => executeSearch(term)}
+                        className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)] text-xs text-[var(--text)] transition-colors cursor-pointer group"
+                      >
+                        <Clock className="w-3 h-3 text-[var(--text-muted)]" />
+                        <span>{term}</span>
+                        <button
+                          type="button"
+                          onClick={(e) => removeRecentSearch(e, term)}
+                          className="text-[var(--text-muted)] hover:text-[var(--red)] p-0.5"
+                          aria-label={`Remove ${term}`}
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--gold)] block">
+                  QUICK CATALOGUE JUMPS
+                </span>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                  {[
+                    { label: 'Counter Books (Q2-Q4)', href: '/catalog?category=Counter+Books' },
+                    { label: 'Exercise Books (200p)', href: '/catalog?category=Exercise+Books' },
+                    { label: 'Kraft Bahasha (A4)', href: '/catalog?category=Bahasha+%26+Envelopes' },
+                    { label: 'Wholesale Cartons', href: '/wholesale' },
+                  ].map((j) => (
+                    <button
+                      key={j.label}
+                      type="button"
+                      onClick={() => {
+                        navigate(j.href);
+                        onClose();
+                      }}
+                      className="p-3 rounded-xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)] text-left text-xs font-mono font-bold text-[var(--text)] hover:text-[var(--gold)] transition-colors cursor-pointer flex items-center justify-between"
+                    >
+                      <span>{j.label}</span>
+                      <ChevronRight className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
           )}
+
         </div>
       </div>
     </div>
   );
 };
+
+export default SearchOverlay;

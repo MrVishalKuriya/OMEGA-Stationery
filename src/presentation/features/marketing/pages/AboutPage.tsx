@@ -1,29 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
-  BookOpen,
-  Award,
   ShieldCheck,
   Feather,
   Truck,
   CheckCircle2,
   ArrowRight,
-  Sparkles,
   Layers,
   Compass,
   Factory,
-  MapPin,
-  Clock,
-  Check,
-  FileText,
-  Users,
 } from 'lucide-react';
+import { motion } from 'motion/react';
 import { useStore } from '@/context/StoreContext';
 import { SEOHead } from '@/components/SEOHead';
 import { TRANSLATIONS } from '@/data/translations';
+import {
+  HaikeiWaveDivider,
+  HaikeiBlobGlow,
+  HaikeiPaperLines,
+} from '@/components/HaikeiBackgrounds';
 
 export const AboutPage: React.FC = () => {
-  const { storeConfig, language } = useStore();
+  const { language } = useStore();
   const t = TRANSLATIONS[language];
 
   const milestones = [
@@ -93,140 +91,190 @@ export const AboutPage: React.FC = () => {
   ];
 
   return (
-    <div className="bg-[#F9F8F6] min-h-screen text-[#111113]">
+    <div className="bg-[var(--bg)] min-h-screen text-[var(--text)] transition-colors duration-200">
       <SEOHead
         title="About OMEGA Writing Notebooks & Stationery Tanzania | Our Heritage & Standards"
         description="Learn about OMEGA, Tanzania's benchmark manufacturer of Counter Books (Q2, Q3, Q4), Exercise Books, Kraft Bahasha, and educational paper goods since 1998."
       />
 
-      {/* ==================== 1. HERO SECTION (LEDUP #111113 MOCHA) ==================== */}
-      <section className="relative overflow-hidden w-full bg-[#111113] text-white py-16 lg:py-24 border-b border-[#111113]">
-        <div className="absolute -top-32 -right-32 w-[600px] h-[600px] bg-[#dc2626]/18 rounded-full blur-[150px] pointer-events-none" />
-        <div className="absolute -bottom-32 -left-32 w-[550px] h-[550px] bg-[#b91c1c]/15 rounded-full blur-[140px] pointer-events-none" />
+      {/* ==================== 1. HERO SECTION ==================== */}
+      <section className="relative overflow-hidden w-full bg-[var(--surface-1)] text-[var(--text)] py-16 lg:py-24 border-b border-[var(--border)]">
+        <HaikeiBlobGlow color="mixed" position="top-right" size="lg" className="opacity-30" />
+        <HaikeiPaperLines opacity={0.05} />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-3xl space-y-6">
-            <div className="inline-flex items-center px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#dc2626]/20 via-[#dc2626]/10 to-transparent border border-[#dc2626]/40 backdrop-blur-md font-mono shadow-xs">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55 }}
+            className="max-w-3xl space-y-6"
+          >
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[var(--gold)] bg-[var(--surface-2)] border border-[var(--border)] backdrop-blur-md font-mono shadow-xs">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+              </span>
               <span>Soweto SIDO Mbeya &amp; Kariakoo Hub · Est. 1998</span>
             </div>
 
-            <h1 className="font-heading text-3xl sm:text-5xl lg:text-5xl font-light text-white leading-[1.12] tracking-tight">
+            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-[var(--text)] leading-[1.12] tracking-tight">
               {language === 'sw' ? 'Historia na Ubora wa' : '28 Years of Precision'} <br />
-              <span className="font-bold text-[#dc2626] bg-gradient-to-r from-[#dc2626] via-white to-[#dc2626] bg-clip-text text-transparent">
+              <span className="font-bold text-[var(--red)]">
                 {language === 'sw' ? 'Madaftari ya OMEGA Tanzania.' : 'Paper Engineering in Tanzania.'}
               </span>
             </h1>
 
-            <p className="text-sm sm:text-base text-stone-200 leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-[var(--text-muted)] leading-relaxed font-normal">
               {language === 'sw'
                 ? 'Tangu mwaka 1998, OMEGA imekuwa ikiongoza katika utengenezaji na usambazaji wa vitabu vya majalada magumu (Counter Books), madaftari ya mazoezi ya shule, na bahasha nzito za kraft zenye uimara usiomomonyoka.'
                 : 'Founded in Mbeya in 1998, OMEGA has set the gold standard for durable student exercise books, professional accounting ledgers, and institutional stationery across East Africa.'}
             </p>
 
             <div className="pt-2 flex flex-wrap items-center gap-4">
-              <Link
-                to="/catalog"
-                className="btn-ledup-copper px-7 py-3.5 rounded-lg text-xs sm:text-sm uppercase tracking-wider font-bold inline-flex items-center gap-2 group shadow-lg"
-              >
-                <span>{language === 'sw' ? 'TAZAMA BIDHAA' : 'EXPLORE CATALOGUE'}</span>
-                <ArrowRight className="w-4 h-4 ledup-arrow-icon" />
-              </Link>
-              <Link
-                to="/contact"
-                className="px-6 py-3.5 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all"
-              >
-                <span>{language === 'sw' ? 'WASILIANA NASI' : 'CONTACT DISPATCH'}</span>
-              </Link>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.96 }}>
+                <Link
+                  to="/catalog"
+                  className="bg-[var(--red)] hover:bg-[var(--red-hover)] text-white px-7 py-3.5 rounded-full text-xs sm:text-sm uppercase tracking-wider font-mono font-bold inline-flex items-center gap-2 group shadow-lg shadow-red-950/40 cursor-pointer"
+                >
+                  <span>{language === 'sw' ? 'TAZAMA BIDHAA' : 'EXPLORE CATALOGUE'}</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.96 }}>
+                <Link
+                  to="/contact"
+                  className="px-6 py-3.5 rounded-full bg-[var(--surface-2)] hover:bg-[var(--surface-1)] text-[var(--text)] border border-[var(--border)] hover:border-[var(--gold)] text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all cursor-pointer"
+                >
+                  <span>{language === 'sw' ? 'WASILIANA NASI' : 'CONTACT DISPATCH'}</span>
+                </Link>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* ==================== 2. SCALE & TRUST METRICS ==================== */}
-      <section className="bg-white border-b border-[#E7E5E0] py-8">
+      <section className="bg-[var(--surface-1)] border-b border-[var(--border)] py-8 transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            <div className="p-4 rounded-[16px] bg-[#F9F8F6] border border-[#E7E5E0]">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#111113] font-heading block">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.05 }}
+              className="p-5 rounded-2xl bg-[var(--surface-2)] border border-[var(--border)] shadow-xs"
+            >
+              <span className="text-2xl sm:text-3xl font-extrabold text-[var(--text)] font-heading block">
                 28 Years
               </span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#111113] mt-1">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--gold)] mt-1 font-mono">
                 Continuous Heritage
               </h4>
-              <p className="text-[11px] text-[#6E6B66] mt-0.5">Manufacturing in Tanzania since 1998</p>
-            </div>
+              <p className="text-[11px] text-[var(--text-muted)] mt-0.5">Manufacturing in Tanzania since 1998</p>
+            </motion.div>
 
-            <div className="p-4 rounded-[16px] bg-[#F9F8F6] border border-[#E7E5E0]">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#dc2626] font-heading block">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.12 }}
+              className="p-5 rounded-2xl bg-[var(--surface-2)] border border-[var(--border)] shadow-xs"
+            >
+              <span className="text-2xl sm:text-3xl font-extrabold text-[var(--red)] font-heading block">
                 500,000+
               </span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#111113] mt-1">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text)] mt-1 font-mono">
                 Annual Book Volume
               </h4>
-              <p className="text-[11px] text-[#6E6B66] mt-0.5">Supplied to schools and enterprises</p>
-            </div>
+              <p className="text-[11px] text-[var(--text-muted)] mt-0.5">Supplied to schools and enterprises</p>
+            </motion.div>
 
-            <div className="p-4 rounded-[16px] bg-[#F9F8F6] border border-[#E7E5E0]">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#111113] font-heading block">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.18 }}
+              className="p-5 rounded-2xl bg-[var(--surface-2)] border border-[var(--border)] shadow-xs"
+            >
+              <span className="text-2xl sm:text-3xl font-extrabold text-[var(--text)] font-heading block">
                 1,200+
               </span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#111113] mt-1">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--gold)] mt-1 font-mono">
                 Partner Schools &amp; Tenders
               </h4>
-              <p className="text-[11px] text-[#6E6B66] mt-0.5">Direct carton dispatch every term</p>
-            </div>
+              <p className="text-[11px] text-[var(--text-muted)] mt-0.5">Direct carton dispatch every term</p>
+            </motion.div>
 
-            <div className="p-4 rounded-[16px] bg-[#F9F8F6] border border-[#E7E5E0]">
-              <span className="text-2xl sm:text-3xl font-extrabold text-[#2A9D8F] font-heading block">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.24 }}
+              className="p-5 rounded-2xl bg-[var(--surface-2)] border border-[var(--border)] shadow-xs"
+            >
+              <span className="text-2xl sm:text-3xl font-extrabold text-emerald-500 font-heading block">
                 31 Regions
               </span>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#111113] mt-1">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text)] mt-1 font-mono">
                 Nationwide Delivery
               </h4>
-              <p className="text-[11px] text-[#6E6B66] mt-0.5">Daily bus parcel waybill logistics</p>
-            </div>
+              <p className="text-[11px] text-[var(--text-muted)] mt-0.5">Daily bus parcel waybill logistics</p>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* ==================== 3. FOUR MANUFACTURING PILLARS ==================== */}
-      <section className="py-14 lg:py-20 bg-[#F9F8F6] border-b border-[#E7E5E0]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          <div className="text-center space-y-2 max-w-2xl mx-auto">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#dc2626] font-heading block">
+      <section className="py-14 lg:py-20 bg-[var(--bg)] border-b border-[var(--border)] relative overflow-hidden transition-colors duration-200">
+        <HaikeiBlobGlow color="gold" position="bottom-right" size="lg" className="opacity-20" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center space-y-2 max-w-2xl mx-auto"
+          >
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--gold)] font-mono block">
               OUR CRAFTSMANSHIP
             </span>
-            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#111113] tracking-tight">
+            <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[var(--text)] tracking-tight">
               {language === 'sw' ? 'Viwango Vinavyotutofautisha' : 'The Four OMEGA Quality Standards'}
             </h2>
-            <p className="text-xs sm:text-sm text-[#6E6B66]">
+            <p className="text-xs sm:text-sm text-[var(--text-muted)]">
               {language === 'sw'
                 ? 'Kila daftari linalotoka kiwandani kwetu linapitia hatua madhubuti za ubora ili kuhakikisha kumbukumbu zako zinadumu maisha yote.'
                 : 'Every batch produced at our Mbeya works undergoes rigorous pull-testing, ink-retention trials, and moisture tests.'}
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {standards.map((std, idx) => {
               const Icon = std.icon;
               return (
-                <div
+                <motion.div
                   key={idx}
-                  className="p-6 rounded-[20px] bg-white border border-[#E7E5E0] hover:border-[#dc2626] transition-all space-y-3 shadow-xs"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.45, delay: idx * 0.08 }}
+                  whileHover={{ y: -5 }}
+                  className="p-6 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)]/50 transition-colors space-y-3 shadow-xs"
                 >
-                  <div className="w-12 h-12 rounded-[14px] bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold shadow-sm">
+                  <div className="w-12 h-12 rounded-xl bg-[var(--surface-2)] text-[var(--red)] flex items-center justify-center font-bold shadow-sm border border-[var(--border)]">
                     <Icon className="w-6 h-6" />
                   </div>
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#2A9D8F] block">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--gold)] block">
                     {std.spec}
                   </span>
-                  <h3 className="font-heading font-bold text-base text-[#111113]">
+                  <h3 className="font-heading font-bold text-base text-[var(--text)]">
                     {std.title}
                   </h3>
-                  <p className="text-xs text-[#6E6B66] leading-relaxed">
+                  <p className="text-xs text-[var(--text-muted)] leading-relaxed">
                     {std.desc}
                   </p>
-                </div>
+                </motion.div>
               );
             })}
           </div>
@@ -234,139 +282,167 @@ export const AboutPage: React.FC = () => {
       </section>
 
       {/* ==================== 4. HERITAGE & TIMELINE ==================== */}
-      <section className="py-14 lg:py-20 bg-white border-b border-[#E7E5E0]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          <div className="text-center space-y-2">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#dc2626] font-heading block">
+      <section className="py-14 lg:py-20 bg-[var(--surface-1)] border-b border-[var(--border)] relative overflow-hidden transition-colors duration-200">
+        <HaikeiBlobGlow color="red" position="center" size="lg" className="opacity-15" />
+
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center space-y-2"
+          >
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--gold)] font-mono block">
               CHRONOLOGY
             </span>
-            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#111113] tracking-tight">
+            <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[var(--text)] tracking-tight">
               {language === 'sw' ? 'Safari ya OMEGA Tanzania' : 'Milestones in Our Journey'}
             </h2>
-            <p className="text-xs sm:text-sm text-[#6E6B66] max-w-lg mx-auto">
+            <p className="text-xs sm:text-sm text-[var(--text-muted)] max-w-lg mx-auto">
               {language === 'sw'
                 ? 'Kutoka karakana ndogo ya Mbeya hadi kuwa chapa inayoaminika zaidi kwa elimu na biashara nchini.'
                 : 'From a humble Mbeya paper workshop into Tanzania’s national benchmark for institutional stationery.'}
             </p>
-          </div>
+          </motion.div>
 
-          <div className="relative border-l-2 border-[#E7E5E0] ml-4 md:ml-32 space-y-10 pl-6 md:pl-10">
+          <div className="relative border-l-2 border-[var(--border)] ml-4 md:ml-32 space-y-10 pl-6 md:pl-10">
             {milestones.map((m, idx) => (
-              <div key={idx} className="relative group">
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45, delay: idx * 0.1 }}
+                className="relative group"
+              >
                 {/* Dot */}
-                <div className="absolute -left-[31px] md:-left-[47px] top-1.5 w-4 h-4 rounded-full bg-[#F9F8F6] border-2 border-[#dc2626] group-hover:bg-[#dc2626] transition-colors" />
+                <div className="absolute -left-[31px] md:-left-[47px] top-1.5 w-4 h-4 rounded-full bg-[var(--surface-2)] border-2 border-[var(--red)] group-hover:bg-[var(--red)] transition-colors" />
 
                 <div className="space-y-1">
-                  <span className="font-mono text-sm font-bold text-[#dc2626] tracking-wider block">
+                  <span className="font-mono text-sm font-bold text-[var(--gold)] tracking-wider block">
                     {m.year}
                   </span>
-                  <h3 className="font-heading font-bold text-lg text-[#111113]">
+                  <h3 className="font-heading font-bold text-lg text-[var(--text)]">
                     {m.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-[#6E6B66] leading-relaxed max-w-2xl">
+                  <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed max-w-2xl">
                     {m.desc}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* ==================== 5. FACTORY & DISPATCH LOCATIONS ==================== */}
-      <section className="py-14 lg:py-20 bg-[#F9F8F6] border-b border-[#E7E5E0]">
+      <section className="py-14 lg:py-20 bg-[var(--bg)] border-b border-[var(--border)] transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           <div className="text-center space-y-2">
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#dc2626] font-heading block">
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--gold)] font-mono block">
               OPERATIONS &amp; LOGISTICS
             </span>
-            <h2 className="font-heading text-2xl sm:text-4xl font-bold text-[#111113] tracking-tight">
+            <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[var(--text)] tracking-tight">
               {language === 'sw' ? 'Vituo Vyetu Rasmi' : 'Our Facilities & Dispatch Hubs'}
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Facility 1 */}
-            <div className="p-8 rounded-[24px] bg-white border border-[#E7E5E0] hover:border-[#dc2626] transition-all space-y-4 shadow-xs">
-              <div className="w-12 h-12 rounded-[14px] bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold">
+            <motion.div
+              whileHover={{ y: -5 }}
+              className="p-8 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)]/50 transition-colors space-y-4 shadow-sm"
+            >
+              <div className="w-12 h-12 rounded-xl bg-[var(--surface-2)] text-[var(--red)] flex items-center justify-center font-bold border border-[var(--border)]">
                 <Factory className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#2A9D8F] block">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--gold)] block">
                   CENTRAL WORKS &amp; BINDERY
                 </span>
-                <h3 className="font-heading font-bold text-xl text-[#111113] mt-1">
+                <h3 className="font-heading font-bold text-xl text-[var(--text)] mt-1">
                   Soweto SIDO Industrial Estate
                 </h3>
-                <p className="text-xs text-[#6E6B66] mt-1 font-mono">
+                <p className="text-xs text-[var(--text-muted)] mt-1 font-mono">
                   Mbeya City, Southern Highlands, Tanzania
                 </p>
               </div>
-              <p className="text-xs text-[#6E6B66] leading-relaxed">
+              <p className="text-xs text-[var(--text-muted)] leading-relaxed">
                 Home to our heavy-duty Smyth thread-sewing lines, precision guillotine cutters, and carton bundling depot. Supplies upcountry tenders and regional bulk orders.
               </p>
-              <div className="pt-2 text-xs font-semibold text-[#111113] flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#2A9D8F]" /> Factory direct carton pickups &amp; school tenders
+              <div className="pt-2 text-xs font-semibold text-[var(--text)] flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Factory direct carton pickups &amp; school tenders
               </div>
-            </div>
+            </motion.div>
 
             {/* Facility 2 */}
-            <div className="p-8 rounded-[24px] bg-white border border-[#E7E5E0] hover:border-[#dc2626] transition-all space-y-4 shadow-xs">
-              <div className="w-12 h-12 rounded-[14px] bg-[#111113] text-[#dc2626] flex items-center justify-center font-bold">
+            <motion.div
+              whileHover={{ y: -5 }}
+              className="p-8 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)]/50 transition-colors space-y-4 shadow-sm"
+            >
+              <div className="w-12 h-12 rounded-xl bg-[var(--surface-2)] text-[var(--red)] flex items-center justify-center font-bold border border-[var(--border)]">
                 <Truck className="w-6 h-6" />
               </div>
               <div>
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#dc2626] block">
+                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--gold)] block">
                   COMMERCIAL DISPATCH &amp; WAREHOUSE
                 </span>
-                <h3 className="font-heading font-bold text-xl text-[#111113] mt-1">
+                <h3 className="font-heading font-bold text-xl text-[var(--text)] mt-1">
                   Kariakoo Commercial District
                 </h3>
-                <p className="text-xs text-[#6E6B66] mt-1 font-mono">
+                <p className="text-xs text-[var(--text-muted)] mt-1 font-mono">
                   Dar es Salaam, Coastal Region, Tanzania
                 </p>
               </div>
-              <p className="text-xs text-[#6E6B66] leading-relaxed">
+              <p className="text-xs text-[var(--text-muted)] leading-relaxed">
                 Our national distribution hub handling rapid bus parcel waybills to all 31 regions via Shabiby, BM Coach, Abood, New Force, and Saibaba.
               </p>
-              <div className="pt-2 text-xs font-semibold text-[#111113] flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#2A9D8F]" /> Same-day bus parcel waybill drop-offs
+              <div className="pt-2 text-xs font-semibold text-[var(--text)] flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Same-day bus parcel waybill drop-offs
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* ==================== 6. CALL TO ACTION BANNER ==================== */}
-      <section className="py-14 bg-[#111113] text-white">
+      <section className="py-14 bg-[var(--surface-1)] text-[var(--text)] border-t border-[var(--border)] transition-colors duration-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <h2 className="font-heading text-2xl sm:text-4xl font-bold text-white tracking-tight">
+          <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[var(--text)] tracking-tight">
             {language === 'sw'
               ? 'Weka Oda ya Madaftari ya OMEGA Leo'
               : 'Equip Your Students & Accountants with OMEGA'}
           </h2>
-          <p className="text-xs sm:text-sm text-stone-200 max-w-xl mx-auto">
+          <p className="text-xs sm:text-sm text-[var(--text-muted)] max-w-xl mx-auto">
             {language === 'sw'
               ? 'Pata punguzo la moja kwa moja la bei za jumla kutoka kiwandani na usafirishaji wa haraka mkoani kwako.'
               : 'Direct factory pricing, dedicated bus parcel tracking, and guaranteed thread-sewn durability.'}
           </p>
           <div className="flex flex-wrap justify-center items-center gap-4 pt-2">
-            <Link
-              to="/wholesale"
-              className="btn-ledup-copper px-8 py-3.5 rounded-lg text-xs sm:text-sm uppercase tracking-wider font-bold inline-flex items-center gap-2 shadow-lg"
-            >
-              <span>{language === 'sw' ? 'HESABU BEI YA JUMLA' : 'WHOLESALE CARTON CALCULATOR'}</span>
-              <ArrowRight className="w-4 h-4 ledup-arrow-icon" />
-            </Link>
-            <Link
-              to="/contact"
-              className="px-7 py-3.5 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/25 text-xs sm:text-sm font-bold uppercase tracking-wider transition-all"
-            >
-              <span>{language === 'sw' ? 'WASILIANA NASI' : 'SPEAK WITH SALES'}</span>
-            </Link>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.96 }}>
+              <Link
+                to="/wholesale"
+                className="bg-[var(--red)] hover:bg-[var(--red-hover)] text-white px-8 py-3.5 rounded-full text-xs sm:text-sm font-mono font-bold uppercase tracking-wider inline-flex items-center gap-2 shadow-lg shadow-red-950/40 cursor-pointer"
+              >
+                <span>{language === 'sw' ? 'HESABU BEI YA JUMLA' : 'WHOLESALE CARTON CALCULATOR'}</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.96 }}>
+              <Link
+                to="/contact"
+                className="px-7 py-3.5 rounded-full bg-[var(--surface-2)] hover:bg-[var(--surface-1)] text-[var(--text)] border border-[var(--border)] hover:border-[var(--gold)] text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all cursor-pointer"
+              >
+                <span>{language === 'sw' ? 'WASILIANA NASI' : 'SPEAK WITH SALES'}</span>
+              </Link>
+            </motion.div>
           </div>
         </div>
       </section>
+
+      {/* Haikei Wave to Footer */}
+      <HaikeiWaveDivider fill="var(--bg)" secondaryFill="rgba(214, 58, 58, 0.05)" />
     </div>
   );
 };

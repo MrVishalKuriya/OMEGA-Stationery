@@ -37,6 +37,8 @@ export interface StoreContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
   toggleLanguage: () => void;
+  theme: 'dark' | 'light';
+  toggleTheme: () => void;
   activePhoneIndex: number;
   setActivePhoneIndex: (idx: number) => void;
   cart: CartItem[];
@@ -226,6 +228,36 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     showToast(nextLang === 'sw' ? 'Lugha imebadilishwa kuwa Kiswahili' : 'Language switched to English');
   };
 
+  // Theme Toggle (Dark Mode default, switchable to Light Mode)
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    try {
+      const saved = localStorage.getItem('omega_theme');
+      if (saved === 'light' || saved === 'dark') return saved;
+    } catch {}
+    return 'dark';
+  });
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('omega_theme', theme);
+    } catch {}
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+    } else {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => {
+      const next = prev === 'dark' ? 'light' : 'dark';
+      showToast(next === 'dark' ? '🌙 Dark Mode' : '☀️ Light Mode');
+      return next;
+    });
+  };
+
   // Detailed Cart Calculation with useMemo
   const detailedCart = useMemo<DetailedCartItem[]>(() => {
     return cart
@@ -405,6 +437,8 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         language,
         setLanguage,
         toggleLanguage,
+        theme,
+        toggleTheme,
         activePhoneIndex,
         setActivePhoneIndex,
         cart,

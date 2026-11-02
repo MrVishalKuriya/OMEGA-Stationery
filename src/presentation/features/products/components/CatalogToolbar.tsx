@@ -57,22 +57,22 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
   return (
     <div className="space-y-3">
       {/* Search & Top Action Bar */}
-      <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-stone-200 shadow-xs flex flex-col sm:flex-row gap-3 items-center justify-between">
+      <div className="bg-[var(--surface-1)] p-3.5 sm:p-4 rounded-2xl border border-[var(--border)] shadow-xs flex flex-col sm:flex-row gap-3 items-center justify-between transition-colors duration-200">
         {/* Search Input */}
         <div className="relative w-full sm:w-80">
-          <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[var(--text-muted)] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder={language === 'sw' ? 'Tafuta daftari, kurasa, au SKU...' : 'Search notebooks, pages, SKU...'}
-            className="w-full pl-9 pr-8 py-2 text-xs rounded-full border border-stone-200 focus:outline-none focus:border-[#111113] bg-stone-50 text-[#111113] placeholder:text-stone-400"
+            className="w-full pl-9 pr-8 py-2 text-xs rounded-full border border-[var(--border)] focus:outline-none focus:border-[var(--gold)] bg-[var(--surface-2)] text-[var(--text)] placeholder:text-[var(--text-muted)]"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => onSearchChange('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text)]"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -85,41 +85,25 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
           <button
             type="button"
             onClick={onOpenMobileFilters}
-            className="lg:hidden px-3 py-2 rounded-xl border border-stone-200 bg-stone-50 hover:bg-stone-100 text-xs font-bold text-[#111113] inline-flex items-center gap-1.5"
+            className="lg:hidden px-3.5 py-2 rounded-xl border border-[var(--border)] bg-[var(--surface-2)] hover:bg-[var(--surface-1)] text-xs font-bold text-[var(--text)] inline-flex items-center gap-2 cursor-pointer shadow-2xs hover:border-[var(--gold)] transition-colors"
           >
-            <SlidersHorizontal className="w-3.5 h-3.5" />
+            <SlidersHorizontal className="w-3.5 h-3.5 text-[var(--gold)]" />
             <span>Filters</span>
             {activeFilterCount > 0 && (
-              <span className="w-4 h-4 rounded-full bg-[#dc2626] text-white text-[10px] flex items-center justify-center font-bold">
+              <span className="w-4 h-4 rounded-full bg-[var(--red)] text-white text-[10px] flex items-center justify-center font-bold">
                 {activeFilterCount}
               </span>
             )}
           </button>
 
-          {/* Sort Dropdown */}
-          <div className="flex items-center gap-1.5 text-xs text-stone-600">
-            <span className="hidden md:inline font-medium">Sort:</span>
-            <select
-              value={sortBy}
-              onChange={(e) => onSortChange(e.target.value as SortOption)}
-              className="px-3 py-1.5 rounded-xl border border-stone-200 bg-stone-50 text-xs font-semibold text-[#111113] focus:outline-none focus:border-[#111113]"
-            >
-              <option value="featured">Featured / Best Match</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
-              <option value="name-asc">Alphabetical (A-Z)</option>
-              <option value="pages-desc">Most Pages</option>
-            </select>
-          </div>
-
           {/* View Mode Toggle */}
-          <div className="flex items-center bg-stone-100 p-1 rounded-xl border border-stone-200">
+          <div className="flex items-center bg-[var(--surface-2)] p-1 rounded-xl border border-[var(--border)] shadow-2xs">
             <button
               type="button"
               onClick={() => onViewModeChange('grid')}
               aria-label="Grid View"
-              className={`p-1.5 rounded-lg transition-colors ${
-                viewMode === 'grid' ? 'bg-white shadow-xs text-[#111113]' : 'text-stone-400 hover:text-stone-600'
+              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                viewMode === 'grid' ? 'bg-[var(--surface-1)] shadow-xs text-[var(--red)] font-bold' : 'text-[var(--text-muted)] hover:text-[var(--text)]'
               }`}
             >
               <LayoutGrid className="w-4 h-4" />
@@ -128,8 +112,8 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
               type="button"
               onClick={() => onViewModeChange('list')}
               aria-label="List View"
-              className={`p-1.5 rounded-lg transition-colors ${
-                viewMode === 'list' ? 'bg-white shadow-xs text-[#111113]' : 'text-stone-400 hover:text-stone-600'
+              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                viewMode === 'list' ? 'bg-[var(--surface-1)] shadow-xs text-[var(--red)] font-bold' : 'text-[var(--text-muted)] hover:text-[var(--text)]'
               }`}
             >
               <List className="w-4 h-4" />
@@ -141,59 +125,59 @@ export const CatalogToolbar: React.FC<CatalogToolbarProps> = ({
       {/* Active Filter Chips */}
       {activeFilterCount > 0 && (
         <div className="flex flex-wrap items-center gap-2 pt-1">
-          <span className="text-xs text-stone-500 font-medium">Active Filters:</span>
+          <span className="text-xs text-[var(--text-muted)] font-medium">Active Filters:</span>
           {selectedCategory !== 'All' && (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-[#E7E5E0] text-[#111113] text-xs font-semibold shadow-2xs">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[var(--surface-1)] border border-[var(--border)] text-[var(--text)] text-xs font-semibold shadow-2xs">
               Category: {selectedCategory}
-              <button type="button" onClick={() => onClearFilter('category')} className="hover:text-red-600">
+              <button type="button" onClick={() => onClearFilter('category')} className="hover:text-[var(--red)]">
                 <X className="w-3 h-3" />
               </button>
             </span>
           )}
           {selectedQuire !== 'All' && (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-[#E7E5E0] text-[#111113] text-xs font-semibold shadow-2xs">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[var(--surface-1)] border border-[var(--border)] text-[var(--text)] text-xs font-semibold shadow-2xs">
               Quire: {selectedQuire}
-              <button type="button" onClick={() => onClearFilter('quire')} className="hover:text-red-600">
+              <button type="button" onClick={() => onClearFilter('quire')} className="hover:text-[var(--red)]">
                 <X className="w-3 h-3" />
               </button>
             </span>
           )}
           {selectedRuling !== 'All' && (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-[#E7E5E0] text-[#111113] text-xs font-semibold shadow-2xs">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[var(--surface-1)] border border-[var(--border)] text-[var(--text)] text-xs font-semibold shadow-2xs">
               Ruling: {selectedRuling}
-              <button type="button" onClick={() => onClearFilter('ruling')} className="hover:text-red-600">
+              <button type="button" onClick={() => onClearFilter('ruling')} className="hover:text-[var(--red)]">
                 <X className="w-3 h-3" />
               </button>
             </span>
           )}
           {selectedBinding !== 'All' && (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-[#E7E5E0] text-[#111113] text-xs font-semibold shadow-2xs">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[var(--surface-1)] border border-[var(--border)] text-[var(--text)] text-xs font-semibold shadow-2xs">
               Binding: {selectedBinding}
-              <button type="button" onClick={() => onClearFilter('binding')} className="hover:text-red-600">
+              <button type="button" onClick={() => onClearFilter('binding')} className="hover:text-[var(--red)]">
                 <X className="w-3 h-3" />
               </button>
             </span>
           )}
           {(appliedPriceRange.min !== null || appliedPriceRange.max !== null) && (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-[#E7E5E0] text-[#111113] text-xs font-semibold shadow-2xs">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[var(--surface-1)] border border-[var(--border)] text-[var(--text)] text-xs font-semibold shadow-2xs">
               Price: {appliedPriceRange.min || 0} - {appliedPriceRange.max || '∞'}
-              <button type="button" onClick={() => onClearFilter('price')} className="hover:text-red-600">
+              <button type="button" onClick={() => onClearFilter('price')} className="hover:text-[var(--red)]">
                 <X className="w-3 h-3" />
               </button>
             </span>
           )}
           {inStockOnly && (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-[#E7E5E0] text-[#111113] text-xs font-semibold shadow-2xs">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[var(--surface-1)] border border-[var(--border)] text-[var(--text)] text-xs font-semibold shadow-2xs">
               In Stock Only
-              <button type="button" onClick={() => onClearFilter('inStock')} className="hover:text-red-600">
+              <button type="button" onClick={() => onClearFilter('inStock')} className="hover:text-[var(--red)]">
                 <X className="w-3 h-3" />
               </button>
             </span>
           )}
           {bestsellerOnly && (
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white border border-[#E7E5E0] text-[#111113] text-xs font-semibold shadow-2xs">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[var(--surface-1)] border border-[var(--border)] text-[var(--text)] text-xs font-semibold shadow-2xs">
               Bestsellers Only
-              <button type="button" onClick={() => onClearFilter('bestseller')} className="hover:text-red-600">
+              <button type="button" onClick={() => onClearFilter('bestseller')} className="hover:text-[var(--red)]">
                 <X className="w-3 h-3" />
               </button>
             </span>

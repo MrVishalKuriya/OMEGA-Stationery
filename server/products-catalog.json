@@ -8,20 +8,29 @@
     "category": "Counter Books",
     "createdAt": "2026-10-15T20:06:44.793Z",
     "description": "The national standard 3-Quire archival accounting register with 288 numbered pages. Deep feint ruling with left margin. Stiff rigid cover with protective gloss lamination built to endure years of high-volume office, hospital, or school use.",
-    "descriptionSw": "Daftari la kaunta la OMEGA Quire 3 lenye kurasa 288. Ubora wa juu zaidi nchini Tanzania kwa uwekaji wa kumbukumbu za mahesabu na rejesta.",
-    "discountPrice": 53000,
+    "descriptionSw": "Quire-3, Pages-288 | Imara | Nadhifu | Rahisi kutumia",
+    "discountPrice": null,
     "featured": true,
     "gallery": [
       "/omega-products/counter-book-q3-288p.jpeg",
       "/omega-products/catalog-sheet-counter-q2-q3-q4.jpeg"
     ],
-    "image": "/omega-products/counter-book-q3-288p.jpeg",
+    "image": {
+      "src": "/products/omega-hardcover-counter-book-q3-288-pages-1200.webp",
+      "src400": "/products/omega-hardcover-counter-book-q3-288-pages-400.webp",
+      "src800": "/products/omega-hardcover-counter-book-q3-288-pages-800.webp",
+      "src1200": "/products/omega-hardcover-counter-book-q3-288-pages-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Hardcover Counter Book Q3 (288 Pages)"
+    },
     "name": "OMEGA Hardcover Counter Book Q3 (288 Pages)",
     "nameSw": "OMEGA Daftari la Kaunta Q3 (Kurasa 288)",
     "pageCount": "288 Pages",
     "paperType": "70 GSM Bleed-Proof",
     "price": 57000,
-    "quire": "3 Quire",
+    "quire": "Q3",
     "rating": 5,
     "reviewCount": 412,
     "size": "A4",
@@ -44,7 +53,7 @@
       },
       {
         "label": "Manufacturer",
-        "value": "OMEGA Indigo Printer · Tanzania",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga",
         "_id": "6ad7135e1dbe0a71e070c705"
       }
     ],
@@ -52,7 +61,7 @@
     "stockStatus": "In Stock",
     "updatedAt": "2026-10-20T07:08:14.030Z",
     "wholesaleMinQty": 10,
-    "wholesalePrice": 49000,
+    "wholesalePrice": 57000,
     "badge": "Institutional Pick",
     "colorOptions": [
       {
@@ -81,20 +90,29 @@
     "category": "Counter Books",
     "createdAt": "2026-10-15T20:06:45.004Z",
     "description": "Massive 384-page archival ledger. Stiff cover survives rigorous daily audit use. Features heavy-duty thread binding and reinforced spine.",
-    "descriptionSw": "Daftari kubwa la OMEGA Quire 4 lenye kurasa 384 za kumbukumbu za miaka mingi.",
-    "discountPrice": 60000,
+    "descriptionSw": "Quire-4, Pages-384 | Imara | Nadhifu | Rahisi kutumia",
+    "discountPrice": null,
     "featured": true,
     "gallery": [
       "/omega-products/counter-book-q4-384p.jpeg",
       "/omega-products/catalog-sheet-counter-q2-q3-q4.jpeg"
     ],
-    "image": "/omega-products/counter-book-q4-384p.jpeg",
+    "image": {
+      "src": "/products/omega-hardcover-counter-book-q4-384-pages-1200.webp",
+      "src400": "/products/omega-hardcover-counter-book-q4-384-pages-400.webp",
+      "src800": "/products/omega-hardcover-counter-book-q4-384-pages-800.webp",
+      "src1200": "/products/omega-hardcover-counter-book-q4-384-pages-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Hardcover Counter Book Q4 (384 Pages)"
+    },
     "name": "OMEGA Hardcover Counter Book Q4 (384 Pages)",
     "nameSw": "OMEGA Daftari la Kaunta Q4 (Kurasa 384)",
     "pageCount": "384 Pages",
     "paperType": "70 GSM Archival Bleed-Proof",
-    "price": 65000,
-    "quire": "4 Quire",
+    "price": 60000,
+    "quire": "Q4",
     "rating": 4.95,
     "reviewCount": 198,
     "size": "A4",
@@ -109,13 +127,17 @@
         "label": "Ruling",
         "value": "Feint Ruled with Left Margin",
         "_id": "6ad7135e1dbe0a71e070c70d"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 310,
     "stockStatus": "In Stock",
     "updatedAt": "2026-10-20T07:08:14.252Z",
     "wholesaleMinQty": 5,
-    "wholesalePrice": 56000,
+    "wholesalePrice": 60000,
     "badge": "Heavy Duty",
     "colorOptions": [
       {
@@ -139,16 +161,25 @@
     "category": "Exercise Books",
     "createdAt": "2026-10-15T20:06:45.211Z",
     "description": "Long-lasting 200-page exercise book for secondary school and college students across Tanzania. Vibrant purple laminated cover with official student index table.",
-    "descriptionSw": "Daftari imara la wanafunzi lenye kurasa 200 kwa masomo ya sekondari na vyuo.",
-    "discountPrice": 33000,
+    "descriptionSw": "200 Pages Single Line (SL) Purple Edition",
+    "discountPrice": null,
     "featured": true,
     "gallery": [],
-    "image": "/omega-products/exercise-book-200p-purple.jpeg",
+    "image": {
+      "src": "/products/omega-student-exercise-book-200-pages-single-line-1200.webp",
+      "src400": "/products/omega-student-exercise-book-200-pages-single-line-400.webp",
+      "src800": "/products/omega-student-exercise-book-200-pages-single-line-800.webp",
+      "src1200": "/products/omega-student-exercise-book-200-pages-single-line-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Student Exercise Book 200 Pages (Single Line)"
+    },
     "name": "OMEGA Student Exercise Book 200 Pages (Single Line)",
     "nameSw": "Daftari la Mazoezi la Wanafunzi OMEGA (Kurasa 200)",
     "pageCount": "200 Pages",
     "paperType": "60 GSM Smooth White",
-    "price": 36000,
+    "price": 68000,
     "rating": 4.85,
     "reviewCount": 520,
     "size": "A5 Standard",
@@ -163,13 +194,18 @@
         "label": "Page Count",
         "value": "200 Pages",
         "_id": "6ad7135e1dbe0a71e070c712"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 1200,
     "stockStatus": "In Stock",
     "updatedAt": "2026-10-20T07:08:14.441Z",
     "wholesaleMinQty": 20,
-    "wholesalePrice": 30000
+    "wholesalePrice": 68000,
+    "packaging": "120 Pcs / Box"
   },
   {
     "_id": "6ad13257c52aa41d5a5c95e0",
@@ -180,15 +216,24 @@
     "category": "Bahasha & Envelopes",
     "createdAt": "2026-10-15T20:06:46.414Z",
     "description": "Heavyweight brown kraft envelopes for official company transcripts, tenders, bank vouchers, and court documents. Resists tearing and moisture.",
-    "descriptionSw": "Bahasha nzito za khaki zisizopasuka kwa nyaraka rasmi za kiofisi na zabuni.",
-    "discountPrice": 16500,
+    "descriptionSw": "Heavy Kraft Bahasha Size A4",
+    "discountPrice": null,
     "featured": true,
     "gallery": [],
-    "image": "/omega-products/bahasha-a4-envelope.jpeg",
+    "image": {
+      "src": "/products/omega-heavy-kraft-bahasha-envelopes-a4-pack-of-50-1200.webp",
+      "src400": "/products/omega-heavy-kraft-bahasha-envelopes-a4-pack-of-50-400.webp",
+      "src800": "/products/omega-heavy-kraft-bahasha-envelopes-a4-pack-of-50-800.webp",
+      "src1200": "/products/omega-heavy-kraft-bahasha-envelopes-a4-pack-of-50-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Heavy Kraft Bahasha Envelopes A4 (Pack of 50)"
+    },
     "name": "OMEGA Heavy Kraft Bahasha Envelopes A4 (Pack of 50)",
     "nameSw": "Bahasha Nzito za OMEGA A4 (Pakiti ya 50)",
     "paperType": "120 GSM Pure Kraft Paper",
-    "price": 18500,
+    "price": 28000,
     "rating": 4.9,
     "reviewCount": 260,
     "size": "A4 Document Size (229 x 324 mm)",
@@ -203,13 +248,18 @@
         "label": "Closure",
         "value": "Peel & Seal / Gummed",
         "_id": "6ad7135f1dbe0a71e070c726"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 750,
     "stockStatus": "In Stock",
     "updatedAt": "2026-10-20T07:08:15.060Z",
     "wholesaleMinQty": 10,
-    "wholesalePrice": 14500
+    "wholesalePrice": 28000,
+    "packaging": "500 Pcs / Box"
   },
   {
     "_id": "6ad13257c52aa41d5a5c95e1",
@@ -220,18 +270,27 @@
     "category": "Bahasha & Envelopes",
     "createdAt": "2026-10-15T20:06:46.636Z",
     "description": "Spacious A3 architectural and engineering drawing envelopes. Perfect for blueprints, posters, and unfolded contracts.",
-    "descriptionSw": "Bahasha kubwa za ramani, michoro na nyaraka kubwa bila kukunjwa.",
-    "discountPrice": 24000,
+    "descriptionSw": "Heavy Kraft Bahasha Size A3 · Document Protection",
+    "discountPrice": null,
     "featured": false,
     "gallery": [
       "/omega-products/bahasha-a3-envelope.jpeg",
       "/omega-products/catalog-sheet-shorthand-bahasha.jpeg"
     ],
-    "image": "/omega-products/bahasha-a3-catalog.jpeg",
+    "image": {
+      "src": "/products/omega-extra-large-bahasha-envelopes-a3-pack-of-25-1200.webp",
+      "src400": "/products/omega-extra-large-bahasha-envelopes-a3-pack-of-25-400.webp",
+      "src800": "/products/omega-extra-large-bahasha-envelopes-a3-pack-of-25-800.webp",
+      "src1200": "/products/omega-extra-large-bahasha-envelopes-a3-pack-of-25-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Extra-Large Bahasha Envelopes A3 (Pack of 25)"
+    },
     "name": "OMEGA Extra-Large Bahasha Envelopes A3 (Pack of 25)",
     "nameSw": "Bahasha Kubwa za OMEGA A3 (Pakiti ya 25)",
     "paperType": "140 GSM Extra-Heavy Kraft",
-    "price": 26000,
+    "price": 52000,
     "rating": 4.85,
     "reviewCount": 88,
     "size": "A3 Oversize (324 x 458 mm)",
@@ -246,13 +305,17 @@
         "label": "Paper",
         "value": "140 GSM reinforced kraft",
         "_id": "6ad7135f1dbe0a71e070c72b"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 420,
     "stockStatus": "In Stock",
     "updatedAt": "2026-10-20T07:12:20.174Z",
     "wholesaleMinQty": 10,
-    "wholesalePrice": 21000,
+    "wholesalePrice": 52000,
     "badge": "Archive Safe",
     "dispatchTime": "Same-Day Dispatch",
     "freeDelivery": true,
@@ -268,18 +331,27 @@
     "category": "Bahasha & Envelopes",
     "createdAt": "2026-10-15T20:06:46.935Z",
     "description": "Versatile envelope for financial receipts, certificates, passports, and official correspondence.",
-    "descriptionSw": "Bahasha za kiofisi za ukubwa wa kati kwa risiti na barua.",
-    "discountPrice": 12000,
+    "descriptionSw": "Heavy Kraft Bahasha Size A5 · Peel & Seal",
+    "discountPrice": null,
     "featured": false,
     "gallery": [
       "/omega-products/bahasha-a4-box.jpeg",
       "/omega-products/catalog-sheet-bahasha-manila.jpeg"
     ],
-    "image": "/omega-products/bahasha-a5-catalog.jpeg",
+    "image": {
+      "src": "/products/omega-medium-document-bahasha-envelopes-a5-pack-of-50-1200.webp",
+      "src400": "/products/omega-medium-document-bahasha-envelopes-a5-pack-of-50-400.webp",
+      "src800": "/products/omega-medium-document-bahasha-envelopes-a5-pack-of-50-800.webp",
+      "src1200": "/products/omega-medium-document-bahasha-envelopes-a5-pack-of-50-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Medium Document Bahasha Envelopes A5 (Pack of 50)"
+    },
     "name": "OMEGA Medium Document Bahasha Envelopes A5 (Pack of 50)",
     "nameSw": "Bahasha za Saizi ya Kati OMEGA A5 (Pakiti ya 50)",
     "paperType": "110 GSM Golden Kraft",
-    "price": 13500,
+    "price": 23000,
     "rating": 4.75,
     "reviewCount": 110,
     "size": "A5 (162 x 229 mm)",
@@ -289,13 +361,17 @@
         "label": "Pack Count",
         "value": "50 Envelopes",
         "_id": "6ad7135f1dbe0a71e070c72f"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 640,
     "stockStatus": "In Stock",
     "updatedAt": "2026-10-20T07:12:20.590Z",
     "wholesaleMinQty": 15,
-    "wholesalePrice": 10500,
+    "wholesalePrice": 23000,
     "badge": "Standard Mailer",
     "dispatchTime": "Same-Day Dispatch",
     "freeDelivery": true,
@@ -311,18 +387,27 @@
     "category": "Bahasha & Envelopes",
     "createdAt": "2026-10-15T20:06:47.163Z",
     "description": "Compact envelopes suitable for wage payment slips, utility bills, business gift vouchers, and small notes.",
-    "descriptionSw": "Bahasha ndogo za mishahara, risiti na vipeperushi.",
-    "discountPrice": 9500,
+    "descriptionSw": "Heavy Kraft Bahasha Size A6 · Carton Pack",
+    "discountPrice": null,
     "featured": false,
     "gallery": [
       "/omega-products/bahasha-a6-box.jpeg",
       "/omega-products/catalog-sheet-bahasha-manila.jpeg"
     ],
-    "image": "/omega-products/bahasha-a6-catalog.jpeg",
+    "image": {
+      "src": "/products/omega-compact-pocket-bahasha-envelopes-a6-pack-of-100-1200.webp",
+      "src400": "/products/omega-compact-pocket-bahasha-envelopes-a6-pack-of-100-400.webp",
+      "src800": "/products/omega-compact-pocket-bahasha-envelopes-a6-pack-of-100-800.webp",
+      "src1200": "/products/omega-compact-pocket-bahasha-envelopes-a6-pack-of-100-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Compact Pocket Bahasha Envelopes A6 (Pack of 100)"
+    },
     "name": "OMEGA Compact Pocket Bahasha Envelopes A6 (Pack of 100)",
     "nameSw": "Bahasha Ndogo za Mfukoni OMEGA A6 (Pakiti ya 100)",
     "paperType": "90 GSM Kraft",
-    "price": 11000,
+    "price": 140000,
     "rating": 4.7,
     "reviewCount": 75,
     "size": "A6 / DL Pocket Size",
@@ -332,13 +417,17 @@
         "label": "Quantity",
         "value": "100 Pieces per Box",
         "_id": "6ad7135f1dbe0a71e070c732"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 890,
     "stockStatus": "In Stock",
     "updatedAt": "2026-10-20T07:12:20.980Z",
     "wholesaleMinQty": 20,
-    "wholesalePrice": 8000,
+    "wholesalePrice": 140000,
     "badge": "Bulk 5000 Pcs",
     "dispatchTime": "Same-Day Dispatch",
     "freeDelivery": true,
@@ -354,15 +443,24 @@
     "category": "Registers",
     "createdAt": "2026-10-15T20:06:47.397Z",
     "description": "Standardized attendance ledger with pre-printed 31-day columns, term totals, summary analytics and student biodata sections.",
-    "descriptionSw": "Rejesta rasmi ya mahudhurio ya shule kwa muhula na mwaka mzima.",
-    "discountPrice": 35000,
+    "descriptionSw": "Attendance Register · Indigo Printed Limited",
+    "discountPrice": null,
     "featured": true,
     "gallery": [],
-    "image": "/omega-products/printer-jaradio-cover.jpeg",
+    "image": {
+      "src": "/products/omega-school-student-attendance-register-hardcover-1200.webp",
+      "src400": "/products/omega-school-student-attendance-register-hardcover-400.webp",
+      "src800": "/products/omega-school-student-attendance-register-hardcover-800.webp",
+      "src1200": "/products/omega-school-student-attendance-register-hardcover-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA School Student Attendance Register (Hardcover)"
+    },
     "name": "OMEGA School Student Attendance Register (Hardcover)",
     "nameSw": "Rejesta ya Mahudhurio ya Wanafunzi OMEGA (Jalada Gumu)",
     "paperType": "80 GSM Ledger Bond",
-    "price": 38000,
+    "price": 55000,
     "rating": 4.95,
     "reviewCount": 215,
     "size": "Folio Standard (215 x 330 mm)",
@@ -377,13 +475,17 @@
         "label": "Pages",
         "value": "Pre-formatted attendance grids",
         "_id": "6ad7135f1dbe0a71e070c736"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 520,
     "stockStatus": "In Stock",
     "updatedAt": "2026-10-20T07:11:59.249Z",
     "wholesaleMinQty": 10,
-    "wholesalePrice": 31000
+    "wholesalePrice": 55000
   },
   {
     "_id": "6ad13258c52aa41d5a5c95e5",
@@ -394,15 +496,24 @@
     "category": "Registers",
     "createdAt": "2026-10-15T20:06:47.589Z",
     "description": "Professional entrance logbook recording date, time in/out, visitor name, vehicle plate number, person visited, and signature.",
-    "descriptionSw": "Kitabu cha wageni kwa ajili ya ofisi, mageti na hoteli.",
-    "discountPrice": 29000,
+    "descriptionSw": "Printer Jaradio Security Gate Visitors Register",
+    "discountPrice": null,
     "featured": false,
     "gallery": [],
-    "image": "/omega-products/printer-jaradio-isolated.jpeg",
+    "image": {
+      "src": "/products/omega-security-gate-visitors-register-executive-foil-1200.webp",
+      "src400": "/products/omega-security-gate-visitors-register-executive-foil-400.webp",
+      "src800": "/products/omega-security-gate-visitors-register-executive-foil-800.webp",
+      "src1200": "/products/omega-security-gate-visitors-register-executive-foil-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Security & Gate Visitors Register (Executive Foil)"
+    },
     "name": "OMEGA Security & Gate Visitors Register (Executive Foil)",
     "nameSw": "Kitabu cha Wageni Getini OMEGA (Jalada la Dhahabu)",
     "paperType": "75 GSM Ledger",
-    "price": 32000,
+    "price": 55000,
     "rating": 4.88,
     "reviewCount": 140,
     "size": "Landscape A4 Format",
@@ -412,13 +523,17 @@
         "label": "Format",
         "value": "Columns for Date, Time, Name, ID, Signature",
         "_id": "6ad7135f1dbe0a71e070c73a"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 410,
     "stockStatus": "In Stock",
     "updatedAt": "2026-10-20T07:11:59.682Z",
     "wholesaleMinQty": 10,
-    "wholesalePrice": 26000
+    "wholesalePrice": 55000
   },
   {
     "_id": "6ad13258c52aa41d5a5c95e6",
@@ -429,15 +544,24 @@
     "category": "Ruled Paper",
     "createdAt": "2026-10-15T20:06:47.767Z",
     "description": "Precision ruled paper with red left margin, pre-punched binder holes, and header for candidate number, subject, and date.",
-    "descriptionSw": "Karatasi rasmi za mitihani na majaribio ya shule na vyuo.",
-    "discountPrice": 25500,
+    "descriptionSw": "Ruled Examination Paper · 400 Sheets, 16 Pkt",
+    "discountPrice": null,
     "featured": true,
     "gallery": [],
-    "image": "/omega-products/ruled-paper-catalog.jpeg",
-    "name": "OMEGA Ruled Examination Paper (Ream of 500 Sheets)",
+    "image": {
+      "src": "/products/omega-ruled-examination-paper-400-sheets-16-pkt-1200.webp",
+      "src400": "/products/omega-ruled-examination-paper-400-sheets-16-pkt-400.webp",
+      "src800": "/products/omega-ruled-examination-paper-400-sheets-16-pkt-800.webp",
+      "src1200": "/products/omega-ruled-examination-paper-400-sheets-16-pkt-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Ruled Examination Paper (400 Sheets / 16 Pkt)"
+    },
+    "name": "OMEGA Ruled Examination Paper (400 Sheets / 16 Pkt)",
     "nameSw": "Karatasi za Mitihani za OMEGA (Rimi ya Karatasi 500)",
     "paperType": "70 GSM Pure White Bond",
-    "price": 28000,
+    "price": 70000,
     "rating": 4.9,
     "reviewCount": 430,
     "size": "A4 Single Sheets (210 x 297 mm)",
@@ -447,13 +571,19 @@
         "label": "Sheet Count",
         "value": "500 Sheets per Ream",
         "_id": "6ad7135f1dbe0a71e070c73d"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 950,
     "stockStatus": "In Stock",
     "updatedAt": "2026-10-20T07:12:00.202Z",
     "wholesaleMinQty": 10,
-    "wholesalePrice": 23000
+    "wholesalePrice": 70000,
+    "packaging": "400 Sheets / 16 Pkt",
+    "subtitle": "Ruled Paper · 400 Sheets in 16 Packets"
   },
   {
     "_id": "6ad13258c52aa41d5a5c95e7",
@@ -468,7 +598,16 @@
     "discountPrice": 12500,
     "featured": false,
     "gallery": [],
-    "image": "/omega-products/ruled-paper-pack.jpeg",
+    "image": {
+      "src": "/products/omega-metric-millimeter-graph-paper-pad-of-100-sheets-1200.webp",
+      "src400": "/products/omega-metric-millimeter-graph-paper-pad-of-100-sheets-400.webp",
+      "src800": "/products/omega-metric-millimeter-graph-paper-pad-of-100-sheets-800.webp",
+      "src1200": "/products/omega-metric-millimeter-graph-paper-pad-of-100-sheets-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Metric Millimeter Graph Paper (Pad of 100 Sheets)"
+    },
     "name": "OMEGA Metric Millimeter Graph Paper (Pad of 100 Sheets)",
     "nameSw": "Karatasi za Grafu za OMEGA (Pedi ya Karatasi 100)",
     "paperType": "80 GSM Cartographic Green/Blue Grid",
@@ -482,6 +621,10 @@
         "label": "Grid",
         "value": "1mm / 5mm / 10mm Metric Grid",
         "_id": "6ad713601dbe0a71e070c740"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 620,
@@ -499,19 +642,28 @@
     "category": "Flipcharts",
     "createdAt": "2026-10-15T20:06:48.108Z",
     "description": "Heavy-weight giant easel pad paper for conference rooms, training seminars, workshops, and classroom lectures.",
-    "descriptionSw": "Karatasi za mikutano na mafunzo kwenye stendi za easel.",
-    "discountPrice": 32000,
+    "descriptionSw": "OMEGA Flipchart Paper · Seminars & Corporate Presentations",
+    "discountPrice": null,
     "featured": false,
     "gallery": [
       "/omega-products/flipchart-bundle-stack.jpeg",
       "/omega-products/flipchart-stack-large.jpeg",
       "/omega-products/catalog-sheet-flipchart-ruled-folder.jpeg"
     ],
-    "image": "/omega-products/flipchart-stack-large.jpeg",
+    "image": {
+      "src": "/products/omega-presentation-flipchart-paper-stack-of-50-sheets-1200.webp",
+      "src400": "/products/omega-presentation-flipchart-paper-stack-of-50-sheets-400.webp",
+      "src800": "/products/omega-presentation-flipchart-paper-stack-of-50-sheets-800.webp",
+      "src1200": "/products/omega-presentation-flipchart-paper-stack-of-50-sheets-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Presentation Flipchart Paper (Stack of 50 Sheets)"
+    },
     "name": "OMEGA Presentation Flipchart Paper (Stack of 50 Sheets)",
     "nameSw": "Karatasi za Flipchart za OMEGA (Pakiti ya 50)",
     "paperType": "70 GSM Heavy Easel Paper",
-    "price": 35000,
+    "price": 42000,
     "rating": 4.85,
     "reviewCount": 92,
     "size": "Standard Easel Size (650 x 1000 mm)",
@@ -521,13 +673,17 @@
         "label": "Dimensions",
         "value": "650 x 1000 mm",
         "_id": "6ad713601dbe0a71e070c743"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 380,
     "stockStatus": "In Stock",
     "updatedAt": "2026-10-20T07:08:16.278Z",
     "wholesaleMinQty": 5,
-    "wholesalePrice": 28500,
+    "wholesalePrice": 42000,
     "badge": "Conference Grade",
     "dispatchTime": "Same-Day Dispatch",
     "freeDelivery": true,
@@ -543,19 +699,28 @@
     "category": "Manila & Folders",
     "createdAt": "2026-10-15T20:06:48.295Z",
     "description": "Classic buff-yellow high-density manila cardstock folders with pre-punched fastener slots. Long shelf life in tropical climate.",
-    "descriptionSw": "Mafaili ya manila yenye unene thabiti yanayodumu kwenye unyevu.",
-    "discountPrice": 22500,
+    "descriptionSw": "Manila Heavy Folders · Protective Filing",
+    "discountPrice": null,
     "featured": false,
     "gallery": [
       "/omega-products/manila-file-folder-flat.jpeg",
       "/omega-products/manila-file-folder-open.jpeg",
       "/omega-products/catalog-sheet-flipchart-ruled-folder.jpeg"
     ],
-    "image": "/omega-products/manila-file-folder-flat.jpeg",
+    "image": {
+      "src": "/products/omega-heavyweight-manila-file-folders-bundle-of-100-1200.webp",
+      "src400": "/products/omega-heavyweight-manila-file-folders-bundle-of-100-400.webp",
+      "src800": "/products/omega-heavyweight-manila-file-folders-bundle-of-100-800.webp",
+      "src1200": "/products/omega-heavyweight-manila-file-folders-bundle-of-100-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Heavyweight Manila File Folders (Bundle of 100)"
+    },
     "name": "OMEGA Heavyweight Manila File Folders (Bundle of 100)",
     "nameSw": "Mafaili ya Manila ya OMEGA (Mfungo wa 100)",
     "paperType": "250 GSM High-Density Manila Cardstock",
-    "price": 25000,
+    "price": 42000,
     "rating": 4.9,
     "reviewCount": 280,
     "size": "Foolscap Document Size",
@@ -565,13 +730,17 @@
         "label": "Bundle",
         "value": "100 Folders per Bundle",
         "_id": "6ad713601dbe0a71e070c746"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 840,
     "stockStatus": "In Stock",
     "updatedAt": "2026-10-20T07:08:16.423Z",
     "wholesaleMinQty": 10,
-    "wholesalePrice": 20000,
+    "wholesalePrice": 42000,
     "badge": "Archive Standard",
     "dispatchTime": "Same-Day Dispatch",
     "freeDelivery": true,
@@ -587,15 +756,24 @@
     "category": "Files & Folders",
     "createdAt": "2026-10-15T20:06:48.522Z",
     "description": "Durable moisture-proof plastic binder with heavy stainless steel spring clamp mechanism that grips up to 150 punched sheets.",
-    "descriptionSw": "Faili la plastiki ya PVC lenye spring ya chuma isiyo na kutu.",
-    "discountPrice": 6500,
+    "descriptionSw": "Plastic File P.V.C",
+    "discountPrice": null,
     "featured": false,
     "gallery": [],
-    "image": "/omega-products/omega-pvc-spring-file.jpeg",
-    "name": "OMEGA Executive PVC Spring Action File",
+    "image": {
+      "src": "/products/omega-executive-plastic-p-v-c-spring-file-1200.webp",
+      "src400": "/products/omega-executive-plastic-p-v-c-spring-file-400.webp",
+      "src800": "/products/omega-executive-plastic-p-v-c-spring-file-800.webp",
+      "src1200": "/products/omega-executive-plastic-p-v-c-spring-file-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Executive Plastic P.V.C. Spring File"
+    },
+    "name": "OMEGA Executive Plastic P.V.C. Spring File",
     "nameSw": "Faili la Kisasa la PVC Spring OMEGA",
     "paperType": "Heavy Rigid PVC Polypropylene Shell",
-    "price": 7500,
+    "price": 270000,
     "rating": 4.8,
     "reviewCount": 115,
     "size": "A4 / Foolscap",
@@ -605,13 +783,19 @@
         "label": "Capacity",
         "value": "Holds up to 150 sheets securely",
         "_id": "6ad713601dbe0a71e070c749"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 910,
     "stockStatus": "In Stock",
     "updatedAt": "2026-10-20T07:08:16.592Z",
     "wholesaleMinQty": 20,
-    "wholesalePrice": 5500
+    "wholesalePrice": 270000,
+    "packaging": "50 Pcs / Box",
+    "subtitle": "Plastic File · P.V.C Heavy Spring Mechanism"
   },
   {
     "_id": "6ad13259c52aa41d5a5c95eb",
@@ -622,15 +806,24 @@
     "category": "School Stationery",
     "createdAt": "2026-10-15T20:06:48.714Z",
     "description": "Classic embossed tin box containing die-cast metal compass, divider, 15cm ruler, 180° protractor, set squares, sharpener, and eraser.",
-    "descriptionSw": "Seti kamili ya kijiometria katika sanduku la bati kwa masomo ya hisabati.",
-    "discountPrice": 8500,
+    "descriptionSw": "Oxford Compass Geometry Instruments",
+    "discountPrice": null,
     "featured": true,
     "gallery": [],
-    "image": "/omega-products/oxford-mathematical-set.jpeg",
-    "name": "Oxford Mathematical Instruments Geometry Set",
+    "image": {
+      "src": "/products/oxford-compass-mathematical-instruments-geometry-set-1200.webp",
+      "src400": "/products/oxford-compass-mathematical-instruments-geometry-set-400.webp",
+      "src800": "/products/oxford-compass-mathematical-instruments-geometry-set-800.webp",
+      "src1200": "/products/oxford-compass-mathematical-instruments-geometry-set-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "Oxford Compass Mathematical Instruments Geometry Set"
+    },
+    "name": "Oxford Compass Mathematical Instruments Geometry Set",
     "nameSw": "Vifaa vya Jiometria vya Oxford (Math Set)",
     "paperType": "N/A (Precision Die-Cast Metal & Clear Acrylic)",
-    "price": 9500,
+    "price": 180000,
     "rating": 4.95,
     "reviewCount": 460,
     "size": "Tin Case Dimensions: 180 x 80 mm",
@@ -640,13 +833,19 @@
         "label": "Contents",
         "value": "9 essential geometry tools in metal case",
         "_id": "6ad713601dbe0a71e070c74c"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 1100,
     "stockStatus": "In Stock",
     "updatedAt": "2026-10-20T07:08:16.743Z",
     "wholesaleMinQty": 24,
-    "wholesalePrice": 7200
+    "wholesalePrice": 180000,
+    "packaging": "10 Sets / Outer Box",
+    "subtitle": "Oxford Compass · Official Steel Mathematical Set"
   },
   {
     "_id": "6ad13259c52aa41d5a5c95ec",
@@ -657,39 +856,53 @@
     "category": "Registers",
     "createdAt": "2026-10-15T20:06:48.852Z",
     "description": "Top-spiral notebook with center-line ruling for reporters, secretaries, meeting minutes, and field research.",
-    "descriptionSw": "Daftari la spiral la kurekodi maelezo haraka kwenye mikutano.",
-    "discountPrice": 7500,
+    "descriptionSw": "Madaftari ya Shorthand · Laha 70, 120×200mm · Indigo Printed Limited",
+    "discountPrice": null,
     "featured": false,
     "gallery": [
       "/omega-products/omega-shorthand-notebook.jpeg",
       "/omega-products/catalog-sheet-shorthand-bahasha.jpeg"
     ],
-    "image": "/omega-products/omega-shorthand-notebook.jpeg",
+    "image": {
+      "src": "/products/omega-wire-bound-shorthand-steno-notebook-160-pages-1200.webp",
+      "src400": "/products/omega-wire-bound-shorthand-steno-notebook-160-pages-400.webp",
+      "src800": "/products/omega-wire-bound-shorthand-steno-notebook-160-pages-800.webp",
+      "src1200": "/products/omega-wire-bound-shorthand-steno-notebook-160-pages-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Wire-Bound Shorthand Steno Notebook (160 Pages)"
+    },
     "name": "OMEGA Wire-Bound Shorthand Steno Notebook (160 Pages)",
     "nameSw": "Daftari la Shorthand la OMEGA (Kurasa 160)",
     "paperType": "65 GSM High-Speed Writing Paper",
-    "price": 8500,
+    "price": 110000,
     "rating": 4.75,
     "reviewCount": 65,
-    "size": "150 x 225 mm Steno Standard",
+    "size": "120×200mm",
     "sku": "OMG-SN-160",
     "specifications": [
       {
         "label": "Binding",
         "value": "Twin-wire top spiral",
         "_id": "6ad713601dbe0a71e070c74f"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 470,
     "stockStatus": "In Stock",
     "updatedAt": "2026-10-20T07:08:16.884Z",
     "wholesaleMinQty": 15,
-    "wholesalePrice": 6200,
+    "wholesalePrice": 110000,
     "badge": "Steno Special",
     "dispatchTime": "Same-Day Dispatch",
     "freeDelivery": true,
     "packaging": "192 Pcs / Box",
-    "subtitle": "70 Sheets · Top Wire Bound · Fast Steno Writing"
+    "subtitle": "70 Sheets (120×200mm) · Top Wire Bound Steno",
+    "pageCount": "70 Sheets (140 Pages)"
   },
   {
     "_id": "6ad13259c52aa41d5a5c95ed",
@@ -700,18 +913,27 @@
     "category": "Office Supplies",
     "createdAt": "2026-10-15T20:06:49.014Z",
     "description": "Sequential duplicate vouchers for office expense tracking and bookkeeping audit.",
-    "descriptionSw": "Voucher za malipo madogo ya kiofisi zenye namba za mpangilio.",
-    "discountPrice": 5000,
+    "descriptionSw": "Petty Cash Voucher Books",
+    "discountPrice": null,
     "featured": false,
     "gallery": [
       "/omega-products/omega-petty-cash-voucher.jpeg",
       "/omega-products/catalog-sheet-jaradio-cash.jpeg"
     ],
-    "image": "/omega-products/omega-petty-cash-voucher.jpeg",
+    "image": {
+      "src": "/products/omega-accounting-petty-cash-vouchers-pad-of-100-1200.webp",
+      "src400": "/products/omega-accounting-petty-cash-vouchers-pad-of-100-400.webp",
+      "src800": "/products/omega-accounting-petty-cash-vouchers-pad-of-100-800.webp",
+      "src1200": "/products/omega-accounting-petty-cash-vouchers-pad-of-100-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Accounting Petty Cash Vouchers (Pad of 100)"
+    },
     "name": "OMEGA Accounting Petty Cash Vouchers (Pad of 100)",
     "nameSw": "Voucher za Petty Cash OMEGA (Kitabu cha 100)",
     "paperType": "60 GSM Duplicate Bond",
-    "price": 6000,
+    "price": 100000,
     "rating": 4.8,
     "reviewCount": 95,
     "size": "130 x 185 mm",
@@ -721,13 +943,17 @@
         "label": "Pack",
         "value": "Pad of 100 duplicate slips",
         "_id": "6ad713611dbe0a71e070c752"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 830,
     "stockStatus": "In Stock",
     "updatedAt": "2026-10-20T07:08:17.034Z",
     "wholesaleMinQty": 20,
-    "wholesalePrice": 4200,
+    "wholesalePrice": 100000,
     "badge": "Audit Ready",
     "dispatchTime": "Same-Day Dispatch",
     "freeDelivery": true,
@@ -750,7 +976,16 @@
       "/omega-products/omega-carton-box-branded.jpeg",
       "/omega-products/omega-carton-box-plain.jpeg"
     ],
-    "image": "/omega-products/omega-carton-box-branded.jpeg",
+    "image": {
+      "src": "/products/omega-branded-corrugated-shipping-cartons-bundle-of-25-1200.webp",
+      "src400": "/products/omega-branded-corrugated-shipping-cartons-bundle-of-25-400.webp",
+      "src800": "/products/omega-branded-corrugated-shipping-cartons-bundle-of-25-800.webp",
+      "src1200": "/products/omega-branded-corrugated-shipping-cartons-bundle-of-25-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Branded Corrugated Shipping Cartons (Bundle of 25)"
+    },
     "name": "OMEGA Branded Corrugated Shipping Cartons (Bundle of 25)",
     "nameSw": "Maboksi ya Kusafirishia ya OMEGA (Mfungo wa 25)",
     "paperType": "Heavy 5-Ply Double-Wall Corrugated Flute",
@@ -764,6 +999,10 @@
         "label": "Bundle",
         "value": "25 Heavyweight Master Cartons",
         "_id": "6ad713611dbe0a71e070c755"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 320,
@@ -798,7 +1037,7 @@
     ],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "Top-tier student exercise book with 200 crisp, high-opacity single line pages. Printed by Indigo Printer with national curriculum standards, vivid purple-pink cover, and smooth paper that prevents ink bleeding.",
-    "discountPrice": 65000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": true,
     "freeDelivery": true,
@@ -806,7 +1045,16 @@
       "/omega-products/exercise-book-200p-purple.jpeg",
       "/omega-products/catalog-sheet-exercise-200-sl-dl-sq.jpeg"
     ],
-    "image": "/omega-products/exercise-book-200p-purple.jpeg",
+    "image": {
+      "src": "/products/omega-exercise-book-200-pages-single-line-sl-1200.webp",
+      "src400": "/products/omega-exercise-book-200-pages-single-line-sl-400.webp",
+      "src800": "/products/omega-exercise-book-200-pages-single-line-sl-800.webp",
+      "src1200": "/products/omega-exercise-book-200-pages-single-line-sl-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Exercise Book 200 Pages (Single Line - SL)"
+    },
     "name": "OMEGA Exercise Book 200 Pages (Single Line - SL)",
     "packaging": "120 Pcs / Box",
     "price": 68000,
@@ -838,12 +1086,18 @@
         "label": "Quality Mark",
         "value": "Quality Guarantee · Proudly Tanzanian",
         "_id": "6ad70aea76b381509a5e7db6"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
     "subtitle": "200 Pages · Single Line · Indigo Precision Print",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 68000,
+    "descriptionSw": "200 Pages Single Line (SL) · Indigo Printed Limited"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebb9",
@@ -861,7 +1115,7 @@
     ],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "Specially designed for penmanship mastery and early handwriting development. Features 200 double-line ruled pages that guide letter proportions and neat cursive writing.",
-    "discountPrice": 68000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": true,
     "freeDelivery": true,
@@ -869,10 +1123,19 @@
       "/omega-products/exercise-book-200p-whitered.jpeg",
       "/omega-products/catalog-sheet-exercise-200-sl-dl-sq.jpeg"
     ],
-    "image": "/omega-products/exercise-book-200p-whitered.jpeg",
+    "image": {
+      "src": "/products/omega-exercise-book-200-pages-double-line-dl-1200.webp",
+      "src400": "/products/omega-exercise-book-200-pages-double-line-dl-400.webp",
+      "src800": "/products/omega-exercise-book-200-pages-double-line-dl-800.webp",
+      "src1200": "/products/omega-exercise-book-200-pages-double-line-dl-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Exercise Book 200 Pages (Double Line - DL)"
+    },
     "name": "OMEGA Exercise Book 200 Pages (Double Line - DL)",
     "packaging": "120 Pcs / Box",
-    "price": 72000,
+    "price": 68000,
     "rating": 4.8,
     "reviewCount": 215,
     "sku": "OMG-EX-200DL",
@@ -901,12 +1164,18 @@
         "label": "Target",
         "value": "Primary & Secondary Writing Practice",
         "_id": "6ad70aea76b381509a5e7dbc"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
     "subtitle": "200 Pages · Double Line · Penmanship Grade",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 68000,
+    "descriptionSw": "200 Pages Double Line (DL) · Indigo Printed Limited"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebba",
@@ -924,17 +1193,26 @@
     ],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "Dedicated mathematics and science exercise book with 200 precision square grid pages. Ideal for geometry sketches, equations, tabular data, and calculations.",
-    "discountPrice": 68000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": false,
     "freeDelivery": true,
     "gallery": [
       "/omega-products/catalog-sheet-exercise-200-sl-dl-sq.jpeg"
     ],
-    "image": "/omega-products/catalog-sheet-exercise-200-sl-dl-sq.jpeg",
+    "image": {
+      "src": "/products/omega-exercise-book-200-pages-square-mathematics-sq-1200.webp",
+      "src400": "/products/omega-exercise-book-200-pages-square-mathematics-sq-400.webp",
+      "src800": "/products/omega-exercise-book-200-pages-square-mathematics-sq-800.webp",
+      "src1200": "/products/omega-exercise-book-200-pages-square-mathematics-sq-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Exercise Book 200 Pages (Square / Mathematics - SQ)"
+    },
     "name": "OMEGA Exercise Book 200 Pages (Square / Mathematics - SQ)",
     "packaging": "120 Pcs / Box",
-    "price": 72000,
+    "price": 68000,
     "rating": 4.9,
     "reviewCount": 310,
     "sku": "OMG-EX-200SQ",
@@ -963,12 +1241,18 @@
         "label": "Paper Bleed",
         "value": "Zero Feathering with Ballpoint or Gel",
         "_id": "6ad70aea76b381509a5e7dc2"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
     "subtitle": "200 Pages · Square Grid · Mathematics & Sciences",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 68000,
+    "descriptionSw": "200 Pages Mathematics / Square (SQ) · Indigo Printed Limited"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebbb",
@@ -991,7 +1275,7 @@
     ],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "Premium stiff cover exercise book featuring modern black-and-red geometric poly-faceted artwork, reinforced perimeter binding, and 200 smooth pages. Combines the elegance of a hardcover with notebook flexibility.",
-    "discountPrice": 70000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": true,
     "freeDelivery": true,
@@ -999,7 +1283,16 @@
       "/omega-products/stiff-cover-200p-black.jpeg",
       "/omega-products/catalog-sheet-stiff-cover-200.jpeg"
     ],
-    "image": "/omega-products/stiff-cover-200p-black.jpeg",
+    "image": {
+      "src": "/products/omega-stiff-cover-geometric-exercise-book-200-pages-1200.webp",
+      "src400": "/products/omega-stiff-cover-geometric-exercise-book-200-pages-400.webp",
+      "src800": "/products/omega-stiff-cover-geometric-exercise-book-200-pages-800.webp",
+      "src1200": "/products/omega-stiff-cover-geometric-exercise-book-200-pages-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Stiff Cover Geometric Exercise Book (200 Pages)"
+    },
     "name": "OMEGA Stiff Cover Geometric Exercise Book (200 Pages)",
     "packaging": "96 Pcs / Box",
     "price": 75000,
@@ -1031,12 +1324,18 @@
         "label": "Variants Available",
         "value": "Single Line (SL), Double Line (DL), Square (SQ)",
         "_id": "6ad70aea76b381509a5e7dc9"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
     "subtitle": "200 Pages · Rigid Stiff Cover · Premium Geometric Finish",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 75000,
+    "descriptionSw": "200 Pages Stiff Cover (SL, DL, SQ) · Imara na Rahisi Kutumia"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebbc",
@@ -1048,7 +1347,7 @@
     "colorOptions": [],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "High-grade 100-page student exercise book with crisp single-line feint ruling and left red margin. Engineered by Indigo Printer with bleed-proof 70 GSM paper for primary and secondary classroom notes.",
-    "discountPrice": 41000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": true,
     "freeDelivery": true,
@@ -1057,10 +1356,19 @@
       "/omega-products/exercise-book-100p-pink.jpeg",
       "/omega-products/catalog-sheet-exercise-100-80-32.jpeg"
     ],
-    "image": "/omega-products/exercise-book-100p-catalog.jpeg",
+    "image": {
+      "src": "/products/omega-exercise-book-100-pages-single-line-sl-1200.webp",
+      "src400": "/products/omega-exercise-book-100-pages-single-line-sl-400.webp",
+      "src800": "/products/omega-exercise-book-100-pages-single-line-sl-800.webp",
+      "src1200": "/products/omega-exercise-book-100-pages-single-line-sl-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Exercise Book 100 Pages (Single Line - SL)"
+    },
     "name": "OMEGA Exercise Book 100 Pages (Single Line - SL)",
     "packaging": "120 Pcs / Box",
-    "price": 45000,
+    "price": 41000,
     "rating": 4.8,
     "reviewCount": 290,
     "sku": "OMG-EX-100SL",
@@ -1087,14 +1395,16 @@
       },
       {
         "label": "Manufacturer",
-        "value": "OMEGA Indigo Printer · Tanzania",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga",
         "_id": "6ad70aea76b381509a5e7dce"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
     "subtitle": "100 Pages · Single Line · Indigo Precision Print",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 41000,
+    "descriptionSw": "100 Pages Single Line (SL) · Indigo Printed Limited"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebbd",
@@ -1106,7 +1416,7 @@
     "colorOptions": [],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "Double-line 100-page exercise book for penmanship training, neat handwriting practice, and early literacy development.",
-    "discountPrice": 41000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": false,
     "freeDelivery": true,
@@ -1114,10 +1424,19 @@
       "/omega-products/exercise-book-100p-catalog.jpeg",
       "/omega-products/catalog-sheet-exercise-100-80-32.jpeg"
     ],
-    "image": "/omega-products/exercise-book-100p-catalog.jpeg",
+    "image": {
+      "src": "/products/omega-exercise-book-100-pages-double-line-dl-1200.webp",
+      "src400": "/products/omega-exercise-book-100-pages-double-line-dl-400.webp",
+      "src800": "/products/omega-exercise-book-100-pages-double-line-dl-800.webp",
+      "src1200": "/products/omega-exercise-book-100-pages-double-line-dl-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Exercise Book 100 Pages (Double Line - DL)"
+    },
     "name": "OMEGA Exercise Book 100 Pages (Double Line - DL)",
     "packaging": "120 Pcs / Box",
-    "price": 45000,
+    "price": 41000,
     "rating": 4.8,
     "reviewCount": 165,
     "sku": "OMG-EX-100DL",
@@ -1141,12 +1460,18 @@
         "label": "Binding",
         "value": "Saddle-Stitched Center Spine",
         "_id": "6ad70aea76b381509a5e7dd2"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
     "subtitle": "100 Pages · Double Line · Penmanship Grade",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 41000,
+    "descriptionSw": "100 Pages Double Line (DL) · Indigo Printed Limited"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebbe",
@@ -1158,7 +1483,7 @@
     "colorOptions": [],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "Dedicated mathematics and science exercise book with 100 precision square grid pages. Ideal for geometry sketches, equations, tabular data, and calculations.",
-    "discountPrice": 41000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": false,
     "freeDelivery": true,
@@ -1166,10 +1491,19 @@
       "/omega-products/exercise-book-100p-catalog.jpeg",
       "/omega-products/catalog-sheet-exercise-100-80-32.jpeg"
     ],
-    "image": "/omega-products/exercise-book-100p-catalog.jpeg",
+    "image": {
+      "src": "/products/omega-exercise-book-100-pages-square-mathematics-sq-1200.webp",
+      "src400": "/products/omega-exercise-book-100-pages-square-mathematics-sq-400.webp",
+      "src800": "/products/omega-exercise-book-100-pages-square-mathematics-sq-800.webp",
+      "src1200": "/products/omega-exercise-book-100-pages-square-mathematics-sq-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Exercise Book 100 Pages (Square / Mathematics - SQ)"
+    },
     "name": "OMEGA Exercise Book 100 Pages (Square / Mathematics - SQ)",
     "packaging": "120 Pcs / Box",
-    "price": 45000,
+    "price": 41000,
     "rating": 4.8,
     "reviewCount": 195,
     "sku": "OMG-EX-100SQ",
@@ -1193,12 +1527,18 @@
         "label": "Paper Bleed",
         "value": "Zero Feathering with Ballpoint or Gel",
         "_id": "6ad70aea76b381509a5e7dd6"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
     "subtitle": "100 Pages · Square Grid · Mathematics & Sciences",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 41000,
+    "descriptionSw": "100 Pages Square Grid / Maths (SQ) · Indigo Printed Limited"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebbf",
@@ -1210,7 +1550,7 @@
     "colorOptions": [],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "100 clean plain unruled pages designed for biology diagrams, technical sketching, geography map work, and creative brainstorming.",
-    "discountPrice": 41000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": true,
     "freeDelivery": true,
@@ -1218,10 +1558,19 @@
       "/omega-products/exercise-book-100p-pink.jpeg",
       "/omega-products/catalog-sheet-exercise-100-80-32.jpeg"
     ],
-    "image": "/omega-products/exercise-book-100p-pink.jpeg",
+    "image": {
+      "src": "/products/omega-exercise-book-100-pages-plain-unruled-1200.webp",
+      "src400": "/products/omega-exercise-book-100-pages-plain-unruled-400.webp",
+      "src800": "/products/omega-exercise-book-100-pages-plain-unruled-800.webp",
+      "src1200": "/products/omega-exercise-book-100-pages-plain-unruled-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Exercise Book 100 Pages (Plain Unruled)"
+    },
     "name": "OMEGA Exercise Book 100 Pages (Plain Unruled)",
     "packaging": "120 Pcs / Box",
-    "price": 45000,
+    "price": 41000,
     "rating": 4.7,
     "reviewCount": 180,
     "sku": "OMG-EX-100PL",
@@ -1245,12 +1594,18 @@
         "label": "Cover Design",
         "value": "Indigo Printer Magenta & Cobalt",
         "_id": "6ad70aea76b381509a5e7dda"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
     "subtitle": "100 Pages · Plain Unruled · Diagram & Sketch",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 41000,
+    "descriptionSw": "100 Pages Plain / Blank (Unruled) · Indigo Printed Limited"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebc0",
@@ -1262,7 +1617,7 @@
     "colorOptions": [],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "Vibrant canary yellow exercise book with 80 smooth ruled pages. Lightweight, durable, and cost-effective for semester units, homework, and weekly revision.",
-    "discountPrice": 42000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": true,
     "freeDelivery": true,
@@ -1270,10 +1625,19 @@
       "/omega-products/exercise-book-80p-yellow.jpeg",
       "/omega-products/catalog-sheet-exercise-100-80-32.jpeg"
     ],
-    "image": "/omega-products/exercise-book-80p-yellow.jpeg",
+    "image": {
+      "src": "/products/omega-exercise-book-80-pages-canary-yellow-1200.webp",
+      "src400": "/products/omega-exercise-book-80-pages-canary-yellow-400.webp",
+      "src800": "/products/omega-exercise-book-80-pages-canary-yellow-800.webp",
+      "src1200": "/products/omega-exercise-book-80-pages-canary-yellow-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Exercise Book 80 Pages (Canary Yellow)"
+    },
     "name": "OMEGA Exercise Book 80 Pages (Canary Yellow)",
     "packaging": "100 Pcs / Box",
-    "price": 46000,
+    "price": 42000,
     "rating": 4.8,
     "reviewCount": 240,
     "sku": "OMG-EX-80Y",
@@ -1297,12 +1661,18 @@
         "label": "Binding",
         "value": "Saddle-Stitched Center Spine",
         "_id": "6ad70aea76b381509a5e7dde"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
     "subtitle": "80 Pages · Canary Yellow Cover · Compact & Sturdy",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 42000,
+    "descriptionSw": "80 Pages Canary Yellow · Imara | Nadhifu | Rahisi kutumia"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebc1",
@@ -1314,7 +1684,7 @@
     "colorOptions": [],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "Classic 32-page kraft brown exercise book featuring the iconic African Elephant emblem and the heritage motto \"Knowledge Builds a Better Future\".",
-    "discountPrice": 32000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": false,
     "freeDelivery": true,
@@ -1322,10 +1692,19 @@
       "/omega-products/exercise-book-32p-kraft.jpeg",
       "/omega-products/catalog-sheet-exercise-100-80-32.jpeg"
     ],
-    "image": "/omega-products/exercise-book-32p-kraft.jpeg",
+    "image": {
+      "src": "/products/omega-classic-exercise-book-32-pages-single-line-kraft-1200.webp",
+      "src400": "/products/omega-classic-exercise-book-32-pages-single-line-kraft-400.webp",
+      "src800": "/products/omega-classic-exercise-book-32-pages-single-line-kraft-800.webp",
+      "src1200": "/products/omega-classic-exercise-book-32-pages-single-line-kraft-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Classic Exercise Book 32 Pages (Single Line Kraft)"
+    },
     "name": "OMEGA Classic Exercise Book 32 Pages (Single Line Kraft)",
     "packaging": "300 Pcs / Box",
-    "price": 35000,
+    "price": 32000,
     "rating": 4.7,
     "reviewCount": 190,
     "sku": "OMG-EX-32DL",
@@ -1349,12 +1728,18 @@
         "label": "Heritage",
         "value": "Daftari ya Mazoezi · Elephant Crest",
         "_id": "6ad70aea76b381509a5e7de2"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
     "subtitle": "32 Pages · Single Line · Kraft Heritage Cover",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 32000,
+    "descriptionSw": "32 Pages Single Line Kraft · Knowledge Builds a Better Future"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebc2",
@@ -1366,7 +1751,7 @@
     "colorOptions": [],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "Premium heavyweight kraft envelopes in standard A4 format with tamper-evident peel-and-seal adhesive strip and printed OMEGA security emblem. Keeps contracts, certificates, and student papers perfectly protected.",
-    "discountPrice": 25000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": true,
     "freeDelivery": true,
@@ -1375,7 +1760,16 @@
       "/omega-products/bahasha-a4-box.jpeg",
       "/omega-products/catalog-sheet-shorthand-bahasha.jpeg"
     ],
-    "image": "/omega-products/bahasha-a4-envelope.jpeg",
+    "image": {
+      "src": "/products/omega-bahasha-document-envelopes-size-a4-pack-1200.webp",
+      "src400": "/products/omega-bahasha-document-envelopes-size-a4-pack-400.webp",
+      "src800": "/products/omega-bahasha-document-envelopes-size-a4-pack-800.webp",
+      "src1200": "/products/omega-bahasha-document-envelopes-size-a4-pack-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Bahasha Document Envelopes (Size A4 Pack)"
+    },
     "name": "OMEGA Bahasha Document Envelopes (Size A4 Pack)",
     "packaging": "500 Pcs / Box",
     "price": 28000,
@@ -1407,12 +1801,18 @@
         "label": "Branding",
         "value": "Official OMEGA Security Print",
         "_id": "6ad70aea76b381509a5e7dec"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
     "subtitle": "Size A4 · Self-Adhesive Security Seal · Heavy Kraft",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 28000,
+    "descriptionSw": "Heavy Kraft Bahasha Size A4 · Document Mailers"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebc3",
@@ -1430,7 +1830,7 @@
     ],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "The premier filing choice for your office — durable, clean, and elegant! Heavy-gauge PVC spring file featuring durable internal spring clip mechanism, twin punch eyelets, client indexing box, and distinctive OMEGA Executive branding.",
-    "discountPrice": 250000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": true,
     "freeDelivery": true,
@@ -1438,8 +1838,17 @@
       "/omega-products/omega-pvc-spring-file.jpeg",
       "/omega-products/catalog-sheet-file-jaradio-compass.jpeg"
     ],
-    "image": "/omega-products/omega-pvc-spring-file.jpeg",
-    "name": "OMEGA Executive P.V.C. Spring File",
+    "image": {
+      "src": "/products/omega-executive-plastic-p-v-c-spring-file-1200.webp",
+      "src400": "/products/omega-executive-plastic-p-v-c-spring-file-400.webp",
+      "src800": "/products/omega-executive-plastic-p-v-c-spring-file-800.webp",
+      "src1200": "/products/omega-executive-plastic-p-v-c-spring-file-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Executive Plastic P.V.C. Spring File"
+    },
+    "name": "OMEGA Executive Plastic P.V.C. Spring File",
     "packaging": "50 Pcs / Box",
     "price": 270000,
     "rating": 5,
@@ -1465,12 +1874,18 @@
         "label": "Format",
         "value": "A4 & Folio Document Capacity",
         "_id": "6ad70aea76b381509a5e7dfe"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
-    "subtitle": "Heavy Gauge PVC · Twin Clip Spring Mechanism",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "subtitle": "Plastic File · P.V.C Heavy Spring Mechanism",
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 270000,
+    "descriptionSw": "Plastic File P.V.C · Faili bora kwa ofisi yako"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebc4",
@@ -1482,7 +1897,7 @@
     "colorOptions": [],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "Tough water-repellent vinyl book cover roll in striking orange. Shields school notebooks and office ledgers from moisture, dirt, and heavy backpack wear throughout the academic year.",
-    "discountPrice": 210000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": false,
     "freeDelivery": true,
@@ -1490,10 +1905,19 @@
       "/omega-products/orange-jaradio-roll.jpeg",
       "/omega-products/catalog-sheet-jaradio-cash.jpeg"
     ],
-    "image": "/omega-products/orange-jaradio-roll.jpeg",
+    "image": {
+      "src": "/products/omega-orange-jaradio-heavy-book-cover-roll-1200.webp",
+      "src400": "/products/omega-orange-jaradio-heavy-book-cover-roll-400.webp",
+      "src800": "/products/omega-orange-jaradio-heavy-book-cover-roll-800.webp",
+      "src1200": "/products/omega-orange-jaradio-heavy-book-cover-roll-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Orange Jaradio Heavy Book Cover (Roll)"
+    },
     "name": "OMEGA Orange Jaradio Heavy Book Cover (Roll)",
     "packaging": "Continuous Roll",
-    "price": 230000,
+    "price": 210000,
     "rating": 4.8,
     "reviewCount": 160,
     "sku": "OMG-JAR-ORG",
@@ -1521,6 +1945,10 @@
       {
         "label": "Packaging Unit",
         "value": "Heavy Protective Shrink-Wrapped Continuous Roll"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
@@ -1529,9 +1957,9 @@
     "updatedAt": "2026-10-20T06:32:10.295Z",
     "nameSw": "Jalada Nzito la OMEGA Orange Jaradio (Roli)",
     "subtitleSw": "Roli ya Jalada · Kinga Imara Isiyopenya Maji",
-    "wholesalePrice": 195000,
+    "wholesalePrice": 210000,
     "wholesaleMinQty": 5,
-    "descriptionSw": "Roli ya jalada nzito la plastiki ya rangi ya chungwa isiyopenya maji. Hukinga madaftari ya shule na majalada ya ofisi dhidi ya unyevu, vumbi na mikwaruzo mwaka mzima wa masomo."
+    "descriptionSw": "Orange Jaradio Heavy Book Cover Roll"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebc5",
@@ -1543,7 +1971,7 @@
     "colorOptions": [],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "Indigo-printed kraft brown book jacket featuring a detailed world map, complete 1× to 10× multiplication reference table, and a dedicated student identification frame.",
-    "discountPrice": 55000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": true,
     "freeDelivery": true,
@@ -1551,10 +1979,19 @@
       "/omega-products/printer-jaradio-cover.jpeg",
       "/omega-products/catalog-sheet-file-jaradio-compass.jpeg"
     ],
-    "image": "/omega-products/printer-jaradio-cover.jpeg",
+    "image": {
+      "src": "/products/omega-printer-jaradio-notebook-cover-with-world-map-1200.webp",
+      "src400": "/products/omega-printer-jaradio-notebook-cover-with-world-map-400.webp",
+      "src800": "/products/omega-printer-jaradio-notebook-cover-with-world-map-800.webp",
+      "src1200": "/products/omega-printer-jaradio-notebook-cover-with-world-map-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Printer Jaradio Notebook Cover with World Map"
+    },
     "name": "OMEGA Printer Jaradio Notebook Cover with World Map",
     "packaging": "100 Pcs / Pack",
-    "price": 60000,
+    "price": 55000,
     "rating": 4.9,
     "reviewCount": 220,
     "sku": "OMG-JAR-PRN",
@@ -1573,12 +2010,18 @@
         "label": "Eco Standards",
         "value": "Save Trees · High Quality Paper Product",
         "_id": "6ad70aea76b381509a5e7e08"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
     "subtitle": "Indigo Printed · World Map & Tables Included",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 55000,
+    "descriptionSw": "Printer Jaradio Cover with Map · Indigo Printed Limited"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebc6",
@@ -1590,7 +2033,7 @@
     "colorOptions": [],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "Classic embossed Oxford metal tin geometry box containing all precision mathematical instruments: brass screw compass, divider, 180° protractor, 45° and 60° set squares, 15cm ruler, wooden drafting pencil, eraser, and mini sharpener. NECTA & Cambridge exam approved.",
-    "discountPrice": 165000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": true,
     "freeDelivery": true,
@@ -1598,9 +2041,18 @@
       "/omega-products/oxford-mathematical-set.jpeg",
       "/omega-products/catalog-sheet-file-jaradio-compass.jpeg"
     ],
-    "image": "/omega-products/oxford-mathematical-set.jpeg",
-    "name": "Oxford Mathematical Instruments Student Geometry Set",
-    "packaging": "10 Sets / Outer",
+    "image": {
+      "src": "/products/oxford-compass-mathematical-instruments-geometry-set-1200.webp",
+      "src400": "/products/oxford-compass-mathematical-instruments-geometry-set-400.webp",
+      "src800": "/products/oxford-compass-mathematical-instruments-geometry-set-800.webp",
+      "src1200": "/products/oxford-compass-mathematical-instruments-geometry-set-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "Oxford Compass Mathematical Instruments Geometry Set"
+    },
+    "name": "Oxford Compass Mathematical Instruments Geometry Set",
+    "packaging": "10 Sets / Outer Box",
     "price": 180000,
     "rating": 5,
     "reviewCount": 512,
@@ -1620,12 +2072,18 @@
         "label": "Standard",
         "value": "National & International Examination Approved",
         "_id": "6ad70aea76b381509a5e7e0b"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
-    "subtitle": "Complete Tin Box · Compass, Dividers, Protractor & Rulers",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "subtitle": "Oxford Compass · Official Steel Mathematical Set",
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 180000,
+    "descriptionSw": "Oxford Compass Mathematical Instruments"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebc7",
@@ -1637,7 +2095,7 @@
     "colorOptions": [],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "Crystal-clear 30cm (12 inch) acrylic school ruler with sharp millimeter gradations, non-smear beveled drawing edge, and hanging aperture. Shatter-resistant for classroom longevity.",
-    "discountPrice": 110000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": false,
     "freeDelivery": true,
@@ -1645,10 +2103,19 @@
       "/omega-products/omega-school-ruler.jpeg",
       "/omega-products/catalog-sheet-ruler-roll-chalk.jpeg"
     ],
-    "image": "/omega-products/omega-school-ruler.jpeg",
-    "name": "OMEGA Precision School Ruler (30cm Clear Acrylic)",
+    "image": {
+      "src": "/products/omega-precision-clear-rulled-school-rulers-30cm-1200.webp",
+      "src400": "/products/omega-precision-clear-rulled-school-rulers-30cm-400.webp",
+      "src800": "/products/omega-precision-clear-rulled-school-rulers-30cm-800.webp",
+      "src1200": "/products/omega-precision-clear-rulled-school-rulers-30cm-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Precision Clear Rulled School Rulers (30cm)"
+    },
+    "name": "OMEGA Precision Clear Rulled School Rulers (30cm)",
     "packaging": "50 Pcs / Box",
-    "price": 120000,
+    "price": 110000,
     "rating": 4.8,
     "reviewCount": 310,
     "sku": "OMG-RUL-30",
@@ -1667,12 +2134,17 @@
         "label": "Graduations",
         "value": "Millimeters & Tenths of an Inch",
         "_id": "6ad70aea76b381509a5e7e0e"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
-    "subtitle": "30cm / 12 Inch · Dual Scale · Shatter Resistant",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "subtitle": "Rulled · 30cm Metric Millimeter Calibration",
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 110000
   },
   {
     "_id": "6ad6471f5d01c6a7959eebc8",
@@ -1684,7 +2156,7 @@
     "colorOptions": [],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "Clear counter display tub with 50 precision DOMS Stopper pencil sharpeners. Fitted with high-carbon steel contoured blades that sharpen smooth points without pencil lead breakage.",
-    "discountPrice": 350000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": true,
     "freeDelivery": true,
@@ -1692,10 +2164,19 @@
       "/omega-products/catalog-sheet-doms-sharpeners.jpeg",
       "/omega-products/catalog-sheet-staples-doms.jpeg"
     ],
-    "image": "/omega-products/catalog-sheet-doms-sharpeners.jpeg",
-    "name": "DOMS Stopper Pencil Sharpeners (Counter Tub of 50 Pcs)",
+    "image": {
+      "src": "/products/doms-stopper-pencil-sharpeners-counter-tub-of-50-1200.webp",
+      "src400": "/products/doms-stopper-pencil-sharpeners-counter-tub-of-50-400.webp",
+      "src800": "/products/doms-stopper-pencil-sharpeners-counter-tub-of-50-800.webp",
+      "src1200": "/products/doms-stopper-pencil-sharpeners-counter-tub-of-50-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "DOMS Stopper Pencil Sharpeners (Counter Tub of 50)"
+    },
+    "name": "DOMS Stopper Pencil Sharpeners (Counter Tub of 50)",
     "packaging": "50 Pcs / Tub",
-    "price": 380000,
+    "price": 350000,
     "rating": 4.9,
     "reviewCount": 180,
     "sku": "DOM-SHR-50",
@@ -1714,12 +2195,18 @@
         "label": "Colors",
         "value": "Assorted Neon Translucent (Red, Blue, Green, Yellow)",
         "_id": "6ad70aea76b381509a5e7e11"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
-    "subtitle": "Tub of 50 · High Carbon Steel Blades · Mixed Neon Colors",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "subtitle": "Dom's Stoper · Anti-Bacterial Safety Blade",
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 350000,
+    "descriptionSw": "Dom's Stopper Sharpeners Tub"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebc9",
@@ -1731,17 +2218,26 @@
     "colorOptions": [],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "Dermatologically tested dustless white chalk for chalkboard city writing. Smooth, dense calcium carbonate formulation leaves crisp high-contrast marks without powdery airborne residue.",
-    "discountPrice": 175000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": false,
     "freeDelivery": true,
     "gallery": [
       "/omega-products/catalog-sheet-ruler-roll-chalk.jpeg"
     ],
-    "image": "/omega-products/catalog-sheet-ruler-roll-chalk.jpeg",
-    "name": "DOMS Dustless White Chalk (Classroom Box of 10 Pcs)",
-    "packaging": "10 Pcs / Box",
-    "price": 190000,
+    "image": {
+      "src": "/products/doms-dustless-white-chalk-1-ctn-10-box-10-pkt-1200.webp",
+      "src400": "/products/doms-dustless-white-chalk-1-ctn-10-box-10-pkt-400.webp",
+      "src800": "/products/doms-dustless-white-chalk-1-ctn-10-box-10-pkt-800.webp",
+      "src1200": "/products/doms-dustless-white-chalk-1-ctn-10-box-10-pkt-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "DOMS Dustless White Chalk (1 Ctn / 10 Box / 10 Pkt)"
+    },
+    "name": "DOMS Dustless White Chalk (1 Ctn / 10 Box / 10 Pkt)",
+    "packaging": "1 Ctn (10 Boxes × 10 Pkts × 10 Pcs)",
+    "price": 175000,
     "rating": 4.7,
     "reviewCount": 140,
     "sku": "DOM-CHK-10",
@@ -1760,12 +2256,18 @@
         "label": "Formula",
         "value": "100% Dustless & Non-Toxic",
         "_id": "6ad70aea76b381509a5e7e14"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
-    "subtitle": "Non-Toxic · Pure White Dustless Formula · Board Safe",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "subtitle": "White Chalk · 1000 Dustless Sticks Master Carton",
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 175000,
+    "descriptionSw": "White Chalk (1 Ctn, 10 Box, 10 Pct, 10 Pc)"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebca",
@@ -1777,7 +2279,7 @@
     "colorOptions": [],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "Certified high-sensitivity thermal paper rolls for Electronic Fiscal Devices (EFD), POS card terminals, and cash registers. Produces dark, enduring printouts that comply with Tanzania Revenue Authority (TRA) audit guidelines.",
-    "discountPrice": 125000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": true,
     "freeDelivery": true,
@@ -1785,10 +2287,19 @@
       "/omega-products/tra-rolls-pack.jpeg",
       "/omega-products/catalog-sheet-ruler-roll-chalk.jpeg"
     ],
-    "image": "/omega-products/tra-rolls-pack.jpeg",
-    "name": "T.R.A. Certified Thermal Receipt Paper Rolls (Pack of 10 Rolls)",
-    "packaging": "10 Rolls / Pack",
-    "price": 135000,
+    "image": {
+      "src": "/products/t-r-a-certified-thermal-receipt-paper-rolls-10-pkt-100-pc-1200.webp",
+      "src400": "/products/t-r-a-certified-thermal-receipt-paper-rolls-10-pkt-100-pc-400.webp",
+      "src800": "/products/t-r-a-certified-thermal-receipt-paper-rolls-10-pkt-100-pc-800.webp",
+      "src1200": "/products/t-r-a-certified-thermal-receipt-paper-rolls-10-pkt-100-pc-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "T.R.A. Certified Thermal Receipt Paper Rolls (10 Pkt / 100 Pc)"
+    },
+    "name": "T.R.A. Certified Thermal Receipt Paper Rolls (10 Pkt / 100 Pc)",
+    "packaging": "10 Pkts (100 Pcs / Carton)",
+    "price": 125000,
     "rating": 5,
     "reviewCount": 420,
     "sku": "OMG-TRA-10",
@@ -1807,12 +2318,18 @@
         "label": "Coating",
         "value": "BPA-Free High-Contrast Thermal Layer",
         "_id": "6ad70aea76b381509a5e7e17"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
-    "subtitle": "BPA-Free Thermal Grade · Certified for TRA EFD Machines",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "subtitle": "T.R.A Roll · 10 Packets, 100 Rolls Total",
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 125000,
+    "descriptionSw": "T.R.A Thermal Rolls (10 Pkt, 100 Pc)"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebcb",
@@ -1824,17 +2341,26 @@
     "colorOptions": [],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "Original Kangaro 24/6-1M precision wire staples in bulk trade master carton of 20 boxes. Chisel point tips provide effortless paper penetration up to 30 sheets without jamming.",
-    "discountPrice": 204000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": false,
     "freeDelivery": true,
     "gallery": [
       "/omega-products/catalog-sheet-staples-doms.jpeg"
     ],
-    "image": "/omega-products/catalog-sheet-staples-doms.jpeg",
-    "name": "Kangaro Blue Staples 24/6 (Case of 20 Boxes)",
+    "image": {
+      "src": "/products/kangaro-blue-pin-staples-24-6-1200.webp",
+      "src400": "/products/kangaro-blue-pin-staples-24-6-400.webp",
+      "src800": "/products/kangaro-blue-pin-staples-24-6-800.webp",
+      "src1200": "/products/kangaro-blue-pin-staples-24-6-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "Kangaro Blue Pin Staples 24/6"
+    },
+    "name": "Kangaro Blue Pin Staples 24/6",
     "packaging": "20 Boxes / Master Pack",
-    "price": 220000,
+    "price": 204000,
     "rating": 4.9,
     "reviewCount": 220,
     "sku": "KNG-STP-20",
@@ -1853,12 +2379,18 @@
         "label": "Coating",
         "value": "Rust-Resistant Zinc Plating",
         "_id": "6ad70aea76b381509a5e7e1d"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
-    "subtitle": "20 Boxes × 1,000 Pcs · Rust-Resistant Zinc Plated",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "subtitle": "Blue Pin · Heavy-Duty Wire Staples",
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 204000,
+    "descriptionSw": "Blue Pin / Kangaro Staples 24/6"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebcc",
@@ -1870,17 +2402,26 @@
     "colorOptions": [],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "Great Hall Model 369 high-tensile steel staples. Engineered for everyday filing, legal folios, and student booklet stapling.",
-    "discountPrice": 100000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": false,
     "freeDelivery": true,
     "gallery": [
       "/omega-products/catalog-sheet-staples-doms.jpeg"
     ],
-    "image": "/omega-products/catalog-sheet-staples-doms.jpeg",
-    "name": "Great Hall Red Staples Model 369 (24/6 Heavy Duty)",
+    "image": {
+      "src": "/products/great-hall-red-pin-staples-model-369-1200.webp",
+      "src400": "/products/great-hall-red-pin-staples-model-369-400.webp",
+      "src800": "/products/great-hall-red-pin-staples-model-369-800.webp",
+      "src1200": "/products/great-hall-red-pin-staples-model-369-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "Great Hall Red Pin Staples Model 369"
+    },
+    "name": "Great Hall Red Pin Staples Model 369",
     "packaging": "10 Boxes / Pack",
-    "price": 110000,
+    "price": 100000,
     "rating": 4.8,
     "reviewCount": 160,
     "sku": "GHL-STP-369",
@@ -1894,12 +2435,18 @@
         "label": "Material",
         "value": "Hardened Steel",
         "_id": "6ad70aea76b381509a5e7e1f"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
-    "subtitle": "Model 369 · 1000 × 10 · High Penetration",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "subtitle": "Red Pin · Model 369 Standard Staples",
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 100000,
+    "descriptionSw": "Red Pin / Great Hall Staples 24/6"
   },
   {
     "_id": "6ad6471f5d01c6a7959eebcd",
@@ -1911,7 +2458,7 @@
     "colorOptions": [],
     "createdAt": "2026-10-19T16:36:46.709Z",
     "description": "Ideal for schools, administrative offices, commercial records, revision exercises, and organized bookkeeping. High-volume master bundle of 400 single-line ruled exam sheets organized across 16 individually wrapped student packets.",
-    "discountPrice": 66000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": true,
     "freeDelivery": true,
@@ -1920,8 +2467,17 @@
       "/omega-products/ruled-paper-ream-tall.jpeg",
       "/omega-products/catalog-sheet-flipchart-ruled-folder.jpeg"
     ],
-    "image": "/omega-products/ruled-paper-pack.jpeg",
-    "name": "OMEGA Ruled Exam Writing Paper (400 Sheets / 16 Pkt)",
+    "image": {
+      "src": "/products/omega-ruled-examination-paper-400-sheets-16-pkt-1200.webp",
+      "src400": "/products/omega-ruled-examination-paper-400-sheets-16-pkt-400.webp",
+      "src800": "/products/omega-ruled-examination-paper-400-sheets-16-pkt-800.webp",
+      "src1200": "/products/omega-ruled-examination-paper-400-sheets-16-pkt-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Ruled Examination Paper (400 Sheets / 16 Pkt)"
+    },
+    "name": "OMEGA Ruled Examination Paper (400 Sheets / 16 Pkt)",
     "packaging": "400 Sheets / 16 Pkt",
     "price": 70000,
     "rating": 4.9,
@@ -1947,12 +2503,18 @@
         "label": "Application",
         "value": "Term Exams, Revision Sheets & Office Notes",
         "_id": "6ad70aea76b381509a5e7e23"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 100,
     "stockStatus": "In Stock",
-    "subtitle": "400 Sheets · 16 Packets · Double Margin Single Line",
-    "updatedAt": "2026-10-20T06:32:10.295Z"
+    "subtitle": "Ruled Paper · 400 Sheets in 16 Packets",
+    "updatedAt": "2026-10-20T06:32:10.295Z",
+    "wholesalePrice": 70000,
+    "descriptionSw": "Ruled Exam Writing Paper · 400 Sheets, 16 Pkt"
   },
   {
     "_id": "6ad668fb5d01c6a7959eecc4",
@@ -1975,7 +2537,7 @@
     ],
     "createdAt": "2026-10-19T19:01:14.710Z",
     "description": "Heavyweight OMEGA 2-Quire counter book with 192 numbered pages. Bound in scratch-resistant stiff hardboard with reinforced cloth spine and indexed header label. Perfect for daily office registry, accounting ledger, and academic note-taking.",
-    "discountPrice": 52000,
+    "discountPrice": null,
     "dispatchTime": "Same-Day Dispatch",
     "featured": true,
     "freeDelivery": true,
@@ -1983,7 +2545,16 @@
       "/omega-products/counter-book-q2-192p.jpeg",
       "/omega-products/catalog-sheet-counter-q2-q3-q4.jpeg"
     ],
-    "image": "/omega-products/counter-book-q2-192p.jpeg",
+    "image": {
+      "src": "/products/omega-hardcover-counter-book-q2-192-pages-1200.webp",
+      "src400": "/products/omega-hardcover-counter-book-q2-192-pages-400.webp",
+      "src800": "/products/omega-hardcover-counter-book-q2-192-pages-800.webp",
+      "src1200": "/products/omega-hardcover-counter-book-q2-192-pages-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Hardcover Counter Book Q2 (192 Pages)"
+    },
     "name": "OMEGA Hardcover Counter Book Q2 (192 Pages)",
     "packaging": "48 Pcs / Box",
     "price": 56000,
@@ -2008,7 +2579,7 @@
       },
       {
         "label": "Manufacturer",
-        "value": "OMEGA Indigo Printer · Tanzania",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga",
         "_id": "6ad7135d1dbe0a71e070c6fa"
       }
     ],
@@ -2017,14 +2588,14 @@
     "subtitle": "192 Pages · 2Quire · Stiff Hardcover",
     "updatedAt": "2026-10-20T07:08:13.077Z",
     "binding": "Thread-Sewn Hardboard with Reinforced Spine",
-    "descriptionSw": "Daftari la kaunta la OMEGA Quire 2 lenye kurasa 192 zilizopangwa kwa ustadi. Jalada gumu lisilopinda kwa matumizi ya biashara na elimu.",
+    "descriptionSw": "Quire-2, Pages-198 | Imara | Nadhifu | Rahisi kutumia",
     "nameSw": "OMEGA Daftari la Kaunta Q2 (Kurasa 192)",
     "pageCount": "192 Pages",
     "paperType": "70 GSM Bleed-Proof",
-    "quire": "2 Quire",
+    "quire": "Q2",
     "size": "A4",
     "wholesaleMinQty": 10,
-    "wholesalePrice": 48000
+    "wholesalePrice": 56000
   },
   {
     "_id": "6ad7135e5d01c6a7959eefe3",
@@ -2035,16 +2606,25 @@
     "category": "Exercise Books",
     "createdAt": "2026-10-20T07:08:14.599Z",
     "description": "Standard 100-page notebook available in Single Line, Double Line and Square Grid for mathematics and English composition.",
-    "descriptionSw": "Daftari la kurasa 100 kwa shule za msingi na sekondari.",
-    "discountPrice": 22000,
+    "descriptionSw": "100 Pages Standard Classroom Pack",
+    "discountPrice": null,
     "featured": false,
     "gallery": [],
-    "image": "/omega-products/exercise-book-100p-catalog.jpeg",
+    "image": {
+      "src": "/products/omega-primary-secondary-exercise-book-100-pages-1200.webp",
+      "src400": "/products/omega-primary-secondary-exercise-book-100-pages-400.webp",
+      "src800": "/products/omega-primary-secondary-exercise-book-100-pages-800.webp",
+      "src1200": "/products/omega-primary-secondary-exercise-book-100-pages-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Primary & Secondary Exercise Book 100 Pages"
+    },
     "name": "OMEGA Primary & Secondary Exercise Book 100 Pages",
     "nameSw": "Daftari la Mazoezi la OMEGA (Kurasa 100)",
     "pageCount": "100 Pages",
     "paperType": "60 GSM Smooth White",
-    "price": 24000,
+    "price": 41000,
     "rating": 4.8,
     "reviewCount": 310,
     "size": "A5 Standard",
@@ -2059,13 +2639,18 @@
         "label": "Paper",
         "value": "Bleed-resistant white paper",
         "_id": "6ad7135e1dbe0a71e070c717"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 1800,
     "stockStatus": "In Stock",
     "updatedAt": "2026-10-20T07:12:21.446Z",
     "wholesaleMinQty": 20,
-    "wholesalePrice": 19500
+    "wholesalePrice": 41000,
+    "packaging": "120 Pcs / Box"
   },
   {
     "_id": "6ad7135e5d01c6a7959eefe4",
@@ -2076,16 +2661,25 @@
     "category": "Exercise Books",
     "createdAt": "2026-10-20T07:08:14.758Z",
     "description": "Everyday school exercise book with printed multiplication tables and metric conversion charts on rear cover.",
-    "descriptionSw": "Daftari la kawaida la masomo ya kila siku lenye ratiba na majedwali.",
-    "discountPrice": 16500,
+    "descriptionSw": "80 Pages School Exercise Book",
+    "discountPrice": null,
     "featured": false,
     "gallery": [],
-    "image": "/omega-products/exercise-book-80p-yellow.jpeg",
+    "image": {
+      "src": "/products/omega-school-exercise-book-80-pages-1200.webp",
+      "src400": "/products/omega-school-exercise-book-80-pages-400.webp",
+      "src800": "/products/omega-school-exercise-book-80-pages-800.webp",
+      "src1200": "/products/omega-school-exercise-book-80-pages-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA School Exercise Book 80 Pages"
+    },
     "name": "OMEGA School Exercise Book 80 Pages",
     "nameSw": "Daftari la Wanafunzi OMEGA Kurasa 80",
     "pageCount": "80 Pages",
     "paperType": "55 GSM High-Opacity",
-    "price": 18000,
+    "price": 42000,
     "rating": 4.7,
     "reviewCount": 190,
     "size": "A5",
@@ -2100,13 +2694,18 @@
         "label": "Size",
         "value": "A5",
         "_id": "6ad7135e1dbe0a71e070c71c"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 2400,
     "stockStatus": "In Stock",
     "updatedAt": "2026-10-20T07:12:21.830Z",
     "wholesaleMinQty": 25,
-    "wholesalePrice": 14500
+    "wholesalePrice": 42000,
+    "packaging": "100 Pcs / Box"
   },
   {
     "_id": "6ad7135e5d01c6a7959eefe5",
@@ -2117,16 +2716,25 @@
     "category": "Exercise Books",
     "createdAt": "2026-10-20T07:08:14.913Z",
     "description": "Slim lightweight exercise book for kindergarten and early primary grades. Easy for small children to handle.",
-    "descriptionSw": "Daftari la kurasa 32 kwa wanafunzi wa awali na shule za chekechea.",
-    "discountPrice": 10500,
+    "descriptionSw": "32 Pages Early Learning",
+    "discountPrice": null,
     "featured": false,
     "gallery": [],
-    "image": "/omega-products/exercise-book-32p-kraft.jpeg",
+    "image": {
+      "src": "/products/omega-early-learning-exercise-book-32-pages-1200.webp",
+      "src400": "/products/omega-early-learning-exercise-book-32-pages-400.webp",
+      "src800": "/products/omega-early-learning-exercise-book-32-pages-800.webp",
+      "src1200": "/products/omega-early-learning-exercise-book-32-pages-1200.webp",
+      "width": 1200,
+      "height": 1200,
+      "bg": "white",
+      "alt": "OMEGA Early Learning Exercise Book 32 Pages"
+    },
     "name": "OMEGA Early Learning Exercise Book 32 Pages",
     "nameSw": "Daftari la Chekechea / Awali OMEGA (Kurasa 32)",
     "pageCount": "32 Pages",
     "paperType": "60 GSM High-Tear Strength",
-    "price": 12000,
+    "price": 32000,
     "rating": 4.65,
     "reviewCount": 95,
     "size": "A5",
@@ -2141,12 +2749,17 @@
         "label": "Ruling",
         "value": "Large Ruled or Square",
         "_id": "6ad7135e1dbe0a71e070c721"
+      },
+      {
+        "label": "Manufacturer",
+        "value": "Indigo Printed Limited · Plot 30 Block F Kilwa Rd, Mkuranga"
       }
     ],
     "stockQuantity": 3000,
     "stockStatus": "In Stock",
     "updatedAt": "2026-10-20T07:12:22.207Z",
     "wholesaleMinQty": 30,
-    "wholesalePrice": 9000
+    "wholesalePrice": 32000,
+    "packaging": "300 Pcs / Box"
   }
 ]

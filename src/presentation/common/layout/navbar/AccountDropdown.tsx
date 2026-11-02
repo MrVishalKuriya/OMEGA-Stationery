@@ -48,7 +48,6 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
       if (e.key === 'Escape') onClose();
     };
 
-    // Use standard click instead of mousedown to guarantee button click events complete
     const timer = setTimeout(() => {
       document.addEventListener('click', handleClickOutside);
     }, 50);
@@ -85,24 +84,24 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
       aria-label="Account Menu"
       onMouseDown={(e) => e.stopPropagation()}
       onClick={(e) => e.stopPropagation()}
-      className="absolute right-0 top-full mt-2 w-72 rounded-[12px] bg-white text-[#14182B] border border-[#E7E5E0] shadow-2xl z-[100] p-2 animate-in fade-in slide-in-from-top-1 font-sans pointer-events-auto"
+      className="absolute right-0 top-full mt-2 w-72 rounded-2xl bg-[var(--surface-1)] text-[var(--text)] border border-[var(--border)] shadow-2xl z-[100] p-2 animate-in fade-in slide-in-from-top-1 font-sans pointer-events-auto"
     >
       {/* Header Profile Info */}
-      <div className="p-3 rounded-[8px] bg-[#F9F8F6] border border-[#E7E5E0]/50 mb-2">
+      <div className="p-3 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] mb-2">
         {currentUser ? (
           <div>
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#111113] text-[#dc2626] font-bold text-sm flex items-center justify-center font-mono shrink-0 shadow-xs">
+              <div className="w-10 h-10 rounded-full bg-[var(--surface-1)] text-[var(--gold)] border border-[var(--border)] font-bold text-sm flex items-center justify-center font-mono shrink-0 shadow-xs">
                 {currentUser.initials}
               </div>
-              <div className="min-w-0 flex-1">
-                <span className="text-xs font-bold text-[#14182B] block truncate">
+              <div className="min-w-0 flex-1 text-left">
+                <span className="text-xs font-bold text-[var(--text)] block truncate">
                   {currentUser.name}
                 </span>
-                <span className="text-[11px] text-[#6B7280] block truncate font-mono">
+                <span className="text-[11px] text-[var(--text-muted)] block truncate font-mono">
                   {currentUser.email}
                 </span>
-                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#2A9D8F] mt-0.5">
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-500 mt-0.5">
                   <ShieldCheck className="w-3 h-3" />
                   {currentUser.accountType === 'wholesale'
                     ? 'Wholesale Partner'
@@ -113,11 +112,11 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
               </div>
             </div>
 
-            {/* Active Session Token Indicator */}
+            {/* Active Session Indicator */}
             {activeSession && (
-              <div className="mt-2 pt-2 border-t border-[#E7E5E0]/60 flex items-center justify-between text-[10px] text-[#6B7280]">
-                <span className="flex items-center gap-1 text-[#2A9D8F] font-bold">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#2A9D8F] animate-pulse" />
+              <div className="mt-2 pt-2 border-t border-[var(--border)] flex items-center justify-between text-[10px] text-[var(--text-muted)]">
+                <span className="flex items-center gap-1 text-emerald-500 font-bold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   Active Secure Session
                 </span>
                 <span className="font-mono text-[9px]">30-Day Cookie</span>
@@ -125,12 +124,12 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
             )}
           </div>
         ) : (
-          <div className="space-y-1">
-            <span className="text-xs font-bold text-[#14182B] block">
+          <div className="space-y-1 text-left">
+            <span className="text-xs font-bold text-[var(--text)] block">
               Welcome to OMEGA Stationery
             </span>
-            <p className="text-[11px] text-[#6B7280]">
-              Sign in to track orders, manage business invoices and access wholesale tiers.
+            <p className="text-[11px] text-[var(--text-muted)] leading-relaxed">
+              Sign in to track orders, manage business invoices, and access wholesale rates.
             </p>
           </div>
         )}
@@ -138,130 +137,112 @@ export const AccountDropdown: React.FC<AccountDropdownProps> = ({
 
       {/* Menu Actions */}
       <div className="space-y-1 text-xs font-medium">
-        {/* My Account & Profile */}
-        {currentUser && (
-          <Link
-            to="/account"
-            onClick={onClose}
-            className="w-full flex items-center justify-between p-2.5 rounded-[8px] hover:bg-[#F3EEE2] text-[#14182B] hover:text-[#111113] transition-colors group focus-ring-gold font-bold bg-[#F9F8F6]/60 border border-[#E7E5E0]/50"
-          >
-            <div className="flex items-center gap-2.5">
-              <User className="w-4 h-4 text-[#111113]" />
-              <span>My Account &amp; Profile</span>
-            </div>
-            <ChevronRight className="w-3.5 h-3.5 text-[#6B7280] group-hover:translate-x-0.5 transition-transform" />
-          </Link>
-        )}
-
-        {/* Track Orders */}
-        <button
-          type="button"
-          onClick={() => {
-            onOpenOrders();
-            onClose();
-          }}
-          className="w-full flex items-center justify-between p-2.5 rounded-[8px] hover:bg-[#F3EEE2] text-[#14182B] hover:text-[#111113] transition-colors group focus-ring-gold"
-        >
-          <div className="flex items-center gap-2.5">
-            <Package className="w-4 h-4 text-[#111113]" />
-            <span>My Orders &amp; Tracking</span>
-          </div>
-          <ChevronRight className="w-3.5 h-3.5 text-[#6B7280] group-hover:translate-x-0.5 transition-transform" />
-        </button>
-
-        {/* Wishlist */}
-        <button
-          type="button"
-          onClick={() => {
-            onOpenWishlist();
-            onClose();
-          }}
-          className="w-full flex items-center justify-between p-2.5 rounded-[8px] hover:bg-[#F3EEE2] text-[#14182B] hover:text-[#111113] transition-colors group focus-ring-gold"
-        >
-          <div className="flex items-center gap-2.5">
-            <Heart className="w-4 h-4 text-[#D64545]" />
-            <span>Saved Wishlist</span>
-          </div>
-          <span className="text-[10px] font-bold font-mono px-2 py-0.5 rounded-full bg-[#F9F8F6] border border-[#E7E5E0] text-[#14182B]">
-            {wishlistCount}
-          </span>
-        </button>
-
-        {/* Cookie & Session Privacy Settings */}
-        <button
-          type="button"
-          onClick={() => {
-            onClose();
-            openCookiePreferences();
-          }}
-          className="w-full flex items-center justify-between p-2.5 rounded-[8px] hover:bg-[#F3EEE2] text-[#14182B] hover:text-[#111113] transition-colors group focus-ring-gold"
-        >
-          <div className="flex items-center gap-2.5">
-            <Cookie className="w-4 h-4 text-[#dc2626]" />
-            <span>Cookie &amp; Session Privacy</span>
-          </div>
-          <ChevronRight className="w-3.5 h-3.5 text-[#6B7280] group-hover:translate-x-0.5 transition-transform" />
-        </button>
-
-
-        <div className="my-1.5 border-t border-[#E7E5E0]" />
-
-        {/* Login / Register or Logout */}
         {currentUser ? (
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="w-full flex items-center gap-2.5 p-2.5 rounded-[8px] hover:bg-[#D64545]/10 text-[#D64545] font-semibold transition-colors focus-ring-gold"
-          >
-            <LogOut className="w-4 h-4" />
-            <span>Log Out</span>
-          </button>
+          <>
+            <Link
+              to="/account"
+              onClick={onClose}
+              className="flex items-center justify-between p-2.5 rounded-xl hover:bg-[var(--surface-2)] text-[var(--text)] transition-colors group cursor-pointer"
+            >
+              <div className="flex items-center gap-2.5">
+                <User className="w-4 h-4 text-[var(--gold)]" />
+                <span>My Profile &amp; Settings</span>
+              </div>
+              <ChevronRight className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:translate-x-0.5 transition-transform" />
+            </Link>
+
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                onOpenOrders();
+              }}
+              className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-[var(--surface-2)] text-[var(--text)] transition-colors group cursor-pointer"
+            >
+              <div className="flex items-center gap-2.5">
+                <Package className="w-4 h-4 text-[var(--red)]" />
+                <span>Track Orders &amp; Waybills</span>
+              </div>
+              <ChevronRight className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:translate-x-0.5 transition-transform" />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                onOpenWishlist();
+              }}
+              className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-[var(--surface-2)] text-[var(--text)] transition-colors group cursor-pointer"
+            >
+              <div className="flex items-center gap-2.5">
+                <Heart className="w-4 h-4 text-[var(--red)]" />
+                <span>Saved Wishlist</span>
+              </div>
+              {wishlistCount > 0 && (
+                <span className="px-1.5 py-0.5 rounded-full bg-[var(--red)] text-white text-[10px] font-mono font-bold">
+                  {wishlistCount}
+                </span>
+              )}
+            </button>
+
+            <div className="my-1 border-t border-[var(--border)]" />
+
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="w-full flex items-center gap-2.5 p-2.5 rounded-xl text-[var(--red)] hover:bg-[var(--red)]/10 transition-colors cursor-pointer"
+            >
+              <LogOut className="w-4 h-4" />
+              <span>Sign Out</span>
+            </button>
+          </>
         ) : (
-          <div className="space-y-2 pt-1">
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                id="navbar-signin-btn"
-                onMouseDown={(e) => e.stopPropagation()}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleOpenSignIn();
-                }}
-                className="w-full py-2.5 px-3 rounded-[8px] btn-indra-primary text-xs font-bold text-center flex items-center justify-center gap-1.5 shadow-xs cursor-pointer hover:brightness-105 active:scale-95 transition-all select-none"
-              >
-                <LogIn className="w-3.5 h-3.5 pointer-events-none" />
-                <span className="pointer-events-none">Sign In</span>
-              </button>
-              <button
-                type="button"
-                id="navbar-register-btn"
-                onMouseDown={(e) => e.stopPropagation()}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleOpenRegister();
-                }}
-                className="w-full py-2.5 px-3 rounded-[8px] bg-white border border-[#E7E5E0] hover:bg-[#F3EEE2] text-xs font-bold text-center text-[#111113] flex items-center justify-center gap-1.5 cursor-pointer hover:border-[#111113] active:scale-95 transition-all select-none"
-              >
-                <UserPlus className="w-3.5 h-3.5 pointer-events-none" />
-                <span className="pointer-events-none">Register</span>
-              </button>
-            </div>
-            <div className="text-center text-[10px] text-[#6B7280] pt-1">
-              <Link
-                to="/login"
-                onMouseDown={(e) => e.stopPropagation()}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onClose();
-                }}
-                className="hover:text-[#111113] hover:underline cursor-pointer select-none"
-              >
-                Open Full Dedicated Sign In Page →
-              </Link>
-            </div>
-          </div>
+          <>
+            <button
+              type="button"
+              onClick={handleOpenSignIn}
+              className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-[var(--surface-2)] text-[var(--text)] font-semibold transition-colors group cursor-pointer"
+            >
+              <div className="flex items-center gap-2.5">
+                <LogIn className="w-4 h-4 text-[var(--red)]" />
+                <span>Sign In to Account</span>
+              </div>
+              <ChevronRight className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:translate-x-0.5 transition-transform" />
+            </button>
+
+            <button
+              type="button"
+              onClick={handleOpenRegister}
+              className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-[var(--surface-2)] text-[var(--text)] transition-colors group cursor-pointer"
+            >
+              <div className="flex items-center gap-2.5">
+                <UserPlus className="w-4 h-4 text-[var(--gold)]" />
+                <span>Create New Account</span>
+              </div>
+              <ChevronRight className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:translate-x-0.5 transition-transform" />
+            </button>
+
+            <div className="my-1 border-t border-[var(--border)]" />
+
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                onOpenOrders();
+              }}
+              className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-[var(--surface-2)] text-[var(--text)] transition-colors group cursor-pointer"
+            >
+              <div className="flex items-center gap-2.5">
+                <Package className="w-4 h-4 text-[var(--gold)]" />
+                <span>Track Parcel (No Login Required)</span>
+              </div>
+              <ChevronRight className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:translate-x-0.5 transition-transform" />
+            </button>
+          </>
         )}
       </div>
     </div>
   );
 };
+
+export default AccountDropdown;

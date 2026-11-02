@@ -84,7 +84,7 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center py-12 px-4 bg-[#F9F8F6]">
+    <div className="min-h-[85vh] flex items-center justify-center py-12 px-4 bg-[var(--bg)] text-[var(--text)]">
       <SEOHead
         title="Create Account | OMEGA Stationery & Books Tanzania"
         description="Register for an OMEGA Stationery account: retail member, wholesale partner, or educational institution."
@@ -92,28 +92,28 @@ export const RegisterPage: React.FC = () => {
 
       <div className="max-w-xl w-full">
         {/* Main Registration Card */}
-        <div className="bg-white rounded-[16px] border border-[#E7E5E0] shadow-boutique overflow-hidden">
+        <div className="bg-[var(--surface-1)] rounded-2xl border border-[var(--border)] shadow-xl overflow-hidden">
           {/* Header */}
-          <div className="bg-[#111113] text-white p-6 sm:p-8">
+          <div className="bg-[var(--surface-2)] text-[var(--text)] p-6 sm:p-8 border-b border-[var(--border)]">
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-[11px] font-mono tracking-widest text-[#dc2626] uppercase font-bold">
+                <span className="text-[11px] font-mono tracking-widest text-[var(--gold)] uppercase font-bold">
                   New Customer Registration
                 </span>
-                <h1 className="text-2xl font-serif font-bold mt-1 text-white">
+                <h1 className="text-2xl font-heading font-bold mt-1 text-[var(--text)]">
                   Join OMEGA Stationery
                 </h1>
               </div>
-              <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-[#dc2626]">
+              <div className="w-12 h-12 rounded-full bg-[var(--surface-1)] flex items-center justify-center text-[var(--gold)] border border-[var(--border)]">
                 <UserPlus className="w-6 h-6" />
               </div>
             </div>
-            <p className="text-xs text-stone-300 mt-2">
+            <p className="text-xs text-[var(--text-muted)] mt-2">
               Select your account type below to receive tailored commercial discounts, tax receipts, and order tracking.
             </p>
 
             {/* Backend connection status pill */}
-            <div className="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono font-medium bg-white/10 border border-white/20 text-stone-200">
+            <div className="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono font-medium bg-[var(--surface-1)] border border-[var(--border)] text-[var(--text-muted)]">
               <span className={`w-2 h-2 rounded-full ${isBackendOnline ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
               <span>{isBackendOnline ? 'MongoDB Account Sync: Ready' : 'Instant Resilient Local Storage'}</span>
             </div>
@@ -122,7 +122,7 @@ export const RegisterPage: React.FC = () => {
           <div className="p-6 sm:p-8 space-y-5">
             {/* Account Type Selector */}
             <div>
-              <label className="block text-xs font-bold text-[#14182B] mb-2 uppercase tracking-wider font-mono">
+              <label className="block text-xs font-bold text-[var(--text)] mb-2 uppercase tracking-wider font-mono">
                 1. Select Account Category
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
@@ -130,52 +130,52 @@ export const RegisterPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setAccountType('individual')}
-                  className={`p-3 rounded-[10px] border text-left transition-all ${
+                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                     accountType === 'individual'
-                      ? 'border-[#111113] bg-[#111113]/5 shadow-xs ring-1 ring-[#111113]'
-                      : 'border-[#E7E5E0] hover:border-stone-400 bg-white'
+                      ? 'border-[var(--red)] bg-[var(--surface-2)] shadow-xs ring-1 ring-[var(--red)]'
+                      : 'border-[var(--border)] hover:border-[var(--gold)] bg-[var(--surface-2)]/60'
                   }`}
                 >
-                  <ShoppingBag className={`w-5 h-5 mb-1.5 ${accountType === 'individual' ? 'text-[#111113]' : 'text-[#6B7280]'}`} />
-                  <div className="font-bold text-xs text-[#14182B]">Individual</div>
-                  <div className="text-[10px] text-[#6B7280] mt-0.5">Personal &amp; Retail</div>
+                  <ShoppingBag className={`w-5 h-5 mb-1.5 ${accountType === 'individual' ? 'text-[var(--red)]' : 'text-[var(--text-muted)]'}`} />
+                  <div className="font-bold text-xs text-[var(--text)]">Individual</div>
+                  <div className="text-[10px] text-[var(--text-muted)] mt-0.5">Personal &amp; Retail</div>
                 </button>
 
                 {/* Wholesale */}
                 <button
                   type="button"
                   onClick={() => setAccountType('wholesale')}
-                  className={`p-3 rounded-[10px] border text-left transition-all ${
+                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                     accountType === 'wholesale'
-                      ? 'border-[#111113] bg-[#111113]/5 shadow-xs ring-1 ring-[#111113]'
-                      : 'border-[#E7E5E0] hover:border-stone-400 bg-white'
+                      ? 'border-[var(--red)] bg-[var(--surface-2)] shadow-xs ring-1 ring-[var(--red)]'
+                      : 'border-[var(--border)] hover:border-[var(--gold)] bg-[var(--surface-2)]/60'
                   }`}
                 >
-                  <Building2 className={`w-5 h-5 mb-1.5 ${accountType === 'wholesale' ? 'text-[#111113]' : 'text-[#6B7280]'}`} />
-                  <div className="font-bold text-xs text-[#14182B]">Wholesale</div>
-                  <div className="text-[10px] text-[#6B7280] mt-0.5">Bulk / Corporate</div>
+                  <Building2 className={`w-5 h-5 mb-1.5 ${accountType === 'wholesale' ? 'text-[var(--red)]' : 'text-[var(--text-muted)]'}`} />
+                  <div className="font-bold text-xs text-[var(--text)]">Wholesale</div>
+                  <div className="text-[10px] text-[var(--text-muted)] mt-0.5">Bulk / Corporate</div>
                 </button>
 
                 {/* School */}
                 <button
                   type="button"
                   onClick={() => setAccountType('school')}
-                  className={`p-3 rounded-[10px] border text-left transition-all ${
+                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                     accountType === 'school'
-                      ? 'border-[#111113] bg-[#111113]/5 shadow-xs ring-1 ring-[#111113]'
-                      : 'border-[#E7E5E0] hover:border-stone-400 bg-white'
+                      ? 'border-[var(--red)] bg-[var(--surface-2)] shadow-xs ring-1 ring-[var(--red)]'
+                      : 'border-[var(--border)] hover:border-[var(--gold)] bg-[var(--surface-2)]/60'
                   }`}
                 >
-                  <GraduationCap className={`w-5 h-5 mb-1.5 ${accountType === 'school' ? 'text-[#111113]' : 'text-[#6B7280]'}`} />
-                  <div className="font-bold text-xs text-[#14182B]">School / Inst.</div>
-                  <div className="text-[10px] text-[#6B7280] mt-0.5">Educational Quotas</div>
+                  <GraduationCap className={`w-5 h-5 mb-1.5 ${accountType === 'school' ? 'text-[var(--red)]' : 'text-[var(--text-muted)]'}`} />
+                  <div className="font-bold text-xs text-[var(--text)]">School / Inst.</div>
+                  <div className="text-[10px] text-[var(--text-muted)] mt-0.5">Educational Quotas</div>
                 </button>
               </div>
             </div>
 
             {/* Error Message */}
             {errorMessage && (
-              <div className="p-3 rounded-[8px] bg-[#D64545]/10 border border-[#D64545]/30 text-[#D64545] text-xs font-medium flex items-start gap-2">
+              <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-[var(--red)] text-xs font-medium flex items-start gap-2">
                 <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
                 <span>{errorMessage}</span>
               </div>
@@ -183,30 +183,30 @@ export const RegisterPage: React.FC = () => {
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
-              <label className="block text-xs font-bold text-[#14182B] uppercase tracking-wider font-mono">
+              <label className="block text-xs font-bold text-[var(--text)] uppercase tracking-wider font-mono">
                 2. Contact &amp; Security Credentials
               </label>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-[#14182B] mb-1">
+                  <label className="block text-xs font-medium text-[var(--text)] mb-1">
                     Contact Name *
                   </label>
                   <div className="relative">
-                    <User className="w-4 h-4 text-[#6B7280] absolute left-3 top-3" />
+                    <User className="w-4 h-4 text-[var(--text-muted)] absolute left-3 top-3" />
                     <input
                       type="text"
                       required
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="e.g. Mussa Juma"
-                      className="w-full pl-9 pr-3 py-2.5 rounded-[8px] bg-white border border-[#E7E5E0] text-xs focus:border-[#111113] focus:outline-none"
+                      className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] text-[var(--text)] text-xs focus:border-[var(--red)] focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-[#14182B] mb-1">
+                  <label className="block text-xs font-medium text-[var(--text)] mb-1">
                     {accountType === 'school'
                       ? 'School / University Name'
                       : accountType === 'wholesale'
@@ -214,13 +214,13 @@ export const RegisterPage: React.FC = () => {
                       : 'City / Region'}
                   </label>
                   <div className="relative">
-                    <Building2 className="w-4 h-4 text-[#6B7280] absolute left-3 top-3" />
+                    <Building2 className="w-4 h-4 text-[var(--text-muted)] absolute left-3 top-3" />
                     <input
                       type="text"
                       value={organization}
                       onChange={(e) => setOrganization(e.target.value)}
                       placeholder={accountType === 'school' ? 'e.g. Dar Academy' : 'e.g. Dar es Salaam'}
-                      className="w-full pl-9 pr-3 py-2.5 rounded-[8px] bg-white border border-[#E7E5E0] text-xs focus:border-[#111113] focus:outline-none"
+                      className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] text-[var(--text)] text-xs focus:border-[var(--red)] focus:outline-none"
                     />
                   </div>
                 </div>
@@ -228,34 +228,34 @@ export const RegisterPage: React.FC = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-[#14182B] mb-1">
+                  <label className="block text-xs font-medium text-[var(--text)] mb-1">
                     Email Address *
                   </label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 text-[#6B7280] absolute left-3 top-3" />
+                    <Mail className="w-4 h-4 text-[var(--text-muted)] absolute left-3 top-3" />
                     <input
                       type="email"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="name@example.co.tz"
-                      className="w-full pl-9 pr-3 py-2.5 rounded-[8px] bg-white border border-[#E7E5E0] text-xs focus:border-[#111113] focus:outline-none"
+                      className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] text-[var(--text)] text-xs focus:border-[var(--red)] focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-[#14182B] mb-1">
+                  <label className="block text-xs font-medium text-[var(--text)] mb-1">
                     Mobile Phone *
                   </label>
                   <div className="relative">
-                    <Phone className="w-4 h-4 text-[#6B7280] absolute left-3 top-3" />
+                    <Phone className="w-4 h-4 text-[var(--text-muted)] absolute left-3 top-3" />
                     <input
                       type="tel"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="+255 715 268 391"
-                      className="w-full pl-9 pr-3 py-2.5 rounded-[8px] bg-white border border-[#E7E5E0] text-xs focus:border-[#111113] focus:outline-none"
+                      className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] text-[var(--text)] text-xs focus:border-[var(--red)] focus:outline-none"
                     />
                   </div>
                 </div>
@@ -263,23 +263,23 @@ export const RegisterPage: React.FC = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-[#14182B] mb-1">
+                  <label className="block text-xs font-medium text-[var(--text)] mb-1">
                     Create Password *
                   </label>
                   <div className="relative">
-                    <Lock className="w-4 h-4 text-[#6B7280] absolute left-3 top-3" />
+                    <Lock className="w-4 h-4 text-[var(--text-muted)] absolute left-3 top-3" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="Min 4 characters"
-                      className="w-full pl-9 pr-10 py-2.5 rounded-[8px] bg-white border border-[#E7E5E0] text-xs focus:border-[#111113] focus:outline-none"
+                      className="w-full pl-9 pr-10 py-2.5 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] text-[var(--text)] text-xs focus:border-[var(--red)] focus:outline-none"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-2.5 text-[#6B7280] hover:text-[#14182B]"
+                      className="absolute right-3 top-2.5 text-[var(--text-muted)] hover:text-[var(--text)] cursor-pointer"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -287,18 +287,18 @@ export const RegisterPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-[#14182B] mb-1">
+                  <label className="block text-xs font-medium text-[var(--text)] mb-1">
                     Confirm Password *
                   </label>
                   <div className="relative">
-                    <Lock className="w-4 h-4 text-[#6B7280] absolute left-3 top-3" />
+                    <Lock className="w-4 h-4 text-[var(--text-muted)] absolute left-3 top-3" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       required
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Re-enter password"
-                      className="w-full pl-9 pr-3 py-2.5 rounded-[8px] bg-white border border-[#E7E5E0] text-xs focus:border-[#111113] focus:outline-none"
+                      className="w-full pl-9 pr-3 py-2.5 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] text-[var(--text)] text-xs focus:border-[var(--red)] focus:outline-none"
                     />
                   </div>
                 </div>
@@ -306,12 +306,12 @@ export const RegisterPage: React.FC = () => {
 
               {/* Terms checkbox */}
               <div className="pt-1">
-                <label className="flex items-start gap-2.5 cursor-pointer text-xs text-[#14182B]">
+                <label className="flex items-start gap-2.5 cursor-pointer text-xs text-[var(--text)]">
                   <input
                     type="checkbox"
                     checked={agreeTerms}
                     onChange={(e) => setAgreeTerms(e.target.checked)}
-                    className="mt-0.5 rounded border-[#E7E5E0] text-[#111113] focus:ring-[#dc2626]"
+                    className="mt-0.5 rounded border-[var(--border)] text-[var(--red)] focus:ring-[var(--red)]"
                   />
                   <span>
                     I agree to OMEGA Stationery terms of business, privacy policy, and commercial wholesale conditions.
@@ -323,7 +323,7 @@ export const RegisterPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-3.5 px-4 rounded-[8px] btn-indra-primary font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all mt-2"
+                className="w-full py-3.5 px-4 rounded-full bg-[var(--red)] hover:opacity-90 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md transition-all mt-2 cursor-pointer"
               >
                 {isLoading ? (
                   <>
@@ -341,9 +341,9 @@ export const RegisterPage: React.FC = () => {
             </form>
 
             {/* Footer */}
-            <div className="pt-4 border-t border-[#E7E5E0] text-center text-xs text-[#6B7280]">
+            <div className="pt-4 border-t border-[var(--border)] text-center text-xs text-[var(--text-muted)]">
               Already have an account?{' '}
-              <Link to="/login" className="font-bold text-[#111113] hover:underline">
+              <Link to="/login" className="font-bold text-[var(--red)] hover:underline">
                 Sign In here
               </Link>
             </div>

@@ -40,12 +40,23 @@ export interface ProductColorOption {
   hex: string;
 }
 
+export interface ProductImageMeta {
+  src: string;
+  src400?: string;
+  src800?: string;
+  src1200?: string;
+  width: number;
+  height: number;
+  bg: 'white' | 'transparent';
+  alt: string;
+}
+
 export interface Product {
   id: string;
   name: string;
   nameSw?: string;
   category: ProductCategory;
-  image: string;
+  image: string | ProductImageMeta;
   gallery?: string[];
   description: string;
   descriptionSw?: string;

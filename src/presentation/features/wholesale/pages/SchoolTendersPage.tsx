@@ -70,30 +70,30 @@ export const SchoolTendersPage: React.FC = () => {
   )}`;
 
   return (
-    <div className="bg-[#F9F8F6] min-h-screen text-[#111113]">
+    <div className="bg-[var(--bg)] min-h-screen text-[var(--text)] transition-colors duration-200">
       <SEOHead
         title="School Booklist Tenders & Bulk Educational Procurement | OMEGA Tanzania"
         description="Official school tender portal for Tanzanian primary and secondary schools. Calculate exercise books, counter books, and exam pads with up to 20% tender discounts."
       />
 
       {/* ==================== 1. HERO HEADER ==================== */}
-      <section className="relative overflow-hidden w-full bg-[#111113] text-white py-14 lg:py-20 border-b border-[#111113]">
-        <div className="absolute -top-32 -right-32 w-[600px] h-[600px] bg-[#dc2626]/18 rounded-full blur-[150px] pointer-events-none" />
+      <section className="relative overflow-hidden w-full bg-[var(--surface-1)] text-[var(--text)] py-14 lg:py-20 border-b border-[var(--border)]">
+        <div className="absolute -top-32 -right-32 w-[600px] h-[600px] bg-[var(--red)]/15 rounded-full blur-[150px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-3xl space-y-4">
-            <div className="inline-flex items-center px-3.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-gradient-to-r from-[#dc2626]/20 via-[#dc2626]/10 to-transparent border border-[#dc2626]/40 font-mono shadow-xs">
+            <div className="inline-flex items-center px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[var(--gold)] bg-[var(--surface-2)] border border-[var(--border)] font-mono shadow-xs">
               <span>Official School Procurement &amp; Syllabi Booklists</span>
             </div>
 
-            <h1 className="font-heading text-3xl sm:text-5xl font-light text-white leading-tight">
+            <h1 className="font-heading text-3xl sm:text-5xl font-light text-[var(--text)] leading-tight">
               {language === 'sw' ? 'Zabuni za Shule na' : 'Institutional School Tenders &'} <br />
-              <span className="font-bold text-[#dc2626] bg-gradient-to-r from-[#dc2626] via-white to-[#dc2626] bg-clip-text text-transparent">
+              <span className="font-bold text-[var(--red)]">
                 {language === 'sw' ? 'Manunuzi ya Madaftari ya Shule.' : 'Direct Factory Booklists.'}
               </span>
             </h1>
 
-            <p className="text-sm sm:text-base text-stone-200 leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-[var(--text-muted)] leading-relaxed font-normal">
               {language === 'sw'
                 ? 'Portal rasmi ya wakuu wa shule, wahasibu na bodi za manunuzi Tanzania. Hesabu idadi ya madaftari ya wanafunzi, pata punguzo la hadi 20% la zabuni, na uletewe mizigo moja kwa moja shuleni kupitia mabasi ya mikoani.'
                 : 'Dedicated procurement portal for school headmasters, bursars, and academic committees. Estimate termly exercise and counter book allocations with direct factory tender discounts up to 20%.'}
@@ -108,34 +108,34 @@ export const SchoolTendersPage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
             {/* Left: Input Form Studio */}
-            <div className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-[24px] border border-[#E7E5E0] shadow-xs space-y-6">
+            <div className="lg:col-span-7 bg-[var(--surface-1)] p-6 sm:p-8 rounded-2xl border border-[var(--border)] shadow-xs space-y-6">
               <div className="space-y-1">
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#dc2626] font-heading block">
+                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--red)] font-heading block">
                   STEP 1: ENROLLMENT &amp; DETAILS
                 </span>
-                <h2 className="font-heading text-xl sm:text-2xl font-bold text-[#111113]">
+                <h2 className="font-heading text-xl sm:text-2xl font-bold text-[var(--text)]">
                   School Specification Calculator
                 </h2>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-[#111113] uppercase">School Name</label>
+                  <label className="text-xs font-bold text-[var(--text)] uppercase">School Name</label>
                   <input
                     type="text"
                     value={schoolName}
                     onChange={(e) => setSchoolName(e.target.value)}
                     placeholder="e.g. Alliance Boys High School"
-                    className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#E7E5E0] text-xs focus:ring-1 focus:ring-[#111113] focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--surface-2)] text-[var(--text)] text-xs focus:ring-1 focus:ring-[var(--gold)] focus:outline-none"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-[#111113] uppercase">Delivery Region</label>
+                  <label className="text-xs font-bold text-[var(--text)] uppercase">Delivery Region</label>
                   <select
                     value={schoolRegion}
                     onChange={(e) => setSchoolRegion(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-[12px] border border-[#E7E5E0] text-xs focus:ring-1 focus:ring-[#111113] focus:outline-none bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--surface-2)] text-[var(--text)] text-xs focus:ring-1 focus:ring-[var(--gold)] focus:outline-none"
                   >
                     {[
                       'Dar es Salaam', 'Arusha', 'Mwanza', 'Dodoma', 'Mbeya', 'Kilimanjaro (Moshi)',
@@ -150,7 +150,7 @@ export const SchoolTendersPage: React.FC = () => {
 
               {/* Education Level Selector */}
               <div className="space-y-2">
-                <label className="text-xs font-bold text-[#111113] uppercase">Educational Level</label>
+                <label className="text-xs font-bold text-[var(--text)] uppercase">Educational Level</label>
                 <div className="grid grid-cols-3 gap-2">
                   {[
                     { key: 'primary', label: 'Primary (Std 1–7)', note: '8 books/student' },
@@ -161,10 +161,10 @@ export const SchoolTendersPage: React.FC = () => {
                       key={tier.key}
                       type="button"
                       onClick={() => setLevelTier(tier.key as any)}
-                      className={`p-3 rounded-[12px] border text-left transition-all ${
+                      className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                         levelTier === tier.key
-                          ? 'btn-ledup-copper text-[#09090b] font-bold border-transparent shadow-xs'
-                          : 'bg-[#F9F8F6] text-[#111113] border-[#E7E5E0] hover:border-[#dc2626]'
+                          ? 'bg-[var(--red)] text-white font-bold border-[var(--red)] shadow-xs'
+                          : 'bg-[var(--surface-2)] text-[var(--text)] border-[var(--border)] hover:border-[var(--gold)]'
                       }`}
                     >
                       <div className="text-xs font-bold">{tier.label}</div>
@@ -177,8 +177,8 @@ export const SchoolTendersPage: React.FC = () => {
               {/* Student Population Slider */}
               <div className="space-y-3 pt-2">
                 <div className="flex justify-between items-center text-xs">
-                  <label className="font-bold text-[#111113] uppercase">Student Population:</label>
-                  <span className="font-mono font-extrabold text-sm text-[#dc2626]">
+                  <label className="font-bold text-[var(--text)] uppercase">Student Population:</label>
+                  <span className="font-mono font-extrabold text-sm text-[var(--red)]">
                     {studentCount} Students
                   </span>
                 </div>
@@ -189,9 +189,9 @@ export const SchoolTendersPage: React.FC = () => {
                   step="25"
                   value={studentCount}
                   onChange={(e) => setStudentCount(Number(e.target.value))}
-                  className="w-full accent-[#dc2626] cursor-pointer"
+                  className="w-full accent-[var(--red)] cursor-pointer"
                 />
-                <div className="flex justify-between text-[10px] text-[#6E6B66] font-mono">
+                <div className="flex justify-between text-[10px] text-[var(--text-muted)] font-mono">
                   <span>50 Students</span>
                   <span>500 Students (20% Discount)</span>
                   <span>1,500+ Students</span>
@@ -200,51 +200,51 @@ export const SchoolTendersPage: React.FC = () => {
             </div>
 
             {/* Right: Calculated Summary & Proforma Generator */}
-            <div className="lg:col-span-5 bg-[#111113] text-white p-6 sm:p-8 rounded-[24px] shadow-xl border border-white/10 space-y-5">
-              <div className="flex items-center justify-between pb-3 border-b border-white/15">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#dc2626]">
+            <div className="lg:col-span-5 bg-[var(--surface-1)] text-[var(--text)] p-6 sm:p-8 rounded-2xl shadow-xl border border-[var(--border)] space-y-5">
+              <div className="flex items-center justify-between pb-3 border-b border-[var(--border)]">
+                <span className="text-xs font-bold uppercase tracking-wider text-[var(--red)]">
                   Tender Proforma Estimate
                 </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-500 border border-emerald-500/30">
                   {Math.round(discountRate * 100)}% Institutional Saving
                 </span>
               </div>
 
               {/* Estimated Book Breakdown */}
-              <div className="space-y-2.5 text-xs text-stone-200">
+              <div className="space-y-2.5 text-xs text-[var(--text-muted)]">
                 <div className="flex justify-between">
                   <span>Student Exercise Books:</span>
-                  <span className="font-mono font-bold text-white">
+                  <span className="font-mono font-bold text-[var(--text)]">
                     {totalExerciseBooks.toLocaleString()} pcs ({cartonsExercise} Boxes)
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Teachers &amp; Ledger Counter Books:</span>
-                  <span className="font-mono font-bold text-white">
+                  <span className="font-mono font-bold text-[var(--text)]">
                     {counterBooksNeeded} pcs ({cartonsCounter} Boxes)
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Examination Ruled Paper:</span>
-                  <span className="font-mono font-bold text-white">
+                  <span className="font-mono font-bold text-[var(--text)]">
                     {examReamsNeeded} Reams
                   </span>
                 </div>
               </div>
 
               {/* Cost Calculation */}
-              <div className="p-4 rounded-[14px] bg-[#111113] border border-white/15 space-y-1.5 font-mono text-xs">
-                <div className="flex justify-between text-stone-300">
+              <div className="p-4 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] space-y-1.5 font-mono text-xs">
+                <div className="flex justify-between text-[var(--text-muted)]">
                   <span>Standard Retail Total:</span>
                   <span className="line-through">{formatPrice(totalGross, currency)}</span>
                 </div>
-                <div className="flex justify-between text-emerald-400 font-bold">
+                <div className="flex justify-between text-emerald-500 font-bold">
                   <span>Tender Volume Savings:</span>
                   <span>- {formatPrice(savings, currency)}</span>
                 </div>
-                <div className="flex justify-between text-sm font-extrabold text-white pt-2 border-t border-white/15">
+                <div className="flex justify-between text-sm font-extrabold text-[var(--text)] pt-2 border-t border-[var(--border)]">
                   <span>Estimated Net Proforma:</span>
-                  <span className="text-[#dc2626] text-base font-black">
+                  <span className="text-[var(--red)] text-base font-black">
                     {formatPrice(netEstimatedTotal, currency)}
                   </span>
                 </div>
@@ -255,24 +255,24 @@ export const SchoolTendersPage: React.FC = () => {
                   href={tenderWhatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3.5 px-4 rounded-lg btn-ledup-copper text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 group"
+                  className="w-full py-3.5 px-4 rounded-xl bg-[var(--red)] hover:bg-[var(--red-hover)] text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 group cursor-pointer"
                 >
                   <MessageCircle className="w-4 h-4 text-white" />
                   <span className="text-white">Submit to Tender Desk (WhatsApp)</span>
-                  <ArrowRight className="w-4 h-4 text-white ledup-arrow-icon" />
+                  <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-1 transition-transform" />
                 </a>
 
                 <button
                   type="button"
                   onClick={() => window.print()}
-                  className="w-full py-2.5 px-4 rounded-lg bg-white/10 hover:bg-white/20 text-stone-200 text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-2"
+                  className="w-full py-2.5 px-4 rounded-xl bg-[var(--surface-2)] hover:bg-[var(--surface-1)] border border-[var(--border)] text-[var(--text)] text-xs font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Print / Save Quotation</span>
                 </button>
               </div>
 
-              <p className="text-[11px] text-stone-300 text-center">
+              <p className="text-[11px] text-[var(--text-muted)] text-center">
                 Dedicated Desks: Kanti Bhai K. Halai: +255 715 268 391 · Vijesh K. Halai: +255 624 265 480 · Mbeya: +255 746 268 391 · Mwanza: +255 699 032 777 · EFD Stamped Invoices Issued
               </p>
             </div>
@@ -281,31 +281,31 @@ export const SchoolTendersPage: React.FC = () => {
       </section>
 
       {/* ==================== 3. FOUR INSTITUTIONAL GUARANTEES ==================== */}
-      <section className="py-14 bg-white border-t border-[#E7E5E0]">
+      <section className="py-14 bg-[var(--surface-1)] border-t border-[var(--border)] transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            <div className="p-5 rounded-[16px] bg-[#F9F8F6] border border-[#E7E5E0] space-y-2">
-              <ShieldCheck className="w-6 h-6 text-[#111113]" />
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#111113]">NECTA Syllabus Standard</h4>
-              <p className="text-[11px] text-[#6E6B66]">Approved 8mm ruling and margin guides compliant with Tanzanian primary and secondary exams.</p>
+            <div className="p-5 rounded-2xl bg-[var(--surface-2)] border border-[var(--border)] space-y-2">
+              <ShieldCheck className="w-6 h-6 text-[var(--gold)]" />
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text)]">NECTA Syllabus Standard</h4>
+              <p className="text-[11px] text-[var(--text-muted)]">Approved 8mm ruling and margin guides compliant with Tanzanian primary and secondary exams.</p>
             </div>
 
-            <div className="p-5 rounded-[16px] bg-[#F9F8F6] border border-[#E7E5E0] space-y-2">
-              <Package className="w-6 h-6 text-[#111113]" />
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#111113]">Reinforced Carton Packs</h4>
-              <p className="text-[11px] text-[#6E6B66]">Packed in heavy-duty OMEGA 5-ply cartons with water-resistant strapping to prevent transit losses.</p>
+            <div className="p-5 rounded-2xl bg-[var(--surface-2)] border border-[var(--border)] space-y-2">
+              <Package className="w-6 h-6 text-[var(--gold)]" />
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text)]">Reinforced Carton Packs</h4>
+              <p className="text-[11px] text-[var(--text-muted)]">Packed in heavy-duty OMEGA 5-ply cartons with water-resistant strapping to prevent transit losses.</p>
             </div>
 
-            <div className="p-5 rounded-[16px] bg-[#F9F8F6] border border-[#E7E5E0] space-y-2">
-              <Truck className="w-6 h-6 text-[#111113]" />
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#111113]">Direct Bus Parcel Drop-off</h4>
-              <p className="text-[11px] text-[#6E6B66]">Waybill receipts sent via WhatsApp with same-day drop-off at your region's bus terminal.</p>
+            <div className="p-5 rounded-2xl bg-[var(--surface-2)] border border-[var(--border)] space-y-2">
+              <Truck className="w-6 h-6 text-[var(--gold)]" />
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text)]">Direct Bus Parcel Drop-off</h4>
+              <p className="text-[11px] text-[var(--text-muted)]">Waybill receipts sent via WhatsApp with same-day drop-off at your region's bus terminal.</p>
             </div>
 
-            <div className="p-5 rounded-[16px] bg-[#F9F8F6] border border-[#E7E5E0] space-y-2">
-              <FileText className="w-6 h-6 text-[#111113]" />
-              <h4 className="text-xs font-bold uppercase tracking-wider text-[#111113]">TRA EFD Invoicing</h4>
-              <p className="text-[11px] text-[#6E6B66]">Official fiscal receipts with school TIN/VRN compliance for government audit satisfaction.</p>
+            <div className="p-5 rounded-2xl bg-[var(--surface-2)] border border-[var(--border)] space-y-2">
+              <FileText className="w-6 h-6 text-[var(--gold)]" />
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text)]">TRA EFD Invoicing</h4>
+              <p className="text-[11px] text-[var(--text-muted)]">Official fiscal receipts with school TIN/VRN compliance for government audit satisfaction.</p>
             </div>
           </div>
         </div>

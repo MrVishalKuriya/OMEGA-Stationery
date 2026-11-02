@@ -10,7 +10,8 @@
     "db:seed": "node -e \"fetch('http://localhost:5000/api/products/seed', {method:'POST'}).then(r=>r.json()).then(console.log)\"",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "dev:all": "node scripts/dev.mjs"
   },
   "dependencies": {
     "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
@@ -49,6 +50,7 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
+    "sharp": "^0.35.5",
     "typescript": "^5.7.3",
     "vite": "^6.1.0"
   }

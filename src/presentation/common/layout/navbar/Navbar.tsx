@@ -2,21 +2,26 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
   Search,
+  SearchX,
+  MessageCircle,
   Heart,
-  User,
   ShoppingBag,
   Menu,
   Globe,
   X,
   ArrowRight,
+  Sun,
+  Moon,
   Truck,
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useStore } from '@/context/StoreContext';
 import { AnnouncementBar } from './AnnouncementBar';
-import { MegaMenu } from './MegaMenu';
 import { SearchOverlay } from './SearchOverlay';
 import { AccountDropdown } from './AccountDropdown';
 import { MobileMenu } from './MobileMenu';
+import { ProductImage } from '@/components/ProductImage';
+import { BrandLogo } from '@/components/BrandLogo';
 
 export const Navbar: React.FC = () => {
   const {
@@ -26,8 +31,9 @@ export const Navbar: React.FC = () => {
     currentUser,
     language,
     toggleLanguage,
+    theme,
+    toggleTheme,
     setIsCartDrawerOpen,
-    setIsTrackingModalOpen,
   } = useStore();
 
   const location = useLocation();
@@ -37,7 +43,6 @@ export const Navbar: React.FC = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAccountOpen, setIsAccountOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeMegaCategory, setActiveMegaCategory] = useState<string | null>(null);
 
   // Desktop Inline Search State
   const [desktopSearchQuery, setDesktopSearchQuery] = useState('');
@@ -55,7 +60,7 @@ export const Navbar: React.FC = () => {
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, []);
 
-  // Compute live inline search matches (Hick's Law: limited to 5 high-relevance items)
+  // Compute live inline search matches (limited to 5 high-relevance items)
   const inlineMatches = useMemo(() => {
     const q = desktopSearchQuery.trim().toLowerCase();
     if (!q) return [];
@@ -80,13 +85,36 @@ export const Navbar: React.FC = () => {
     }
   };
 
-  // Cart bounce animation state (Doherty Threshold: Instant visual feedback)
+  // Cart bounce animation
   const [isCartBouncing, setIsCartBouncing] = useState(false);
   const prevCountRef = useRef(cartItemCount);
 
+  useEffect(() => {
+    if (cartItemCount !== prevCountRef.current) {
+      setIsCartBouncing(true);
+      const timer = setTimeout(() => setIsCartBouncing(false), 500);
+      prevCountRef.current = cartItemCount;
+      return () => clearTimeout(timer);
+    }
+  }, [cartItemCount]);
+
+  // Global shortcut "⌘K" or "/" to focus search
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.key === '/' || ((e.metaKey || e.ctrlKey) && e.key === 'k')) && !isSearchOpen) {
+        const target = e.target as HTMLElement;
+        if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) return;
+        e.preventDefault();
+        setIsSearchOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isSearchOpen]);
+
   // Dynamic Header Height measurement to prevent content overlap
   const headerRef = useRef<HTMLElement>(null);
-  const [headerHeight, setHeaderHeight] = useState<number>(115);
+  const [headerHeight, setHeaderHeight] = useState<number>(102);
 
   useEffect(() => {
     if (!headerRef.current) return;
@@ -105,47 +133,18 @@ export const Navbar: React.FC = () => {
     };
   }, []);
 
-  // Sticky navbar state
+  // Sticky navbar state: smooth hide on down-scroll, reveal on up-scroll
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollYRef = useRef(0);
 
-  // Mega menu open delay ref
-  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Detect cart count changes and trigger bounce
-  useEffect(() => {
-    if (cartItemCount !== prevCountRef.current) {
-      setIsCartBouncing(true);
-      const timer = setTimeout(() => setIsCartBouncing(false), 400);
-      prevCountRef.current = cartItemCount;
-      return () => clearTimeout(timer);
-    }
-  }, [cartItemCount]);
-
-  // Global shortcut "/" to focus search (Jakob's Law convention)
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === '/' && !isSearchOpen) {
-        const target = e.target as HTMLElement;
-        if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) return;
-        e.preventDefault();
-        setIsSearchOpen(true);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isSearchOpen]);
-
-  // Scroll handler: hide on scroll down, reveal on scroll up
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      if (currentScrollY > 120 && currentScrollY > lastScrollYRef.current + 10) {
+      if (currentScrollY > 150 && currentScrollY > lastScrollYRef.current + 8) {
         setIsVisible(false);
-        setActiveMegaCategory(null);
         setIsAccountOpen(false);
-      } else if (currentScrollY < lastScrollYRef.current - 5 || currentScrollY <= 80) {
+      } else if (currentScrollY < lastScrollYRef.current - 4 || currentScrollY <= 80) {
         setIsVisible(true);
       }
 
@@ -156,14 +155,7 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleNavMouseLeave = () => {
-    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-    hoverTimeoutRef.current = setTimeout(() => {
-      setActiveMegaCategory(null);
-    }, 200);
-  };
-
-  // Helper to determine exact active category navigation item
+  // Helper to determine active category navigation item
   const isNavActive = (href: string) => {
     const [targetPath, targetQuery] = href.split('?');
     if (location.pathname !== targetPath) {
@@ -182,88 +174,69 @@ export const Navbar: React.FC = () => {
     return true;
   };
 
-  // Dedicated Category Navigation Items
+  // Modern Watermelon UI Category Navigation Items
   const CATEGORY_NAV_ITEMS = [
     { id: 'all-catalog', label: language === 'sw' ? 'Bidhaa Zote' : 'All Products', href: '/catalog' },
-    { id: 'counter-books', label: 'Counter Books (Q2-Q4)', href: '/catalog?category=Counter+Books' },
+    { id: 'counter-books', label: 'Counter Books (Q1-Q6)', href: '/catalog?category=Counter+Books' },
     { id: 'exercise-books', label: language === 'sw' ? 'Madaftari ya Mazoezi' : 'Exercise Books', href: '/catalog?category=Exercise+Books' },
-    { id: 'bahasha', label: 'Bahasha & Envelopes', href: '/catalog?category=Bahasha+%26+Envelopes' },
-    { id: 'school-tenders', label: language === 'sw' ? 'Zabuni za Shule' : 'School Tenders', href: '/school-tenders', badge: 'CALCULATOR' },
-    { id: 'wholesale', label: language === 'sw' ? 'Bei za Jumla' : 'Wholesale Cartons', href: '/wholesale', badge: 'UP TO 18% OFF' },
+    { id: 'bahasha', label: 'Kraft Bahasha', href: '/catalog?category=Bahasha+%26+Envelopes' },
+    { id: 'registers', label: 'Office Registers', href: '/catalog?category=Registers' },
+    { id: 'wholesale', label: language === 'sw' ? 'Bei za Jumla' : 'Wholesale Cartons', href: '/wholesale', badge: 'UP TO 20% OFF' },
+    { id: 'school-tenders', label: language === 'sw' ? 'Zabuni za Shule' : 'School Tenders', href: '/school-tenders', badge: 'RFQ' },
     { id: 'shipping-guide', label: language === 'sw' ? 'Usafirishaji Mikoani' : 'Shipping Guide', href: '/shipping-guide' },
     { id: 'about', label: language === 'sw' ? 'Kuhusu Sisi' : 'About OMEGA', href: '/about' },
-    { id: 'contact', label: language === 'sw' ? 'Wasiliana Nasi' : 'Contact & Desk', href: '/contact' },
+    { id: 'contact', label: language === 'sw' ? 'Wasiliana Nasi' : 'Contact Desk', href: '/contact' },
   ];
 
   return (
     <>
-      {/* Skip to Content for Accessibility (WCAG 2.1 AA) */}
+      {/* Skip to Content for Accessibility */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#111113] focus:text-white focus:rounded-lg focus:font-bold focus:shadow-xl"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-[var(--surface-1)] focus:text-[var(--text)] focus:rounded-lg focus:font-bold focus:shadow-xl focus:border focus:border-[var(--gold)]"
       >
         Skip to main content
       </a>
 
-      {/* Main Sticky Header Container */}
+      {/* Main Sticky Header Container with Glassmorphism */}
       <header
         ref={headerRef}
         role="banner"
-        className={`fixed top-0 left-0 right-0 z-40 w-full transition-transform duration-200 ease-out shadow-xs ${
+        className={`fixed top-0 left-0 right-0 z-40 w-full transition-transform duration-300 ease-out shadow-xs backdrop-blur-md bg-[var(--surface-1)]/95 border-b border-[var(--border)] ${
           isVisible ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
         {/* ================= TIER 0: ANNOUNCEMENT BAR ================= */}
         <AnnouncementBar />
 
-        {/* ================= TIER 1: BRAND LOGO + SEARCH + ACTIONS ================= */}
-        <div className="bg-white border-b border-[#e4e4e7] text-[#18181b]">
+        {/* ================= TIER 1: BRAND LOGO + INSTANT SEARCH + ESSENTIAL ACTIONS ================= */}
+        <div className="text-[var(--text)] transition-colors duration-200">
           <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-[64px] sm:h-[72px] gap-3 sm:gap-6">
+            <div className="flex items-center justify-between h-[58px] sm:h-[64px] gap-2 sm:gap-6">
               
               {/* LEFT: Mobile Hamburger & OMEGA Brand Hallmark */}
               <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-                {/* Mobile Menu Button (Fitts's Law: 44px min touch target) */}
+                {/* Mobile Menu Button */}
                 <button
                   type="button"
                   onClick={() => setIsMobileMenuOpen(true)}
                   aria-label="Open navigation menu"
-                  className="lg:hidden p-2 rounded-xl text-[#18181b] hover:bg-[#f4f4f5] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center shrink-0 cursor-pointer"
+                  className="lg:hidden p-2 rounded-xl text-[var(--text)] hover:bg-[var(--surface-2)] transition-colors min-w-[40px] min-h-[40px] flex items-center justify-center shrink-0 cursor-pointer"
                 >
-                  <Menu className="w-5 h-5 stroke-[1.75]" />
+                  <Menu className="w-5 h-5 stroke-[2]" />
                 </button>
 
-                {/* Brand Logo & Name */}
-                <Link 
-                  to="/"
-                  className="flex items-center gap-2.5 group rounded-xl p-1 shrink-0"
-                  aria-label="OMEGA Stationery & Books Home"
-                >
-                  <div className="bg-white p-1 rounded-xl border border-[#e4e4e7] shadow-2xs group-hover:border-[#DC2626] transition-all shrink-0 flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10">
-                    <img
-                      src="/logo-icon.png"
-                      alt="OMEGA Icon"
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  <div className="flex flex-col shrink-0">
-                    <span className="font-heading text-base sm:text-lg font-black tracking-tight text-[#111113] leading-none group-hover:text-[#DC2626] transition-colors">
-                      OMEGA
-                    </span>
-                    <span className="text-[9px] sm:text-[10px] tracking-wider font-bold uppercase text-[#71717a] mt-0.5 hidden min-[360px]:block">
-                      STATIONERY &amp; BOOKS
-                    </span>
-                  </div>
-                </Link>
+                {/* High-Contrast Brand Logo */}
+                <BrandLogo size="md" />
               </div>
 
-              {/* CENTER: Prominent Instant Search Bar */}
+              {/* CENTER: Watermelon UI Instant Search Command Bar (Desktop) */}
               <div
                 ref={inlineSearchRef}
-                className="relative hidden md:flex flex-1 max-w-xl lg:max-w-2xl mx-2 lg:mx-6"
+                className="relative hidden md:flex flex-1 max-w-md lg:max-w-lg mx-2 lg:mx-4"
               >
                 <form onSubmit={handleDesktopSearchSubmit} className="relative w-full flex items-center">
-                  <Search className="w-4 h-4 text-[#71717a] absolute left-3.5 pointer-events-none stroke-[1.75]" />
+                  <Search className="w-4 h-4 text-[var(--gold)] absolute left-3.5 pointer-events-none stroke-[2]" />
                   <input
                     type="text"
                     role="searchbox"
@@ -278,40 +251,46 @@ export const Navbar: React.FC = () => {
                     onFocus={() => setIsInlineSearchFocused(true)}
                     placeholder={
                       language === 'sw'
-                        ? 'Tafuta madaftari, counter books, bahasha, rejesta...'
-                        : 'Search notebooks, counter books, bahasha, registers...'
+                        ? 'Tafuta madaftari, counter books, bahasha...'
+                        : 'Search notebooks, counter books, bahasha...'
                     }
-                    className="w-full pl-10 pr-10 py-2.5 text-xs sm:text-sm bg-[#fafafa] rounded-xl border border-[#e4e4e7] hover:border-[#DC2626] focus:border-[#DC2626] text-[#18181b] placeholder:text-[#71717a] transition-all shadow-2xs focus:outline-none focus:ring-1 focus:ring-[#DC2626]"
+                    className="w-full pl-9 pr-12 py-2 text-xs sm:text-sm bg-[var(--surface-2)] rounded-full border border-[var(--border)] hover:border-[var(--gold)]/60 focus:border-[var(--red)] text-[var(--text)] placeholder:text-[var(--text-muted)] transition-all shadow-xs focus:outline-none focus:ring-1 focus:ring-[var(--red)]"
                   />
-                  {desktopSearchQuery && (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setDesktopSearchQuery('');
-                        setIsInlineSearchFocused(false);
-                      }}
-                      className="absolute right-3 p-1.5 text-[#71717a] hover:text-[#18181b] cursor-pointer"
-                      aria-label="Clear search"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  )}
+                  <div className="absolute right-3 flex items-center gap-1 pointer-events-none">
+                    {desktopSearchQuery ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setDesktopSearchQuery('');
+                          setIsInlineSearchFocused(false);
+                        }}
+                        className="pointer-events-auto p-1 text-[var(--text-muted)] hover:text-[var(--text)] cursor-pointer"
+                        aria-label="Clear search"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    ) : (
+                      <kbd className="hidden lg:inline-block px-1.5 py-0.5 text-[9.5px] font-mono text-[var(--text-muted)] bg-[var(--surface-1)] border border-[var(--border)] rounded">
+                        /
+                      </kbd>
+                    )}
+                  </div>
                 </form>
 
-                {/* Instant Live Search Dropdown */}
+                {/* Instant Live Search Results Popover */}
                 {isInlineSearchFocused && inlineMatches.length > 0 && (
-                  <div className="absolute left-0 right-0 top-full mt-2 bg-white rounded-xl border border-[#e4e4e7] shadow-xl overflow-hidden z-50">
-                    <div className="px-4 py-2.5 bg-[#fafafa] border-b border-[#e4e4e7] flex items-center justify-between text-xs font-bold text-[#71717a]">
-                      <span>{language === 'sw' ? 'Bidhaa Zinazolingana' : 'Matching Products'}</span>
+                  <div className="absolute left-0 right-0 top-full mt-2 bg-[var(--surface-1)] rounded-2xl border border-[var(--border)] shadow-2xl overflow-hidden z-50">
+                    <div className="px-4 py-2 bg-[var(--surface-2)] border-b border-[var(--border)] flex items-center justify-between text-xs font-bold text-[var(--text-muted)] font-mono">
+                      <span>MATCHING STATIONERY</span>
                       <button
                         type="button"
                         onClick={handleDesktopSearchSubmit}
-                        className="text-[#111113] hover:text-[#DC2626] flex items-center gap-1 font-semibold cursor-pointer"
+                        className="text-[var(--red)] hover:underline flex items-center gap-1 font-semibold cursor-pointer"
                       >
-                        {language === 'sw' ? 'Tazama zote' : 'View all'} ({inlineMatches.length}) <ArrowRight className="w-3.5 h-3.5" />
+                        View all ({inlineMatches.length}) <ArrowRight className="w-3 h-3" />
                       </button>
                     </div>
-                    <div className="max-h-72 overflow-y-auto divide-y divide-[#e4e4e7]/60">
+                    <div className="max-h-72 overflow-y-auto divide-y divide-[var(--border)]">
                       {inlineMatches.map((item) => (
                         <button
                           key={item.id}
@@ -321,22 +300,25 @@ export const Navbar: React.FC = () => {
                             setIsInlineSearchFocused(false);
                             setDesktopSearchQuery('');
                           }}
-                          className="w-full p-3 flex items-center gap-3 hover:bg-[#fafafa] text-left transition-colors cursor-pointer group"
+                          className="w-full p-2.5 flex items-center gap-3 hover:bg-[var(--surface-2)] text-left transition-colors cursor-pointer group"
                         >
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-10 h-10 object-contain rounded bg-white p-0.5 border border-[#e4e4e7] shrink-0"
-                          />
+                          <div className="w-10 h-10 rounded-lg bg-[var(--paper)] overflow-hidden shrink-0">
+                            <ProductImage
+                              image={item.image}
+                              alt={item.name}
+                              variant="thumb"
+                              className="w-full h-full"
+                            />
+                          </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs sm:text-sm font-semibold text-[#18181b] group-hover:text-[#DC2626] truncate">
+                            <p className="text-xs sm:text-sm font-semibold text-[var(--text)] group-hover:text-[var(--gold)] truncate">
                               {language === 'sw' && item.nameSw ? item.nameSw : item.name}
                             </p>
-                            <p className="text-[11px] text-[#71717a] truncate font-mono">
-                              {item.category} • {item.quire || item.pageCount || item.size || 'Stationery'}
+                            <p className="text-[11px] text-[var(--text-muted)] truncate font-mono">
+                              {item.category} • {item.quire || item.pageCount || '70 GSM'}
                             </p>
                           </div>
-                          <span className="text-xs sm:text-sm font-mono font-bold text-[#DC2626] shrink-0">
+                          <span className="text-xs sm:text-sm font-mono font-black text-[var(--text)] shrink-0 tabular-nums">
                             TZS {(item.discountPrice || item.price).toLocaleString()}
                           </span>
                         </button>
@@ -344,67 +326,122 @@ export const Navbar: React.FC = () => {
                     </div>
                   </div>
                 )}
+
+                {/* No Matches Found Popover */}
+                {isInlineSearchFocused && desktopSearchQuery.trim() && inlineMatches.length === 0 && (
+                  <div className="absolute left-0 right-0 top-full mt-2 bg-[var(--surface-1)] rounded-2xl border border-[var(--border)] shadow-2xl p-4 text-center space-y-2 z-50">
+                    <p className="text-xs font-bold text-[var(--text)]">
+                      {language === 'sw' ? 'Hakuna bidhaa iliyopatikana' : `No stationery found for "${desktopSearchQuery}"`}
+                    </p>
+                    <a
+                      href={`https://wa.me/255746268391?text=${encodeURIComponent('Habari OMEGA, ninatafuta: ' + desktopSearchQuery)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#25D366] hover:bg-[#16a34a] text-white text-[11px] font-mono font-bold"
+                    >
+                      <MessageCircle size={13} />
+                      <span>Ask Dispatch on WhatsApp</span>
+                    </a>
+                  </div>
+                )}
               </div>
 
-              {/* RIGHT: Actions (All touch targets >= 44px per Fitts's Law) */}
-              <div className="flex items-center gap-2 shrink-0 ml-auto">
-                {/* 1. Track Order Quick Trigger */}
-                <button
+              {/* RIGHT: Pixel-Perfect Standalone Luxury Controls */}
+              <div className="flex items-center gap-2 sm:gap-2.5 shrink-0 ml-auto">
+                
+                {/* Mobile Search Icon Trigger */}
+                <motion.button
+                  whileTap={{ scale: 0.92 }}
                   type="button"
-                  onClick={() => setIsTrackingModalOpen(true)}
-                  className="hidden md:inline-flex items-center gap-1.5 px-3 py-2 min-h-[44px] rounded-xl border border-[#e4e4e7] hover:border-[#DC2626] bg-white text-xs font-semibold text-[#18181b] transition-all hover:bg-[#fafafa] shrink-0 cursor-pointer shadow-2xs"
-                  title="Track Parcel Delivery"
-                  aria-label="Track Parcel Delivery"
+                  onClick={() => setIsSearchOpen(true)}
+                  aria-label="Open search dialog"
+                  className="md:hidden flex items-center justify-center w-9 h-9 rounded-full bg-[var(--surface-2)] text-[var(--gold)] border border-[var(--border)] transition-colors cursor-pointer shadow-2xs"
                 >
-                  <Truck className="w-4 h-4 text-[#DC2626] stroke-[1.75]" />
-                  <span>{language === 'sw' ? 'Fuatilia Oda' : 'Track Order'}</span>
-                </button>
+                  <Search className="w-4 h-4 stroke-[2]" />
+                </motion.button>
 
-                {/* 2. Language Switcher (SW / EN) */}
-                <button
+                {/* 1. Track Order Pill with Perfect Optical Center Alignment */}
+                <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} className="hidden xl:inline-flex">
+                  <Link
+                    to="/tracking"
+                    className="h-9 inline-flex items-center justify-center gap-2 px-3.5 rounded-full bg-[var(--surface-2)] border border-[var(--border)] hover:border-[var(--gold)] text-[var(--text)] hover:text-[var(--gold)] transition-all shadow-2xs select-none group"
+                    title="Track Order Dispatch & Bus Waybills"
+                  >
+                    <Truck className="w-3.5 h-3.5 text-[var(--gold)] shrink-0 transition-transform group-hover:scale-110" strokeWidth={2.2} />
+                    <span className="text-xs font-sans font-bold leading-none tracking-tight">
+                      Track Order
+                    </span>
+                  </Link>
+                </motion.div>
+
+                {/* 2. Theme Toggle (Sun / Moon) in Clean Circular Pill (w-9 h-9) */}
+                <motion.button
+                  whileHover={{ scale: 1.08 }}
+                  whileTap={{ scale: 0.92 }}
+                  type="button"
+                  onClick={toggleTheme}
+                  className="hidden sm:flex w-9 h-9 rounded-full bg-[var(--surface-2)] border border-[var(--border)] hover:border-[var(--gold)] items-center justify-center text-[var(--text)] hover:text-[var(--gold)] transition-colors cursor-pointer shadow-2xs shrink-0"
+                  title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                  aria-label="Toggle theme"
+                >
+                  {theme === 'dark' ? (
+                    <Sun className="w-4 h-4 text-[var(--gold)] stroke-[2]" />
+                  ) : (
+                    <Moon className="w-4 h-4 text-[var(--text)] stroke-[2]" />
+                  )}
+                </motion.button>
+
+                {/* 3. Language Switcher (SW / EN) with Red Globe (h-9 height) */}
+                <motion.button
+                  whileHover={{ scale: 1.06 }}
+                  whileTap={{ scale: 0.94 }}
                   type="button"
                   onClick={toggleLanguage}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-[#e4e4e7] hover:border-[#DC2626] bg-white hover:bg-[#fafafa] text-xs font-bold text-[#18181b] transition-all min-h-[44px] shadow-2xs shrink-0 cursor-pointer"
-                  title={language === 'en' ? 'Badili lugha kuwa Kiswahili' : 'Switch to English'}
-                  aria-label="Toggle language between English and Swahili"
+                  className="h-9 hidden sm:inline-flex items-center gap-1.5 px-3 rounded-full bg-[var(--surface-2)] border border-[var(--border)] hover:border-[var(--red)] text-xs font-mono font-black text-[var(--text)] transition-colors cursor-pointer shadow-2xs shrink-0"
+                  title={language === 'en' ? 'Badili kuwa Kiswahili' : 'Switch to English'}
+                  aria-label="Toggle language"
                 >
-                  <Globe className="w-4 h-4 text-[#DC2626] stroke-[1.75]" />
-                  <span className="font-mono uppercase text-xs">{language === 'en' ? 'SW' : 'EN'}</span>
-                </button>
+                  <Globe className="w-3.5 h-3.5 text-[var(--red)] stroke-[2.2]" />
+                  <span>{language === 'en' ? 'SW' : 'EN'}</span>
+                </motion.button>
 
-                {/* 3. Wishlist Heart Icon (44x44px touch target) */}
-                <Link
-                  to="/wishlist"
-                  aria-label={`Wishlist (${wishlistCount} saved items)`}
-                  className="rounded-xl text-[#18181b] hover:text-[#DC2626] hover:bg-[#f4f4f5] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center relative shrink-0 cursor-pointer"
-                  title="Wishlist"
-                >
-                  <Heart
-                    className={`w-5 h-5 stroke-[1.75] ${
-                      wishlistCount > 0 ? 'fill-[#DC2626] text-[#DC2626]' : ''
-                    }`}
-                  />
-                  {wishlistCount > 0 && (
-                    <span className="absolute top-1.5 right-1.5 min-w-[16px] h-[16px] px-0.5 rounded-full bg-[#DC2626] text-white text-[9px] font-bold flex items-center justify-center font-mono leading-none shadow-xs">
-                      {wishlistCount}
-                    </span>
-                  )}
-                </Link>
+                {/* 4. Wishlist Heart in Circular Pill (w-9 h-9) */}
+                <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }} className="hidden sm:block shrink-0">
+                  <Link
+                    to="/wishlist"
+                    aria-label={`Wishlist (${wishlistCount})`}
+                    className="w-9 h-9 rounded-full bg-[var(--surface-2)] border border-[var(--border)] hover:border-[var(--red)] text-[var(--text)] hover:text-[var(--red)] transition-colors flex items-center justify-center relative cursor-pointer shadow-2xs"
+                    title="Wishlist"
+                  >
+                    <Heart
+                      className={`w-4 h-4 stroke-[2] ${
+                        wishlistCount > 0 ? 'fill-[var(--red)] text-[var(--red)]' : ''
+                      }`}
+                    />
+                    {wishlistCount > 0 && (
+                      <span className="absolute -top-1 -right-1 min-w-[16px] h-[16px] px-1 rounded-full bg-[var(--red)] text-white text-[9px] font-black flex items-center justify-center font-mono leading-none shadow-xs">
+                        {wishlistCount}
+                      </span>
+                    )}
+                  </Link>
+                </motion.div>
 
-                {/* 4. User Account Circle (44x44px touch target) */}
-                <div className="relative z-50 shrink-0">
-                  <button
+                {/* 5. User Account Avatar with Concentric Halo Ring */}
+                <div className="relative hidden sm:block shrink-0">
+                  <motion.button
+                    whileHover={{ scale: 1.08 }}
+                    whileTap={{ scale: 0.92 }}
                     type="button"
                     onClick={() => setIsAccountOpen(!isAccountOpen)}
-                    aria-label={currentUser ? `Account: ${currentUser.name}` : 'Account and Orders'}
+                    aria-label={currentUser ? `Account: ${currentUser.name}` : 'Account'}
                     aria-expanded={isAccountOpen}
-                    className="rounded-xl text-[#18181b] hover:text-[#DC2626] hover:bg-[#f4f4f5] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer"
+                    className="p-0.5 rounded-full border border-[var(--gold)]/30 hover:border-[var(--gold)] transition-colors cursor-pointer"
                     title={currentUser ? currentUser.name : 'Account'}
                   >
-                    <div className="w-8 h-8 rounded-full bg-[#111113] text-[#DC2626] font-bold text-xs flex items-center justify-center font-mono shadow-xs border border-[#111113]">
+                    <div className="w-8 h-8 rounded-full bg-[var(--surface-1)] text-[var(--gold)] font-bold text-xs flex items-center justify-center font-mono shadow-xs">
                       {currentUser?.initials || 'OA'}
                     </div>
-                  </button>
+                  </motion.button>
 
                   <AccountDropdown
                     isOpen={isAccountOpen}
@@ -414,68 +451,54 @@ export const Navbar: React.FC = () => {
                   />
                 </div>
 
-                {/* 5. Shopping Bag Icon (44x44px touch target) */}
-                <button
-                  type="button"
-                  onClick={() => setIsCartDrawerOpen(true)}
-                  aria-label={`Shopping bag (${cartItemCount} items)`}
-                  className="rounded-xl text-[#18181b] hover:text-[#DC2626] hover:bg-[#f4f4f5] transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center relative group shrink-0 cursor-pointer"
-                  title="Shopping Bag"
-                >
-                  <ShoppingBag className="w-5 h-5 stroke-[1.75] text-[#111113]" />
-                  <span
-                    className={`absolute top-1 right-1 w-[18px] h-[18px] rounded-full bg-[#DC2626] text-white text-[10px] font-black flex items-center justify-center font-mono leading-none shadow-xs ${
-                      isCartBouncing ? 'animate-bounce' : ''
-                    }`}
-                  >
-                    {cartItemCount}
-                  </span>
-                </button>
-              </div>
-            </div>
-
-            {/* Mobile Inline Search Bar (< md, min-h-[44px]) */}
-            <div className="md:hidden pb-3 pt-1 relative">
-              <form onSubmit={handleDesktopSearchSubmit} className="relative flex items-center">
-                <Search className="w-4 h-4 text-[#a1a1aa] absolute left-3.5 pointer-events-none stroke-[1.75]" />
-                <input
-                  type="text"
-                  role="searchbox"
-                  autoCapitalize="none"
-                  autoCorrect="off"
-                  enterKeyHint="search"
-                  value={desktopSearchQuery}
-                  onChange={(e) => setDesktopSearchQuery(e.target.value)}
-                  placeholder={
-                    language === 'sw'
-                      ? 'Tafuta madaftari, counter books, bahasha...'
-                      : 'Search notebooks, counter books, bahasha...'
-                  }
-                  className="w-full pl-9 pr-8 py-2.5 text-xs bg-[#fafafa] rounded-xl border border-[#e4e4e7] text-[#18181b] placeholder:text-[#71717a] shadow-2xs focus:outline-none focus:border-[#DC2626] focus:ring-1 focus:ring-[#DC2626]"
-                />
-                {desktopSearchQuery && (
+                {/* Mobile Account trigger */}
+                <div className="sm:hidden relative">
                   <button
                     type="button"
-                    onClick={() => setDesktopSearchQuery('')}
-                    className="absolute right-3 p-1 text-[#71717a] cursor-pointer"
-                    aria-label="Clear"
+                    onClick={() => setIsAccountOpen(!isAccountOpen)}
+                    className="w-9 h-9 rounded-full bg-[var(--surface-2)] text-[var(--gold)] font-bold text-[11px] flex items-center justify-center font-mono border border-[var(--border)]"
                   >
-                    <X className="w-3.5 h-3.5" />
+                    {currentUser?.initials || 'OA'}
                   </button>
-                )}
-              </form>
+                  <AccountDropdown
+                    isOpen={isAccountOpen}
+                    onClose={() => setIsAccountOpen(false)}
+                    onOpenOrders={() => navigate('/tracking')}
+                    onOpenWishlist={() => navigate('/wishlist')}
+                  />
+                </div>
+
+                {/* 5. Primary Action Filled Red Cart Pill Button */}
+                <motion.button
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.95 }}
+                  type="button"
+                  onClick={() => setIsCartDrawerOpen(true)}
+                  aria-label={`Shopping Cart (${cartItemCount} items)`}
+                  className={`h-9 inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 rounded-full bg-[#D63A3A] hover:bg-[#b91c1c] active:bg-[#a81616] text-white transition-all shadow-md shadow-red-950/35 shrink-0 cursor-pointer select-none ${
+                    isCartBouncing ? 'animate-bounce' : ''
+                  }`}
+                  style={{ backgroundColor: '#D63A3A', color: '#FFFFFF' }}
+                  title="Shopping Cart"
+                >
+                  <ShoppingBag className="w-4 h-4 text-white stroke-[2]" />
+                  <span className="font-sans text-xs font-bold whitespace-nowrap text-white leading-none pt-[0.5px]">
+                    <span className="hidden min-[380px]:inline">Cart </span>({cartItemCount})
+                  </span>
+                </motion.button>
+
+              </div>
             </div>
           </div>
         </div>
 
-        {/* ================= TIER 2: HORIZONTAL CATEGORY NAVIGATION BAR ================= */}
-        <div className="hidden lg:block bg-white border-b border-[#e4e4e7] py-2">
+        {/* ================= TIER 2: WATERMELON UI CATEGORY PILL NAVIGATION BAR ================= */}
+        <div className="hidden lg:block border-t border-[var(--border)] py-1.5 bg-[var(--surface-1)]/90">
           <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
             <nav
               role="navigation"
               aria-label="Category Navigation"
-              className="flex items-center justify-between gap-1 xl:gap-2 overflow-x-auto no-scrollbar"
-              onMouseLeave={handleNavMouseLeave}
+              className="flex items-center justify-start xl:justify-between gap-1 overflow-x-auto no-scrollbar py-0.5 px-1"
             >
               {CATEGORY_NAV_ITEMS.map((item) => {
                 const active = isNavActive(item.href);
@@ -483,15 +506,15 @@ export const Navbar: React.FC = () => {
                   <Link
                     key={item.id}
                     to={item.href}
-                    className={`px-3 py-1.5 text-xs font-semibold tracking-tight rounded-md transition-all whitespace-nowrap flex items-center gap-1.5 ${
+                    className={`px-3 py-1.5 text-xs font-mono font-bold tracking-tight rounded-full transition-all whitespace-nowrap flex items-center gap-1.5 ${
                       active
-                        ? 'bg-[#DC2626] text-white shadow-xs font-bold'
-                        : 'text-[#18181b] hover:text-[#DC2626] hover:bg-[#f4f4f5]'
+                        ? 'bg-[var(--red)] text-white shadow-xs'
+                        : 'text-[var(--text)] hover:text-[var(--gold)] hover:bg-[var(--surface-2)]'
                     }`}
                   >
                     <span>{item.label}</span>
                     {item.badge && (
-                      <span className="text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-xs bg-[#DC2626] text-white leading-none">
+                      <span className="text-[9px] font-mono font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-[var(--gold)] text-black leading-none">
                         {item.badge}
                       </span>
                     )}
@@ -500,31 +523,19 @@ export const Navbar: React.FC = () => {
               })}
             </nav>
           </div>
-
-          {/* Mega Menu Dropdown */}
-          <div
-            onMouseEnter={() => {
-              if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
-            }}
-          >
-            <MegaMenu
-              activeId={activeMegaCategory}
-              onClose={() => setActiveMegaCategory(null)}
-            />
-          </div>
         </div>
       </header>
 
       {/* Dynamic Header Spacer to prevent page content overlap */}
       <div style={{ height: `${headerHeight}px` }} className="w-full shrink-0" aria-hidden="true" />
 
-      {/* Global Search Overlay for "/" shortcut */}
+      {/* Global Search Overlay for "/" or "⌘K" shortcut and mobile */}
       <SearchOverlay
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
       />
 
-      {/* Mobile Drawer Menu */}
+      {/* Modern Watermelon Mobile Drawer Menu */}
       <MobileMenu
         isOpen={isMobileMenuOpen}
         onClose={() => setIsMobileMenuOpen(false)}

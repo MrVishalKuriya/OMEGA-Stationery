@@ -40,7 +40,7 @@ function resolveBackendUrl(): string {
     }
   }
 
-  // When developing locally on localhost, directly connect to local port 5000
+  // When developing locally on localhost, use the Vite proxy ('') so requests to /api route cleanly to local port 5000
   if (isLocalhostHost) {
     const localEnv = import.meta.env.VITE_LOCAL_API_URL || '';
     if (localEnv && isLoopbackTarget(localEnv)) {
@@ -48,7 +48,7 @@ function resolveBackendUrl(): string {
       if (clean.endsWith('/api')) clean = clean.slice(0, -4);
       return clean;
     }
-    return 'http://localhost:5000';
+    return '';
   }
 
   const envUrl = import.meta.env.VITE_API_URL || import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_API_BASE_URL || '';

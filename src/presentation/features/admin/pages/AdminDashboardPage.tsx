@@ -65,6 +65,7 @@ import {
 } from '@/types/store';
 import { IMAGES, INITIAL_STORE_CONFIG } from '@/data/products';
 import { SEOHead } from '@/components/SEOHead';
+import { getProductImageSrc } from '@/components/ProductImage';
 import {
   fetchHealth,
   flushRedisCache,
@@ -935,7 +936,7 @@ export const AdminDashboardPage: React.FC = () => {
       dispatchTime: product.dispatchTime || 'Same-Day Factory Dispatch',
       stockStatus: product.stockStatus,
       stockQuantity: product.stockQuantity !== undefined ? String(product.stockQuantity) : '150',
-      image: product.image,
+      image: getProductImageSrc(product.image),
       description: product.description || '',
       featured: !!product.featured,
       bestSeller: !!product.bestSeller,
@@ -977,7 +978,7 @@ export const AdminDashboardPage: React.FC = () => {
       dispatchTime: product.dispatchTime || 'Same-Day Factory Dispatch',
       stockStatus: 'In Stock',
       stockQuantity: '100',
-      image: product.image,
+      image: getProductImageSrc(product.image),
       description: product.description || '',
       featured: false,
       bestSeller: false,
@@ -2339,7 +2340,7 @@ export const AdminDashboardPage: React.FC = () => {
         <div className="bg-white rounded-2xl border border-stone-200 p-5 sm:p-8 space-y-6 shadow-xs">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 pb-6 border-b border-stone-200">
             <img
-              src={inspectingProduct.image || '/omega-products/counter-book-q3-288p.jpeg'}
+              src={getProductImageSrc(inspectingProduct.image) || '/omega-products/counter-book-q3-288p.jpeg'}
               alt={inspectingProduct.name}
               onError={(e) => {
                 (e.target as HTMLImageElement).src = '/omega-products/counter-book-q3-288p.jpeg';
@@ -2937,7 +2938,7 @@ export const AdminDashboardPage: React.FC = () => {
                           title="View product details"
                         >
                           <img
-                            src={product.image || '/omega-products/counter-book-q3-288p.jpeg'}
+                            src={getProductImageSrc(product.image) || '/omega-products/counter-book-q3-288p.jpeg'}
                             alt={product.name}
                             loading="lazy"
                             onError={(e) => {
@@ -3215,7 +3216,7 @@ export const AdminDashboardPage: React.FC = () => {
                                   title="Click to view full ERP specification sheet"
                                 >
                                   <img
-                                    src={product.image || '/omega-products/counter-book-q3-288p.jpeg'}
+                                    src={getProductImageSrc(product.image) || '/omega-products/counter-book-q3-288p.jpeg'}
                                     alt={product.name}
                                     loading="lazy"
                                     onError={(e) => {

@@ -1,9 +1,23 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   X,
   ChevronRight,
+  BookOpen,
+  Layers,
+  FileText,
+  Truck,
+  Building2,
+  Phone,
+  Sun,
+  Moon,
+  Globe,
+  Heart,
+  Package,
+  Search,
 } from 'lucide-react';
+import { useStore } from '@/context/StoreContext';
+import { BrandLogo } from '@/components/BrandLogo';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -13,36 +27,16 @@ interface MobileMenuProps {
   onOpenTracking?: () => void;
 }
 
-interface SidebarMenuItem {
-  title: string;
-  subtitle?: string;
-  href: string;
-}
-
-const SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
-  {
-    title: 'Home',
-    href: '/',
-  },
-  {
-    title: 'All Stationery Catalogues',
-    href: '/catalog',
-  },
-  {
-    title: 'Office Stationery & Supplies',
-    href: '/catalog?category=Office+Supplies',
-  },
-  {
-    title: 'Wholesale & Bulk Orders',
-    subtitle: 'Cartons, bulk enquiries, wholesale prices',
-    href: '/wholesale',
-  },
-];
-
 export const MobileMenu: React.FC<MobileMenuProps> = ({
   isOpen,
   onClose,
+  onOpenSearch,
+  onOpenWishlist,
+  onOpenTracking,
 }) => {
+  const { language, toggleLanguage, theme, toggleTheme, wishlistCount } = useStore();
+  const navigate = useNavigate();
+
   // Lock body scroll
   useEffect(() => {
     if (isOpen) {
@@ -57,6 +51,62 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
 
   if (!isOpen) return null;
 
+  const categories = [
+    {
+      title: 'Counter Books (Q1 – Q6)',
+      subtitle: 'Hardcover Smyth-sewn archival ledgers',
+      href: '/catalog?category=Counter+Books',
+      icon: BookOpen,
+      accent: 'text-[var(--gold)]',
+    },
+    {
+      title: 'Exercise Books (200p / 100p / 80p)',
+      subtitle: 'Single & double line school editions',
+      href: '/catalog?category=Exercise+Books',
+      icon: Layers,
+      accent: 'text-[var(--red)]',
+    },
+    {
+      title: 'Kraft Bahasha & Envelopes',
+      subtitle: 'A3, A4, A5 heavy tear-resistant mailers',
+      href: '/catalog?category=Bahasha+%26+Envelopes',
+      icon: FileText,
+      accent: 'text-[var(--gold)]',
+    },
+    {
+      title: 'Office Registers & Ruled Paper',
+      subtitle: '70 GSM pure white bond folios',
+      href: '/catalog?category=Registers',
+      icon: FileText,
+      accent: 'text-[var(--red)]',
+    },
+  ];
+
+  const businessLinks = [
+    {
+      title: language === 'sw' ? 'Bei za Jumla za Katoni' : 'Wholesale Carton Rates',
+      badge: 'UP TO 20% OFF',
+      href: '/wholesale',
+      icon: Package,
+    },
+    {
+      title: language === 'sw' ? 'Zabuni za Shule na Serikali' : 'School & Gov Tenders',
+      badge: 'TENDER RFQ',
+      href: '/school-tenders',
+      icon: Building2,
+    },
+    {
+      title: language === 'sw' ? 'Usafirishaji Mikoa Yote 31' : '31 Regions Bus Parcel Guide',
+      href: '/shipping-guide',
+      icon: Truck,
+    },
+  ];
+
+  const infoLinks = [
+    { title: language === 'sw' ? 'Kuhusu OMEGA (Tangu 1998)' : 'About OMEGA (Est. 1998)', href: '/about' },
+    { title: language === 'sw' ? 'Wasiliana Nasi & Kiwanda' : 'Contact Factory Desk', href: '/contact' },
+  ];
+
   return (
     <div
       role="dialog"
@@ -67,66 +117,180 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
       {/* Dim Backdrop */}
       <div
         onClick={onClose}
-        className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-black/70 backdrop-blur-xs transition-opacity"
         aria-hidden="true"
       />
 
       {/* Slide-In Drawer from Left */}
-      <div className="relative w-full max-w-xs sm:max-w-sm h-full bg-[#0d0d10] text-zinc-100 flex flex-col shadow-2xl z-10 animate-in slide-in-from-left duration-250 border-r border-white/10">
+      <div className="relative w-full max-w-xs sm:max-w-sm h-full bg-[var(--surface-1)] text-[var(--text)] flex flex-col shadow-2xl z-10 animate-in slide-in-from-left duration-250 border-r border-[var(--border)] overflow-hidden">
+        
         {/* Drawer Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/10 bg-[#141418]">
-          <Link to="/" onClick={onClose} className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-white/10 border border-white/15 p-1 flex items-center justify-center shadow-xs shrink-0">
-              <img
-                src="/logo-icon-white.png"
-                alt="OMEGA Icon"
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-heading text-base font-bold tracking-wider text-white">
-                OMEGA
-              </span>
-              <span className="text-[9px] font-mono tracking-widest text-[#DC2626] uppercase -mt-0.5">
-                STATIONERY
-              </span>
-            </div>
-          </Link>
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[var(--border)] bg-[var(--surface-2)]">
+          <BrandLogo size="sm" />
 
           <button
             type="button"
             onClick={onClose}
             aria-label="Close menu"
-            className="w-9 h-9 flex items-center justify-center rounded-lg text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+            className="w-9 h-9 flex items-center justify-center rounded-xl text-[var(--text-muted)] hover:text-[var(--text)] hover:bg-[var(--surface-1)] transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Sidebar Navigation Items */}
-        <nav className="flex-1 overflow-y-auto px-5 divide-y divide-white/10">
-          {SIDEBAR_MENU_ITEMS.map((item) => (
-            <Link
-              key={item.title}
-              to={item.href}
-              onClick={onClose}
-              className="group flex items-center justify-between py-4 hover:bg-white/[0.03] -mx-2 px-2 rounded-lg transition-colors"
+        {/* Quick Search Bar */}
+        <div className="p-4 border-b border-[var(--border)]">
+          <button
+            type="button"
+            onClick={() => {
+              onClose();
+              onOpenSearch?.();
+            }}
+            className="w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-full bg-[var(--surface-2)] hover:bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)] text-xs sm:text-sm text-[var(--text)] transition-all shadow-xs cursor-pointer group"
+          >
+            <div className="flex items-center gap-3 min-w-0">
+              <Search className="w-4 h-4 text-[var(--gold)] shrink-0 group-hover:scale-110 transition-transform stroke-[2]" />
+              <span className="font-medium text-[var(--text-muted)] group-hover:text-[var(--text)] truncate">
+                {language === 'sw' ? 'Tafuta bidhaa, madaftari...' : 'Search notebooks, folios...'}
+              </span>
+            </div>
+            <span className="px-2.5 py-1 rounded-full bg-[var(--surface-1)] border border-[var(--border)] group-hover:border-[var(--gold)] text-[11px] font-mono font-bold uppercase tracking-wider text-[var(--gold)] shrink-0 transition-colors">
+              {language === 'sw' ? 'Tafuta' : 'Search'}
+            </span>
+          </button>
+        </div>
+
+        {/* Navigation Content */}
+        <div className="flex-1 overflow-y-auto px-4 py-3 space-y-5">
+          
+          {/* Section 1: Product Categories */}
+          <div>
+            <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-[var(--gold)] block px-1 mb-2">
+              CATALOGUE CATEGORIES
+            </span>
+            <div className="space-y-1">
+              {categories.map((c) => {
+                const Icon = c.icon;
+                return (
+                  <Link
+                    key={c.title}
+                    to={c.href}
+                    onClick={onClose}
+                    className="flex items-center justify-between p-2.5 rounded-xl hover:bg-[var(--surface-2)] transition-colors group"
+                  >
+                    <div className="flex items-center gap-3 min-w-0 pr-2 text-left">
+                      <div className="w-8 h-8 rounded-lg bg-[var(--surface-2)] border border-[var(--border)] flex items-center justify-center shrink-0">
+                        <Icon className={`w-4 h-4 ${c.accent}`} />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="block text-xs font-bold text-[var(--text)] group-hover:text-[var(--gold)] transition-colors truncate">
+                          {c.title}
+                        </span>
+                        <span className="block text-[10.5px] text-[var(--text-muted)] truncate">
+                          {c.subtitle}
+                        </span>
+                      </div>
+                    </div>
+                    <ChevronRight className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:translate-x-0.5 transition-transform shrink-0" />
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Section 2: Wholesale & Procurement */}
+          <div className="pt-2 border-t border-[var(--border)]">
+            <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-[var(--gold)] block px-1 mb-2">
+              B2B &amp; INSTITUTIONAL
+            </span>
+            <div className="space-y-1">
+              {businessLinks.map((b) => {
+                const Icon = b.icon;
+                return (
+                  <Link
+                    key={b.title}
+                    to={b.href}
+                    onClick={onClose}
+                    className="flex items-center justify-between p-2.5 rounded-xl hover:bg-[var(--surface-2)] transition-colors group"
+                  >
+                    <div className="flex items-center gap-3 min-w-0 pr-2 text-left">
+                      <div className="w-8 h-8 rounded-lg bg-[var(--surface-2)] border border-[var(--border)] flex items-center justify-center shrink-0 text-[var(--gold)]">
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <span className="text-xs font-bold text-[var(--text)] group-hover:text-[var(--gold)] transition-colors truncate">
+                        {b.title}
+                      </span>
+                    </div>
+                    {b.badge && (
+                      <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-[var(--red)] text-white shrink-0">
+                        {b.badge}
+                      </span>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Section 3: Information & Hotline */}
+          <div className="pt-2 border-t border-[var(--border)]">
+            <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-[var(--gold)] block px-1 mb-2">
+              COMPANY &amp; SUPPORT
+            </span>
+            <div className="space-y-1">
+              {infoLinks.map((info) => (
+                <Link
+                  key={info.title}
+                  to={info.href}
+                  onClick={onClose}
+                  className="flex items-center justify-between p-2.5 rounded-xl hover:bg-[var(--surface-2)] transition-colors text-xs font-bold text-[var(--text)] hover:text-[var(--gold)] text-left"
+                >
+                  <span>{info.title}</span>
+                  <ChevronRight className="w-3.5 h-3.5 text-[var(--text-muted)]" />
+                </Link>
+              ))}
+            </div>
+          </div>
+
+        </div>
+
+        {/* Drawer Footer with Theme & Language */}
+        <div className="p-4 border-t border-[var(--border)] bg-[var(--surface-2)]">
+          {/* Controls: Theme & Language */}
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              className="flex items-center justify-center gap-1.5 py-2 rounded-xl bg-[var(--surface-1)] border border-[var(--border)] text-xs font-mono font-bold text-[var(--text)] hover:border-[var(--gold)] transition-colors cursor-pointer"
             >
-              <div className="min-w-0 pr-3">
-                <span className="block text-[15px] font-bold text-white group-hover:text-[#DC2626] transition-colors leading-snug">
-                  {item.title}
-                </span>
-                {item.subtitle && (
-                  <span className="block text-xs text-zinc-400 truncate mt-0.5">
-                    {item.subtitle}
-                  </span>
-                )}
-              </div>
-              <ChevronRight className="w-4 h-4 text-zinc-500 group-hover:text-white group-hover:translate-x-0.5 transition-all shrink-0" />
-            </Link>
-          ))}
-        </nav>
+              {theme === 'dark' ? (
+                <>
+                  <Sun size={14} className="text-[var(--gold)]" />
+                  <span>Light Mode</span>
+                </>
+              ) : (
+                <>
+                  <Moon size={14} className="text-[var(--text)]" />
+                  <span>Dark Mode</span>
+                </>
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={toggleLanguage}
+              className="flex items-center justify-center gap-1.5 py-2 rounded-xl bg-[var(--surface-1)] border border-[var(--border)] text-xs font-mono font-bold text-[var(--text)] hover:border-[var(--gold)] transition-colors cursor-pointer"
+            >
+              <Globe size={14} className="text-[var(--red)]" />
+              <span>{language === 'en' ? 'Kiswahili' : 'English'}</span>
+            </button>
+          </div>
+
+        </div>
+
       </div>
     </div>
   );
 };
+
+export default MobileMenu;

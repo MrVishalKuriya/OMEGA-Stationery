@@ -1,29 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   X,
   CheckCircle2,
-  Heart,
   Truck,
   ShieldCheck,
-  Cookie,
-  Server,
-  Sparkles,
-  Calculator,
-  Scale,
+  Tag,
   MessageCircle,
   ArrowUp,
-  ArrowRight,
-  Package,
-  Download,
-  Phone,
   MapPin,
-  Mail,
-  Percent,
-  Building2,
-  Clock,
-  FileText,
-  Award,
+  Phone,
+  WifiOff,
 } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { QuickViewModal, ProductCompareModal } from '@/presentation/features/products';
@@ -32,8 +19,8 @@ import { WishlistModal } from '@/presentation/features/wishlist';
 import { AuthModal } from '@/presentation/features/auth';
 import { CookieBanner } from '../components/CookieBanner';
 import { BackendStatusModal } from '../components/BackendStatusModal';
-import { OmegaLogo } from '../components/OmegaLogo';
 import { Navbar } from './navbar';
+import { BrandLogo } from '@/components/BrandLogo';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
@@ -42,33 +29,73 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     location.pathname.startsWith('/admin');
 
   const {
-    wishlistCount,
-    setIsWishlistModalOpen,
-    setIsTrackingModalOpen,
     isCookieBannerOpen,
-    openCookiePreferences,
     closeCookiePreferences,
     toastMessage,
     clearToast,
-    isBackendOnline,
   } = useStore();
 
   const [isBackendModalOpen, setIsBackendModalOpen] = useState(false);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const [isOffline, setIsOffline] = useState(!navigator.onLine);
+  const [hasPulsedWhatsApp, setHasPulsedWhatsApp] = useState(false);
+
+  // Monitor scroll for Back-to-Top (> 600px)
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 600) {
+        setShowBackToTop(true);
+      } else {
+        setShowBackToTop(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Monitor Offline state
+  useEffect(() => {
+    const handleOnline = () => setIsOffline(false);
+    const handleOffline = () => setIsOffline(true);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  // One gentle WhatsApp pulse on initial load
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setHasPulsedWhatsApp(true);
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-[#F9F8F6] text-[#111113] font-sans selection:bg-[#DC2626] selection:text-white">
-      {/* Reusable Boutique Navbar */}
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden flex flex-col bg-[var(--bg)] text-[var(--text)] font-sans selection:bg-[var(--red)]/30 selection:text-white">
+      
+      {/* Offline Alert Banner */}
+      {isOffline && (
+        <div className="bg-[var(--red)] text-white text-xs font-mono font-bold py-2 px-4 flex items-center justify-center gap-2 sticky top-0 z-50">
+          <WifiOff size={16} strokeWidth={2} />
+          <span>You are currently offline. Viewing cached OMEGA catalog.</span>
+        </div>
+      )}
+
+      {/* Header */}
       <Navbar />
 
-      {/* ==================== 3. TOAST NOTIFICATIONS ==================== */}
+      {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-xl bg-[#111113] text-white border border-[#DC2626]/50 shadow-2xl animate-in slide-in-from-bottom-5">
-          <CheckCircle2 className="w-5 h-5 text-[#DC2626] shrink-0" />
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-2xl bg-[var(--surface-1)] text-[var(--text)] border border-[var(--gold)]/40 shadow-2xl animate-in slide-in-from-bottom-5">
+          <CheckCircle2 className="w-5 h-5 text-[var(--red)] shrink-0" />
           <span className="text-xs font-bold">{toastMessage}</span>
           <button
             onClick={clearToast}
-            className="ml-2 text-stone-300 hover:text-white p-1 cursor-pointer"
+            className="ml-2 text-[var(--text-muted)] hover:text-[var(--text)] p-1 cursor-pointer"
             aria-label="Dismiss"
           >
             <X className="w-4 h-4" />
@@ -76,312 +103,197 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         </div>
       )}
 
-      {/* ==================== 4. MAIN PAGE CONTENT ==================== */}
+      {/* Main Page Content */}
       <main className="flex-1 w-full max-w-full overflow-x-hidden">
         {children}
       </main>
 
-      {/* ==================== 5. PRESTIGE ARCHITECTURAL FOOTER ==================== */}
-      <footer className="bg-[#0a0a0c] text-zinc-300 border-t border-[#DC2626]/30 relative overflow-hidden">
-        {/* Subtle Ambient Backlight */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-[#DC2626]/5 blur-3xl pointer-events-none" />
-
-        {/* 1) Trust & Manufacturing Excellence Strip (4 Responsive Pillars) */}
-        <div className="border-b border-white/10 bg-[#111114]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#DC2626]/15 border border-[#DC2626]/30 flex items-center justify-center text-[#DC2626] shrink-0">
-                  <Award className="w-5 h-5" />
-                </div>
-                <div>
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-white font-heading">
-                    Pure 70 GSM Bond
-                  </h5>
-                  <p className="text-[11px] text-zinc-400 leading-tight mt-0.5">
-                    Zero ink-bleed, smooth writing finish
-                  </p>
-                </div>
+      {/* ========================================================================= */}
+      {/* FOOTER SECTION: Slim Icon Strip + Surface-1 Card with Gold Hairline */}
+      {/* ========================================================================= */}
+      <footer className="w-full max-w-[1360px] mx-auto px-3 sm:px-6 lg:px-8 pb-12 sm:pb-16 pt-8 space-y-6">
+        
+        {/* Slim Icon Strip */}
+        <div className="bg-[var(--surface-1)] rounded-2xl border border-[var(--border)] p-4 sm:p-6 shadow-xs">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 divide-y sm:divide-y-0 sm:divide-x divide-[var(--border)]">
+            
+            {/* 1. Delivery */}
+            <div className="flex items-center gap-3 pt-2 sm:pt-0 sm:px-4">
+              <div className="w-10 h-10 rounded-full bg-[var(--surface-2)] border border-[var(--border)] flex items-center justify-center text-[var(--red)] shrink-0">
+                <Truck size={18} strokeWidth={2} />
               </div>
-
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#DC2626]/15 border border-[#DC2626]/30 flex items-center justify-center text-[#DC2626] shrink-0">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <div>
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-white font-heading">
-                    Thread-Sewn Spines
-                  </h5>
-                  <p className="text-[11px] text-zinc-400 leading-tight mt-0.5">
-                    Double-stitched for extreme durability
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#DC2626]/15 border border-[#DC2626]/30 flex items-center justify-center text-[#DC2626] shrink-0">
-                  <FileText className="w-5 h-5" />
-                </div>
-                <div>
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-white font-heading">
-                    Price List #PL00001
-                  </h5>
-                  <p className="text-[11px] text-zinc-400 leading-tight mt-0.5">
-                    Factory direct transparent rates
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#DC2626]/15 border border-[#DC2626]/30 flex items-center justify-center text-[#DC2626] shrink-0">
-                  <Truck className="w-5 h-5" />
-                </div>
-                <div>
-                  <h5 className="text-xs font-bold uppercase tracking-wider text-white font-heading">
-                    31 Regions Cargo
-                  </h5>
-                  <p className="text-[11px] text-zinc-400 leading-tight mt-0.5">
-                    Daily freight via verified bus parcels
-                  </p>
-                </div>
+              <div className="text-left">
+                <h4 className="text-xs font-bold text-[var(--text)] font-sans">Fast Delivery</h4>
+                <p className="text-[10.5px] text-[var(--text-muted)] font-mono">All 31 regions in Tanzania</p>
               </div>
             </div>
+
+            {/* 2. Quality */}
+            <div className="flex items-center gap-3 pt-2 sm:pt-0 sm:px-4">
+              <div className="w-10 h-10 rounded-full bg-[var(--surface-2)] border border-[var(--border)] flex items-center justify-center text-[var(--gold)] shrink-0">
+                <ShieldCheck size={18} strokeWidth={2} />
+              </div>
+              <div className="text-left">
+                <h4 className="text-xs font-bold text-[var(--text)] font-sans">100% Quality</h4>
+                <p className="text-[10.5px] text-[var(--text-muted)] font-mono">70 GSM bleed-proof bond</p>
+              </div>
+            </div>
+
+            {/* 3. Fair Price */}
+            <div className="flex items-center gap-3 pt-2 sm:pt-0 sm:px-4">
+              <div className="w-10 h-10 rounded-full bg-[var(--surface-2)] border border-[var(--border)] flex items-center justify-center text-[var(--red)] shrink-0">
+                <Tag size={18} strokeWidth={2} />
+              </div>
+              <div className="text-left">
+                <h4 className="text-xs font-bold text-[var(--text)] font-sans">Fair Price</h4>
+                <p className="text-[10.5px] text-[var(--text-muted)] font-mono">Factory-direct wholesale</p>
+              </div>
+            </div>
+
+            {/* 4. WhatsApp Support */}
+            <div className="flex items-center gap-3 pt-2 sm:pt-0 sm:px-4">
+              <div className="w-10 h-10 rounded-full bg-[var(--surface-2)] border border-[var(--border)] flex items-center justify-center text-[#25D366] shrink-0">
+                <MessageCircle size={18} strokeWidth={2} />
+              </div>
+              <div className="text-left">
+                <h4 className="text-xs font-bold text-[var(--text)] font-sans">Direct Desk</h4>
+                <p className="text-[10.5px] text-[var(--text-muted)] font-mono">+255 746 268 391</p>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        {/* 3) Main Architectural Grid: 2-Column Responsive Layout */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
-            {/* Col 1: Heritage & Manufacturing (6 cols) */}
-            <div className="lg:col-span-6 space-y-4">
-              {/* Brand Hallmark & Manufacturing Eyebrow */}
-              <div className="flex flex-wrap items-center gap-3">
-                <Link to="/" className="inline-block group rounded-lg">
-                  <OmegaLogo variant="badge" size="md" showSubtitle={true} />
-                </Link>
-
-                <div className="inline-flex items-center px-3 py-1 rounded-md bg-gradient-to-r from-[#DC2626]/20 via-[#DC2626]/10 to-transparent border border-[#DC2626]/40 text-[10px] font-mono font-bold text-[#DC2626] uppercase tracking-wider shadow-xs">
-                  <span>MANUFACTURED BY INDIGO PRINTED LIMITED</span>
-                </div>
-              </div>
-
-              <p className="text-xs text-zinc-300 leading-relaxed max-w-xl">
-                Tanzania&apos;s benchmark manufacturer of Counter Books (Q2, Q3, Q4), Exercise Books, Kraft Bahasha, and educational paper products. Engineered for scholars, schools, wholesale traders, and commercial enterprises nationwide.
+        {/* Surface-1 Rounded Footer Card with Gold Hairline */}
+        <div className="bg-[var(--surface-1)] text-[var(--text)] rounded-2xl p-8 sm:p-12 shadow-2xl border border-[var(--border)] border-t border-t-[var(--gold)]/35 relative overflow-hidden">
+          
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-start text-left">
+            
+            {/* Col 1: Wordmark & Address (5 cols) */}
+            <div className="md:col-span-5 space-y-4">
+              <BrandLogo size="lg" />
+              <p className="text-xs text-[var(--text-muted)] leading-relaxed max-w-sm font-sans">
+                Tanzania&apos;s premier benchmark manufacturer of authentic Counter Books (Q2, Q3, Q4), Exercise Books, Kraft Bahasha, and educational paper products.
               </p>
-
-              {/* Manufacturing Facilities & Direct Dispatch Hubs Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-w-xl pt-1">
-                {/* 1. Main Factory & HQ */}
-                <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-[#DC2626]/40 transition-all flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-1.5 mb-1.5">
-                      <MapPin className="w-3.5 h-3.5 text-[#DC2626] shrink-0" />
-                      <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-zinc-400">
-                        Main Factory &amp; HQ
-                      </span>
-                    </div>
-                    <p className="text-xs text-white font-semibold leading-snug">
-                      Plot 30, Block F Kilwa Rd, Mwanambaya-Mkuranga
-                    </p>
-                  </div>
-                  <p className="text-[11px] text-zinc-400 mt-2 font-mono">
-                    P.O. Box 10424, Dar es Salaam
-                  </p>
-                </div>
-
-                {/* 2. Upcountry Factory Desk (Mbeya) */}
-                <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-[#DC2626]/40 transition-all flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-1.5 mb-1.5">
-                      <Building2 className="w-3.5 h-3.5 text-[#DC2626] shrink-0" />
-                      <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-zinc-400">
-                        Highlands Hub Desk
-                      </span>
-                    </div>
-                    <p className="text-xs text-white font-semibold leading-snug">
-                      Mbeya Factory Desk
-                    </p>
-                  </div>
-                  <p className="text-[11px] text-zinc-400 mt-2 font-mono">
-                    Soweto SIDO Viwandani, Mbeya
-                  </p>
-                </div>
-              </div>
-
-              {/* Official Corporate Inquiries Bar */}
-              <div className="p-2.5 rounded-xl bg-white/[0.03] border border-white/10 hover:border-[#DC2626]/40 transition-all flex items-center justify-between gap-3 max-w-xl">
-                <div className="flex items-center gap-2 min-w-0">
-                  <div className="w-7 h-7 rounded-lg bg-[#DC2626]/15 border border-[#DC2626]/30 flex items-center justify-center text-[#DC2626] shrink-0">
-                    <Mail className="w-3.5 h-3.5" />
-                  </div>
-                  <div className="min-w-0">
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block leading-tight">
-                      Official Inquiries
-                    </span>
-                    <a
-                      href="mailto:indigoprinter06423@gmail.com"
-                      className="text-xs font-mono font-bold text-zinc-200 hover:text-[#DC2626] transition-colors block truncate"
-                    >
-                      indigoprinter06423@gmail.com
-                    </a>
-                  </div>
-                </div>
-                <a
-                  href="mailto:indigoprinter06423@gmail.com"
-                  className="px-2.5 py-1 rounded-md bg-white/5 hover:bg-[#DC2626] text-zinc-300 hover:text-white text-[11px] font-mono font-semibold transition-all shrink-0"
-                >
-                  Email Us
-                </a>
-              </div>
-            </div>
-
-            {/* Col 2: Executive Factory Desks & Direct Hotlines (6 cols) */}
-            <div className="lg:col-span-6 space-y-3.5">
-              <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                <h4 className="font-heading text-xs font-bold uppercase tracking-wider text-white">
-                  Executive Desks &amp; Direct Hotlines
-                </h4>
-                <span className="inline-flex items-center gap-1.5 text-[9px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-md border border-emerald-500/20">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  DIRECT DESKS
+              <div className="pt-2 flex items-start gap-2 text-xs text-[var(--text)]/90">
+                <MapPin size={16} strokeWidth={2} className="shrink-0 text-[var(--red)] mt-0.5" />
+                <span className="font-sans leading-snug">
+                  Soweto SIDO Viwandani, Mbeya · Main Factory: Plot 30, Block F Kilwa Rd, Mkuranga, Dar es Salaam
                 </span>
               </div>
+            </div>
 
-              {/* 4 Dedicated Direct Factory Hotlines Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                {/* 1. Kanti Bhai K. Halai */}
-                <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-[#DC2626]/40 transition-all flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block truncate">Founder &amp; MD</span>
-                    <span className="text-xs font-bold text-white block truncate">Kanti Bhai K. Halai</span>
-                    <a href="tel:+255715268391" className="text-xs font-mono font-bold text-[#DC2626] hover:underline block mt-0.5 truncate">
-                      +255 715 268 391
-                    </a>
-                  </div>
-                  <a
-                    href="https://wa.me/255715268391?text=Hello%20Kanti%20Bhai,%20inquiry%20from%20website"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/30 text-emerald-400 transition-colors shrink-0"
-                    title="Chat with Kanti Bhai on WhatsApp"
-                    aria-label="Chat with Kanti Bhai on WhatsApp"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                  </a>
-                </div>
+            {/* Col 2: Quick Links (3 cols) */}
+            <div className="md:col-span-3 space-y-3">
+              <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-[var(--gold)]">
+                Collections
+              </h4>
+              <ul className="space-y-2 text-xs text-[var(--text-muted)] font-sans">
+                <li>
+                  <Link to="/catalog?category=Counter+Books" className="hover:text-[var(--text)] transition-colors">
+                    Counter Books (Q2-Q4)
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/catalog?category=Exercise+Books" className="hover:text-[var(--text)] transition-colors">
+                    Exercise Books (Single &amp; Double)
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/catalog?category=Bahasha+%26+Envelopes" className="hover:text-[var(--text)] transition-colors">
+                    Kraft Bahasha (A3–A6)
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/catalog?category=Registers" className="hover:text-[var(--text)] transition-colors">
+                    Office Registers &amp; Ruled Paper
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/wholesale" className="hover:text-[var(--text)] transition-colors">
+                    Wholesale Carton Rates
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-                {/* 2. Vijesh K. Halai */}
-                <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-[#DC2626]/40 transition-all flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block truncate">Co-Founder &amp; MD</span>
-                    <span className="text-xs font-bold text-white block truncate">Vijesh K. Halai</span>
-                    <a href="tel:+255624265480" className="text-xs font-mono font-bold text-[#DC2626] hover:underline block mt-0.5 truncate">
-                      +255 624 265 480
-                    </a>
-                  </div>
-                  <a
-                    href="https://wa.me/255624265480?text=Hello%20Vijesh%20Bhai,%20inquiry%20from%20website"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/30 text-emerald-400 transition-colors shrink-0"
-                    title="Chat with Vijesh Bhai on WhatsApp"
-                    aria-label="Chat with Vijesh Bhai on WhatsApp"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                  </a>
-                </div>
-
-                {/* 3. Mbeya Branch Manager - Gupta Alok */}
-                <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-[#DC2626]/40 transition-all flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block truncate">Mbeya Branch Manager</span>
-                    <span className="text-xs font-bold text-white block truncate">Gupta Alok</span>
-                    <a href="tel:+255746268391" className="text-xs font-mono font-bold text-[#DC2626] hover:underline block mt-0.5 truncate">
-                      +255 746 268 391
-                    </a>
-                  </div>
-                  <a
-                    href="https://wa.me/255746268391?text=Hello%20Alok%20Gupta,%20inquiry%20from%20website"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/30 text-emerald-400 transition-colors shrink-0"
-                    title="Chat with Alok Gupta on WhatsApp"
-                    aria-label="Chat with Alok Gupta on WhatsApp"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                  </a>
-                </div>
-
-                {/* 4. Mwanza Branch Manager - Gupta Vivek */}
-                <div className="p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:border-[#DC2626]/40 transition-all flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold block truncate">Mwanza Branch Manager</span>
-                    <span className="text-xs font-bold text-white block truncate">Gupta Vivek</span>
-                    <a href="tel:+255699032777" className="text-xs font-mono font-bold text-[#DC2626] hover:underline block mt-0.5 truncate">
-                      +255 699 032 777
-                    </a>
-                  </div>
-                  <a
-                    href="https://wa.me/255699032777?text=Hello%20Vivek%20Gupta,%20inquiry%20from%20website"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/30 text-emerald-400 transition-colors shrink-0"
-                    title="Chat with Vivek Gupta on WhatsApp"
-                    aria-label="Chat with Vivek Gupta on WhatsApp"
-                  >
-                    <MessageCircle className="w-4 h-4" />
+            {/* Col 3: Direct WhatsApp & Phone Hotline (4 cols) */}
+            <div className="md:col-span-4 space-y-3">
+              <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-[var(--gold)]">
+                Sales &amp; Dispatch Desk
+              </h4>
+              <p className="text-xs text-[var(--text-muted)] font-sans">
+                Contact our factory representatives directly for bulk tenders or immediate upcountry bus parcel delivery.
+              </p>
+              
+              <div className="pt-2 space-y-2">
+                <a
+                  href="https://wa.me/255746268391?text=Habari%20OMEGA%20Stationery,%20nahitaji%20bei%20za%20jumla."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] hover:bg-[#16a34a] text-white text-xs font-bold font-mono transition-transform active:scale-95 shadow-md"
+                >
+                  <MessageCircle size={16} strokeWidth={2} />
+                  <span>WhatsApp: +255 746 268 391</span>
+                </a>
+                
+                <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] pt-1">
+                  <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)]" />
+                  <a href="tel:+255715268391" className="hover:underline font-mono text-[var(--text)]">
+                    +255 715 268 391 (MD Desk)
                   </a>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* 4) Bottom Copyright & Utilities */}
-        <div className="border-t border-white/10 bg-[#060608] pb-24 sm:pb-5">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-zinc-400">
-            <p className="text-center md:text-left">
-              &copy; {new Date().getFullYear()} OMEGA Writing Notebooks &amp; Stationery Tanzania. Manufactured by Indigo Printed Limited. All rights reserved.
+          </div>
+
+          {/* Bottom Bar inside Card */}
+          <div className="mt-8 pt-6 border-t border-[var(--border)] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-[var(--text-muted)] font-mono">
+            <p>
+              &copy; {new Date().getFullYear()} OMEGA Stationery Tanzania. Manufactured by Indigo Printed Limited.
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-3 font-mono text-[11px]">
-              <Link to="/tracking" className="hover:text-white transition-colors">
+            <div className="flex items-center gap-4">
+              <Link to="/tracking" className="hover:text-[var(--gold)] transition-colors">
                 Track Parcel
               </Link>
               <span>·</span>
-              <Link to="/wholesale" className="hover:text-white transition-colors">
-                Carton Rates
+              <Link to="/about" className="hover:text-[var(--gold)] transition-colors">
+                About Us
               </Link>
               <span>·</span>
-              <button
-                type="button"
-                onClick={openCookiePreferences}
-                className="hover:text-white transition-colors cursor-pointer"
-              >
-                Cookies
-              </button>
-              <span>·</span>
-              <button
-                type="button"
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="p-1.5 rounded-lg bg-white/5 hover:bg-[#DC2626] hover:text-white text-white transition-all ml-1 cursor-pointer"
-                aria-label="Scroll to top"
-                title="Scroll to top"
-              >
-                <ArrowUp className="w-3.5 h-3.5" />
-              </button>
+              <Link to="/contact" className="hover:text-[var(--gold)] transition-colors">
+                Contact
+              </Link>
             </div>
           </div>
+
         </div>
+
       </footer>
 
-      {/* Floating WhatsApp Action Button */}
+      {/* Floating Back to Top Button (> 600px) */}
+      {showBackToTop && (
+        <button
+          type="button"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          aria-label="Scroll to top"
+          className="fixed bottom-20 right-5 z-40 w-11 h-11 rounded-full bg-[var(--surface-1)] border border-[var(--border)] text-[var(--text)] hover:border-[var(--gold)] hover:text-[var(--gold)] shadow-lg flex items-center justify-center transition-all duration-200 active:scale-90 cursor-pointer"
+        >
+          <ArrowUp size={18} strokeWidth={2.2} />
+        </button>
+      )}
+
+      {/* Floating WhatsApp Action Button with gentle initial pulse */}
       {!isAdminPage && (
         <div className="fixed bottom-5 right-5 z-40">
           <a
             href="https://wa.me/255746268391?text=Hello%20OMEGA%20Stationery%20Tanzania,%20I%20would%20like%20to%20place%20an%20order."
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold shadow-xl transition-all hover:scale-105 active:scale-95 cursor-pointer border-2 border-white/20"
+            className={`flex items-center gap-2 px-5 py-3 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer border-2 border-white/40 ${
+              !hasPulsedWhatsApp ? 'animate-bounce' : ''
+            }`}
             title="Chat with Sales Desk on WhatsApp (+255 746 268 391)"
             aria-label="Chat on WhatsApp"
           >
