@@ -1072,8 +1072,15 @@ export async function uploadProductImage(
 /**
  * Normalizes any product image URL to ensure cross-device and cloud accessibility
  */
-export function resolveImageUrl(url?: string): string {
+export function resolveImageUrl(url?: string | any): any {
   if (!url) return '';
+  if (typeof url === 'object') {
+    return {
+      ...url,
+      src: typeof url.src === 'string' ? resolveImageUrl(url.src) : url.src,
+    };
+  }
+  if (typeof url !== 'string') return '';
   if (url.startsWith('/uploads/')) {
     return `${BACKEND_URL}${url}`;
   }

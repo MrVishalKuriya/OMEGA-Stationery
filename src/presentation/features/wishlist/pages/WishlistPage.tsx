@@ -6,14 +6,13 @@ import { formatPrice } from '@/types/store';
 import { SEOHead } from '@/components/SEOHead';
 import { TRANSLATIONS } from '@/data/translations';
 import { ProductImage } from '@/components/ProductImage';
+import { ProductCard } from '@/components/ProductCard';
 
 export const WishlistPage: React.FC = () => {
   const {
     wishlist,
     products,
-    toggleWishlist,
     clearWishlist,
-    addToCart,
     storeConfig,
     language,
   } = useStore();
@@ -90,7 +89,7 @@ export const WishlistPage: React.FC = () => {
       </section>
 
       {/* Main Content Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
         {wishlistedProducts.length === 0 ? (
           <div className="bg-[var(--surface-1)] border border-[var(--border)] rounded-2xl p-10 sm:p-14 text-center max-w-lg mx-auto space-y-4 shadow-xl my-6">
             <div className="w-16 h-16 rounded-2xl bg-[var(--surface-2)] text-[var(--red)] flex items-center justify-center mx-auto border border-[var(--border)]">
@@ -111,69 +110,10 @@ export const WishlistPage: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5 sm:gap-6">
-            {wishlistedProducts.map((p) => {
-              const effectivePrice =
-                p.discountPrice && p.discountPrice > 0 ? p.discountPrice : p.price;
-              return (
-                <div
-                  key={p.id}
-                  className="bg-[var(--surface-1)] border border-[var(--border)] rounded-2xl overflow-hidden hover:shadow-xl hover:border-[var(--gold)]/50 transition-all duration-300 flex flex-col justify-between group"
-                >
-                  <div className="relative aspect-square overflow-hidden border-b border-[var(--border)] bg-[var(--surface-2)]">
-                    <button
-                      onClick={() => toggleWishlist(p.id)}
-                      className="absolute top-2.5 right-2.5 z-20 w-8 h-8 rounded-full bg-[var(--surface-1)]/90 hover:bg-[var(--red)] text-[var(--text)] hover:text-white border border-[var(--border)] flex items-center justify-center shadow-xs transition-colors cursor-pointer"
-                      title="Remove from wishlist"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                    <ProductImage
-                      image={p.image}
-                      alt={p.name}
-                      variant="card"
-                      imgClassName="group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-
-                  <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
-                    <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--gold)] font-mono">
-                        {p.category}
-                      </span>
-                      <h3 className="text-xs sm:text-sm font-bold text-[var(--text)] line-clamp-2 mt-0.5">
-                        <Link to={`/product/${p.id}`} className="hover:text-[var(--red)] transition-colors">
-                          {language === 'sw' && p.nameSw ? p.nameSw : p.name}
-                        </Link>
-                      </h3>
-                    </div>
-
-                    <div className="pt-2 border-t border-[var(--border)] flex items-baseline justify-between">
-                      <span className="text-sm sm:text-base font-black text-[var(--text)] font-mono">
-                        {formatPrice(effectivePrice, currency)}
-                      </span>
-                      {p.discountPrice && p.discountPrice < p.price && (
-                        <span className="text-xs text-[var(--text-muted)] line-through font-mono">
-                          {formatPrice(p.price, currency)}
-                        </span>
-                      )}
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        addToCart(p.id, 1, true);
-                        toggleWishlist(p.id);
-                      }}
-                      className="w-full py-2.5 px-3 rounded-full bg-[var(--red)] hover:opacity-90 text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-xs active:scale-95 cursor-pointer font-mono"
-                    >
-                      <ShoppingBag className="w-3.5 h-3.5" />
-                      <span>Move to Cart</span>
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
+            {wishlistedProducts.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
           </div>
         )}
       </div>

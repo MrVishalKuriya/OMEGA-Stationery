@@ -11,6 +11,52 @@ import {
 } from '@/services/api';
 
 const PRODUCTS_QUERY_KEY = ['products'];
+const STORAGE_KEY = 'omega_products_v4';
+
+function canonicalizeProducts(liveList: Product[]): Product[] {
+  if (!Array.isArray(liveList) || liveList.length === 0) {
+    return INITIAL_PRODUCTS;
+  }
+
+  const liveById = new Map<string, Product>();
+  for (const item of liveList) {
+    if (item && item.id) {
+      liveById.set(item.id, item);
+    }
+  }
+
+  const canonicalIds = new Set<string>();
+  const merged: Product[] = INITIAL_PRODUCTS.map((canonical) => {
+    canonicalIds.add(canonical.id);
+    const live = liveById.get(canonical.id);
+    if (!live) return canonical;
+
+    const liveImgStr =
+      typeof live.image === 'string' ? live.image : live.image?.src || '';
+    const hasCustomUpload =
+      liveImgStr.includes('/uploads/') || liveImgStr.startsWith('http');
+
+    return {
+      ...live,
+      ...canonical,
+      image: hasCustomUpload ? live.image : canonical.image,
+      stockStatus: live.stockStatus || canonical.stockStatus,
+      stockQuantity:
+        live.stockQuantity !== undefined
+          ? live.stockQuantity
+          : canonical.stockQuantity,
+    };
+  });
+
+  // Append any newly created custom products not in INITIAL_PRODUCTS
+  for (const item of liveList) {
+    if (item && item.id && !canonicalIds.has(item.id)) {
+      merged.push(item);
+    }
+  }
+
+  return merged;
+}
 
 export const useProductsQuery = () => {
   const queryClient = useQueryClient();
@@ -18,24 +64,36 @@ export const useProductsQuery = () => {
   const query = useQuery<Product[]>({
     queryKey: PRODUCTS_QUERY_KEY,
     queryFn: async () => {
+      try {
+        localStorage.removeItem('omega_products_v2');
+        localStorage.removeItem('omega_products_v3');
+      } catch {}
       const res = await fetchLiveProducts({ forceRefresh: true });
       if (res && res.length > 0) {
+        const canonicalized = canonicalizeProducts(res);
         try {
-          localStorage.setItem('omega_products_v2', JSON.stringify(res));
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(canonicalized));
         } catch {}
-        return res;
+        return canonicalized;
       }
       return INITIAL_PRODUCTS;
     },
     placeholderData: () => {
       try {
-        const saved = localStorage.getItem('omega_products_v2');
-        if (saved) return JSON.parse(saved);
+        localStorage.removeItem('omega_products_v2');
+        localStorage.removeItem('omega_products_v3');
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return canonicalizeProducts(parsed);
+          }
+        }
       } catch {}
-      return undefined;
+      return INITIAL_PRODUCTS;
     },
-    staleTime: 5000, // 5 seconds fresh, then always refetch from MongoDB
-    gcTime: 1000 * 60 * 15, // 15 Minutes cache
+    staleTime: 5000,
+    gcTime: 1000 * 60 * 15,
     refetchOnMount: true,
     refetchOnWindowFocus: true,
   });
@@ -52,7 +110,7 @@ export const useProductsQuery = () => {
       const next = [newProduct, ...previousProducts.filter((p) => p.id !== newProduct.id)];
       queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, next);
       try {
-        localStorage.setItem('omega_products_v2', JSON.stringify(next));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
       } catch {}
 
       return { previousProducts };
@@ -61,7 +119,7 @@ export const useProductsQuery = () => {
       if (context?.previousProducts) {
         queryClient.setQueryData(PRODUCTS_QUERY_KEY, context.previousProducts);
         try {
-          localStorage.setItem('omega_products_v2', JSON.stringify(context.previousProducts));
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(context.previousProducts));
         } catch {}
       }
     },
@@ -83,7 +141,7 @@ export const useProductsQuery = () => {
       const next = previousProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p));
       queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, next);
       try {
-        localStorage.setItem('omega_products_v2', JSON.stringify(next));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
       } catch {}
 
       return { previousProducts };
@@ -92,7 +150,7 @@ export const useProductsQuery = () => {
       if (context?.previousProducts) {
         queryClient.setQueryData(PRODUCTS_QUERY_KEY, context.previousProducts);
         try {
-          localStorage.setItem('omega_products_v2', JSON.stringify(context.previousProducts));
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(context.previousProducts));
         } catch {}
       }
     },
@@ -129,7 +187,7 @@ export const useProductsQuery = () => {
       );
       queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, next);
       try {
-        localStorage.setItem('omega_products_v2', JSON.stringify(next));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
       } catch {}
 
       return { previousProducts };
@@ -138,7 +196,7 @@ export const useProductsQuery = () => {
       if (context?.previousProducts) {
         queryClient.setQueryData(PRODUCTS_QUERY_KEY, context.previousProducts);
         try {
-          localStorage.setItem('omega_products_v2', JSON.stringify(context.previousProducts));
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(context.previousProducts));
         } catch {}
       }
     },
@@ -178,7 +236,7 @@ export const useProductsQuery = () => {
       );
       queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, next);
       try {
-        localStorage.setItem('omega_products_v2', JSON.stringify(next));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
       } catch {}
 
       return { previousProducts };
@@ -187,7 +245,7 @@ export const useProductsQuery = () => {
       if (context?.previousProducts) {
         queryClient.setQueryData(PRODUCTS_QUERY_KEY, context.previousProducts);
         try {
-          localStorage.setItem('omega_products_v2', JSON.stringify(context.previousProducts));
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(context.previousProducts));
         } catch {}
       }
     },
@@ -208,7 +266,7 @@ export const useProductsQuery = () => {
       const next = previousProducts.filter((p) => p.id !== id);
       queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, next);
       try {
-        localStorage.setItem('omega_products_v2', JSON.stringify(next));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
       } catch {}
 
       return { previousProducts };
@@ -217,7 +275,7 @@ export const useProductsQuery = () => {
       if (context?.previousProducts) {
         queryClient.setQueryData(PRODUCTS_QUERY_KEY, context.previousProducts);
         try {
-          localStorage.setItem('omega_products_v2', JSON.stringify(context.previousProducts));
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(context.previousProducts));
         } catch {}
       }
     },
