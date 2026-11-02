@@ -18,7 +18,6 @@ import {
   Building2,
   ChevronDown,
   Layers,
-  HelpCircle,
   Sparkles,
   FileCheck2,
   Boxes,
@@ -30,7 +29,6 @@ import { Hero } from '../components/Hero';
 import { SEOHead } from '@/components/SEOHead';
 import { TRANSLATIONS } from '@/data/translations';
 import { ProductImage } from '@/components/ProductImage';
-import { CardSplitAccordion } from '@/components/watermelon/card-split-accordion';
 import {
   HaikeiWaveDivider,
   HaikeiBlobGlow,
@@ -1078,103 +1076,6 @@ export const HomePage: React.FC = () => {
             </motion.div>
 
           </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 8.5. FREQUENTLY ASKED QUESTIONS (FAQ) (Motion Animated Accordion) */}
-      {/* ========================================================================= */}
-      <section className="py-16 sm:py-22 bg-[var(--surface-1)] border-b border-[var(--border)] relative overflow-hidden transition-colors duration-200">
-        
-        <HaikeiBlobGlow color="mixed" position="center" size="lg" className="opacity-15" />
-
-        <div className="max-w-[900px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10 relative z-10">
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center space-y-3"
-          >
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[var(--surface-2)] border border-[var(--border)] text-[10.5px] font-mono font-bold tracking-widest uppercase text-[var(--gold)]">
-              <HelpCircle className="w-3.5 h-3.5" />
-              <span>FREQUENTLY ASKED QUESTIONS</span>
-            </div>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text)]">
-              {language === 'sw' ? 'Maswali Yanayoulizwa Mara kwa Mara' : 'Stationery & Delivery FAQs'}
-            </h2>
-            <p className="text-xs sm:text-sm text-[var(--text-muted)]">
-              Clear answers regarding quire formats, upcountry bus logistics, and custom school orders.
-            </p>
-          </motion.div>
-
-          {/* Watermelon UI Card Split Accordion */}
-          <CardSplitAccordion
-            items={[
-              {
-                id: 1,
-                title:
-                  language === 'sw'
-                    ? 'Kuna tofauti gani ya kurasa kati ya Q1, Q2, Q3, Q4, na Q6?'
-                    : 'What is the exact page count difference between Q1, Q2, Q3, Q4, and Q6?',
-                icon: <BookOpen className="w-4 h-4" />,
-                content:
-                  language === 'sw'
-                    ? 'Kulingana na viwango vya ufungaji madaftari, Quire 1 inajumuisha kurasa 96. OMEGA inatoa: Q1 (kurasa 96), Q2 (kurasa 192), Q3 (kurasa 288), Q4 (kurasa 384), na Q6 (kurasa 576). Yote yanatumia karatasi ya 70 GSM isiyopenyeza wino.'
-                    : 'In traditional stationery binding, 1 Quire equals 96 pages. OMEGA offers: Q1 (96 pages), Q2 (192 pages), Q3 (288 pages), Q4 (384 pages), and Q6 (576 pages). All editions feature identical 70 GSM archival bond paper and Smythe-sewn lay-flat bindings.',
-              },
-              {
-                id: 2,
-                title:
-                  language === 'sw'
-                    ? 'Usafirishaji mikoani na Zanzibar unafanyikaje?'
-                    : 'How does upcountry regional delivery work across mainland Tanzania and Zanzibar?',
-                icon: <Truck className="w-4 h-4" />,
-                content:
-                  language === 'sw'
-                    ? 'Tunasafirisha kupitia mabasi ya uhakika (Tahmeed, Shabiby, Abood, Tilisho) na malori ya mizigo. Mara baada ya oda kuthibitishwa, katoni zinafungwa na kukabidhiwa stendi ndani ya saa 24. Unapewa namba ya risiti (waybill) ya kuchukulia mzigo wako kwenye kituo cha basi.'
-                    : 'We partner with accredited express bus lines (Tahmeed, Shabiby, Abood, Tilisho) and specialized cargo trucks from Dar es Salaam and Mbeya. Once payment is confirmed, cartons are packaged and handed to the bus terminal within 24 hours. You receive an official waybill number to collect your parcel directly at your local bus depot.',
-              },
-              {
-                id: 3,
-                title:
-                  language === 'sw'
-                    ? 'Je, shule, vyuo na taasisi zinaweza kuweka nembo zao kwenye jalada?'
-                    : 'Can schools, colleges, and NGOs order custom embossed logos on the covers?',
-                icon: <Award className="w-4 h-4" />,
-                content:
-                  language === 'sw'
-                    ? 'Ndiyo! Kwa oda za taasisi kuanzia katoni 10 au zaidi, OMEGA inachapa nembo ya shule au chuo kwa maandishi ya dhahabu (gold foil) au picha ya rangi kulingana na muundo wako.'
-                    : 'Yes! For bulk institutional orders of 10 cartons or more, OMEGA offers customized gold/silver foil stamping and custom 4-color printed cover jackets with your school motto, crest, and vision statement.',
-              },
-              {
-                id: 4,
-                title:
-                  language === 'sw'
-                    ? 'Je, mnatoa risiti ya kielektroniki ya TRA EFD kwa ajili ya hesabu za kodi?'
-                    : 'Do you provide TRA EFD fiscal receipts for corporate accounting and tax audits?',
-                icon: <FileCheck2 className="w-4 h-4" />,
-                content:
-                  language === 'sw'
-                    ? 'Bila shaka. Kila oda ya jumla au taasisi inaambatanishwa na risiti halali ya kielektroniki ya TRA EFD yenye mchanganuo wa VAT kwa ajili ya mahesabu ya ukaguzi wa mapato.'
-                    : 'Absolutely. Every commercial and wholesale order is accompanied by a genuine TRA EFD electronic fiscal receipt showing full VAT breakdown, suitable for corporate expenditure declarations and institutional audit clearance.',
-              },
-              {
-                id: 5,
-                title:
-                  language === 'sw'
-                    ? 'Kiwango cha chini cha katoni za bei ya jumla ni ngapi?'
-                    : 'What is the minimum order quantity (MOQ) for wholesale carton rates?',
-                icon: <Package className="w-4 h-4" />,
-                content:
-                  language === 'sw'
-                    ? 'Punguzo la bei ya jumla linaanza kuanzia katoni 1 tu (vitabu 20 hadi 60 kulingana na Quire). Punguzo zaidi linaongezeka kiotomatiki kuanzia katoni 6 na katoni 40 kuendelea.'
-                    : 'Wholesale carton discounts start at just 1 carton (usually 20 to 60 books per carton depending on Quire size). Additional tiered factory rebates apply automatically for orders exceeding 6 cartons and 40 cartons.',
-              },
-            ]}
-          />
-
         </div>
       </section>
 
