@@ -1457,7 +1457,7 @@ export const AdminDashboardPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsProductModalOpen(false)}
-                className="px-4 py-2 border border-stone-200 rounded-xl text-xs font-bold text-stone-600 hover:bg-stone-50 bg-white"
+                className="px-4 py-2 border border-zinc-200 rounded-xl text-xs font-bold text-zinc-600 hover:bg-zinc-50 bg-white transition-colors cursor-pointer"
               >
                 Cancel
               </button>
@@ -1465,7 +1465,7 @@ export const AdminDashboardPage: React.FC = () => {
                 type="button"
                 onClick={handleProductFormSubmit}
                 disabled={isSavingProduct}
-                className={`px-5 py-2 btn-ledup-copper text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 ${
+                className={`px-5 py-2 bg-[var(--red)] hover:bg-[var(--red-hover)] text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-xs active:scale-95 transition-all inline-flex items-center gap-1.5 cursor-pointer ${
                   isSavingProduct ? 'opacity-70 cursor-not-allowed' : ''
                 }`}
               >
@@ -2239,7 +2239,7 @@ export const AdminDashboardPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsProductModalOpen(false)}
-                className="px-4 py-2.5 border border-stone-200 rounded-xl text-xs font-bold text-stone-600 hover:bg-stone-50 bg-white"
+                className="px-4 py-2.5 border border-zinc-200 rounded-xl text-xs font-bold text-zinc-600 hover:bg-zinc-50 bg-white transition-colors cursor-pointer"
               >
                 Cancel &amp; Return
               </button>
@@ -2247,7 +2247,7 @@ export const AdminDashboardPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSavingProduct}
-                className={`px-6 py-2.5 btn-ledup-copper text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-md active:scale-95 transition-all inline-flex items-center gap-1.5 ${
+                className={`px-6 py-2.5 bg-[var(--red)] hover:bg-[var(--red-hover)] text-white rounded-xl text-xs font-bold uppercase tracking-wider shadow-xs active:scale-95 transition-all inline-flex items-center gap-1.5 cursor-pointer ${
                   isSavingProduct ? 'opacity-70 cursor-not-allowed' : ''
                 }`}
               >
@@ -4268,7 +4268,7 @@ export const AdminDashboardPage: React.FC = () => {
           <div className="flex justify-end pt-3 border-t border-stone-200">
             <button
               type="submit"
-              className="px-6 py-2.5 btn-ledup-copper text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-md inline-flex items-center gap-2 active:scale-95 transition-all"
+              className="px-6 py-2.5 bg-[var(--red)] hover:bg-[var(--red-hover)] text-white text-xs font-bold uppercase tracking-wider rounded-xl shadow-xs inline-flex items-center gap-2 active:scale-95 transition-all cursor-pointer font-mono"
             >
               <Check className="w-4 h-4" />
               <span>Save &amp; Publish to MongoDB Atlas</span>

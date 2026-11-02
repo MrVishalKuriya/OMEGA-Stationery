@@ -211,3 +211,14 @@ input[type="search"]::-webkit-search-results-decoration {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--gold);
 }
+
+/* OMEGA Primary Action Button Utilities */
+.btn-ledup-copper {
+  background-color: var(--red) !important;
+  color: #ffffff !important;
+  transition: all 0.2s ease;
+}
+
+.btn-ledup-copper:hover {
+  background-color: var(--red-hover) !important;
+}

@@ -584,36 +584,66 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
     ctx.lineTo(cbX + cbW, cbY + (cbH * 2) / 3);
     ctx.stroke();
 
-    // Corner brackets
-    const bracketLen = 16;
+    // WhatsApp-style bold corner brackets (L-shapes)
+    const bracketLen = 22;
     ctx.strokeStyle = '#ffffff';
-    ctx.lineWidth = 2.5;
+    ctx.lineWidth = 3.5;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
 
+    // Top-left
     ctx.beginPath();
     ctx.moveTo(cbX, cbY + bracketLen);
     ctx.lineTo(cbX, cbY);
     ctx.lineTo(cbX + bracketLen, cbY);
     ctx.stroke();
 
+    // Top-right
     ctx.beginPath();
     ctx.moveTo(cbX + cbW - bracketLen, cbY);
     ctx.lineTo(cbX + cbW, cbY);
     ctx.lineTo(cbX + cbW, cbY + bracketLen);
     ctx.stroke();
 
+    // Bottom-left
     ctx.beginPath();
     ctx.moveTo(cbX, cbY + cbH - bracketLen);
     ctx.lineTo(cbX, cbY + cbH);
     ctx.lineTo(cbX + bracketLen, cbY + cbH);
     ctx.stroke();
 
+    // Bottom-right
     ctx.beginPath();
     ctx.moveTo(cbX + cbW - bracketLen, cbY + cbH);
     ctx.lineTo(cbX + cbW, cbY + cbH);
     ctx.lineTo(cbX + cbW, cbY + cbH - bracketLen);
     ctx.stroke();
 
-    updateLivePreview(canvas, cbX, cbY, cbW, cbH);
+    // WhatsApp-style center edge bars
+    const edgeBarLen = 20;
+    // Top edge center
+    ctx.beginPath();
+    ctx.moveTo(cbX + cbW / 2 - edgeBarLen / 2, cbY);
+    ctx.lineTo(cbX + cbW / 2 + edgeBarLen / 2, cbY);
+    ctx.stroke();
+
+    // Bottom edge center
+    ctx.beginPath();
+    ctx.moveTo(cbX + cbW / 2 - edgeBarLen / 2, cbY + cbH);
+    ctx.lineTo(cbX + cbW / 2 + edgeBarLen / 2, cbY + cbH);
+    ctx.stroke();
+
+    // Left edge center
+    ctx.beginPath();
+    ctx.moveTo(cbX, cbY + cbH / 2 - edgeBarLen / 2);
+    ctx.lineTo(cbX, cbY + cbH / 2 + edgeBarLen / 2);
+    ctx.stroke();
+
+    // Right edge center
+    ctx.beginPath();
+    ctx.moveTo(cbX + cbW, cbY + cbH / 2 - edgeBarLen / 2);
+    ctx.lineTo(cbX + cbW, cbY + cbH / 2 + edgeBarLen / 2);
+    ctx.stroke();
   }, [
     sourceImg,
     rotation,
@@ -749,45 +779,94 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
     return () => window.removeEventListener('resize', handleResize);
   }, [redrawCanvas]);
 
-  // Pointer drag interactions
+  // Pointer drag interactions (WhatsApp-Style 8-Point Crop Engine)
+  const getHandleAtPoint = (clientX: number, clientY: number): string | null => {
+    const canvas = canvasRef.current;
+    if (!canvas) return null;
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return null;
+
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const cx = (clientX - rect.left) * scaleX;
+    const cy = (clientY - rect.top) * scaleY;
+
+    const cbX = cropBox.x * canvas.width;
+    const cbY = cropBox.y * canvas.height;
+    const cbW = cropBox.width * canvas.width;
+    const cbH = cropBox.height * canvas.height;
+
+    // Generous hit radius in canvas coordinates
+    const hitR = Math.max(22, Math.round(26 * scaleX));
+
+    // 1. WhatsApp 4 corner handles
+    if (Math.hypot(cx - cbX, cy - cbY) <= hitR) return 'nw';
+    if (Math.hypot(cx - (cbX + cbW), cy - cbY) <= hitR) return 'ne';
+    if (Math.hypot(cx - cbX, cy - (cbY + cbH)) <= hitR) return 'sw';
+    if (Math.hypot(cx - (cbX + cbW), cy - (cbY + cbH)) <= hitR) return 'se';
+
+    // 2. WhatsApp 4 center edge bars
+    if (Math.abs(cy - cbY) <= hitR && cx >= cbX && cx <= cbX + cbW) return 'n';
+    if (Math.abs(cy - (cbY + cbH)) <= hitR && cx >= cbX && cx <= cbX + cbW) return 's';
+    if (Math.abs(cx - cbX) <= hitR && cy >= cbY && cy <= cbY + cbH) return 'w';
+    if (Math.abs(cx - (cbX + cbW)) <= hitR && cy >= cbY && cy <= cbY + cbH) return 'e';
+
+    // 3. Inside crop box -> move
+    if (cx >= cbX && cx <= cbX + cbW && cy >= cbY && cy <= cbY + cbH) return 'move';
+
+    return null;
+  };
+
+  const getCursorForHandle = (handle: string | null): string => {
+    switch (handle) {
+      case 'nw':
+      case 'se':
+        return 'nwse-resize';
+      case 'ne':
+      case 'sw':
+        return 'nesw-resize';
+      case 'n':
+      case 's':
+        return 'ns-resize';
+      case 'e':
+      case 'w':
+        return 'ew-resize';
+      case 'move':
+        return 'move';
+      default:
+        return 'crosshair';
+    }
+  };
+
   const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+
+    const handle = getHandleAtPoint(e.clientX, e.clientY);
+    if (!handle) return;
+
     const rect = canvas.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width;
     const py = (e.clientY - rect.top) / rect.height;
 
-    const cb = cropBox;
-    const tolerance = 0.12;
-
-    if (Math.abs(px - cb.x) < tolerance && Math.abs(py - cb.y) < tolerance) {
-      setDragHandle('nw');
-    } else if (Math.abs(px - (cb.x + cb.width)) < tolerance && Math.abs(py - cb.y) < tolerance) {
-      setDragHandle('ne');
-    } else if (Math.abs(px - cb.x) < tolerance && Math.abs(py - (cb.y + cb.height)) < tolerance) {
-      setDragHandle('sw');
-    } else if (
-      Math.abs(px - (cb.x + cb.width)) < tolerance &&
-      Math.abs(py - (cb.y + cb.height)) < tolerance
-    ) {
-      setDragHandle('se');
-    } else if (px >= cb.x && px <= cb.x + cb.width && py >= cb.y && py <= cb.y + cb.height) {
-      setDragHandle('move');
-    } else {
-      setDragHandle(null);
-      return;
-    }
-
+    setDragHandle(handle);
     setIsDraggingCrop(true);
     setDragStart({ x: px, y: py });
-    setCropBoxStart({ ...cb });
+    setCropBoxStart({ ...cropBox });
+    canvas.style.cursor = getCursorForHandle(handle);
     (e.target as HTMLElement).setPointerCapture(e.pointerId);
   };
 
   const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (!isDraggingCrop || !dragHandle) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
+
+    if (!isDraggingCrop || !dragHandle) {
+      const handle = getHandleAtPoint(e.clientX, e.clientY);
+      canvas.style.cursor = getCursorForHandle(handle);
+      return;
+    }
+
     const rect = canvas.getBoundingClientRect();
     const px = (e.clientX - rect.left) / rect.width;
     const py = (e.clientY - rect.top) / rect.height;
@@ -795,6 +874,7 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
     const dx = px - dragStart.x;
     const dy = py - dragStart.y;
     const start = cropBoxStart;
+    const minSize = 0.08;
 
     let newBox = { ...start };
 
@@ -802,26 +882,40 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
       newBox.x = Math.max(0, Math.min(1 - start.width, start.x + dx));
       newBox.y = Math.max(0, Math.min(1 - start.height, start.y + dy));
     } else if (dragHandle === 'se') {
-      let nw = Math.max(0.15, Math.min(1 - start.x, start.width + dx));
-      let nh = Math.max(0.15, Math.min(1 - start.y, start.height + dy));
+      let nw = Math.max(minSize, Math.min(1 - start.x, start.width + dx));
+      let nh = Math.max(minSize, Math.min(1 - start.y, start.height + dy));
       if (aspectRatio === '1:1') {
         const side = Math.min(nw, nh);
         nw = side;
         nh = side;
       } else if (aspectRatio === '4:5') {
-        nw = nh * (4 / 5);
+        nw = Math.min(nw, (nh * 4) / 5);
+        nh = (nw * 5) / 4;
+      } else if (aspectRatio === '16:9') {
+        nw = Math.min(nw, (nh * 16) / 9);
+        nh = (nw * 9) / 16;
       }
-      newBox.width = nw;
-      newBox.height = nh;
+      newBox.width = Math.min(1 - start.x, nw);
+      newBox.height = Math.min(1 - start.y, nh);
     } else if (dragHandle === 'nw') {
-      let nx = Math.max(0, Math.min(start.x + start.width - 0.15, start.x + dx));
-      let ny = Math.max(0, Math.min(start.y + start.height - 0.15, start.y + dy));
+      let nx = Math.max(0, Math.min(start.x + start.width - minSize, start.x + dx));
+      let ny = Math.max(0, Math.min(start.y + start.height - minSize, start.y + dy));
       let nw = start.width - (nx - start.x);
       let nh = start.height - (ny - start.y);
       if (aspectRatio === '1:1') {
         const side = Math.min(nw, nh);
         nw = side;
         nh = side;
+        nx = start.x + (start.width - nw);
+        ny = start.y + (start.height - nh);
+      } else if (aspectRatio === '4:5') {
+        nw = Math.min(nw, (nh * 4) / 5);
+        nh = (nw * 5) / 4;
+        nx = start.x + (start.width - nw);
+        ny = start.y + (start.height - nh);
+      } else if (aspectRatio === '16:9') {
+        nw = Math.min(nw, (nh * 16) / 9);
+        nh = (nw * 9) / 16;
         nx = start.x + (start.width - nw);
         ny = start.y + (start.height - nh);
       }
@@ -830,30 +924,75 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
       newBox.width = nw;
       newBox.height = nh;
     } else if (dragHandle === 'ne') {
-      let nw = Math.max(0.15, Math.min(1 - start.x, start.width + dx));
-      let ny = Math.max(0, Math.min(1 - start.y, start.height + dy));
+      let nw = Math.max(minSize, Math.min(1 - start.x, start.width + dx));
+      let ny = Math.max(0, Math.min(start.y + start.height - minSize, start.y + dy));
       let nh = start.height - (ny - start.y);
       if (aspectRatio === '1:1') {
         const side = Math.min(nw, nh);
         nw = side;
         nh = side;
         ny = start.y + (start.height - nh);
+      } else if (aspectRatio === '4:5') {
+        nw = Math.min(nw, (nh * 4) / 5);
+        nh = (nw * 5) / 4;
+        ny = start.y + (start.height - nh);
+      } else if (aspectRatio === '16:9') {
+        nw = Math.min(nw, (nh * 16) / 9);
+        nh = (nw * 9) / 16;
+        ny = start.y + (start.height - nh);
       }
       newBox.width = nw;
       newBox.height = nh;
+      newBox.y = ny;
     } else if (dragHandle === 'sw') {
-      let nx = Math.max(0, Math.min(start.x + start.width - 0.15, start.x + dx));
+      let nx = Math.max(0, Math.min(start.x + start.width - minSize, start.x + dx));
       let nw = start.width - (nx - start.x);
-      let nh = Math.max(0.15, Math.min(1 - start.y, start.height + dy));
+      let nh = Math.max(minSize, Math.min(1 - start.y, start.height + dy));
       if (aspectRatio === '1:1') {
         const side = Math.min(nw, nh);
         nw = side;
         nh = side;
         nx = start.x + (start.width - nw);
+      } else if (aspectRatio === '4:5') {
+        nw = Math.min(nw, (nh * 4) / 5);
+        nh = (nw * 5) / 4;
+        nx = start.x + (start.width - nw);
+      } else if (aspectRatio === '16:9') {
+        nw = Math.min(nw, (nh * 16) / 9);
+        nh = (nw * 9) / 16;
+        nx = start.x + (start.width - nw);
       }
       newBox.x = nx;
       newBox.width = nw;
       newBox.height = nh;
+    } else if (dragHandle === 'n') {
+      let ny = Math.max(0, Math.min(start.y + start.height - minSize, start.y + dy));
+      let nh = start.height - (ny - start.y);
+      newBox.y = ny;
+      newBox.height = nh;
+      if (aspectRatio === '1:1') {
+        newBox.width = Math.min(1 - start.x, nh);
+      }
+    } else if (dragHandle === 's') {
+      let nh = Math.max(minSize, Math.min(1 - start.y, start.height + dy));
+      newBox.height = nh;
+      if (aspectRatio === '1:1') {
+        newBox.width = Math.min(1 - start.x, nh);
+      }
+    } else if (dragHandle === 'w') {
+      let nx = Math.max(0, Math.min(start.x + start.width - minSize, start.x + dx));
+      let nw = start.width - (nx - start.x);
+      newBox.x = nx;
+      newBox.width = nw;
+      if (aspectRatio === '1:1') {
+        newBox.height = Math.min(1 - start.y, nw);
+      }
+    } else if (dragHandle === 'e') {
+      let nw = Math.max(minSize, Math.min(1 - start.x, start.width + dx));
+      newBox.width = nw;
+      if (aspectRatio === '1:1') {
+        newBox.height = Math.min(1 - start.y, nw);
+      }
     }
 
     setCropBox(newBox);
@@ -862,7 +1001,29 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
   const handlePointerUp = () => {
     setIsDraggingCrop(false);
     setDragHandle(null);
+    const canvas = canvasRef.current;
+    if (canvas) {
+      canvas.style.cursor = 'default';
+      const cbX = cropBox.x * canvas.width;
+      const cbY = cropBox.y * canvas.height;
+      const cbW = cropBox.width * canvas.width;
+      const cbH = cropBox.height * canvas.height;
+      updateLivePreview(canvas, cbX, cbY, cbW, cbH);
+    }
   };
+
+  useEffect(() => {
+    if (studioTab === 'preview') {
+      const canvas = canvasRef.current;
+      if (canvas) {
+        const cbX = cropBox.x * canvas.width;
+        const cbY = cropBox.y * canvas.height;
+        const cbW = cropBox.width * canvas.width;
+        const cbH = cropBox.height * canvas.height;
+        updateLivePreview(canvas, cbX, cbY, cbW, cbH);
+      }
+    }
+  }, [studioTab, cropBox]);
 
   // Reset all adjustments
   const handleResetAll = () => {
@@ -1151,7 +1312,8 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                 onPointerDown={handlePointerDown}
                 onPointerMove={handlePointerMove}
                 onPointerUp={handlePointerUp}
-                className="w-full h-full object-contain cursor-grab active:cursor-grabbing touch-none"
+                onPointerCancel={handlePointerUp}
+                className="w-full h-full object-contain touch-none select-none"
               />
             )}
 
@@ -1774,36 +1936,6 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
                     </span>
                   </div>
 
-                  {/* Website Card Display Mode Toggle */}
-                  <div className="bg-zinc-50 p-2.5 rounded-2xl border border-zinc-200 space-y-1.5">
-                    <span className="text-[11px] font-bold text-zinc-800 block">
-                      Card Display Style on Website:
-                    </span>
-                    <div className="grid grid-cols-2 gap-1.5">
-                      <button
-                        type="button"
-                        onClick={() => setStoreImageFit('cover')}
-                        className={`py-1.5 px-2 rounded-xl text-xs font-bold transition-all text-center cursor-pointer font-mono ${
-                          storeImageFit === 'cover'
-                            ? 'bg-[var(--red)] text-white shadow-xs'
-                            : 'bg-white border border-zinc-200 text-zinc-700 hover:bg-zinc-100'
-                        }`}
-                      >
-                        Edge-to-Edge Cover (With BG)
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setStoreImageFit('contain')}
-                        className={`py-1.5 px-2 rounded-xl text-xs font-bold transition-all text-center cursor-pointer font-mono ${
-                          storeImageFit === 'contain'
-                            ? 'bg-[var(--red)] text-white shadow-xs'
-                            : 'bg-white border border-zinc-200 text-zinc-700 hover:bg-zinc-100'
-                        }`}
-                      >
-                        Studio Pedestal Fit (Without BG)
-                      </button>
-                    </div>
-                  </div>
 
                   {/* Realistic Mini OMEGA Product Card */}
                   <div className="max-w-[260px] mx-auto w-full bg-white text-zinc-900 rounded-2xl border border-zinc-200/80 shadow-sm overflow-hidden flex flex-col">
