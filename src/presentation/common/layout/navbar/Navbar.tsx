@@ -12,7 +12,6 @@ import {
   ArrowRight,
   Sun,
   Moon,
-  Truck,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useStore } from '@/context/StoreContext';
@@ -359,20 +358,6 @@ export const Navbar: React.FC = () => {
                 >
                   <Search className="w-4 h-4 stroke-[2]" />
                 </motion.button>
-
-                {/* 1. Track Order Pill with Perfect Optical Center Alignment */}
-                <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} className="hidden xl:inline-flex">
-                  <Link
-                    to="/tracking"
-                    className="h-9 inline-flex items-center justify-center gap-2 px-3.5 rounded-full bg-[var(--surface-2)] border border-[var(--border)] hover:border-[var(--gold)] text-[var(--text)] hover:text-[var(--gold)] transition-all shadow-2xs select-none group"
-                    title="Track Order Dispatch & Bus Waybills"
-                  >
-                    <Truck className="w-3.5 h-3.5 text-[var(--gold)] shrink-0 transition-transform group-hover:scale-110" strokeWidth={2.2} />
-                    <span className="text-xs font-sans font-bold leading-none tracking-tight">
-                      Track Order
-                    </span>
-                  </Link>
-                </motion.div>
 
                 {/* 2. Theme Toggle (Sun / Moon) in Clean Circular Pill (w-9 h-9) */}
                 <motion.button
