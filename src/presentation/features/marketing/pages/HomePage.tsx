@@ -376,7 +376,7 @@ export const HomePage: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* Collection Cards: Mobile Single-Slide Carousel + Desktop 4-Col Grid */}
+          {/* Collection Cards: Mobile Single-Slide Carousel + Desktop 4-Col Grid (Stitch Minimal UI/UX) */}
           <div
             ref={collectionScrollRef}
             onScroll={handleCollectionScroll}
@@ -385,75 +385,62 @@ export const HomePage: React.FC = () => {
             {collections.map((col, idx) => (
               <motion.div
                 key={col.id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.08 }}
-                whileHover={{ y: -5, transition: { duration: 0.25 } }}
+                transition={{ duration: 0.35, delay: idx * 0.06 }}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 onClick={() => {
                   setSelectedCollection(col);
                   setSelectedGalleryImg(col.image);
                 }}
-                className="w-[86vw] sm:w-[320px] md:w-auto shrink-0 snap-center relative overflow-hidden bg-white rounded-3xl border border-[#E6E0D4] hover:border-[var(--red)]/50 transition-all duration-300 p-5 sm:p-6 flex flex-col justify-between shadow-[0_4px_24px_rgba(22,21,24,0.04)] hover:shadow-[0_16px_40px_rgba(214,58,58,0.12)] group text-left cursor-pointer"
+                className="w-[86vw] sm:w-[320px] md:w-auto shrink-0 snap-center bg-white rounded-2xl border border-[#E7E5E0] hover:border-[var(--gold)]/80 transition-all duration-300 p-5 sm:p-6 flex flex-col justify-between shadow-[0_2px_10px_rgba(17,17,19,0.03)] hover:shadow-[0_12px_28px_-6px_rgba(35,27,18,0.07)] group text-left cursor-pointer"
               >
-                {/* Subtle Ambient Glow */}
-                <div className="absolute -top-10 -right-10 w-36 h-36 bg-[var(--gold)]/10 rounded-full blur-2xl group-hover:bg-[var(--red)]/10 transition-colors duration-500 pointer-events-none" />
-
-                <div className="flex flex-col justify-between h-full relative z-10">
+                <div className="flex flex-col justify-between h-full">
                   <div>
-                    {/* 1. TOP BADGE & TAG */}
-                    <div className="flex items-center justify-between gap-2 mb-2">
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9.5px] font-mono font-bold tracking-wider uppercase text-[var(--gold)] bg-[var(--surface-2)] border border-[var(--gold)]/25 shadow-2xs">
-                        <Sparkles className="w-3 h-3 text-[var(--gold)]" />
-                        <span>{col.badge}</span>
+                    {/* 1. TOP MINIMAL METADATA */}
+                    <div className="flex items-center justify-between gap-2 mb-2.5">
+                      <span className="text-[10px] font-mono tracking-widest uppercase text-[var(--gold)] font-bold">
+                        {col.badge}
                       </span>
-                      <span className="text-[10px] font-mono font-bold text-[var(--gold)] bg-[var(--gold)]/10 px-2 py-0.5 rounded-md border border-[var(--gold)]/20">
+                      <span className="text-[9.5px] font-mono text-[#8C7355] font-semibold bg-[#FAF8F5] px-2 py-0.5 rounded border border-[#E7E5E0]">
                         {col.tag}
                       </span>
                     </div>
 
-                    {/* 2. BOOK KA NAME UPAR (Book Title at Top) */}
+                    {/* 2. BOOK TITLE AT TOP (Clean Bodoni/Serif) */}
                     <div className="mb-3">
-                      <h3 className="font-heading font-black text-lg sm:text-xl text-[var(--text)] group-hover:text-[var(--red)] transition-colors leading-tight tracking-tight">
+                      <h3 className="font-serif text-lg sm:text-xl font-bold tracking-tight text-[#161311] group-hover:text-[var(--red)] transition-colors leading-tight">
                         {col.title}
                       </h3>
-                      <p className="text-[11.5px] text-[var(--text-muted)] font-medium mt-1 line-clamp-1">
+                      <p className="text-xs text-[#6E6B66] font-sans mt-0.5 line-clamp-1">
                         {col.subtitle}
                       </p>
                     </div>
 
-                    {/* 3. PRODUCT IMAGE SAHI SE SET (Centered, Sharp & Tactile) */}
-                    <div className="w-full aspect-[4/3] rounded-2xl bg-gradient-to-b from-[#FAF8F5] via-[#F4EFEA] to-[#EBE4D7] border border-[#DDD5C7] overflow-hidden flex items-center justify-center p-3.5 mb-4 relative shadow-inner group-hover:border-[var(--gold)]/60 transition-all duration-300">
-                      {/* Ambient Radial Spotlight */}
-                      <div className="absolute inset-0 bg-radial from-white/90 via-white/20 to-transparent pointer-events-none" />
-
-                      {/* Tactile Book Cutout with Drop Shadow and Hover Scale */}
+                    {/* 3. PRODUCT IMAGE (Seamless Multiply Blend - No White Box) */}
+                    <div className="w-full aspect-[4/3] rounded-xl bg-[#FAF8F5] border border-[#E7E5E0] overflow-hidden flex items-center justify-center p-3.5 my-3 relative group-hover:border-[var(--gold)]/40 transition-colors">
                       <img
                         src={col.image}
                         alt={col.title}
-                        className="relative z-1 max-h-full max-w-full object-contain filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.18)] transition-all duration-400 ease-out group-hover:scale-108 group-hover:-rotate-1"
+                        className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-300 group-hover:scale-106"
                         loading="lazy"
                       />
-
-                      {/* Pedestal Surface Shadow */}
-                      <div className="absolute bottom-1.5 inset-x-8 h-2.5 bg-black/15 blur-sm rounded-full pointer-events-none" />
                     </div>
 
-                    {/* 4. SHIRF WAHI DETAILS (Concise Clean Specifications) */}
-                    <ul className="space-y-2 text-xs text-[var(--text)] mb-4">
+                    {/* 4. REFINED MINIMALIST SPECIFICATIONS */}
+                    <ul className="space-y-2 text-xs text-[#47464A] mb-4">
                       {col.features.map((feat, fIdx) => (
-                        <li key={fIdx} className="flex items-center gap-2">
-                          <span className="w-4 h-4 rounded-full bg-[var(--red)]/10 text-[var(--red)] flex items-center justify-center shrink-0 border border-[var(--red)]/20 shadow-2xs">
-                            <CheckCircle2 className="w-2.5 h-2.5 stroke-[2.5]" />
-                          </span>
-                          <span className="font-medium text-[var(--text)] text-[12px] leading-snug">{feat}</span>
+                        <li key={fIdx} className="flex items-center gap-2.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[var(--gold)] shrink-0" />
+                          <span className="font-sans text-[12.5px] text-[#1A1C1B] leading-snug">{feat}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
-                  {/* 5. EXPLORE ACTION & BRAND HALLMARK */}
-                  <div className="pt-3 border-t border-[var(--border)]/60 flex items-center justify-between gap-2 mt-auto">
+                  {/* 5. MINIMAL EXPLORE ACTION & BRAND HALLMARK */}
+                  <div className="pt-3 border-t border-[#E7E5E0] flex items-center justify-between gap-2 mt-auto">
                     <button
                       type="button"
                       onClick={(e) => {
@@ -461,13 +448,13 @@ export const HomePage: React.FC = () => {
                         setSelectedCollection(col);
                         setSelectedGalleryImg(col.image);
                       }}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#161518] hover:bg-[#D63A3A] active:scale-95 text-white font-sans text-xs font-bold tracking-wide transition-all duration-200 shadow-sm hover:shadow-md hover:shadow-red-950/20 cursor-pointer group/btn"
+                      className="inline-flex items-center gap-2 px-4.5 py-2 rounded-lg bg-[#111113] hover:bg-[#D63A3A] active:scale-95 text-white font-mono text-xs font-bold tracking-wider uppercase transition-all duration-200 shadow-2xs hover:shadow-xs cursor-pointer group/btn"
                     >
                       <span>{col.cta}</span>
                       <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
                     </button>
                     
-                    <span className="text-[10.5px] font-mono font-bold text-[var(--text-muted)]">
+                    <span className="text-[11px] font-mono text-[#6E6B66]">
                       {col.brand}
                     </span>
                   </div>
@@ -554,11 +541,11 @@ export const HomePage: React.FC = () => {
               {/* Drawer Body: Exclusive Book Photos & Full Details */}
               <div className="p-5 sm:p-6 space-y-6 flex-1 text-left">
                 {/* Large Featured Photo */}
-                <div className="w-full aspect-[4/3] rounded-2xl bg-gradient-to-b from-[#FAF8F5] via-[#F4EFEA] to-[#EBE4D7] border border-[#DDD5C7] overflow-hidden flex items-center justify-center p-4 relative shadow-inner">
+                <div className="w-full aspect-[4/3] rounded-2xl bg-[#FAF8F5] border border-[#E7E5E0] overflow-hidden flex items-center justify-center p-4 relative">
                   <img
                     src={selectedGalleryImg || selectedCollection.image}
                     alt={selectedCollection.title}
-                    className="max-h-full max-w-full object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.18)] transition-all duration-300"
+                    className="max-h-full max-w-full object-contain mix-blend-multiply transition-all duration-300"
                   />
                 </div>
 
@@ -576,11 +563,11 @@ export const HomePage: React.FC = () => {
                           onClick={() => setSelectedGalleryImg(imgUrl)}
                           className={`w-16 h-16 rounded-xl overflow-hidden p-1 bg-[#FAF8F5] border-2 transition-all shrink-0 cursor-pointer ${
                             (selectedGalleryImg || selectedCollection.image) === imgUrl
-                              ? 'border-[var(--red)] shadow-sm'
-                              : 'border-[var(--border)] hover:border-[var(--gold)] opacity-70 hover:opacity-100'
+                              ? 'border-[#111113] shadow-sm'
+                              : 'border-[#E7E5E0] hover:border-[var(--gold)] opacity-70 hover:opacity-100'
                           }`}
                         >
-                          <img src={imgUrl} alt="Thumbnail" className="w-full h-full object-contain" />
+                          <img src={imgUrl} alt="Thumbnail" className="w-full h-full object-contain mix-blend-multiply" />
                         </button>
                       ))}
                     </div>
