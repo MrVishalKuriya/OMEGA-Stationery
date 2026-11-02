@@ -173,8 +173,9 @@ export const Navbar: React.FC = () => {
 
   // Modern Watermelon UI Category Navigation Items
   const CATEGORY_NAV_ITEMS = [
+    { id: 'home', label: language === 'sw' ? 'Mwanzo' : 'Home', href: '/' },
     { id: 'all-catalog', label: language === 'sw' ? 'Bidhaa Zote' : 'All Products', href: '/catalog' },
-    { id: 'counter-books', label: 'Counter Books (Q1-Q6)', href: '/catalog?category=Counter+Books' },
+    { id: 'counter-books', label: 'Counter Books (Q2-Q4)', href: '/catalog?category=Counter+Books' },
     { id: 'exercise-books', label: language === 'sw' ? 'Madaftari ya Mazoezi' : 'Exercise Books', href: '/catalog?category=Exercise+Books' },
     { id: 'bahasha', label: 'Kraft Bahasha', href: '/catalog?category=Bahasha+%26+Envelopes' },
     { id: 'registers', label: 'Office Registers', href: '/catalog?category=Registers' },

@@ -13,6 +13,7 @@ import {
   Heart,
   Package,
   Search,
+  Home,
 } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { BrandLogo } from '@/components/BrandLogo';
@@ -51,7 +52,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
 
   const categories = [
     {
-      title: 'Counter Books (Q1 – Q6)',
+      title: 'Counter Books (Q2 – Q4)',
       subtitle: 'Hardcover Smyth-sewn archival ledgers',
       href: '/catalog?category=Counter+Books',
       icon: BookOpen,
@@ -160,6 +161,24 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
 
         {/* Navigation Content */}
         <div className="flex-1 overflow-y-auto px-4 py-3 space-y-5">
+          {/* Home Page Button */}
+          <div>
+            <Link
+              to="/"
+              onClick={onClose}
+              className="flex items-center justify-between p-2.5 rounded-xl bg-[var(--surface-2)]/70 hover:bg-[var(--surface-2)] border border-[var(--border)] transition-colors group"
+            >
+              <div className="flex items-center gap-3 min-w-0 pr-2 text-left">
+                <div className="w-8 h-8 rounded-lg bg-[var(--surface-1)] border border-[var(--border)] flex items-center justify-center shrink-0">
+                  <Home className="w-4 h-4 text-[var(--red)]" />
+                </div>
+                <span className="text-xs font-bold text-[var(--text)] group-hover:text-[var(--gold)] transition-colors truncate">
+                  {language === 'sw' ? 'Ukurasa wa Mwanzo (Home)' : 'Home Page'}
+                </span>
+              </div>
+              <ChevronRight className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:translate-x-0.5 transition-transform shrink-0" />
+            </Link>
+          </div>
           
           {/* Section 1: Product Categories */}
           <div>
