@@ -253,54 +253,53 @@ export const HomePage: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* 4 Collection Cards Grid with Motion Stagger */}
+          {/* 4 Collection Cards Grid with Clean Light-Theme Layout */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
             {collections.map((col, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 25 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.45, delay: idx * 0.08 }}
+                transition={{ duration: 0.4, delay: idx * 0.08 }}
                 whileHover={{ y: -6, transition: { duration: 0.25 } }}
               >
                 <Link
                   to={col.link}
-                  className="group relative h-56 sm:h-64 rounded-2xl overflow-hidden border border-[var(--border)] bg-[var(--surface-1)] hover:border-[var(--gold)] hover:shadow-xl transition-all duration-300 flex flex-col justify-between p-5 text-white block"
+                  className="group relative rounded-2xl overflow-hidden border border-[var(--border)] bg-white hover:border-[var(--gold)] hover:shadow-xl transition-all duration-300 flex flex-col p-4 sm:p-5 h-full text-left block shadow-xs"
                 >
-                  {/* Background Image with Dark Vignette */}
-                  <div className="absolute inset-0 z-0">
-                    <img
-                      src={col.image}
-                      alt={col.title}
-                      className="w-full h-full object-cover object-center opacity-30 group-hover:scale-105 group-hover:opacity-40 transition-all duration-500 ease-out"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg)] via-[var(--bg)]/75 to-transparent" />
-                  </div>
-
-                  {/* Top Badge */}
-                  <div className="relative z-10 flex items-center justify-between">
-                    <span className="text-[10px] font-mono tracking-widest uppercase text-[var(--gold)] block font-bold">
+                  {/* Top Row: Category Tag & Arrow Badge */}
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[10px] font-mono tracking-widest uppercase text-[var(--gold)] font-bold">
                       {col.sub}
                     </span>
-                    <div className="w-8 h-8 rounded-full bg-white/10 group-hover:bg-[var(--red)] group-hover:text-white backdrop-blur-xs flex items-center justify-center text-[var(--text)] transition-colors border border-white/15">
+                    <div className="w-8 h-8 rounded-full bg-[var(--surface-2)] text-[var(--text)] group-hover:bg-[var(--red)] group-hover:text-white flex items-center justify-center transition-all duration-200 shadow-2xs border border-[var(--border)] group-hover:border-transparent shrink-0">
                       <ArrowUpRight className="w-4 h-4 stroke-[2]" />
                     </div>
                   </div>
 
-                  {/* Bottom Title & Action */}
-                  <div className="relative z-10 space-y-1.5 text-left">
-                    <h3 className="font-serif text-base sm:text-lg font-bold tracking-wide text-[var(--text)] leading-snug">
+                  {/* Centered Crisp Product Showcase Panel */}
+                  <div className="w-full aspect-[4/3] rounded-xl bg-[#F7F4EE] border border-[var(--border)]/60 overflow-hidden flex items-center justify-center p-3 relative mb-4 group-hover:border-[var(--gold)]/40 transition-colors">
+                    <img
+                      src={col.image}
+                      alt={col.title}
+                      className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-108"
+                      loading="lazy"
+                    />
+                  </div>
+
+                  {/* Bottom Content: Title, Description, & Explore Link */}
+                  <div className="mt-auto space-y-1">
+                    <h3 className="font-serif text-base sm:text-lg font-bold tracking-tight text-[var(--text)] group-hover:text-[var(--red)] transition-colors leading-snug">
                       {col.title}
                     </h3>
-                    <p className="text-[11px] text-[var(--text-muted)] line-clamp-1 font-sans">
+                    <p className="text-[11.5px] text-[var(--text-muted)] font-sans line-clamp-1">
                       {col.desc}
                     </p>
                     <div className="pt-2">
-                      <span className="inline-flex items-center gap-1.5 text-[10.5px] font-mono tracking-widest uppercase text-[var(--text)] font-bold group-hover:text-[var(--gold)] border-b border-[var(--border)] group-hover:border-[var(--gold)] pb-0.5 transition-all">
+                      <span className="inline-flex items-center gap-1.5 text-[10.5px] font-mono font-bold tracking-wider uppercase text-[var(--gold)] group-hover:text-[var(--red)] transition-colors">
                         <span>EXPLORE</span>
-                        <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1 stroke-[2]" />
+                        <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1 stroke-[2]" />
                       </span>
                     </div>
                   </div>
