@@ -1463,11 +1463,6 @@ export const HomePage: React.FC = () => {
         <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-2xl mx-auto text-center space-y-4">
             
-            {/* Red Badge */}
-            <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-[var(--red)]/40 bg-[var(--red)]/10 text-[var(--red)] text-[11px] font-mono font-bold uppercase tracking-widest shadow-xs">
-              VIP CONCIERGE &amp; PRICE ALERTS
-            </div>
-
             {/* Headline */}
             <h2 className="font-serif text-2xl sm:text-4xl lg:text-5xl font-bold text-[var(--text)] tracking-tight">
               {language === 'sw' ? 'Ungana na OMEGA Stationery' : 'Connect with OMEGA Stationery'}
