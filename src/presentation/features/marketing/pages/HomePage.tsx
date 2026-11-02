@@ -21,6 +21,9 @@ import {
   Sparkles,
   FileCheck2,
   Boxes,
+  X,
+  ExternalLink,
+  ShoppingBag,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useStore } from '@/context/StoreContext';
@@ -45,6 +48,8 @@ export const HomePage: React.FC = () => {
   const [bannerFavorited, setBannerFavorited] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [activeCollectionSlide, setActiveCollectionSlide] = useState(0);
+  const [selectedCollection, setSelectedCollection] = useState<any | null>(null);
+  const [selectedGalleryImg, setSelectedGalleryImg] = useState<string>('');
   const collectionScrollRef = React.useRef<HTMLDivElement>(null);
 
   const scrollToSlide = (index: number) => {
@@ -98,6 +103,24 @@ export const HomePage: React.FC = () => {
         cta: language === 'sw' ? 'EXPLORE' : 'EXPLORE',
         link: '/catalog?category=Counter+Books',
         image: '/omega-products/counter-book-q2-catalog.jpeg',
+        gallery: [
+          '/omega-products/counter-book-q2-catalog.jpeg',
+          '/omega-products/counter-book-q3-288p.jpeg',
+          '/omega-products/counter-book-q4-catalog.jpeg',
+          '/omega-products/catalog-sheet-counter-q2-q3-q4.jpeg',
+        ],
+        variants: [
+          { name: 'Quire 2 (Q2)', pages: '192 Pages', price: 'TSh 6,500', desc: 'Commercial Accounts & Store Ledgers' },
+          { name: 'Quire 3 (Q3)', pages: '288 Pages', price: 'TSh 8,500', badge: 'BEST SELLER', desc: 'Secondary School & Institutional Standard' },
+          { name: 'Quire 4 (Q4)', pages: '384 Pages', price: 'TSh 11,500', desc: 'Heavyweight Extended Ledger Folio' },
+        ],
+        specs: [
+          'Pure 70 GSM archival white bond paper with zero ink bleed',
+          'Precision Smyth-sewn binding opens 180° lay-flat',
+          'Attractive rigid black & red hardcover board',
+          'Manufactured to Tanzania institutional standards',
+          'Daily bus cargo dispatch across all 31 regions',
+        ],
       },
       {
         id: 'exercise-books',
@@ -114,6 +137,24 @@ export const HomePage: React.FC = () => {
         cta: language === 'sw' ? 'EXPLORE' : 'EXPLORE',
         link: '/catalog?category=Exercise+Books',
         image: '/omega-products/exercise-book-200p-sl-catalog.jpeg',
+        gallery: [
+          '/omega-products/exercise-book-200p-sl-catalog.jpeg',
+          '/omega-products/exercise-book-100p-catalog.jpeg',
+          '/omega-products/exercise-book-80p-catalog.jpeg',
+          '/omega-products/exercise-book-200p-purple.jpeg',
+        ],
+        variants: [
+          { name: '200 Pages (Single Line / Double Line / Grid)', pages: '200 Pages', price: 'TSh 2,500', badge: 'POPULAR', desc: 'Secondary & College High-Volume Note Taking' },
+          { name: '100 Pages Single Line', pages: '100 Pages', price: 'TSh 1,500', desc: 'Standard Classroom Subject Exercise Book' },
+          { name: '80 Pages Single & Double Line', pages: '80 Pages', price: 'TSh 1,200', desc: 'Term Exercise Book for Primary & Secondary' },
+          { name: '32 Pages Exercise Book', pages: '32 Pages', price: 'TSh 600', desc: 'Kindergarten & Early Primary Writing' },
+        ],
+        specs: [
+          '70 GSM bright white bond writing paper',
+          'Stiff protective cover featuring Tanzania national map',
+          'Indigo precision ruled margins conforming to official syllabus',
+          'Available in wholesale cartons of 100 pcs and 200 pcs',
+        ],
       },
       {
         id: 'kraft-bahasha',
@@ -130,6 +171,23 @@ export const HomePage: React.FC = () => {
         cta: language === 'sw' ? 'EXPLORE' : 'EXPLORE',
         link: '/catalog?category=Bahasha+%26+Envelopes',
         image: '/omega-products/bahasha-a4-catalog.png',
+        gallery: [
+          '/omega-products/bahasha-a4-catalog.png',
+          '/omega-products/bahasha-a3-catalog.jpeg',
+          '/omega-products/bahasha-a5-catalog.jpeg',
+          '/omega-products/bahasha-a4-box.jpeg',
+        ],
+        variants: [
+          { name: 'A3 Heavy Kraft Bahasha', pages: 'Box of 250', price: 'TSh 35,000 / Box', desc: 'Tenders, Architectural Folios & Contracts' },
+          { name: 'A4 Official Document Mailer', pages: 'Box of 500', price: 'TSh 45,000 / Box', badge: 'HIGH DEMAND', desc: 'Standard Office Mailer with Instant Peel & Seal' },
+          { name: 'A5 & A6 Waybill Envelopes', pages: 'Box of 500', price: 'TSh 28,000 / Box', desc: 'Bus Parcel & Cargo Waybills' },
+        ],
+        specs: [
+          'Extra-heavy pure virgin kraft fiber paper',
+          'Tamper-evident self-adhesive peel & seal strip',
+          'Water-resistant and tear-resistant protective barrier',
+          'Wholesale carton box packaging for high security',
+        ],
       },
       {
         id: 'registers',
@@ -146,6 +204,22 @@ export const HomePage: React.FC = () => {
         cta: language === 'sw' ? 'EXPLORE' : 'EXPLORE',
         link: '/catalog?category=Registers',
         image: '/omega-products/stiff-cover-200-catalog.jpeg',
+        gallery: [
+          '/omega-products/stiff-cover-200-catalog.jpeg',
+          '/omega-products/catalog-sheet-stiff-cover-200.jpeg',
+          '/omega-products/catalog-sheet-jaradio-cash.jpeg',
+        ],
+        variants: [
+          { name: 'Visitor Gate Register', pages: '200 Pages', price: 'TSh 9,500', desc: 'Security Gate, Check-In & Time Logs' },
+          { name: 'Student & Staff Attendance Register', pages: '200 Pages', price: 'TSh 8,500', badge: 'INSTITUTIONAL', desc: 'Daily Official School & Ministry Attendance' },
+          { name: 'Commercial Cash & Delivery Register', pages: '300 Pages', price: 'TSh 12,000', desc: 'Store Dispatch & Warehouse Waybills' },
+        ],
+        specs: [
+          'Heavyweight stiff board binding with gold foil lettering',
+          'Pure white 70 GSM ruled folio paper',
+          'Reinforced spine engineered for years of frequent handling',
+          'Compliant with TRA and corporate auditing guidelines',
+        ],
       },
     ],
     [language]
@@ -316,7 +390,11 @@ export const HomePage: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: idx * 0.08 }}
                 whileHover={{ y: -5, transition: { duration: 0.25 } }}
-                className="w-[86vw] sm:w-[320px] md:w-auto shrink-0 snap-center relative overflow-hidden bg-white rounded-3xl border border-[#E6E0D4] hover:border-[var(--red)]/50 transition-all duration-300 p-5 sm:p-6 flex flex-col justify-between shadow-[0_4px_24px_rgba(22,21,24,0.04)] hover:shadow-[0_16px_40px_rgba(214,58,58,0.12)] group text-left"
+                onClick={() => {
+                  setSelectedCollection(col);
+                  setSelectedGalleryImg(col.image);
+                }}
+                className="w-[86vw] sm:w-[320px] md:w-auto shrink-0 snap-center relative overflow-hidden bg-white rounded-3xl border border-[#E6E0D4] hover:border-[var(--red)]/50 transition-all duration-300 p-5 sm:p-6 flex flex-col justify-between shadow-[0_4px_24px_rgba(22,21,24,0.04)] hover:shadow-[0_16px_40px_rgba(214,58,58,0.12)] group text-left cursor-pointer"
               >
                 {/* Subtle Ambient Glow */}
                 <div className="absolute -top-10 -right-10 w-36 h-36 bg-[var(--gold)]/10 rounded-full blur-2xl group-hover:bg-[var(--red)]/10 transition-colors duration-500 pointer-events-none" />
@@ -376,13 +454,18 @@ export const HomePage: React.FC = () => {
 
                   {/* 5. EXPLORE ACTION & BRAND HALLMARK */}
                   <div className="pt-3 border-t border-[var(--border)]/60 flex items-center justify-between gap-2 mt-auto">
-                    <Link
-                      to={col.link}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedCollection(col);
+                        setSelectedGalleryImg(col.image);
+                      }}
                       className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#161518] hover:bg-[#D63A3A] active:scale-95 text-white font-sans text-xs font-bold tracking-wide transition-all duration-200 shadow-sm hover:shadow-md hover:shadow-red-950/20 cursor-pointer group/btn"
                     >
                       <span>{col.cta}</span>
                       <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
-                    </Link>
+                    </button>
                     
                     <span className="text-[10.5px] font-mono font-bold text-[var(--text-muted)]">
                       {col.brand}
@@ -412,6 +495,174 @@ export const HomePage: React.FC = () => {
 
         </div>
       </section>
+
+      {/* ========================================================================= */}
+      {/* EXCLUSIVE BOOK DETAILS SLIDE-OVER DRAWER ("1 par touch Kiya to alag side") */}
+      {/* ========================================================================= */}
+      <AnimatePresence>
+        {selectedCollection && (
+          <div className="fixed inset-0 z-50 flex justify-end">
+            {/* Dark Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={() => setSelectedCollection(null)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-xs cursor-pointer"
+              aria-label="Close modal overlay"
+            />
+
+            {/* Slide-Over Drawer Sheet */}
+            <motion.aside
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 28, stiffness: 280 }}
+              className="relative z-10 w-full max-w-lg bg-[var(--surface-1)] h-full shadow-2xl flex flex-col justify-between overflow-y-auto border-l border-[var(--border)]"
+            >
+              {/* Drawer Header */}
+              <div className="sticky top-0 z-20 bg-[var(--surface-1)]/95 backdrop-blur-md p-5 border-b border-[var(--border)] flex items-center justify-between">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase text-[var(--gold)] bg-[var(--surface-2)] border border-[var(--gold)]/25">
+                      {selectedCollection.badge}
+                    </span>
+                    <span className="text-[10.5px] font-mono font-bold text-[var(--gold)] bg-[var(--gold)]/10 px-2 py-0.5 rounded-md">
+                      {selectedCollection.tag}
+                    </span>
+                  </div>
+                  <h2 className="font-heading font-black text-xl text-[var(--text)] mt-1.5 leading-tight">
+                    {selectedCollection.title}
+                  </h2>
+                  <p className="text-xs text-[var(--text-muted)] font-medium mt-0.5">
+                    {selectedCollection.subtitle}
+                  </p>
+                </div>
+                
+                {/* Close Button */}
+                <button
+                  type="button"
+                  onClick={() => setSelectedCollection(null)}
+                  className="w-10 h-10 rounded-full bg-[var(--surface-2)] hover:bg-[var(--red)] text-[var(--text)] hover:text-white flex items-center justify-center transition-colors shadow-xs cursor-pointer border border-[var(--border)] shrink-0"
+                  aria-label="Close"
+                >
+                  <X size={18} strokeWidth={2.5} />
+                </button>
+              </div>
+
+              {/* Drawer Body: Exclusive Book Photos & Full Details */}
+              <div className="p-5 sm:p-6 space-y-6 flex-1 text-left">
+                {/* Large Featured Photo */}
+                <div className="w-full aspect-[4/3] rounded-2xl bg-gradient-to-b from-[#FAF8F5] via-[#F4EFEA] to-[#EBE4D7] border border-[#DDD5C7] overflow-hidden flex items-center justify-center p-4 relative shadow-inner">
+                  <img
+                    src={selectedGalleryImg || selectedCollection.image}
+                    alt={selectedCollection.title}
+                    className="max-h-full max-w-full object-contain filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.18)] transition-all duration-300"
+                  />
+                </div>
+
+                {/* Photo Gallery Thumbnails */}
+                {selectedCollection.gallery && selectedCollection.gallery.length > 1 && (
+                  <div>
+                    <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[var(--text-muted)] block mb-2">
+                      Official Factory Photos ({selectedCollection.gallery.length})
+                    </span>
+                    <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-none">
+                      {selectedCollection.gallery.map((imgUrl: string, gIdx: number) => (
+                        <button
+                          key={gIdx}
+                          type="button"
+                          onClick={() => setSelectedGalleryImg(imgUrl)}
+                          className={`w-16 h-16 rounded-xl overflow-hidden p-1 bg-[#FAF8F5] border-2 transition-all shrink-0 cursor-pointer ${
+                            (selectedGalleryImg || selectedCollection.image) === imgUrl
+                              ? 'border-[var(--red)] shadow-sm'
+                              : 'border-[var(--border)] hover:border-[var(--gold)] opacity-70 hover:opacity-100'
+                          }`}
+                        >
+                          <img src={imgUrl} alt="Thumbnail" className="w-full h-full object-contain" />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Available Variants & Page Counts */}
+                <div>
+                  <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[var(--text-muted)] block mb-2.5">
+                    Available Quires & Editions
+                  </span>
+                  <div className="space-y-2">
+                    {selectedCollection.variants?.map((v: any, vIdx: number) => (
+                      <div
+                        key={vIdx}
+                        className="p-3.5 rounded-xl bg-white border border-[var(--border)] hover:border-[var(--gold)] transition-colors flex items-center justify-between gap-3 shadow-2xs"
+                      >
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-bold text-sm text-[var(--text)] font-heading leading-tight">
+                              {v.name}
+                            </h4>
+                            {v.badge && (
+                              <span className="px-2 py-0.5 rounded-full bg-[var(--red)] text-white text-[9px] font-mono font-bold">
+                                {v.badge}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-[11.5px] text-[var(--text-muted)] mt-0.5">
+                            {v.desc}
+                          </p>
+                        </div>
+                        <div className="text-right shrink-0">
+                          <span className="font-mono font-extrabold text-sm text-[var(--text)] block">
+                            {v.price}
+                          </span>
+                          <span className="text-[10px] font-mono text-[var(--text-muted)]">
+                            {v.pages}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Benchmark Technical Specifications */}
+                <div>
+                  <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[var(--text-muted)] block mb-2.5">
+                    Certified Technical Specifications
+                  </span>
+                  <ul className="space-y-2 text-xs text-[var(--text)]">
+                    {selectedCollection.specs?.map((spec: string, sIdx: number) => (
+                      <li key={sIdx} className="flex items-start gap-2.5">
+                        <span className="w-4.5 h-4.5 rounded-full bg-[var(--red)]/10 text-[var(--red)] flex items-center justify-center shrink-0 mt-0.5">
+                          <CheckCircle2 className="w-3 h-3 stroke-[2.5]" />
+                        </span>
+                        <span className="leading-relaxed">{spec}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Drawer Footer Actions */}
+              <div className="sticky bottom-0 z-20 bg-[var(--surface-1)] border-t border-[var(--border)] p-4 sm:p-5 space-y-2.5">
+                <Link
+                  to={selectedCollection.link}
+                  onClick={() => setSelectedCollection(null)}
+                  className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-[#D63A3A] hover:bg-[#b91c1c] text-white text-xs sm:text-sm font-bold tracking-wide transition-all shadow-md cursor-pointer"
+                >
+                  <span>Explore In Full Catalog</span>
+                  <ArrowRight size={16} />
+                </Link>
+                <div className="flex items-center justify-between text-[11px] text-[var(--text-muted)] font-mono px-1">
+                  <span>Factory Direct Dispatch</span>
+                  <span>31 Regions Cargo</span>
+                </div>
+              </div>
+            </motion.aside>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* ========================================================================= */}
       {/* 4. SIGNATURE FEATURED BANNER (Watermelon UI Depth + Motion) */}
@@ -564,8 +815,8 @@ export const HomePage: React.FC = () => {
           </motion.div>
 
           {/* Watermelon UI Responsive Category Filter Strip */}
-          <div className="w-full overflow-x-auto no-scrollbar py-2 -my-1 touch-pan-x">
-            <div className="flex items-center justify-start sm:justify-center gap-2 min-w-max mx-auto px-4">
+          <div className="w-full overflow-x-auto no-scrollbar py-3 mb-6 sm:mb-8 touch-pan-x">
+            <div className="flex items-center justify-start sm:justify-center gap-2.5 min-w-max mx-auto px-4">
               {[
                 { id: 'all', label: t.allProducts || 'All Products' },
                 { id: 'counter', label: 'Counter Books' },
@@ -580,7 +831,7 @@ export const HomePage: React.FC = () => {
                     key={tab.id}
                     type="button"
                     onClick={() => setActiveTab(tab.id as any)}
-                    className={`px-4 py-2 text-[11px] font-mono font-bold tracking-wider uppercase rounded-full transition-all duration-200 cursor-pointer shrink-0 ${
+                    className={`px-4.5 py-2.5 text-[11px] font-mono font-bold tracking-wider uppercase rounded-full transition-all duration-200 cursor-pointer shrink-0 shadow-2xs ${
                       isActive
                         ? 'bg-[#D63A3A] text-white shadow-md'
                         : 'bg-[var(--surface-1)] border border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--gold)]'
@@ -593,8 +844,8 @@ export const HomePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Product Cards Grid with Staggered Entrance */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-5">
+          {/* Product Cards Grid with Proper Padding & Margins */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 pt-2">
             {displayedProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

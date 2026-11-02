@@ -112,11 +112,11 @@ export const Hero: React.FC = () => {
       <HaikeiPaperLines opacity={0.03} />
 
       {/* Main 2-Column Content Layout */}
-      <div className="relative z-10 w-full max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-8 sm:py-14 lg:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      <div className="relative z-10 w-full max-w-[1360px] mx-auto px-5 sm:px-8 lg:px-12 py-10 sm:py-16 lg:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
           
           {/* Left Column: Clean Typography & Action (7 cols) */}
-          <div className="lg:col-span-7 max-w-xl text-left space-y-4 sm:space-y-5">
+          <div className="lg:col-span-7 max-w-xl text-left space-y-4 sm:space-y-6">
             <AnimatePresence mode="wait">
               <motion.div
                 key={slide.id}
@@ -124,10 +124,10 @@ export const Hero: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                className="space-y-4 sm:space-y-5"
+                className="space-y-4 sm:space-y-6"
               >
                 {/* Headline: White Serif + Gradient Sans */}
-                <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--text)] leading-tight">
+                <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--text)] leading-[1.14]">
                   <span>{slide.headlinePrefix}</span>
                   <br />
                   <span className="font-sans font-extrabold text-gradient-headline">
@@ -136,28 +136,28 @@ export const Hero: React.FC = () => {
                 </h1>
 
                 {/* Subtitle */}
-                <p className="text-xs sm:text-sm text-[var(--text-muted)] max-w-lg leading-relaxed font-sans">
+                <p className="text-xs sm:text-base text-[var(--text-muted)] max-w-lg leading-relaxed font-sans">
                   {language === 'sw' ? slide.subSw : slide.subEn}
                 </p>
 
                 {/* Watermelon UI Quick Specs Micro-Pills */}
-                <div className="flex flex-wrap items-center gap-2 pt-1 text-[11px] font-mono text-[var(--text)]">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--surface-1)] border border-[var(--border)] shadow-2xs">
+                <div className="flex flex-wrap items-center gap-2.5 pt-2 pb-1 text-[11px] font-mono text-[var(--text)]">
+                  <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[var(--surface-1)] border border-[var(--border)] shadow-2xs">
                     <Feather size={12} className="text-[var(--red)]" />
                     <span>70 GSM Bleed-Proof</span>
                   </span>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--surface-1)] border border-[var(--border)] shadow-2xs">
+                  <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[var(--surface-1)] border border-[var(--border)] shadow-2xs">
                     <ShieldCheck size={12} className="text-[var(--gold)]" />
                     <span>Smyth-Sewn 180° Lay-Flat</span>
                   </span>
                 </div>
 
                 {/* Primary Action Button: Filled Red Pill with Motion Tap Physics */}
-                <div className="pt-2">
+                <div className="pt-3">
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.96 }} className="inline-block">
                     <Link
                       to={slide.href}
-                      className="inline-flex items-center gap-2.5 px-7 py-3.5 min-h-[46px] rounded-full bg-[#D63A3A] hover:bg-[#b91c1c] active:scale-95 text-white font-mono text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-200 shadow-xl shadow-red-950/40 group cursor-pointer border border-red-400/30"
+                      className="inline-flex items-center gap-2.5 px-8 py-3.5 min-h-[48px] rounded-full bg-[#D63A3A] hover:bg-[#b91c1c] active:scale-95 text-white font-mono text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-200 shadow-xl shadow-red-950/40 group cursor-pointer border border-red-400/30"
                       style={{ backgroundColor: '#D63A3A', color: '#FFFFFF' }}
                     >
                       <span>{language === 'sw' ? slide.ctaSw : slide.ctaEn}</span>
