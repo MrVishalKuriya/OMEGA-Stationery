@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronLeft, ChevronRight, ShieldCheck, Feather } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -17,6 +17,7 @@ interface HeroSlide {
   ctaSw: string;
   href: string;
   productImage: string;
+  label: string;
 }
 
 const HERO_SLIDES: HeroSlide[] = [
@@ -32,24 +33,26 @@ const HERO_SLIDES: HeroSlide[] = [
     ctaSw: 'Nunua Vitabu Sasa',
     href: '/catalog?category=Counter+Books',
     productImage: '/omega-hero-book.png',
+    label: 'Burgundy Edition',
   },
   {
     id: 'slide-2',
-    badgeEn: '31 REGIONS DISPATCH',
-    badgeSw: 'USAFIRISHAJI MIKOA YOTE 31',
+    badgeEn: 'EXECUTIVE FOIL EDITION',
+    badgeSw: 'TOLEO MAALUM LA KIOFISI',
     headlinePrefix: 'Premium Books for a',
     headlineGradient: 'Brighter Future.',
-    subEn: 'High-performance notebooks and exercise books trusted by schools and firms across Tanzania.',
-    subSw: 'Madaftari yenye ubora wa juu yanayoaminika shuleni na maofisini.',
+    subEn: 'High-quality notebooks, exercise books, counter books and stationery products — trusted across Tanzania.',
+    subSw: 'Madaftari yenye ubora wa juu yanayoaminika shuleni na maofisini kote Tanzania.',
     ctaEn: 'Explore All Products',
     ctaSw: 'Tazama Bidhaa Zetu',
     href: '/catalog',
-    productImage: '/omega-counter-book-podium.png',
+    productImage: '/omega-hero-book-brown.png',
+    label: 'Saddle Brown',
   },
   {
     id: 'slide-3',
-    badgeEn: 'FACTORY DIRECT WHOLESALE',
-    badgeSw: 'BEI ZA KIWANDANI ZA JUMLA',
+    badgeEn: '31 REGIONS DISPATCH',
+    badgeSw: 'USAFIRISHAJI MIKOA YOTE 31',
     headlinePrefix: 'Archival Ledgers.',
     headlineGradient: 'Built to Last.',
     subEn: 'Double Smyth-threaded spines engineered for commercial accounts, schools, and government tenders.',
@@ -57,9 +60,164 @@ const HERO_SLIDES: HeroSlide[] = [
     ctaEn: 'Explore Catalogue',
     ctaSw: 'Tazama Mkusanyiko',
     href: '/catalog',
-    productImage: '/omega-hero-book.png',
+    productImage: '/omega-hero-book-navy.png',
+    label: 'Royal Navy Q3',
+  },
+  {
+    id: 'slide-4',
+    badgeEn: 'FACTORY DIRECT WHOLESALE',
+    badgeSw: 'BEI ZA KIWANDANI ZA JUMLA',
+    headlinePrefix: 'Engineered for',
+    headlineGradient: 'Every Page.',
+    subEn: '384-page Quire 4 hardcover counter books with reinforced crimson stitched spines and 180° lay-flat binding.',
+    subSw: 'Vitabu vya Quire 4 vyenye kurasa 384 na mshono imara wa kudumu miaka mingi.',
+    ctaEn: 'Shop Quire 4 Ledgers',
+    ctaSw: 'Nunua Quire 4',
+    href: '/catalog?category=Counter+Books',
+    productImage: '/omega-hero-book-black.png',
+    label: 'Obsidian Q4',
   },
 ];
+
+/**
+ * Generates closed harmonic guilloché / spirograph wave paths
+ * matching the 3D twisted circular wave ribbon reference.
+ */
+function buildCircularWavePaths(
+  count: number,
+  baseRadius: number,
+  amp1: number,
+  amp2: number,
+  phaseStep: number,
+  radiusStep: number
+): { d: string; opacity: number }[] {
+  const cx = 250;
+  const cy = 250;
+  const steps = 140;
+  const paths: { d: string; opacity: number }[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const tNorm = i / Math.max(1, count - 1);
+    const phase = i * phaseStep;
+    const rOffset = (i - count / 2) * radiusStep;
+    const points: string[] = [];
+
+    for (let s = 0; s <= steps; s++) {
+      const theta = (s / steps) * Math.PI * 2;
+      const wave1 = amp1 * Math.sin(3 * theta + phase);
+      const wave2 = amp2 * Math.cos(2 * theta - phase * 0.8);
+      const r = baseRadius + rOffset + wave1 + wave2;
+
+      const x = cx + r * Math.cos(theta);
+      const y = cy + r * Math.sin(theta);
+      points.push(`${s === 0 ? 'M' : 'L'} ${x.toFixed(2)} ${y.toFixed(2)}`);
+    }
+    points.push('Z');
+
+    // Bell-curve opacity so outer and inner edges feather smoothly
+    const edgeFactor = Math.sin(tNorm * Math.PI);
+    const opacity = 0.25 + 0.7 * edgeFactor;
+
+    paths.push({ d: points.join(' '), opacity });
+  }
+
+  return paths;
+}
+
+const CircularMotionWaves: React.FC = () => {
+  const primaryPaths = useMemo(
+    () => buildCircularWavePaths(24, 168, 22, 12, 0.085, 1.85),
+    []
+  );
+  const secondaryPaths = useMemo(
+    () => buildCircularWavePaths(14, 152, 18, 10, -0.11, 1.6),
+    []
+  );
+
+  return (
+    <div
+      className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
+      aria-hidden="true"
+    >
+      {/* Ambient Warm Radial Aura Behind the Wave Ring */}
+      <div
+        className="w-[82%] h-[82%] rounded-full blur-2xl opacity-75"
+        style={{
+          background:
+            'radial-gradient(circle, rgba(214,58,58,0.18) 0%, rgba(233,180,76,0.16) 45%, rgba(214,58,58,0) 72%)',
+        }}
+      />
+
+      {/* Primary Rotating 3D Guilloché Wave Ribbon (24 concentric phase-shifted wave loops) */}
+      <motion.svg
+        viewBox="0 0 500 500"
+        className="absolute inset-0 w-full h-full overflow-visible"
+        animate={{
+          rotate: [0, 360],
+          scale: [0.98, 1.03, 0.98],
+        }}
+        transition={{
+          rotate: { duration: 28, repeat: Infinity, ease: 'linear' },
+          scale: { duration: 6, repeat: Infinity, ease: 'easeInOut' },
+        }}
+      >
+        <defs>
+          <linearGradient id="omegaWaveGradPrimary" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#E5484D" />
+            <stop offset="38%" stopColor="#F97316" />
+            <stop offset="72%" stopColor="#E9B44C" />
+            <stop offset="100%" stopColor="#B8862B" />
+          </linearGradient>
+          <linearGradient id="omegaWaveGradSecondary" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="#E9B44C" />
+            <stop offset="50%" stopColor="#D63A3A" />
+            <stop offset="100%" stopColor="#F97316" />
+          </linearGradient>
+        </defs>
+
+        {primaryPaths.map((p, idx) => (
+          <path
+            key={`p-${idx}`}
+            d={p.d}
+            fill="none"
+            stroke="url(#omegaWaveGradPrimary)"
+            strokeWidth="1.35"
+            strokeOpacity={p.opacity}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        ))}
+      </motion.svg>
+
+      {/* Secondary Counter-Rotating Harmonic Wave Ribbon */}
+      <motion.svg
+        viewBox="0 0 500 500"
+        className="absolute inset-0 w-full h-full overflow-visible"
+        animate={{
+          rotate: [360, 0],
+          scale: [1.02, 0.96, 1.02],
+        }}
+        transition={{
+          rotate: { duration: 36, repeat: Infinity, ease: 'linear' },
+          scale: { duration: 7.5, repeat: Infinity, ease: 'easeInOut' },
+        }}
+      >
+        {secondaryPaths.map((p, idx) => (
+          <path
+            key={`s-${idx}`}
+            d={p.d}
+            fill="none"
+            stroke="url(#omegaWaveGradSecondary)"
+            strokeWidth="1.05"
+            strokeOpacity={p.opacity * 0.55}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        ))}
+      </motion.svg>
+    </div>
+  );
+};
 
 export const Hero: React.FC = () => {
   const { language } = useStore();
@@ -70,7 +228,7 @@ export const Hero: React.FC = () => {
     if (isPaused) return;
     const interval = setInterval(() => {
       setCurrentIdx((prev) => (prev + 1) % HERO_SLIDES.length);
-    }, 6000);
+    }, 5500);
     return () => clearInterval(interval);
   }, [isPaused]);
 
@@ -89,7 +247,7 @@ export const Hero: React.FC = () => {
       aria-label="Hero Showcase"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      className="relative w-full overflow-hidden bg-[var(--bg)] min-h-[380px] sm:min-h-[520px] lg:min-h-[600px] flex items-center border-b border-[var(--border)] transition-colors duration-200"
+      className="relative w-full overflow-hidden bg-[var(--bg)] min-h-[420px] sm:min-h-[520px] lg:min-h-[600px] flex items-center border-b border-[var(--border)] transition-colors duration-200"
     >
       {/* Clean Light Luxury Paper Canvas */}
       <div
@@ -119,7 +277,7 @@ export const Hero: React.FC = () => {
                 transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                 className="space-y-4 sm:space-y-5"
               >
-                {/* Headline: White Serif + Gradient Sans */}
+                {/* Headline: Serif + Gradient Sans */}
                 <h1 className="font-serif text-3xl sm:text-5xl lg:text-[56px] font-bold tracking-tight text-[var(--text)] leading-[1.12]">
                   <span>{slide.headlinePrefix}</span>
                   <br />
@@ -133,7 +291,7 @@ export const Hero: React.FC = () => {
                   {language === 'sw' ? slide.subSw : slide.subEn}
                 </p>
 
-                {/* Watermelon UI Quick Specs Micro-Pills */}
+                {/* Quick Specs Micro-Pills */}
                 <div className="flex flex-wrap items-center gap-2.5 text-[11px] font-mono text-[var(--text)]">
                   <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[var(--surface-1)] border border-[var(--border)] shadow-2xs">
                     <Feather size={12} className="text-[var(--red)]" />
@@ -145,7 +303,7 @@ export const Hero: React.FC = () => {
                   </span>
                 </div>
 
-                {/* Primary Action Button: Filled Red Pill with Motion Tap Physics */}
+                {/* Primary Action Button: Filled Red Pill */}
                 <div className="pt-1">
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.96 }} className="inline-block">
                     <Link
@@ -166,40 +324,41 @@ export const Hero: React.FC = () => {
             </AnimatePresence>
           </div>
 
-          {/* Right Column: Clean Floating Product Showcase (5 cols) */}
-          <div className="lg:col-span-5 hidden sm:flex items-center justify-center relative">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={slide.id}
-                initial={{ opacity: 0, scale: 0.92, y: 15 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-                className="relative w-full max-w-sm lg:max-w-md aspect-square flex items-center justify-center"
-              >
-                {/* Soft Radial Ambient Glow */}
-                <div
-                  className="absolute inset-4 rounded-full bg-gradient-to-tr from-[var(--red)]/10 via-[var(--gold)]/10 to-transparent blur-2xl pointer-events-none"
-                  aria-hidden="true"
-                />
+          {/* Right Column: Circular Motion Graphics Wave Ring + Transparent Cutout Book (5 cols) */}
+          <div className="lg:col-span-5 flex items-center justify-center relative">
+            <div className="relative w-full max-w-[320px] sm:max-w-[400px] lg:max-w-[460px] aspect-square flex items-center justify-center">
+              
+              {/* Animated 3D Circular Spirograph Wave Rings Behind Book */}
+              <CircularMotionWaves />
 
-                {/* Cutout Product Image with Soft Elegant Shadow */}
+              {/* Floating Transparent Cutout Book in Front */}
+              <AnimatePresence mode="wait">
                 <motion.img
-                  whileHover={{ scale: 1.05, rotate: 1 }}
-                  transition={{ duration: 0.3 }}
+                  key={slide.id}
+                  initial={{ opacity: 0, scale: 0.88, y: 18, rotate: -2 }}
+                  animate={{ opacity: 1, scale: 1, y: [0, -8, 0], rotate: 0 }}
+                  exit={{ opacity: 0, scale: 0.92, y: -14, rotate: 2 }}
+                  transition={{
+                    opacity: { duration: 0.35 },
+                    scale: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
+                    y: { duration: 4.5, repeat: Infinity, ease: 'easeInOut' },
+                  }}
+                  whileHover={{ scale: 1.06, rotate: 1.5 }}
                   src={slide.productImage}
-                  alt={slide.headlinePrefix}
-                  className="relative z-10 max-h-[85%] max-w-[85%] object-contain drop-shadow-[0_20px_25px_rgba(0,0,0,0.18)] cursor-pointer"
+                  alt={slide.label}
+                  onClick={handleNext}
+                  className="relative z-10 max-h-[78%] max-w-[78%] object-contain drop-shadow-[0_26px_36px_rgba(0,0,0,0.34)] cursor-pointer select-none"
                   loading="eager"
                 />
-              </motion.div>
-            </AnimatePresence>
+              </AnimatePresence>
+
+            </div>
           </div>
 
         </div>
       </div>
 
-      {/* Navigation Arrows (Hidden on Mobile to Prevent Text Overlap) */}
+      {/* Navigation Arrows */}
       <motion.button
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.92 }}

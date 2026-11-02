@@ -780,7 +780,7 @@ export const HomePage: React.FC = () => {
                   variant="hero"
                   bg="transparent"
                   priority={true}
-                  imgClassName="transition-transform duration-500 drop-shadow-[0_25px_35px_rgba(0,0,0,0.4)]"
+                  imgClassName="transition-transform duration-500 drop-shadow-[0_25px_35px_rgba(0,0,0,0.35)]"
                 />
               </motion.div>
             </div>
