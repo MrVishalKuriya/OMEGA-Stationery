@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useStore } from '@/context/StoreContext';
 
 interface BrandLogoProps {
   className?: string;
@@ -13,9 +12,6 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   size = 'md',
   showSubtitle = true,
 }) => {
-  const { theme } = useStore();
-  const isDark = theme === 'dark';
-
   const iconSizes = {
     sm: 'w-8 h-8 p-1 rounded-lg',
     md: 'w-10 h-10 p-1.5 rounded-xl',
@@ -34,13 +30,9 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
       className={`inline-flex items-center gap-2.5 sm:gap-3 group select-none shrink-0 ${className}`}
       aria-label="OMEGA Stationery & Books Tanzania Home"
     >
-      {/* High-Contrast Dual-Theme Emblem Seal */}
+      {/* High-Contrast Luxury Emblem Seal */}
       <div
-        className={`${iconSizes} flex items-center justify-center shrink-0 transition-all duration-300 border ${
-          isDark
-            ? 'bg-[var(--surface-2)] border-[var(--border)] text-white shadow-sm group-hover:border-[var(--gold)]/70'
-            : 'bg-[#121214] border-black/15 text-white shadow-md group-hover:border-[var(--red)]'
-        }`}
+        className={`${iconSizes} flex items-center justify-center shrink-0 transition-all duration-300 border bg-[#121214] border-black/15 text-white shadow-md group-hover:border-[var(--red)]`}
       >
         <img
           src="/logo-icon-white.png"

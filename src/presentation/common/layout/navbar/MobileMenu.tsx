@@ -9,8 +9,6 @@ import {
   Truck,
   Building2,
   Phone,
-  Sun,
-  Moon,
   Globe,
   Heart,
   Package,
@@ -254,38 +252,16 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
 
         </div>
 
-        {/* Drawer Footer with Theme & Language */}
+        {/* Drawer Footer with Language Switcher */}
         <div className="p-4 border-t border-[var(--border)] bg-[var(--surface-2)]">
-          {/* Controls: Theme & Language */}
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={toggleTheme}
-              className="flex items-center justify-center gap-1.5 py-2 rounded-xl bg-[var(--surface-1)] border border-[var(--border)] text-xs font-mono font-bold text-[var(--text)] hover:border-[var(--gold)] transition-colors cursor-pointer"
-            >
-              {theme === 'dark' ? (
-                <>
-                  <Sun size={14} className="text-[var(--gold)]" />
-                  <span>Light Mode</span>
-                </>
-              ) : (
-                <>
-                  <Moon size={14} className="text-[var(--text)]" />
-                  <span>Dark Mode</span>
-                </>
-              )}
-            </button>
-
-            <button
-              type="button"
-              onClick={toggleLanguage}
-              className="flex items-center justify-center gap-1.5 py-2 rounded-xl bg-[var(--surface-1)] border border-[var(--border)] text-xs font-mono font-bold text-[var(--text)] hover:border-[var(--gold)] transition-colors cursor-pointer"
-            >
-              <Globe size={14} className="text-[var(--red)]" />
-              <span>{language === 'en' ? 'Kiswahili' : 'English'}</span>
-            </button>
-          </div>
-
+          <button
+            type="button"
+            onClick={toggleLanguage}
+            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[var(--surface-1)] border border-[var(--border)] text-xs font-mono font-bold text-[var(--text)] hover:border-[var(--gold)] transition-colors cursor-pointer shadow-xs"
+          >
+            <Globe size={15} className="text-[var(--red)]" />
+            <span>{language === 'en' ? 'Badili lugha: Kiswahili' : 'Switch Language: English'}</span>
+          </button>
         </div>
 
       </div>

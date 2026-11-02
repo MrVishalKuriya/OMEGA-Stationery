@@ -228,34 +228,19 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     showToast(nextLang === 'sw' ? 'Lugha imebadilishwa kuwa Kiswahili' : 'Language switched to English');
   };
 
-  // Theme Toggle (Dark Mode default, switchable to Light Mode)
-  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    try {
-      const saved = localStorage.getItem('omega_theme');
-      if (saved === 'light' || saved === 'dark') return saved;
-    } catch {}
-    return 'dark';
-  });
+  // Theme (Strictly Light Mode)
+  const [theme] = useState<'light' | 'dark'>('light');
 
   useEffect(() => {
     try {
-      localStorage.setItem('omega_theme', theme);
+      localStorage.setItem('omega_theme', 'light');
     } catch {}
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
-    } else {
-      document.documentElement.classList.add('light');
-      document.documentElement.classList.remove('dark');
-    }
-  }, [theme]);
+    document.documentElement.classList.add('light');
+    document.documentElement.classList.remove('dark');
+  }, []);
 
   const toggleTheme = () => {
-    setTheme((prev) => {
-      const next = prev === 'dark' ? 'light' : 'dark';
-      showToast(next === 'dark' ? '🌙 Dark Mode' : '☀️ Light Mode');
-      return next;
-    });
+    // Light mode locked
   };
 
   // Detailed Cart Calculation with useMemo

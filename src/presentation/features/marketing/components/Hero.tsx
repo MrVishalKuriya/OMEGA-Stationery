@@ -62,8 +62,7 @@ const HERO_SLIDES: HeroSlide[] = [
 ];
 
 export const Hero: React.FC = () => {
-  const { language, theme } = useStore();
-  const isDark = theme === 'dark';
+  const { language } = useStore();
   const [currentIdx, setCurrentIdx] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -94,27 +93,23 @@ export const Hero: React.FC = () => {
     >
       {/* Clean Texture Background (No Baked-In Text) */}
       <div
-        className="absolute inset-0 bg-cover bg-center sm:bg-right bg-no-repeat pointer-events-none opacity-25 dark:opacity-40 transition-opacity duration-700"
+        className="absolute inset-0 bg-cover bg-center sm:bg-right bg-no-repeat pointer-events-none opacity-20 transition-opacity duration-700"
         style={{ backgroundImage: "url('/hero-luxury-bg.jpg')" }}
         aria-hidden="true"
       />
 
-      {/* Theme-Adaptive Gradient Overlay for Maximum Text Contrast */}
+      {/* Light Luxury Paper Gradient Overlay */}
       <div
-        className={`absolute inset-0 pointer-events-none transition-colors duration-300 ${
-          isDark
-            ? 'bg-gradient-to-r from-[#121214] via-[#121214]/92 sm:via-[#121214]/80 to-[#121214]/50'
-            : 'bg-gradient-to-r from-[#FAF8F5] via-[#FAF8F5]/96 sm:via-[#FAF8F5]/88 to-[#FAF8F5]/50'
-        }`}
+        className="absolute inset-0 pointer-events-none bg-gradient-to-r from-[#FAF8F5] via-[#FAF8F5]/96 sm:via-[#FAF8F5]/88 to-[#FAF8F5]/50"
         aria-hidden="true"
       />
 
       {/* Haikei Organic Blob Glow Accents */}
-      <HaikeiBlobGlow color="mixed" position="bottom-right" size="lg" className={isDark ? 'opacity-35' : 'opacity-15'} />
-      <HaikeiBlobGlow color="red" position="top-left" size="md" className={isDark ? 'opacity-20' : 'opacity-10'} />
+      <HaikeiBlobGlow color="mixed" position="bottom-right" size="lg" className="opacity-15" />
+      <HaikeiBlobGlow color="red" position="top-left" size="md" className="opacity-10" />
 
       {/* Haikei Paper Contour Lines */}
-      <HaikeiPaperLines opacity={isDark ? 0.05 : 0.03} />
+      <HaikeiPaperLines opacity={0.03} />
 
       {/* Main 2-Column Content Layout */}
       <div className="relative z-10 w-full max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-8 sm:py-14 lg:py-16">

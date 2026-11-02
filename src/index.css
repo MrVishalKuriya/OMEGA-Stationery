@@ -6,64 +6,10 @@
    ========================================================================= */
 
 :root,
-:root.dark,
-.dark,
-html.dark {
-  /* Surfaces & Backgrounds (Dark Mode default) */
-  --bg: #121214;
-  --surface-1: #1B1A1C;
-  --surface-2: #242224;
-  --border: #3A3637;
-
-  /* Typography Colors */
-  --text: #F5F0E8;
-  --text-muted: #A8A09A;
-
-  /* Brand Reds (Action Only) */
-  --red: #D63A3A;
-  --red-hover: #b91c1c;
-  --red-deep: #8F1414;
-  --red-bright: #E5484D;
-  --salmon: #F4897F;
-
-  /* Brand Gold (Quality & Trust Only) */
-  --gold: #E9B44C;
-  --gold-soft: #F3D28A;
-  --gold-deep: #B8862B;
-
-  /* Product Paper Panel */
-  --paper: #F3EBDD;
-
-  /* WhatsApp Brand Green */
-  --whatsapp: #25D366;
-  --whatsapp-hover: #16a34a;
-
-  /* Architectural Radii */
-  --radius-card: 20px;
-  --radius-hero: 28px;
-  --radius-pill: 999px;
-
-  /* Gradients & Glow */
-  --gradient-headline: linear-gradient(90deg, #E5484D, #F4A39A 50%, #E5484D);
-  --gradient-gold: linear-gradient(135deg, #F3D28A, #E9B44C 50%, #B8862B);
-  --glow: radial-gradient(circle at 85% 90%, rgba(214, 58, 58, 0.22), transparent 55%);
-
-  /* Motion Tokens */
-  --duration-fast: 150ms;
-  --duration-base: 220ms;
-  --duration-slow: 320ms;
-  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
-
-  /* Typography Families */
-  --font-family-display: 'Newsreader', 'Bodoni Moda', Georgia, serif;
-  --font-family-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-}
-
 :root.light,
 .light,
 html.light {
-  /* Surfaces & Backgrounds (Light Mode) */
+  /* Surfaces & Backgrounds (Light Luxury Stationery Theme) */
   --bg: #FAF8F5;
   --surface-1: #FFFFFF;
   --surface-2: #F2ECE4;
@@ -71,7 +17,7 @@ html.light {
 
   /* Typography Colors */
   --text: #161518;
-  --text-muted: #6E6864;
+  --text-muted: #5C5652;
 
   /* Brand Reds (Action Only) */
   --red: #D63A3A;
@@ -80,10 +26,10 @@ html.light {
   --red-bright: #E5484D;
   --salmon: #C93030;
 
-  /* Brand Gold (Quality & Trust Only) */
-  --gold: #B8862B;
-  --gold-soft: #D9A036;
-  --gold-deep: #8F6518;
+  /* Brand Gold (Quality & Trust - high contrast on light) */
+  --gold: #9E701E;
+  --gold-soft: #B8862B;
+  --gold-deep: #7D5512;
 
   /* Product Paper Panel */
   --paper: #F3EBDD;

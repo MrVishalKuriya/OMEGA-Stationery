@@ -10,8 +10,6 @@ import {
   Globe,
   X,
   ArrowRight,
-  Sun,
-  Moon,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useStore } from '@/context/StoreContext';
@@ -359,24 +357,7 @@ export const Navbar: React.FC = () => {
                   <Search className="w-4 h-4 stroke-[2]" />
                 </motion.button>
 
-                {/* 2. Theme Toggle (Sun / Moon) in Clean Circular Pill (w-9 h-9) */}
-                <motion.button
-                  whileHover={{ scale: 1.08 }}
-                  whileTap={{ scale: 0.92 }}
-                  type="button"
-                  onClick={toggleTheme}
-                  className="hidden sm:flex w-9 h-9 rounded-full bg-[var(--surface-2)] border border-[var(--border)] hover:border-[var(--gold)] items-center justify-center text-[var(--text)] hover:text-[var(--gold)] transition-colors cursor-pointer shadow-2xs shrink-0"
-                  title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-                  aria-label="Toggle theme"
-                >
-                  {theme === 'dark' ? (
-                    <Sun className="w-4 h-4 text-[var(--gold)] stroke-[2]" />
-                  ) : (
-                    <Moon className="w-4 h-4 text-[var(--text)] stroke-[2]" />
-                  )}
-                </motion.button>
-
-                {/* 3. Language Switcher (SW / EN) with Red Globe (h-9 height) */}
+                {/* Language Switcher (SW / EN) with Red Globe (h-9 height) */}
                 <motion.button
                   whileHover={{ scale: 1.06 }}
                   whileTap={{ scale: 0.94 }}
