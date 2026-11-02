@@ -436,23 +436,6 @@ export const Navbar: React.FC = () => {
                   />
                 </div>
 
-                {/* Mobile Account trigger */}
-                <div className="sm:hidden relative">
-                  <button
-                    type="button"
-                    onClick={() => setIsAccountOpen(!isAccountOpen)}
-                    className="w-9 h-9 rounded-full bg-[var(--surface-2)] text-[var(--gold)] font-bold text-[11px] flex items-center justify-center font-mono border border-[var(--border)]"
-                  >
-                    {currentUser?.initials || 'OA'}
-                  </button>
-                  <AccountDropdown
-                    isOpen={isAccountOpen}
-                    onClose={() => setIsAccountOpen(false)}
-                    onOpenOrders={() => navigate('/tracking')}
-                    onOpenWishlist={() => navigate('/wishlist')}
-                  />
-                </div>
-
                 {/* 5. Primary Action Filled Red Cart Pill Button */}
                 <motion.button
                   whileHover={{ scale: 1.04 }}

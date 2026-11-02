@@ -90,7 +90,7 @@ export const Hero: React.FC = () => {
       aria-label="Hero Showcase"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      className="relative w-full overflow-hidden bg-[var(--bg)] min-h-[480px] sm:min-h-[540px] lg:min-h-[600px] flex items-center border-b border-[var(--border)] transition-colors duration-200"
+      className="relative w-full overflow-hidden bg-[var(--bg)] min-h-[380px] sm:min-h-[520px] lg:min-h-[600px] flex items-center border-b border-[var(--border)] transition-colors duration-200"
     >
       {/* Clean Texture Background (No Baked-In Text) */}
       <div
@@ -117,7 +117,7 @@ export const Hero: React.FC = () => {
       <HaikeiPaperLines opacity={isDark ? 0.05 : 0.03} />
 
       {/* Main 2-Column Content Layout */}
-      <div className="relative z-10 w-full max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
+      <div className="relative z-10 w-full max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-8 sm:py-14 lg:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
           {/* Left Column: Clean Typography & Action (7 cols) */}
@@ -211,14 +211,14 @@ export const Hero: React.FC = () => {
         </div>
       </div>
 
-      {/* Navigation Arrows with Motion Physics */}
+      {/* Navigation Arrows (Hidden on Mobile to Prevent Text Overlap) */}
       <motion.button
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.92 }}
         type="button"
         onClick={handlePrev}
         aria-label="Previous slide"
-        className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-[var(--surface-1)] hover:bg-[#D63A3A] text-[var(--text)] hover:text-white border border-[var(--border)] hover:border-[var(--gold)]/40 backdrop-blur-md flex items-center justify-center transition-all cursor-pointer shadow-md"
+        className="hidden md:flex absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-[var(--surface-1)] hover:bg-[#D63A3A] text-[var(--text)] hover:text-white border border-[var(--border)] hover:border-[var(--gold)]/40 backdrop-blur-md items-center justify-center transition-all cursor-pointer shadow-md"
       >
         <ChevronLeft className="w-5 h-5 stroke-[2]" />
       </motion.button>
@@ -229,7 +229,7 @@ export const Hero: React.FC = () => {
         type="button"
         onClick={handleNext}
         aria-label="Next slide"
-        className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-[var(--surface-1)] hover:bg-[#D63A3A] text-[var(--text)] hover:text-white border border-[var(--border)] hover:border-[var(--gold)]/40 backdrop-blur-md flex items-center justify-center transition-all cursor-pointer shadow-md"
+        className="hidden md:flex absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-[var(--surface-1)] hover:bg-[#D63A3A] text-[var(--text)] hover:text-white border border-[var(--border)] hover:border-[var(--gold)]/40 backdrop-blur-md items-center justify-center transition-all cursor-pointer shadow-md"
       >
         <ChevronRight className="w-5 h-5 stroke-[2]" />
       </motion.button>
