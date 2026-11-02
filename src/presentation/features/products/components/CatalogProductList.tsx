@@ -78,12 +78,12 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
             return (
               <div
                 key={p.id}
-                className="bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)] rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-center justify-between gap-5 transition-all shadow-xs"
+                className="bg-white rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-center justify-between gap-5 transition-all border-0 shadow-none"
               >
-                {/* Image Thumbnail */}
-                <div className="w-full md:w-36 h-36 rounded-xl border border-[var(--border)] shrink-0 overflow-hidden relative bg-[var(--surface-2)]">
+                {/* Image Thumbnail - Pure White BG, No Borders */}
+                <div className="w-full md:w-36 h-36 rounded-xl shrink-0 overflow-hidden relative bg-white flex items-center justify-center">
                   {p.badge && (
-                    <span className="absolute top-2 left-2 z-10 bg-[var(--gold)] text-black text-[9px] font-bold px-2 py-0.5 rounded-full shadow-2xs font-mono uppercase">
+                    <span className="absolute top-2 left-2 z-10 bg-zinc-900 text-white text-[9px] font-bold px-2 py-0.5 rounded-full font-mono uppercase">
                       {p.badge}
                     </span>
                   )}
@@ -91,7 +91,8 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                     image={p.image}
                     alt={p.name}
                     variant="card"
-                    className="w-full h-full"
+                    bg="white"
+                    className="w-full h-full mix-blend-multiply"
                   />
                 </div>
 

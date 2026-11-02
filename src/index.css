@@ -31,8 +31,8 @@ html.light {
   --gold-soft: #B8862B;
   --gold-deep: #7D5512;
 
-  /* Product Paper Panel */
-  --paper: #F3EBDD;
+  /* Product Paper Panel - Pure White as requested */
+  --paper: #FFFFFF;
 
   /* WhatsApp Brand Green */
   --whatsapp: #25D366;

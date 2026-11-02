@@ -257,51 +257,51 @@ export const ProductDetailsPage: React.FC = () => {
       />
 
       {/* Top Value Strip */}
-      <div className="bg-[var(--surface-1)] text-[var(--text)] text-xs py-2 px-4 border-b border-[var(--border)]">
+      <div className="bg-white text-zinc-700 text-xs py-2 px-4 border-b border-zinc-200/80">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 font-medium">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[var(--gold)] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#8C7355] animate-pulse" />
             <span>
               {language === 'sw'
                 ? 'Kiwandani moja kwa moja: Uwasilishaji nchi nzima Tanzania kwa njia ya mabasi'
                 : 'Factory-Direct Supply: Reliable nationwide bus parcel dispatch across all 31 regions'}
             </span>
           </div>
-          <div className="flex items-center gap-4 text-[11px] text-[var(--text-muted)]">
-            <span className="inline-flex items-center gap-1">
-              <CheckCircle className="w-3.5 h-3.5 text-emerald-500" />
+          <div className="flex items-center gap-4 text-[11px] text-zinc-500 font-mono">
+            <span className="inline-flex items-center gap-1.5">
+              <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
               <span>TRA Tax Invoicing</span>
             </span>
-            <span className="inline-flex items-center gap-1">
-              <Truck className="w-3.5 h-3.5 text-[var(--gold)]" />
+            <span className="inline-flex items-center gap-1.5">
+              <Truck className="w-3.5 h-3.5 text-[#8C7355]" />
               <span>Upcountry Waybills</span>
             </span>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
-        {/* Breadcrumb Navigation */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+        {/* Breadcrumb Navigation - shadcn Style */}
         <nav
           aria-label="Breadcrumb"
-          className="flex items-center gap-2 text-xs text-[var(--text-muted)] flex-wrap"
+          className="flex items-center gap-2 text-xs text-zinc-500 font-medium flex-wrap"
         >
-          <Link to="/" className="hover:text-[var(--red)] font-semibold transition-colors">
+          <Link to="/" className="hover:text-zinc-900 transition-colors">
             {t.home}
           </Link>
-          <span aria-hidden="true" className="text-[var(--text-muted)]">/</span>
-          <Link to="/catalog" className="hover:text-[var(--red)] font-semibold transition-colors">
+          <span aria-hidden="true" className="text-zinc-400">/</span>
+          <Link to="/catalog" className="hover:text-zinc-900 transition-colors">
             {t.catalog}
           </Link>
-          <span aria-hidden="true" className="text-[var(--text-muted)]">/</span>
+          <span aria-hidden="true" className="text-zinc-400">/</span>
           <Link
             to={`/catalog?category=${encodeURIComponent(product.category)}`}
-            className="hover:text-[var(--red)] font-semibold transition-colors"
+            className="hover:text-zinc-900 transition-colors"
           >
             {product.category}
           </Link>
-          <span aria-hidden="true" className="text-[var(--text-muted)]">/</span>
-          <span className="text-[var(--text)] font-bold truncate max-w-sm">
+          <span aria-hidden="true" className="text-zinc-400">/</span>
+          <span className="text-zinc-900 font-semibold truncate max-w-sm">
             {language === 'sw' && product.nameSw ? product.nameSw : product.name}
           </span>
         </nav>
@@ -310,23 +310,23 @@ export const ProductDetailsPage: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
           {/* ===================================================================== */}
-          {/* LEFT COLUMN: HIGH-RES GALLERY, LIGHTBOX & QUALITY BADGES */}
+          {/* LEFT COLUMN: HIGH-RES GALLERY & SHADCN QUALITY CARDS */}
           {/* ===================================================================== */}
-          <div className="lg:col-span-6 space-y-5 lg:sticky lg:top-24">
+          <div className="lg:col-span-6 space-y-4 lg:sticky lg:top-24">
             
-            {/* Primary Visual Display Box */}
-            <div className="w-full aspect-square bg-[var(--surface-1)] rounded-2xl border border-[var(--border)] shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex items-center justify-center p-6 sm:p-10 group">
+            {/* Primary Visual Display Box - Pure White BG, No Borders, No Shadows */}
+            <div className="w-full aspect-square bg-white rounded-2xl border-0 shadow-none relative overflow-hidden flex items-center justify-center p-6 sm:p-10 group">
               
-              {/* Badges on Visual */}
+              {/* Badges on Visual - shadcn Badges */}
               <div className="absolute top-4 left-4 z-10 flex flex-col gap-1.5 items-start">
                 {product.badge && (
-                  <span className="px-2.5 py-1 rounded-md bg-[#111113] text-[#DC2626] border border-[#dc2626]/30 text-[11px] font-bold uppercase tracking-wider shadow-sm flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-[#DC2626]" />
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-900 text-white text-[11px] font-mono font-bold uppercase tracking-wider shadow-2xs">
+                    <Sparkles className="w-3 h-3 text-[#E9B44C]" />
                     <span>{product.badge}</span>
                   </span>
                 )}
                 {product.freeDelivery && (
-                  <span className="px-2.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 text-[10px] font-bold uppercase tracking-wider">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-mono font-semibold uppercase tracking-wider">
                     Free Bus Parcel Elig.
                   </span>
                 )}
@@ -334,11 +334,11 @@ export const ProductDetailsPage: React.FC = () => {
 
               <div className="absolute top-4 right-4 z-10 flex flex-col gap-1.5 items-end">
                 {hasDiscount && (
-                  <span className="px-2.5 py-1 rounded-md bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#DC2626] text-white text-xs font-bold shadow-sm tracking-wide">
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-[#D63A3A] text-white text-xs font-mono font-bold shadow-2xs">
                     {Math.round(((product.price - effectivePrice) / product.price) * 100)}% OFF
                   </span>
                 )}
-                <span className="px-2.5 py-0.5 rounded-md bg-stone-100 text-stone-700 text-[10px] font-mono font-bold border border-stone-200">
+                <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-700 text-[10px] font-mono font-bold border border-zinc-200/80">
                   {product.sku}
                 </span>
               </div>
@@ -355,33 +355,33 @@ export const ProductDetailsPage: React.FC = () => {
                     alt={`${product.name} - View ${selectedImageIdx + 1}`}
                     variant="gallery"
                     priority={true}
-                    imgClassName="transition-transform duration-500 ease-out group-hover:scale-105"
+                    imgClassName="transition-transform duration-500 ease-out group-hover:scale-105 mix-blend-multiply"
                   />
                 </div>
               ) : (
                 /* Specification Sheet Preview fallback */
                 <div className="w-full h-full p-4 flex items-center justify-center">
-                  <div className="w-full max-w-sm border-2 border-[#111113] bg-[#F9F8F6] p-5 space-y-3 rounded-xl shadow-xs">
-                    <div className="text-center border-b border-stone-300 pb-2">
-                      <p className="text-lg font-bold tracking-widest text-[#111113] font-heading">
+                  <div className="w-full max-w-sm border border-zinc-200 bg-zinc-50 p-5 space-y-3 rounded-xl shadow-xs">
+                    <div className="text-center border-b border-zinc-200 pb-2">
+                      <p className="text-lg font-bold tracking-widest text-zinc-900 font-heading">
                         OMEGA STATIONERY
                       </p>
-                      <p className="text-[11px] font-semibold uppercase text-stone-600">
+                      <p className="text-[11px] font-semibold uppercase text-zinc-500 font-mono">
                         {product.category} · Official Specification
                       </p>
                     </div>
-                    <div className="space-y-1.5 text-xs text-stone-700 font-mono">
-                      <div className="flex justify-between border-b border-stone-200 pb-1">
-                        <span className="font-bold text-[#111113]">Item:</span>
+                    <div className="space-y-1.5 text-xs text-zinc-700 font-mono">
+                      <div className="flex justify-between border-b border-zinc-200 pb-1">
+                        <span className="font-bold text-zinc-900">Item:</span>
                         <span className="truncate max-w-[180px]">{product.name}</span>
                       </div>
-                      <div className="flex justify-between border-b border-stone-200 pb-1">
-                        <span className="font-bold text-[#111113]">SKU:</span>
+                      <div className="flex justify-between border-b border-zinc-200 pb-1">
+                        <span className="font-bold text-zinc-900">SKU:</span>
                         <span>{product.sku}</span>
                       </div>
                       {product.specifications.slice(0, 4).map((spec) => (
-                        <div key={spec.label} className="flex justify-between border-b border-stone-200 pb-1">
-                          <span className="font-bold text-[#111113]">{spec.label}:</span>
+                        <div key={spec.label} className="flex justify-between border-b border-zinc-200 pb-1">
+                          <span className="font-bold text-zinc-900">{spec.label}:</span>
                           <span className="truncate max-w-[170px]">{spec.value}</span>
                         </div>
                       ))}
@@ -390,20 +390,20 @@ export const ProductDetailsPage: React.FC = () => {
                 </div>
               )}
 
-              {/* Bottom Expand Prompt */}
+              {/* Bottom Expand Prompt - shadcn Button */}
               <button
                 type="button"
                 onClick={() => setIsLightboxOpen(true)}
-                className="absolute bottom-4 right-4 p-2 rounded-xl bg-white/90 hover:bg-white text-stone-700 hover:text-[#111113] border border-stone-200 shadow-xs transition-all flex items-center gap-1.5 text-xs font-semibold"
+                className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-white/95 px-2.5 py-1.5 text-xs font-mono font-medium text-zinc-700 shadow-2xs backdrop-blur-xs hover:bg-zinc-50 cursor-pointer"
                 aria-label="Expand image"
               >
                 <Maximize2 className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Zoom Full-Res</span>
+                <span className="hidden sm:inline">Zoom</span>
               </button>
             </div>
 
             {/* Thumbnail Navigation Row */}
-            <div className="flex items-center gap-3 overflow-x-auto pb-1">
+            <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-none">
               {galleryImages.map((imgUrl, index) => (
                 <button
                   key={`${imgUrl}-${index}`}
@@ -412,17 +412,17 @@ export const ProductDetailsPage: React.FC = () => {
                     setImgError(false);
                     setSelectedImageIdx(index);
                   }}
-                  className={`w-16 h-16 rounded-xl overflow-hidden border-2 shrink-0 transition-all ${
+                  className={`w-16 h-16 rounded-xl overflow-hidden border p-1 bg-white shrink-0 transition-all cursor-pointer ${
                     selectedImageIdx === index
-                      ? 'border-[#E9B44C] ring-2 ring-[#E5484D] shadow-sm'
-                      : 'border-[#3A3637] hover:border-[#E9B44C]/50'
+                      ? 'border-zinc-900 ring-2 ring-zinc-900/10 shadow-xs'
+                      : 'border-zinc-200/80 hover:border-zinc-400 opacity-80 hover:opacity-100'
                   }`}
                 >
                   <ProductImage
                     image={imgUrl}
                     alt={`Thumbnail ${index + 1}`}
                     variant="thumb"
-                    className="w-full h-full"
+                    className="w-full h-full mix-blend-multiply"
                   />
                 </button>
               ))}
@@ -430,88 +430,88 @@ export const ProductDetailsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setSelectedImageIdx(galleryImages.length)}
-                className={`h-16 px-3.5 rounded-xl border-2 shrink-0 flex flex-col items-center justify-center bg-white text-[11px] font-bold transition-all ${
+                className={`h-16 px-3.5 rounded-xl border shrink-0 flex flex-col items-center justify-center bg-white text-[11px] font-mono font-bold transition-all cursor-pointer ${
                   selectedImageIdx === galleryImages.length
-                    ? 'border-[#111113] text-[#111113] ring-2 ring-[#dc2626]'
-                    : 'border-[#E7E5E0] text-stone-600 hover:border-stone-400'
+                    ? 'border-zinc-900 text-zinc-900 ring-2 ring-zinc-900/10 shadow-xs'
+                    : 'border-zinc-200/80 text-zinc-500 hover:border-zinc-400'
                 }`}
               >
-                <FileText className="w-4 h-4 mb-0.5 text-[#dc2626]" />
-                <span>Specs Sheet</span>
+                <FileText className="w-4 h-4 mb-0.5 text-[#D63A3A]" />
+                <span>Specs</span>
               </button>
             </div>
 
-            {/* 4 Contextual Feature Pills under Visual */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 text-center">
-              <div className="p-2.5 rounded-xl bg-[var(--surface-1)] border border-[var(--border)] shadow-2xs">
+            {/* 4 Contextual Feature Pills - shadcn Style Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1 text-center">
+              <div className="p-3 rounded-xl bg-white border border-zinc-200/80 shadow-2xs">
                 {product.category?.includes('Bahasha') ? (
-                  <ShieldCheck className="w-4 h-4 text-emerald-500 mx-auto mb-1" />
+                  <ShieldCheck className="w-4 h-4 text-emerald-600 mx-auto mb-1" />
                 ) : product.category?.includes('File') || product.name.includes('Jaradio') ? (
-                  <Droplets className="w-4 h-4 text-emerald-500 mx-auto mb-1" />
+                  <Droplets className="w-4 h-4 text-emerald-600 mx-auto mb-1" />
                 ) : (
-                  <Layers className="w-4 h-4 text-[var(--gold)] mx-auto mb-1" />
+                  <Layers className="w-4 h-4 text-[#8C7355] mx-auto mb-1" />
                 )}
-                <span className="text-[11px] font-bold text-[var(--text)] block truncate">
+                <span className="text-[11px] font-bold text-zinc-900 block truncate font-sans">
                   {product.category?.includes('Bahasha')
                     ? 'Reinforced'
                     : product.name.includes('Jaradio')
                     ? 'Waterproof'
                     : 'Thread-Sewn'}
                 </span>
-                <span className="text-[10px] text-[var(--text-muted)] block truncate">
+                <span className="text-[10px] text-zinc-500 block truncate font-mono">
                   {product.category?.includes('Bahasha')
                     ? 'Heavy Kraft Paper'
                     : product.name.includes('Jaradio')
-                    ? 'Vinyl Moisture Barrier'
-                    : 'Durable Spine Binding'}
+                    ? 'Moisture Barrier'
+                    : 'Smyth 180° Lay-Flat'}
                 </span>
               </div>
 
-              <div className="p-2.5 rounded-xl bg-[var(--surface-1)] border border-[var(--border)] shadow-2xs">
-                <FileText className="w-4 h-4 text-[var(--text)] mx-auto mb-1" />
-                <span className="text-[11px] font-bold text-[var(--text)] block truncate">
+              <div className="p-3 rounded-xl bg-white border border-zinc-200/80 shadow-2xs">
+                <FileText className="w-4 h-4 text-zinc-800 mx-auto mb-1" />
+                <span className="text-[11px] font-bold text-zinc-900 block truncate font-sans">
                   {product.paperType ? 'Pure Paper' : 'Factory Grade'}
                 </span>
-                <span className="text-[10px] text-[var(--text-muted)] block truncate">
-                  {product.paperType || 'Standard Specification'}
+                <span className="text-[10px] text-zinc-500 block truncate font-mono">
+                  {product.paperType || 'Standard Bond'}
                 </span>
               </div>
 
-              <div className="p-2.5 rounded-xl bg-[var(--surface-1)] border border-[var(--border)] shadow-2xs">
-                <Package className="w-4 h-4 text-[var(--red)] mx-auto mb-1" />
-                <span className="text-[11px] font-bold text-[var(--text)] block truncate">
+              <div className="p-3 rounded-xl bg-white border border-zinc-200/80 shadow-2xs">
+                <Package className="w-4 h-4 text-[#D63A3A] mx-auto mb-1" />
+                <span className="text-[11px] font-bold text-zinc-900 block truncate font-sans">
                   {product.packaging ? 'Master Box' : 'Wholesale'}
                 </span>
-                <span className="text-[10px] text-[var(--text-muted)] block truncate">
+                <span className="text-[10px] text-zinc-500 block truncate font-mono">
                   {product.packaging || 'Bulk Factory Crate'}
                 </span>
               </div>
 
-              <div className="p-2.5 rounded-xl bg-[var(--surface-1)] border border-[var(--border)] shadow-2xs">
-                <ShieldCheck className="w-4 h-4 text-emerald-500 mx-auto mb-1" />
-                <span className="text-[11px] font-bold text-[var(--text)] block truncate">Genuine</span>
-                <span className="text-[10px] text-[var(--text-muted)] block truncate">Indigo Printed Ltd</span>
+              <div className="p-3 rounded-xl bg-white border border-zinc-200/80 shadow-2xs">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 mx-auto mb-1" />
+                <span className="text-[11px] font-bold text-zinc-900 block truncate font-sans">Genuine</span>
+                <span className="text-[10px] text-zinc-500 block truncate font-mono">Indigo Printed Ltd</span>
               </div>
             </div>
 
           </div>
 
           {/* ===================================================================== */}
-          {/* RIGHT COLUMN: INFORMATION, DYNAMIC PRICING, HOTLINES & ACCORDIONS */}
+          {/* RIGHT COLUMN: SHADCN INFORMATION, PRICING, HOTLINES & ACCORDIONS */}
           {/* ===================================================================== */}
           <div className="lg:col-span-6 space-y-6">
             
-            {/* Header, Title & Tags */}
-            <div className="space-y-3 border-b border-[var(--border)] pb-5">
+            {/* Header, Title & Tags - shadcn Style */}
+            <div className="space-y-3 border-b border-zinc-200/80 pb-5">
               <div className="flex items-center justify-between gap-2 flex-wrap text-xs">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="px-2.5 py-1 rounded-full bg-[var(--surface-1)] border border-[var(--red)] text-[var(--red)] font-mono font-bold">
+                  <span className="inline-flex items-center rounded-md border border-zinc-200/80 bg-zinc-50 px-2.5 py-0.5 text-xs font-mono font-bold uppercase tracking-wider text-zinc-700">
                     OFFICIAL FACTORY
                   </span>
-                  <span className="px-2.5 py-1 rounded-full bg-[var(--surface-1)] border border-[var(--border)] text-[var(--text)] font-mono font-semibold">
+                  <span className="inline-flex items-center rounded-md border border-zinc-200/80 bg-zinc-50 px-2.5 py-0.5 text-xs font-mono font-medium text-zinc-500">
                     SKU: {product.sku}
                   </span>
-                  <span className="px-2.5 py-1 rounded-full bg-[var(--surface-2)] border border-[var(--border)] text-[var(--gold)] font-bold">
+                  <span className="inline-flex items-center rounded-md border border-amber-200/60 bg-amber-50/60 px-2.5 py-0.5 text-xs font-mono font-bold text-[#8C7355]">
                     {product.category}
                   </span>
                 </div>
@@ -520,24 +520,24 @@ export const ProductDetailsPage: React.FC = () => {
                   type="button"
                   onClick={handleShare}
                   aria-label="Share product"
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)] text-[var(--text)] hover:text-[var(--gold)] text-xs font-mono font-semibold transition-colors cursor-pointer shadow-2xs"
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md border border-zinc-200 bg-white hover:bg-zinc-50 text-zinc-700 text-xs font-mono font-medium transition-colors cursor-pointer shadow-2xs"
                 >
                   <Share2 size={13} />
                   <span>Share</span>
                 </button>
               </div>
 
-              <h1 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[var(--text)] leading-tight">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-zinc-900 leading-tight">
                 {language === 'sw' && product.nameSw ? product.nameSw : product.name}
               </h1>
 
               {product.subtitle && (
-                <p className="text-sm sm:text-base font-medium text-[var(--gold)]">
+                <p className="text-sm sm:text-base font-medium text-[#8C7355]">
                   {language === 'sw' && product.subtitleSw ? product.subtitleSw : product.subtitle}
                 </p>
               )}
 
-              {/* Rating & Stock Badges */}
+              {/* Rating & Stock Badges - shadcn Badges */}
               <div className="flex items-center gap-4 text-xs pt-1 flex-wrap">
                 <div className="flex items-center gap-1.5">
                   <div className="flex text-amber-500">
@@ -545,19 +545,19 @@ export const ProductDetailsPage: React.FC = () => {
                       <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
                     ))}
                   </div>
-                  <span className="font-bold text-[var(--text)]">{product.rating || 4.8}</span>
-                  <span className="text-[var(--text-muted)]">({product.reviewCount || 160} reviews)</span>
+                  <span className="font-bold text-zinc-900">{product.rating || 4.8}</span>
+                  <span className="text-zinc-500 font-mono">({product.reviewCount || 160} reviews)</span>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-[var(--text-muted)]">·</span>
+                  <span className="text-zinc-300">·</span>
                   <span
-                    className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-bold ${
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ${
                       product.stockStatus === 'In Stock'
-                        ? 'bg-emerald-500/15 text-emerald-500 border border-emerald-500/25'
+                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                         : product.stockStatus === 'Low Stock'
-                        ? 'bg-amber-500/15 text-amber-500 border border-amber-500/25'
-                        : 'bg-red-500/15 text-red-500 border border-red-500/25'
+                        ? 'bg-amber-50 text-amber-700 border border-amber-200'
+                        : 'bg-red-50 text-red-700 border border-red-200'
                     }`}
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-current" />
@@ -571,19 +571,19 @@ export const ProductDetailsPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Price Box with Wholesale Tier Indicator */}
-            <div className="p-4 sm:p-5 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] shadow-xs space-y-4">
+            {/* Price Box with Wholesale Tier Indicator - shadcn Card */}
+            <div className="p-5 rounded-2xl border border-zinc-200/80 bg-white shadow-xs space-y-4">
               <div className="flex flex-wrap items-baseline justify-between gap-4">
                 <div>
-                  <span className="text-xs uppercase tracking-wider text-[var(--text-muted)] font-bold block mb-1">
+                  <span className="text-[11px] uppercase tracking-wider text-zinc-500 font-mono font-bold block mb-1">
                     {t.retailPrice}
                   </span>
                   <div className="flex items-baseline gap-3">
-                    <span className="text-3xl sm:text-4xl font-extrabold text-[var(--text)] font-mono tracking-tight">
+                    <span className="text-3xl sm:text-4xl font-bold text-zinc-900 font-mono tracking-tight tabular-nums">
                       {currency} {unitPrice.toLocaleString()}
                     </span>
                     {hasDiscount && (
-                      <span className="text-base text-[var(--text-muted)] line-through font-mono">
+                      <span className="text-base text-zinc-400 line-through font-mono">
                         {currency} {product.price.toLocaleString()}
                       </span>
                     )}
@@ -591,86 +591,89 @@ export const ProductDetailsPage: React.FC = () => {
                 </div>
 
                 {product.wholesalePrice && (
-                  <div className="text-right p-3 rounded-xl bg-[var(--surface-2)] border border-[var(--border)]">
-                    <span className="text-[11px] font-bold text-[var(--gold)] uppercase tracking-wider block">
+                  <div className="text-right p-3 rounded-xl bg-zinc-50 border border-zinc-200/80">
+                    <span className="text-[11px] font-mono font-bold text-[#8C7355] uppercase tracking-wider block">
                       Wholesale Rate (5+ {unitLabel})
                     </span>
-                    <span className="text-base font-black text-[var(--text)] font-mono">
+                    <span className="text-base font-bold text-zinc-900 font-mono tabular-nums">
                       {currency} {wholesaleRate.toLocaleString()}
                     </span>
-                    <span className="text-[10px] text-[var(--text-muted)] block mt-0.5">
-                      Save {currency} {(effectivePrice - wholesaleRate).toLocaleString()} per {unitLabel.toLowerCase().slice(0, -1) || 'unit'}
+                    <span className="text-[10px] text-zinc-500 block mt-0.5 font-mono">
+                      Save {currency} {(effectivePrice - wholesaleRate).toLocaleString()} / {unitLabel.toLowerCase().slice(0, -1) || 'unit'}
                     </span>
                   </div>
                 )}
               </div>
 
               {/* Volume Discount Tiers Strip */}
-              <div className="pt-2 border-t border-[var(--border)]">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)] block mb-2">
+              <div className="pt-3 border-t border-zinc-100">
+                <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-500 block mb-2.5">
                   Volume Pricing Tiers:
                 </span>
                 <div className="grid grid-cols-3 gap-2 text-xs">
-                  <div
+                  <button
+                    type="button"
                     onClick={() => setQuantity(1)}
-                    className={`p-2 rounded-xl text-center border cursor-pointer transition-all ${
+                    className={`p-2.5 rounded-xl text-center border cursor-pointer transition-all ${
                       quantity < wholesaleMinMoq
-                        ? 'bg-[var(--red)] text-white border-[var(--red)] shadow-xs'
-                        : 'bg-[var(--surface-2)] text-[var(--text)] border-[var(--border)] hover:border-[var(--gold)]'
+                        ? 'bg-zinc-900 text-white border-zinc-900 shadow-xs'
+                        : 'bg-zinc-50 text-zinc-800 border-zinc-200/80 hover:border-zinc-400'
                     }`}
                   >
                     <span className="block font-bold">1 – 4 {unitLabel}</span>
-                    <span className="text-[11px] font-mono">{currency} {effectivePrice.toLocaleString()}</span>
-                  </div>
+                    <span className="text-[11px] font-mono tabular-nums">{currency} {effectivePrice.toLocaleString()}</span>
+                  </button>
 
-                  <div
+                  <button
+                    type="button"
                     onClick={() => setQuantity(5)}
-                    className={`p-2 rounded-xl text-center border cursor-pointer transition-all ${
+                    className={`p-2.5 rounded-xl text-center border cursor-pointer transition-all ${
                       quantity >= wholesaleMinMoq && quantity < 10
-                        ? 'bg-[var(--red)] text-white border-[var(--red)] shadow-xs'
-                        : 'bg-[var(--surface-2)] text-[var(--text)] border-[var(--border)] hover:border-[var(--gold)]'
+                        ? 'bg-zinc-900 text-white border-zinc-900 shadow-xs'
+                        : 'bg-zinc-50 text-zinc-800 border-zinc-200/80 hover:border-zinc-400'
                     }`}
                   >
                     <span className="block font-bold">5 – 9 {unitLabel}</span>
-                    <span className="text-[11px] font-mono">{currency} {wholesaleRate.toLocaleString()}</span>
-                    <span className="text-[9px] text-[var(--gold)] block font-bold">Bulk Tier</span>
-                  </div>
+                    <span className="text-[11px] font-mono tabular-nums">{currency} {wholesaleRate.toLocaleString()}</span>
+                    <span className="text-[9px] text-[#C49B7C] block font-mono font-bold">Bulk Tier</span>
+                  </button>
 
-                  <div
+                  <button
+                    type="button"
                     onClick={() => setQuantity(10)}
-                    className={`p-2 rounded-xl text-center border cursor-pointer transition-all ${
+                    className={`p-2.5 rounded-xl text-center border cursor-pointer transition-all ${
                       quantity >= 10
-                        ? 'bg-[var(--red)] text-white border-[var(--red)] shadow-xs'
-                        : 'bg-[var(--surface-2)] text-[var(--text)] border-[var(--border)] hover:border-[var(--gold)]'
+                        ? 'bg-zinc-900 text-white border-zinc-900 shadow-xs'
+                        : 'bg-zinc-50 text-zinc-800 border-zinc-200/80 hover:border-zinc-400'
                     }`}
                   >
                     <span className="block font-bold">10+ {unitLabel}</span>
-                    <span className="text-[11px] font-mono">
+                    <span className="text-[11px] font-mono tabular-nums">
                       {currency} {getTierPrice(10).toLocaleString()}
                     </span>
-                    <span className="text-[9px] text-emerald-500 block font-bold">Carton Rate</span>
-                  </div>
+                    <span className="text-[9px] text-emerald-600 block font-mono font-bold">Carton Rate</span>
+                  </button>
                 </div>
               </div>
             </div>
 
-            {/* Quantity Selector, Subtotal & Live Order Action Box */}
-            <div className="bg-[var(--surface-1)] border border-[var(--border)] rounded-2xl p-5 space-y-4 shadow-xs">
+            {/* Quantity Selector, Subtotal & Live Order Action Box - shadcn Card */}
+            <div className="bg-white border border-zinc-200/80 rounded-2xl p-5 space-y-4 shadow-xs">
               <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="space-y-1">
+                <div className="space-y-1.5">
                   <label
                     htmlFor="pdp-quantity"
-                    className="block text-xs font-bold text-[var(--text)] uppercase tracking-wider"
+                    className="block text-xs font-mono font-bold text-zinc-700 uppercase tracking-wider"
                   >
-                    Select Quantity ({unitLabel})
+                    Quantity ({unitLabel})
                   </label>
-                  <div className="inline-flex items-center border border-[var(--border)] rounded-xl bg-[var(--surface-2)]">
+                  <div className="inline-flex items-center border border-zinc-200 rounded-lg bg-zinc-50/80 p-0.5">
                     <button
                       type="button"
                       onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                       disabled={isOutOfStock || quantity <= 1}
                       aria-label="Decrease quantity"
-                      className="p-2.5 text-[var(--text-muted)] hover:text-[var(--text)] disabled:opacity-40"
+                      className="p-2 text-zinc-500 hover:text-zinc-900 hover:bg-white rounded-md disabled:opacity-30 transition-all cursor-pointer"
                     >
                       <Minus className="w-3.5 h-3.5" />
                     </button>
@@ -687,14 +690,14 @@ export const ProductDetailsPage: React.FC = () => {
                         }
                       }}
                       disabled={isOutOfStock}
-                      className="w-16 text-center text-sm font-bold text-[var(--text)] font-mono focus:outline-none bg-transparent"
+                      className="w-14 text-center text-sm font-bold text-zinc-900 font-mono focus:outline-none bg-transparent"
                     />
                     <button
                       type="button"
                       onClick={() => setQuantity((q) => Math.min(999, q + 1))}
                       disabled={isOutOfStock}
                       aria-label="Increase quantity"
-                      className="p-2.5 text-[var(--text-muted)] hover:text-[var(--text)] disabled:opacity-40"
+                      className="p-2 text-zinc-500 hover:text-zinc-900 hover:bg-white rounded-md disabled:opacity-30 transition-all cursor-pointer"
                     >
                       <Plus className="w-3.5 h-3.5" />
                     </button>
@@ -702,30 +705,30 @@ export const ProductDetailsPage: React.FC = () => {
                 </div>
 
                 <div className="text-right">
-                  <p className="text-xs text-[var(--text-muted)] font-medium">Order Subtotal</p>
-                  <p className="text-2xl font-black text-[var(--text)] font-mono">
+                  <p className="text-xs text-zinc-500 font-mono font-medium">Order Subtotal</p>
+                  <p className="text-2xl font-bold text-zinc-900 font-mono tabular-nums">
                     {currency} {subtotal.toLocaleString()}
                   </p>
                   {savings > 0 && (
-                    <span className="text-[11px] font-bold text-emerald-500 block">
-                      You save {currency} {savings.toLocaleString()}!
+                    <span className="text-[11px] font-mono font-bold text-emerald-600 block">
+                      Save {currency} {savings.toLocaleString()}
                     </span>
                   )}
                 </div>
               </div>
 
               {/* Quick Preset Buttons */}
-              <div className="flex items-center gap-2 pt-1 flex-wrap">
-                <span className="text-[10px] font-bold uppercase text-[var(--text-muted)]">Quick Pick:</span>
+              <div className="flex items-center gap-1.5 pt-1 flex-wrap">
+                <span className="text-[10px] font-mono font-bold uppercase text-zinc-400">Quick:</span>
                 {[1, 5, 10, 20, 50].map((preset) => (
                   <button
                     key={preset}
                     type="button"
                     onClick={() => setQuantity(preset)}
-                    className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    className={`px-2.5 py-1 rounded-md text-xs font-mono font-semibold transition-all cursor-pointer ${
                       quantity === preset
-                        ? 'bg-[var(--red)] text-white shadow-xs'
-                        : 'bg-[var(--surface-2)] text-[var(--text)] border border-[var(--border)] hover:border-[var(--gold)]'
+                        ? 'bg-zinc-900 text-white shadow-2xs'
+                        : 'bg-zinc-50 text-zinc-700 border border-zinc-200/80 hover:bg-zinc-100'
                     }`}
                   >
                     +{preset} {unitLabel}
@@ -734,8 +737,8 @@ export const ProductDetailsPage: React.FC = () => {
               </div>
 
               {/* Official Sales Desk Hotline Chooser */}
-              <div className="pt-3 border-t border-[var(--border)] space-y-2">
-                <label className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)] block">
+              <div className="pt-3 border-t border-zinc-100 space-y-2">
+                <label className="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-500 block">
                   Select Order Hotline Desk:
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
@@ -751,29 +754,29 @@ export const ProductDetailsPage: React.FC = () => {
                       onClick={() => setSelectedPhoneDesk(d.digits)}
                       className={`p-2.5 rounded-xl text-left border transition-all cursor-pointer ${
                         selectedPhoneDesk === d.digits
-                          ? 'bg-[var(--surface-2)] border-[var(--red)] ring-2 ring-[var(--red)] font-bold shadow-xs'
-                          : 'bg-[var(--surface-2)] border-[var(--border)] text-[var(--text-muted)] hover:border-[var(--gold)]'
+                          ? 'bg-zinc-50 border-zinc-900 ring-1 ring-zinc-900 shadow-2xs'
+                          : 'bg-white border-zinc-200/80 text-zinc-500 hover:border-zinc-300'
                       }`}
                     >
-                      <p className="text-[10px] text-[var(--red)] font-bold truncate">{d.label}</p>
-                      <p className="font-mono text-xs text-[var(--text)] mt-0.5">{d.number}</p>
+                      <p className="text-[10px] text-[#D63A3A] font-mono font-bold truncate">{d.label}</p>
+                      <p className="font-mono text-xs text-zinc-900 font-semibold mt-0.5">{d.number}</p>
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* Action Buttons: Add to Order & Order via WhatsApp */}
+              {/* Action Buttons: shadcn Primary & Secondary Buttons */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                 <button
                   type="button"
                   onClick={handleAdd}
                   disabled={isOutOfStock}
-                  className={`w-full py-4 px-5 rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer ${
+                  className={`w-full py-3.5 px-5 rounded-xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer ${
                     isOutOfStock
-                      ? 'bg-[var(--surface-2)] text-[var(--text-muted)] cursor-not-allowed'
+                      ? 'bg-zinc-100 text-zinc-400 cursor-not-allowed border border-zinc-200'
                       : justAdded
-                      ? 'bg-[#16a34a] text-white'
-                      : 'bg-[var(--red)] hover:bg-[var(--red-hover)] text-white shadow-md shadow-red-950/40 active:scale-[0.98]'
+                      ? 'bg-emerald-600 text-white'
+                      : 'bg-zinc-900 hover:bg-[#D63A3A] active:scale-[0.98] text-white hover:shadow-md'
                   }`}
                 >
                   {isOutOfStock ? (
@@ -795,7 +798,7 @@ export const ProductDetailsPage: React.FC = () => {
                   href={directWhatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-4 px-5 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] cursor-pointer"
+                  className="w-full py-3.5 px-5 bg-[#25D366] hover:bg-[#20ba59] active:scale-[0.98] text-white rounded-xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer"
                 >
                   <MessageCircle className="w-4 h-4 fill-white" />
                   <span>Order on WhatsApp</span>
@@ -804,35 +807,35 @@ export const ProductDetailsPage: React.FC = () => {
             </div>
 
             {/* ================================================================= */}
-            {/* INTERACTIVE ACCORDION DETAILS SECTION (ACORDING DETAILS DISPLAY) */}
+            {/* SHADCN ACCORDION DETAILS SECTION */}
             {/* ================================================================= */}
-            <div className="space-y-3 pt-4">
+            <div className="space-y-3 pt-3">
               <div className="flex items-center justify-between pb-1">
-                <h2 className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--red)] font-heading">
+                <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-900">
                   Product Details &amp; Specifications
                 </h2>
-                <span className="text-[11px] text-[var(--text-muted)]">Tap sections to expand</span>
+                <span className="text-[11px] font-mono text-zinc-400">Click to expand</span>
               </div>
 
-              {/* 1. OVERVIEW & PROTECTION BENEFITS */}
-              <div className="border border-[var(--border)] rounded-2xl bg-[var(--surface-1)] overflow-hidden shadow-2xs">
+              {/* 1. OVERVIEW & PROTECTION BENEFITS - shadcn Accordion */}
+              <div className="border border-zinc-200/80 rounded-xl bg-white overflow-hidden shadow-2xs">
                 <button
                   type="button"
                   onClick={() => toggleAccordion('overview')}
-                  className="w-full p-4 text-left flex items-center justify-between font-bold text-sm text-[var(--text)] hover:bg-[var(--surface-2)] transition-colors cursor-pointer"
+                  className="w-full p-4 text-left flex items-center justify-between font-semibold text-sm text-zinc-900 hover:bg-zinc-50/80 transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-2.5">
-                    <Droplets className="w-4 h-4 text-emerald-500" />
-                    <span>Product Overview &amp; Shield Features</span>
+                    <Droplets className="w-4 h-4 text-emerald-600" />
+                    <span>Product Overview &amp; Key Features</span>
                   </div>
                   {accordionState.overview ? (
-                    <ChevronUp className="w-4 h-4 text-[var(--gold)]" />
+                    <ChevronUp className="w-4 h-4 text-zinc-400" />
                   ) : (
-                    <ChevronDown className="w-4 h-4 text-[var(--text-muted)]" />
+                    <ChevronDown className="w-4 h-4 text-zinc-400" />
                   )}
                 </button>
                 {accordionState.overview && (
-                  <div className="px-5 pb-5 pt-1 space-y-4 text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed border-t border-[var(--border)]">
+                  <div className="px-5 pb-5 pt-2 space-y-4 text-xs sm:text-sm text-zinc-600 leading-relaxed border-t border-zinc-100">
                     <p>
                       {language === 'sw' && product.descriptionSw
                         ? product.descriptionSw
@@ -840,45 +843,45 @@ export const ProductDetailsPage: React.FC = () => {
                     </p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                      <div className="p-3 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] flex items-start gap-2.5">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-200/80 flex items-start gap-2.5">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                         <div>
-                          <strong className="block text-[var(--text)]">
+                          <strong className="block text-zinc-900">
                             {product.binding ? 'Guaranteed Binding' : 'Factory Grade Craft'}
                           </strong>
-                          <span className="text-[11px] text-[var(--text-muted)]">
+                          <span className="text-[11px] text-zinc-500">
                             {product.binding || 'Engineered for durability under rigorous daily classroom & office handling.'}
                           </span>
                         </div>
                       </div>
 
-                      <div className="p-3 rounded-xl bg-[var(--surface-2)] border border-[var(--border)] flex items-start gap-2.5">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                      <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-200/80 flex items-start gap-2.5">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                         <div>
-                          <strong className="block text-[var(--text)]">
+                          <strong className="block text-zinc-900">
                             {product.paperType ? 'Paper Standard' : 'Material Quality'}
                           </strong>
-                          <span className="text-[11px] text-stone-600">
+                          <span className="text-[11px] text-zinc-500">
                             {product.paperType || 'Standard high-performance material manufactured to strict Tanzanian norms.'}
                           </span>
                         </div>
                       </div>
 
-                      <div className="p-3 rounded-xl bg-[#F9F8F6] border border-stone-200/80 flex items-start gap-2.5">
-                        <CheckCircle2 className="w-4 h-4 text-[#2A9D8F] shrink-0 mt-0.5" />
+                      <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-200/80 flex items-start gap-2.5">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                         <div>
-                          <strong className="block text-[#111113]">Master Packaging</strong>
-                          <span className="text-[11px] text-stone-600">
+                          <strong className="block text-zinc-900">Master Packaging</strong>
+                          <span className="text-[11px] text-zinc-500">
                             {product.packaging ? `${product.packaging} sealed in heavy corrugated protective carton.` : 'Packed in heavy moisture-proof protective cartons for long-distance transit.'}
                           </span>
                         </div>
                       </div>
 
-                      <div className="p-3 rounded-xl bg-[#F9F8F6] border border-stone-200/80 flex items-start gap-2.5">
-                        <CheckCircle2 className="w-4 h-4 text-[#2A9D8F] shrink-0 mt-0.5" />
+                      <div className="p-3 rounded-xl bg-zinc-50 border border-zinc-200/80 flex items-start gap-2.5">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
                         <div>
-                          <strong className="block text-[var(--text)]">Indigo Printed Limited Hallmark</strong>
-                          <span className="text-[11px] text-[var(--text-muted)]">
+                          <strong className="block text-zinc-900">Indigo Printed Limited Hallmark</strong>
+                          <span className="text-[11px] text-zinc-500">
                             Manufactured at Plot 30, Block F Kilwa Rd, Mkuranga.
                           </span>
                         </div>
@@ -889,149 +892,151 @@ export const ProductDetailsPage: React.FC = () => {
               </div>
 
               {/* 2. COMPLETE TECHNICAL SPECIFICATIONS ACCORDION */}
-              <div className="border border-[var(--border)] rounded-2xl bg-[var(--surface-1)] overflow-hidden shadow-2xs">
+              <div className="border border-zinc-200/80 rounded-xl bg-white overflow-hidden shadow-2xs">
                 <button
                   type="button"
                   onClick={() => toggleAccordion('specs')}
-                  className="w-full p-4 text-left flex items-center justify-between font-bold text-sm text-[var(--text)] hover:bg-[var(--surface-2)] transition-colors"
+                  className="w-full p-4 text-left flex items-center justify-between font-semibold text-sm text-zinc-900 hover:bg-zinc-50/80 transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-2.5">
-                    <Layers className="w-4 h-4 text-[var(--red)]" />
+                    <Layers className="w-4 h-4 text-[#8C7355]" />
                     <span>Technical Specifications &amp; Parameters</span>
                   </div>
                   {accordionState.specs ? (
-                    <ChevronUp className="w-4 h-4 text-[var(--text-muted)]" />
+                    <ChevronUp className="w-4 h-4 text-zinc-400" />
                   ) : (
-                    <ChevronDown className="w-4 h-4 text-[var(--text-muted)]" />
+                    <ChevronDown className="w-4 h-4 text-zinc-400" />
                   )}
                 </button>
                 {accordionState.specs && (
-                  <div className="px-5 pb-5 pt-1 space-y-3 border-t border-[var(--border)]">
-                    <table className="w-full text-left border-collapse text-xs sm:text-sm">
-                      <tbody className="divide-y divide-[var(--border)]">
-                        <tr className="bg-[var(--surface-1)]">
-                          <th className="py-2.5 px-3 font-semibold text-[var(--text-muted)] bg-[var(--surface-2)] w-2/5">
-                            Product SKU
-                          </th>
-                          <td className="py-2.5 px-3 font-mono font-bold text-[var(--text)]">
-                            {product.sku}
-                          </td>
-                        </tr>
-                        <tr className="bg-[var(--surface-1)]">
-                          <th className="py-2.5 px-3 font-semibold text-[var(--text-muted)] bg-[var(--surface-2)]">
-                            Category
-                          </th>
-                          <td className="py-2.5 px-3 text-[var(--text)]">
-                            {product.category}
-                          </td>
-                        </tr>
-                        {product.packaging && (
-                          <tr className="bg-[var(--surface-1)]">
-                            <th className="py-2.5 px-3 font-semibold text-[var(--text-muted)] bg-[var(--surface-2)]">
-                              Packaging Unit
+                  <div className="px-5 pb-5 pt-2 space-y-3 border-t border-zinc-100">
+                    <div className="border border-zinc-200/80 rounded-xl overflow-hidden">
+                      <table className="w-full text-left border-collapse text-xs sm:text-sm">
+                        <tbody className="divide-y divide-zinc-200/70">
+                          <tr className="bg-white">
+                            <th className="py-2.5 px-3.5 font-mono font-semibold text-zinc-500 bg-zinc-50/80 w-2/5">
+                              Product SKU
                             </th>
-                            <td className="py-2.5 px-3 text-[var(--text)]">
-                              {product.packaging}
+                            <td className="py-2.5 px-3.5 font-mono font-bold text-zinc-900">
+                              {product.sku}
                             </td>
                           </tr>
-                        )}
-                        {product.specifications.map((spec) => (
-                          <tr key={spec.label} className="bg-[var(--surface-1)]">
-                            <th className="py-2.5 px-3 font-semibold text-[var(--text-muted)] bg-[var(--surface-2)]">
-                              {spec.label}
+                          <tr className="bg-white">
+                            <th className="py-2.5 px-3.5 font-mono font-semibold text-zinc-500 bg-zinc-50/80">
+                              Category
                             </th>
-                            <td className="py-2.5 px-3 font-medium text-[var(--text)]">
-                              {spec.value}
+                            <td className="py-2.5 px-3.5 text-zinc-800">
+                              {product.category}
                             </td>
                           </tr>
-                        ))}
-                        <tr className="bg-[var(--surface-1)]">
-                          <th className="py-2.5 px-3 font-semibold text-[var(--text-muted)] bg-[var(--surface-2)]">
-                            Manufacturer &amp; Factory
-                          </th>
-                          <td className="py-2.5 px-3 text-[var(--text)]">
-                            Indigo Printed Limited · Plot 30, Block F Kilwa Rd, Mkuranga, Dar es Salaam
-                          </td>
-                        </tr>
-                        <tr className="bg-[var(--surface-1)]">
-                          <th className="py-2.5 px-3 font-semibold text-[var(--text-muted)] bg-[var(--surface-2)]">
-                            Price List Reference
-                          </th>
-                          <td className="py-2.5 px-3 font-mono text-[var(--gold)] font-semibold">
-                            PL00001 (Official Factory Benchmark)
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
+                          {product.packaging && (
+                            <tr className="bg-white">
+                              <th className="py-2.5 px-3.5 font-mono font-semibold text-zinc-500 bg-zinc-50/80">
+                                Packaging Unit
+                              </th>
+                              <td className="py-2.5 px-3.5 text-zinc-800 font-mono">
+                                {product.packaging}
+                              </td>
+                            </tr>
+                          )}
+                          {product.specifications.map((spec) => (
+                            <tr key={spec.label} className="bg-white">
+                              <th className="py-2.5 px-3.5 font-mono font-semibold text-zinc-500 bg-zinc-50/80">
+                                {spec.label}
+                              </th>
+                              <td className="py-2.5 px-3.5 font-medium text-zinc-900">
+                                {spec.value}
+                              </td>
+                            </tr>
+                          ))}
+                          <tr className="bg-white">
+                            <th className="py-2.5 px-3.5 font-mono font-semibold text-zinc-500 bg-zinc-50/80">
+                              Manufacturer &amp; Factory
+                            </th>
+                            <td className="py-2.5 px-3.5 text-zinc-700">
+                              Indigo Printed Limited · Plot 30, Block F Kilwa Rd, Mkuranga
+                            </td>
+                          </tr>
+                          <tr className="bg-white">
+                            <th className="py-2.5 px-3.5 font-mono font-semibold text-zinc-500 bg-zinc-50/80">
+                              Price List Reference
+                            </th>
+                            <td className="py-2.5 px-3.5 font-mono text-[#8C7355] font-bold">
+                              PL00001 (Official Factory Benchmark)
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 )}
               </div>
 
               {/* 3. WHOLESALE, SCHOOL TENDERS & TRA INVOICING */}
-              <div className="border border-[var(--border)] rounded-2xl bg-[var(--surface-1)] overflow-hidden shadow-2xs">
+              <div className="border border-zinc-200/80 rounded-xl bg-white overflow-hidden shadow-2xs">
                 <button
                   type="button"
                   onClick={() => toggleAccordion('wholesale')}
-                  className="w-full p-4 text-left flex items-center justify-between font-bold text-sm text-[var(--text)] hover:bg-[var(--surface-2)] transition-colors"
+                  className="w-full p-4 text-left flex items-center justify-between font-semibold text-sm text-zinc-900 hover:bg-zinc-50/80 transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-2.5">
-                    <FileText className="w-4 h-4 text-[var(--gold)]" />
+                    <FileText className="w-4 h-4 text-[#8C7355]" />
                     <span>Wholesale, School Tenders &amp; TRA Tax Invoicing</span>
                   </div>
                   {accordionState.wholesale ? (
-                    <ChevronUp className="w-4 h-4 text-[var(--text-muted)]" />
+                    <ChevronUp className="w-4 h-4 text-zinc-400" />
                   ) : (
-                    <ChevronDown className="w-4 h-4 text-[var(--text-muted)]" />
+                    <ChevronDown className="w-4 h-4 text-zinc-400" />
                   )}
                 </button>
                 {accordionState.wholesale && (
-                  <div className="px-5 pb-5 pt-1 space-y-3 text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed border-t border-[var(--border)]">
+                  <div className="px-5 pb-5 pt-2 space-y-3 text-xs sm:text-sm text-zinc-600 leading-relaxed border-t border-zinc-100">
                     <p>
                       OMEGA Stationery is an authorized manufacturing partner supplying wholesale book covers and writing stationery across Tanzania:
                     </p>
-                    <ul className="space-y-1.5 list-disc list-inside text-[var(--text-muted)]">
-                      <li><strong className="text-[var(--text)]">TRA Fiscal EFD Invoices:</strong> Issued with all corporate, school, and government tender consignments.</li>
-                      <li><strong className="text-[var(--text)]">Carton Crate Savings:</strong> Special discounted rates for wholesale carton orders (10+ rolls).</li>
-                      <li><strong className="text-[var(--text)]">School Supplies:</strong> Trusted by primary and secondary academies in Mbeya, Dar es Salaam, Mwanza, Arusha, and Dodoma.</li>
-                      <li><strong className="text-[var(--text)]">Direct Payment Options:</strong> CRDB, NMB, M-Pesa Till, Airtel Money, or Cash on Pickup at Soweto SIDO Viwandani.</li>
+                    <ul className="space-y-1.5 list-disc list-inside text-zinc-600">
+                      <li><strong className="text-zinc-900">TRA Fiscal EFD Invoices:</strong> Issued with all corporate, school, and government tender consignments.</li>
+                      <li><strong className="text-zinc-900">Carton Crate Savings:</strong> Special discounted rates for wholesale carton orders.</li>
+                      <li><strong className="text-zinc-900">School Supplies:</strong> Trusted by primary and secondary academies across all 31 regions.</li>
+                      <li><strong className="text-zinc-900">Direct Payment Options:</strong> CRDB, NMB, M-Pesa Till, Airtel Money, or Cash on Pickup at Soweto SIDO Viwandani.</li>
                     </ul>
                   </div>
                 )}
               </div>
 
               {/* 4. BUS CARGO & UPCOUNTRY REGIONAL DISPATCH */}
-              <div className="border border-[var(--border)] rounded-2xl bg-[var(--surface-1)] overflow-hidden shadow-2xs">
+              <div className="border border-zinc-200/80 rounded-xl bg-white overflow-hidden shadow-2xs">
                 <button
                   type="button"
                   onClick={() => toggleAccordion('delivery')}
-                  className="w-full p-4 text-left flex items-center justify-between font-bold text-sm text-[var(--text)] hover:bg-[var(--surface-2)] transition-colors"
+                  className="w-full p-4 text-left flex items-center justify-between font-semibold text-sm text-zinc-900 hover:bg-zinc-50/80 transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-2.5">
-                    <Truck className="w-4 h-4 text-[var(--gold)]" />
+                    <Truck className="w-4 h-4 text-zinc-700" />
                     <span>Upcountry Bus Parcel Delivery (All 31 Regions)</span>
                   </div>
                   {accordionState.delivery ? (
-                    <ChevronUp className="w-4 h-4 text-[var(--text-muted)]" />
+                    <ChevronUp className="w-4 h-4 text-zinc-400" />
                   ) : (
-                    <ChevronDown className="w-4 h-4 text-[var(--text-muted)]" />
+                    <ChevronDown className="w-4 h-4 text-zinc-400" />
                   )}
                 </button>
                 {accordionState.delivery && (
-                  <div className="px-5 pb-5 pt-1 space-y-3 text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed border-t border-[var(--border)]">
+                  <div className="px-5 pb-5 pt-2 space-y-3 text-xs sm:text-sm text-zinc-600 leading-relaxed border-t border-zinc-100">
                     <p>
                       We deliver daily consignments via reliable scheduled bus companies:
                     </p>
                     <div className="grid grid-cols-2 gap-2 text-xs pt-1">
-                      <div className="p-2.5 rounded-lg bg-[var(--surface-2)] border border-[var(--border)]">
-                        <strong className="block text-[var(--text)]">Dar es Salaam</strong>
+                      <div className="p-3 rounded-lg bg-zinc-50 border border-zinc-200/80">
+                        <strong className="block text-zinc-900">Dar es Salaam</strong>
                         <span>Same-day or next-day direct van drop-off.</span>
                       </div>
-                      <div className="p-2.5 rounded-lg bg-[var(--surface-2)] border border-[var(--border)]">
-                        <strong className="block text-[var(--text)]">Upcountry Regions</strong>
+                      <div className="p-3 rounded-lg bg-zinc-50 border border-zinc-200/80">
+                        <strong className="block text-zinc-900">Upcountry Regions</strong>
                         <span>BM Coach, Shabiby, Dar Express, New Force parcel tracking.</span>
                       </div>
                     </div>
-                    <p className="text-[11px] text-[var(--text-muted)] pt-1">
+                    <p className="text-[11px] text-zinc-500 pt-1 font-mono">
                       Waybill numbers are forwarded instantly via WhatsApp as soon as parcels are dispatched.
                     </p>
                   </div>
@@ -1039,29 +1044,29 @@ export const ProductDetailsPage: React.FC = () => {
               </div>
 
               {/* 5. APPLICATION & COVERING GUIDE */}
-              <div className="border border-[var(--border)] rounded-2xl bg-[var(--surface-1)] overflow-hidden shadow-2xs">
+              <div className="border border-zinc-200/80 rounded-xl bg-white overflow-hidden shadow-2xs">
                 <button
                   type="button"
                   onClick={() => toggleAccordion('guide')}
-                  className="w-full p-4 text-left flex items-center justify-between font-bold text-sm text-[var(--text)] hover:bg-[var(--surface-2)] transition-colors"
+                  className="w-full p-4 text-left flex items-center justify-between font-semibold text-sm text-zinc-900 hover:bg-zinc-50/80 transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-2.5">
-                    <HelpCircle className="w-4 h-4 text-[var(--red)]" />
+                    <HelpCircle className="w-4 h-4 text-zinc-700" />
                     <span>How to Wrap &amp; Cover Books (Application Guide)</span>
                   </div>
                   {accordionState.guide ? (
-                    <ChevronUp className="w-4 h-4 text-[var(--text-muted)]" />
+                    <ChevronUp className="w-4 h-4 text-zinc-400" />
                   ) : (
-                    <ChevronDown className="w-4 h-4 text-[var(--text-muted)]" />
+                    <ChevronDown className="w-4 h-4 text-zinc-400" />
                   )}
                 </button>
                 {accordionState.guide && (
-                  <div className="px-5 pb-5 pt-1 space-y-2 text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed border-t border-[var(--border)]">
-                    <ol className="list-decimal list-inside space-y-1.5 text-[var(--text-muted)]">
-                      <li><strong className="text-[var(--text)]">Measure:</strong> Open the counter book or exercise book flat on the roll.</li>
-                      <li><strong className="text-[var(--text)]">Cut:</strong> Leave 3 cm margin on top, bottom, and side flaps. Cut with scissors.</li>
-                      <li><strong className="text-[var(--text)]">Fold Spine:</strong> Make small cuts at the top and bottom of the spine fold.</li>
-                      <li><strong className="text-[var(--text)]">Secure:</strong> Fold side flaps neatly inside the cover and secure with clear tape.</li>
+                  <div className="px-5 pb-5 pt-2 space-y-2 text-xs sm:text-sm text-zinc-600 leading-relaxed border-t border-zinc-100">
+                    <ol className="list-decimal list-inside space-y-1.5 text-zinc-600">
+                      <li><strong className="text-zinc-900">Measure:</strong> Open the counter book or exercise book flat on the roll.</li>
+                      <li><strong className="text-zinc-900">Cut:</strong> Leave 3 cm margin on top, bottom, and side flaps. Cut with scissors.</li>
+                      <li><strong className="text-zinc-900">Fold Spine:</strong> Make small cuts at the top and bottom of the spine fold.</li>
+                      <li><strong className="text-zinc-900">Secure:</strong> Fold side flaps neatly inside the cover and secure with clear tape.</li>
                     </ol>
                   </div>
                 )}

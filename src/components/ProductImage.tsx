@@ -79,7 +79,7 @@ export const ProductImage: React.FC<ProductImageProps> = ({
   let paddingStyle = 'clamp(8px, 6%, 20px)';
   let objectPosition = 'center';
   let defaultSizes = '(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw';
-  let bgWrapper = 'bg-[var(--paper,#F3EBDD)]';
+  let bgWrapper = 'bg-white';
 
   switch (variant) {
     case 'card':
@@ -132,7 +132,7 @@ export const ProductImage: React.FC<ProductImageProps> = ({
   } else if (resolvedBg === 'white') {
     blendClass = 'mix-blend-multiply';
   } else {
-    dropShadowStyle = 'drop-shadow(0 6px 14px rgba(0,0,0,0.12))';
+    dropShadowStyle = '';
   }
 
   return (

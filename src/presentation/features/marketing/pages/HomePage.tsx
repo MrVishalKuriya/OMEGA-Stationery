@@ -105,12 +105,12 @@ export const HomePage: React.FC = () => {
         brand: 'Brand: OMEGA',
         cta: language === 'sw' ? 'EXPLORE' : 'EXPLORE',
         link: '/product/prod-omega-cb-q3',
-        image: '/products/omega-hardcover-counter-book-q3-288-pages-800.webp',
+        image: '/omega-hero-book.png',
         gallery: [
+          '/omega-hero-book.png',
           '/products/omega-hardcover-counter-book-q3-288-pages-800.webp',
           '/omega-products/counter-book-q3-288p.jpeg',
           '/omega-products/counter-book-q4-catalog.jpeg',
-          '/omega-products/catalog-sheet-counter-q2-q3-q4.jpeg',
         ],
         variants: [
           { name: 'Quire 2 (Q2)', pages: '192 Pages', price: 'TSh 6,500', desc: 'Commercial Accounts & Store Ledgers' },
@@ -466,12 +466,12 @@ export const HomePage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Right Side: Product Image (No Inner Box Div - Full Flex Natural Blend) */}
+                {/* Right Side: Product Image (No Inner Box Div - Clean Blend, No Box Shadow) */}
                 <div className="w-full sm:w-[48%] h-52 sm:h-64 relative flex items-center justify-center shrink-0">
                   <img
                     src={col.image}
                     alt={col.title}
-                    className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-106 filter drop-shadow-md"
+                    className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-106"
                     loading="lazy"
                   />
                 </div>
