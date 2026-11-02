@@ -912,8 +912,8 @@ export const HomePage: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* 4 Technical Pillar Cards with Stagger Animation */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* 4 Technical Pillar Cards with Stagger Animation - Icon Left, Text Right */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
             
             {/* Component 1: 1.8mm Greyboard */}
             <motion.div
@@ -921,26 +921,33 @@ export const HomePage: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: 0.05 }}
-              whileHover={{ y: -5 }}
-              className="p-6 rounded-2xl bg-[var(--surface-2)] border border-[var(--border)] hover:border-[var(--gold)]/50 transition-colors shadow-sm space-y-4"
+              whileHover={{ y: -4 }}
+              className="p-5 sm:p-6 rounded-2xl bg-white border border-zinc-200/80 hover:border-zinc-300 transition-all shadow-xs flex flex-col justify-between"
             >
-              <div className="w-12 h-12 rounded-xl bg-[var(--red)]/10 border border-[var(--red)]/20 flex items-center justify-center text-[var(--red)]">
-                <Layers className="w-6 h-6 stroke-[2]" />
-              </div>
-              <div className="space-y-1.5 text-left">
-                <span className="text-[10px] font-mono font-bold tracking-wider text-[var(--gold)] uppercase">
-                  PART 01 · FOUNDATION
-                </span>
-                <h3 className="font-serif text-lg font-bold text-[var(--text)]">
-                  1.8mm Rigid Greyboard
-                </h3>
-                <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+              <div>
+                {/* Icon Left + Text Right */}
+                <div className="flex items-center gap-3.5 mb-3.5">
+                  <div className="w-11 h-11 rounded-xl bg-[var(--red)]/10 border border-[var(--red)]/20 flex items-center justify-center text-[var(--red)] shrink-0 shadow-2xs">
+                    <Layers className="w-5 h-5 stroke-[2]" />
+                  </div>
+                  <div className="min-w-0 text-left">
+                    <span className="text-[10px] font-mono font-bold tracking-wider text-[#8C7355] uppercase block truncate">
+                      PART 01 · FOUNDATION
+                    </span>
+                    <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight truncate">
+                      1.8mm Rigid Greyboard
+                    </h3>
+                  </div>
+                </div>
+
+                <p className="text-xs text-zinc-600 leading-relaxed text-left">
                   High-caliper dense board with protective matte laminate. Resists tropical humidity, bending, and corner fraying over decades of daily ledger filing.
                 </p>
               </div>
-              <div className="pt-2 border-t border-[var(--border)] text-[11px] font-mono text-[var(--text-muted)] flex justify-between">
+
+              <div className="pt-3 mt-4 border-t border-zinc-100 text-[11px] font-mono text-zinc-500 flex justify-between items-center">
                 <span>Density</span>
-                <span className="font-bold text-[var(--text)]">1,150 g/m²</span>
+                <span className="font-bold text-zinc-900 font-mono">1,150 g/m²</span>
               </div>
             </motion.div>
 
@@ -950,26 +957,33 @@ export const HomePage: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: 0.12 }}
-              whileHover={{ y: -5 }}
-              className="p-6 rounded-2xl bg-[var(--surface-2)] border border-[var(--border)] hover:border-[var(--gold)]/50 transition-colors shadow-sm space-y-4"
+              whileHover={{ y: -4 }}
+              className="p-5 sm:p-6 rounded-2xl bg-white border border-zinc-200/80 hover:border-zinc-300 transition-all shadow-xs flex flex-col justify-between"
             >
-              <div className="w-12 h-12 rounded-xl bg-[var(--gold)]/10 border border-[var(--gold)]/20 flex items-center justify-center text-[var(--gold)]">
-                <BookOpen className="w-6 h-6 stroke-[2]" />
-              </div>
-              <div className="space-y-1.5 text-left">
-                <span className="text-[10px] font-mono font-bold tracking-wider text-[var(--gold)] uppercase">
-                  PART 02 · SPINE
-                </span>
-                <h3 className="font-serif text-lg font-bold text-[var(--text)]">
-                  Smyth Thread Sewing
-                </h3>
-                <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+              <div>
+                {/* Icon Left + Text Right */}
+                <div className="flex items-center gap-3.5 mb-3.5">
+                  <div className="w-11 h-11 rounded-xl bg-[var(--gold)]/10 border border-[var(--gold)]/20 flex items-center justify-center text-[var(--gold)] shrink-0 shadow-2xs">
+                    <BookOpen className="w-5 h-5 stroke-[2]" />
+                  </div>
+                  <div className="min-w-0 text-left">
+                    <span className="text-[10px] font-mono font-bold tracking-wider text-[#8C7355] uppercase block truncate">
+                      PART 02 · SPINE
+                    </span>
+                    <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight truncate">
+                      Smyth Thread Sewing
+                    </h3>
+                  </div>
+                </div>
+
+                <p className="text-xs text-zinc-600 leading-relaxed text-left">
                   Double-threaded cotton stitching through the fold. Book lays 180° flat naturally on flat desks, with zero risk of leaves detaching like cheap glued books.
                 </p>
               </div>
-              <div className="pt-2 border-t border-[var(--border)] text-[11px] font-mono text-[var(--text-muted)] flex justify-between">
+
+              <div className="pt-3 mt-4 border-t border-zinc-100 text-[11px] font-mono text-zinc-500 flex justify-between items-center">
                 <span>Flexibility</span>
-                <span className="font-bold text-[var(--text)]">180° Lay-Flat</span>
+                <span className="font-bold text-zinc-900 font-mono">180° Lay-Flat</span>
               </div>
             </motion.div>
 
@@ -979,26 +993,33 @@ export const HomePage: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: 0.18 }}
-              whileHover={{ y: -5 }}
-              className="p-6 rounded-2xl bg-[var(--surface-2)] border border-[var(--border)] hover:border-[var(--gold)]/50 transition-colors shadow-sm space-y-4"
+              whileHover={{ y: -4 }}
+              className="p-5 sm:p-6 rounded-2xl bg-white border border-zinc-200/80 hover:border-zinc-300 transition-all shadow-xs flex flex-col justify-between"
             >
-              <div className="w-12 h-12 rounded-xl bg-[var(--red)]/10 border border-[var(--red)]/20 flex items-center justify-center text-[var(--red)]">
-                <Feather className="w-6 h-6 stroke-[2]" />
-              </div>
-              <div className="space-y-1.5 text-left">
-                <span className="text-[10px] font-mono font-bold tracking-wider text-[var(--gold)] uppercase">
-                  PART 03 · PAPER CORE
-                </span>
-                <h3 className="font-serif text-lg font-bold text-[var(--text)]">
-                  70 GSM Bleed-Proof Bond
-                </h3>
-                <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+              <div>
+                {/* Icon Left + Text Right */}
+                <div className="flex items-center gap-3.5 mb-3.5">
+                  <div className="w-11 h-11 rounded-xl bg-[var(--red)]/10 border border-[var(--red)]/20 flex items-center justify-center text-[var(--red)] shrink-0 shadow-2xs">
+                    <Feather className="w-5 h-5 stroke-[2]" />
+                  </div>
+                  <div className="min-w-0 text-left">
+                    <span className="text-[10px] font-mono font-bold tracking-wider text-[#8C7355] uppercase block truncate">
+                      PART 03 · PAPER CORE
+                    </span>
+                    <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight truncate">
+                      70 GSM Bleed-Proof Bond
+                    </h3>
+                  </div>
+                </div>
+
+                <p className="text-xs text-zinc-600 leading-relaxed text-left">
                   Pure white woodfree bond paper calibrated for high opacity. Fountain pen ink, ballpoints, and highlighters write smoothly without bleed-through or ghosting.
                 </p>
               </div>
-              <div className="pt-2 border-t border-[var(--border)] text-[11px] font-mono text-[var(--text-muted)] flex justify-between">
+
+              <div className="pt-3 mt-4 border-t border-zinc-100 text-[11px] font-mono text-zinc-500 flex justify-between items-center">
                 <span>Opacity</span>
-                <span className="font-bold text-[var(--text)]">92% ISO High</span>
+                <span className="font-bold text-zinc-900 font-mono">92% ISO High</span>
               </div>
             </motion.div>
 
@@ -1008,26 +1029,33 @@ export const HomePage: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: 0.24 }}
-              whileHover={{ y: -5 }}
-              className="p-6 rounded-2xl bg-[var(--surface-2)] border border-[var(--border)] hover:border-[var(--gold)]/50 transition-colors shadow-sm space-y-4"
+              whileHover={{ y: -4 }}
+              className="p-5 sm:p-6 rounded-2xl bg-white border border-zinc-200/80 hover:border-zinc-300 transition-all shadow-xs flex flex-col justify-between"
             >
-              <div className="w-12 h-12 rounded-xl bg-[var(--gold)]/10 border border-[var(--gold)]/20 flex items-center justify-center text-[var(--gold)]">
-                <FileCheck2 className="w-6 h-6 stroke-[2]" />
-              </div>
-              <div className="space-y-1.5 text-left">
-                <span className="text-[10px] font-mono font-bold tracking-wider text-[var(--gold)] uppercase">
-                  PART 04 · PRECISION
-                </span>
-                <h3 className="font-serif text-lg font-bold text-[var(--text)]">
-                  NECTA &amp; Standard Ruling
-                </h3>
-                <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+              <div>
+                {/* Icon Left + Text Right */}
+                <div className="flex items-center gap-3.5 mb-3.5">
+                  <div className="w-11 h-11 rounded-xl bg-[var(--gold)]/10 border border-[var(--gold)]/20 flex items-center justify-center text-[var(--gold)] shrink-0 shadow-2xs">
+                    <FileCheck2 className="w-5 h-5 stroke-[2]" />
+                  </div>
+                  <div className="min-w-0 text-left">
+                    <span className="text-[10px] font-mono font-bold tracking-wider text-[#8C7355] uppercase block truncate">
+                      PART 04 · PRECISION
+                    </span>
+                    <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight truncate">
+                      NECTA &amp; Standard Ruling
+                    </h3>
+                  </div>
+                </div>
+
+                <p className="text-xs text-zinc-600 leading-relaxed text-left">
                   Optically balanced soft cyan feint lines with vibrant red security margin rules, compliant with Tanzanian national school curriculum guidelines.
                 </p>
               </div>
-              <div className="pt-2 border-t border-[var(--border)] text-[11px] font-mono text-[var(--text-muted)] flex justify-between">
+
+              <div className="pt-3 mt-4 border-t border-zinc-100 text-[11px] font-mono text-zinc-500 flex justify-between items-center">
                 <span>Standard</span>
-                <span className="font-bold text-[var(--text)]">TBS / NECTA</span>
+                <span className="font-bold text-zinc-900 font-mono">TBS / NECTA</span>
               </div>
             </motion.div>
 

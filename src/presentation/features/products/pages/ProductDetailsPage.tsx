@@ -441,56 +441,72 @@ export const ProductDetailsPage: React.FC = () => {
               </button>
             </div>
 
-            {/* 4 Contextual Feature Pills - shadcn Style Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1 text-center">
-              <div className="p-3 rounded-xl bg-white border border-zinc-200/80 shadow-2xs">
-                {product.category?.includes('Bahasha') ? (
-                  <ShieldCheck className="w-4 h-4 text-emerald-600 mx-auto mb-1" />
-                ) : product.category?.includes('File') || product.name.includes('Jaradio') ? (
-                  <Droplets className="w-4 h-4 text-emerald-600 mx-auto mb-1" />
-                ) : (
-                  <Layers className="w-4 h-4 text-[#8C7355] mx-auto mb-1" />
-                )}
-                <span className="text-[11px] font-bold text-zinc-900 block truncate font-sans">
-                  {product.category?.includes('Bahasha')
-                    ? 'Reinforced'
-                    : product.name.includes('Jaradio')
-                    ? 'Waterproof'
-                    : 'Thread-Sewn'}
-                </span>
-                <span className="text-[10px] text-zinc-500 block truncate font-mono">
-                  {product.category?.includes('Bahasha')
-                    ? 'Heavy Kraft Paper'
-                    : product.name.includes('Jaradio')
-                    ? 'Moisture Barrier'
-                    : 'Smyth 180° Lay-Flat'}
-                </span>
+            {/* 4 Contextual Feature Pills - Icon Left, Text Right, Responsive */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1 text-left">
+              <div className="p-2.5 sm:p-3 rounded-xl bg-white border border-zinc-200/80 shadow-2xs flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-zinc-50 border border-zinc-200/70 text-emerald-600 flex items-center justify-center shrink-0">
+                  {product.category?.includes('Bahasha') ? (
+                    <ShieldCheck className="w-4 h-4" />
+                  ) : product.category?.includes('File') || product.name.includes('Jaradio') ? (
+                    <Droplets className="w-4 h-4" />
+                  ) : (
+                    <Layers className="w-4 h-4 text-[#8C7355]" />
+                  )}
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[11px] font-bold text-zinc-900 block truncate font-sans">
+                    {product.category?.includes('Bahasha')
+                      ? 'Reinforced'
+                      : product.name.includes('Jaradio')
+                      ? 'Waterproof'
+                      : 'Thread-Sewn'}
+                  </span>
+                  <span className="text-[10px] text-zinc-500 block truncate font-mono">
+                    {product.category?.includes('Bahasha')
+                      ? 'Heavy Kraft'
+                      : product.name.includes('Jaradio')
+                      ? 'Moisture Barrier'
+                      : '180° Lay-Flat'}
+                  </span>
+                </div>
               </div>
 
-              <div className="p-3 rounded-xl bg-white border border-zinc-200/80 shadow-2xs">
-                <FileText className="w-4 h-4 text-zinc-800 mx-auto mb-1" />
-                <span className="text-[11px] font-bold text-zinc-900 block truncate font-sans">
-                  {product.paperType ? 'Pure Paper' : 'Factory Grade'}
-                </span>
-                <span className="text-[10px] text-zinc-500 block truncate font-mono">
-                  {product.paperType || 'Standard Bond'}
-                </span>
+              <div className="p-2.5 sm:p-3 rounded-xl bg-white border border-zinc-200/80 shadow-2xs flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-zinc-50 border border-zinc-200/70 text-zinc-800 flex items-center justify-center shrink-0">
+                  <FileText className="w-4 h-4" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[11px] font-bold text-zinc-900 block truncate font-sans">
+                    {product.paperType ? 'Pure Paper' : 'Factory Grade'}
+                  </span>
+                  <span className="text-[10px] text-zinc-500 block truncate font-mono">
+                    {product.paperType || 'Standard Bond'}
+                  </span>
+                </div>
               </div>
 
-              <div className="p-3 rounded-xl bg-white border border-zinc-200/80 shadow-2xs">
-                <Package className="w-4 h-4 text-[#D63A3A] mx-auto mb-1" />
-                <span className="text-[11px] font-bold text-zinc-900 block truncate font-sans">
-                  {product.packaging ? 'Master Box' : 'Wholesale'}
-                </span>
-                <span className="text-[10px] text-zinc-500 block truncate font-mono">
-                  {product.packaging || 'Bulk Factory Crate'}
-                </span>
+              <div className="p-2.5 sm:p-3 rounded-xl bg-white border border-zinc-200/80 shadow-2xs flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-zinc-50 border border-zinc-200/70 text-[#D63A3A] flex items-center justify-center shrink-0">
+                  <Package className="w-4 h-4" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[11px] font-bold text-zinc-900 block truncate font-sans">
+                    {product.packaging ? 'Master Box' : 'Wholesale'}
+                  </span>
+                  <span className="text-[10px] text-zinc-500 block truncate font-mono">
+                    {product.packaging || 'Factory Crate'}
+                  </span>
+                </div>
               </div>
 
-              <div className="p-3 rounded-xl bg-white border border-zinc-200/80 shadow-2xs">
-                <ShieldCheck className="w-4 h-4 text-emerald-600 mx-auto mb-1" />
-                <span className="text-[11px] font-bold text-zinc-900 block truncate font-sans">Genuine</span>
-                <span className="text-[10px] text-zinc-500 block truncate font-mono">Indigo Printed Ltd</span>
+              <div className="p-2.5 sm:p-3 rounded-xl bg-white border border-zinc-200/80 shadow-2xs flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-zinc-50 border border-zinc-200/70 text-emerald-600 flex items-center justify-center shrink-0">
+                  <ShieldCheck className="w-4 h-4" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[11px] font-bold text-zinc-900 block truncate font-sans">Genuine</span>
+                  <span className="text-[10px] text-zinc-500 block truncate font-mono">Indigo Ltd</span>
+                </div>
               </div>
             </div>
 

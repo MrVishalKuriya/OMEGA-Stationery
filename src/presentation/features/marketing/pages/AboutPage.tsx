@@ -259,21 +259,28 @@ export const AboutPage: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.45, delay: idx * 0.08 }}
-                  whileHover={{ y: -5 }}
-                  className="p-6 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)]/50 transition-colors space-y-3 shadow-xs"
+                  whileHover={{ y: -4 }}
+                  className="p-5 sm:p-6 rounded-2xl bg-white border border-zinc-200/80 hover:border-zinc-300 transition-all shadow-xs flex flex-col justify-between"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-[var(--surface-2)] text-[var(--red)] flex items-center justify-center font-bold shadow-sm border border-[var(--border)]">
-                    <Icon className="w-6 h-6" />
+                  <div>
+                    {/* Icon Left + Text Right Header */}
+                    <div className="flex items-center gap-3.5 mb-3">
+                      <div className="w-11 h-11 rounded-xl bg-[var(--surface-2)] text-[var(--red)] flex items-center justify-center font-bold shrink-0 border border-zinc-200/80 shadow-2xs">
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <div className="min-w-0 text-left">
+                        <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#8C7355] block truncate">
+                          {std.spec}
+                        </span>
+                        <h3 className="font-heading font-bold text-sm sm:text-base text-zinc-900 leading-tight truncate">
+                          {std.title}
+                        </h3>
+                      </div>
+                    </div>
+                    <p className="text-xs text-zinc-600 leading-relaxed text-left">
+                      {std.desc}
+                    </p>
                   </div>
-                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--gold)] block">
-                    {std.spec}
-                  </span>
-                  <h3 className="font-heading font-bold text-base text-[var(--text)]">
-                    {std.title}
-                  </h3>
-                  <p className="text-xs text-[var(--text-muted)] leading-relaxed">
-                    {std.desc}
-                  </p>
                 </motion.div>
               );
             })}
@@ -348,58 +355,64 @@ export const AboutPage: React.FC = () => {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {/* Facility 1 */}
             <motion.div
-              whileHover={{ y: -5 }}
-              className="p-8 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)]/50 transition-colors space-y-4 shadow-sm"
+              whileHover={{ y: -4 }}
+              className="p-6 sm:p-8 rounded-2xl bg-white border border-zinc-200/80 hover:border-zinc-300 transition-all space-y-4 shadow-xs"
             >
-              <div className="w-12 h-12 rounded-xl bg-[var(--surface-2)] text-[var(--red)] flex items-center justify-center font-bold border border-[var(--border)]">
-                <Factory className="w-6 h-6" />
+              <div className="flex items-center gap-4 text-left">
+                <div className="w-12 h-12 rounded-xl bg-zinc-100 text-[var(--red)] flex items-center justify-center font-bold border border-zinc-200 shrink-0 shadow-2xs">
+                  <Factory className="w-6 h-6" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#8C7355] block truncate">
+                    CENTRAL WORKS &amp; BINDERY
+                  </span>
+                  <h3 className="font-heading font-bold text-lg sm:text-xl text-zinc-900 mt-0.5 truncate">
+                    Soweto SIDO Industrial Estate
+                  </h3>
+                  <p className="text-xs text-zinc-500 font-mono truncate">
+                    Mbeya City, Southern Highlands, Tanzania
+                  </p>
+                </div>
               </div>
-              <div>
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--gold)] block">
-                  CENTRAL WORKS &amp; BINDERY
-                </span>
-                <h3 className="font-heading font-bold text-xl text-[var(--text)] mt-1">
-                  Soweto SIDO Industrial Estate
-                </h3>
-                <p className="text-xs text-[var(--text-muted)] mt-1 font-mono">
-                  Mbeya City, Southern Highlands, Tanzania
-                </p>
-              </div>
-              <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+              <p className="text-xs text-zinc-600 leading-relaxed text-left">
                 Home to our heavy-duty Smyth thread-sewing lines, precision guillotine cutters, and carton bundling depot. Supplies upcountry tenders and regional bulk orders.
               </p>
-              <div className="pt-2 text-xs font-semibold text-[var(--text)] flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Factory direct carton pickups &amp; school tenders
+              <div className="pt-2 text-xs font-semibold text-zinc-800 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Factory direct carton pickups &amp; school tenders</span>
               </div>
             </motion.div>
 
             {/* Facility 2 */}
             <motion.div
-              whileHover={{ y: -5 }}
-              className="p-8 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)]/50 transition-colors space-y-4 shadow-sm"
+              whileHover={{ y: -4 }}
+              className="p-6 sm:p-8 rounded-2xl bg-white border border-zinc-200/80 hover:border-zinc-300 transition-all space-y-4 shadow-xs"
             >
-              <div className="w-12 h-12 rounded-xl bg-[var(--surface-2)] text-[var(--red)] flex items-center justify-center font-bold border border-[var(--border)]">
-                <Truck className="w-6 h-6" />
+              <div className="flex items-center gap-4 text-left">
+                <div className="w-12 h-12 rounded-xl bg-zinc-100 text-[var(--red)] flex items-center justify-center font-bold border border-zinc-200 shrink-0 shadow-2xs">
+                  <Truck className="w-6 h-6" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#8C7355] block truncate">
+                    COMMERCIAL DISPATCH &amp; WAREHOUSE
+                  </span>
+                  <h3 className="font-heading font-bold text-lg sm:text-xl text-zinc-900 mt-0.5 truncate">
+                    Kariakoo Commercial District
+                  </h3>
+                  <p className="text-xs text-zinc-500 font-mono truncate">
+                    Dar es Salaam, Coastal Region, Tanzania
+                  </p>
+                </div>
               </div>
-              <div>
-                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-[var(--gold)] block">
-                  COMMERCIAL DISPATCH &amp; WAREHOUSE
-                </span>
-                <h3 className="font-heading font-bold text-xl text-[var(--text)] mt-1">
-                  Kariakoo Commercial District
-                </h3>
-                <p className="text-xs text-[var(--text-muted)] mt-1 font-mono">
-                  Dar es Salaam, Coastal Region, Tanzania
-                </p>
-              </div>
-              <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+              <p className="text-xs text-zinc-600 leading-relaxed text-left">
                 Our national distribution hub handling rapid bus parcel waybills to all 31 regions via Shabiby, BM Coach, Abood, New Force, and Saibaba.
               </p>
-              <div className="pt-2 text-xs font-semibold text-[var(--text)] flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Same-day bus parcel waybill drop-offs
+              <div className="pt-2 text-xs font-semibold text-zinc-800 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>Same-day bus parcel waybill drop-offs</span>
               </div>
             </motion.div>
           </div>
