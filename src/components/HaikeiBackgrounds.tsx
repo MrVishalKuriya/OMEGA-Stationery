@@ -14,10 +14,13 @@ interface WaveProps {
 
 export const HaikeiWaveDivider: React.FC<WaveProps> = ({
   fill = 'var(--surface-1)',
-  secondaryFill = 'rgba(214, 58, 58, 0.05)',
+  secondaryFill,
   flip = false,
   className = '',
 }) => {
+  const waveGradId = React.useId();
+  const crestGradId = React.useId();
+
   return (
     <div
       className={`w-full overflow-hidden leading-none pointer-events-none select-none ${
@@ -30,17 +33,53 @@ export const HaikeiWaveDivider: React.FC<WaveProps> = ({
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         preserveAspectRatio="none"
-        className="w-full h-10 sm:h-16 lg:h-20 block"
+        className="w-full h-12 sm:h-16 lg:h-20 block"
       >
-        {/* Layer 1: Subtle Organic Accent Crest */}
+        <defs>
+          <linearGradient id={waveGradId} x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#D63A3A" stopOpacity="0.22" />
+            <stop offset="50%" stopColor="#C89B3C" stopOpacity="0.32" />
+            <stop offset="100%" stopColor="#D63A3A" stopOpacity="0.22" />
+          </linearGradient>
+          <linearGradient id={crestGradId} x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#C89B3C" stopOpacity="0.38" />
+            <stop offset="50%" stopColor="#D63A3A" stopOpacity="0.28" />
+            <stop offset="100%" stopColor="#C89B3C" stopOpacity="0.38" />
+          </linearGradient>
+        </defs>
+
+        {/* Layer 0: Deep Warm Gold / Crimson Ambient Wave */}
+        <path
+          d="M0,18L60,30C120,42,240,66,360,68C480,70,600,50,720,38C840,26,960,22,1080,36C1200,50,1320,82,1380,96L1440,110L1440,120L0,120Z"
+          fill={`url(#${waveGradId})`}
+        />
+
+        {/* Layer 1: Highlighted Organic Accent Crest */}
         <path
           d="M0,32L48,42.7C96,53,192,75,288,74.7C384,75,480,53,576,42.7C672,32,768,32,864,48C960,64,1056,96,1152,96C1248,96,1344,64,1392,48L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"
-          fill={secondaryFill}
+          fill={secondaryFill && !secondaryFill.includes('0.0') ? secondaryFill : `url(#${crestGradId})`}
         />
+
+        {/* Layer 1 Stroke: Subtle Gold Contour Line */}
+        <path
+          d="M0,32L48,42.7C96,53,192,75,288,74.7C384,75,480,53,576,42.7C672,32,768,32,864,48C960,64,1056,96,1152,96C1248,96,1344,64,1392,48L1440,32"
+          stroke="rgba(184, 134, 43, 0.45)"
+          strokeWidth="1.5"
+          fill="none"
+        />
+
         {/* Layer 2: Main Smooth Surface Curve */}
         <path
           d="M0,64L48,69.3C96,75,192,85,288,74.7C384,64,480,32,576,26.7C672,21,768,43,864,58.7C960,75,1056,85,1152,80C1248,75,1344,53,1392,42.7L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"
           fill={fill}
+        />
+
+        {/* Layer 2 Top Edge Highlight Stroke */}
+        <path
+          d="M0,64L48,69.3C96,75,192,85,288,74.7C384,64,480,32,576,26.7C672,21,768,43,864,58.7C960,75,1056,85,1152,80C1248,75,1344,53,1392,42.7L1440,32"
+          stroke="rgba(214, 58, 58, 0.35)"
+          strokeWidth="1.75"
+          fill="none"
         />
       </svg>
     </div>

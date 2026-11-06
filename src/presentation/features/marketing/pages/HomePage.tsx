@@ -932,11 +932,6 @@ export const HomePage: React.FC = () => {
                   High-caliper dense board with protective matte laminate. Resists tropical humidity, bending, and corner fraying over decades of daily ledger filing.
                 </p>
               </div>
-
-              <div className="pt-3 mt-4 border-t border-zinc-100 text-[11px] font-mono text-zinc-500 flex justify-between items-center">
-                <span>Density</span>
-                <span className="font-bold text-zinc-900 font-mono">1,150 g/m²</span>
-              </div>
             </motion.div>
 
             {/* Component 2: Smyth Thread Spine */}
@@ -964,11 +959,6 @@ export const HomePage: React.FC = () => {
                 <p className="text-xs text-zinc-600 leading-relaxed text-left">
                   Double-threaded cotton stitching through the fold. Book lays 180° flat naturally on flat desks, with zero risk of leaves detaching like cheap glued books.
                 </p>
-              </div>
-
-              <div className="pt-3 mt-4 border-t border-zinc-100 text-[11px] font-mono text-zinc-500 flex justify-between items-center">
-                <span>Flexibility</span>
-                <span className="font-bold text-zinc-900 font-mono">180° Lay-Flat</span>
               </div>
             </motion.div>
 
@@ -998,11 +988,6 @@ export const HomePage: React.FC = () => {
                   Pure white woodfree bond paper calibrated for high opacity. Fountain pen ink, ballpoints, and highlighters write smoothly without bleed-through or ghosting.
                 </p>
               </div>
-
-              <div className="pt-3 mt-4 border-t border-zinc-100 text-[11px] font-mono text-zinc-500 flex justify-between items-center">
-                <span>Opacity</span>
-                <span className="font-bold text-zinc-900 font-mono">92% ISO High</span>
-              </div>
             </motion.div>
 
             {/* Component 4: NECTA Ruling */}
@@ -1030,11 +1015,6 @@ export const HomePage: React.FC = () => {
                 <p className="text-xs text-zinc-600 leading-relaxed text-left">
                   Optically balanced soft cyan feint lines with vibrant red security margin rules, compliant with Tanzanian national school curriculum guidelines.
                 </p>
-              </div>
-
-              <div className="pt-3 mt-4 border-t border-zinc-100 text-[11px] font-mono text-zinc-500 flex justify-between items-center">
-                <span>Standard</span>
-                <span className="font-bold text-zinc-900 font-mono">TBS / NECTA</span>
               </div>
             </motion.div>
 

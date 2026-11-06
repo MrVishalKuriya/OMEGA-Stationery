@@ -231,51 +231,46 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               
               <div className="pt-2 space-y-2.5">
                 <a
-                  href="https://wa.me/255746268391?text=Habari%20OMEGA%20Stationery,%20nahitaji%20bei%20za%20jumla."
+                  href="https://wa.me/255624265480?text=Habari%20OMEGA%20Stationery,%20nahitaji%20bei%20za%20jumla."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] hover:bg-[#16a34a] text-white text-xs font-bold font-mono transition-transform active:scale-95 shadow-md"
                 >
                   <MessageCircle size={16} strokeWidth={2} />
-                  <span>WhatsApp: +255 746 268 391</span>
+                  <span>WhatsApp: +255 624 265 480</span>
                 </a>
                 
-                {/* Direct Phone Numbers List (Same to Same Format) */}
-                <div className="space-y-2 pt-1">
+                {/* Direct Phone Numbers List */}
+                <div className="space-y-2.5 pt-1">
                   <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
                     <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)]" />
-                    <a href="tel:+255715268391" className="hover:underline font-mono text-[var(--text)]">
+                    <a href="tel:+255715268391" className="hover:underline font-mono font-semibold text-[var(--text)]">
                       +255 715 268 391 (MD Desk)
                     </a>
                   </div>
 
-                  <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
-                    <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)]" />
-                    <a href="tel:+255624265480" className="hover:underline font-mono text-[var(--text)]">
-                      +255 624 265 480 (Co-Founder &amp; MD · Vijesh K. Halai)
-                    </a>
-                  </div>
-
-                  <div className="pt-0.5">
-                    <span className="text-[10.5px] font-sans font-semibold text-[var(--text-muted)] block pl-5 leading-tight">
-                      Mwanza Branch Manager · <strong className="text-[var(--text)]">Gupta Vivek</strong>
-                    </span>
-                    <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] mt-0.5">
-                      <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)]" />
-                      <a href="tel:+255699032777" className="hover:underline font-mono text-[var(--text)]">
-                        +255 699 032 777
+                  {/* 2. Gupta Alok - Mbeya Branch Manager */}
+                  <div className="flex items-start gap-2 text-xs">
+                    <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)] mt-0.5" />
+                    <div className="leading-snug">
+                      <span className="text-[11px] font-sans text-[var(--text-muted)] block">
+                        Mbeya Branch Manager · <strong className="text-[var(--text)] font-bold">Gupta Alok</strong>
+                      </span>
+                      <a href="tel:+255746268391" className="hover:underline font-mono font-semibold text-[var(--text)] block">
+                        +255 746 268 391
                       </a>
                     </div>
                   </div>
 
-                  <div className="pt-0.5">
-                    <span className="text-[10.5px] font-sans font-semibold text-[var(--text-muted)] block pl-5 leading-tight">
-                      Mbeya Branch Manager · <strong className="text-[var(--text)]">Gupta Alok</strong>
-                    </span>
-                    <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] mt-0.5">
-                      <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)]" />
-                      <a href="tel:+255746268391" className="hover:underline font-mono text-[var(--text)]">
-                        +255 746 268 391
+                  {/* 3. Gupta Vivek - Mwanza Branch Manager */}
+                  <div className="flex items-start gap-2 text-xs">
+                    <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)] mt-0.5" />
+                    <div className="leading-snug">
+                      <span className="text-[11px] font-sans text-[var(--text-muted)] block">
+                        Mwanza Branch Manager · <strong className="text-[var(--text)] font-bold">Gupta Vivek</strong>
+                      </span>
+                      <a href="tel:+255699032777" className="hover:underline font-mono font-semibold text-[var(--text)] block">
+                        +255 699 032 777
                       </a>
                     </div>
                   </div>
