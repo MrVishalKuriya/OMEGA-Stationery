@@ -242,27 +242,37 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 
                 {/* Direct Phone Numbers List */}
                 <div className="space-y-2.5 pt-1">
-                  {/* 1. MD Desk */}
-                  <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
-                    <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)]" />
-                    <a href="tel:+255715268391" className="hover:underline font-mono font-semibold text-[var(--text)]">
-                      +255 715 268 391 (MD Desk)
-                    </a>
+                  {/* 1. Co-Founder & Executive Director (+255 715 268 391) */}
+                  <div className="flex items-start gap-2 text-xs">
+                    <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)] mt-0.5" />
+                    <div className="leading-snug min-w-0">
+                      <span className="text-[10px] sm:text-[11px] font-sans text-[var(--text-muted)] block whitespace-nowrap tracking-tight">
+                        Co-Founder &amp; Executive Director · <strong className="text-[var(--text)] font-bold">Kanti Bhai K. Halai</strong>
+                      </span>
+                      <a href="tel:+255715268391" className="hover:underline font-mono font-semibold text-[var(--text)] block">
+                        +255 715 268 391
+                      </a>
+                    </div>
                   </div>
 
-                  {/* 2. Co-Founder & MD (+255 624 265 480) */}
-                  <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
-                    <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)]" />
-                    <a href="tel:+255624265480" className="hover:underline font-mono font-semibold text-[var(--text)]">
-                      +255 624 265 480
-                    </a>
+                  {/* 2. Co-Founder & Managing Director (+255 624 265 480) */}
+                  <div className="flex items-start gap-2 text-xs">
+                    <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)] mt-0.5" />
+                    <div className="leading-snug min-w-0">
+                      <span className="text-[10px] sm:text-[11px] font-sans text-[var(--text-muted)] block whitespace-nowrap tracking-tight">
+                        Co-Founder &amp; Managing Director · <strong className="text-[var(--text)] font-bold">Vijesh K. Halai</strong>
+                      </span>
+                      <a href="tel:+255624265480" className="hover:underline font-mono font-semibold text-[var(--text)] block">
+                        +255 624 265 480
+                      </a>
+                    </div>
                   </div>
 
                   {/* 3. Gupta Vivek - Mbeya Branch Manager */}
                   <div className="flex items-start gap-2 text-xs">
                     <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)] mt-0.5" />
-                    <div className="leading-snug">
-                      <span className="text-[11px] font-sans text-[var(--text-muted)] block">
+                    <div className="leading-snug min-w-0">
+                      <span className="text-[10px] sm:text-[11px] font-sans text-[var(--text-muted)] block whitespace-nowrap tracking-tight">
                         Mbeya Branch Manager · <strong className="text-[var(--text)] font-bold">Gupta Vivek</strong>
                       </span>
                       <a href="tel:+255746268391" className="hover:underline font-mono font-semibold text-[var(--text)] block">
@@ -274,8 +284,8 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   {/* 4. Gupta Alok - Mwanza Branch Manager */}
                   <div className="flex items-start gap-2 text-xs">
                     <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)] mt-0.5" />
-                    <div className="leading-snug">
-                      <span className="text-[11px] font-sans text-[var(--text-muted)] block">
+                    <div className="leading-snug min-w-0">
+                      <span className="text-[10px] sm:text-[11px] font-sans text-[var(--text-muted)] block whitespace-nowrap tracking-tight">
                         Mwanza Branch Manager · <strong className="text-[var(--text)] font-bold">Gupta Alok</strong>
                       </span>
                       <a href="tel:+255699032777" className="hover:underline font-mono font-semibold text-[var(--text)] block">

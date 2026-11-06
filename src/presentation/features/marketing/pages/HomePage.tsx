@@ -115,8 +115,10 @@ export const HomePage: React.FC = () => {
         cta: language === 'sw' ? 'EXPLORE' : 'EXPLORE',
         link: '/product/prod-omega-cb-q3',
         image: '/omega-products/counter-book-desk-podium.jpg',
+        bgImage: '/omega-products/counter-book-card-bg.jpg',
         gallery: [
           '/omega-products/counter-book-desk-podium.jpg',
+          '/omega-products/counter-book-card-bg.jpg',
           '/assets/aistudio/image_c7a05502.png',
           '/assets/aistudio/image_c6f045f0.png',
           '/omega-hero-book.webp',
@@ -415,93 +417,114 @@ export const HomePage: React.FC = () => {
             onScroll={handleCollectionScroll}
             className="flex lg:grid lg:grid-cols-2 gap-6 overflow-x-auto snap-x snap-mandatory pb-4 lg:pb-0 scrollbar-none scroll-smooth px-1"
           >
-            {collections.map((col, idx) => (
-              <motion.div
-                key={col.id}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.35, delay: idx * 0.06 }}
-                whileHover={{ y: -3, transition: { duration: 0.2 } }}
-                onClick={() => {
-                  setSelectedCollection(col);
-                  setSelectedGalleryImg(col.image);
-                }}
-                className="w-[88vw] sm:w-[520px] lg:w-auto shrink-0 snap-center relative rounded-2xl border border-zinc-200/80 bg-white p-6 sm:p-7 shadow-xs hover:shadow-xl hover:border-zinc-300/90 group text-left cursor-pointer transition-all duration-300 flex flex-col sm:flex-row items-center justify-between gap-6 overflow-hidden"
-              >
-                {/* Right Side: Number & Action Link (shadcn Badge) */}
-                <div className="absolute top-5 right-5 sm:top-6 sm:right-6 z-20 flex items-center gap-2">
-                  <span className="inline-flex items-center justify-center rounded-md border border-zinc-200/80 bg-zinc-50 px-2.5 py-1 font-mono text-xs font-bold text-zinc-700 shadow-2xs">
-                    0{idx + 1}
-                  </span>
-                  <div className="w-8 h-8 rounded-full border border-zinc-200/80 bg-zinc-50 text-zinc-700 group-hover:bg-zinc-900 group-hover:text-white transition-colors flex items-center justify-center shadow-2xs">
-                    <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </div>
-                </div>
+            {collections.map((col: any, idx) => {
+              const hasFullBg = Boolean(col.bgImage);
+              return (
+                <motion.div
+                  key={col.id}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.35, delay: idx * 0.06 }}
+                  whileHover={{ y: -3, transition: { duration: 0.2 } }}
+                  onClick={() => {
+                    setSelectedCollection(col);
+                    setSelectedGalleryImg(col.image);
+                  }}
+                  className="w-[90vw] sm:w-[540px] lg:w-auto shrink-0 snap-center relative rounded-[24px] border border-zinc-200/70 bg-white p-5 sm:p-7 shadow-sm hover:shadow-xl group text-left cursor-pointer transition-all duration-300 flex flex-row items-stretch justify-between gap-3 sm:gap-5 overflow-hidden min-h-[270px] sm:min-h-[300px]"
+                >
+                  {/* Full-Card Seamless Photo Background (Extends behind both Text & Product) */}
+                  {hasFullBg ? (
+                    <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                      <img
+                        src={col.bgImage}
+                        alt={col.title}
+                        className="w-full h-full object-cover object-[78%_center] sm:object-right transition-transform duration-700 group-hover:scale-105"
+                        loading="eager"
+                      />
+                      {/* Soft translucent gradient scrim on the left so text sits over the photo background with crisp legibility */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#FAF8F5]/90 via-[#FAF8F5]/68 to-transparent sm:from-[#FAF8F5]/88 sm:via-[#FAF8F5]/55 sm:to-transparent" />
+                    </div>
+                  ) : (
+                    <div className="absolute inset-0 z-0 pointer-events-none bg-gradient-to-br from-[#FAF8F5] via-white to-[#F3ECE2]" />
+                  )}
 
-                {/* Left Side: Product Details */}
-                <div className="flex-1 min-w-0 pr-0 sm:pr-4 flex flex-col justify-between self-stretch z-10">
-                  <div>
-                    {/* Badge & Tag (shadcn UI Badges) */}
-                    <div className="flex items-center gap-2 mb-2.5">
-                      <span className="inline-flex items-center rounded-full border border-zinc-200/80 bg-zinc-50 px-2.5 py-0.5 text-[10.5px] font-mono font-bold tracking-wider uppercase text-zinc-700">
-                        {col.badge}
-                      </span>
-                      <span className="text-[10px] font-mono text-[#8C7355] font-semibold bg-[#FAF8F5] px-2 py-0.5 rounded border border-[#EBE7DF]">
-                        {col.tag}
-                      </span>
+                  {/* Top-Right: Number & Action Link (Borderless Clean Pills) */}
+                  <div className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-20 flex items-center gap-1.5">
+                    <span className="inline-flex items-center justify-center rounded-full bg-white/90 backdrop-blur-md px-2.5 py-1 font-mono text-[11px] font-bold text-zinc-800 border-0 shadow-xs">
+                      0{idx + 1}
+                    </span>
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 backdrop-blur-md text-zinc-800 group-hover:bg-zinc-900 group-hover:text-white transition-colors flex items-center justify-center border-0 shadow-xs">
+                      <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </div>
+                  </div>
+
+                  {/* Left Side: Product Details Over Background */}
+                  <div className="w-[57%] sm:w-[55%] min-w-0 flex flex-col justify-between self-stretch z-10">
+                    <div>
+                      {/* Badge & Tag (Borderless Single-Line Pills) */}
+                      <div className="flex flex-wrap items-center gap-1.5 mb-2.5">
+                        <span className="inline-flex items-center whitespace-nowrap rounded-full bg-white/90 backdrop-blur-xs px-2.5 py-1 text-[8.5px] sm:text-[10px] font-mono font-bold tracking-wider uppercase text-zinc-800 border-0 leading-none shadow-2xs">
+                          {col.badge}
+                        </span>
+                        <span className="inline-flex items-center whitespace-nowrap rounded-full bg-[#F4F1EA]/95 backdrop-blur-xs px-2.5 py-1 text-[8.5px] sm:text-[10px] font-mono font-bold tracking-wider uppercase text-[#7A6852] border-0 leading-none shadow-2xs">
+                          {col.tag}
+                        </span>
+                      </div>
+
+                      {/* Book Title */}
+                      <h3 className="font-serif text-xl sm:text-3xl font-bold tracking-tight text-zinc-900 group-hover:text-[var(--red)] transition-colors leading-[1.12]">
+                        {col.title}
+                      </h3>
+                      <p className="text-[11px] sm:text-sm text-zinc-600 font-sans mt-1 mb-3 line-clamp-1 font-medium">
+                        {col.subtitle}
+                      </p>
+
+                      {/* Refined Feature Checklist */}
+                      <ul className="space-y-1.5 sm:space-y-2 text-[11px] sm:text-xs text-zinc-800 mb-4">
+                        {col.features.map((feat: string, fIdx: number) => (
+                          <li key={fIdx} className="flex items-center gap-1.5 sm:gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#8C7355] shrink-0" />
+                            <span className="font-sans text-[11px] sm:text-xs text-zinc-800 font-medium leading-snug truncate">
+                              {feat}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
                     </div>
 
-                    {/* Book Title */}
-                    <h3 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 group-hover:text-[var(--red)] transition-colors leading-tight">
-                      {col.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-zinc-500 font-sans mt-1.5 mb-4 line-clamp-1">
-                      {col.subtitle}
-                    </p>
-
-                    {/* Refined Feature Checklist */}
-                    <ul className="space-y-2 text-xs text-zinc-600 mb-5">
-                      {col.features.map((feat, fIdx) => (
-                        <li key={fIdx} className="flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#8C7355] shrink-0" />
-                          <span className="font-sans text-xs text-zinc-700 leading-snug">{feat}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    {/* Action Button & Brand */}
+                    <div className="pt-1 flex flex-wrap items-center gap-2.5 sm:gap-3.5 mt-auto">
+                      <Link
+                        to={col.link}
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center justify-center gap-1.5 sm:gap-2 rounded-full bg-zinc-900 hover:bg-[#D63A3A] active:scale-95 text-white font-mono text-[10.5px] sm:text-xs font-bold tracking-wider uppercase px-4 sm:px-5 py-2 sm:py-2.5 shadow-sm hover:shadow-md transition-all duration-200 group/btn whitespace-nowrap"
+                      >
+                        <span>{col.cta}</span>
+                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
+                      </Link>
+                      <span className="text-[10px] sm:text-[11px] font-mono text-zinc-600 font-medium whitespace-nowrap">
+                        {col.brand}
+                      </span>
+                    </div>
                   </div>
 
-                  {/* shadcn Button: Explore Single Product Direct Page */}
-                  <div className="pt-2 flex items-center gap-4 mt-auto">
-                    <Link
-                      to={col.link}
-                      onClick={(e) => e.stopPropagation()}
-                      className="inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-900 hover:bg-[#D63A3A] active:scale-95 text-white font-mono text-xs font-bold tracking-wider uppercase px-5 py-2.5 shadow-xs hover:shadow-md transition-all duration-200 group/btn"
-                    >
-                      <span>{col.cta}</span>
-                      <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
-                    </Link>
-                    <span className="text-[11px] font-mono text-zinc-400">
-                      {col.brand}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Right Side: Product Image */}
-                <div className="w-full sm:w-[48%] h-56 sm:h-64 relative flex items-center justify-center shrink-0 overflow-hidden rounded-xl">
-                  <img
-                    src={col.image}
-                    alt={col.title}
-                    className={`max-h-full max-w-full transition-transform duration-500 group-hover:scale-105 ${
-                      col.id === 'counter-books'
-                        ? 'w-full h-full object-cover rounded-xl shadow-xs'
-                        : 'object-contain mix-blend-multiply'
-                    }`}
-                    loading="lazy"
-                  />
-                </div>
-              </motion.div>
-            ))}
+                  {/* Right Side: Visual Space for Full-Bleed Background Book OR Product Cutout */}
+                  {hasFullBg ? (
+                    <div className="w-[43%] sm:w-[45%] shrink-0 z-10 pointer-events-none" aria-hidden="true" />
+                  ) : (
+                    <div className="w-[43%] sm:w-[45%] h-48 sm:h-60 relative flex items-center justify-center shrink-0 z-10 self-center">
+                      <img
+                        src={col.image}
+                        alt={col.title}
+                        className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-105"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
+                </motion.div>
+              );
+            })}
           </div>
 
           {/* Mobile Carousel Single-Slide Indicators (Dots) */}
@@ -552,11 +575,11 @@ export const HomePage: React.FC = () => {
               {/* Drawer Header */}
               <div className="sticky top-0 z-20 bg-[var(--surface-1)]/95 backdrop-blur-md p-5 border-b border-[var(--border)] flex items-center justify-between">
                 <div>
-                  <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase text-[var(--gold)] bg-[var(--surface-2)] border border-[var(--gold)]/25">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="inline-flex items-center whitespace-nowrap px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-wider uppercase text-zinc-700 bg-zinc-100 border-0 leading-none">
                       {selectedCollection.badge}
                     </span>
-                    <span className="text-[10.5px] font-mono font-bold text-[var(--gold)] bg-[var(--gold)]/10 px-2 py-0.5 rounded-md">
+                    <span className="inline-flex items-center whitespace-nowrap text-[10px] font-mono font-bold tracking-wider uppercase text-[#7A6852] bg-[#F4F1EA] px-2.5 py-1 rounded-full border-0 leading-none">
                       {selectedCollection.tag}
                     </span>
                   </div>

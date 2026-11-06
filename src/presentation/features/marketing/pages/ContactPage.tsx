@@ -61,10 +61,10 @@ export const ContactPage: React.FC = () => {
       title: 'Kanti Bhai K. Halai',
       phone: '+255 715 268 391',
       numberDigits: '255715268391',
-      tag: 'Co-Founder & Managing Director',
+      tag: 'Co-Founder & Executive Director',
       desc: language === 'sw'
         ? 'Mawasiliano ya moja kwa moja ya uongozi mkuu kwa oda maalum, maswali ya mikataba na oda za haraka.'
-        : 'Co-Founder & Managing Director - direct line for priority purchasing, special contract terms, and escalated service.',
+        : 'Co-Founder & Executive Director - direct line for priority purchasing, special contract terms, and escalated service.',
     },
     {
       id: 'desk-boss-2',
@@ -298,8 +298,8 @@ export const ContactPage: React.FC = () => {
                       onChange={(e) => setSelectedDesk(e.target.value)}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-[var(--surface-2)] text-[var(--text)] text-xs focus:ring-1 focus:ring-[var(--red)] focus:outline-none"
                     >
-                      <option value="255715268391">KANTI BHAI K. HALAI (+255 715 268 391) — Co-Founder &amp; MD</option>
-                      <option value="255624265480">VIJESH K. HALAI (+255 624 265 480) — Co-Founder &amp; MD</option>
+                      <option value="255715268391">KANTI BHAI K. HALAI (+255 715 268 391) — Co-Founder &amp; Executive Director</option>
+                      <option value="255624265480">VIJESH K. HALAI (+255 624 265 480) — Co-Founder &amp; Managing Director</option>
                       <option value="255746268391">GUPTA VIVEK (+255 746 268 391) — Mbeya Branch Manager</option>
                       <option value="255699032777">GUPTA ALOK (+255 699 032 777) — Mwanza Branch Manager</option>
                     </select>
