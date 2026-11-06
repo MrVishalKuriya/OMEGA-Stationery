@@ -167,17 +167,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
       </div>
 
-      {/* Middle Content: Title & Meta */}
-      <div className="mt-3 space-y-1">
+      {/* Middle Content: Title */}
+      <div className="mt-3">
         <h3
           className="font-sans text-[13px] sm:text-[14px] font-bold text-[#161518] group-hover:text-[#D63A3A] line-clamp-2 leading-[1.35] transition-colors"
           title={productName}
         >
           {productName}
         </h3>
-        <p className="text-[11px] sm:text-[11.5px] text-[#71717A] font-sans font-normal truncate">
-          {product.quire || product.pageCount || product.category} • 70 GSM Bond
-        </p>
       </div>
 
       {/* Bottom Row: Price & Red Action Bag Button */}

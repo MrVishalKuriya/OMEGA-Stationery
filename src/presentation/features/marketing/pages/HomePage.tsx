@@ -922,9 +922,6 @@ export const HomePage: React.FC = () => {
                     <Layers className="w-5 h-5 stroke-[2]" />
                   </div>
                   <div className="min-w-0 text-left">
-                    <span className="text-xs font-mono font-bold tracking-wider text-[#8C7355] block">
-                      01
-                    </span>
                     <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight truncate">
                       1.8mm Rigid Greyboard
                     </h3>
@@ -958,9 +955,6 @@ export const HomePage: React.FC = () => {
                     <BookOpen className="w-5 h-5 stroke-[2]" />
                   </div>
                   <div className="min-w-0 text-left">
-                    <span className="text-xs font-mono font-bold tracking-wider text-[#8C7355] block">
-                      02
-                    </span>
                     <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight truncate">
                       Smyth Thread Sewing
                     </h3>
@@ -994,9 +988,6 @@ export const HomePage: React.FC = () => {
                     <Feather className="w-5 h-5 stroke-[2]" />
                   </div>
                   <div className="min-w-0 text-left">
-                    <span className="text-xs font-mono font-bold tracking-wider text-[#8C7355] block">
-                      03
-                    </span>
                     <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight truncate">
                       70 GSM Bleed-Proof Bond
                     </h3>
@@ -1030,9 +1021,6 @@ export const HomePage: React.FC = () => {
                     <FileCheck2 className="w-5 h-5 stroke-[2]" />
                   </div>
                   <div className="min-w-0 text-left">
-                    <span className="text-xs font-mono font-bold tracking-wider text-[#8C7355] block">
-                      04
-                    </span>
                     <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight truncate">
                       NECTA &amp; Standard Ruling
                     </h3>
