@@ -170,10 +170,10 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         {/* Surface-1 Rounded Footer Card with Gold Hairline */}
         <div className="bg-[var(--surface-1)] text-[var(--text)] rounded-2xl p-8 sm:p-12 shadow-2xl border border-[var(--border)] border-t border-t-[var(--gold)]/35 relative overflow-hidden">
           
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-start text-left">
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-start text-left">
             
-            {/* Col 1: Wordmark & Address (5 cols) */}
-            <div className="md:col-span-5 space-y-4">
+            {/* Col 1: Wordmark & Address (4 cols) */}
+            <div className="md:col-span-4 space-y-4">
               <BrandLogo size="lg" />
               <p className="text-xs text-[var(--text-muted)] leading-relaxed max-w-sm font-sans">
                 Tanzania&apos;s premier benchmark manufacturer of authentic Counter Books (Q2, Q3, Q4), Exercise Books, Kraft Bahasha, and educational paper products.
@@ -220,8 +220,8 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
               </ul>
             </div>
 
-            {/* Col 3: Direct WhatsApp & Phone Hotline (4 cols) */}
-            <div className="md:col-span-4 space-y-3">
+            {/* Col 3: Direct WhatsApp & Phone Hotline (5 cols for full single-line executive names) */}
+            <div className="md:col-span-5 space-y-3">
               <h4 className="font-mono text-xs font-bold uppercase tracking-wider text-[var(--gold)]">
                 Sales &amp; Dispatch Desk
               </h4>
@@ -240,54 +240,58 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                   <span>WhatsApp: +255 624 265 480</span>
                 </a>
                 
-                {/* Direct Phone Numbers List */}
+                {/* Direct Phone Numbers List — Single-Line Role + Name Guaranteed */}
                 <div className="space-y-2.5 pt-1">
-                  {/* 1. Co-Founder & Executive Director (+255 715 268 391) */}
+                  {/* 1. Co-Founder & Executive Director · Kanti Bhai K. Halai (+255 715 268 391) */}
                   <div className="flex items-start gap-2 text-xs">
                     <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)] mt-0.5" />
-                    <div className="leading-snug min-w-0">
-                      <span className="text-[10px] sm:text-[11px] font-sans text-[var(--text-muted)] block whitespace-nowrap tracking-tight">
-                        Co-Founder &amp; Executive Director · <strong className="text-[var(--text)] font-bold">Kanti Bhai K. Halai</strong>
-                      </span>
+                    <div className="leading-snug min-w-0 flex-1">
+                      <div className="flex items-baseline gap-1 whitespace-nowrap text-[10.5px] sm:text-xs font-sans text-[var(--text-muted)]">
+                        <span>Co-Founder &amp; Executive Director ·</span>
+                        <strong className="text-[var(--text)] font-bold whitespace-nowrap">Kanti&nbsp;Bhai&nbsp;K.&nbsp;Halai</strong>
+                      </div>
                       <a href="tel:+255715268391" className="hover:underline font-mono font-semibold text-[var(--text)] block">
                         +255 715 268 391
                       </a>
                     </div>
                   </div>
 
-                  {/* 2. Co-Founder & Managing Director (+255 624 265 480) */}
+                  {/* 2. Co-Founder & Managing Director · Vijesh K. Halai (+255 624 265 480) */}
                   <div className="flex items-start gap-2 text-xs">
                     <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)] mt-0.5" />
-                    <div className="leading-snug min-w-0">
-                      <span className="text-[10px] sm:text-[11px] font-sans text-[var(--text-muted)] block whitespace-nowrap tracking-tight">
-                        Co-Founder &amp; Managing Director · <strong className="text-[var(--text)] font-bold">Vijesh K. Halai</strong>
-                      </span>
+                    <div className="leading-snug min-w-0 flex-1">
+                      <div className="flex items-baseline gap-1 whitespace-nowrap text-[10.5px] sm:text-xs font-sans text-[var(--text-muted)]">
+                        <span>Co-Founder &amp; Managing Director ·</span>
+                        <strong className="text-[var(--text)] font-bold whitespace-nowrap">Vijesh&nbsp;K.&nbsp;Halai</strong>
+                      </div>
                       <a href="tel:+255624265480" className="hover:underline font-mono font-semibold text-[var(--text)] block">
                         +255 624 265 480
                       </a>
                     </div>
                   </div>
 
-                  {/* 3. Gupta Vivek - Mbeya Branch Manager */}
+                  {/* 3. Mbeya Branch Manager · Gupta Vivek (+255 746 268 391) */}
                   <div className="flex items-start gap-2 text-xs">
                     <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)] mt-0.5" />
-                    <div className="leading-snug min-w-0">
-                      <span className="text-[10px] sm:text-[11px] font-sans text-[var(--text-muted)] block whitespace-nowrap tracking-tight">
-                        Mbeya Branch Manager · <strong className="text-[var(--text)] font-bold">Gupta Vivek</strong>
-                      </span>
+                    <div className="leading-snug min-w-0 flex-1">
+                      <div className="flex items-baseline gap-1 whitespace-nowrap text-[10.5px] sm:text-xs font-sans text-[var(--text-muted)]">
+                        <span>Mbeya Branch Manager ·</span>
+                        <strong className="text-[var(--text)] font-bold whitespace-nowrap">Gupta&nbsp;Vivek</strong>
+                      </div>
                       <a href="tel:+255746268391" className="hover:underline font-mono font-semibold text-[var(--text)] block">
                         +255 746 268 391
                       </a>
                     </div>
                   </div>
 
-                  {/* 4. Gupta Alok - Mwanza Branch Manager */}
+                  {/* 4. Mwanza Branch Manager · Gupta Alok (+255 699 032 777) */}
                   <div className="flex items-start gap-2 text-xs">
                     <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)] mt-0.5" />
-                    <div className="leading-snug min-w-0">
-                      <span className="text-[10px] sm:text-[11px] font-sans text-[var(--text-muted)] block whitespace-nowrap tracking-tight">
-                        Mwanza Branch Manager · <strong className="text-[var(--text)] font-bold">Gupta Alok</strong>
-                      </span>
+                    <div className="leading-snug min-w-0 flex-1">
+                      <div className="flex items-baseline gap-1 whitespace-nowrap text-[10.5px] sm:text-xs font-sans text-[var(--text-muted)]">
+                        <span>Mwanza Branch Manager ·</span>
+                        <strong className="text-[var(--text)] font-bold whitespace-nowrap">Gupta&nbsp;Alok</strong>
+                      </div>
                       <a href="tel:+255699032777" className="hover:underline font-mono font-semibold text-[var(--text)] block">
                         +255 699 032 777
                       </a>

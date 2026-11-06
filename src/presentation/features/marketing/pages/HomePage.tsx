@@ -47,17 +47,7 @@ export const HomePage: React.FC = () => {
   const [activeCollectionSlide, setActiveCollectionSlide] = useState(0);
   const [selectedCollection, setSelectedCollection] = useState<any | null>(null);
   const [selectedGalleryImg, setSelectedGalleryImg] = useState<string>('');
-  const [activeBannerPhoto, setActiveBannerPhoto] = useState<number>(0);
-  const bannerStudioPhotos = [
-    {
-      src: '/assets/aistudio/image_c7a05502.png',
-      label: language === 'sw' ? 'Muundo wa 180° Flat' : '180° Lay-Flat Spread',
-    },
-    {
-      src: '/assets/aistudio/image_c6f045f0.png',
-      label: language === 'sw' ? 'Jalada na Kurasa' : 'Hardcover & Ruled Bond',
-    },
-  ];
+  const bannerStudioPhoto = '/omega-products/q3-banner-light-red-bg.jpg';
   const collectionScrollRef = React.useRef<HTMLDivElement>(null);
 
   const scrollToSlide = (index: number) => {
@@ -723,6 +713,8 @@ export const HomePage: React.FC = () => {
       {/* ========================================================================= */}
       {/* 4. SIGNATURE FEATURED BANNER (Watermelon UI Depth + Motion) */}
       {/* ========================================================================= */}
+      {/* 4. SIGNATURE FEATURED BANNER (Full-Bleed Soft Light-Red Studio Scene) */}
+      {/* ========================================================================= */}
       <section
         aria-label="Signature Banner"
         className="omega-fluid-container pt-2 sm:pt-4 pb-8 sm:pb-12 omega-banner-container"
@@ -732,128 +724,72 @@ export const HomePage: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.45 }}
-          className="relative w-full rounded-2xl overflow-hidden bg-[var(--surface-1)] border border-[var(--border)] p-5 sm:p-8 lg:p-10 shadow-2xl transition-colors duration-200"
+          className="relative w-full rounded-[24px] overflow-hidden bg-gradient-to-r from-[#E6ACA7] via-[#F2C4C0] to-[#F5CCC8] border border-[#E2B0AC]/70 p-6 sm:p-9 lg:p-12 shadow-xl transition-all duration-300 min-h-[300px] sm:min-h-[360px] lg:min-h-[400px] flex items-center group"
         >
-          {/* Subtle Paper Line Texture */}
-          <HaikeiBlobGlow color="red" position="top-right" size="lg" className="opacity-20" />
-          <HaikeiPaperLines opacity={0.04} />
+          {/* Full-Card Seamless Soft Light-Red Studio Photo Background (Desktop & Tablet) */}
+          <div className="hidden sm:block absolute inset-0 z-0 pointer-events-none overflow-hidden">
+            <img
+              src={bannerStudioPhoto}
+              alt="OMEGA Hardcover Counter Book 180° Lay-Flat Studio Photo"
+              className="w-full h-full object-cover object-right transition-transform duration-700 group-hover:scale-[1.03]"
+              loading="eager"
+            />
+            {/* Gentle left-side warm rose shadow strictly on the left 42% — zero white haze */}
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(186,118,114,0.26)_0%,rgba(210,148,144,0.10)_30%,transparent_46%)]" />
+          </div>
 
-          <div className="relative z-10 omega-banner-layout">
+          <div className="relative z-10 w-full omega-banner-layout">
             
-            {/* Left Content Column */}
-            <div className="space-y-5 text-left">
+            {/* Left Content Column Over Soft Light-Red Studio Backdrop */}
+            <div className="space-y-4 sm:space-y-5 text-left max-w-lg">
               
-              {/* Top-Left: Clean Typographic Spec Bar (Zero Pill-Sandwich Clutter) */}
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[11px] font-mono font-bold uppercase tracking-wider text-[var(--text-muted)] border-b border-[var(--border)] pb-3">
-                <span className="inline-flex items-center gap-1.5 text-[var(--text)]">
-                  <ShieldCheck size={13} strokeWidth={2.2} className="text-[var(--gold)]" />
-                  <span>Durable Smyth-Sewn</span>
-                </span>
-                <span className="text-[var(--border)]">•</span>
-                <span className="inline-flex items-center gap-1.5 text-[var(--text)]">
-                  <Feather size={13} strokeWidth={2.2} className="text-[var(--red)]" />
-                  <span>70 GSM Bleed-Proof</span>
-                </span>
-                <span className="text-[var(--border)]">•</span>
-                <span className="inline-flex items-center gap-1.5 text-[var(--text)]">
-                  <CheckCircle2 size={13} strokeWidth={2.2} className="text-[var(--gold)]" />
-                  <span>Direct Factory Value</span>
-                </span>
-              </div>
-
-              {/* Middle Headline with Gold Badge */}
+              {/* Headline with Gold Badge */}
               <div className="space-y-2.5">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-[#F3D28A] via-[#E9B44C] to-[#B8862B] text-black text-[9.5px] font-mono font-black uppercase tracking-wider shadow-xs">
+                <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gradient-to-r from-[#F3D28A] via-[#E9B44C] to-[#B8862B] text-zinc-950 text-[9.5px] sm:text-[10px] font-mono font-black uppercase tracking-wider shadow-xs border-0">
                   <span>★</span>
                   <span>BEST SELLER · QUIRE 3</span>
                 </div>
-                <h2 className="omega-fluid-banner-title font-serif font-bold text-[var(--text)]">
+                <h2 className="omega-fluid-banner-title font-serif font-bold text-zinc-950 tracking-tight leading-[1.1]">
                   Counter Book Q3, Hardcover
                 </h2>
-                <p className="omega-fluid-body text-[var(--text-muted)] max-w-md font-sans">
+                <p className="omega-fluid-body text-zinc-800 max-w-md font-sans font-medium leading-relaxed">
                   288 pages of pure 70 GSM archival bond paper. Precision Smyth-sewn binding opens 180° flat, engineered for commercial accountants, schools, and tenders.
                 </p>
               </div>
 
-              {/* Price & Action Row (Only ONE filled red button) */}
-              <div className="pt-2 flex flex-wrap items-center gap-3">
-                <span className="text-2xl sm:text-3xl font-mono font-black text-[var(--text)] tabular-nums mr-2">
+              {/* Price & Action Row */}
+              <div className="pt-2 flex flex-wrap items-center gap-3.5">
+                <span className="text-2xl sm:text-3xl font-mono font-black text-zinc-950 tabular-nums mr-1">
                   TSh 8,500
                 </span>
 
-                {/* Primary Action Button: Filled Red Pill with Motion Tap */}
+                {/* Primary Action Button */}
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.95 }}
                   type="button"
                   onClick={handleBannerBuyNow}
-                  className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-[var(--red)] hover:bg-[var(--red-hover)] text-white font-mono text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-950/40 cursor-pointer"
+                  className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-[#C92A2A] hover:bg-[#A61E1E] text-white font-mono text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-950/25 cursor-pointer"
                 >
                   <span>BUY NOW</span>
-                  <ArrowRight size={15} strokeWidth={2} />
+                  <ArrowRight size={15} strokeWidth={2.2} />
                 </motion.button>
               </div>
 
             </div>
 
-            {/* Right Studio Showcase (Main Photo + Interactive 2-Photo Switcher) */}
-            <div className="flex flex-col items-center justify-center relative gap-3.5">
-              {/* Primary Studio Photo Frame */}
-              <div className="relative w-full max-w-lg rounded-2xl overflow-hidden border border-black/10 shadow-xl bg-[#990F14] aspect-[4/3]">
-                <AnimatePresence mode="wait">
-                  <motion.img
-                    key={bannerStudioPhotos[activeBannerPhoto].src}
-                    src={bannerStudioPhotos[activeBannerPhoto].src}
-                    alt="OMEGA Hardcover Counter Book 180° Lay-Flat Studio Photo"
-                    initial={{ opacity: 0, scale: 1.02 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.98 }}
-                    transition={{ duration: 0.3, ease: 'easeOut' }}
-                    className="w-full h-full object-cover"
-                  />
-                </AnimatePresence>
-
-                {/* Subtle Bottom-Left Studio Label */}
-                <div className="absolute bottom-3 left-3 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/15 text-white text-[10.5px] font-mono font-semibold tracking-wide flex items-center gap-1.5 shadow-md">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#25D366]" />
-                  <span>{bannerStudioPhotos[activeBannerPhoto].label}</span>
-                </div>
+            {/* Right Visual Space: Seamless Book & Open Spread on Studio Surface */}
+            <div className="w-full flex items-center justify-center relative">
+              {/* Mobile seamless blend of the right half of the light-red studio scene (no inner border box) */}
+              <div className="sm:hidden w-full -mx-2 -mb-2 pt-1 overflow-hidden rounded-xl">
+                <img
+                  src={bannerStudioPhoto}
+                  alt="OMEGA Hardcover Counter Book 180° Lay-Flat Studio Photo"
+                  className="w-full h-52 object-cover object-[86%_center] scale-105"
+                />
               </div>
-
-              {/* Dual Studio Photo Thumbnails (Both Uploaded Photos Visible & Selectable) */}
-              <div className="omega-dual-thumb-grid w-full max-w-lg">
-                {bannerStudioPhotos.map((photo, idx) => {
-                  const isSelected = activeBannerPhoto === idx;
-                  return (
-                    <button
-                      key={photo.src}
-                      type="button"
-                      onClick={() => setActiveBannerPhoto(idx)}
-                      className={`group relative flex items-center gap-2.5 p-2 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
-                        isSelected
-                          ? 'bg-white border-[var(--red)] ring-2 ring-[var(--red)]/20 shadow-sm'
-                          : 'bg-[var(--surface-2)]/80 border-[var(--border)] hover:border-[var(--gold)] opacity-80 hover:opacity-100'
-                      }`}
-                    >
-                      <div className="w-14 h-11 rounded-lg overflow-hidden shrink-0 border border-black/10 bg-[#990F14]">
-                        <img
-                          src={photo.src}
-                          alt={photo.label}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                      <div className="min-w-0">
-                        <span className="block text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)]">
-                          View 0{idx + 1}
-                        </span>
-                        <span className="block text-xs font-bold text-[var(--text)] truncate">
-                          {photo.label}
-                        </span>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
+              {/* Desktop spacer so the full-bleed background book on the right has full breathing room */}
+              <div className="hidden sm:block w-full h-64 lg:h-72 pointer-events-none" aria-hidden="true" />
             </div>
 
           </div>
