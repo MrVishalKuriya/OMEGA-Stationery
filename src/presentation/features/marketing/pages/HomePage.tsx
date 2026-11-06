@@ -17,7 +17,6 @@ import {
   Building2,
   ChevronDown,
   Layers,
-  Sparkles,
   FileCheck2,
   Boxes,
   X,
@@ -157,7 +156,9 @@ export const HomePage: React.FC = () => {
         cta: language === 'sw' ? 'EXPLORE' : 'EXPLORE',
         link: '/product/prod-omega-ex-200p-purple',
         image: '/products/omega-student-exercise-book-200-pages-single-line-800.webp',
+        bgImage: '/omega-products/exercise-book-card-bg.jpg',
         gallery: [
+          '/omega-products/exercise-book-card-bg.jpg',
           '/products/omega-student-exercise-book-200-pages-single-line-800.webp',
           '/omega-products/exercise-book-200p-sl-catalog.jpeg',
           '/omega-products/exercise-book-100p-catalog.jpeg',
@@ -194,7 +195,9 @@ export const HomePage: React.FC = () => {
         cta: language === 'sw' ? 'EXPLORE' : 'EXPLORE',
         link: '/product/prod-omega-bahasha-a4-pack',
         image: '/products/omega-heavy-kraft-bahasha-envelopes-a4-pack-of-50-800.webp',
+        bgImage: '/omega-products/kraft-bahasha-card-bg.jpg',
         gallery: [
+          '/omega-products/kraft-bahasha-card-bg.jpg',
           '/products/omega-heavy-kraft-bahasha-envelopes-a4-pack-of-50-800.webp',
           '/omega-products/bahasha-a4-catalog.png',
           '/omega-products/bahasha-a3-catalog.jpeg',
@@ -230,7 +233,9 @@ export const HomePage: React.FC = () => {
         cta: language === 'sw' ? 'EXPLORE' : 'EXPLORE',
         link: '/product/prod-omega-visitors-reg',
         image: '/products/omega-security-gate-visitors-register-executive-foil-800.webp',
+        bgImage: '/omega-products/office-register-card-bg.jpg',
         gallery: [
+          '/omega-products/office-register-card-bg.jpg',
           '/products/omega-security-gate-visitors-register-executive-foil-800.webp',
           '/omega-products/stiff-cover-200-catalog.jpeg',
           '/omega-products/catalog-sheet-stiff-cover-200.jpeg',
@@ -281,7 +286,7 @@ export const HomePage: React.FC = () => {
       <Hero />
 
       {/* Haikei Organic Wave Transition between Hero & Trust Strip */}
-      <HaikeiWaveDivider fill="var(--surface-1)" secondaryFill="rgba(214, 58, 58, 0.08)" />
+      <HaikeiWaveDivider topFill="var(--bg)" fill="var(--surface-1)" />
 
       {/* ========================================================================= */}
       {/* 2. FOUR-PILLAR HALLMARK TRUST STRIP (Watermelon UI Micro-Elevation) */}
@@ -433,17 +438,17 @@ export const HomePage: React.FC = () => {
                   }}
                   className="w-[90vw] sm:w-[540px] lg:w-auto shrink-0 snap-center relative rounded-[24px] border border-zinc-200/70 bg-white p-5 sm:p-7 shadow-sm hover:shadow-xl group text-left cursor-pointer transition-all duration-300 flex flex-row items-stretch justify-between gap-3 sm:gap-5 overflow-hidden min-h-[270px] sm:min-h-[300px]"
                 >
-                  {/* Full-Card Seamless Photo Background (Extends behind both Text & Product) */}
+                  {/* Full-Card Seamless Photo Background (Extends behind both Text & Product, Zero White Haze) */}
                   {hasFullBg ? (
                     <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
                       <img
                         src={col.bgImage}
                         alt={col.title}
-                        className="w-full h-full object-cover object-[78%_center] sm:object-right transition-transform duration-700 group-hover:scale-105"
+                        className="w-full h-full object-cover object-[76%_center] sm:object-right transition-transform duration-700 group-hover:scale-105"
                         loading="eager"
                       />
-                      {/* Soft translucent gradient scrim on the left so text sits over the photo background with crisp legibility */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#FAF8F5]/90 via-[#FAF8F5]/68 to-transparent sm:from-[#FAF8F5]/88 sm:via-[#FAF8F5]/55 sm:to-transparent" />
+                      {/* Subtle natural left-side shadow strictly on the left 40% — zero white haze over the book */}
+                      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(214,196,172,0.32)_0%,rgba(228,214,194,0.12)_30%,transparent_46%)]" />
                     </div>
                   ) : (
                     <div className="absolute inset-0 z-0 pointer-events-none bg-gradient-to-br from-[#FAF8F5] via-white to-[#F3ECE2]" />
@@ -729,43 +734,35 @@ export const HomePage: React.FC = () => {
           transition={{ duration: 0.45 }}
           className="relative w-full rounded-2xl overflow-hidden bg-[var(--surface-1)] border border-[var(--border)] p-5 sm:p-8 lg:p-10 shadow-2xl transition-colors duration-200"
         >
-          {/* Giant Serif "omega." Wordmark */}
-          <div
-            className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden"
-            aria-hidden="true"
-          >
-            <span className="font-serif font-black text-[var(--red)]/15 text-[28vw] sm:text-[22vw] tracking-tighter leading-none transform translate-y-3">
-              omega.
-            </span>
-          </div>
-
-          {/* Haikei Mesh Glow Background Accents */}
-          <HaikeiBlobGlow color="red" position="top-right" size="lg" className="opacity-30" />
+          {/* Subtle Paper Line Texture */}
+          <HaikeiBlobGlow color="red" position="top-right" size="lg" className="opacity-20" />
           <HaikeiPaperLines opacity={0.04} />
 
           <div className="relative z-10 omega-banner-layout">
             
             {/* Left Content Column */}
-            <div className="space-y-6 text-left">
+            <div className="space-y-5 text-left">
               
-              {/* Top-Left: 3 Pill Tags with Gold & Red Icons */}
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--surface-2)] border border-[var(--border)] text-[10.5px] font-mono font-bold text-[var(--text)] shadow-xs">
-                  <ShieldCheck size={13} strokeWidth={2} className="text-[var(--gold)]" />
+              {/* Top-Left: Clean Typographic Spec Bar (Zero Pill-Sandwich Clutter) */}
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[11px] font-mono font-bold uppercase tracking-wider text-[var(--text-muted)] border-b border-[var(--border)] pb-3">
+                <span className="inline-flex items-center gap-1.5 text-[var(--text)]">
+                  <ShieldCheck size={13} strokeWidth={2.2} className="text-[var(--gold)]" />
                   <span>Durable Smyth-Sewn</span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--surface-2)] border border-[var(--border)] text-[10.5px] font-mono font-bold text-[var(--text)] shadow-xs">
-                  <Feather size={13} strokeWidth={2} className="text-[var(--red)]" />
+                <span className="text-[var(--border)]">•</span>
+                <span className="inline-flex items-center gap-1.5 text-[var(--text)]">
+                  <Feather size={13} strokeWidth={2.2} className="text-[var(--red)]" />
                   <span>70 GSM Bleed-Proof</span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--surface-2)] border border-[var(--border)] text-[10.5px] font-mono font-bold text-[var(--text)] shadow-xs">
-                  <CheckCircle2 size={13} strokeWidth={2} className="text-[var(--gold)]" />
+                <span className="text-[var(--border)]">•</span>
+                <span className="inline-flex items-center gap-1.5 text-[var(--text)]">
+                  <CheckCircle2 size={13} strokeWidth={2.2} className="text-[var(--gold)]" />
                   <span>Direct Factory Value</span>
                 </span>
               </div>
 
               {/* Middle Headline with Gold Badge */}
-              <div className="space-y-2">
+              <div className="space-y-2.5">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-[#F3D28A] via-[#E9B44C] to-[#B8862B] text-black text-[9.5px] font-mono font-black uppercase tracking-wider shadow-xs">
                   <span>★</span>
                   <span>BEST SELLER · QUIRE 3</span>
@@ -949,7 +946,7 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* Haikei Organic Wave Transition */}
-      <HaikeiWaveDivider fill="var(--surface-1)" secondaryFill="rgba(233, 180, 76, 0.08)" />
+      <HaikeiWaveDivider topFill="var(--bg)" fill="var(--surface-1)" />
 
       {/* ========================================================================= */}
       {/* 5.5. THE ANATOMY OF AN OMEGA SMYTH-SEWN BOOK (Motion & Watermelon UI) */}
@@ -968,17 +965,17 @@ export const HomePage: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="text-center space-y-3 max-w-2xl mx-auto"
+            className="text-center space-y-2.5 max-w-2xl mx-auto"
           >
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[var(--surface-2)] border border-[var(--border)] text-[10.5px] font-mono font-bold tracking-widest uppercase text-[var(--gold)]">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>THE OMEGA ENGINEERING STANDARD</span>
-            </div>
+            <span className="text-[10.5px] font-mono font-bold tracking-widest uppercase text-[var(--gold)] block">
+              ★ THE OMEGA ENGINEERING STANDARD
+            </span>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--text)]">
               {language === 'sw'
                 ? 'Muundo wa Ndani wa Daftari la OMEGA'
                 : 'Anatomy of Archival Craftsmanship'}
             </h2>
+            <div className="w-12 h-0.5 bg-[var(--gold)] mx-auto opacity-70" />
             <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
               {language === 'sw'
                 ? 'Tofauti kati ya daftari linalochakaa haraka na daftari la OMEGA inatokana na vipengele 4 vya kiufundi vilivyobuniwa kudumu miaka kumi.'
@@ -1554,7 +1551,7 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* Haikei Wave to Footer */}
-      <HaikeiWaveDivider fill="var(--bg)" secondaryFill="rgba(214, 58, 58, 0.05)" />
+      <HaikeiWaveDivider topFill="var(--surface-1)" fill="var(--bg)" />
 
     </div>
   );

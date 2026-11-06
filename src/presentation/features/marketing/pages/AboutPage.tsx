@@ -447,7 +447,7 @@ export const AboutPage: React.FC = () => {
       </section>
 
       {/* Haikei Wave to Footer */}
-      <HaikeiWaveDivider fill="var(--bg)" secondaryFill="rgba(214, 58, 58, 0.05)" />
+      <HaikeiWaveDivider topFill="var(--surface-1)" fill="var(--bg)" />
     </div>
   );
 };

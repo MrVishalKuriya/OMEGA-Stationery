@@ -132,11 +132,11 @@ export const Hero: React.FC = () => {
       aria-label="Hero Showcase"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      className="relative w-full overflow-hidden bg-[var(--bg)] min-h-[440px] sm:min-h-[540px] lg:min-h-[600px] flex items-center border-b border-[var(--border)] transition-colors duration-200"
+      className="relative w-full overflow-hidden bg-[var(--bg)] min-h-[440px] sm:min-h-[540px] lg:min-h-[600px] flex items-center transition-colors duration-200"
     >
       {/* Clean Light Luxury Paper Canvas */}
       <div
-        className="absolute inset-0 pointer-events-none bg-gradient-to-r from-[#FAF8F5] via-[#FAF8F5] to-[#F5EFE6]"
+        className="absolute inset-0 pointer-events-none bg-[var(--bg)]"
         aria-hidden="true"
       />
 

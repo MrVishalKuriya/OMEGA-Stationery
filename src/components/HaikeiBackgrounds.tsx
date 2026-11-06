@@ -6,6 +6,7 @@ import React from 'react';
  */
 
 interface WaveProps {
+  topFill?: string;
   fill?: string;
   secondaryFill?: string;
   flip?: boolean;
@@ -13,17 +14,18 @@ interface WaveProps {
 }
 
 export const HaikeiWaveDivider: React.FC<WaveProps> = ({
+  topFill = 'transparent',
   fill = 'var(--surface-1)',
-  secondaryFill,
   flip = false,
   className = '',
 }) => {
-  const waveGradId = React.useId();
-  const crestGradId = React.useId();
+  const waveGrad1 = React.useId();
+  const waveGrad2 = React.useId();
 
   return (
     <div
-      className={`w-full overflow-hidden leading-none pointer-events-none select-none ${
+      style={{ backgroundColor: topFill }}
+      className={`w-full overflow-hidden leading-none pointer-events-none select-none border-0 ${
         flip ? 'rotate-180 -mb-px' : '-mt-px'
       } ${className}`}
       aria-hidden="true"
@@ -36,50 +38,37 @@ export const HaikeiWaveDivider: React.FC<WaveProps> = ({
         className="w-full h-12 sm:h-16 lg:h-20 block"
       >
         <defs>
-          <linearGradient id={waveGradId} x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#D63A3A" stopOpacity="0.22" />
-            <stop offset="50%" stopColor="#C89B3C" stopOpacity="0.32" />
-            <stop offset="100%" stopColor="#D63A3A" stopOpacity="0.22" />
+          {/* Pure Clean OMEGA Crimson & Soft Rose Ribbon (Zero Brownish Tint) */}
+          <linearGradient id={waveGrad1} x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#D63A3A" stopOpacity="0.18" />
+            <stop offset="50%" stopColor="#EF4444" stopOpacity="0.28" />
+            <stop offset="100%" stopColor="#D63A3A" stopOpacity="0.18" />
           </linearGradient>
-          <linearGradient id={crestGradId} x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#C89B3C" stopOpacity="0.38" />
-            <stop offset="50%" stopColor="#D63A3A" stopOpacity="0.28" />
-            <stop offset="100%" stopColor="#C89B3C" stopOpacity="0.38" />
+
+          {/* Soft Coral-Crimson Secondary Wave (Zero Brownish Tint) */}
+          <linearGradient id={waveGrad2} x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#EF4444" stopOpacity="0.24" />
+            <stop offset="50%" stopColor="#D63A3A" stopOpacity="0.16" />
+            <stop offset="100%" stopColor="#EF4444" stopOpacity="0.24" />
           </linearGradient>
         </defs>
 
-        {/* Layer 0: Deep Warm Gold / Crimson Ambient Wave */}
+        {/* Layer 0: Soft Crimson Ambient Wave (No harsh top border stroke) */}
         <path
-          d="M0,18L60,30C120,42,240,66,360,68C480,70,600,50,720,38C840,26,960,22,1080,36C1200,50,1320,82,1380,96L1440,110L1440,120L0,120Z"
-          fill={`url(#${waveGradId})`}
+          d="M0,22L60,32C120,42,240,64,360,66C480,68,600,48,720,36C840,24,960,20,1080,34C1200,48,1320,78,1380,92L1440,104L1440,120L0,120Z"
+          fill={`url(#${waveGrad1})`}
         />
 
-        {/* Layer 1: Highlighted Organic Accent Crest */}
+        {/* Layer 1: Clean Secondary Crimson Wave (No brownish fill or border) */}
         <path
-          d="M0,32L48,42.7C96,53,192,75,288,74.7C384,75,480,53,576,42.7C672,32,768,32,864,48C960,64,1056,96,1152,96C1248,96,1344,64,1392,48L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"
-          fill={secondaryFill && !secondaryFill.includes('0.0') ? secondaryFill : `url(#${crestGradId})`}
+          d="M0,34L48,44C96,54,192,74,288,74C384,74,480,54,576,44C672,34,768,34,864,48C960,62,1056,92,1152,92C1248,92,1344,62,1392,48L1440,34L1440,120L0,120Z"
+          fill={`url(#${waveGrad2})`}
         />
 
-        {/* Layer 1 Stroke: Subtle Gold Contour Line */}
+        {/* Layer 2: Main Smooth Surface Curve (Blends 100% seamlessly into next section) */}
         <path
-          d="M0,32L48,42.7C96,53,192,75,288,74.7C384,75,480,53,576,42.7C672,32,768,32,864,48C960,64,1056,96,1152,96C1248,96,1344,64,1392,48L1440,32"
-          stroke="rgba(184, 134, 43, 0.45)"
-          strokeWidth="1.5"
-          fill="none"
-        />
-
-        {/* Layer 2: Main Smooth Surface Curve */}
-        <path
-          d="M0,64L48,69.3C96,75,192,85,288,74.7C384,64,480,32,576,26.7C672,21,768,43,864,58.7C960,75,1056,85,1152,80C1248,75,1344,53,1392,42.7L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"
+          d="M0,64L48,69.3C96,75,192,85,288,74.7C384,64,480,32,576,26.7C672,21,768,43,864,58.7C960,75,1056,85,1152,80C1248,75,1344,53,1392,42.7L1440,32L1440,120L0,120Z"
           fill={fill}
-        />
-
-        {/* Layer 2 Top Edge Highlight Stroke */}
-        <path
-          d="M0,64L48,69.3C96,75,192,85,288,74.7C384,64,480,32,576,26.7C672,21,768,43,864,58.7C960,75,1056,85,1152,80C1248,75,1344,53,1392,42.7L1440,32"
-          stroke="rgba(214, 58, 58, 0.35)"
-          strokeWidth="1.75"
-          fill="none"
         />
       </svg>
     </div>
