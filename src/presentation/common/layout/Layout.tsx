@@ -242,6 +242,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 
                 {/* Direct Phone Numbers List */}
                 <div className="space-y-2.5 pt-1">
+                  {/* 1. MD Desk */}
                   <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
                     <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)]" />
                     <a href="tel:+255715268391" className="hover:underline font-mono font-semibold text-[var(--text)]">
@@ -249,12 +250,20 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                     </a>
                   </div>
 
-                  {/* 2. Gupta Alok - Mbeya Branch Manager */}
+                  {/* 2. Co-Founder & MD (+255 624 265 480) */}
+                  <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
+                    <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)]" />
+                    <a href="tel:+255624265480" className="hover:underline font-mono font-semibold text-[var(--text)]">
+                      +255 624 265 480
+                    </a>
+                  </div>
+
+                  {/* 3. Gupta Vivek - Mbeya Branch Manager */}
                   <div className="flex items-start gap-2 text-xs">
                     <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)] mt-0.5" />
                     <div className="leading-snug">
                       <span className="text-[11px] font-sans text-[var(--text-muted)] block">
-                        Mbeya Branch Manager · <strong className="text-[var(--text)] font-bold">Gupta Alok</strong>
+                        Mbeya Branch Manager · <strong className="text-[var(--text)] font-bold">Gupta Vivek</strong>
                       </span>
                       <a href="tel:+255746268391" className="hover:underline font-mono font-semibold text-[var(--text)] block">
                         +255 746 268 391
@@ -262,12 +271,12 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                     </div>
                   </div>
 
-                  {/* 3. Gupta Vivek - Mwanza Branch Manager */}
+                  {/* 4. Gupta Alok - Mwanza Branch Manager */}
                   <div className="flex items-start gap-2 text-xs">
                     <Phone size={14} strokeWidth={2} className="shrink-0 text-[var(--red)] mt-0.5" />
                     <div className="leading-snug">
                       <span className="text-[11px] font-sans text-[var(--text-muted)] block">
-                        Mwanza Branch Manager · <strong className="text-[var(--text)] font-bold">Gupta Vivek</strong>
+                        Mwanza Branch Manager · <strong className="text-[var(--text)] font-bold">Gupta Alok</strong>
                       </span>
                       <a href="tel:+255699032777" className="hover:underline font-mono font-semibold text-[var(--text)] block">
                         +255 699 032 777

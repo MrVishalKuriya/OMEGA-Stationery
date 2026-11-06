@@ -48,6 +48,17 @@ export const HomePage: React.FC = () => {
   const [activeCollectionSlide, setActiveCollectionSlide] = useState(0);
   const [selectedCollection, setSelectedCollection] = useState<any | null>(null);
   const [selectedGalleryImg, setSelectedGalleryImg] = useState<string>('');
+  const [activeBannerPhoto, setActiveBannerPhoto] = useState<number>(0);
+  const bannerStudioPhotos = [
+    {
+      src: '/assets/aistudio/image_c7a05502.png',
+      label: language === 'sw' ? 'Muundo wa 180° Flat' : '180° Lay-Flat Spread',
+    },
+    {
+      src: '/assets/aistudio/image_c6f045f0.png',
+      label: language === 'sw' ? 'Jalada na Kurasa' : 'Hardcover & Ruled Bond',
+    },
+  ];
   const collectionScrollRef = React.useRef<HTMLDivElement>(null);
 
   const scrollToSlide = (index: number) => {
@@ -103,8 +114,11 @@ export const HomePage: React.FC = () => {
         brand: 'Brand: OMEGA',
         cta: language === 'sw' ? 'EXPLORE' : 'EXPLORE',
         link: '/product/prod-omega-cb-q3',
-        image: '/omega-hero-book.webp',
+        image: '/omega-products/counter-book-desk-podium.jpg',
         gallery: [
+          '/omega-products/counter-book-desk-podium.jpg',
+          '/assets/aistudio/image_c7a05502.png',
+          '/assets/aistudio/image_c6f045f0.png',
           '/omega-hero-book.webp',
           '/products/omega-hardcover-counter-book-q3-288-pages-800.webp',
           '/omega-products/counter-book-q3-288p.jpeg',
@@ -271,8 +285,8 @@ export const HomePage: React.FC = () => {
       {/* 2. FOUR-PILLAR HALLMARK TRUST STRIP (Watermelon UI Micro-Elevation) */}
       {/* ========================================================================= */}
       <section className="bg-[var(--surface-1)] border-b border-[var(--border)] py-5 sm:py-6 relative z-10 transition-colors duration-200">
-        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="omega-fluid-container">
+          <div className="omega-trust-grid">
             
             {/* 1. Pure 70 GSM Bond */}
             <motion.div
@@ -384,7 +398,7 @@ export const HomePage: React.FC = () => {
             <span className="text-[10.5px] font-mono font-bold tracking-widest uppercase text-[var(--gold)] block">
               ★ TANZANIA BENCHMARK
             </span>
-            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[var(--text)]">
+            <h2 className="omega-fluid-section-title font-serif font-bold tracking-tight text-[var(--text)]">
               {language === 'sw' ? 'MKUSANYIKO WA VITABU' : 'SHOP BY COLLECTION'}
             </h2>
             <div className="w-12 h-0.5 bg-[var(--gold)] mx-auto opacity-70" />
@@ -473,12 +487,16 @@ export const HomePage: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Right Side: Product Image (No Inner Box Div - Clean Blend, No Box Shadow) */}
-                <div className="w-full sm:w-[48%] h-52 sm:h-64 relative flex items-center justify-center shrink-0">
+                {/* Right Side: Product Image */}
+                <div className="w-full sm:w-[48%] h-56 sm:h-64 relative flex items-center justify-center shrink-0 overflow-hidden rounded-xl">
                   <img
                     src={col.image}
                     alt={col.title}
-                    className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-106"
+                    className={`max-h-full max-w-full transition-transform duration-500 group-hover:scale-105 ${
+                      col.id === 'counter-books'
+                        ? 'w-full h-full object-cover rounded-xl shadow-xs'
+                        : 'object-contain mix-blend-multiply'
+                    }`}
                     loading="lazy"
                   />
                 </div>
@@ -679,7 +697,7 @@ export const HomePage: React.FC = () => {
       {/* ========================================================================= */}
       <section
         aria-label="Signature Banner"
-        className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-8 sm:pb-12"
+        className="omega-fluid-container pt-2 sm:pt-4 pb-8 sm:pb-12 omega-banner-container"
       >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -702,10 +720,10 @@ export const HomePage: React.FC = () => {
           <HaikeiBlobGlow color="red" position="top-right" size="lg" className="opacity-30" />
           <HaikeiPaperLines opacity={0.04} />
 
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div className="relative z-10 omega-banner-layout">
             
             {/* Left Content Column */}
-            <div className="lg:col-span-6 space-y-6 text-left">
+            <div className="space-y-6 text-left">
               
               {/* Top-Left: 3 Pill Tags with Gold & Red Icons */}
               <div className="flex flex-wrap items-center gap-2">
@@ -729,10 +747,10 @@ export const HomePage: React.FC = () => {
                   <span>★</span>
                   <span>BEST SELLER · QUIRE 3</span>
                 </div>
-                <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[var(--text)] leading-tight">
+                <h2 className="omega-fluid-banner-title font-serif font-bold text-[var(--text)]">
                   Counter Book Q3, Hardcover
                 </h2>
-                <p className="text-xs sm:text-sm text-[var(--text-muted)] max-w-md font-sans leading-relaxed">
+                <p className="omega-fluid-body text-[var(--text-muted)] max-w-md font-sans">
                   288 pages of pure 70 GSM archival bond paper. Precision Smyth-sewn binding opens 180° flat, engineered for commercial accountants, schools, and tenders.
                 </p>
               </div>
@@ -758,22 +776,64 @@ export const HomePage: React.FC = () => {
 
             </div>
 
-            {/* Right Product Cutout Overlapping in Front */}
-            <div className="lg:col-span-6 flex items-center justify-center relative">
-              <motion.div
-                whileHover={{ scale: 1.04, rotate: 1 }}
-                transition={{ duration: 0.4 }}
-                className="relative w-full max-w-md aspect-square flex items-center justify-center cursor-pointer"
-              >
-                <ProductImage
-                  src="/omega-hero-book.webp"
-                  alt="OMEGA Hardcover Counter Book Cutout"
-                  variant="hero"
-                  bg="transparent"
-                  priority={true}
-                  imgClassName="transition-transform duration-500 drop-shadow-[0_25px_35px_rgba(0,0,0,0.35)]"
-                />
-              </motion.div>
+            {/* Right Studio Showcase (Main Photo + Interactive 2-Photo Switcher) */}
+            <div className="flex flex-col items-center justify-center relative gap-3.5">
+              {/* Primary Studio Photo Frame */}
+              <div className="relative w-full max-w-lg rounded-2xl overflow-hidden border border-black/10 shadow-xl bg-[#990F14] aspect-[4/3]">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={bannerStudioPhotos[activeBannerPhoto].src}
+                    src={bannerStudioPhotos[activeBannerPhoto].src}
+                    alt="OMEGA Hardcover Counter Book 180° Lay-Flat Studio Photo"
+                    initial={{ opacity: 0, scale: 1.02 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                    className="w-full h-full object-cover"
+                  />
+                </AnimatePresence>
+
+                {/* Subtle Bottom-Left Studio Label */}
+                <div className="absolute bottom-3 left-3 px-3 py-1 rounded-full bg-black/70 backdrop-blur-md border border-white/15 text-white text-[10.5px] font-mono font-semibold tracking-wide flex items-center gap-1.5 shadow-md">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#25D366]" />
+                  <span>{bannerStudioPhotos[activeBannerPhoto].label}</span>
+                </div>
+              </div>
+
+              {/* Dual Studio Photo Thumbnails (Both Uploaded Photos Visible & Selectable) */}
+              <div className="omega-dual-thumb-grid w-full max-w-lg">
+                {bannerStudioPhotos.map((photo, idx) => {
+                  const isSelected = activeBannerPhoto === idx;
+                  return (
+                    <button
+                      key={photo.src}
+                      type="button"
+                      onClick={() => setActiveBannerPhoto(idx)}
+                      className={`group relative flex items-center gap-2.5 p-2 rounded-xl border text-left transition-all duration-200 cursor-pointer ${
+                        isSelected
+                          ? 'bg-white border-[var(--red)] ring-2 ring-[var(--red)]/20 shadow-sm'
+                          : 'bg-[var(--surface-2)]/80 border-[var(--border)] hover:border-[var(--gold)] opacity-80 hover:opacity-100'
+                      }`}
+                    >
+                      <div className="w-14 h-11 rounded-lg overflow-hidden shrink-0 border border-black/10 bg-[#990F14]">
+                        <img
+                          src={photo.src}
+                          alt={photo.label}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="block text-[10px] font-mono uppercase tracking-wider text-[var(--text-muted)]">
+                          View 0{idx + 1}
+                        </span>
+                        <span className="block text-xs font-bold text-[var(--text)] truncate">
+                          {photo.label}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
           </div>
@@ -843,7 +903,7 @@ export const HomePage: React.FC = () => {
           </div>
 
           {/* Product Cards Grid with Proper Padding & Margins */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 pt-2">
+          <div className="omega-product-grid pt-2">
             {displayedProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

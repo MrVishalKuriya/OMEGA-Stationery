@@ -78,7 +78,7 @@ export const ContactPage: React.FC = () => {
     },
     {
       id: 'desk-branch-mbeya',
-      title: 'Gupta Alok',
+      title: 'Gupta Vivek',
       phone: '+255 746 268 391',
       numberDigits: '255746268391',
       tag: 'Mbeya Branch Manager',
@@ -88,7 +88,7 @@ export const ContactPage: React.FC = () => {
     },
     {
       id: 'desk-branch-mwanza',
-      title: 'Gupta Vivek',
+      title: 'Gupta Alok',
       phone: '+255 699 032 777',
       numberDigits: '255699032777',
       tag: 'Mwanza Branch Manager',
@@ -300,8 +300,8 @@ export const ContactPage: React.FC = () => {
                     >
                       <option value="255715268391">KANTI BHAI K. HALAI (+255 715 268 391) — Co-Founder &amp; MD</option>
                       <option value="255624265480">VIJESH K. HALAI (+255 624 265 480) — Co-Founder &amp; MD</option>
-                      <option value="255746268391">GUPTA ALOK (+255 746 268 391) — Mbeya Branch Manager</option>
-                      <option value="255699032777">GUPTA VIVEK (+255 699 032 777) — Mwanza Branch Manager</option>
+                      <option value="255746268391">GUPTA VIVEK (+255 746 268 391) — Mbeya Branch Manager</option>
+                      <option value="255699032777">GUPTA ALOK (+255 699 032 777) — Mwanza Branch Manager</option>
                     </select>
                   </div>
                 </div>
