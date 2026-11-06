@@ -58,27 +58,27 @@ export const ContactPage: React.FC = () => {
   const salesDesks = [
     {
       id: 'desk-boss-1',
-      title: 'KANTI BHAI K. HALAI: Co-Founder & Managing Director',
+      title: 'Kanti Bhai K. Halai',
       phone: '+255 715 268 391',
       numberDigits: '255715268391',
-      tag: 'KANTI BHAI K. HALAI',
+      tag: 'Co-Founder & Managing Director',
       desc: language === 'sw'
         ? 'Mawasiliano ya moja kwa moja ya uongozi mkuu kwa oda maalum, maswali ya mikataba na oda za haraka.'
         : 'Co-Founder & Managing Director - direct line for priority purchasing, special contract terms, and escalated service.',
     },
     {
       id: 'desk-boss-2',
-      title: language === 'sw' ? 'VIJESH K. HALAI: Co-Founder & Managing Director' : 'VIJESH K. HALAI: Co-Founder & Managing Director',
+      title: 'Vijesh K. Halai',
       phone: '+255 624 265 480',
       numberDigits: '255624265480',
-      tag: 'VIJESH K. HALAI',
+      tag: 'Co-Founder & Managing Director',
       desc: language === 'sw'
         ? 'Mkurugenzi Mtendaji na Mwanzilishi Mwenza anayesimamia uzalishaji, bei za katoni na mikataba mikubwa ya B2B.'
         : 'Co-Founder & Managing Director overseeing factory production dispatches, volume carton pricing, and distributor supply.',
     },
     {
       id: 'desk-branch-mbeya',
-      title: language === 'sw' ? 'GUPTA ALOK: Mbeya Branch Manager' : 'GUPTA ALOK: Mbeya Branch Manager',
+      title: 'Gupta Alok',
       phone: '+255 746 268 391',
       numberDigits: '255746268391',
       tag: 'Mbeya Branch Manager',
@@ -88,7 +88,7 @@ export const ContactPage: React.FC = () => {
     },
     {
       id: 'desk-branch-mwanza',
-      title: language === 'sw' ? 'GUPTA VIVEK: Mwanza Branch Manager' : 'GUPTA VIVEK: Mwanza Branch Manager',
+      title: 'Gupta Vivek',
       phone: '+255 699 032 777',
       numberDigits: '255699032777',
       tag: 'Mwanza Branch Manager',
