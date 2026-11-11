@@ -178,18 +178,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </h3>
         </div>
 
-        {/* Bottom Row: Price & Red Action Bag Button */}
-        <div className="mt-auto pt-3 flex items-center justify-between gap-2 border-0">
-          {/* Price */}
-          <div className="flex flex-col">
-            <span className="omega-card-price text-[15px] sm:text-[16.5px] font-sans font-extrabold text-[#161518] tabular-nums tracking-tight">
-              {formatPrice(effectivePrice, 'TSh')}
+        {/* Bottom Row: Price & Sleek Pill Action Button */}
+        <div className="mt-auto pt-2.5 mt-2.5 flex items-center justify-between gap-2 border-t border-zinc-100">
+          {/* Price Block */}
+          <div className="flex flex-col min-w-0">
+            <span className="text-[9px] font-mono uppercase tracking-wider text-zinc-400 leading-none mb-1 truncate">
+              {product.packaging || product.quire || (language === 'sw' ? 'Bei ya Kiwandani' : 'Factory Rate')}
             </span>
-            {hasDiscount && (
-              <span className="text-[10.5px] text-[#71717A] line-through font-sans tabular-nums">
-                {formatPrice(product.price, 'TSh')}
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <span className="omega-card-price text-[14.5px] sm:text-[16px] font-mono font-extrabold text-[#161518] tabular-nums tracking-tight leading-none">
+                {formatPrice(effectivePrice, 'TSh')}
               </span>
-            )}
+              {hasDiscount && (
+                <span className="text-[10px] text-zinc-400 line-through font-mono tabular-nums leading-none">
+                  {formatPrice(product.price, 'TSh')}
+                </span>
+              )}
+            </div>
           </div>
 
           {/* Action Group */}
@@ -197,43 +202,43 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {inCartQty > 0 ? (
               <div
                 onClick={(e) => e.stopPropagation()}
-                className="flex items-center gap-1 bg-zinc-100 rounded-xl px-1.5 py-0.5"
+                className="flex items-center gap-1 bg-zinc-100 rounded-full px-1.5 py-1 border border-zinc-200/70"
               >
                 <button
                   type="button"
                   onClick={(e) => handleQtyChange(e, -1)}
-                  className="w-6 h-6 flex items-center justify-center text-zinc-700 hover:bg-white rounded-md transition-colors cursor-pointer"
+                  className="w-6 h-6 flex items-center justify-center text-zinc-700 hover:bg-white rounded-full transition-colors cursor-pointer"
                   aria-label="Decrease quantity"
                 >
-                  <Minus size={12} strokeWidth={2.5} />
+                  <Minus size={11} strokeWidth={2.5} />
                 </button>
-                <span className="text-xs font-sans font-bold text-[#161518] px-1 tabular-nums">
+                <span className="text-xs font-mono font-bold text-[#161518] px-1 tabular-nums">
                   {inCartQty}
                 </span>
                 <button
                   type="button"
                   onClick={(e) => handleQtyChange(e, 1)}
-                  className="w-6 h-6 flex items-center justify-center text-zinc-700 hover:bg-white rounded-md transition-colors cursor-pointer"
+                  className="w-6 h-6 flex items-center justify-center text-zinc-700 hover:bg-white rounded-full transition-colors cursor-pointer"
                   aria-label="Increase quantity"
                 >
-                  <Plus size={12} strokeWidth={2.5} />
+                  <Plus size={11} strokeWidth={2.5} />
                 </button>
               </div>
             ) : (
               <motion.button
-                whileHover={{ scale: isOutOfStock ? 1 : 1.06 }}
-                whileTap={{ scale: isOutOfStock ? 1 : 0.92 }}
+                whileHover={{ scale: isOutOfStock ? 1 : 1.04 }}
+                whileTap={{ scale: isOutOfStock ? 1 : 0.94 }}
                 type="button"
                 onClick={handleQuickAdd}
                 disabled={isOutOfStock}
                 title={isOutOfStock ? 'Out of stock' : 'Add to cart'}
                 aria-label={isOutOfStock ? 'Out of stock' : 'Add to cart'}
-                className={`omega-card-bag-btn w-9 h-9 sm:w-9.5 sm:h-9.5 rounded-[11px] flex items-center justify-center font-bold text-white transition-colors duration-200 shadow-none cursor-pointer ${
+                className={`h-8 sm:h-9 px-3 sm:px-3.5 rounded-full flex items-center justify-center gap-1.5 font-mono text-[10px] sm:text-[10.5px] font-bold uppercase tracking-wider text-white transition-all duration-200 cursor-pointer ${
                   isOutOfStock
                     ? 'bg-zinc-100 text-zinc-400 cursor-not-allowed'
                     : justAdded
-                    ? 'bg-emerald-600'
-                    : 'bg-[#D63A3A] hover:bg-[#b91c1c]'
+                    ? 'bg-emerald-600 shadow-xs'
+                    : 'bg-[#161518] hover:bg-[#D63A3A] shadow-xs hover:shadow-md hover:shadow-red-600/20'
                 }`}
               >
                 <AnimatePresence mode="wait">
@@ -243,8 +248,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                       initial={{ scale: 0.5, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       exit={{ scale: 0.5, opacity: 0 }}
+                      className="flex items-center gap-1"
                     >
-                      <Check size={16} strokeWidth={2.5} />
+                      <Check size={13} strokeWidth={2.5} />
+                      <span>{language === 'sw' ? 'Sawa' : 'Added'}</span>
                     </motion.div>
                   ) : (
                     <motion.div
@@ -252,8 +259,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                       initial={{ scale: 0.8, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}
                       exit={{ scale: 0.8, opacity: 0 }}
+                      className="flex items-center gap-1.5"
                     >
-                      <ShoppingBag size={16} strokeWidth={2} />
+                      <ShoppingBag size={13} strokeWidth={2.2} />
+                      <span>{language === 'sw' ? 'Weka' : 'Add'}</span>
                     </motion.div>
                   )}
                 </AnimatePresence>

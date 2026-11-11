@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { Package } from 'lucide-react';
 import { ProductImageMeta } from '@/types/store';
 
 export type ProductImageVariant = 'card' | 'tile' | 'thumb' | 'hero' | 'gallery';
 
 export function getProductImageSrc(image?: string | ProductImageMeta | null): string {
-  if (!image) return '/placeholder.png';
+  if (!image) return '/products/omega-hardcover-counter-book-q3-288-pages-1200.webp';
   if (typeof image === 'string') return image;
-  return image.src || image.src1200 || '';
+  return image.src || image.src1200 || '/products/omega-hardcover-counter-book-q3-288-pages-1200.webp';
 }
 
 export interface ProductImageProps {
@@ -135,6 +134,29 @@ export const ProductImage: React.FC<ProductImageProps> = ({
     dropShadowStyle = '';
   }
 
+  function resolveSmartFallback(altText: string): string {
+    const lower = (altText || '').toLowerCase();
+    if (lower.includes('q2') || lower.includes('192')) {
+      return '/products/omega-hardcover-counter-book-q2-192-pages-1200.webp';
+    }
+    if (lower.includes('q4') || lower.includes('384')) {
+      return '/products/omega-hardcover-counter-book-q4-384-pages-1200.webp';
+    }
+    if (lower.includes('bahasha') || lower.includes('envelope')) {
+      return '/products/omega-heavy-kraft-bahasha-envelopes-a4-pack-of-50-1200.webp';
+    }
+    if (lower.includes('exercise')) {
+      return '/products/omega-exercise-book-200-pages-single-line-sl-1200.webp';
+    }
+    if (lower.includes('register') || lower.includes('visitor') || lower.includes('attendance')) {
+      return '/products/omega-security-gate-visitors-register-executive-foil-1200.webp';
+    }
+    return '/products/omega-hardcover-counter-book-q3-288-pages-1200.webp';
+  }
+
+  const effectiveSrc = hasError || !resolvedSrc ? resolveSmartFallback(resolvedAlt) : resolvedSrc;
+  const effectiveSrcSet = hasError ? undefined : srcSetString;
+
   return (
     <div
       onClick={onClick}
@@ -142,48 +164,40 @@ export const ProductImage: React.FC<ProductImageProps> = ({
       style={{ isolation: 'isolate' }}
     >
       {/* 1. Skeleton Shimmer while loading */}
-      {!isLoaded && !hasError && (
+      {!isLoaded && (
         <div
-          className="absolute inset-0 bg-[#E8DFD0] animate-pulse pointer-events-none"
+          className="absolute inset-0 bg-[#F4F1EA] animate-pulse pointer-events-none"
           aria-hidden="true"
         />
       )}
 
-      {/* 2. Error / Missing Placeholder */}
-      {hasError || !resolvedSrc ? (
-        <div
-          className="absolute inset-0 flex flex-col items-center justify-center text-[#9A8F8C] bg-[var(--paper,#F3EBDD)] p-3 text-center"
-          title="Image unavailable"
-        >
-          <Package className="w-8 h-8 stroke-[1.5] mb-1 opacity-60" />
-          <span className="text-[10px] font-mono uppercase tracking-wider opacity-70">
-            OMEGA Archival
-          </span>
-        </div>
-      ) : (
-        /* 3. Standardized Responsive Image */
-        <img
-          src={resolvedSrc}
-          srcSet={srcSetString}
-          sizes={sizes || defaultSizes}
-          alt={resolvedAlt}
-          width={1200}
-          height={1200}
-          loading={priority ? 'eager' : 'lazy'}
-          decoding="async"
-          onLoad={() => setIsLoaded(true)}
-          onError={() => setHasError(true)}
-          className={`absolute inset-0 w-full h-full object-contain ${blendClass} transition-opacity duration-300 ${
-            isLoaded ? 'opacity-100' : 'opacity-0'
-          } ${imgClassName}`}
-          style={{
-            boxSizing: 'border-box',
-            padding: paddingStyle,
-            objectPosition,
-            filter: dropShadowStyle || undefined,
-          }}
-        />
-      )}
+      {/* 2. Standardized Responsive Image with Automatic Local Fallback */}
+      <img
+        src={effectiveSrc}
+        srcSet={effectiveSrcSet}
+        sizes={sizes || defaultSizes}
+        alt={resolvedAlt}
+        width={1200}
+        height={1200}
+        loading={priority ? 'eager' : 'lazy'}
+        decoding="async"
+        onLoad={() => setIsLoaded(true)}
+        onError={() => {
+          if (!hasError) {
+            setHasError(true);
+            setIsLoaded(true);
+          }
+        }}
+        className={`absolute inset-0 w-full h-full object-contain ${blendClass} transition-opacity duration-300 ${
+          isLoaded ? 'opacity-100' : 'opacity-0'
+        } ${imgClassName}`}
+        style={{
+          boxSizing: 'border-box',
+          padding: paddingStyle,
+          objectPosition,
+          filter: dropShadowStyle || undefined,
+        }}
+      />
     </div>
   );
 };

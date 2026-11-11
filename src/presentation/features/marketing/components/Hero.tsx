@@ -85,18 +85,12 @@ const StudioBookHalo: React.FC = () => {
     >
       {/* Soft Warm Radial Studio Glow */}
       <div
-        className="w-[78%] h-[78%] rounded-full blur-2xl opacity-80"
+        className="absolute w-[76%] h-[76%] rounded-full blur-2xl opacity-75"
         style={{
           background:
-            'radial-gradient(circle, rgba(214,58,58,0.14) 0%, rgba(233,180,76,0.16) 48%, rgba(214,58,58,0) 74%)',
+            'radial-gradient(circle, rgba(214,58,58,0.12) 0%, rgba(233,180,76,0.14) 48%, rgba(214,58,58,0) 72%)',
         }}
       />
-
-      {/* Outer Architectural Precision Ring */}
-      <div className="w-[76%] h-[76%] rounded-full border border-[#D4AF37]/25 bg-gradient-to-br from-white/50 via-[#FAF8F5]/30 to-[#F3EDE2]/50 shadow-[inset_0_1px_16px_rgba(212,175,55,0.12)]" />
-
-      {/* Inner Subtle Concentric Ring */}
-      <div className="w-[60%] h-[60%] rounded-full border border-[#D63A3A]/15" />
 
       {/* Ground Pedestal Shadow */}
       <div className="absolute bottom-[9%] w-[54%] h-6 rounded-full bg-black/15 blur-xl" />

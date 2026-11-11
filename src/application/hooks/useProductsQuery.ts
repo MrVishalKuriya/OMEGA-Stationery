@@ -11,7 +11,30 @@ import {
 } from '@/services/api';
 
 const PRODUCTS_QUERY_KEY = ['products'];
-const STORAGE_KEY = 'omega_products_v4';
+const STORAGE_KEY = 'omega_products_v5';
+
+function getCategoryFallbackImage(item: Partial<Product>): string {
+  const text = `${item.name || ''} ${item.category || ''} ${item.quire || ''}`.toLowerCase();
+  if (text.includes('q2') || text.includes('192')) {
+    return '/products/omega-hardcover-counter-book-q2-192-pages-1200.webp';
+  }
+  if (text.includes('q4') || text.includes('384')) {
+    return '/products/omega-hardcover-counter-book-q4-384-pages-1200.webp';
+  }
+  if (text.includes('counter') || text.includes('q3') || text.includes('288')) {
+    return '/products/omega-hardcover-counter-book-q3-288-pages-1200.webp';
+  }
+  if (text.includes('bahasha') || text.includes('envelope')) {
+    return '/products/omega-heavy-kraft-bahasha-envelopes-a4-pack-of-50-1200.webp';
+  }
+  if (text.includes('exercise')) {
+    return '/products/omega-exercise-book-200-pages-single-line-sl-1200.webp';
+  }
+  if (text.includes('register') || text.includes('attendance') || text.includes('visitor')) {
+    return '/products/omega-security-gate-visitors-register-executive-foil-1200.webp';
+  }
+  return '/products/omega-hardcover-counter-book-q3-288-pages-1200.webp';
+}
 
 function canonicalizeProducts(liveList: Product[]): Product[] {
   if (!Array.isArray(liveList) || liveList.length === 0) {
@@ -33,13 +56,12 @@ function canonicalizeProducts(liveList: Product[]): Product[] {
 
     const liveImgStr =
       typeof live.image === 'string' ? live.image : live.image?.src || '';
-    const hasCustomUpload =
-      liveImgStr.includes('/uploads/') || liveImgStr.startsWith('http');
+    const isDataUri = liveImgStr.startsWith('data:image/');
 
     return {
       ...live,
       ...canonical,
-      image: hasCustomUpload ? live.image : canonical.image,
+      image: isDataUri ? live.image : canonical.image,
       stockStatus: live.stockStatus || canonical.stockStatus,
       stockQuantity:
         live.stockQuantity !== undefined
@@ -48,10 +70,18 @@ function canonicalizeProducts(liveList: Product[]): Product[] {
     };
   });
 
-  // Append any newly created custom products not in INITIAL_PRODUCTS
+  // Append any newly created custom products not in INITIAL_PRODUCTS (ensuring valid image)
   for (const item of liveList) {
     if (item && item.id && !canonicalIds.has(item.id)) {
-      merged.push(item);
+      const imgStr = typeof item.image === 'string' ? item.image : item.image?.src || '';
+      const hasValidLocalOrDataImg =
+        imgStr.startsWith('/products/') ||
+        imgStr.startsWith('/omega-products/') ||
+        imgStr.startsWith('data:image/');
+      merged.push({
+        ...item,
+        image: hasValidLocalOrDataImg ? item.image : getCategoryFallbackImage(item),
+      });
     }
   }
 
@@ -62,6 +92,7 @@ function getInitialProducts(): Product[] {
   try {
     localStorage.removeItem('omega_products_v2');
     localStorage.removeItem('omega_products_v3');
+    localStorage.removeItem('omega_products_v4');
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);

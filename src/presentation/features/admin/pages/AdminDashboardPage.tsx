@@ -3355,11 +3355,14 @@ export const AdminDashboardPage: React.FC = () => {
                         <div className="p-3 bg-stone-50 rounded-xl border border-stone-200/80 grid grid-cols-2 gap-2.5 text-xs">
                           <div>
                             <span className="text-[10px] font-mono uppercase tracking-wider text-stone-400 block font-bold">
-                              Retail Price
+                              Box Price (Carton)
                             </span>
-                            <div className="flex items-baseline gap-1.5 mt-0.5">
+                            <div className="flex items-baseline gap-1 mt-0.5 flex-wrap">
                               <span className="font-mono font-bold text-[#111113]">
                                 {formatPrice(product.discountPrice ?? product.price, currency)}
+                              </span>
+                              <span className="text-[10px] font-mono font-bold text-[#991B1B] bg-red-50 px-1.5 py-0.2 rounded">
+                                / Box
                               </span>
                               {product.discountPrice && (
                                 <span className="font-mono text-[10px] text-stone-400 line-through">
@@ -3371,14 +3374,14 @@ export const AdminDashboardPage: React.FC = () => {
 
                           <div>
                             <span className="text-[10px] font-mono uppercase tracking-wider text-stone-400 block font-bold">
-                              Wholesale Unit
+                              Wholesale Box
                             </span>
-                            <div className="flex items-baseline gap-1 mt-0.5">
+                            <div className="flex items-baseline gap-1 mt-0.5 flex-wrap">
                               <span className="font-mono font-bold text-emerald-700">
                                 {formatPrice(wholesaleP, currency)}
                               </span>
                               <span className="text-[10px] text-emerald-800 bg-emerald-50 px-1.5 py-0.2 rounded font-mono font-bold">
-                                {dealerMargin}%
+                                / Box
                               </span>
                             </div>
                           </div>
