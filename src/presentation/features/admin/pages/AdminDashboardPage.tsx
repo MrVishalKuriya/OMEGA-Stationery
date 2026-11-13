@@ -54,6 +54,16 @@ import {
   Crop,
   ArrowLeft,
 } from 'lucide-react';
+import {
+  AnimatedAllItemsIcon,
+  AnimatedInStockIcon,
+  AnimatedLowStockIcon,
+  AnimatedOutOfStockIcon,
+  AnimatedCartonBoxIcon,
+  AnimatedTrendPulseIcon,
+  AnimatedQuickSlidersIcon,
+  AnimatedStatusBeacon,
+} from '@/components/admin/AdminAnimatedIcons';
 import { ImageEditorModal } from '@/components/admin/ImageEditorModal';
 import { useStore } from '@/context/StoreContext';
 import {
@@ -2890,83 +2900,187 @@ export const AdminDashboardPage: React.FC = () => {
         <div className="space-y-6">
           {/* ERP Inventory Valuation & Health Dashboard */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">Total Active SKUs</span>
-              <p className="text-2xl font-black text-[#111113] font-mono mt-1">{products.length}</p>
-              <span className="text-[11px] text-stone-500">Live MongoDB documents</span>
+            <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs hover:shadow-sm transition-shadow group">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">
+                  Total Active SKUs
+                </span>
+                <span className="w-8 h-8 rounded-lg bg-stone-100 border border-stone-200/80 text-[#111113] flex items-center justify-center shrink-0">
+                  <AnimatedAllItemsIcon className="w-4 h-4" active />
+                </span>
+              </div>
+              <p className="text-2xl font-black text-[#111113] font-mono mt-1.5 tabular-nums">
+                {products.length}
+              </p>
+              <span className="text-[11px] text-stone-500 inline-flex items-center gap-1 mt-0.5">
+                <Database className="w-3 h-3 text-stone-400" />
+                <span>Live MongoDB documents</span>
+              </span>
             </div>
 
-            <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">Physical Stock Units</span>
-              <p className="text-2xl font-black text-emerald-700 font-mono mt-1">
+            <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs hover:shadow-sm transition-shadow group">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">
+                  Physical Stock Units
+                </span>
+                <span className="w-8 h-8 rounded-lg bg-emerald-50 border border-emerald-200/80 text-emerald-700 flex items-center justify-center shrink-0">
+                  <AnimatedCartonBoxIcon className="w-4 h-4" />
+                </span>
+              </div>
+              <p className="text-2xl font-black text-emerald-700 font-mono mt-1.5 tabular-nums">
                 {totalUnitsOnHand.toLocaleString()}
               </p>
-              <span className="text-[11px] text-emerald-700 font-semibold">Warehouse inventory count</span>
+              <span className="text-[11px] text-emerald-700 font-semibold inline-flex items-center gap-1 mt-0.5">
+                <Boxes className="w-3 h-3 text-emerald-600" />
+                <span>Warehouse inventory count</span>
+              </span>
             </div>
 
-            <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">Wholesale Asset Value</span>
-              <p className="text-lg font-black text-[#111113] font-mono mt-1 truncate">
+            <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs hover:shadow-sm transition-shadow group">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">
+                  Wholesale Asset Value
+                </span>
+                <span className="w-8 h-8 rounded-lg bg-stone-100 border border-stone-200/80 text-[#111113] flex items-center justify-center shrink-0">
+                  <AnimatedTrendPulseIcon className="w-4 h-4 text-emerald-700" />
+                </span>
+              </div>
+              <p className="text-lg font-black text-[#111113] font-mono mt-1.5 truncate tabular-nums">
                 {formatPrice(totalWholesaleValuation, currency)}
               </p>
-              <span className="text-[11px] text-stone-500">At factory dealer rates</span>
+              <span className="text-[11px] text-stone-500 inline-flex items-center gap-1 mt-0.5">
+                <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                <span>At factory dealer rates</span>
+              </span>
             </div>
 
-            <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">Retail Yield Valuation</span>
-              <p className="text-lg font-black text-amber-700 font-mono mt-1 truncate">
+            <div className="p-4 bg-white border border-stone-200 rounded-xl shadow-xs hover:shadow-sm transition-shadow group">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">
+                  Retail Yield Valuation
+                </span>
+                <span className="w-8 h-8 rounded-lg bg-amber-50 border border-amber-200/80 text-amber-700 flex items-center justify-center shrink-0">
+                  <AnimatedTrendPulseIcon className="w-4 h-4 text-amber-600" />
+                </span>
+              </div>
+              <p className="text-lg font-black text-amber-700 font-mono mt-1.5 truncate tabular-nums">
                 {formatPrice(totalRetailValuation, currency)}
               </p>
-              <span className="text-[11px] text-amber-700 font-semibold">Total retail revenue potential</span>
+              <span className="text-[11px] text-amber-700 font-semibold inline-flex items-center gap-1 mt-0.5">
+                <TrendingUp className="w-3 h-3 text-amber-600" />
+                <span>Total retail revenue potential</span>
+              </span>
             </div>
           </div>
 
-
-          {/* Quick Filter Status Pills */}
-          <div className="flex flex-wrap items-center gap-2">
+          {/* Quick Filter Status Buttons with Custom Animated SVG Icons */}
+          <div className="flex flex-wrap items-center gap-2.5">
             <button
               type="button"
               onClick={() => setStockStatusFilter('All')}
-              className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+              className={`group px-3.5 py-2 rounded-xl text-xs font-bold inline-flex items-center gap-2 transition-all duration-200 cursor-pointer ${
                 stockStatusFilter === 'All'
-                  ? 'bg-[#111113] text-white shadow-2xs'
-                  : 'bg-white border border-stone-200 text-stone-600 hover:bg-stone-50'
+                  ? 'bg-[#111113] text-white shadow-sm ring-2 ring-[#111113]/15'
+                  : 'bg-white border border-stone-200/90 text-stone-700 hover:bg-stone-50 hover:border-stone-300 shadow-2xs'
               }`}
             >
-              All Items ({products.length})
+              <AnimatedAllItemsIcon
+                className={`w-4 h-4 transition-transform duration-300 group-hover:scale-110 ${
+                  stockStatusFilter === 'All' ? 'text-amber-300' : 'text-stone-600'
+                }`}
+                active={stockStatusFilter === 'All'}
+              />
+              <span>All Items</span>
+              <span
+                className={`px-1.5 py-0.5 rounded-md font-mono text-[11px] tabular-nums ${
+                  stockStatusFilter === 'All'
+                    ? 'bg-white/15 text-white'
+                    : 'bg-stone-100 text-stone-700 border border-stone-200/70'
+                }`}
+              >
+                {products.length}
+              </span>
             </button>
+
             <button
               type="button"
               onClick={() => setStockStatusFilter('In Stock')}
-              className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+              className={`group px-3.5 py-2 rounded-xl text-xs font-bold inline-flex items-center gap-2 transition-all duration-200 cursor-pointer ${
                 stockStatusFilter === 'In Stock'
-                  ? 'bg-emerald-700 text-white shadow-2xs'
-                  : 'bg-white border border-stone-200 text-emerald-700 hover:bg-emerald-50'
+                  ? 'bg-emerald-700 text-white shadow-sm ring-2 ring-emerald-700/20'
+                  : 'bg-white border border-stone-200/90 text-emerald-800 hover:bg-emerald-50/70 hover:border-emerald-200 shadow-2xs'
               }`}
             >
-              In Stock ({inStockCount})
+              <AnimatedInStockIcon
+                className={`w-4 h-4 transition-transform duration-300 group-hover:scale-110 ${
+                  stockStatusFilter === 'In Stock' ? 'text-emerald-200' : 'text-emerald-600'
+                }`}
+                active={stockStatusFilter === 'In Stock'}
+              />
+              <span>In Stock</span>
+              <span
+                className={`px-1.5 py-0.5 rounded-md font-mono text-[11px] tabular-nums ${
+                  stockStatusFilter === 'In Stock'
+                    ? 'bg-white/20 text-white'
+                    : 'bg-emerald-50 text-emerald-800 border border-emerald-200/80'
+                }`}
+              >
+                {inStockCount}
+              </span>
             </button>
+
             <button
               type="button"
               onClick={() => setStockStatusFilter('Low Stock')}
-              className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+              className={`group px-3.5 py-2 rounded-xl text-xs font-bold inline-flex items-center gap-2 transition-all duration-200 cursor-pointer ${
                 stockStatusFilter === 'Low Stock'
-                  ? 'bg-amber-600 text-white shadow-2xs'
-                  : 'bg-white border border-stone-200 text-amber-700 hover:bg-amber-50'
+                  ? 'bg-amber-600 text-white shadow-sm ring-2 ring-amber-600/20'
+                  : 'bg-white border border-stone-200/90 text-amber-800 hover:bg-amber-50/80 hover:border-amber-200 shadow-2xs'
               }`}
             >
-              ⚠️ Low Stock Attention ({lowStockCount})
+              <AnimatedLowStockIcon
+                className={`w-4 h-4 transition-transform duration-300 group-hover:scale-110 ${
+                  stockStatusFilter === 'Low Stock' ? 'text-amber-100' : 'text-amber-600'
+                }`}
+                active={stockStatusFilter === 'Low Stock'}
+              />
+              <span>Low Stock Attention</span>
+              <span
+                className={`px-1.5 py-0.5 rounded-md font-mono text-[11px] tabular-nums ${
+                  stockStatusFilter === 'Low Stock'
+                    ? 'bg-white/20 text-white'
+                    : 'bg-amber-50 text-amber-800 border border-amber-200/80'
+                }`}
+              >
+                {lowStockCount}
+              </span>
             </button>
+
             <button
               type="button"
               onClick={() => setStockStatusFilter('Out of Stock')}
-              className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+              className={`group px-3.5 py-2 rounded-xl text-xs font-bold inline-flex items-center gap-2 transition-all duration-200 cursor-pointer ${
                 stockStatusFilter === 'Out of Stock'
-                  ? 'bg-red-600 text-white shadow-2xs'
-                  : 'bg-white border border-stone-200 text-red-700 hover:bg-red-50'
+                  ? 'bg-red-600 text-white shadow-sm ring-2 ring-red-600/20'
+                  : 'bg-white border border-stone-200/90 text-red-700 hover:bg-red-50/80 hover:border-red-200 shadow-2xs'
               }`}
             >
-              Out of Stock ({outOfStockCount})
+              <AnimatedOutOfStockIcon
+                className={`w-4 h-4 transition-transform duration-300 group-hover:scale-110 ${
+                  stockStatusFilter === 'Out of Stock' ? 'text-red-100' : 'text-red-600'
+                }`}
+                active={stockStatusFilter === 'Out of Stock'}
+              />
+              <span>Out of Stock</span>
+              <span
+                className={`px-1.5 py-0.5 rounded-md font-mono text-[11px] tabular-nums ${
+                  stockStatusFilter === 'Out of Stock'
+                    ? 'bg-white/20 text-white'
+                    : 'bg-red-50 text-red-700 border border-red-200/80'
+                }`}
+              >
+                {outOfStockCount}
+              </span>
             </button>
           </div>
 
@@ -3216,26 +3330,51 @@ export const AdminDashboardPage: React.FC = () => {
                   return (
                     <div
                       key={product.id}
-                      className={`p-4 rounded-2xl border transition-all space-y-3 shadow-xs ${
+                      className={`p-4 rounded-2xl border transition-all duration-200 space-y-3 ${
                         isSelected
-                          ? 'bg-amber-50/60 border-amber-300 ring-1 ring-amber-300'
-                          : 'bg-white border-stone-200'
+                          ? 'bg-amber-50/60 border-amber-300 ring-1 ring-amber-300 shadow-sm'
+                          : 'bg-white border-stone-200/90 shadow-xs hover:shadow-md hover:border-stone-300'
                       }`}
                     >
-                      {/* Top: Checkbox, Thumbnail, Full Title & SKU */}
-                      <div className="flex items-start gap-3">
-                        <input
-                          type="checkbox"
-                          checked={isSelected}
-                          onChange={() => handleToggleSelectProduct(product.id)}
-                          aria-label={`Select ${product.name}`}
-                          className="rounded text-[#dc2626] focus:ring-0 cursor-pointer mt-1"
-                        />
+                      {/* Row 1: Top Metadata Bar (Checkbox + Category/SKU + Single Stock Status Badge) */}
+                      <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-stone-100">
+                        <label className="flex items-center gap-2.5 min-w-0 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={isSelected}
+                            onChange={() => handleToggleSelectProduct(product.id)}
+                            aria-label={`Select ${product.name}`}
+                            className="w-4 h-4 rounded text-[#dc2626] border-stone-300 focus:ring-0 cursor-pointer shrink-0"
+                          />
+                          <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-stone-500 truncate">
+                            <span className="font-bold uppercase tracking-wider text-stone-700">
+                              {product.category}
+                            </span>
+                            <span className="text-stone-300">·</span>
+                            <span className="text-stone-500 font-semibold">{product.sku}</span>
+                          </span>
+                        </label>
 
+                        <span
+                          className={`shrink-0 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold font-mono border ${
+                            product.stockStatus === 'In Stock'
+                              ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                              : product.stockStatus === 'Low Stock'
+                              ? 'bg-amber-50 text-amber-800 border-amber-200'
+                              : 'bg-red-50 text-red-800 border-red-200'
+                          }`}
+                        >
+                          <AnimatedStatusBeacon status={product.stockStatus} />
+                          <span>{product.stockStatus}</span>
+                        </span>
+                      </div>
+
+                      {/* Row 2: Product Thumbnail & Full Title Lockup */}
+                      <div className="flex items-center gap-3.5">
                         <button
                           type="button"
                           onClick={() => handleOpenInspectProduct(product)}
-                          className="shrink-0 relative group"
+                          className="shrink-0 relative group cursor-pointer"
                           title="View product details"
                         >
                           <img
@@ -3245,88 +3384,93 @@ export const AdminDashboardPage: React.FC = () => {
                             onError={(e) => {
                               (e.target as HTMLImageElement).src = '/omega-products/counter-book-q3-288p.jpeg';
                             }}
-                            className="w-14 h-14 rounded-xl object-contain bg-stone-50 p-1 border border-stone-200"
+                            className="w-16 h-16 rounded-xl object-contain bg-stone-50 p-1.5 border border-stone-200/90 shadow-2xs group-hover:border-[#dc2626]/60 transition-all"
                           />
+                          <span className="absolute inset-0 rounded-xl bg-black/25 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                            <Eye className="w-4 h-4 text-white" />
+                          </span>
                         </button>
 
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-1.5 flex-wrap mb-1">
-                            <span className="px-2 py-0.5 rounded-md bg-stone-100 text-stone-700 text-[10px] font-mono uppercase font-bold tracking-wider">
-                              {product.category}
-                            </span>
-                            <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold font-mono ${
-                              product.stockStatus === 'In Stock'
-                                ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                                : product.stockStatus === 'Low Stock'
-                                ? 'bg-amber-50 text-amber-800 border border-amber-200'
-                                : 'bg-red-50 text-red-800 border border-red-200'
-                            }`}>
-                              {product.stockStatus}
-                            </span>
-                          </div>
-
+                        <div className="min-w-0 flex-1 space-y-1">
                           <button
                             type="button"
                             onClick={() => handleOpenInspectProduct(product)}
-                            className="font-bold text-sm text-[#111113] hover:text-[#dc2626] text-left leading-snug line-clamp-2 transition-colors block"
+                            className="font-bold text-[15px] text-[#111113] hover:text-[#dc2626] text-left leading-snug line-clamp-2 transition-colors block cursor-pointer"
                           >
                             {product.name}
                           </button>
 
-                          <div className="flex items-center gap-2 mt-0.5 text-[11px] text-stone-500 font-mono">
-                            <span>SKU: {product.sku}</span>
-                            {product.packaging && <span className="truncate">· {product.packaging}</span>}
+                          <div className="flex items-center gap-2 text-xs text-stone-500 font-mono">
+                            {product.packaging && (
+                              <span className="inline-flex items-center gap-1 text-stone-600 font-semibold">
+                                <AnimatedCartonBoxIcon className="w-3.5 h-3.5 text-[#dc2626] shrink-0" />
+                                <span>{product.packaging}</span>
+                              </span>
+                            )}
+                            {product.barcode && (
+                              <span className="text-stone-400 truncate">· {product.barcode}</span>
+                            )}
                           </div>
                         </div>
                       </div>
 
-                      {/* Middle: Financial & Stock Stats Grid */}
+                      {/* Row 3: Untruncated 2-Column TSh Price Boxes & Warehouse Stock Bar */}
                       {isEditingThisRow ? (
-                        <div className="p-3 bg-stone-50 rounded-xl border border-stone-200 space-y-2 text-xs">
-                          <div className="grid grid-cols-2 gap-2">
+                        <div className="p-3.5 bg-stone-50 rounded-xl border border-stone-200 space-y-3 text-xs">
+                          <div className="grid grid-cols-2 gap-2.5">
                             <div>
-                              <label className="text-[10px] font-bold uppercase text-stone-500 block">Retail Price</label>
+                              <label className="text-[10px] font-mono font-bold uppercase text-stone-500 block mb-1">
+                                Retail Price (TSh / Box)
+                              </label>
                               <input
                                 type="number"
                                 value={tempPrice}
                                 onChange={(e) => setTempPrice(e.target.value)}
-                                className="w-full px-2 py-1 border border-stone-300 rounded-lg text-xs bg-white font-mono"
+                                className="w-full px-2.5 py-1.5 border border-stone-300 rounded-lg text-xs bg-white font-mono font-bold text-[#111113]"
                               />
                             </div>
                             <div>
-                              <label className="text-[10px] font-bold uppercase text-stone-500 block">Discount Price</label>
+                              <label className="text-[10px] font-mono font-bold uppercase text-stone-500 block mb-1">
+                                Discount Price (Opt)
+                              </label>
                               <input
                                 type="number"
                                 value={tempDiscountPrice}
                                 onChange={(e) => setTempDiscountPrice(e.target.value)}
-                                className="w-full px-2 py-1 border border-stone-300 rounded-lg text-xs bg-white font-mono"
+                                className="w-full px-2.5 py-1.5 border border-stone-300 rounded-lg text-xs bg-white font-mono"
                               />
                             </div>
                             <div>
-                              <label className="text-[10px] font-bold uppercase text-stone-500 block">Wholesale Unit</label>
+                              <label className="text-[10px] font-mono font-bold uppercase text-emerald-800 block mb-1">
+                                Wholesale (TSh / Box)
+                              </label>
                               <input
                                 type="number"
                                 value={tempWholesalePrice}
                                 onChange={(e) => setTempWholesalePrice(e.target.value)}
-                                className="w-full px-2 py-1 border border-stone-300 rounded-lg text-xs bg-white font-mono text-emerald-800 font-bold"
+                                className="w-full px-2.5 py-1.5 border border-emerald-300 rounded-lg text-xs bg-white font-mono text-emerald-800 font-bold"
                               />
                             </div>
                             <div>
-                              <label className="text-[10px] font-bold uppercase text-stone-500 block">Stock Qty</label>
+                              <label className="text-[10px] font-mono font-bold uppercase text-stone-500 block mb-1">
+                                Stock Units
+                              </label>
                               <input
                                 type="number"
                                 value={tempStockQuantity}
                                 onChange={(e) => setTempStockQuantity(e.target.value)}
-                                className="w-full px-2 py-1 border border-stone-300 rounded-lg text-xs bg-white font-mono"
+                                className="w-full px-2.5 py-1.5 border border-stone-300 rounded-lg text-xs bg-white font-mono font-bold"
                               />
                             </div>
                           </div>
                           <div>
-                            <label className="text-[10px] font-bold uppercase text-stone-500 block mb-0.5">Stock Status</label>
+                            <label className="text-[10px] font-mono font-bold uppercase text-stone-500 block mb-1">
+                              Stock Status
+                            </label>
                             <select
                               value={tempStockStatus}
                               onChange={(e) => setTempStockStatus(e.target.value as StockStatus)}
-                              className="w-full px-2 py-1 border border-stone-300 rounded-lg text-xs bg-white"
+                              className="w-full px-2.5 py-1.5 border border-stone-300 rounded-lg text-xs bg-white font-semibold"
                             >
                               <option value="In Stock">In Stock</option>
                               <option value="Low Stock">Low Stock</option>
@@ -3337,84 +3481,102 @@ export const AdminDashboardPage: React.FC = () => {
                             <button
                               type="button"
                               onClick={() => setEditingRowId(null)}
-                              className="px-3 py-1 text-xs text-stone-600 bg-white border border-stone-200 rounded-lg font-bold"
+                              className="px-3.5 py-1.5 text-xs text-stone-600 bg-white border border-stone-200 rounded-lg font-bold hover:bg-stone-100 transition-colors cursor-pointer"
                             >
                               Cancel
                             </button>
                             <button
                               type="button"
                               onClick={() => saveRowEdit(product.id)}
-                              className="px-3 py-1 text-xs text-white bg-[#111113] rounded-lg font-bold inline-flex items-center gap-1 shadow-xs"
+                              className="px-3.5 py-1.5 text-xs text-white bg-[#111113] hover:bg-stone-800 rounded-lg font-bold inline-flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
                             >
                               <Check className="w-3.5 h-3.5" />
-                              <span>Save</span>
+                              <span>Save Changes</span>
                             </button>
                           </div>
                         </div>
                       ) : (
-                        <div className="p-3 bg-stone-50 rounded-xl border border-stone-200/80 grid grid-cols-2 gap-2.5 text-xs">
-                          <div>
-                            <span className="text-[10px] font-mono uppercase tracking-wider text-stone-400 block font-bold">
-                              Box Price (Carton)
-                            </span>
-                            <div className="flex items-baseline gap-1 mt-0.5 flex-wrap">
-                              <span className="font-mono font-bold text-[#111113]">
-                                {formatPrice(product.discountPrice ?? product.price, currency)}
-                              </span>
-                              <span className="text-[10px] font-mono font-bold text-[#991B1B] bg-red-50 px-1.5 py-0.2 rounded">
-                                / Box
-                              </span>
-                              {product.discountPrice && (
-                                <span className="font-mono text-[10px] text-stone-400 line-through">
-                                  {formatPrice(product.price, currency)}
+                        <div className="space-y-2">
+                          <div className="grid grid-cols-2 gap-2.5">
+                            {/* Box 1: Retail TSh Price Box */}
+                            <div className="p-3 rounded-xl bg-stone-50/90 border border-stone-200/90 flex flex-col justify-between">
+                              <div className="flex items-center justify-between gap-1">
+                                <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider text-stone-500 font-bold whitespace-nowrap">
+                                  <Tag className="w-3 h-3 text-[#dc2626] shrink-0" />
+                                  <span>Retail Price</span>
                                 </span>
+                                {product.discountPrice && (
+                                  <span className="font-mono text-[10px] text-stone-400 line-through tabular-nums whitespace-nowrap">
+                                    {formatPrice(product.price, currency)}
+                                  </span>
+                                )}
+                              </div>
+                              <div className="mt-1.5 flex items-baseline gap-1 whitespace-nowrap">
+                                <span className="font-mono font-extrabold text-[15px] text-[#111113] tabular-nums tracking-tight">
+                                  {formatPrice(product.discountPrice ?? product.price, currency)}
+                                </span>
+                                <span className="text-[11px] font-mono font-bold text-[#991B1B]">
+                                  / Box
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Box 2: Wholesale TSh Price Box */}
+                            <div className="p-3 rounded-xl bg-emerald-50/50 border border-emerald-200/80 flex flex-col justify-between">
+                              <div className="flex items-center justify-between gap-1">
+                                <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider text-emerald-800 font-bold whitespace-nowrap">
+                                  <TrendingUp className="w-3 h-3 text-emerald-600 shrink-0" />
+                                  <span>Wholesale</span>
+                                </span>
+                                {dealerMargin > 0 && (
+                                  <span className="px-1.5 py-0.2 rounded bg-emerald-100/90 text-emerald-800 font-mono text-[10px] font-bold tabular-nums whitespace-nowrap">
+                                    {dealerMargin}%
+                                  </span>
+                                )}
+                              </div>
+                              <div className="mt-1.5 flex items-baseline gap-1 whitespace-nowrap">
+                                <span className="font-mono font-extrabold text-[15px] text-emerald-700 tabular-nums tracking-tight">
+                                  {formatPrice(wholesaleP, currency)}
+                                </span>
+                                <span className="text-[11px] font-mono font-bold text-emerald-800/80">
+                                  / Box
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Unified Single-Row Warehouse Stock Bar */}
+                          <div className="px-3.5 py-2.5 rounded-xl bg-stone-50/70 border border-stone-200/80 flex items-center justify-between gap-2">
+                            <span className="inline-flex items-center gap-1.5 text-[11px] font-mono uppercase tracking-wider text-stone-500 font-bold whitespace-nowrap">
+                              <Boxes className="w-3.5 h-3.5 text-stone-500 shrink-0" />
+                              <span>Warehouse Stock</span>
+                            </span>
+                            <div className="flex items-center gap-2 font-mono text-xs whitespace-nowrap">
+                              <span className="font-extrabold text-[#111113] tabular-nums">
+                                {stockQty.toLocaleString()} units
+                              </span>
+                              {product.packaging && (
+                                <>
+                                  <span className="text-stone-300">·</span>
+                                  <span className="text-[11px] font-semibold text-stone-600">
+                                    {product.packaging}
+                                  </span>
+                                </>
                               )}
                             </div>
-                          </div>
-
-                          <div>
-                            <span className="text-[10px] font-mono uppercase tracking-wider text-stone-400 block font-bold">
-                              Wholesale Box
-                            </span>
-                            <div className="flex items-baseline gap-1 mt-0.5 flex-wrap">
-                              <span className="font-mono font-bold text-emerald-700">
-                                {formatPrice(wholesaleP, currency)}
-                              </span>
-                              <span className="text-[10px] text-emerald-800 bg-emerald-50 px-1.5 py-0.2 rounded font-mono font-bold">
-                                / Box
-                              </span>
-                            </div>
-                          </div>
-
-                          <div className="pt-2 border-t border-stone-200/60">
-                            <span className="text-[10px] font-mono uppercase tracking-wider text-stone-400 block font-bold">
-                              Warehouse Stock
-                            </span>
-                            <span className="font-mono font-bold text-stone-800">
-                              {stockQty.toLocaleString()} units
-                            </span>
-                          </div>
-
-                          <div className="pt-2 border-t border-stone-200/60">
-                            <span className="text-[10px] font-mono uppercase tracking-wider text-stone-400 block font-bold">
-                              Status
-                            </span>
-                            <span className="font-bold text-stone-700 text-xs">
-                              {product.stockStatus}
-                            </span>
                           </div>
                         </div>
                       )}
 
-                      {/* Bottom Action Bar */}
+                      {/* Row 4: Clean Single-Row Action Toolbar */}
                       {!isEditingThisRow && (
-                        <div className="flex items-center justify-between pt-1 border-t border-stone-100">
+                        <div className="flex items-center justify-between gap-2 pt-2 border-t border-stone-100">
                           <button
                             type="button"
                             onClick={() => startRowEdit(product)}
-                            className="px-2.5 py-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold inline-flex items-center gap-1.5 transition-colors font-mono"
+                            className="group px-3 py-2 rounded-xl bg-stone-100 hover:bg-stone-200/80 text-stone-800 border border-stone-200/80 text-xs font-bold inline-flex items-center gap-1.5 transition-colors font-mono cursor-pointer whitespace-nowrap"
                           >
-                            <Sliders className="w-3.5 h-3.5 text-stone-600" />
+                            <AnimatedQuickSlidersIcon className="w-3.5 h-3.5 text-stone-700 shrink-0" />
                             <span>Quick Edit</span>
                           </button>
 
@@ -3423,25 +3585,28 @@ export const AdminDashboardPage: React.FC = () => {
                               type="button"
                               onClick={() => openEditProductModal(product)}
                               title="Full Edit Form"
-                              className="p-2 rounded-lg bg-stone-100 hover:bg-stone-200 text-[#dc2626] transition-colors"
+                              className="group px-3 py-2 rounded-xl bg-stone-100 hover:bg-stone-200/90 text-[#111113] border border-stone-200/80 text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
                             >
-                              <Edit3 className="w-4 h-4" />
+                              <Edit3 className="w-3.5 h-3.5 text-[#dc2626] shrink-0 transition-transform duration-200 group-hover:-rotate-12 group-hover:scale-110" />
+                              <span>Edit</span>
                             </button>
                             <button
                               type="button"
                               onClick={() => handleCloneProduct(product)}
-                              title="Clone Product"
-                              className="p-2 rounded-lg bg-stone-100 hover:bg-sky-100 text-stone-600 hover:text-sky-700 transition-colors"
+                              title="Duplicate Product"
+                              aria-label="Duplicate Product"
+                              className="group p-2 rounded-xl bg-stone-100 hover:bg-sky-50 text-stone-600 hover:text-sky-700 border border-stone-200/80 hover:border-sky-200 transition-colors cursor-pointer shrink-0"
                             >
-                              <Copy className="w-4 h-4" />
+                              <Copy className="w-3.5 h-3.5 transition-transform duration-200 group-hover:scale-110" />
                             </button>
                             <button
                               type="button"
                               onClick={() => handleInitiateDelete(product)}
                               title="Delete Product"
-                              className="p-2 rounded-lg bg-stone-100 hover:bg-red-100 text-stone-500 hover:text-red-600 transition-colors"
+                              className="group px-3 py-2 rounded-xl bg-red-50/70 hover:bg-red-100/90 text-red-700 border border-red-200/80 text-xs font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap"
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <Trash2 className="w-3.5 h-3.5 text-red-600 shrink-0 transition-transform duration-200 group-hover:scale-110" />
+                              <span>Delete</span>
                             </button>
                           </div>
                         </div>
@@ -3473,8 +3638,8 @@ export const AdminDashboardPage: React.FC = () => {
                         </th>
                         <th className="py-3 px-4 font-bold">Product &amp; SKU</th>
                         <th className="py-3 px-4 font-bold">Category</th>
-                        <th className="py-3 px-4 font-bold">Retail MSRP</th>
-                        <th className="py-3 px-4 font-bold text-amber-200">Wholesale Unit</th>
+                        <th className="py-3 px-4 font-bold">Retail Price (Box)</th>
+                        <th className="py-3 px-4 font-bold text-amber-200">Wholesale Unit (Box)</th>
                         <th className="py-3 px-4 font-bold">Warehouse Stock</th>
                         <th className="py-3 px-4 font-bold">Status</th>
                         <th className="py-3 px-4 font-bold text-right">Actions</th>
@@ -3584,12 +3749,17 @@ export const AdminDashboardPage: React.FC = () => {
                                   />
                                 </div>
                               ) : (
-                                <div className="flex flex-col">
-                                  <span className="font-bold text-[#111113]">
-                                    {formatPrice(product.discountPrice ?? product.price, currency)}
-                                  </span>
+                                <div className="inline-flex flex-col gap-0.5">
+                                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-stone-50 border border-stone-200/90 shadow-2xs">
+                                    <span className="font-bold text-[#111113] tabular-nums">
+                                      {formatPrice(product.discountPrice ?? product.price, currency)}
+                                    </span>
+                                    <span className="text-[10px] font-bold text-[#991B1B] bg-red-50 border border-red-200/80 px-1.5 py-0.2 rounded">
+                                      / Box
+                                    </span>
+                                  </div>
                                   {product.discountPrice && (
-                                    <span className="text-[10px] text-stone-400 line-through">
+                                    <span className="text-[10px] text-stone-400 line-through pl-1 tabular-nums">
                                       {formatPrice(product.price, currency)}
                                     </span>
                                   )}
@@ -3608,11 +3778,16 @@ export const AdminDashboardPage: React.FC = () => {
                                   className="w-24 px-2 py-1 border border-stone-300 rounded text-xs bg-white font-mono text-emerald-800 font-bold"
                                 />
                               ) : (
-                                <div>
-                                  <span className="font-bold text-emerald-700">
-                                    {formatPrice(wholesaleP, currency)}
-                                  </span>
-                                  <span className="text-[10px] text-stone-400 block font-sans">
+                                <div className="inline-flex flex-col gap-0.5">
+                                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50/50 border border-emerald-200/90 shadow-2xs">
+                                    <span className="font-bold text-emerald-700 tabular-nums">
+                                      {formatPrice(wholesaleP, currency)}
+                                    </span>
+                                    <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100/80 border border-emerald-200/80 px-1.5 py-0.2 rounded">
+                                      / Box
+                                    </span>
+                                  </div>
+                                  <span className="text-[10px] text-stone-400 block font-sans pl-1">
                                     {dealerMargin}% dealer margin
                                   </span>
                                 </div>

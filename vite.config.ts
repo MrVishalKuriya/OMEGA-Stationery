@@ -2,9 +2,10 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig } from 'vite';
+import { omegaMongoApiPlugin } from './server/viteMongoApiPlugin';
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [omegaMongoApiPlugin(), react(), tailwindcss()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -18,13 +19,6 @@ export default defineConfig({
       port: 3000,
     },
     watch: process.env.DISABLE_HMR === 'true' ? null : {},
-    proxy: {
-      '/api': {
-        target: process.env.VITE_BACKEND_URL || 'http://localhost:5000',
-        changeOrigin: true,
-        secure: false,
-      },
-    },
   },
   optimizeDeps: {
     include: [

@@ -24,8 +24,29 @@ export function isLoopbackRestricted(url?: string): boolean {
 
 function resolveBackendUrl(): string {
   const isBrowser = typeof window !== 'undefined';
-  const isRemoteHttps = isBrowser && window.location.protocol === 'https:' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
-  const isLocalhostHost = isBrowser && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+  const hostname = isBrowser ? window.location.hostname : '';
+  const isLocalOrAiStudio =
+    isBrowser &&
+    (hostname === 'localhost' ||
+      hostname === '127.0.0.1' ||
+      hostname.endsWith('.run.app'));
+  const isRemoteHttps =
+    isBrowser &&
+    window.location.protocol === 'https:' &&
+    hostname !== 'localhost' &&
+    hostname !== '127.0.0.1';
+
+  // When running on localhost or AI Studio (*.run.app), use same-origin ('') so /api and /uploads
+  // route directly to our in-process Node.js + MongoDB Atlas server on port 3000!
+  if (isLocalOrAiStudio) {
+    try {
+      const saved = localStorage.getItem('OMEGA_BACKEND_URL');
+      if (saved && saved.includes('onrender.com')) {
+        localStorage.removeItem('OMEGA_BACKEND_URL');
+      }
+    } catch {}
+    return '';
+  }
 
   if (isBrowser) {
     const saved = localStorage.getItem('OMEGA_BACKEND_URL');
@@ -33,25 +54,20 @@ function resolveBackendUrl(): string {
       let clean = saved.trim().replace(/\/+$/, '');
       if (clean.endsWith('/api')) clean = clean.slice(0, -4);
       if (isRemoteHttps && isLoopbackTarget(clean)) {
-        try { localStorage.removeItem('OMEGA_BACKEND_URL'); } catch {}
+        try {
+          localStorage.removeItem('OMEGA_BACKEND_URL');
+        } catch {}
       } else {
         return clean;
       }
     }
   }
 
-  // When developing locally on localhost, use the Vite proxy ('') so requests to /api route cleanly to local port 5000
-  if (isLocalhostHost) {
-    const localEnv = import.meta.env.VITE_LOCAL_API_URL || '';
-    if (localEnv && isLoopbackTarget(localEnv)) {
-      let clean = localEnv.trim().replace(/\/+$/, '');
-      if (clean.endsWith('/api')) clean = clean.slice(0, -4);
-      return clean;
-    }
-    return '';
-  }
-
-  const envUrl = import.meta.env.VITE_API_URL || import.meta.env.VITE_BACKEND_URL || import.meta.env.VITE_API_BASE_URL || '';
+  const envUrl =
+    import.meta.env.VITE_API_URL ||
+    import.meta.env.VITE_BACKEND_URL ||
+    import.meta.env.VITE_API_BASE_URL ||
+    '';
   if (envUrl && envUrl.trim()) {
     let clean = envUrl.trim().replace(/\/+$/, '');
     if (clean.endsWith('/api')) clean = clean.slice(0, -4);
@@ -78,6 +94,7 @@ export function setCustomBackendUrl(url: string): void {
 }
 
 export function isBackendConfigured(): boolean {
+  if (BACKEND_URL === '') return true;
   return Boolean(BACKEND_URL) && !isLoopbackRestricted(BACKEND_URL);
 }
 
@@ -309,14 +326,7 @@ export async function apiFetch<T = any>(
  * Check connectivity and status of the Node.js + MongoDB Atlas backend
  */
 export async function checkBackendHealth(): Promise<{ online: boolean; data?: BackendHealthData; error?: string }> {
-  if (!BACKEND_URL) {
-    return {
-      online: false,
-      error: 'Backend URL is not configured. Set VITE_API_URL in Vercel to your deployed backend URL (e.g. Render).',
-    };
-  }
-
-  if (isLoopbackRestricted(BACKEND_URL)) {
+  if (BACKEND_URL && isLoopbackRestricted(BACKEND_URL)) {
     return {
       online: false,
       error: 'Access to localhost:5000 is blocked from public HTTPS domains by browser Private Network Access policy. Deploy backend and set VITE_API_URL in Vercel.',
@@ -878,21 +888,34 @@ export async function verifyAdminKeyWithBackend(key: string): Promise<{ success:
 }
 
 /**
- * Update Product directly in MongoDB Database
+ * Update Product directly in MongoDB Database (with automatic upsert fallback)
  */
 export async function updateProductInDb(id: string, product: Partial<Product>): Promise<{ success: boolean; data?: Product; message?: string }> {
   clearClientProductCache();
   if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
     const { _id, ...cleanProduct } = product as any;
-    const res = await fetch(`${BACKEND_URL}/api/products/${id}`, {
+    const payload = { ...cleanProduct, id: cleanProduct.id || id };
+    const res = await fetch(`${BACKEND_URL}/api/products/${encodeURIComponent(id)}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(cleanProduct),
+      body: JSON.stringify(payload),
     });
-    const json = await res.json();
+    const json = await res.json().catch(() => ({ success: false }));
+    if (res.ok && json && json.success !== false) {
+      clearClientProductCache();
+      return json;
+    }
+
+    // Fallback to POST /api/products upsert if PUT failed on a legacy server deployment
+    const fallbackRes = await fetch(`${BACKEND_URL}/api/products`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const fallbackJson = await fallbackRes.json();
     clearClientProductCache();
-    return json;
+    return fallbackJson;
   } catch (err: any) {
     return { success: false, message: err.message || 'Database unreachable' };
   }
@@ -1085,11 +1108,11 @@ export function resolveImageUrl(url?: string | any): any {
     };
   }
   if (typeof url !== 'string') return '';
-  if (url.startsWith('/uploads/')) {
-    return `${BACKEND_URL}${url}`;
-  }
-  if (typeof window !== 'undefined' && window.location.protocol === 'https:' && url.startsWith('http://localhost:5000/uploads/')) {
-    return url.replace('http://localhost:5000', BACKEND_URL);
+  if (url.includes('/uploads/')) {
+    const fname = url.split('/uploads/').pop();
+    if (fname) {
+      return `${BACKEND_URL}/uploads/${fname}`;
+    }
   }
   return url;
 }

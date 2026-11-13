@@ -11,7 +11,7 @@ import {
 } from '@/services/api';
 
 const PRODUCTS_QUERY_KEY = ['products'];
-const STORAGE_KEY = 'omega_products_v5';
+const STORAGE_KEY = 'omega_products_v6';
 
 function getCategoryFallbackImage(item: Partial<Product>): string {
   const text = `${item.name || ''} ${item.category || ''} ${item.quire || ''}`.toLowerCase();
@@ -36,56 +36,64 @@ function getCategoryFallbackImage(item: Partial<Product>): string {
   return '/products/omega-hardcover-counter-book-q3-288-pages-1200.webp';
 }
 
+function normalizeLiveImage(liveImage: any, fallbackImage: any): any {
+  const rawStr = typeof liveImage === 'string' ? liveImage : liveImage?.src || '';
+  if (!rawStr) return fallbackImage;
+  if (rawStr.includes('/uploads/')) {
+    const fname = rawStr.split('/uploads/').pop();
+    if (fname) return `/uploads/${fname}`;
+  }
+  return liveImage;
+}
+
 function canonicalizeProducts(liveList: Product[]): Product[] {
   if (!Array.isArray(liveList) || liveList.length === 0) {
     return INITIAL_PRODUCTS;
   }
 
-  const liveById = new Map<string, Product>();
-  for (const item of liveList) {
-    if (item && item.id) {
-      liveById.set(item.id, item);
-    }
+  const canonicalById = new Map<string, Product>();
+  for (const canonical of INITIAL_PRODUCTS) {
+    canonicalById.set(canonical.id, canonical);
   }
 
-  const canonicalIds = new Set<string>();
-  const merged: Product[] = INITIAL_PRODUCTS.map((canonical) => {
-    canonicalIds.add(canonical.id);
-    const live = liveById.get(canonical.id);
-    if (!live) return canonical;
+  const seenIds = new Set<string>();
+  const merged: Product[] = [];
 
-    const liveImgStr =
-      typeof live.image === 'string' ? live.image : live.image?.src || '';
-    const isDataUri = liveImgStr.startsWith('data:image/');
+  for (const live of liveList) {
+    if (!live || !live.id || seenIds.has(live.id)) continue;
+    seenIds.add(live.id);
 
-    return {
-      ...live,
-      ...canonical,
-      image: isDataUri ? live.image : canonical.image,
-      stockStatus: live.stockStatus || canonical.stockStatus,
-      stockQuantity:
-        live.stockQuantity !== undefined
-          ? live.stockQuantity
-          : canonical.stockQuantity,
-    };
-  });
-
-  // Append any newly created custom products not in INITIAL_PRODUCTS (ensuring valid image)
-  for (const item of liveList) {
-    if (item && item.id && !canonicalIds.has(item.id)) {
-      const imgStr = typeof item.image === 'string' ? item.image : item.image?.src || '';
-      const hasValidLocalOrDataImg =
-        imgStr.startsWith('/products/') ||
-        imgStr.startsWith('/omega-products/') ||
-        imgStr.startsWith('data:image/');
+    const canonical = canonicalById.get(live.id);
+    if (canonical) {
       merged.push({
-        ...item,
-        image: hasValidLocalOrDataImg ? item.image : getCategoryFallbackImage(item),
+        ...canonical,
+        ...live,
+        price: Number(live.price ?? canonical.price),
+        discountPrice:
+          live.discountPrice !== undefined && live.discountPrice !== null
+            ? Number(live.discountPrice)
+            : undefined,
+        wholesalePrice:
+          live.wholesalePrice !== undefined && live.wholesalePrice !== null
+            ? Number(live.wholesalePrice)
+            : canonical.wholesalePrice,
+        stockStatus: live.stockStatus || canonical.stockStatus,
+        stockQuantity:
+          live.stockQuantity !== undefined && live.stockQuantity !== null
+            ? Number(live.stockQuantity)
+            : canonical.stockQuantity,
+        image: normalizeLiveImage(live.image, canonical.image),
+      });
+    } else {
+      merged.push({
+        ...live,
+        price: Number(live.price || 0),
+        image: normalizeLiveImage(live.image, getCategoryFallbackImage(live)),
       });
     }
   }
 
-  return merged;
+  return merged.length > 0 ? merged : INITIAL_PRODUCTS;
 }
 
 function getInitialProducts(): Product[] {
@@ -93,6 +101,7 @@ function getInitialProducts(): Product[] {
     localStorage.removeItem('omega_products_v2');
     localStorage.removeItem('omega_products_v3');
     localStorage.removeItem('omega_products_v4');
+    localStorage.removeItem('omega_products_v5');
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);
@@ -110,7 +119,7 @@ export const useProductsQuery = () => {
   const query = useQuery<Product[]>({
     queryKey: PRODUCTS_QUERY_KEY,
     queryFn: async () => {
-      const res = await fetchLiveProducts({ forceRefresh: false, retries: 1 });
+      const res = await fetchLiveProducts({ forceRefresh: true, retries: 1 });
       if (res && res.length > 0) {
         const canonicalized = canonicalizeProducts(res);
         try {
@@ -121,9 +130,9 @@ export const useProductsQuery = () => {
       return getInitialProducts();
     },
     initialData: getInitialProducts,
-    staleTime: 1000 * 60 * 5,
+    staleTime: 1000 * 15,
     gcTime: 1000 * 60 * 30,
-    refetchOnMount: false,
+    refetchOnMount: true,
     refetchOnWindowFocus: false,
   });
 

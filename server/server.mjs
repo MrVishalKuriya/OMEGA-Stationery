@@ -32,10 +32,52 @@ try {
   console.warn('Notice on uploads directory creation:', e.message);
 }
 
-// Configurable MongoDB URIs
-const ATLAS_URI = 'mongodb+srv://indigoprinteromega07_db_user:OMEGA%407016@omega.ccgcbcy.mongodb.net/omega_stationery?retryWrites=true&w=majority';
+// Configurable MongoDB URIs with automatic password encoding (OMEGA@7016 -> OMEGA%407016) & zlib compression
+function normalizeMongoUri(rawUri) {
+  const defaultUri =
+    'mongodb+srv://indigoprinteromega07_db_user:OMEGA%407016@omega.ccgcbcy.mongodb.net/omega_stationery?compressors=zlib&retryWrites=true&w=majority';
+  if (!rawUri || !rawUri.trim()) return defaultUri;
+  const uri = rawUri.trim();
+  const schemeMatch = uri.match(/^(mongodb(?:\+srv)?:\/\/)(.+)$/);
+  if (!schemeMatch) return defaultUri;
+  const scheme = schemeMatch[1];
+  const rest = schemeMatch[2];
+  const slashIdx = rest.indexOf('/');
+  const authority = slashIdx >= 0 ? rest.slice(0, slashIdx) : rest;
+  let pathAndQuery = slashIdx >= 0 ? rest.slice(slashIdx) : '/omega_stationery';
+  const lastAtIdx = authority.lastIndexOf('@');
+  if (lastAtIdx === -1) return defaultUri;
+  const userInfo = authority.slice(0, lastAtIdx);
+  const hostPart = authority.slice(lastAtIdx + 1);
+  const colonIdx = userInfo.indexOf(':');
+  let cleanUserInfo = userInfo;
+  if (colonIdx !== -1) {
+    const user = userInfo.slice(0, colonIdx).replace(/^<|>$/g, '');
+    let pass = userInfo.slice(colonIdx + 1).replace(/^<|>$/g, '');
+    try {
+      pass = decodeURIComponent(pass);
+    } catch {}
+    pass = encodeURIComponent(pass);
+    cleanUserInfo = `${user}:${pass}`;
+  }
+  if (pathAndQuery.startsWith('/?')) {
+    pathAndQuery = `/omega_stationery?${pathAndQuery.slice(2)}`;
+  } else if (pathAndQuery === '/') {
+    pathAndQuery = '/omega_stationery?compressors=zlib&retryWrites=true&w=majority';
+  }
+  if (!pathAndQuery.includes('?')) {
+    pathAndQuery += '?compressors=zlib&retryWrites=true&w=majority';
+  } else {
+    if (!pathAndQuery.includes('compressors=')) pathAndQuery += '&compressors=zlib';
+    if (!pathAndQuery.includes('retryWrites=')) pathAndQuery += '&retryWrites=true&w=majority';
+  }
+  return `${scheme}${cleanUserInfo}@${hostPart}${pathAndQuery}`;
+}
+
+const ATLAS_URI =
+  'mongodb+srv://indigoprinteromega07_db_user:OMEGA%407016@omega.ccgcbcy.mongodb.net/omega_stationery?compressors=zlib&retryWrites=true&w=majority';
 const LOCAL_URI = 'mongodb://127.0.0.1:27017/omega_stationery';
-const MONGODB_URI = process.env.MONGODB_URI || ATLAS_URI;
+const MONGODB_URI = normalizeMongoUri(process.env.MONGODB_URI || ATLAS_URI);
 const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
 const CACHE_TTL = parseInt(process.env.CACHE_TTL_SECONDS || '5', 10);
 
@@ -916,6 +958,8 @@ app.put('/api/products/:id', async (req, res) => {
 
   try {
     const updatePayload = { ...updateData, id: updateData.id || id };
+    const query = mongoose.isValidObjectId(id) ? { $or: [{ id }, { _id: id }] } : { id };
+    let updated = null;
 
     if (mongoConnected && ProductModel) {
       updated = await ProductModel.findOneAndUpdate(query, { $set: updatePayload }, { new: true, upsert: true }).lean();
@@ -923,9 +967,12 @@ app.put('/api/products/:id', async (req, res) => {
 
     const idx = inMemoryProducts.findIndex((p) => p.id === id || (p._id && String(p._id) === id));
     if (idx >= 0) {
-      inMemoryProducts[idx] = { ...inMemoryProducts[idx], ...updateData };
+      inMemoryProducts[idx] = { ...inMemoryProducts[idx], ...updatePayload };
       if (!updated) updated = inMemoryProducts[idx];
     } else if (updated) {
+      inMemoryProducts.unshift(updated);
+    } else {
+      updated = updatePayload;
       inMemoryProducts.unshift(updated);
     }
 

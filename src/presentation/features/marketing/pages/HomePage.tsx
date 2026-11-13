@@ -48,6 +48,7 @@ export const HomePage: React.FC = () => {
   const [selectedCollection, setSelectedCollection] = useState<any | null>(null);
   const [selectedGalleryImg, setSelectedGalleryImg] = useState<string>('');
   const bannerStudioPhoto = '/omega-products/q3-banner-light-red-bg.jpg';
+  const bannerVerticalPhoto = '/omega-products/q3-banner-light-red-vertical.jpg';
   const collectionScrollRef = React.useRef<HTMLDivElement>(null);
 
   const scrollToSlide = (index: number) => {
@@ -105,6 +106,7 @@ export const HomePage: React.FC = () => {
         link: '/product/prod-omega-cb-q3',
         image: '/omega-products/counter-book-desk-podium.jpg',
         bgImage: '/omega-products/counter-book-card-bg.jpg',
+        verticalBgImage: '/omega-products/counter-book-card-vertical.jpg',
         gallery: [
           '/omega-products/counter-book-desk-podium.jpg',
           '/omega-products/counter-book-card-bg.jpg',
@@ -147,6 +149,7 @@ export const HomePage: React.FC = () => {
         link: '/product/prod-omega-ex-200p-purple',
         image: '/products/omega-student-exercise-book-200-pages-single-line-800.webp',
         bgImage: '/omega-products/exercise-book-card-bg.jpg',
+        verticalBgImage: '/omega-products/exercise-book-card-vertical.jpg',
         gallery: [
           '/omega-products/exercise-book-card-bg.jpg',
           '/products/omega-student-exercise-book-200-pages-single-line-800.webp',
@@ -186,6 +189,7 @@ export const HomePage: React.FC = () => {
         link: '/product/prod-omega-bahasha-a4-pack',
         image: '/products/omega-heavy-kraft-bahasha-envelopes-a4-pack-of-50-800.webp',
         bgImage: '/omega-products/kraft-bahasha-card-bg.jpg',
+        verticalBgImage: '/omega-products/kraft-bahasha-card-vertical.jpg',
         gallery: [
           '/omega-products/kraft-bahasha-card-bg.jpg',
           '/products/omega-heavy-kraft-bahasha-envelopes-a4-pack-of-50-800.webp',
@@ -224,6 +228,7 @@ export const HomePage: React.FC = () => {
         link: '/product/prod-omega-visitors-reg',
         image: '/products/omega-security-gate-visitors-register-executive-foil-800.webp',
         bgImage: '/omega-products/office-register-card-bg.jpg',
+        verticalBgImage: '/omega-products/office-register-card-vertical.jpg',
         gallery: [
           '/omega-products/office-register-card-bg.jpg',
           '/products/omega-security-gate-visitors-register-executive-foil-800.webp',
@@ -426,61 +431,60 @@ export const HomePage: React.FC = () => {
                     setSelectedCollection(col);
                     setSelectedGalleryImg(col.image);
                   }}
-                  className="w-[92vw] sm:w-[540px] lg:w-auto shrink-0 snap-center relative rounded-[20px] sm:rounded-[24px] border border-zinc-200/70 bg-[#EFE9DF] p-3.5 sm:p-7 shadow-sm hover:shadow-xl group text-left cursor-pointer transition-all duration-300 flex flex-row items-stretch justify-between gap-2 sm:gap-5 overflow-hidden min-h-[192px] sm:min-h-[300px]"
+                  className="w-[90vw] sm:w-[520px] lg:w-auto shrink-0 snap-center relative rounded-[24px] border border-[#DFCBB5]/80 bg-[#EADCC9] md:bg-[#EFE9DF] p-0 md:p-7 shadow-md hover:shadow-xl group text-left cursor-pointer transition-all duration-300 flex flex-col md:flex-row items-stretch justify-between gap-0 md:gap-5 overflow-hidden md:min-h-[300px]"
                 >
-                  {/* Full-Card Seamless Photo Background (Exact 16:9 Proportion on Both Mobile & Desktop) */}
+                  {/* Desktop Full-Card Seamless Photo Background (md and up) */}
                   {hasFullBg ? (
-                    <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                    <div className="hidden md:block absolute inset-0 z-0 pointer-events-none overflow-hidden">
                       <img
                         src={col.bgImage}
                         alt={col.title}
                         className="w-full h-full object-cover object-right transition-transform duration-700 group-hover:scale-105"
                         loading="eager"
                       />
-                      {/* Subtle natural left-side shadow strictly on the left 40% — zero white haze over the book */}
                       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(214,196,172,0.32)_0%,rgba(228,214,194,0.12)_30%,transparent_46%)]" />
                     </div>
                   ) : (
-                    <div className="absolute inset-0 z-0 pointer-events-none bg-gradient-to-br from-[#FAF8F5] via-white to-[#F3ECE2]" />
+                    <div className="hidden md:block absolute inset-0 z-0 pointer-events-none bg-gradient-to-br from-[#FAF8F5] via-white to-[#F3ECE2]" />
                   )}
 
-                  {/* Top-Right: Number & Action Link (Borderless Clean Pills, Scaled for Mobile) */}
-                  <div className="absolute top-2.5 right-2.5 sm:top-5 sm:right-5 z-20 flex items-center gap-1 sm:gap-1.5">
-                    <span className="inline-flex items-center justify-center rounded-full bg-white/90 backdrop-blur-md px-2 py-0.5 sm:px-2.5 sm:py-1 font-mono text-[9.5px] sm:text-[11px] font-bold text-zinc-800 border-0 shadow-xs">
+                  {/* Top-Right: Number & Action Link */}
+                  <div className="absolute top-4 right-4 sm:top-5 sm:right-5 z-20 flex items-center gap-1.5">
+                    <span className="inline-flex items-center justify-center rounded-full bg-white/95 backdrop-blur-md px-2.5 py-1 font-mono text-[11px] font-bold text-zinc-800 border-0 shadow-xs">
                       0{idx + 1}
                     </span>
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/90 backdrop-blur-md text-zinc-800 group-hover:bg-zinc-900 group-hover:text-white transition-colors flex items-center justify-center border-0 shadow-xs">
-                      <ArrowUpRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    <div className="w-8 h-8 rounded-full bg-white/95 backdrop-blur-md text-zinc-800 group-hover:bg-zinc-900 group-hover:text-white transition-colors flex items-center justify-center border-0 shadow-xs">
+                      <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </div>
                   </div>
 
-                  {/* Left Side: Product Details Over Clean Studio Wall */}
-                  <div className="w-[53%] sm:w-[55%] min-w-0 flex flex-col justify-between self-stretch z-10">
+                  {/* Top (Mobile Vertical) / Left (Desktop): Product Details */}
+                  <div className="w-full md:w-[55%] min-w-0 flex flex-col justify-between self-stretch z-10 p-5 pb-3 md:p-0">
                     <div>
-                      {/* Badge & Tag (Borderless Single-Line Pills) */}
-                      <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 mb-1.5 sm:mb-2.5">
-                        <span className="inline-flex items-center whitespace-nowrap rounded-full bg-white/90 backdrop-blur-xs px-2 py-0.5 sm:px-2.5 sm:py-1 text-[7.5px] sm:text-[10px] font-mono font-bold tracking-wider uppercase text-zinc-800 border-0 leading-none shadow-2xs">
+                      {/* Badge & Tag */}
+                      <div className="flex flex-wrap items-center gap-1.5 mb-2.5 pr-16 md:pr-0">
+                        <span className="inline-flex items-center whitespace-nowrap rounded-full bg-white/95 backdrop-blur-xs px-3 py-1 text-[10px] font-mono font-bold tracking-wider uppercase text-zinc-800 border-0 leading-none shadow-2xs">
                           {col.badge}
                         </span>
-                        <span className="inline-flex items-center whitespace-nowrap rounded-full bg-[#F4F1EA]/95 backdrop-blur-xs px-2 py-0.5 sm:px-2.5 sm:py-1 text-[7.5px] sm:text-[10px] font-mono font-bold tracking-wider uppercase text-[#7A6852] border-0 leading-none shadow-2xs">
+                        <span className="inline-flex items-center whitespace-nowrap rounded-full bg-[#F4F1EA]/95 backdrop-blur-xs px-2.5 py-1 text-[10px] font-mono font-bold tracking-wider uppercase text-[#7A6852] border-0 leading-none shadow-2xs">
                           {col.tag}
                         </span>
                       </div>
 
                       {/* Book Title */}
-                      <h3 className="font-serif text-[16px] sm:text-3xl font-bold tracking-tight text-zinc-900 group-hover:text-[var(--red)] transition-colors leading-[1.08] sm:leading-[1.12]">
+                      <h3 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 group-hover:text-[var(--red)] transition-colors leading-[1.12]">
                         {col.title}
                       </h3>
-                      <p className="text-[9.5px] sm:text-sm text-zinc-600 font-sans mt-0.5 mb-1.5 sm:mt-1 sm:mb-3 line-clamp-1 font-medium">
+                      <p className="text-xs sm:text-sm text-zinc-600 font-sans mt-1 mb-3 font-medium">
                         {col.subtitle}
                       </p>
 
                       {/* Refined Feature Checklist */}
-                      <ul className="space-y-0.5 sm:space-y-2 text-[9.5px] sm:text-xs text-zinc-800 mb-2 sm:mb-4">
+                      <ul className="space-y-1.5 sm:space-y-2 text-xs text-zinc-800 mb-4">
                         {col.features.map((feat: string, fIdx: number) => (
-                          <li key={fIdx} className="flex items-center gap-1 sm:gap-2">
-                            <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-[#8C7355] shrink-0" />
-                            <span className="font-sans text-[9.5px] sm:text-xs text-zinc-800 font-medium leading-tight sm:leading-snug truncate">
+                          <li key={fIdx} className="flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#8C7355] shrink-0" />
+                            <span className="font-sans text-xs text-zinc-800 font-medium leading-snug">
                               {feat}
                             </span>
                           </li>
@@ -489,26 +493,37 @@ export const HomePage: React.FC = () => {
                     </div>
 
                     {/* Action Button & Brand */}
-                    <div className="pt-0.5 sm:pt-1 flex flex-wrap items-center gap-1.5 sm:gap-3.5 mt-auto">
+                    <div className="pt-1 flex flex-wrap items-center gap-3.5 mt-auto">
                       <Link
                         to={col.link}
                         onClick={(e) => e.stopPropagation()}
-                        className="inline-flex items-center justify-center gap-1 sm:gap-2 rounded-full bg-zinc-900 hover:bg-[#D63A3A] active:scale-95 text-white font-mono text-[8.5px] sm:text-xs font-bold tracking-wider uppercase px-3 sm:px-5 py-1.5 sm:py-2.5 shadow-sm hover:shadow-md transition-all duration-200 group/btn whitespace-nowrap"
+                        className="inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 hover:bg-[#D63A3A] active:scale-95 text-white font-mono text-xs font-bold tracking-wider uppercase px-5 py-2.5 shadow-sm hover:shadow-md transition-all duration-200 group/btn whitespace-nowrap"
                       >
                         <span>{col.cta}</span>
-                        <ArrowRight className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
+                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
                       </Link>
-                      <span className="text-[8.5px] sm:text-[11px] font-mono text-zinc-600 font-medium whitespace-nowrap">
+                      <span className="text-[11px] font-mono text-zinc-600 font-medium whitespace-nowrap">
                         {col.brand}
                       </span>
                     </div>
                   </div>
 
-                  {/* Right Side: Visual Space for Full-Bleed Background Book OR Product Cutout */}
+                  {/* Bottom (Mobile Vertical): Full-Width Centered Studio Podium Image */}
+                  <div className="w-full md:hidden relative z-10 overflow-hidden mt-1">
+                    <div className="absolute top-0 inset-x-0 h-7 bg-gradient-to-b from-[#EADCC9] via-[#EADCC9]/45 to-transparent z-10 pointer-events-none" />
+                    <img
+                      src={col.verticalBgImage || col.image}
+                      alt={col.title}
+                      className="w-full h-56 sm:h-64 object-cover object-center transition-transform duration-700 group-hover:scale-105 block"
+                      loading="eager"
+                    />
+                  </div>
+
+                  {/* Right Side (Desktop): Visual Space for Full-Bleed Background Book */}
                   {hasFullBg ? (
-                    <div className="w-[47%] sm:w-[45%] shrink-0 z-10 pointer-events-none" aria-hidden="true" />
+                    <div className="hidden md:block md:w-[45%] shrink-0 z-10 pointer-events-none" aria-hidden="true" />
                   ) : (
-                    <div className="w-[47%] sm:w-[45%] h-36 sm:h-60 relative flex items-center justify-center shrink-0 z-10 self-center">
+                    <div className="hidden md:flex md:w-[45%] h-60 relative items-center justify-center shrink-0 z-10 self-center">
                       <img
                         src={col.image}
                         alt={col.title}
@@ -724,42 +739,41 @@ export const HomePage: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.45 }}
-          className="relative w-full rounded-[20px] sm:rounded-[24px] overflow-hidden bg-[#F2C4C0] border border-[#E2B0AC]/70 p-3.5 sm:p-9 lg:p-12 shadow-xl transition-all duration-300 min-h-[192px] sm:min-h-[360px] lg:min-h-[400px] flex items-center group"
+          className="relative w-full rounded-[24px] overflow-hidden bg-[#EFC0BC] md:bg-[#F2C4C0] border border-[#E2B0AC]/80 p-0 md:p-9 lg:p-12 shadow-xl transition-all duration-300 md:min-h-[360px] lg:min-h-[400px] flex flex-col md:flex-row items-stretch md:items-center group"
         >
-          {/* Full-Card Seamless Soft Light-Red Studio Photo Background (Proportional 16:9 on Mobile, Tablet & Desktop) */}
-          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          {/* Desktop Full-Card Seamless Soft Light-Red Studio Photo Background */}
+          <div className="hidden md:block absolute inset-0 z-0 pointer-events-none overflow-hidden">
             <img
               src={bannerStudioPhoto}
               alt="OMEGA Hardcover Counter Book 180° Lay-Flat Studio Photo"
               className="w-full h-full object-cover object-right transition-transform duration-700 group-hover:scale-[1.03]"
               loading="eager"
             />
-            {/* Gentle left-side warm rose shadow strictly on the left 42% — zero white haze */}
             <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(186,118,114,0.26)_0%,rgba(210,148,144,0.10)_30%,transparent_46%)]" />
           </div>
 
-          <div className="relative z-10 w-full flex flex-row items-center justify-between gap-2 sm:gap-6">
+          <div className="relative z-10 w-full flex flex-col md:flex-row items-stretch md:items-center justify-between gap-0 md:gap-6">
             
-            {/* Left Content Column Over Soft Light-Red Studio Backdrop */}
-            <div className="w-[51%] sm:w-[50%] shrink-0 space-y-1.5 sm:space-y-5 text-left">
+            {/* Top (Mobile Vertical) / Left (Desktop): Content Block Over Soft Light-Red Studio Backdrop */}
+            <div className="w-full md:w-[50%] shrink-0 space-y-4 sm:space-y-5 text-left p-6 pb-3 md:p-0">
               
               {/* Headline with Gold Badge */}
-              <div className="space-y-1 sm:space-y-2.5">
-                <div className="inline-flex items-center gap-1 sm:gap-1.5 px-2 py-0.5 sm:px-3.5 sm:py-1 rounded-full bg-gradient-to-r from-[#F3D28A] via-[#E9B44C] to-[#B8862B] text-zinc-950 text-[7.5px] sm:text-[10px] font-mono font-black uppercase tracking-wider shadow-xs border-0">
+              <div className="space-y-2.5">
+                <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gradient-to-r from-[#F3D28A] via-[#E9B44C] to-[#B8862B] text-zinc-950 text-[10px] font-mono font-black uppercase tracking-wider shadow-xs border-0">
                   <span>★</span>
                   <span>BEST SELLER · QUIRE 3</span>
                 </div>
-                <h2 className="text-[15.5px] sm:text-3xl lg:text-[42px] font-serif font-bold text-zinc-950 tracking-tight leading-[1.08] sm:leading-[1.1]">
+                <h2 className="text-[28px] sm:text-3xl lg:text-[42px] font-serif font-bold text-zinc-950 tracking-tight leading-[1.1]">
                   Counter Book Q3, Hardcover
                 </h2>
-                <p className="text-[9px] sm:text-sm lg:text-[15px] text-zinc-800 max-w-md font-sans font-medium leading-snug sm:leading-relaxed line-clamp-3 sm:line-clamp-none">
+                <p className="text-[13.5px] sm:text-sm lg:text-[15px] text-zinc-800 max-w-md font-sans font-medium leading-relaxed">
                   288 pages of pure 70 GSM archival bond paper. Precision Smyth-sewn binding opens 180° flat, engineered for commercial accountants, schools, and tenders.
                 </p>
               </div>
 
               {/* Price & Action Row */}
-              <div className="pt-1 sm:pt-2 flex flex-wrap items-center gap-2 sm:gap-3.5">
-                <span className="text-sm sm:text-3xl font-mono font-black text-zinc-950 tabular-nums">
+              <div className="pt-1 sm:pt-2 flex flex-wrap items-center gap-3.5">
+                <span className="text-2xl sm:text-3xl font-mono font-black text-zinc-950 tabular-nums">
                   TSh 8,500
                 </span>
 
@@ -769,17 +783,28 @@ export const HomePage: React.FC = () => {
                   whileTap={{ scale: 0.95 }}
                   type="button"
                   onClick={handleBannerBuyNow}
-                  className="inline-flex items-center gap-1 sm:gap-2 px-3 py-1.5 sm:px-7 sm:py-3 rounded-full bg-[#C92A2A] hover:bg-[#A61E1E] text-white font-mono text-[8.5px] sm:text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md sm:shadow-lg shadow-red-950/25 cursor-pointer whitespace-nowrap"
+                  className="inline-flex items-center gap-2 px-6 py-3 sm:px-7 sm:py-3 rounded-full bg-[#C92A2A] hover:bg-[#A61E1E] text-white font-mono text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-950/25 cursor-pointer whitespace-nowrap"
                 >
                   <span>BUY NOW</span>
-                  <ArrowRight className="w-2.5 h-2.5 sm:w-4 sm:h-4 stroke-[2.2]" />
+                  <ArrowRight className="w-4 h-4 stroke-[2.2]" />
                 </motion.button>
               </div>
 
             </div>
 
-            {/* Right Visual Space: Seamless Book & Open Spread on Studio Surface */}
-            <div className="w-[49%] sm:w-[50%] shrink-0 pointer-events-none" aria-hidden="true" />
+            {/* Bottom (Mobile Vertical): Full-Width Centered Studio Book & 180° Spread */}
+            <div className="w-full md:hidden relative z-10 overflow-hidden mt-1">
+              <div className="absolute top-0 inset-x-0 h-8 bg-gradient-to-b from-[#EFC0BC] via-[#EFC0BC]/50 to-transparent z-10 pointer-events-none" />
+              <img
+                src={bannerVerticalPhoto}
+                alt="OMEGA Hardcover Counter Book Q3 180° Lay-Flat Spread"
+                className="w-full h-auto object-cover object-center transition-transform duration-700 group-hover:scale-[1.03] block"
+                loading="eager"
+              />
+            </div>
+
+            {/* Right Visual Space (Desktop): Seamless Book & Open Spread on Studio Surface */}
+            <div className="hidden md:block md:w-[50%] shrink-0 pointer-events-none" aria-hidden="true" />
 
           </div>
         </motion.div>

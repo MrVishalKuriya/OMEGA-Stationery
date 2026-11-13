@@ -154,6 +154,11 @@ textarea,
   font-family: var(--font-family-body);
 }
 
+.font-mono,
+.font-mono span {
+  font-family: var(--font-family-mono);
+}
+
 /* =========================================================================
    FLUID TYPOGRAPHY, BORDER-RADIUS & SPACING UTILITIES — clamp()
    ========================================================================= */
