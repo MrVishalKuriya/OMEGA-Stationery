@@ -11,8 +11,13 @@ import {
   resolveImageUrl,
 } from '@/services/api';
 
-const PRODUCTS_QUERY_KEY = ['products'];
-const STORAGE_KEY = 'omega_products_v6';
+import {
+  PRODUCTS_QUERY_KEY,
+  PRODUCTS_STORAGE_KEY,
+  useProductCacheInvalidation,
+} from './useProductCacheInvalidation';
+
+const STORAGE_KEY = PRODUCTS_STORAGE_KEY;
 
 function getCategoryFallbackImage(item: Partial<Product>): string {
   const text = `${item.name || ''} ${item.category || ''} ${item.quire || ''}`.toLowerCase();
@@ -141,6 +146,7 @@ function persistProductsToStorage(list: Product[]): void {
 
 export const useProductsQuery = () => {
   const queryClient = useQueryClient();
+  const { invalidateAndRefetchProducts } = useProductCacheInvalidation();
 
   const query = useQuery<Product[]>({
     queryKey: PRODUCTS_QUERY_KEY,
@@ -410,6 +416,7 @@ export const useProductsQuery = () => {
     isFetching: query.isFetching,
     error: query.error,
     refetch: query.refetch,
+    invalidateAndRefetchProducts,
     createProduct: createProductMutation.mutateAsync,
     updateProduct: updateProductMutation.mutateAsync,
     updateStock: updateStockMutation.mutateAsync,

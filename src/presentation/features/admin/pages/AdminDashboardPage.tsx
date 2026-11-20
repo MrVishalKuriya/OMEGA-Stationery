@@ -66,6 +66,7 @@ import {
 } from '@/components/admin/AdminAnimatedIcons';
 import { ImageEditorModal } from '@/components/admin/ImageEditorModal';
 import { useStore } from '@/context/StoreContext';
+import { useProductCacheInvalidation } from '@/application/hooks/useProductCacheInvalidation';
 import {
   Product,
   ProductVariantOption,
@@ -461,6 +462,7 @@ export const AdminDashboardPage: React.FC = () => {
           };
           try {
             await updateProduct(updatedProductRecord);
+            await invalidateAndRefetchProducts({ updatedProduct: updatedProductRecord });
           } catch (saveErr: any) {
             setIsUploadingImage(false);
             setIsImageEditorOpen(false);
@@ -822,6 +824,7 @@ export const AdminDashboardPage: React.FC = () => {
     });
     setIsBulkAdjusting(false);
     if (ok) {
+      await invalidateAndRefetchProducts({ purgeServerCache: true });
       setSelectedProductIds([]);
     }
   };
@@ -839,6 +842,7 @@ export const AdminDashboardPage: React.FC = () => {
     });
     setIsBulkAdjusting(false);
     if (ok) {
+      await invalidateAndRefetchProducts({ purgeServerCache: true });
       setSelectedProductIds([]);
     }
   };
@@ -948,6 +952,7 @@ export const AdminDashboardPage: React.FC = () => {
           tempStockStatus,
           !Number.isNaN(parsedStockQty) ? Math.max(0, parsedStockQty) : 0
         );
+        await invalidateAndRefetchProducts();
       } catch (err: any) {
         showToast(err?.message || 'Quick edit failed to sync with database.');
       }
@@ -1007,12 +1012,13 @@ export const AdminDashboardPage: React.FC = () => {
     showToast(`"${product.name}" moved to trash. You have 1 minute to Undo!`);
   };
 
-  const handleUndoDelete = (productId: string) => {
+  const handleUndoDelete = async (productId: string) => {
     const item = pendingDeletions.find((p) => p.product.id === productId);
     if (!item) return;
 
     setPendingDeletions((prev) => prev.filter((p) => p.product.id !== productId));
-    restoreProduct(item.product, item.originalIndex);
+    await restoreProduct(item.product, item.originalIndex);
+    await invalidateAndRefetchProducts({ updatedProduct: item.product });
     showToast(`Restored "${item.product.name}" successfully!`);
   };
 
@@ -1022,7 +1028,8 @@ export const AdminDashboardPage: React.FC = () => {
 
     setPendingDeletions((prev) => prev.filter((p) => p.product.id !== productId));
     deleteProductFromDb(productId)
-      .then(() => {
+      .then(async () => {
+        await invalidateAndRefetchProducts();
         showToast(`Permanently deleted "${item.product.name}".`);
       })
       .catch((err) => console.warn('Permanent delete notice:', err));
@@ -1326,6 +1333,7 @@ export const AdminDashboardPage: React.FC = () => {
             imageBackground: productForm.imageBackground || undefined,
           };
           await updateProduct(updatedObj);
+          await invalidateAndRefetchProducts({ updatedProduct: updatedObj });
           setDbSaveSuccessMessage(`Updated in MongoDB Atlas! Document ID: ${updatedObj.id}`);
         }
       } else {
@@ -1358,6 +1366,7 @@ export const AdminDashboardPage: React.FC = () => {
           imageBackground: productForm.imageBackground || undefined,
           isDemoData: false,
         });
+        await invalidateAndRefetchProducts({ updatedProduct: createdObj });
         setDbSaveSuccessMessage(`Persisted to MongoDB Atlas! New SKU: ${createdObj.sku}`);
       }
 

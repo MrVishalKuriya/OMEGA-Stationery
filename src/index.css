@@ -449,3 +449,68 @@ input[type="search"]::-webkit-search-results-decoration {
 .btn-ledup-copper:hover {
   background-color: var(--red-hover) !important;
 }
+
+/* =========================================================================
+   REACTBITS SHINY TEXT & OMEGA EMBLEM SPECULAR SWEEP
+   ========================================================================= */
+@keyframes omega-shiny-sweep {
+  0% {
+    background-position: 140% center;
+  }
+  100% {
+    background-position: -140% center;
+  }
+}
+
+.omega-shiny-gold {
+  background-image: linear-gradient(
+    110deg,
+    #8A5E14 18%,
+    #B8862B 42%,
+    #F3D28A 50%,
+    #B8862B 58%,
+    #8A5E14 82%
+  );
+  background-size: 240% 100%;
+  animation: omega-shiny-sweep 4.2s linear infinite;
+}
+
+.omega-shiny-light-gold {
+  background-image: linear-gradient(
+    110deg,
+    #D4A447 15%,
+    #F6DC9D 44%,
+    #FFF7DE 50%,
+    #F6DC9D 56%,
+    #D4A447 85%
+  );
+  background-size: 240% 100%;
+  animation: omega-shiny-sweep 4s linear infinite;
+}
+
+.omega-shiny-crimson {
+  background-image: linear-gradient(
+    110deg,
+    #A61E1E 18%,
+    #D63A3A 44%,
+    #FF9393 50%,
+    #D63A3A 56%,
+    #A61E1E 82%
+  );
+  background-size: 240% 100%;
+  animation: omega-shiny-sweep 4.4s linear infinite;
+}
+
+@keyframes omega-emblem-sheen {
+  0% {
+    transform: translateX(-140%) skewX(-22deg);
+  }
+  100% {
+    transform: translateX(240%) skewX(-22deg);
+  }
+}
+
+.group:hover .omega-emblem-glint {
+  animation: omega-emblem-sheen 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+

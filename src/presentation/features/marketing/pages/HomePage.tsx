@@ -32,6 +32,18 @@ import {
   HaikeiBlobGlow,
   HaikeiPaperLines,
 } from '@/components/HaikeiBackgrounds';
+import {
+  OmegaAuroraMeshShader,
+  OmegaSilkShader,
+} from '@/components/ui/OmegaShaders';
+import {
+  BlurText,
+  ShinyText,
+  SpotlightCard,
+  Magnet,
+  CountUp,
+  ScrollVelocityRibbon,
+} from '@/components/ui/ReactBitsAnimations';
 
 export const HomePage: React.FC = () => {
   const { products, language, addToCart, setIsCartDrawerOpen } = useStore();
@@ -294,7 +306,7 @@ export const HomePage: React.FC = () => {
       <HaikeiWaveDivider topFill="var(--bg)" fill="var(--surface-1)" />
 
       {/* ========================================================================= */}
-      {/* 2. FOUR-PILLAR HALLMARK TRUST STRIP (Watermelon UI Micro-Elevation) */}
+      {/* 2. FOUR-PILLAR HALLMARK TRUST STRIP (ReactBits SpotlightCard + CountUp)   */}
       {/* ========================================================================= */}
       <section className="bg-[var(--surface-1)] border-b border-[var(--border)] py-5 sm:py-6 relative z-10 transition-colors duration-200">
         <div className="omega-fluid-container">
@@ -306,19 +318,25 @@ export const HomePage: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.05 }}
-              className="flex items-center gap-3.5 text-left p-2.5 rounded-xl hover:bg-[var(--surface-2)]/60 transition-colors"
             >
-              <div className="w-11 h-11 rounded-2xl bg-[var(--red)]/10 border border-[var(--red)]/30 flex items-center justify-center text-[var(--red)] shrink-0 shadow-sm">
-                <Award className="w-5 h-5 stroke-[2]" />
-              </div>
-              <div className="min-w-0">
-                <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[var(--text)] font-heading leading-tight">
-                  PURE 70 GSM BOND
-                </h4>
-                <p className="text-[11px] text-[var(--text-muted)] leading-tight mt-0.5 font-sans">
-                  Zero ink-bleed, smooth writing finish
-                </p>
-              </div>
+              <SpotlightCard
+                spotlightTone="crimson"
+                className="rounded-xl border border-transparent hover:border-[var(--red)]/25 transition-colors"
+              >
+                <div className="flex items-center gap-3.5 text-left p-2.5">
+                  <div className="w-11 h-11 rounded-2xl bg-[var(--red)]/10 border border-[var(--red)]/30 flex items-center justify-center text-[var(--red)] shrink-0 shadow-sm">
+                    <Award className="w-5 h-5 stroke-[2]" />
+                  </div>
+                  <div className="min-w-0">
+                    <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[var(--text)] font-heading leading-tight">
+                      PURE <CountUp to={70} duration={1.1} /> GSM BOND
+                    </h4>
+                    <p className="text-[11px] text-[var(--text-muted)] leading-tight mt-0.5 font-sans">
+                      Zero ink-bleed, smooth writing finish
+                    </p>
+                  </div>
+                </div>
+              </SpotlightCard>
             </motion.div>
 
             {/* 2. Thread-Sewn Spines */}
@@ -327,19 +345,25 @@ export const HomePage: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.12 }}
-              className="flex items-center gap-3.5 text-left p-2.5 rounded-xl hover:bg-[var(--surface-2)]/60 transition-colors"
             >
-              <div className="w-11 h-11 rounded-2xl bg-[var(--gold)]/10 border border-[var(--gold)]/30 flex items-center justify-center text-[var(--gold)] shrink-0 shadow-sm">
-                <ShieldCheck className="w-5 h-5 stroke-[2]" />
-              </div>
-              <div className="min-w-0">
-                <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[var(--text)] font-heading leading-tight">
-                  THREAD-SEWN SPINES
-                </h4>
-                <p className="text-[11px] text-[var(--text-muted)] leading-tight mt-0.5 font-sans">
-                  Double-stitched for extreme durability
-                </p>
-              </div>
+              <SpotlightCard
+                spotlightTone="gold"
+                className="rounded-xl border border-transparent hover:border-[var(--gold)]/30 transition-colors"
+              >
+                <div className="flex items-center gap-3.5 text-left p-2.5">
+                  <div className="w-11 h-11 rounded-2xl bg-[var(--gold)]/10 border border-[var(--gold)]/30 flex items-center justify-center text-[var(--gold)] shrink-0 shadow-sm">
+                    <ShieldCheck className="w-5 h-5 stroke-[2]" />
+                  </div>
+                  <div className="min-w-0">
+                    <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[var(--text)] font-heading leading-tight">
+                      <CountUp to={180} suffix="°" duration={1.2} /> THREAD-SEWN
+                    </h4>
+                    <p className="text-[11px] text-[var(--text-muted)] leading-tight mt-0.5 font-sans">
+                      Double-stitched for extreme durability
+                    </p>
+                  </div>
+                </div>
+              </SpotlightCard>
             </motion.div>
 
             {/* 3. Factory Direct Pricing */}
@@ -348,19 +372,25 @@ export const HomePage: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.18 }}
-              className="flex items-center gap-3.5 text-left p-2.5 rounded-xl hover:bg-[var(--surface-2)]/60 transition-colors"
             >
-              <div className="w-11 h-11 rounded-2xl bg-[var(--red)]/10 border border-[var(--red)]/30 flex items-center justify-center text-[var(--red)] shrink-0 shadow-sm">
-                <FileText className="w-5 h-5 stroke-[2]" />
-              </div>
-              <div className="min-w-0">
-                <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[var(--text)] font-heading leading-tight">
-                  FACTORY DIRECT RATES
-                </h4>
-                <p className="text-[11px] text-[var(--text-muted)] leading-tight mt-0.5 font-sans">
-                  Transparent wholesale &amp; retail value
-                </p>
-              </div>
+              <SpotlightCard
+                spotlightTone="crimson"
+                className="rounded-xl border border-transparent hover:border-[var(--red)]/25 transition-colors"
+              >
+                <div className="flex items-center gap-3.5 text-left p-2.5">
+                  <div className="w-11 h-11 rounded-2xl bg-[var(--red)]/10 border border-[var(--red)]/30 flex items-center justify-center text-[var(--red)] shrink-0 shadow-sm">
+                    <FileText className="w-5 h-5 stroke-[2]" />
+                  </div>
+                  <div className="min-w-0">
+                    <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[var(--text)] font-heading leading-tight">
+                      FACTORY DIRECT RATES
+                    </h4>
+                    <p className="text-[11px] text-[var(--text-muted)] leading-tight mt-0.5 font-sans">
+                      Transparent wholesale &amp; retail value
+                    </p>
+                  </div>
+                </div>
+              </SpotlightCard>
             </motion.div>
 
             {/* 4. 31 Regions Cargo */}
@@ -369,19 +399,25 @@ export const HomePage: React.FC = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: 0.24 }}
-              className="flex items-center gap-3.5 text-left p-2.5 rounded-xl hover:bg-[var(--surface-2)]/60 transition-colors"
             >
-              <div className="w-11 h-11 rounded-2xl bg-[var(--gold)]/10 border border-[var(--gold)]/30 flex items-center justify-center text-[var(--gold)] shrink-0 shadow-sm">
-                <Truck className="w-5 h-5 stroke-[2]" />
-              </div>
-              <div className="min-w-0">
-                <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[var(--text)] font-heading leading-tight">
-                  31 REGIONS CARGO
-                </h4>
-                <p className="text-[11px] text-[var(--text-muted)] leading-tight mt-0.5 font-sans">
-                  Daily freight via verified bus parcels
-                </p>
-              </div>
+              <SpotlightCard
+                spotlightTone="gold"
+                className="rounded-xl border border-transparent hover:border-[var(--gold)]/30 transition-colors"
+              >
+                <div className="flex items-center gap-3.5 text-left p-2.5">
+                  <div className="w-11 h-11 rounded-2xl bg-[var(--gold)]/10 border border-[var(--gold)]/30 flex items-center justify-center text-[var(--gold)] shrink-0 shadow-sm">
+                    <Truck className="w-5 h-5 stroke-[2]" />
+                  </div>
+                  <div className="min-w-0">
+                    <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[var(--text)] font-heading leading-tight">
+                      <CountUp to={31} duration={1.15} /> REGIONS CARGO
+                    </h4>
+                    <p className="text-[11px] text-[var(--text-muted)] leading-tight mt-0.5 font-sans">
+                      Daily freight via verified bus parcels
+                    </p>
+                  </div>
+                </div>
+              </SpotlightCard>
             </motion.div>
 
           </div>
@@ -399,7 +435,7 @@ export const HomePage: React.FC = () => {
 
         <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 relative z-10">
 
-          {/* Centered Editorial Header with Gold Hairline */}
+          {/* Centered Editorial Header with ShinyText & BlurText */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -407,11 +443,17 @@ export const HomePage: React.FC = () => {
             transition={{ duration: 0.5 }}
             className="text-center space-y-2"
           >
-            <span className="text-[10.5px] font-mono font-bold tracking-widest uppercase text-[var(--gold)] block">
+            <ShinyText
+              tone="gold"
+              className="text-[10.5px] font-mono font-bold tracking-widest uppercase block"
+            >
               ★ TANZANIA BENCHMARK
-            </span>
+            </ShinyText>
             <h2 className="omega-fluid-section-title font-serif font-bold tracking-tight text-[var(--text)]">
-              {language === 'sw' ? 'MKUSANYIKO WA VITABU' : 'SHOP BY COLLECTION'}
+              <BlurText
+                text={language === 'sw' ? 'MKUSANYIKO WA VITABU' : 'SHOP BY COLLECTION'}
+                className="justify-center"
+              />
             </h2>
             <div className="w-12 h-0.5 bg-[var(--gold)] mx-auto opacity-70" />
             <p className="text-xs sm:text-sm text-[var(--text-muted)] max-w-xl mx-auto pt-1 font-sans">
@@ -738,13 +780,20 @@ export const HomePage: React.FC = () => {
           transition={{ duration: 0.45 }}
           className="relative w-full rounded-[20px] sm:rounded-[24px] overflow-hidden bg-[#F1C1BD] border border-[#E2B0AC]/80 p-3.5 sm:p-8 lg:p-12 shadow-xl transition-all duration-300 min-h-[192px] sm:min-h-[290px] lg:min-h-[400px] flex flex-row items-center group"
         >
-          {/* Full-Card Seamless Soft Light-Red Studio Photo Background (All Screens — Horizontal) */}
+          {/* Full-Card Seamless Soft Light-Red Studio Photo Background + Subtle WebGL Silk Sheen */}
           <div className="block absolute inset-0 z-0 pointer-events-none overflow-hidden">
             <img
               src={bannerStudioPhoto}
               alt="OMEGA Hardcover Counter Book 180° Lay-Flat Studio Photo"
               className="w-full h-full object-cover object-right transition-transform duration-700 group-hover:scale-[1.03]"
               loading="eager"
+            />
+            <OmegaSilkShader
+              variant="crimson-blush"
+              speed={0.65}
+              intensity={0.5}
+              interactive={true}
+              className="opacity-30 mix-blend-soft-light"
             />
             <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(241,193,189,0.92)_0%,rgba(241,193,189,0.78)_44%,rgba(241,193,189,0.22)_55%,transparent_65%)] sm:bg-[linear-gradient(90deg,rgba(186,118,114,0.26)_0%,rgba(210,148,144,0.10)_30%,transparent_46%)]" />
           </div>
@@ -774,17 +823,19 @@ export const HomePage: React.FC = () => {
                   TSh 8,500
                 </span>
 
-                {/* Primary Action Button */}
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.95 }}
-                  type="button"
-                  onClick={handleBannerBuyNow}
-                  className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-7 sm:py-3 rounded-full bg-[#C92A2A] hover:bg-[#A61E1E] text-white font-mono text-[9px] sm:text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md sm:shadow-lg shadow-red-950/25 cursor-pointer whitespace-nowrap"
-                >
-                  <span>BUY NOW</span>
-                  <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 stroke-[2.2]" />
-                </motion.button>
+                {/* Primary Action Button with ReactBits Magnet */}
+                <Magnet strength={0.2}>
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.95 }}
+                    type="button"
+                    onClick={handleBannerBuyNow}
+                    className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-7 sm:py-3 rounded-full bg-[#C92A2A] hover:bg-[#A61E1E] text-white font-mono text-[9px] sm:text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md sm:shadow-lg shadow-red-950/25 cursor-pointer whitespace-nowrap"
+                  >
+                    <span>BUY NOW</span>
+                    <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 stroke-[2.2]" />
+                  </motion.button>
+                </Magnet>
               </div>
 
             </div>
@@ -802,7 +853,7 @@ export const HomePage: React.FC = () => {
       <section className="py-14 sm:py-20 bg-[var(--bg)] border-t border-[var(--border)] transition-colors duration-200">
         <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
 
-          {/* Centered Editorial Header */}
+          {/* Centered Editorial Header with ShinyText & BlurText */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -810,11 +861,17 @@ export const HomePage: React.FC = () => {
             transition={{ duration: 0.5 }}
             className="text-center space-y-2"
           >
-            <span className="text-[10.5px] font-mono font-bold tracking-widest uppercase text-[var(--gold)] block">
+            <ShinyText
+              tone="gold"
+              className="text-[10.5px] font-mono font-bold tracking-widest uppercase block"
+            >
               ★ OFFICIAL CATALOGUE
-            </span>
+            </ShinyText>
             <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[var(--text)]">
-              {language === 'sw' ? 'MKUSANYIKO WA VITABU' : 'FEATURED STATIONERY'}
+              <BlurText
+                text={language === 'sw' ? 'MKUSANYIKO WA VITABU' : 'FEATURED STATIONERY'}
+                className="justify-center"
+              />
             </h2>
             <div className="w-12 h-0.5 bg-[var(--gold)] mx-auto opacity-70" />
             <p className="text-xs sm:text-sm text-[var(--text-muted)] max-w-xl mx-auto pt-1 font-sans">
@@ -881,11 +938,21 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Haikei Organic Wave Transition */}
-      <HaikeiWaveDivider topFill="var(--bg)" fill="var(--surface-1)" />
+      {/* ReactBits ScrollVelocity Editorial Hallmark Ribbon with OMEGA Emblem Separators */}
+      <ScrollVelocityRibbon
+        items={[
+          'PURE 70 GSM ARCHIVAL BOND',
+          'SMYTH-SEWN 180° LAY-FLAT BINDING',
+          'COUNTER BOOKS · Q2 · Q3 · Q4',
+          'INDIGO PRINTED LIMITED · TANZANIA',
+          '31 REGIONS BUS PARCEL CARGO',
+          'NECTA COMPLIANT RULING',
+        ]}
+        baseVelocity={26}
+      />
 
       {/* ========================================================================= */}
-      {/* 5.5. THE ANATOMY OF AN OMEGA SMYTH-SEWN BOOK (Motion & Watermelon UI) */}
+      {/* 5.5. THE ANATOMY OF AN OMEGA SMYTH-SEWN BOOK (SpotlightCard + BlurText)   */}
       {/* ========================================================================= */}
       <section className="py-16 sm:py-24 bg-[var(--surface-1)] border-b border-[var(--border)] relative overflow-hidden transition-colors duration-200 scroll-mt-24">
         
@@ -903,13 +970,21 @@ export const HomePage: React.FC = () => {
             transition={{ duration: 0.5 }}
             className="text-center space-y-2.5 max-w-2xl mx-auto"
           >
-            <span className="text-[10.5px] font-mono font-bold tracking-widest uppercase text-[var(--gold)] block">
+            <ShinyText
+              tone="gold"
+              className="text-[10.5px] font-mono font-bold tracking-widest uppercase block"
+            >
               ★ THE OMEGA ENGINEERING STANDARD
-            </span>
+            </ShinyText>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[var(--text)]">
-              {language === 'sw'
-                ? 'Muundo wa Ndani wa Daftari la OMEGA'
-                : 'Anatomy of Archival Craftsmanship'}
+              <BlurText
+                text={
+                  language === 'sw'
+                    ? 'Muundo wa Ndani wa Daftari la OMEGA'
+                    : 'Anatomy of Archival Craftsmanship'
+                }
+                className="justify-center"
+              />
             </h2>
             <div className="w-12 h-0.5 bg-[var(--gold)] mx-auto opacity-70" />
             <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
@@ -919,7 +994,7 @@ export const HomePage: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* 4 Technical Pillar Cards with Stagger Animation - Icon Left, Text Right */}
+          {/* 4 Technical Pillar Cards with ReactBits SpotlightCard */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
             
             {/* Component 1: 1.8mm Greyboard */}
@@ -929,25 +1004,29 @@ export const HomePage: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: 0.05 }}
               whileHover={{ y: -4 }}
-              className="p-5 sm:p-6 rounded-2xl bg-white border border-zinc-200/80 hover:border-zinc-300 transition-all shadow-xs flex flex-col justify-between"
+              className="h-full"
             >
-              <div>
-                {/* Icon Left + Text Right */}
-                <div className="flex items-center gap-3.5 mb-3.5">
-                  <div className="w-11 h-11 rounded-xl bg-[var(--red)]/10 border border-[var(--red)]/20 flex items-center justify-center text-[var(--red)] shrink-0 shadow-2xs">
-                    <Layers className="w-5 h-5 stroke-[2]" />
+              <SpotlightCard
+                spotlightTone="crimson"
+                className="h-full p-5 sm:p-6 rounded-2xl bg-white border border-zinc-200/80 hover:border-[var(--red)]/35 transition-all shadow-xs flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center gap-3.5 mb-3.5">
+                    <div className="w-11 h-11 rounded-xl bg-[var(--red)]/10 border border-[var(--red)]/20 flex items-center justify-center text-[var(--red)] shrink-0 shadow-2xs">
+                      <Layers className="w-5 h-5 stroke-[2]" />
+                    </div>
+                    <div className="min-w-0 text-left">
+                      <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight">
+                        1.8mm Rigid Greyboard
+                      </h3>
+                    </div>
                   </div>
-                  <div className="min-w-0 text-left">
-                    <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight">
-                      1.8mm Rigid Greyboard
-                    </h3>
-                  </div>
-                </div>
 
-                <p className="text-xs text-zinc-600 leading-relaxed text-left">
-                  High-caliper dense board with protective matte laminate. Resists tropical humidity, bending, and corner fraying over decades of daily ledger filing.
-                </p>
-              </div>
+                  <p className="text-xs text-zinc-600 leading-relaxed text-left">
+                    High-caliper dense board with protective matte laminate. Resists tropical humidity, bending, and corner fraying over decades of daily ledger filing.
+                  </p>
+                </div>
+              </SpotlightCard>
             </motion.div>
 
             {/* Component 2: Smyth Thread Spine */}
@@ -957,25 +1036,29 @@ export const HomePage: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: 0.12 }}
               whileHover={{ y: -4 }}
-              className="p-5 sm:p-6 rounded-2xl bg-white border border-zinc-200/80 hover:border-zinc-300 transition-all shadow-xs flex flex-col justify-between"
+              className="h-full"
             >
-              <div>
-                {/* Icon Left + Text Right */}
-                <div className="flex items-center gap-3.5 mb-3.5">
-                  <div className="w-11 h-11 rounded-xl bg-[var(--gold)]/10 border border-[var(--gold)]/20 flex items-center justify-center text-[var(--gold)] shrink-0 shadow-2xs">
-                    <BookOpen className="w-5 h-5 stroke-[2]" />
+              <SpotlightCard
+                spotlightTone="gold"
+                className="h-full p-5 sm:p-6 rounded-2xl bg-white border border-zinc-200/80 hover:border-[var(--gold)]/45 transition-all shadow-xs flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center gap-3.5 mb-3.5">
+                    <div className="w-11 h-11 rounded-xl bg-[var(--gold)]/10 border border-[var(--gold)]/20 flex items-center justify-center text-[var(--gold)] shrink-0 shadow-2xs">
+                      <BookOpen className="w-5 h-5 stroke-[2]" />
+                    </div>
+                    <div className="min-w-0 text-left">
+                      <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight">
+                        Smyth Thread Sewing
+                      </h3>
+                    </div>
                   </div>
-                  <div className="min-w-0 text-left">
-                    <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight">
-                      Smyth Thread Sewing
-                    </h3>
-                  </div>
-                </div>
 
-                <p className="text-xs text-zinc-600 leading-relaxed text-left">
-                  Double-threaded cotton stitching through the fold. Book lays 180° flat naturally on flat desks, with zero risk of leaves detaching like cheap glued books.
-                </p>
-              </div>
+                  <p className="text-xs text-zinc-600 leading-relaxed text-left">
+                    Double-threaded cotton stitching through the fold. Book lays 180° flat naturally on flat desks, with zero risk of leaves detaching like cheap glued books.
+                  </p>
+                </div>
+              </SpotlightCard>
             </motion.div>
 
             {/* Component 3: 70 GSM Bond */}
@@ -985,25 +1068,29 @@ export const HomePage: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: 0.18 }}
               whileHover={{ y: -4 }}
-              className="p-5 sm:p-6 rounded-2xl bg-white border border-zinc-200/80 hover:border-zinc-300 transition-all shadow-xs flex flex-col justify-between"
+              className="h-full"
             >
-              <div>
-                {/* Icon Left + Text Right */}
-                <div className="flex items-center gap-3.5 mb-3.5">
-                  <div className="w-11 h-11 rounded-xl bg-[var(--red)]/10 border border-[var(--red)]/20 flex items-center justify-center text-[var(--red)] shrink-0 shadow-2xs">
-                    <Feather className="w-5 h-5 stroke-[2]" />
+              <SpotlightCard
+                spotlightTone="crimson"
+                className="h-full p-5 sm:p-6 rounded-2xl bg-white border border-zinc-200/80 hover:border-[var(--red)]/35 transition-all shadow-xs flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center gap-3.5 mb-3.5">
+                    <div className="w-11 h-11 rounded-xl bg-[var(--red)]/10 border border-[var(--red)]/20 flex items-center justify-center text-[var(--red)] shrink-0 shadow-2xs">
+                      <Feather className="w-5 h-5 stroke-[2]" />
+                    </div>
+                    <div className="min-w-0 text-left">
+                      <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight">
+                        70 GSM Bleed-Proof Bond
+                      </h3>
+                    </div>
                   </div>
-                  <div className="min-w-0 text-left">
-                    <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight">
-                      70 GSM Bleed-Proof Bond
-                    </h3>
-                  </div>
-                </div>
 
-                <p className="text-xs text-zinc-600 leading-relaxed text-left">
-                  Pure white woodfree bond paper calibrated for high opacity. Fountain pen ink, ballpoints, and highlighters write smoothly without bleed-through or ghosting.
-                </p>
-              </div>
+                  <p className="text-xs text-zinc-600 leading-relaxed text-left">
+                    Pure white woodfree bond paper calibrated for high opacity. Fountain pen ink, ballpoints, and highlighters write smoothly without bleed-through or ghosting.
+                  </p>
+                </div>
+              </SpotlightCard>
             </motion.div>
 
             {/* Component 4: NECTA Ruling */}
@@ -1013,25 +1100,29 @@ export const HomePage: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: 0.24 }}
               whileHover={{ y: -4 }}
-              className="p-5 sm:p-6 rounded-2xl bg-white border border-zinc-200/80 hover:border-zinc-300 transition-all shadow-xs flex flex-col justify-between"
+              className="h-full"
             >
-              <div>
-                {/* Icon Left + Text Right */}
-                <div className="flex items-center gap-3.5 mb-3.5">
-                  <div className="w-11 h-11 rounded-xl bg-[var(--gold)]/10 border border-[var(--gold)]/20 flex items-center justify-center text-[var(--gold)] shrink-0 shadow-2xs">
-                    <FileCheck2 className="w-5 h-5 stroke-[2]" />
+              <SpotlightCard
+                spotlightTone="gold"
+                className="h-full p-5 sm:p-6 rounded-2xl bg-white border border-zinc-200/80 hover:border-[var(--gold)]/45 transition-all shadow-xs flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center gap-3.5 mb-3.5">
+                    <div className="w-11 h-11 rounded-xl bg-[var(--gold)]/10 border border-[var(--gold)]/20 flex items-center justify-center text-[var(--gold)] shrink-0 shadow-2xs">
+                      <FileCheck2 className="w-5 h-5 stroke-[2]" />
+                    </div>
+                    <div className="min-w-0 text-left">
+                      <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight">
+                        NECTA &amp; Standard Ruling
+                      </h3>
+                    </div>
                   </div>
-                  <div className="min-w-0 text-left">
-                    <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight">
-                      NECTA &amp; Standard Ruling
-                    </h3>
-                  </div>
-                </div>
 
-                <p className="text-xs text-zinc-600 leading-relaxed text-left">
-                  Optically balanced soft cyan feint lines with vibrant red security margin rules, compliant with Tanzanian national school curriculum guidelines.
-                </p>
-              </div>
+                  <p className="text-xs text-zinc-600 leading-relaxed text-left">
+                    Optically balanced soft cyan feint lines with vibrant red security margin rules, compliant with Tanzanian national school curriculum guidelines.
+                  </p>
+                </div>
+              </SpotlightCard>
             </motion.div>
 
           </div>
@@ -1039,52 +1130,68 @@ export const HomePage: React.FC = () => {
         </div>
       </section>
 
-
-
       {/* ========================================================================= */}
-      {/* 7. PROMOTIONAL WHOLESALE CARTON RATES BANNER */}
+      {/* 7. PROMOTIONAL WHOLESALE CARTON RATES — OMEGA OBSIDIAN-CRIMSON SILK SHADER */}
       {/* ========================================================================= */}
-      <section className="bg-[var(--surface-2)] text-[var(--text)] border-b border-[var(--border)] py-8 sm:py-12 relative overflow-hidden transition-colors duration-200">
-        <HaikeiBlobGlow color="red" position="center" size="lg" className="opacity-25" />
+      <section className="bg-[#151417] text-[#FAF8F5] border-y border-[#B8862B]/35 py-10 sm:py-14 relative overflow-hidden">
+        {/* Shaders.com-Inspired Flowing Obsidian, Crimson & Burnished Gold Liquid Silk */}
+        <OmegaSilkShader
+          variant="obsidian-crimson"
+          speed={0.75}
+          intensity={1.0}
+          interactive={true}
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#151417]/75 via-[#151417]/35 to-[#151417]/75"
+        />
 
         <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
             
-            {/* Left: 20% OFF Cartons */}
+            {/* Left: 20% OFF Cartons with CountUp + ShinyText */}
             <div className="flex items-center gap-4 shrink-0">
-              <div className="font-serif font-black text-4xl sm:text-5xl lg:text-6xl text-[var(--red)] tracking-tight leading-none">
-                20<span className="text-xl sm:text-2xl font-sans">%</span>
-                <span className="block text-[11px] font-mono font-bold tracking-widest uppercase text-[var(--gold)]">
+              <div className="font-serif font-black text-4xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-none drop-shadow-sm">
+                <CountUp to={20} duration={1.1} />
+                <span className="text-xl sm:text-2xl font-sans text-[#EF4444]">%</span>
+                <ShinyText
+                  tone="light-gold"
+                  speedSec={3.8}
+                  className="block text-[11px] font-mono font-bold tracking-widest uppercase mt-1"
+                >
                   OFF CARTONS
-                </span>
+                </ShinyText>
               </div>
-              <div className="w-px h-12 bg-[var(--border)] hidden sm:block" />
+              <div className="w-px h-14 bg-white/15 hidden sm:block" />
             </div>
 
             {/* Center: Editorial Offer Copy */}
-            <div className="space-y-1 max-w-xl">
-              <h3 className="font-serif text-lg sm:text-xl font-bold text-[var(--text)] tracking-wide">
+            <div className="space-y-1.5 max-w-xl">
+              <h3 className="font-serif text-lg sm:text-2xl font-bold text-[#FAF8F5] tracking-wide">
                 {language === 'sw'
                   ? 'Kwa sababu taasisi yako inastahili ubora usio na kifani.'
                   : 'Because your institution deserves genuine lasting quality.'}
               </h3>
-              <p className="text-xs text-[var(--text-muted)] font-sans">
+              <p className="text-xs sm:text-sm text-[#FAF8F5]/75 font-sans">
                 {language === 'sw'
                   ? 'Furahia punguzo la kiwandani kwa oda zote za jumla za katoni za vitabu na bahasha.'
                   : 'Enjoy special factory carton rates on all bulk counter books and exercise reams for schools and tenders.'}
               </p>
             </div>
 
-            {/* Right: Filled Red CTA Button */}
+            {/* Right: ReactBits Magnet Crimson CTA Button */}
             <div className="shrink-0">
-              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
-                <Link
-                  to="/wholesale"
-                  className="inline-flex items-center justify-center px-7 py-3.5 rounded-full bg-[var(--red)] hover:bg-[var(--red-hover)] text-white text-xs font-mono font-bold tracking-wider uppercase transition-colors shadow-md shadow-red-950/40 cursor-pointer"
-                >
-                  <span>{language === 'sw' ? 'BEI ZA JUMLA' : 'SHOP WHOLESALE CARTONS'}</span>
-                </Link>
-              </motion.div>
+              <Magnet strength={0.22}>
+                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.96 }}>
+                  <Link
+                    to="/wholesale"
+                    className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-[var(--red)] hover:bg-[var(--red-hover)] text-white text-xs font-mono font-bold tracking-wider uppercase transition-colors shadow-[0_12px_28px_rgba(214,58,58,0.4)] border border-white/15 cursor-pointer"
+                  >
+                    <span>{language === 'sw' ? 'BEI ZA JUMLA' : 'SHOP WHOLESALE CARTONS'}</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </motion.div>
+              </Magnet>
             </div>
 
           </div>
@@ -1108,13 +1215,21 @@ export const HomePage: React.FC = () => {
             transition={{ duration: 0.5 }}
             className="text-center space-y-3 max-w-2xl mx-auto"
           >
-            <span className="text-[10.5px] font-mono font-bold tracking-widest uppercase text-[var(--gold)] block">
+            <ShinyText
+              tone="gold"
+              className="text-[10.5px] font-mono font-bold tracking-widest uppercase block"
+            >
               ★ INSTITUTIONAL PROCUREMENT
-            </span>
+            </ShinyText>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text)]">
-              {language === 'sw'
-                ? 'Viwango vya Bei ya Jumla & Usafirishaji'
-                : 'B2B Wholesale Tiers & Direct Freight'}
+              <BlurText
+                text={
+                  language === 'sw'
+                    ? 'Viwango vya Bei ya Jumla & Usafirishaji'
+                    : 'B2B Wholesale Tiers & Direct Freight'
+                }
+                className="justify-center"
+              />
             </h2>
             <div className="w-12 h-0.5 bg-[var(--gold)] mx-auto opacity-70" />
             <p className="text-xs sm:text-sm text-[var(--text-muted)]">
@@ -1124,7 +1239,7 @@ export const HomePage: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* 3 Tier Cards with Motion Hover and Elevate */}
+          {/* 3 Tier Cards with ReactBits SpotlightCard */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             
             {/* Tier 1: Small Enterprise */}
@@ -1134,46 +1249,53 @@ export const HomePage: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: 0.05 }}
               whileHover={{ y: -6 }}
-              className="p-7 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)]/40 transition-colors shadow-sm flex flex-col justify-between space-y-6"
+              className="h-full"
             >
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="px-3 py-1 rounded-full bg-[var(--surface-2)] border border-[var(--border)] text-[10px] font-mono font-bold text-[var(--text-muted)] uppercase">
-                    TIER 1 · STARTER
-                  </span>
-                  <Boxes className="w-5 h-5 text-[var(--text-muted)]" />
-                </div>
-                <div>
-                  <h3 className="font-serif text-xl font-bold text-[var(--text)]">
-                    Retail &amp; Private Academies
-                  </h3>
-                  <p className="text-xs text-[var(--text-muted)] mt-1">
-                    Ideal for individual school terms, stationery shops, and private clinics.
-                  </p>
-                </div>
-                <div className="space-y-2 pt-2 border-t border-[var(--border)] text-xs text-[var(--text)]">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
-                    <span>Minimum Order: <strong>1 to 5 Cartons</strong></span>
+              <SpotlightCard
+                spotlightTone="gold"
+                className="h-full p-7 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)]/45 transition-colors shadow-sm"
+              >
+                <div className="h-full flex flex-col justify-between space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="px-3 py-1 rounded-full bg-[var(--surface-2)] border border-[var(--border)] text-[10px] font-mono font-bold text-[var(--text-muted)] uppercase">
+                        TIER 1 · STARTER
+                      </span>
+                      <Boxes className="w-5 h-5 text-[var(--text-muted)]" />
+                    </div>
+                    <div>
+                      <h3 className="font-serif text-xl font-bold text-[var(--text)]">
+                        Retail &amp; Private Academies
+                      </h3>
+                      <p className="text-xs text-[var(--text-muted)] mt-1">
+                        Ideal for individual school terms, stationery shops, and private clinics.
+                      </p>
+                    </div>
+                    <div className="space-y-2 pt-2 border-t border-[var(--border)] text-xs text-[var(--text)]">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
+                        <span>Minimum Order: <strong>1 to 5 Cartons</strong></span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
+                        <span>Next-Day Bus Parcel Dispatch</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
+                        <span>Standard Factory Wholesale Rates</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
-                    <span>Next-Day Bus Parcel Dispatch</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
-                    <span>Standard Factory Wholesale Rates</span>
-                  </div>
+                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+                    <Link
+                      to="/catalog"
+                      className="w-full block py-3 rounded-full bg-[var(--surface-2)] border border-[var(--border)] hover:border-[var(--gold)] text-center text-xs font-mono font-bold text-[var(--text)] hover:text-[var(--gold)] tracking-wider uppercase transition-colors"
+                    >
+                      Browse Standard Cartons
+                    </Link>
+                  </motion.div>
                 </div>
-              </div>
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
-                <Link
-                  to="/catalog"
-                  className="w-full block py-3 rounded-full bg-[var(--surface-2)] border border-[var(--border)] hover:border-[var(--gold)] text-center text-xs font-mono font-bold text-[var(--text)] hover:text-[var(--gold)] tracking-wider uppercase transition-colors"
-                >
-                  Browse Standard Cartons
-                </Link>
-              </motion.div>
+              </SpotlightCard>
             </motion.div>
 
             {/* Tier 2: Wholesale Stockist (Recommended) */}
@@ -1183,56 +1305,65 @@ export const HomePage: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: 0.12 }}
               whileHover={{ y: -8 }}
-              className="p-7 rounded-2xl bg-[var(--surface-1)] border-2 border-[var(--gold)] shadow-xl relative flex flex-col justify-between space-y-6"
+              className="relative h-full"
             >
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-0.5 rounded-full bg-[var(--gold)] text-black text-[10px] font-mono font-black uppercase tracking-wider shadow-sm">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-30 px-4 py-0.5 rounded-full bg-gradient-to-r from-[#F3D28A] via-[#E9B44C] to-[#B8862B] text-black text-[10px] font-mono font-black uppercase tracking-wider shadow-sm whitespace-nowrap">
                 MOST POPULAR
               </div>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="px-3 py-1 rounded-full bg-[var(--gold)]/10 border border-[var(--gold)]/30 text-[10px] font-mono font-bold text-[var(--gold)] uppercase">
-                    TIER 2 · STOCKIST
-                  </span>
-                  <Award className="w-5 h-5 text-[var(--gold)]" />
-                </div>
-                <div>
-                  <h3 className="font-serif text-xl font-bold text-[var(--text)]">
-                    Regional Wholesale Stockists
-                  </h3>
-                  <p className="text-xs text-[var(--text-muted)] mt-1">
-                    Supplying districts, secondary schools, universities, and commercial suppliers.
-                  </p>
-                </div>
-                <div className="space-y-2 pt-2 border-t border-[var(--border)] text-xs text-[var(--text)]">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
-                    <span>Volume: <strong>6 to 40 Cartons</strong></span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
-                    <span><strong>15% Additional Volume Discount</strong></span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
-                    <span>Free Waybill Insurance to Kariakoo &amp; Upcountry</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
-                    <span>Priority Production Reservation</span>
-                  </div>
-                </div>
-              </div>
-              <motion.a
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
-                href="https://wa.me/255624265480?text=Habari%20OMEGA%2C%20ninaomba%20bei%20za%20jumla%20za%20katoni%206%2B%20(Tier%202%20Stockist)."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-3.5 rounded-full bg-[var(--red)] hover:bg-[var(--red-hover)] text-center text-xs font-mono font-bold text-white tracking-wider uppercase transition-colors shadow-md flex items-center justify-center gap-2 cursor-pointer"
+              <SpotlightCard
+                spotlightTone="dual"
+                className="h-full p-7 rounded-2xl bg-[var(--surface-1)] border-2 border-[var(--gold)] shadow-xl"
               >
-                <MessageCircle className="w-4 h-4" />
-                <span>Instant WhatsApp RFQ</span>
-              </motion.a>
+                <div className="h-full flex flex-col justify-between space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="px-3 py-1 rounded-full bg-[var(--gold)]/10 border border-[var(--gold)]/30 text-[10px] font-mono font-bold text-[var(--gold)] uppercase">
+                        TIER 2 · STOCKIST
+                      </span>
+                      <Award className="w-5 h-5 text-[var(--gold)]" />
+                    </div>
+                    <div>
+                      <h3 className="font-serif text-xl font-bold text-[var(--text)]">
+                        Regional Wholesale Stockists
+                      </h3>
+                      <p className="text-xs text-[var(--text-muted)] mt-1">
+                        Supplying districts, secondary schools, universities, and commercial suppliers.
+                      </p>
+                    </div>
+                    <div className="space-y-2 pt-2 border-t border-[var(--border)] text-xs text-[var(--text)]">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
+                        <span>Volume: <strong>6 to 40 Cartons</strong></span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
+                        <span><strong>15% Additional Volume Discount</strong></span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
+                        <span>Free Waybill Insurance to Kariakoo &amp; Upcountry</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
+                        <span>Priority Production Reservation</span>
+                      </div>
+                    </div>
+                  </div>
+                  <Magnet strength={0.18} className="w-full">
+                    <motion.a
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.97 }}
+                      href="https://wa.me/255624265480?text=Habari%20OMEGA%2C%20ninaomba%20bei%20za%20jumla%20za%20katoni%206%2B%20(Tier%202%20Stockist)."
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-3.5 rounded-full bg-[var(--red)] hover:bg-[var(--red-hover)] text-center text-xs font-mono font-bold text-white tracking-wider uppercase transition-colors shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      <span>Instant WhatsApp RFQ</span>
+                    </motion.a>
+                  </Magnet>
+                </div>
+              </SpotlightCard>
             </motion.div>
 
             {/* Tier 3: Institutional Tenders */}
@@ -1242,50 +1373,57 @@ export const HomePage: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: 0.18 }}
               whileHover={{ y: -6 }}
-              className="p-7 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)]/40 transition-colors shadow-sm flex flex-col justify-between space-y-6"
+              className="h-full"
             >
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="px-3 py-1 rounded-full bg-[var(--surface-2)] border border-[var(--border)] text-[10px] font-mono font-bold text-[var(--text-muted)] uppercase">
-                    TIER 3 · ENTERPRISE
-                  </span>
-                  <Building2 className="w-5 h-5 text-[var(--text-muted)]" />
+              <SpotlightCard
+                spotlightTone="crimson"
+                className="h-full p-7 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--red)]/35 transition-colors shadow-sm"
+              >
+                <div className="h-full flex flex-col justify-between space-y-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="px-3 py-1 rounded-full bg-[var(--surface-2)] border border-[var(--border)] text-[10px] font-mono font-bold text-[var(--text-muted)] uppercase">
+                        TIER 3 · ENTERPRISE
+                      </span>
+                      <Building2 className="w-5 h-5 text-[var(--text-muted)]" />
+                    </div>
+                    <div>
+                      <h3 className="font-serif text-xl font-bold text-[var(--text)]">
+                        National Tenders &amp; Gov
+                      </h3>
+                      <p className="text-xs text-[var(--text-muted)] mt-1">
+                        Ministries, multinational banks, NGOs, and national examination councils.
+                      </p>
+                    </div>
+                    <div className="space-y-2 pt-2 border-t border-[var(--border)] text-xs text-[var(--text)]">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
+                        <span>Volume: <strong>40+ Cartons / Container</strong></span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
+                        <span>Custom School Crest Foil Stamping</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
+                        <span>TRA EFD Fiscal Tax Invoices Provided</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
+                        <span>Dedicated Pallet Truck Logistics</span>
+                      </div>
+                    </div>
+                  </div>
+                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+                    <Link
+                      to="/school-tenders"
+                      className="w-full block py-3 rounded-full bg-[var(--surface-2)] border border-[var(--border)] hover:border-[var(--gold)] text-center text-xs font-mono font-bold text-[var(--text)] hover:text-[var(--gold)] tracking-wider uppercase transition-colors"
+                    >
+                      Inquire Tender Desk
+                    </Link>
+                  </motion.div>
                 </div>
-                <div>
-                  <h3 className="font-serif text-xl font-bold text-[var(--text)]">
-                    National Tenders &amp; Gov
-                  </h3>
-                  <p className="text-xs text-[var(--text-muted)] mt-1">
-                    Ministries, multinational banks, NGOs, and national examination councils.
-                  </p>
-                </div>
-                <div className="space-y-2 pt-2 border-t border-[var(--border)] text-xs text-[var(--text)]">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
-                    <span>Volume: <strong>40+ Cartons / Container</strong></span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
-                    <span>Custom School Crest Foil Stamping</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
-                    <span>TRA EFD Fiscal Tax Invoices Provided</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[var(--gold)] shrink-0" />
-                    <span>Dedicated Pallet Truck Logistics</span>
-                  </div>
-                </div>
-              </div>
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
-                <Link
-                  to="/school-tenders"
-                  className="w-full block py-3 rounded-full bg-[var(--surface-2)] border border-[var(--border)] hover:border-[var(--gold)] text-center text-xs font-mono font-bold text-[var(--text)] hover:text-[var(--gold)] tracking-wider uppercase transition-colors"
-                >
-                  Inquire Tender Desk
-                </Link>
-              </motion.div>
+              </SpotlightCard>
             </motion.div>
 
           </div>
@@ -1307,16 +1445,22 @@ export const HomePage: React.FC = () => {
             transition={{ duration: 0.5 }}
             className="text-center space-y-2"
           >
-            <span className="text-[10.5px] font-mono font-bold tracking-widest uppercase text-[var(--gold)] block">
+            <ShinyText
+              tone="gold"
+              className="text-[10.5px] font-mono font-bold tracking-widest uppercase block"
+            >
               ★ CLIENT TESTIMONIALS
-            </span>
+            </ShinyText>
             <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-[var(--text)]">
-              {language === 'sw' ? 'WATEJA WETU WANASEMAJE' : 'LOVED BY OUR CLIENTS'}
+              <BlurText
+                text={language === 'sw' ? 'WATEJA WETU WANASEMAJE' : 'LOVED BY OUR CLIENTS'}
+                className="justify-center"
+              />
             </h2>
             <div className="w-12 h-0.5 bg-[var(--gold)] mx-auto opacity-70" />
           </motion.div>
 
-          {/* 3 Review Cards with Motion Entrance */}
+          {/* 3 Review Cards with ReactBits SpotlightCard */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
             
             {/* Review 1 */}
@@ -1326,29 +1470,36 @@ export const HomePage: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: 0.05 }}
               whileHover={{ y: -4 }}
-              className="p-6 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)]/40 space-y-4 flex flex-col justify-between transition-colors shadow-sm"
+              className="h-full"
             >
-              <div className="pb-3.5 border-b border-[var(--border)] flex items-center justify-between gap-3 text-left">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-9 h-9 rounded-full bg-[var(--surface-2)] text-[var(--gold)] font-mono font-bold flex items-center justify-center text-xs shrink-0 border border-[var(--border)]">
-                    EK
+              <SpotlightCard
+                spotlightTone="gold"
+                className="h-full p-6 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)]/45 transition-colors shadow-sm"
+              >
+                <div className="space-y-4 flex flex-col justify-between h-full">
+                  <div className="pb-3.5 border-b border-[var(--border)] flex items-center justify-between gap-3 text-left">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-9 h-9 rounded-full bg-[var(--surface-2)] text-[var(--gold)] font-mono font-bold flex items-center justify-center text-xs shrink-0 border border-[var(--border)]">
+                        EK
+                      </div>
+                      <div className="min-w-0">
+                        <h4 className="text-xs font-bold text-[var(--text)] truncate">Emanuel Kiwanga</h4>
+                        <p className="text-[10.5px] text-[var(--text-muted)] font-mono truncate">
+                          Chief Accountant · Dar es Salaam
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex gap-0.5 text-[var(--gold)] shrink-0">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3.5 h-3.5 fill-[var(--gold)] text-[var(--gold)]" />
+                      ))}
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <h4 className="text-xs font-bold text-[var(--text)] truncate">Emanuel Kiwanga</h4>
-                    <p className="text-[10.5px] text-[var(--text-muted)] font-mono truncate">
-                      Chief Accountant · Dar es Salaam
-                    </p>
-                  </div>
+                  <p className="text-xs sm:text-sm text-[var(--text)] italic leading-relaxed font-sans text-left">
+                    “Daftari la OMEGA Quire 3 lina karatasi ngumu sana na jalada lisilopinda. Linanisaidia sana kwenye mahesabu ya kila mwezi bila wino kupenya kabisa.”
+                  </p>
                 </div>
-                <div className="flex gap-0.5 text-[var(--gold)] shrink-0">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-[var(--gold)] text-[var(--gold)]" />
-                  ))}
-                </div>
-              </div>
-              <p className="text-xs sm:text-sm text-[var(--text)] italic leading-relaxed font-sans text-left">
-                “Daftari la OMEGA Quire 3 lina karatasi ngumu sana na jalada lisilopinda. Linanisaidia sana kwenye mahesabu ya kila mwezi bila wino kupenya kabisa.”
-              </p>
+              </SpotlightCard>
             </motion.div>
 
             {/* Review 2 */}
@@ -1358,29 +1509,36 @@ export const HomePage: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: 0.12 }}
               whileHover={{ y: -4 }}
-              className="p-6 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)]/40 space-y-4 flex flex-col justify-between transition-colors shadow-sm"
+              className="h-full"
             >
-              <div className="pb-3.5 border-b border-[var(--border)] flex items-center justify-between gap-3 text-left">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-9 h-9 rounded-full bg-[var(--surface-2)] text-[var(--gold)] font-mono font-bold flex items-center justify-center text-xs shrink-0 border border-[var(--border)]">
-                    GM
+              <SpotlightCard
+                spotlightTone="crimson"
+                className="h-full p-6 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--red)]/35 transition-colors shadow-sm"
+              >
+                <div className="space-y-4 flex flex-col justify-between h-full">
+                  <div className="pb-3.5 border-b border-[var(--border)] flex items-center justify-between gap-3 text-left">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-9 h-9 rounded-full bg-[var(--surface-2)] text-[var(--gold)] font-mono font-bold flex items-center justify-center text-xs shrink-0 border border-[var(--border)]">
+                        GM
+                      </div>
+                      <div className="min-w-0">
+                        <h4 className="text-xs font-bold text-[var(--text)] truncate">Grace Mhando</h4>
+                        <p className="text-[10.5px] text-[var(--text-muted)] font-mono truncate">
+                          Head of Academics · Arusha
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex gap-0.5 text-[var(--gold)] shrink-0">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3.5 h-3.5 fill-[var(--gold)] text-[var(--gold)]" />
+                      ))}
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <h4 className="text-xs font-bold text-[var(--text)] truncate">Grace Mhando</h4>
-                    <p className="text-[10.5px] text-[var(--text-muted)] font-mono truncate">
-                      Head of Academics · Arusha
-                    </p>
-                  </div>
+                  <p className="text-xs sm:text-sm text-[var(--text)] italic leading-relaxed font-sans text-left">
+                    “The Smyth-sewn binding of OMEGA exercise books is truly unmatched. Our secondary school orders 200-page single line books every term without fail.”
+                  </p>
                 </div>
-                <div className="flex gap-0.5 text-[var(--gold)] shrink-0">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-[var(--gold)] text-[var(--gold)]" />
-                  ))}
-                </div>
-              </div>
-              <p className="text-xs sm:text-sm text-[var(--text)] italic leading-relaxed font-sans text-left">
-                “The Smyth-sewn binding of OMEGA exercise books is truly unmatched. Our secondary school orders 200-page single line books every term without fail.”
-              </p>
+              </SpotlightCard>
             </motion.div>
 
             {/* Review 3 */}
@@ -1390,29 +1548,36 @@ export const HomePage: React.FC = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.45, delay: 0.18 }}
               whileHover={{ y: -4 }}
-              className="p-6 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)]/40 space-y-4 flex flex-col justify-between transition-colors shadow-sm"
+              className="h-full"
             >
-              <div className="pb-3.5 border-b border-[var(--border)] flex items-center justify-between gap-3 text-left">
-                <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-9 h-9 rounded-full bg-[var(--surface-2)] text-[var(--gold)] font-mono font-bold flex items-center justify-center text-xs shrink-0 border border-[var(--border)]">
-                    JM
+              <SpotlightCard
+                spotlightTone="gold"
+                className="h-full p-6 rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] hover:border-[var(--gold)]/45 transition-colors shadow-sm"
+              >
+                <div className="space-y-4 flex flex-col justify-between h-full">
+                  <div className="pb-3.5 border-b border-[var(--border)] flex items-center justify-between gap-3 text-left">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-9 h-9 rounded-full bg-[var(--surface-2)] text-[var(--gold)] font-mono font-bold flex items-center justify-center text-xs shrink-0 border border-[var(--border)]">
+                        JM
+                      </div>
+                      <div className="min-w-0">
+                        <h4 className="text-xs font-bold text-[var(--text)] truncate">Joseph Mollel</h4>
+                        <p className="text-[10.5px] text-[var(--text-muted)] font-mono truncate">
+                          Stationery Store Owner · Mwanza
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex gap-0.5 text-[var(--gold)] shrink-0">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3.5 h-3.5 fill-[var(--gold)] text-[var(--gold)]" />
+                      ))}
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <h4 className="text-xs font-bold text-[var(--text)] truncate">Joseph Mollel</h4>
-                    <p className="text-[10.5px] text-[var(--text-muted)] font-mono truncate">
-                      Stationery Store Owner · Mwanza
-                    </p>
-                  </div>
+                  <p className="text-xs sm:text-sm text-[var(--text)] italic leading-relaxed font-sans text-left">
+                    “Fast bus parcel dispatch to Mwanza! The kraft envelopes and ruled reams arrived safely packed in OMEGA branded cartons within 24 hours.”
+                  </p>
                 </div>
-                <div className="flex gap-0.5 text-[var(--gold)] shrink-0">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-[var(--gold)] text-[var(--gold)]" />
-                  ))}
-                </div>
-              </div>
-              <p className="text-xs sm:text-sm text-[var(--text)] italic leading-relaxed font-sans text-left">
-                “Fast bus parcel dispatch to Mwanza! The kraft envelopes and ruled reams arrived safely packed in OMEGA branded cartons within 24 hours.”
-              </p>
+              </SpotlightCard>
             </motion.div>
 
           </div>
@@ -1420,18 +1585,26 @@ export const HomePage: React.FC = () => {
       </section>
 
       {/* ========================================================================= */}
-      {/* 9. VIP CONCIERGE & PRICE ALERTS */}
+      {/* 9. VIP CONCIERGE & PRICE ALERTS — WebGL Parchment Gold Aurora Shader      */}
       {/* ========================================================================= */}
       <section className="py-14 sm:py-20 bg-[var(--surface-1)] text-[var(--text)] relative overflow-hidden transition-colors duration-200">
         
-        <HaikeiBlobGlow color="red" position="top-right" size="lg" className="opacity-25" />
+        <OmegaAuroraMeshShader
+          variant="parchment-gold"
+          speed={0.75}
+          intensity={0.9}
+          interactive={true}
+        />
 
         <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="max-w-2xl mx-auto text-center space-y-4">
             
-            {/* Headline */}
+            {/* Headline with ReactBits BlurText */}
             <h2 className="font-serif text-2xl sm:text-4xl lg:text-5xl font-bold text-[var(--text)] tracking-tight">
-              {language === 'sw' ? 'Ungana na OMEGA Stationery' : 'Connect with OMEGA Stationery'}
+              <BlurText
+                text={language === 'sw' ? 'Ungana na OMEGA Stationery' : 'Connect with OMEGA Stationery'}
+                className="justify-center"
+              />
             </h2>
 
             {/* Description */}
@@ -1441,7 +1614,7 @@ export const HomePage: React.FC = () => {
                 : 'Receive official 2026 wholesale catalogs, bulk school tender announcements, and factory-direct price updates.'}
             </p>
 
-            {/* Form with ONE filled red button */}
+            {/* Form with ONE filled red Magnet button */}
             {newsletterSubmitted ? (
               <div className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-medium mt-3">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
@@ -1470,18 +1643,20 @@ export const HomePage: React.FC = () => {
                     value={newsletterContact}
                     onChange={(e) => setNewsletterContact(e.target.value)}
                     placeholder={language === 'sw' ? 'Weka namba au barua pepe...' : 'Enter your email or phone number...'}
-                    className="w-full pl-11 pr-4 py-3 rounded-full text-xs sm:text-sm bg-[var(--surface-2)] text-[var(--text)] placeholder:text-[var(--text-muted)] border border-[var(--border)] focus:outline-none focus:border-[var(--gold)] focus:ring-1 focus:ring-[var(--gold)] transition-all font-sans"
+                    className="w-full pl-11 pr-4 py-3 rounded-full text-xs sm:text-sm bg-white/90 backdrop-blur-xs text-[var(--text)] placeholder:text-[var(--text-muted)] border border-[var(--border)] focus:outline-none focus:border-[var(--gold)] focus:ring-1 focus:ring-[var(--gold)] transition-all font-sans"
                   />
                 </div>
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.95 }}
-                  type="submit"
-                  className="w-full sm:w-auto px-7 py-3 rounded-full bg-[var(--red)] hover:bg-[var(--red-hover)] text-white text-xs sm:text-sm font-bold uppercase tracking-wider font-mono transition-all shadow-md shrink-0 flex items-center justify-center gap-1.5 cursor-pointer shadow-red-950/40"
-                >
-                  <span>{language === 'sw' ? 'JIUNGE' : 'SUBSCRIBE'}</span>
-                  <ArrowUpRight className="w-4 h-4 stroke-[2]" />
-                </motion.button>
+                <Magnet strength={0.2} className="w-full sm:w-auto">
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.95 }}
+                    type="submit"
+                    className="w-full sm:w-auto px-7 py-3 rounded-full bg-[var(--red)] hover:bg-[var(--red-hover)] text-white text-xs sm:text-sm font-bold uppercase tracking-wider font-mono transition-all shadow-md shrink-0 flex items-center justify-center gap-1.5 cursor-pointer shadow-red-950/40"
+                  >
+                    <span>{language === 'sw' ? 'JIUNGE' : 'SUBSCRIBE'}</span>
+                    <ArrowUpRight className="w-4 h-4 stroke-[2]" />
+                  </motion.button>
+                </Magnet>
               </form>
             )}
 
