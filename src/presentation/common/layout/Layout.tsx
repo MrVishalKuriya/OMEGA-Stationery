@@ -152,9 +152,9 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       {/* Header */}
       <Navbar />
 
-      {/* Toast Notification */}
+      {/* Toast Notification (Positioned away from floating WhatsApp Orders & Back-to-Top buttons) */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-2xl bg-[var(--surface-1)] text-[var(--text)] border border-[var(--gold)]/40 shadow-2xl animate-in slide-in-from-bottom-5">
+        <div className="fixed bottom-36 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-auto z-50 flex items-center gap-3 px-5 py-3 rounded-2xl bg-[var(--surface-1)] text-[var(--text)] border border-[var(--gold)]/40 shadow-2xl animate-in slide-in-from-bottom-5 sm:max-w-md">
           <CheckCircle2 className="w-5 h-5 text-[var(--red)] shrink-0" />
           <span className="text-xs font-bold">{toastMessage}</span>
           <button
@@ -175,7 +175,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       {/* ========================================================================= */}
       {/* FOOTER SECTION: Slim Icon Strip + Surface-1 Card with Gold Hairline */}
       {/* ========================================================================= */}
-      <footer className="w-full max-w-[1360px] mx-auto px-3 sm:px-6 lg:px-8 pb-12 sm:pb-16 pt-8 space-y-6">
+      <footer className="w-full max-w-[1360px] mx-auto px-3 sm:px-6 lg:px-8 pb-32 sm:pb-24 pt-8 space-y-6">
         
         {/* Slim Icon Strip */}
         <div className="bg-[var(--surface-1)] rounded-2xl border border-[var(--border)] p-4 sm:p-6 shadow-xs">

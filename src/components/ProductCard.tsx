@@ -17,7 +17,6 @@ import { useStore } from '../context/StoreContext';
 import { ProductImage } from './ProductImage';
 import { StarRatingBadge } from './StarRatingBadge';
 import { isProductSubscribedForAlert } from '../services/api';
-import { SpotlightCard } from './ui/ReactBitsAnimations';
 
 interface ProductCardProps {
   product: Product;
@@ -144,23 +143,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
   return (
     <div className="omega-card-container h-full">
-      <SpotlightCard
-        spotlightTone="dual"
-        className="h-full rounded-[20px] border border-[var(--border)]/50 hover:border-[var(--gold)]/45 shadow-[0_2px_10px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_28px_rgba(22,21,24,0.08)] transition-all duration-300 bg-white"
+      <motion.div
+        whileHover={{ y: -3, transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] } }}
+        onClick={() => setQuickViewProduct(product)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setQuickViewProduct(product);
+          }
+        }}
+        className="omega-card-inner omega-hover-lift group relative bg-white rounded-[20px] p-3.5 sm:p-4 flex flex-col justify-between transition-all duration-200 h-full text-left border-0 shadow-[0_2px_10px_rgba(0,0,0,0.02)] cursor-pointer"
       >
-        <motion.div
-          whileHover={{ y: -3, transition: { duration: 0.2, ease: [0.16, 1, 0.3, 1] } }}
-          onClick={() => setQuickViewProduct(product)}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              setQuickViewProduct(product);
-            }
-          }}
-          className="omega-card-inner omega-hover-lift group relative bg-transparent rounded-[20px] p-3.5 sm:p-4 flex flex-col justify-between transition-all duration-200 h-full text-left cursor-pointer"
-        >
         {/* Top Image Panel: Click to Open Quick View Modal */}
         <div
           onClick={handleOpenQuickView}
@@ -390,8 +385,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             )}
           </div>
         </div>
-        </motion.div>
-      </SpotlightCard>
+      </motion.div>
     </div>
   );
 };

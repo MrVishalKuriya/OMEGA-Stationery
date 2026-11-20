@@ -157,6 +157,8 @@ export const AdminDashboardPage: React.FC = () => {
     isCatalogLoading,
   } = useStore();
 
+  const { invalidateAndRefetchProducts } = useProductCacheInvalidation();
+
   const [isSavingProduct, setIsSavingProduct] = useState(false);
   const currency = storeConfig.currencySymbol || 'TSh';
 

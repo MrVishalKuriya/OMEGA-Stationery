@@ -4,8 +4,14 @@ import { ArrowRight, ChevronLeft, ChevronRight, ShieldCheck, Feather } from 'luc
 import { motion, AnimatePresence } from 'motion/react';
 import { useStore } from '@/context/StoreContext';
 import { HaikeiPaperLines } from '@/components/HaikeiBackgrounds';
-import { OmegaAuroraMeshShader, OmegaLogoHaloShader } from '@/components/ui/OmegaShaders';
-import { BlurText, ShinyText, Magnet, TiltedCard } from '@/components/ui/ReactBitsAnimations';
+import {
+  HeroArchivalShader,
+  HeroBookCausticShader,
+  HeroBlurText,
+  HeroShinyText,
+  HeroMagnet,
+  HeroTiltedBook,
+} from './HeroShaderEffects';
 
 interface HeroSlide {
   id: string;
@@ -85,13 +91,13 @@ const StudioBookHalo: React.FC = () => {
       className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
       aria-hidden="true"
     >
-      {/* WebGL Radial Crimson & Archival Gold Caustic Shader Halo */}
-      <div className="absolute inset-0 scale-110">
-        <OmegaLogoHaloShader speed={0.8} intensity={0.92} />
+      {/* Shaders.com-Inspired Radial Crimson & Archival Gold WebGL Caustic Halo */}
+      <div className="absolute inset-0 scale-105">
+        <HeroBookCausticShader />
       </div>
 
       {/* Ground Pedestal Shadow */}
-      <div className="absolute bottom-[9%] w-[54%] h-6 rounded-full bg-black/15 blur-xl" />
+      <div className="absolute bottom-[8%] w-[56%] h-6 rounded-full bg-black/15 blur-xl" />
     </div>
   );
 };
@@ -126,25 +132,20 @@ export const Hero: React.FC = () => {
       onMouseLeave={() => setIsPaused(false)}
       className="relative w-full overflow-hidden bg-[var(--bg)] min-h-[440px] sm:min-h-[540px] lg:min-h-[600px] flex items-center transition-colors duration-200"
     >
-      {/* Shaders.com-Inspired Living Archival Paper, Gold & Crimson WebGL Aurora Mesh */}
-      <OmegaAuroraMeshShader
-        variant="parchment"
-        speed={0.85}
-        intensity={1.0}
-        interactive={true}
-      />
+      {/* Shaders.com-Inspired Living Archival Paper, Crimson & Gold Silk Shader */}
+      <HeroArchivalShader />
 
       {/* Subtle Paper Contour Lines */}
       <HaikeiPaperLines opacity={0.035} />
 
-      {/* Main 2-Column Content Layout */}
-      <div className="relative z-10 w-full max-w-[1360px] mx-auto px-5 sm:px-8 lg:px-12 py-10 sm:py-16 lg:py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+      {/* Main 2-Column Content Layout (Safe horizontal padding on md+ prevents side-arrow overlap) */}
+      <div className="relative z-10 w-full max-w-[1360px] mx-auto px-5 sm:px-8 md:px-20 xl:px-24 py-10 sm:py-14 lg:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
-          {/* Left Column: Clean Typography & Anchored Controls (7 cols) */}
+          {/* Left Column: Exact Existing Content Enhanced with ReactBits Animations (7 cols) */}
           <div className="lg:col-span-7 max-w-2xl text-left space-y-4 sm:space-y-5">
             {/* Animated Headline & Subtitle Only (No layout jump on controls) */}
-            <div className="min-h-[146px] sm:min-h-[184px] flex flex-col justify-center">
+            <div className="min-h-[132px] sm:min-h-[168px] flex flex-col justify-center">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={slide.id}
@@ -152,31 +153,15 @@ export const Hero: React.FC = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-                  className="space-y-2.5 sm:space-y-3.5"
+                  className="space-y-3 sm:space-y-4"
                 >
-                  {/* ShinyText Archival Gold Eyebrow */}
-                  <div className="flex items-center gap-2">
-                    <span className="w-5 h-px bg-[var(--gold)]/70" aria-hidden="true" />
-                    <ShinyText
-                      tone="gold"
-                      speedSec={4.2}
-                      className="font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em]"
-                    >
-                      {language === 'sw' ? slide.badgeSw : slide.badgeEn}
-                    </ShinyText>
-                  </div>
-
-                  {/* Headline: ReactBits BlurText Serif + ShinyText Crimson Sans */}
+                  {/* Headline: ReactBits BlurText Serif + ShinyText Crimson Sans (Exact Same Copy) */}
                   <h1 className="font-serif text-3xl sm:text-5xl lg:text-[56px] font-bold tracking-tight text-[var(--text)] leading-[1.12]">
-                    <BlurText text={slide.headlinePrefix} immediate={true} delay={0.04} />
+                    <HeroBlurText text={slide.headlinePrefix} />
                     <br />
-                    <ShinyText
-                      tone="crimson"
-                      speedSec={4.5}
-                      className="font-sans font-extrabold"
-                    >
+                    <HeroShinyText className="font-sans font-extrabold">
                       {slide.headlineGradient}
-                    </ShinyText>
+                    </HeroShinyText>
                   </h1>
 
                   {/* Subtitle */}
@@ -196,8 +181,10 @@ export const Hero: React.FC = () => {
                 {HERO_SLIDES.map((s, idx) => {
                   const active = idx === currentIdx;
                   return (
-                    <button
+                    <motion.button
                       key={s.id}
+                      whileHover={{ y: -1 }}
+                      whileTap={{ scale: 0.96 }}
                       type="button"
                       onClick={() => setCurrentIdx(idx)}
                       className={`px-3.5 py-1.5 rounded-xl font-mono text-xs font-bold transition-all duration-200 cursor-pointer flex items-center gap-1.5 border ${
@@ -210,7 +197,7 @@ export const Hero: React.FC = () => {
                       <span className={`text-[10px] ${active ? 'text-white/90' : 'text-[var(--text-muted)]'}`}>
                         ({s.pages}P)
                       </span>
-                    </button>
+                    </motion.button>
                   );
                 })}
               </div>
@@ -230,7 +217,7 @@ export const Hero: React.FC = () => {
 
             {/* Primary Action Button: ReactBits Magnet + Filled Red Pill */}
             <div className="pt-1">
-              <Magnet strength={0.22}>
+              <HeroMagnet strength={0.22}>
                 <Link
                   to={slide.href}
                   className="inline-flex items-center gap-2.5 px-8 py-3.5 min-h-[48px] rounded-full bg-[#D63A3A] hover:bg-[#b91c1c] active:scale-95 text-white font-mono text-xs sm:text-sm font-bold uppercase tracking-wider transition-all duration-200 shadow-[0_10px_24px_rgba(214,58,58,0.28)] hover:shadow-[0_14px_32px_rgba(214,58,58,0.38)] group cursor-pointer border border-red-400/30"
@@ -243,18 +230,18 @@ export const Hero: React.FC = () => {
                     className="group-hover:translate-x-1.5 transition-transform"
                   />
                 </Link>
-              </Magnet>
+              </HeroMagnet>
             </div>
           </div>
 
           {/* Right Column: WebGL Caustic Halo + ReactBits TiltedCard 3D Books (5 cols) */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center relative">
-            <TiltedCard
+          <div className="lg:col-span-5 flex flex-col items-center justify-center relative gap-3">
+            <HeroTiltedBook
               maxTilt={7}
-              className="relative w-full max-w-[300px] sm:max-w-[380px] lg:max-w-[440px] aspect-square flex items-center justify-center"
+              className="relative w-full max-w-[290px] sm:max-w-[360px] lg:max-w-[420px] aspect-square flex items-center justify-center"
             >
               
-              {/* WebGL Radial Crimson-Gold Studio Halo Pedestal Behind Book */}
+              {/* WebGL Radial Crimson-Gold Caustic Studio Halo Behind Book */}
               <StudioBookHalo />
 
               {/* Pre-Mounted Q2-Q4 Books with Smooth Crossfade & Scale */}
@@ -287,34 +274,68 @@ export const Hero: React.FC = () => {
                         loading="eager"
                         decoding="sync"
                         fetchPriority={idx <= 1 ? 'high' : 'auto'}
-                        className="max-h-[82%] max-w-[82%] object-contain drop-shadow-[0_24px_32px_rgba(0,0,0,0.28)] transition-transform duration-300 hover:scale-103"
+                        className="max-h-[84%] max-w-[84%] object-contain drop-shadow-[0_24px_32px_rgba(0,0,0,0.28)] transition-transform duration-300 hover:scale-103"
                       />
                     </picture>
                   </motion.div>
                 );
               })}
 
-              {/* Floating Live Quire & Page Thickness Pill Badge Below Book */}
-              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 z-20 px-4 py-1.5 rounded-full bg-[#111111]/90 text-white font-mono text-xs font-bold tracking-wider shadow-lg border border-[#B8862B]/35 flex items-center gap-2 backdrop-blur-md whitespace-nowrap">
-                <span className="text-[#EF4444] font-black">{slide.quire}</span>
-                <span className="text-white/40">•</span>
-                <span>{slide.pages} Pages</span>
-              </div>
+            </HeroTiltedBook>
 
-            </TiltedCard>
+            {/* Live Quire & Page Thickness Pill Badge Below Book (In normal flow — zero overlap) */}
+            <div className="relative z-20 px-4 py-1.5 rounded-full bg-[#111111]/90 text-white font-mono text-xs font-bold tracking-wider shadow-lg border border-[#B8862B]/35 flex items-center gap-2 backdrop-blur-md whitespace-nowrap">
+              <span className="text-[#EF4444] font-black">{slide.quire}</span>
+              <span className="text-white/40">•</span>
+              <span>{slide.pages} Pages</span>
+            </div>
           </div>
 
         </div>
+
+        {/* Pagination Indicators — In flow on mobile/tablet (zero overlap), anchored bottom-right on desktop */}
+        <div
+          role="tablist"
+          aria-label="Hero slider pagination"
+          className="mt-6 lg:mt-0 lg:absolute lg:bottom-6 lg:right-10 z-20 flex items-center justify-center lg:justify-end gap-2"
+        >
+          {HERO_SLIDES.map((s, idx) => {
+            const isActive = idx === currentIdx;
+            return (
+              <button
+                key={s.id}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                aria-label={`Go to ${s.quire} (${s.pages} Pages)`}
+                onClick={() => setCurrentIdx(idx)}
+                className={`relative h-2 rounded-full overflow-hidden transition-all duration-300 cursor-pointer ${
+                  isActive ? 'w-10 bg-[#D63A3A]/25 shadow-xs' : 'w-2 bg-[var(--text-muted)]/30 hover:bg-[var(--text-muted)]/60'
+                }`}
+              >
+                {isActive && (
+                  <motion.span
+                    key={`progress-${slide.id}-${isPaused}`}
+                    initial={{ width: '0%' }}
+                    animate={{ width: '100%' }}
+                    transition={{ duration: isPaused ? 0.2 : 4.2, ease: 'linear' }}
+                    className="absolute inset-y-0 left-0 bg-[#D63A3A] rounded-full"
+                  />
+                )}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Navigation Arrows */}
+      {/* Navigation Arrows (Safe outer edge positioning paired with md:px-20 content clearance) */}
       <motion.button
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.92 }}
         type="button"
         onClick={handlePrev}
         aria-label="Previous slide"
-        className="hidden md:flex absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-[var(--surface-1)] hover:bg-[#D63A3A] text-[var(--text)] hover:text-white border border-[var(--border)] hover:border-[var(--gold)]/40 backdrop-blur-md items-center justify-center transition-all cursor-pointer shadow-md"
+        className="hidden md:flex absolute left-3 xl:left-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-[var(--surface-1)]/95 hover:bg-[#D63A3A] text-[var(--text)] hover:text-white border border-[var(--border)] hover:border-[var(--gold)]/40 backdrop-blur-md items-center justify-center transition-all cursor-pointer shadow-md"
       >
         <ChevronLeft className="w-5 h-5 stroke-[2]" />
       </motion.button>
@@ -325,44 +346,10 @@ export const Hero: React.FC = () => {
         type="button"
         onClick={handleNext}
         aria-label="Next slide"
-        className="hidden md:flex absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-[var(--surface-1)] hover:bg-[#D63A3A] text-[var(--text)] hover:text-white border border-[var(--border)] hover:border-[var(--gold)]/40 backdrop-blur-md items-center justify-center transition-all cursor-pointer shadow-md"
+        className="hidden md:flex absolute right-3 xl:right-6 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-[var(--surface-1)]/95 hover:bg-[#D63A3A] text-[var(--text)] hover:text-white border border-[var(--border)] hover:border-[var(--gold)]/40 backdrop-blur-md items-center justify-center transition-all cursor-pointer shadow-md"
       >
         <ChevronRight className="w-5 h-5 stroke-[2]" />
       </motion.button>
-
-      {/* Pagination Indicators with Active Slide Animated Progress Fill */}
-      <div
-        role="tablist"
-        aria-label="Hero slider pagination"
-        className="absolute bottom-5 right-6 sm:bottom-8 sm:right-10 z-20 flex items-center gap-2"
-      >
-        {HERO_SLIDES.map((s, idx) => {
-          const isActive = idx === currentIdx;
-          return (
-            <button
-              key={s.id}
-              type="button"
-              role="tab"
-              aria-selected={isActive}
-              aria-label={`Go to ${s.quire} (${s.pages} Pages)`}
-              onClick={() => setCurrentIdx(idx)}
-              className={`relative h-2 rounded-full overflow-hidden transition-all duration-300 cursor-pointer ${
-                isActive ? 'w-10 bg-[#D63A3A]/25 shadow-xs' : 'w-2 bg-[var(--text-muted)]/30 hover:bg-[var(--text-muted)]/60'
-              }`}
-            >
-              {isActive && (
-                <motion.span
-                  key={`progress-${slide.id}-${isPaused}`}
-                  initial={{ width: '0%' }}
-                  animate={{ width: '100%' }}
-                  transition={{ duration: isPaused ? 0.2 : 4.2, ease: 'linear' }}
-                  className="absolute inset-y-0 left-0 bg-[#D63A3A] rounded-full"
-                />
-              )}
-            </button>
-          );
-        })}
-      </div>
     </section>
   );
 };

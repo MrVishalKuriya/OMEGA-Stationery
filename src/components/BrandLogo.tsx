@@ -1,7 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'motion/react';
-import { ShinyText } from '@/components/ui/ReactBitsAnimations';
 
 interface BrandLogoProps {
   className?: string;
@@ -32,23 +30,16 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
       className={`inline-flex items-center gap-2.5 sm:gap-3 group select-none shrink-0 ${className}`}
       aria-label="OMEGA Stationery & Books Tanzania Home"
     >
-      {/* High-Contrast Luxury Emblem Seal with Crimson/Gold Specular Glint */}
-      <motion.div
-        whileHover={{ scale: 1.06, rotate: -2 }}
-        whileTap={{ scale: 0.95 }}
-        transition={{ type: 'spring', stiffness: 360, damping: 20 }}
-        className={`relative overflow-hidden ${iconSizes} flex items-center justify-center shrink-0 transition-colors duration-300 border bg-[#121214] border-black/15 text-white shadow-md group-hover:border-[var(--red)] group-hover:shadow-[0_6px_18px_rgba(214,58,58,0.28)]`}
+      {/* High-Contrast Luxury Emblem Seal */}
+      <div
+        className={`${iconSizes} flex items-center justify-center shrink-0 transition-all duration-300 border bg-[#121214] border-black/15 text-white shadow-md group-hover:border-[var(--red)]`}
       >
-        <span
-          aria-hidden="true"
-          className="omega-emblem-glint pointer-events-none absolute inset-y-0 -left-full w-1/2 bg-gradient-to-r from-transparent via-[#F3D28A]/45 to-transparent"
-        />
         <img
           src="/logo-icon-white.png"
           alt="OMEGA Logo Emblem"
-          className="relative z-10 w-full h-full object-contain filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] transition-transform duration-300 group-hover:scale-105"
+          className="w-full h-full object-contain filter drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)] transition-transform duration-300 group-hover:scale-105"
         />
-      </motion.div>
+      </div>
 
       {/* Typography Hallmark */}
       <div className="flex flex-col text-left leading-none">
@@ -58,16 +49,12 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
           >
             OMEGA
           </span>
-          <span className="w-1.5 h-1.5 rounded-full bg-[var(--red)] shrink-0 transition-transform duration-300 group-hover:scale-125" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[var(--red)] shrink-0" />
         </div>
         {showSubtitle && (
-          <ShinyText
-            tone="gold"
-            speedSec={5.2}
-            className="text-[9px] sm:text-[9.5px] tracking-[0.2em] font-mono font-bold uppercase mt-1 hidden min-[360px]:block"
-          >
+          <span className="text-[9px] sm:text-[9.5px] tracking-[0.2em] font-mono font-bold uppercase text-[var(--gold)] mt-1 hidden min-[360px]:block">
             STATIONERY TANZANIA
-          </ShinyText>
+          </span>
         )}
       </div>
     </Link>
