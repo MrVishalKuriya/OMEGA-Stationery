@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProductImageMeta } from '@/types/store';
+import { resolveImageUrl, getCloudUploadFallbackUrl } from '@/services/api';
 
 export type ProductImageVariant = 'card' | 'tile' | 'thumb' | 'hero' | 'gallery';
 
 export function getProductImageSrc(image?: string | ProductImageMeta | null): string {
   if (!image) return '/products/omega-hardcover-counter-book-q3-288-pages-1200.webp';
-  if (typeof image === 'string') return image;
-  return image.src || image.src1200 || '/products/omega-hardcover-counter-book-q3-288-pages-1200.webp';
+  if (typeof image === 'string') return resolveImageUrl(image);
+  const raw = image.src || image.src1200 || '/products/omega-hardcover-counter-book-q3-288-pages-1200.webp';
+  return resolveImageUrl(raw);
 }
 
 export interface ProductImageProps {
@@ -46,9 +48,10 @@ export const ProductImage: React.FC<ProductImageProps> = ({
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [triedCloudFallback, setTriedCloudFallback] = useState(false);
 
   // Normalize image data from object or string
-  let resolvedSrc = propSrc || '';
+  let resolvedSrc = propSrc ? resolveImageUrl(propSrc) : '';
   let resolvedAlt = propAlt || 'OMEGA Stationery Product';
   let resolvedBg: 'white' | 'transparent' = propBg || 'white';
   let src400 = '';
@@ -56,14 +59,14 @@ export const ProductImage: React.FC<ProductImageProps> = ({
   let src1200 = '';
 
   if (typeof image === 'object' && image !== null) {
-    resolvedSrc = resolvedSrc || image.src;
+    resolvedSrc = resolvedSrc || resolveImageUrl(image.src);
     resolvedAlt = resolvedAlt !== 'OMEGA Stationery Product' ? resolvedAlt : image.alt || resolvedAlt;
     resolvedBg = propBg || image.bg || 'white';
     src400 = image.src400 || '';
     src800 = image.src800 || '';
     src1200 = image.src1200 || image.src || '';
   } else if (typeof image === 'string') {
-    resolvedSrc = resolvedSrc || image;
+    resolvedSrc = resolvedSrc || resolveImageUrl(image);
     // If string points to standardized webp in /products/, derive srcset
     if (resolvedSrc.includes('/products/') && resolvedSrc.endsWith('-1200.webp')) {
       const base = resolvedSrc.replace(/-1200\.webp$/, '');
@@ -72,6 +75,13 @@ export const ProductImage: React.FC<ProductImageProps> = ({
       src1200 = resolvedSrc;
     }
   }
+
+  // Reset error & loading state whenever the product image URL changes (e.g. after Admin upload)
+  useEffect(() => {
+    setHasError(false);
+    setTriedCloudFallback(false);
+    setIsLoaded(false);
+  }, [resolvedSrc]);
 
   // Variant-specific aspect ratio and padding configurations
   let aspectClass = 'aspect-square';
@@ -154,8 +164,15 @@ export const ProductImage: React.FC<ProductImageProps> = ({
     return '/products/omega-hardcover-counter-book-q3-288-pages-1200.webp';
   }
 
-  const effectiveSrc = hasError || !resolvedSrc ? resolveSmartFallback(resolvedAlt) : resolvedSrc;
-  const effectiveSrcSet = hasError ? undefined : srcSetString;
+  const cloudFallbackUrl = getCloudUploadFallbackUrl(resolvedSrc);
+  const effectiveSrc = !resolvedSrc
+    ? resolveSmartFallback(resolvedAlt)
+    : hasError
+    ? resolveSmartFallback(resolvedAlt)
+    : triedCloudFallback && cloudFallbackUrl
+    ? cloudFallbackUrl
+    : resolvedSrc;
+  const effectiveSrcSet = hasError || triedCloudFallback ? undefined : srcSetString;
 
   return (
     <div
@@ -171,8 +188,9 @@ export const ProductImage: React.FC<ProductImageProps> = ({
         />
       )}
 
-      {/* 2. Standardized Responsive Image with Automatic Local Fallback */}
+      {/* 2. Standardized Responsive Image with Automatic Cloud & Local Fallback */}
       <img
+        key={effectiveSrc}
         src={effectiveSrc}
         srcSet={effectiveSrcSet}
         sizes={sizes || defaultSizes}
@@ -183,6 +201,10 @@ export const ProductImage: React.FC<ProductImageProps> = ({
         decoding="async"
         onLoad={() => setIsLoaded(true)}
         onError={() => {
+          if (!triedCloudFallback && cloudFallbackUrl) {
+            setTriedCloudFallback(true);
+            return;
+          }
           if (!hasError) {
             setHasError(true);
             setIsLoaded(true);

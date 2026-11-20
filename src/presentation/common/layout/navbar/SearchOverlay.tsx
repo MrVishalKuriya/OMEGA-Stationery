@@ -296,7 +296,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
                       Inquire directly with our dispatch desk on WhatsApp for custom factory orders.
                     </p>
                     <a
-                      href={`https://wa.me/255746268391?text=${encodeURIComponent('Habari OMEGA, ninatafuta: ' + debouncedTerm)}`}
+                      href={`https://wa.me/255624265480?text=${encodeURIComponent('Habari OMEGA, ninatafuta: ' + debouncedTerm)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#25D366] hover:bg-[#16a34a] text-white text-xs font-mono font-bold uppercase tracking-wider shadow-sm"

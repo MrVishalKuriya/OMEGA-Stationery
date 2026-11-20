@@ -21,7 +21,7 @@ export const CartAndCheckoutPage: React.FC = () => {
   } = useStore();
 
   const t = TRANSLATIONS[language];
-  const [selectedWhatsAppNumber, setSelectedWhatsAppNumber] = useState<string>('255715268391');
+  const [selectedWhatsAppNumber, setSelectedWhatsAppNumber] = useState<string>('255624265480');
 
   const [formData, setFormData] = useState<CustomerOrderInput>({
     customerName: '',

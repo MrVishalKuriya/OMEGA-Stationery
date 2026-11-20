@@ -326,7 +326,7 @@ const configSchema = new mongoose.Schema(
     thirdPhone: { type: String, default: '+255 746 268 391' },
     fourthPhone: { type: String, default: '+255 699 032 777' },
     phoneNumbers: [String],
-    whatsappNumber: { type: String, default: '255715268391' },
+    whatsappNumber: { type: String, default: '255624265480' },
     shopAddress: { type: String, default: 'Soweto SIDO Viwandani (Mbeya) & Mwanza Branch, Tanzania' },
     shopAddressSw: { type: String, default: 'Soweto SIDO Viwandani (Mbeya) & Tawi la Mwanza, Tanzania' },
     businessHours: { type: String, default: 'Monday – Saturday: 8:00 AM – 6:30 PM · Sunday: Closed' },
@@ -396,7 +396,7 @@ let inMemoryConfig = {
     '+255 746 268 391',
     '+255 699 032 777',
   ],
-  whatsappNumber: '255715268391',
+  whatsappNumber: '255624265480',
   shopAddress: 'Soweto SIDO Viwandani (Mbeya) & Mwanza Branch, Tanzania',
   shopAddressSw: 'Soweto SIDO Viwandani (Mbeya) & Tawi la Mwanza, Tanzania',
   businessHours: 'Monday – Saturday: 8:00 AM – 6:30 PM · Sunday: Closed',
@@ -958,16 +958,25 @@ app.put('/api/products/:id', async (req, res) => {
 
   try {
     const updatePayload = { ...updateData, id: updateData.id || id };
+    const unsetPayload = {};
+    if (updatePayload.discountPrice === null || updatePayload.discountPrice === '') {
+      delete updatePayload.discountPrice;
+      unsetPayload.discountPrice = '';
+    }
     const query = mongoose.isValidObjectId(id) ? { $or: [{ id }, { _id: id }] } : { id };
     let updated = null;
 
     if (mongoConnected && ProductModel) {
-      updated = await ProductModel.findOneAndUpdate(query, { $set: updatePayload }, { new: true, upsert: true }).lean();
+      const mongoUpdate = { $set: updatePayload };
+      if (Object.keys(unsetPayload).length > 0) mongoUpdate.$unset = unsetPayload;
+      updated = await ProductModel.findOneAndUpdate(query, mongoUpdate, { new: true, upsert: true }).lean();
     }
 
     const idx = inMemoryProducts.findIndex((p) => p.id === id || (p._id && String(p._id) === id));
     if (idx >= 0) {
-      inMemoryProducts[idx] = { ...inMemoryProducts[idx], ...updatePayload };
+      const nextMem = { ...inMemoryProducts[idx], ...updatePayload };
+      if (unsetPayload.discountPrice !== undefined) delete nextMem.discountPrice;
+      inMemoryProducts[idx] = updated || nextMem;
       if (!updated) updated = inMemoryProducts[idx];
     } else if (updated) {
       inMemoryProducts.unshift(updated);
@@ -994,25 +1003,37 @@ app.patch('/api/products/:id/price', async (req, res) => {
 
   try {
     const updateObj = {};
+    const unsetObj = {};
     if (price !== undefined) updateObj.price = Number(price);
-    if (discountPrice !== undefined) updateObj.discountPrice = Number(discountPrice);
+    if (discountPrice !== undefined) {
+      if (discountPrice === null || discountPrice === '') {
+        unsetObj.discountPrice = '';
+      } else {
+        updateObj.discountPrice = Number(discountPrice);
+      }
+    }
     if (wholesalePrice !== undefined) updateObj.wholesalePrice = Number(wholesalePrice);
 
     const query = mongoose.isValidObjectId(id) ? { $or: [{ id }, { _id: id }] } : { id };
+    let updated = null;
 
     if (mongoConnected && ProductModel) {
-      await ProductModel.findOneAndUpdate(query, { $set: updateObj });
+      const mongoUpdate = { $set: updateObj };
+      if (Object.keys(unsetObj).length > 0) mongoUpdate.$unset = unsetObj;
+      updated = await ProductModel.findOneAndUpdate(query, mongoUpdate, { new: true }).lean();
     }
 
     const idx = inMemoryProducts.findIndex((p) => p.id === id || (p._id && String(p._id) === id));
     if (idx >= 0) {
       if (price !== undefined) inMemoryProducts[idx].price = Number(price);
-      if (discountPrice !== undefined) inMemoryProducts[idx].discountPrice = Number(discountPrice);
+      if (unsetObj.discountPrice !== undefined) delete inMemoryProducts[idx].discountPrice;
+      else if (discountPrice !== undefined) inMemoryProducts[idx].discountPrice = Number(discountPrice);
       if (wholesalePrice !== undefined) inMemoryProducts[idx].wholesalePrice = Number(wholesalePrice);
+      if (!updated) updated = inMemoryProducts[idx];
     }
 
     await clearAllServerCache();
-    res.json({ success: true, message: 'Price updated successfully in MongoDB' });
+    res.json({ success: true, message: 'Price updated successfully in MongoDB', data: updated || updateObj });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
@@ -1029,19 +1050,21 @@ app.patch('/api/products/:id/stock', async (req, res) => {
     if (stockQuantity !== undefined) updateObj.stockQuantity = Number(stockQuantity);
 
     const query = mongoose.isValidObjectId(id) ? { $or: [{ id }, { _id: id }] } : { id };
+    let updated = null;
 
     if (mongoConnected && ProductModel) {
-      await ProductModel.findOneAndUpdate(query, { $set: updateObj });
+      updated = await ProductModel.findOneAndUpdate(query, { $set: updateObj }, { new: true }).lean();
     }
 
     const idx = inMemoryProducts.findIndex((p) => p.id === id || (p._id && String(p._id) === id));
     if (idx >= 0) {
       if (stockStatus) inMemoryProducts[idx].stockStatus = stockStatus;
       if (stockQuantity !== undefined) inMemoryProducts[idx].stockQuantity = Number(stockQuantity);
+      if (!updated) updated = inMemoryProducts[idx];
     }
 
     await clearAllServerCache();
-    res.json({ success: true, message: 'Stock status updated in MongoDB' });
+    res.json({ success: true, message: 'Stock status updated in MongoDB', data: updated || updateObj });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

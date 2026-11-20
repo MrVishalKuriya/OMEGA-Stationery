@@ -29,14 +29,15 @@ function resolveBackendUrl(): string {
     isBrowser &&
     (hostname === 'localhost' ||
       hostname === '127.0.0.1' ||
-      hostname.endsWith('.run.app'));
+      hostname.startsWith('ais-dev-') ||
+      hostname.startsWith('ais-pre-'));
   const isRemoteHttps =
     isBrowser &&
     window.location.protocol === 'https:' &&
     hostname !== 'localhost' &&
     hostname !== '127.0.0.1';
 
-  // When running on localhost or AI Studio (*.run.app), use same-origin ('') so /api and /uploads
+  // When running on localhost or AI Studio dev server (ais-dev-*.run.app), use same-origin ('') so /api and /uploads
   // route directly to our in-process Node.js + MongoDB Atlas server on port 3000!
   if (isLocalOrAiStudio) {
     try {
@@ -206,7 +207,7 @@ export async function apiFetch<T = any>(
 
   const promise = (async () => {
     const maxRetries = options.retries ?? (method === 'GET' ? 1 : 1);
-    const timeoutMs = options.timeoutMs ?? 4000;
+    const timeoutMs = options.timeoutMs ?? 10000;
     let attempt = 0;
 
     // Filter out forbidden headers that fail CORS preflight
@@ -531,7 +532,7 @@ export async function fetchLiveProducts(options?: {
   const qs = params.toString();
   const res = await apiFetch<BackendApiResponse<Product[]>>(`/api/products${qs ? `?${qs}` : ''}`, {
     method: 'GET',
-    timeoutMs: 3500,
+    timeoutMs: BACKEND_URL ? 12000 : 6000,
     retries: options?.retries ?? 1,
   });
 
@@ -808,8 +809,20 @@ export async function createProductInDb(product: Product): Promise<{ success: bo
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(cleanProduct),
     });
-    const json = await res.json();
+    const json = await res.json().catch(() => ({ success: false, message: `HTTP ${res.status}` }));
     clearClientProductCache();
+    if (!res.ok || json.success === false) {
+      return { success: false, message: json.message || `HTTP ${res.status}` };
+    }
+    if (json.data) {
+      json.data = {
+        ...json.data,
+        image: resolveImageUrl(json.data.image),
+        gallery: Array.isArray(json.data.gallery)
+          ? json.data.gallery.map((g: any) => resolveImageUrl(g))
+          : json.data.gallery,
+      };
+    }
     return json;
   } catch (err: any) {
     return { success: false, message: err.message || 'Database unreachable' };
@@ -821,14 +834,24 @@ export async function createProductInDb(product: Product): Promise<{ success: bo
  */
 export async function fetchSingleProductFromDb(id: string, signal?: AbortSignal): Promise<{ success: boolean; data?: Product; message?: string }> {
   if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
-  const res = await apiFetch<BackendApiResponse<Product>>(`/api/products/${id}?_t=${Date.now()}`, {
+  const res = await apiFetch<BackendApiResponse<Product>>(`/api/products/${encodeURIComponent(id)}?_t=${Date.now()}`, {
     method: 'GET',
     signal,
   });
   if (res.ok && res.data) {
+    const raw = res.data.data || (res.data as any);
+    const normalized: Product = raw
+      ? {
+          ...raw,
+          image: resolveImageUrl(raw.image),
+          gallery: Array.isArray(raw.gallery)
+            ? raw.gallery.map((g: any) => resolveImageUrl(g))
+            : raw.gallery,
+        }
+      : raw;
     return {
       success: true,
-      data: res.data.data || (res.data as any),
+      data: normalized,
       message: res.data.message,
     };
   }
@@ -895,15 +918,30 @@ export async function updateProductInDb(id: string, product: Partial<Product>): 
   if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
     const { _id, ...cleanProduct } = product as any;
-    const payload = { ...cleanProduct, id: cleanProduct.id || id };
+    const payload = {
+      ...cleanProduct,
+      id: cleanProduct.id || id,
+      // Explicitly send null when discountPrice was cleared so MongoDB unsets the stale value
+      discountPrice:
+        cleanProduct.discountPrice === undefined ? null : cleanProduct.discountPrice,
+    };
     const res = await fetch(`${BACKEND_URL}/api/products/${encodeURIComponent(id)}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(payload),
     });
-    const json = await res.json().catch(() => ({ success: false }));
+    const json = await res.json().catch(() => ({ success: false, message: `HTTP ${res.status}` }));
     if (res.ok && json && json.success !== false) {
       clearClientProductCache();
+      if (json.data) {
+        json.data = {
+          ...json.data,
+          image: resolveImageUrl(json.data.image),
+          gallery: Array.isArray(json.data.gallery)
+            ? json.data.gallery.map((g: any) => resolveImageUrl(g))
+            : json.data.gallery,
+        };
+      }
       return json;
     }
 
@@ -913,8 +951,22 @@ export async function updateProductInDb(id: string, product: Partial<Product>): 
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(payload),
     });
-    const fallbackJson = await fallbackRes.json();
+    const fallbackJson = await fallbackRes
+      .json()
+      .catch(() => ({ success: false, message: `HTTP ${fallbackRes.status}` }));
     clearClientProductCache();
+    if (!fallbackRes.ok || fallbackJson.success === false) {
+      return { success: false, message: fallbackJson.message || `HTTP ${fallbackRes.status}` };
+    }
+    if (fallbackJson.data) {
+      fallbackJson.data = {
+        ...fallbackJson.data,
+        image: resolveImageUrl(fallbackJson.data.image),
+        gallery: Array.isArray(fallbackJson.data.gallery)
+          ? fallbackJson.data.gallery.map((g: any) => resolveImageUrl(g))
+          : fallbackJson.data.gallery,
+      };
+    }
     return fallbackJson;
   } catch (err: any) {
     return { success: false, message: err.message || 'Database unreachable' };
@@ -924,17 +976,24 @@ export async function updateProductInDb(id: string, product: Partial<Product>): 
 /**
  * Fast inline price update directly in MongoDB
  */
-export async function updateProductPriceInDb(id: string, price: number, discountPrice?: number, wholesalePrice?: number): Promise<{ success: boolean; message?: string }> {
+export async function updateProductPriceInDb(id: string, price: number, discountPrice?: number, wholesalePrice?: number): Promise<{ success: boolean; data?: Partial<Product>; message?: string }> {
   clearClientProductCache();
   if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
-    const res = await fetch(`${BACKEND_URL}/api/products/${id}/price`, {
+    const res = await fetch(`${BACKEND_URL}/api/products/${encodeURIComponent(id)}/price`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ price, discountPrice, wholesalePrice }),
+      body: JSON.stringify({
+        price,
+        discountPrice: discountPrice === undefined ? null : discountPrice,
+        wholesalePrice,
+      }),
     });
-    const json = await res.json();
+    const json = await res.json().catch(() => ({ success: false, message: `HTTP ${res.status}` }));
     clearClientProductCache();
+    if (!res.ok || json.success === false) {
+      return { success: false, message: json.message || `HTTP ${res.status}` };
+    }
     return json;
   } catch (err: any) {
     return { success: false, message: err.message || 'Database unreachable' };
@@ -944,17 +1003,20 @@ export async function updateProductPriceInDb(id: string, price: number, discount
 /**
  * Update stock status & quantity directly in MongoDB
  */
-export async function updateProductStockInDb(id: string, stockStatus: string, stockQuantity?: number): Promise<{ success: boolean; message?: string }> {
+export async function updateProductStockInDb(id: string, stockStatus: string, stockQuantity?: number): Promise<{ success: boolean; data?: Partial<Product>; message?: string }> {
   clearClientProductCache();
   if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
-    const res = await fetch(`${BACKEND_URL}/api/products/${id}/stock`, {
+    const res = await fetch(`${BACKEND_URL}/api/products/${encodeURIComponent(id)}/stock`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({ stockStatus, stockQuantity }),
     });
-    const json = await res.json();
+    const json = await res.json().catch(() => ({ success: false, message: `HTTP ${res.status}` }));
     clearClientProductCache();
+    if (!res.ok || json.success === false) {
+      return { success: false, message: json.message || `HTTP ${res.status}` };
+    }
     return json;
   } catch (err: any) {
     return { success: false, message: err.message || 'Database unreachable' };
@@ -968,12 +1030,15 @@ export async function deleteProductFromDb(id: string): Promise<{ success: boolea
   clearClientProductCache();
   if (!isBackendConfigured()) return { success: false, message: 'Cloud backend not configured' };
   try {
-    const res = await fetch(`${BACKEND_URL}/api/products/${id}`, {
+    const res = await fetch(`${BACKEND_URL}/api/products/${encodeURIComponent(id)}`, {
       method: 'DELETE',
       headers: { 'Accept': 'application/json' },
     });
-    const json = await res.json();
+    const json = await res.json().catch(() => ({ success: false, message: `HTTP ${res.status}` }));
     clearClientProductCache();
+    if (!res.ok || json.success === false) {
+      return { success: false, message: json.message || `HTTP ${res.status}` };
+    }
     return json;
   } catch (err: any) {
     return { success: false, message: err.message || 'Database unreachable' };
@@ -1086,9 +1151,15 @@ export async function uploadProductImage(
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({ image: dataUriOrBase64, filename }),
     });
-    const json = await res.json();
-    if (json.success && json.url && json.url.startsWith('/')) {
-      json.url = `${BACKEND_URL}${json.url}`;
+    const json = await res.json().catch(() => ({ success: false, message: `HTTP ${res.status}` }));
+    if (!res.ok || !json?.success) {
+      return {
+        success: false,
+        message: json?.message || `Upload failed (HTTP ${res.status})`,
+      };
+    }
+    if (json.url) {
+      json.url = resolveImageUrl(json.url);
     }
     return json;
   } catch (err: any) {
@@ -1099,6 +1170,8 @@ export async function uploadProductImage(
 /**
  * Normalizes any product image URL to ensure cross-device and cloud accessibility
  */
+export const CLOUD_UPLOADS_FALLBACK_ORIGIN = 'https://omega-stationery-backend.onrender.com';
+
 export function resolveImageUrl(url?: string | any): any {
   if (!url) return '';
   if (typeof url === 'object') {
@@ -1108,6 +1181,7 @@ export function resolveImageUrl(url?: string | any): any {
     };
   }
   if (typeof url !== 'string') return '';
+  if (url.startsWith('data:') || url.startsWith('blob:')) return url;
   if (url.includes('/uploads/')) {
     const fname = url.split('/uploads/').pop();
     if (fname) {
@@ -1115,6 +1189,14 @@ export function resolveImageUrl(url?: string | any): any {
     }
   }
   return url;
+}
+
+export function getCloudUploadFallbackUrl(url?: string | null): string | null {
+  if (!url || typeof url !== 'string' || !url.includes('/uploads/')) return null;
+  const fname = url.split('/uploads/').pop();
+  if (!fname) return null;
+  const cloudUrl = `${CLOUD_UPLOADS_FALLBACK_ORIGIN}/uploads/${fname}`;
+  return url === cloudUrl ? null : cloudUrl;
 }
 
 export interface StockAlertSubscription {

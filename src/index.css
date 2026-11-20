@@ -427,6 +427,18 @@ input[type="search"]::-webkit-search-results-decoration {
   background: var(--gold);
 }
 
+/* Hide scrollbars cleanly for horizontal snap carousels and tab strips */
+.scrollbar-none,
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
 /* OMEGA Primary Action Button Utilities */
 .btn-ledup-copper {
   background-color: var(--red) !important;

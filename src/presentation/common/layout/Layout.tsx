@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   X,
@@ -14,6 +14,8 @@ import {
   Mail,
   Clock,
   Building2,
+  ChevronUp,
+  ArrowUpRight,
 } from 'lucide-react';
 import { useStore } from '@/context/StoreContext';
 import { QuickViewModal, ProductCompareModal } from '@/presentation/features/products';
@@ -43,6 +45,65 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [isOffline, setIsOffline] = useState(!navigator.onLine);
   const [hasPulsedWhatsApp, setHasPulsedWhatsApp] = useState(false);
+  const [isWhatsAppMenuOpen, setIsWhatsAppMenuOpen] = useState(false);
+  const whatsAppMenuRef = useRef<HTMLDivElement>(null);
+
+  const whatsAppRepresentatives = [
+    {
+      name: 'Vijesh K. Halai',
+      role: 'Co-Founder & Managing Director',
+      displayNumber: '+255 624 265 480',
+      digits: '255624265480',
+      primary: true,
+      message: 'Hello Vijesh K. Halai (OMEGA Stationery), I would like to place an order.',
+    },
+    {
+      name: 'Kanti Bhai K. Halai',
+      role: 'Co-Founder & Executive Director',
+      displayNumber: '+255 715 268 391',
+      digits: '255715268391',
+      primary: false,
+      message: 'Hello Kanti Bhai K. Halai (OMEGA Stationery), I would like to place an order.',
+    },
+    {
+      name: 'Gupta Vivek',
+      role: 'Mbeya Branch Manager',
+      displayNumber: '+255 746 268 391',
+      digits: '255746268391',
+      primary: false,
+      message: 'Hello Gupta Vivek (OMEGA Mbeya Branch), I would like to place an order.',
+    },
+    {
+      name: 'Gupta Alok',
+      role: 'Mwanza Branch Manager',
+      displayNumber: '+255 699 032 777',
+      digits: '255699032777',
+      primary: false,
+      message: 'Hello Gupta Alok (OMEGA Mwanza Branch), I would like to place an order.',
+    },
+  ];
+
+  // Close WhatsApp representative picker on click outside or Escape
+  useEffect(() => {
+    if (!isWhatsAppMenuOpen) return;
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        whatsAppMenuRef.current &&
+        !whatsAppMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsWhatsAppMenuOpen(false);
+      }
+    };
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsWhatsAppMenuOpen(false);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleEscape);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isWhatsAppMenuOpen]);
 
   // Monitor scroll for Back-to-Top (> 600px)
   useEffect(() => {
@@ -328,7 +389,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
       </footer>
 
       {/* Floating Back to Top Button (> 600px) */}
-      {showBackToTop && (
+      {showBackToTop && !isWhatsAppMenuOpen && (
         <button
           type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -339,22 +400,108 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         </button>
       )}
 
-      {/* Floating WhatsApp Action Button with gentle initial pulse */}
+      {/* Floating WhatsApp Orders Action Button + Multi-Person Contact Picker */}
       {!isAdminPage && (
-        <div className="fixed bottom-5 right-5 z-40">
-          <a
-            href="https://wa.me/255746268391?text=Hello%20OMEGA%20Stationery%20Tanzania,%20I%20would%20like%20to%20place%20an%20order."
-            target="_blank"
-            rel="noopener noreferrer"
+        <div ref={whatsAppMenuRef} className="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-2.5">
+          {isWhatsAppMenuOpen && (
+            <div
+              role="dialog"
+              aria-label="Choose WhatsApp Orders Representative"
+              className="w-[min(calc(100vw-2.5rem),330px)] rounded-2xl bg-[var(--surface-1)] border border-[var(--border)] shadow-2xl overflow-hidden animate-in fade-in slide-in-from-bottom-3 duration-200"
+            >
+              {/* Picker Header */}
+              <div className="bg-[#1DA851] text-white px-4 py-3 flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <MessageCircle className="w-4 h-4 fill-white text-white shrink-0" />
+                    <h4 className="font-sans text-xs font-bold tracking-wide uppercase">
+                      WhatsApp Orders Desk
+                    </h4>
+                  </div>
+                  <p className="text-[11px] text-white/90 mt-0.5 leading-tight">
+                    Choose a representative to chat instantly
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsWhatsAppMenuOpen(false)}
+                  aria-label="Close WhatsApp contacts"
+                  className="w-7 h-7 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition-colors shrink-0 cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* 4 Sales Representatives List */}
+              <div className="p-2.5 space-y-1.5 bg-[var(--bg)]">
+                {whatsAppRepresentatives.map((rep) => (
+                  <a
+                    key={rep.digits}
+                    href={`https://wa.me/${rep.digits}?text=${encodeURIComponent(rep.message)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setIsWhatsAppMenuOpen(false)}
+                    className={`flex items-center justify-between gap-2.5 p-2.5 rounded-xl border transition-all duration-150 group ${
+                      rep.primary
+                        ? 'bg-[#25D366]/10 border-[#25D366]/45 hover:bg-[#25D366]/18'
+                        : 'bg-[var(--surface-1)] border-[var(--border)] hover:border-[#25D366]/50 hover:bg-[#25D366]/5'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div
+                        className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${
+                          rep.primary
+                            ? 'bg-[#25D366] text-white shadow-xs'
+                            : 'bg-[#25D366]/15 text-[#15803d]'
+                        }`}
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                      </div>
+                      <div className="min-w-0 text-left">
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-xs font-bold text-[var(--text)] truncate">
+                            {rep.name}
+                          </span>
+                          {rep.primary && (
+                            <span className="px-1.5 py-0.5 rounded-full bg-[#25D366] text-white text-[8.5px] font-mono font-bold uppercase tracking-wider shrink-0">
+                              Primary
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-[10.5px] text-[var(--text-muted)] block truncate">
+                          {rep.role}
+                        </span>
+                        <span className="text-[11px] font-mono font-bold text-[#15803d] block mt-0.5">
+                          {rep.displayNumber}
+                        </span>
+                      </div>
+                    </div>
+                    <ArrowUpRight className="w-4 h-4 text-[var(--text-muted)] group-hover:text-[#15803d] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <button
+            type="button"
+            onClick={() => setIsWhatsAppMenuOpen((prev) => !prev)}
+            aria-expanded={isWhatsAppMenuOpen}
+            aria-haspopup="dialog"
             className={`flex items-center gap-2 px-5 py-3 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer border-2 border-white/40 ${
-              !hasPulsedWhatsApp ? 'animate-bounce' : ''
+              !hasPulsedWhatsApp && !isWhatsAppMenuOpen ? 'animate-bounce' : ''
             }`}
-            title="Chat with Sales Desk on WhatsApp (+255 746 268 391)"
-            aria-label="Chat on WhatsApp"
+            title="WhatsApp Orders — Choose Representative"
+            aria-label="WhatsApp Orders — Choose Representative"
           >
             <MessageCircle className="w-5 h-5 fill-white text-white" />
             <span className="font-sans font-bold">WhatsApp Orders</span>
-          </a>
+            <ChevronUp
+              className={`w-4 h-4 transition-transform duration-200 ${
+                isWhatsAppMenuOpen ? 'rotate-180' : ''
+              }`}
+            />
+          </button>
         </div>
       )}
 

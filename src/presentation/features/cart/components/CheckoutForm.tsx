@@ -50,24 +50,24 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({
           <div className="space-y-1.5">
             {[
               {
-                digits: '255715268391',
-                label: 'KANTI BHAI K. HALAI: +255 715 268 391',
-                desc: 'Co-Founder & Managing Director (Executive Desk 01)',
-              },
-              {
                 digits: '255624265480',
                 label: 'VIJESH K. HALAI: +255 624 265 480',
-                desc: 'Co-Founder & Managing Director (Wholesale Desk 02)',
+                desc: 'Co-Founder & Managing Director (Primary Orders Desk)',
+              },
+              {
+                digits: '255715268391',
+                label: 'KANTI BHAI K. HALAI: +255 715 268 391',
+                desc: 'Co-Founder & Executive Director',
               },
               {
                 digits: '255746268391',
-                label: 'Mbeya Branch: +255 746 268 391',
-                desc: 'Mbeya Branch (Soweto SIDO Factory Depot)',
+                label: 'Gupta Vivek (Mbeya Branch): +255 746 268 391',
+                desc: 'Mbeya Branch Manager (Soweto SIDO Factory Depot)',
               },
               {
                 digits: '255699032777',
-                label: 'Mwanza Branch: +255 699 032 777',
-                desc: 'Mwanza Branch & Lake Zone Regional Desk',
+                label: 'Gupta Alok (Mwanza Branch): +255 699 032 777',
+                desc: 'Mwanza Branch Manager & Lake Zone Regional Desk',
               },
             ].map((d) => (
               <label

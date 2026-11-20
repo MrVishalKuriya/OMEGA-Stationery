@@ -54,7 +54,7 @@ export const ProductCompareModal: React.FC<ProductCompareModalProps> = ({
 
   const effectiveIsOpen = Boolean(isCompareModalOpen || propIsOpen);
   const currency = storeConfig?.currencySymbol || 'TSh';
-  const cleanWhatsappDigits = (storeConfig?.whatsappNumber || '255746268391').replace(/\D/g, '');
+  const cleanWhatsappDigits = (storeConfig?.whatsappNumber || '255624265480').replace(/\D/g, '');
 
   const handleClose = () => {
     setIsCompareModalOpen(false);

@@ -83,6 +83,11 @@ import { IMAGES, INITIAL_STORE_CONFIG } from '@/data/products';
 import { SEOHead } from '@/components/SEOHead';
 import { getProductImageSrc } from '@/components/ProductImage';
 import {
+  compressImageFile,
+  compressImageDataUrl,
+  formatBytes,
+} from '@/utils/imageCompression';
+import {
   fetchHealth,
   flushRedisCache,
   syncDatabaseProducts,
@@ -93,6 +98,7 @@ import {
   deleteProductFromDb,
   saveStoreConfigToDb,
   uploadProductImage,
+  getCloudUploadFallbackUrl,
   testLiveCacheBenchmark,
   reconnectRedisServer,
   BACKEND_URL,
@@ -265,6 +271,50 @@ export const AdminDashboardPage: React.FC = () => {
     reader.readAsDataURL(file);
   };
 
+  // Direct HD Upload using Client-Side Multi-Step Canvas Compression (bypasses editor for fast batch uploads)
+  const handleDirectImageUpload = async (file: File) => {
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      setUploadErrorNotice('Please select a valid image file (PNG, JPG, WEBP, or SVG).');
+      return;
+    }
+    if (file.size > 25 * 1024 * 1024) {
+      setUploadErrorNotice('File is too large. Image size must be under 25MB.');
+      return;
+    }
+
+    setIsUploadingImage(true);
+    setUploadErrorNotice(null);
+    setUploadSuccessNotice(null);
+
+    try {
+      const compressed = await compressImageFile(file, {
+        maxWidth: 1600,
+        maxHeight: 1600,
+        maxSizeKB: 480,
+        initialQuality: 0.94,
+        minQuality: 0.84,
+        fileName: file.name,
+      });
+      await handleApplyCroppedImage(
+        compressed.dataUrl,
+        compressed.fileName,
+        productForm.imageFit || 'cover',
+        productForm.imageBackground,
+        {
+          originalBytes: compressed.originalBytes,
+          compressedBytes: compressed.compressedBytes,
+          width: compressed.width,
+          height: compressed.height,
+          savingsPercent: compressed.savingsPercent,
+        }
+      );
+    } catch (err: any) {
+      setIsUploadingImage(false);
+      setUploadErrorNotice(err?.message || 'Could not optimize image file.');
+    }
+  };
+
   const handleOpenCurrentInEditor = () => {
     if (!productForm.image) return;
     setImageToEditUrl(productForm.image);
@@ -275,38 +325,165 @@ export const AdminDashboardPage: React.FC = () => {
     setIsImageEditorOpen(true);
   };
 
+  const recentUploadsRef = React.useRef<Map<string, string>>(new Map());
+
+  const handleAdminImgError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const imgEl = e.currentTarget;
+    const currentSrc = imgEl.getAttribute('src') || '';
+    if (imgEl.dataset.fallbackStage === 'done') return;
+
+    // 1. If we just uploaded this photo in the current session, display the local HD data URL immediately
+    const cleanCurrent = currentSrc.split('?')[0];
+    const cachedDataUrl =
+      recentUploadsRef.current.get(currentSrc) ||
+      recentUploadsRef.current.get(cleanCurrent);
+    if (cachedDataUrl && imgEl.dataset.fallbackStage !== 'local-cache') {
+      imgEl.dataset.fallbackStage = 'local-cache';
+      imgEl.src = cachedDataUrl;
+      return;
+    }
+
+    // 2. Try cloud upload mirror if loading a relative /uploads/ path
+    if (!imgEl.dataset.fallbackStage) {
+      const cloudUrl = getCloudUploadFallbackUrl(cleanCurrent);
+      if (cloudUrl) {
+        imgEl.dataset.fallbackStage = 'cloud';
+        imgEl.src = cloudUrl;
+        return;
+      }
+    }
+
+    // 3. One cache-busted retry for transient mobile 4G / cold-start glitches
+    if (imgEl.dataset.fallbackStage !== 'retry' && cleanCurrent.includes('/uploads/')) {
+      imgEl.dataset.fallbackStage = 'retry';
+      setTimeout(() => {
+        if (imgEl && imgEl.dataset.fallbackStage === 'retry') {
+          imgEl.src = `${cleanCurrent}?_r=${Date.now()}`;
+        }
+      }, 650);
+      return;
+    }
+
+    imgEl.dataset.fallbackStage = 'done';
+    imgEl.src = '/omega-products/counter-book-q3-288p.jpeg';
+  };
+
   const handleApplyCroppedImage = async (
     croppedDataUrl: string,
     fileName?: string,
     imageFit?: 'cover' | 'contain',
-    imageBackground?: string
+    imageBackground?: string,
+    precomputedStats?: {
+      originalBytes: number;
+      compressedBytes: number;
+      width: number;
+      height: number;
+      savingsPercent: number;
+    }
   ) => {
     setIsUploadingImage(true);
     setUploadErrorNotice(null);
     setUploadSuccessNotice(null);
 
     try {
-      const targetName = fileName || 'cropped_product.jpg';
-      const res = await uploadProductImage(croppedDataUrl, targetName);
-      setIsUploadingImage(false);
-      setIsImageEditorOpen(false);
+      // Safety net: guarantee every uploaded data URI is optimized via our client-side canvas utility
+      let finalDataUrl = croppedDataUrl;
+      let targetName = fileName || 'cropped_product.webp';
+      let stats = precomputedStats;
 
-      const finalUrl = res.success && res.url ? res.url : croppedDataUrl;
+      if (croppedDataUrl.startsWith('data:image/') && !croppedDataUrl.startsWith('data:image/svg')) {
+        const optimized = await compressImageDataUrl(croppedDataUrl, {
+          maxWidth: 1600,
+          maxHeight: 1600,
+          maxSizeKB: 480,
+          initialQuality: 0.94,
+          minQuality: 0.84,
+          fileName: targetName,
+        });
+        finalDataUrl = optimized.dataUrl;
+        targetName = optimized.fileName;
+        if (!stats) {
+          stats = {
+            originalBytes: optimized.originalBytes,
+            compressedBytes: optimized.compressedBytes,
+            width: optimized.width,
+            height: optimized.height,
+            savingsPercent: optimized.savingsPercent,
+          };
+        }
+      }
+
+      let res = await uploadProductImage(finalDataUrl, targetName);
+      // Automatic 1-retry if remote server was waking up from cold start
+      if (!res.success || !res.url) {
+        res = await uploadProductImage(finalDataUrl, targetName);
+      }
+
+      if (!res.success || !res.url) {
+        setIsUploadingImage(false);
+        setIsImageEditorOpen(false);
+        setUploadErrorNotice(
+          res.message || 'Image upload to server failed. Please try again.'
+        );
+        return;
+      }
+
+      const finalUrl = res.url;
+      // Cache in memory so newly uploaded photos always render sharply even on flaky mobile connections
+      recentUploadsRef.current.set(finalUrl, finalDataUrl);
+      recentUploadsRef.current.set(finalUrl.split('?')[0], finalDataUrl);
+
+      const resolvedFit = imageFit || productForm.imageFit || 'cover';
+      const resolvedBg = imageBackground !== undefined ? imageBackground : productForm.imageBackground;
 
       setProductForm((prev) => ({
         ...prev,
         image: finalUrl,
-        imageFit: imageFit || prev.imageFit || 'cover',
-        imageBackground: imageBackground !== undefined ? imageBackground : prev.imageBackground,
+        imageFit: resolvedFit,
+        imageBackground: resolvedBg,
       }));
 
+      // If editing an existing product, immediately persist the new photo to MongoDB & UI cache (single awaited mutation)
+      if (modalMode === 'edit' && editingProductId) {
+        const existing = products.find((p) => p.id === editingProductId);
+        if (existing) {
+          const prevGallery = Array.isArray(existing.gallery) ? existing.gallery : [];
+          const nextGallery = [
+            finalUrl,
+            ...prevGallery.filter((g) => getProductImageSrc(g) !== getProductImageSrc(finalUrl)),
+          ];
+          const updatedProductRecord: Product = {
+            ...existing,
+            image: finalUrl,
+            gallery: nextGallery,
+            imageFit: resolvedFit,
+            imageBackground: resolvedBg || undefined,
+          };
+          try {
+            await updateProduct(updatedProductRecord);
+          } catch (saveErr: any) {
+            setIsUploadingImage(false);
+            setIsImageEditorOpen(false);
+            setUploadErrorNotice(
+              saveErr?.message || 'Photo uploaded, but saving to database failed. Click "Update Product in Database" to retry.'
+            );
+            return;
+          }
+        }
+      }
+
+      setIsUploadingImage(false);
+      setIsImageEditorOpen(false);
+      const sizeDetail = stats
+        ? stats.savingsPercent > 0
+          ? ` (${stats.width}×${stats.height} · ${formatBytes(stats.originalBytes)} → ${formatBytes(stats.compressedBytes)}, -${stats.savingsPercent}%)`
+          : ` (${stats.width}×${stats.height} · ${formatBytes(stats.compressedBytes)})`
+        : '';
       setUploadSuccessNotice(
-        `Image setup saved: ${res.success && res.url ? 'Server Storage' : 'Direct Record'} (${
-          imageFit === 'contain' ? 'Studio Pedestal' : 'Edge-to-Edge'
-        })`
+        `Photo saved in HD to Database${sizeDetail}`
       );
-      showToast('Product photo & studio setup saved successfully!');
-      setTimeout(() => setUploadSuccessNotice(null), 5000);
+      showToast('Product photo optimized & updated live!');
+      setTimeout(() => setUploadSuccessNotice(null), 6000);
     } catch (err: any) {
       setIsUploadingImage(false);
       setIsImageEditorOpen(false);
@@ -314,8 +491,12 @@ export const AdminDashboardPage: React.FC = () => {
     }
   };
 
-  // Quick Product Inspection Drawer
-  const [inspectingProduct, setInspectingProduct] = useState<Product | null>(null);
+  // Quick Product Inspection Drawer (derived live from products so edits reflect immediately)
+  const [inspectingProductId, setInspectingProductId] = useState<string | null>(null);
+  const inspectingProduct = useMemo(
+    () => (inspectingProductId ? products.find((p) => p.id === inspectingProductId) || null : null),
+    [inspectingProductId, products]
+  );
 
   // Web Content & Store Handles CMS State
   const [brandingForm, setBrandingForm] = useState({ ...storeConfig });
@@ -745,22 +926,32 @@ export const AdminDashboardPage: React.FC = () => {
     );
   };
 
-  const saveRowEdit = (productId: string) => {
+  const saveRowEdit = async (productId: string) => {
     const parsedPrice = parseFloat(tempPrice);
     const parsedDiscount = tempDiscountPrice.trim() ? parseFloat(tempDiscountPrice) : undefined;
     const parsedWholesale = tempWholesalePrice.trim() ? parseFloat(tempWholesalePrice) : undefined;
     const parsedStockQty = tempStockQuantity.trim() ? parseInt(tempStockQuantity, 10) : 100;
 
-    if (!Number.isNaN(parsedPrice) && parsedPrice > 0) {
-      updateProductPrice(
-        productId,
-        Math.round(parsedPrice),
-        parsedDiscount ? Math.round(parsedDiscount) : undefined,
-        parsedWholesale ? Math.round(parsedWholesale) : undefined
-      );
-      updateProductStock(productId, tempStockStatus, parsedStockQty);
-    }
     setEditingRowId(null);
+
+    if (!Number.isNaN(parsedPrice) && parsedPrice > 0) {
+      try {
+        // Run PATCH /price then PATCH /stock sequentially so optimistic React Query state never races
+        await updateProductPrice(
+          productId,
+          Math.round(parsedPrice),
+          parsedDiscount && !Number.isNaN(parsedDiscount) ? Math.round(parsedDiscount) : undefined,
+          parsedWholesale && !Number.isNaN(parsedWholesale) ? Math.round(parsedWholesale) : undefined
+        );
+        await updateProductStock(
+          productId,
+          tempStockStatus,
+          !Number.isNaN(parsedStockQty) ? Math.max(0, parsedStockQty) : 0
+        );
+      } catch (err: any) {
+        showToast(err?.message || 'Quick edit failed to sync with database.');
+      }
+    }
   };
 
   // 60-Second (1-Minute) Undo Feature for Deleted Products
@@ -1101,6 +1292,11 @@ export const AdminDashboardPage: React.FC = () => {
       if (modalMode === 'edit' && editingProductId) {
         const existing = products.find((p) => p.id === editingProductId);
         if (existing) {
+          const existingGallery = Array.isArray(existing.gallery) ? existing.gallery : [];
+          const updatedGallery = [
+            validated.image,
+            ...existingGallery.filter((g) => getProductImageSrc(g) !== getProductImageSrc(validated.image)),
+          ];
           const updatedObj: Product = {
             ...existing,
             name: validated.name,
@@ -1119,6 +1315,7 @@ export const AdminDashboardPage: React.FC = () => {
             stockStatus: validated.stockStatus,
             stockQuantity: validated.stockQuantity,
             image: validated.image,
+            gallery: updatedGallery,
             description: validated.description,
             specifications: specsArray,
             featured: validated.featured,
@@ -1128,7 +1325,7 @@ export const AdminDashboardPage: React.FC = () => {
             imageFit: productForm.imageFit || 'cover',
             imageBackground: productForm.imageBackground || undefined,
           };
-          updateProduct(updatedObj);
+          await updateProduct(updatedObj);
           setDbSaveSuccessMessage(`Updated in MongoDB Atlas! Document ID: ${updatedObj.id}`);
         }
       } else {
@@ -1191,7 +1388,7 @@ export const AdminDashboardPage: React.FC = () => {
       branchMwanza: brandingForm.branchMwanza || '+255 699 032 777',
       thirdPhone: brandingForm.branchMbeya || '+255 746 268 391',
       fourthPhone: brandingForm.branchMwanza || '+255 699 032 777',
-      whatsappNumber: boss1Digits || '255715268391',
+      whatsappNumber: boss2Digits || '255624265480',
       phoneNumbers: [
         brandingForm.phoneNumber || '+255 715 268 391',
         brandingForm.secondaryPhone || '+255 624 265 480',
@@ -1442,7 +1639,7 @@ export const AdminDashboardPage: React.FC = () => {
   const modalCartonDealerProfit = modalCartonRetailYield - modalCartonWholesaleTotal;
 
   const handleOpenInspectProduct = (product: Product) => {
-    setInspectingProduct(product);
+    setInspectingProductId(product.id);
     if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -2389,6 +2586,19 @@ export const AdminDashboardPage: React.FC = () => {
                     onChange={(e) => {
                       const file = e.target.files?.[0];
                       if (file) handleImageFileSelect(file);
+                      e.currentTarget.value = '';
+                    }}
+                  />
+
+                  <input
+                    type="file"
+                    id="product-image-direct-input"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleDirectImageUpload(file);
+                      e.currentTarget.value = '';
                     }}
                   />
 
@@ -2396,10 +2606,10 @@ export const AdminDashboardPage: React.FC = () => {
                     <div className="py-4 flex flex-col items-center justify-center space-y-2">
                       <RefreshCw className="w-8 h-8 text-[#dc2626] animate-spin" />
                       <p className="text-xs font-bold text-[#111113]">
-                        Processing &amp; Uploading Image...
+                        Optimizing HD Canvas &amp; Uploading...
                       </p>
                       <p className="text-[11px] text-stone-500">
-                        Saving image to server repository and linking to MongoDB Atlas
+                        Compressing cleanly in browser, storing on server, and syncing to MongoDB Atlas
                       </p>
                     </div>
                   ) : (
@@ -2419,17 +2629,24 @@ export const AdminDashboardPage: React.FC = () => {
                           </label>
                         </p>
                         <p className="text-[11px] text-stone-500 mt-0.5">
-                          Supports PNG, JPG, JPEG, WEBP or SVG (Max 25MB). Uploads directly to server storage.
+                          Auto-optimized via multi-step HD Canvas compression (up to 1600px, sharp WebP/JPEG).
                         </p>
                       </div>
 
-                      <div className="flex items-center gap-2 pt-1">
+                      <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
                         <label
                           htmlFor="product-image-file-input"
-                          className="px-3.5 py-1.5 bg-[#111113] hover:bg-[#111113] text-white text-[11px] font-bold rounded-xl cursor-pointer inline-flex items-center gap-1.5 shadow-2xs active:scale-95 transition-all"
+                          className="px-3.5 py-1.5 bg-[#111113] hover:bg-black text-white text-[11px] font-bold rounded-xl cursor-pointer inline-flex items-center gap-1.5 shadow-2xs active:scale-95 transition-all"
                         >
-                          <Upload className="w-3.5 h-3.5 text-[#dc2626]" />
-                          <span>Select from Computer / Mobile</span>
+                          <Crop className="w-3.5 h-3.5 text-[#dc2626]" />
+                          <span>Select &amp; Edit in Studio Pro</span>
+                        </label>
+                        <label
+                          htmlFor="product-image-direct-input"
+                          className="px-3.5 py-1.5 bg-white hover:bg-stone-100 text-[#111113] border border-stone-300 text-[11px] font-bold rounded-xl cursor-pointer inline-flex items-center gap-1.5 shadow-2xs active:scale-95 transition-all"
+                        >
+                          <Upload className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>Quick Direct HD Upload</span>
                         </label>
                       </div>
                     </div>
@@ -2456,12 +2673,11 @@ export const AdminDashboardPage: React.FC = () => {
                   <div className="flex items-center gap-3.5 min-w-0">
                     <div className="relative group/thumb shrink-0">
                       <img
-                        src={productForm.image}
+                        key={getProductImageSrc(productForm.image)}
+                        src={getProductImageSrc(productForm.image) || '/omega-products/counter-book-q3-288p.jpeg'}
                         alt="Preview"
                         className="w-20 h-20 rounded-xl object-contain bg-white p-1 border border-stone-300 shadow-2xs"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = '/omega-products/counter-book-q2-192p.jpeg';
-                        }}
+                        onError={handleAdminImgError}
                       />
                       <button
                         type="button"
@@ -2672,7 +2888,7 @@ export const AdminDashboardPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-stone-200">
           <button
             type="button"
-            onClick={() => setInspectingProduct(null)}
+            onClick={() => setInspectingProductId(null)}
             className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-stone-200 hover:border-stone-400 text-stone-700 text-xs font-bold transition-all shadow-2xs hover:bg-stone-50 shrink-0 self-start sm:self-auto"
           >
             <ArrowLeft className="w-4 h-4 text-[#dc2626]" />
@@ -2684,7 +2900,7 @@ export const AdminDashboardPage: React.FC = () => {
               type="button"
               onClick={() => {
                 const prod = inspectingProduct;
-                setInspectingProduct(null);
+                setInspectingProductId(null);
                 handleCloneProduct(prod);
               }}
               className="px-3.5 py-2 border border-stone-200 hover:bg-stone-50 text-stone-700 rounded-xl text-xs font-bold inline-flex items-center gap-1.5 bg-white shadow-2xs"
@@ -2696,7 +2912,7 @@ export const AdminDashboardPage: React.FC = () => {
               type="button"
               onClick={() => {
                 const prod = inspectingProduct;
-                setInspectingProduct(null);
+                setInspectingProductId(null);
                 openEditProductModal(prod);
               }}
               className="px-4 py-2 bg-[#111113] hover:bg-black text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5 shadow-sm"
@@ -2711,11 +2927,10 @@ export const AdminDashboardPage: React.FC = () => {
         <div className="bg-white rounded-2xl border border-stone-200 p-5 sm:p-8 space-y-6 shadow-xs">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5 pb-6 border-b border-stone-200">
             <img
+              key={getProductImageSrc(inspectingProduct.image)}
               src={getProductImageSrc(inspectingProduct.image) || '/omega-products/counter-book-q3-288p.jpeg'}
               alt={inspectingProduct.name}
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = '/omega-products/counter-book-q3-288p.jpeg';
-              }}
+              onError={handleAdminImgError}
               className="w-28 h-28 rounded-2xl object-contain bg-stone-50 p-2 border border-stone-200 shadow-2xs"
             />
             <div className="space-y-1.5 min-w-0">
@@ -3378,12 +3593,11 @@ export const AdminDashboardPage: React.FC = () => {
                           title="View product details"
                         >
                           <img
+                            key={getProductImageSrc(product.image)}
                             src={getProductImageSrc(product.image) || '/omega-products/counter-book-q3-288p.jpeg'}
                             alt={product.name}
                             loading="lazy"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).src = '/omega-products/counter-book-q3-288p.jpeg';
-                            }}
+                            onError={handleAdminImgError}
                             className="w-16 h-16 rounded-xl object-contain bg-stone-50 p-1.5 border border-stone-200/90 shadow-2xs group-hover:border-[#dc2626]/60 transition-all"
                           />
                           <span className="absolute inset-0 rounded-xl bg-black/25 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
@@ -3685,12 +3899,11 @@ export const AdminDashboardPage: React.FC = () => {
                                   title="Click to view full ERP specification sheet"
                                 >
                                   <img
+                                    key={getProductImageSrc(product.image)}
                                     src={getProductImageSrc(product.image) || '/omega-products/counter-book-q3-288p.jpeg'}
                                     alt={product.name}
                                     loading="lazy"
-                                    onError={(e) => {
-                                      (e.target as HTMLImageElement).src = '/omega-products/counter-book-q3-288p.jpeg';
-                                    }}
+                                    onError={handleAdminImgError}
                                     className="w-12 h-12 rounded-lg object-contain bg-stone-50 p-1 border border-stone-200 group-hover:border-[#dc2626] transition-colors"
                                   />
                                   <div className="absolute inset-0 bg-black/30 rounded-lg opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">

@@ -8,6 +8,7 @@ import {
   updateProductPriceInDb,
   updateProductStockInDb,
   deleteProductFromDb,
+  resolveImageUrl,
 } from '@/services/api';
 
 const PRODUCTS_QUERY_KEY = ['products'];
@@ -40,10 +41,19 @@ function normalizeLiveImage(liveImage: any, fallbackImage: any): any {
   const rawStr = typeof liveImage === 'string' ? liveImage : liveImage?.src || '';
   if (!rawStr) return fallbackImage;
   if (rawStr.includes('/uploads/')) {
-    const fname = rawStr.split('/uploads/').pop();
-    if (fname) return `/uploads/${fname}`;
+    return resolveImageUrl(liveImage);
   }
   return liveImage;
+}
+
+function normalizeProductRecord(product: Product): Product {
+  return {
+    ...product,
+    image: resolveImageUrl(product.image),
+    gallery: Array.isArray(product.gallery)
+      ? product.gallery.map((g) => resolveImageUrl(g))
+      : product.gallery,
+  };
 }
 
 function canonicalizeProducts(liveList: Product[]): Product[] {
@@ -62,6 +72,10 @@ function canonicalizeProducts(liveList: Product[]): Product[] {
   for (const live of liveList) {
     if (!live || !live.id || seenIds.has(live.id)) continue;
     seenIds.add(live.id);
+
+    const normalizedGallery = Array.isArray(live.gallery)
+      ? live.gallery.map((g) => resolveImageUrl(g))
+      : undefined;
 
     const canonical = canonicalById.get(live.id);
     if (canonical) {
@@ -83,12 +97,18 @@ function canonicalizeProducts(liveList: Product[]): Product[] {
             ? Number(live.stockQuantity)
             : canonical.stockQuantity,
         image: normalizeLiveImage(live.image, canonical.image),
+        gallery: normalizedGallery ?? canonical.gallery,
       });
     } else {
       merged.push({
         ...live,
         price: Number(live.price || 0),
+        discountPrice:
+          live.discountPrice !== undefined && live.discountPrice !== null
+            ? Number(live.discountPrice)
+            : undefined,
         image: normalizeLiveImage(live.image, getCategoryFallbackImage(live)),
+        gallery: normalizedGallery,
       });
     }
   }
@@ -113,6 +133,12 @@ function getInitialProducts(): Product[] {
   return INITIAL_PRODUCTS;
 }
 
+function persistProductsToStorage(list: Product[]): void {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  } catch {}
+}
+
 export const useProductsQuery = () => {
   const queryClient = useQueryClient();
 
@@ -122,9 +148,7 @@ export const useProductsQuery = () => {
       const res = await fetchLiveProducts({ forceRefresh: true, retries: 1 });
       if (res && res.length > 0) {
         const canonicalized = canonicalizeProducts(res);
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(canonicalized));
-        } catch {}
+        persistProductsToStorage(canonicalized);
         return canonicalized;
       }
       return getInitialProducts();
@@ -139,65 +163,94 @@ export const useProductsQuery = () => {
   // Optimistic Product Create Mutation
   const createProductMutation = useMutation({
     mutationFn: async (product: Product) => {
-      return await createProductInDb(product);
+      const res = await createProductInDb(product);
+      if (res && res.success === false) {
+        throw new Error(res.message || 'Failed to create product in database');
+      }
+      return { res, product };
     },
     onMutate: async (newProduct) => {
       await queryClient.cancelQueries({ queryKey: PRODUCTS_QUERY_KEY });
       const previousProducts = queryClient.getQueryData<Product[]>(PRODUCTS_QUERY_KEY) || [];
+      const normalized = normalizeProductRecord(newProduct);
 
-      const next = [newProduct, ...previousProducts.filter((p) => p.id !== newProduct.id)];
+      const next = [normalized, ...previousProducts.filter((p) => p.id !== normalized.id)];
       queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, next);
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      } catch {}
+      persistProductsToStorage(next);
 
       return { previousProducts };
+    },
+    onSuccess: ({ res, product }) => {
+      const authoritative = normalizeProductRecord({
+        ...product,
+        ...(res?.data || {}),
+      });
+      const current = queryClient.getQueryData<Product[]>(PRODUCTS_QUERY_KEY) || [];
+      const next = [authoritative, ...current.filter((p) => p.id !== authoritative.id)];
+      queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, next);
+      persistProductsToStorage(next);
     },
     onError: (_err, _newProduct, context) => {
       if (context?.previousProducts) {
         queryClient.setQueryData(PRODUCTS_QUERY_KEY, context.previousProducts);
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(context.previousProducts));
-        } catch {}
+        persistProductsToStorage(context.previousProducts);
       }
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: PRODUCTS_QUERY_KEY });
     },
   });
 
-  // Optimistic Product Update Mutation
+  // Optimistic Product Update Mutation (PUT /api/products/:id)
   const updateProductMutation = useMutation({
     mutationFn: async (product: Product) => {
-      return await updateProductInDb(product.id, product);
+      const res = await updateProductInDb(product.id, product);
+      if (res && res.success === false) {
+        throw new Error(res.message || 'Failed to update product in database');
+      }
+      return { res, product };
     },
     onMutate: async (updatedProduct) => {
       await queryClient.cancelQueries({ queryKey: PRODUCTS_QUERY_KEY });
       const previousProducts = queryClient.getQueryData<Product[]>(PRODUCTS_QUERY_KEY) || [];
+      const normalizedUpdated = normalizeProductRecord(updatedProduct);
 
-      // Optimistically update cache instantly
-      const next = previousProducts.map((p) => (p.id === updatedProduct.id ? updatedProduct : p));
+      // Optimistically update cache immediately (upsert if missing)
+      const exists = previousProducts.some((p) => p.id === normalizedUpdated.id);
+      const next = exists
+        ? previousProducts.map((p) => (p.id === normalizedUpdated.id ? normalizedUpdated : p))
+        : [normalizedUpdated, ...previousProducts];
+
       queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, next);
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      } catch {}
+      persistProductsToStorage(next);
 
       return { previousProducts };
+    },
+    onSuccess: ({ res, product }) => {
+      // Merge authoritative DB document with submitted fields so UI immediately reflects confirmed state
+      const serverDoc = res?.data;
+      const merged: Product = normalizeProductRecord({
+        ...product,
+        ...(serverDoc || {}),
+        discountPrice:
+          product.discountPrice === undefined
+            ? undefined
+            : Number(serverDoc?.discountPrice ?? product.discountPrice),
+      });
+      const current = queryClient.getQueryData<Product[]>(PRODUCTS_QUERY_KEY) || [];
+      const exists = current.some((p) => p.id === merged.id);
+      const next = exists
+        ? current.map((p) => (p.id === merged.id ? merged : p))
+        : [merged, ...current];
+      queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, next);
+      persistProductsToStorage(next);
     },
     onError: (_err, _newProduct, context) => {
       if (context?.previousProducts) {
         queryClient.setQueryData(PRODUCTS_QUERY_KEY, context.previousProducts);
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(context.previousProducts));
-        } catch {}
+        persistProductsToStorage(context.previousProducts);
       }
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: PRODUCTS_QUERY_KEY });
     },
   });
 
-  // Optimistic Stock Update Mutation
+  // Optimistic Stock Update Mutation (PATCH /api/products/:id/stock)
   const updateStockMutation = useMutation({
     mutationFn: async ({
       id,
@@ -208,7 +261,11 @@ export const useProductsQuery = () => {
       stockStatus: StockStatus;
       stockQuantity?: number;
     }) => {
-      return await updateProductStockInDb(id, stockStatus, stockQuantity);
+      const res = await updateProductStockInDb(id, stockStatus, stockQuantity);
+      if (res && res.success === false) {
+        throw new Error(res.message || 'Failed to update stock status in database');
+      }
+      return { res, id, stockStatus, stockQuantity };
     },
     onMutate: async ({ id, stockStatus, stockQuantity }) => {
       await queryClient.cancelQueries({ queryKey: PRODUCTS_QUERY_KEY });
@@ -224,26 +281,36 @@ export const useProductsQuery = () => {
           : p
       );
       queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, next);
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      } catch {}
+      persistProductsToStorage(next);
 
       return { previousProducts };
+    },
+    onSuccess: ({ res, id, stockStatus, stockQuantity }) => {
+      const current = queryClient.getQueryData<Product[]>(PRODUCTS_QUERY_KEY) || [];
+      const next = current.map((p) =>
+        p.id === id
+          ? normalizeProductRecord({
+              ...p,
+              ...(res?.data || {}),
+              stockStatus: (res?.data?.stockStatus as StockStatus) || stockStatus,
+              ...(stockQuantity !== undefined
+                ? { stockQuantity: res?.data?.stockQuantity ?? stockQuantity }
+                : {}),
+            })
+          : p
+      );
+      queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, next);
+      persistProductsToStorage(next);
     },
     onError: (_err, _vars, context) => {
       if (context?.previousProducts) {
         queryClient.setQueryData(PRODUCTS_QUERY_KEY, context.previousProducts);
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(context.previousProducts));
-        } catch {}
+        persistProductsToStorage(context.previousProducts);
       }
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: PRODUCTS_QUERY_KEY });
     },
   });
 
-  // Optimistic Price Update Mutation
+  // Optimistic Price Update Mutation (PATCH /api/products/:id/price)
   const updatePriceMutation = useMutation({
     mutationFn: async ({
       id,
@@ -256,7 +323,11 @@ export const useProductsQuery = () => {
       discountPrice?: number;
       wholesalePrice?: number;
     }) => {
-      return await updateProductPriceInDb(id, price, discountPrice, wholesalePrice);
+      const res = await updateProductPriceInDb(id, price, discountPrice, wholesalePrice);
+      if (res && res.success === false) {
+        throw new Error(res.message || 'Failed to update product price in database');
+      }
+      return { res, id, price, discountPrice, wholesalePrice };
     },
     onMutate: async ({ id, price, discountPrice, wholesalePrice }) => {
       await queryClient.cancelQueries({ queryKey: PRODUCTS_QUERY_KEY });
@@ -267,35 +338,53 @@ export const useProductsQuery = () => {
           ? {
               ...p,
               price,
-              ...(discountPrice !== undefined ? { discountPrice } : {}),
+              discountPrice,
               ...(wholesalePrice !== undefined ? { wholesalePrice } : {}),
             }
           : p
       );
       queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, next);
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      } catch {}
+      persistProductsToStorage(next);
 
       return { previousProducts };
+    },
+    onSuccess: ({ res, id, price, discountPrice, wholesalePrice }) => {
+      const current = queryClient.getQueryData<Product[]>(PRODUCTS_QUERY_KEY) || [];
+      const next = current.map((p) =>
+        p.id === id
+          ? normalizeProductRecord({
+              ...p,
+              ...(res?.data || {}),
+              price: res?.data?.price ?? price,
+              discountPrice:
+                discountPrice === undefined
+                  ? undefined
+                  : (res?.data?.discountPrice ?? discountPrice),
+              ...(wholesalePrice !== undefined
+                ? { wholesalePrice: res?.data?.wholesalePrice ?? wholesalePrice }
+                : {}),
+            })
+          : p
+      );
+      queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, next);
+      persistProductsToStorage(next);
     },
     onError: (_err, _vars, context) => {
       if (context?.previousProducts) {
         queryClient.setQueryData(PRODUCTS_QUERY_KEY, context.previousProducts);
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(context.previousProducts));
-        } catch {}
+        persistProductsToStorage(context.previousProducts);
       }
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: PRODUCTS_QUERY_KEY });
     },
   });
 
-  // Optimistic Delete Mutation
+  // Optimistic Delete Mutation (DELETE /api/products/:id)
   const deleteProductMutation = useMutation({
     mutationFn: async (id: string) => {
-      return await deleteProductFromDb(id);
+      const res = await deleteProductFromDb(id);
+      if (res && res.success === false) {
+        throw new Error(res.message || 'Failed to delete product from database');
+      }
+      return res;
     },
     onMutate: async (id) => {
       await queryClient.cancelQueries({ queryKey: PRODUCTS_QUERY_KEY });
@@ -303,22 +392,15 @@ export const useProductsQuery = () => {
 
       const next = previousProducts.filter((p) => p.id !== id);
       queryClient.setQueryData<Product[]>(PRODUCTS_QUERY_KEY, next);
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      } catch {}
+      persistProductsToStorage(next);
 
       return { previousProducts };
     },
     onError: (_err, _id, context) => {
       if (context?.previousProducts) {
         queryClient.setQueryData(PRODUCTS_QUERY_KEY, context.previousProducts);
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(context.previousProducts));
-        } catch {}
+        persistProductsToStorage(context.previousProducts);
       }
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: PRODUCTS_QUERY_KEY });
     },
   });
 

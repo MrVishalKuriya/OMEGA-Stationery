@@ -57,7 +57,11 @@ export const ProductDetailsPage: React.FC = () => {
   const [selectedInlineVariantId, setSelectedInlineVariantId] = useState<string | null>(null);
 
   const productFromStore = products.find((p) => p.id === id);
-  const baseProduct = dbProduct || productFromStore;
+  const baseProduct = productFromStore
+    ? dbProduct
+      ? { ...dbProduct, ...productFromStore }
+      : productFromStore
+    : dbProduct;
 
   const familyOptions = useMemo(() => {
     if (!baseProduct) return [];

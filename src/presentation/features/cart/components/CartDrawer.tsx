@@ -56,7 +56,7 @@ export const CartDrawer: React.FC = () => {
   const remainingForFree = Math.max(0, freeThreshold - subtotal);
 
   // Formatted WhatsApp order message
-  const cleanWhatsappDigits = (storeConfig.whatsappNumber || '255715268391').replace(/\D/g, '');
+  const cleanWhatsappDigits = (storeConfig.whatsappNumber || '255624265480').replace(/\D/g, '');
   const itemsText = detailedCart
     .map(
       (item, idx) =>

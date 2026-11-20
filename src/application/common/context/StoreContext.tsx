@@ -103,11 +103,11 @@ export interface StoreContextType {
   closeCookiePreferences: () => void;
   // Catalog Management
   addProduct: (product: Omit<Product, 'id'>) => Product;
-  updateProduct: (product: Product) => void;
+  updateProduct: (product: Product) => Promise<any>;
   deleteProduct: (productId: string, options?: { skipDb?: boolean }) => void;
-  restoreProduct: (product: Product, targetIndex?: number) => void;
-  updateProductPrice: (productId: string, price: number, discountPrice?: number, wholesalePrice?: number) => void;
-  updateProductStock: (productId: string, stockStatus: StockStatus, stockQuantity?: number) => void;
+  restoreProduct: (product: Product, targetIndex?: number) => Promise<any>;
+  updateProductPrice: (productId: string, price: number, discountPrice?: number, wholesalePrice?: number) => Promise<any>;
+  updateProductStock: (productId: string, stockStatus: StockStatus, stockQuantity?: number) => Promise<any>;
   resetProductsToDefault: () => void;
   updateStoreConfig: (partial: Partial<StoreConfig>) => void;
   resetStoreConfigToDefault: () => void;
@@ -337,9 +337,10 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return created;
   };
 
-  const updateProduct = (updated: Product) => {
-    updateProductInQuery(updated);
+  const updateProduct = async (updated: Product) => {
+    const res = await updateProductInQuery(updated);
     showToast(`Updated "${updated.name}".`);
+    return res;
   };
 
   const deleteProduct = (productId: string) => {
@@ -351,19 +352,31 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
-  const restoreProduct = (product: Product) => {
-    updateProductInQuery(product);
+  const restoreProduct = async (product: Product) => {
+    const res = await updateProductInQuery(product);
     showToast(`Restored "${product.name}".`);
+    return res;
   };
 
-  const updateProductPrice = (productId: string, price: number, discountPrice?: number, wholesalePrice?: number) => {
-    updatePriceInQuery({ id: productId, price, discountPrice, wholesalePrice });
+  const updateProductPrice = async (
+    productId: string,
+    price: number,
+    discountPrice?: number,
+    wholesalePrice?: number
+  ) => {
+    const res = await updatePriceInQuery({ id: productId, price, discountPrice, wholesalePrice });
     showToast('Price updated.');
+    return res;
   };
 
-  const updateProductStock = (productId: string, stockStatus: StockStatus, stockQuantity?: number) => {
-    updateStockInQuery({ id: productId, stockStatus, stockQuantity });
+  const updateProductStock = async (
+    productId: string,
+    stockStatus: StockStatus,
+    stockQuantity?: number
+  ) => {
+    const res = await updateStockInQuery({ id: productId, stockStatus, stockQuantity });
     showToast(`Stock status updated to "${stockStatus}".`);
+    return res;
   };
 
   const resetProductsToDefault = () => {
@@ -476,7 +489,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         removeFromCompare,
         clearCompareProducts,
         isInCompare,
-        quickViewProduct,
+        quickViewProduct: quickViewProduct
+          ? products.find((p) => p.id === quickViewProduct.id) || quickViewProduct
+          : null,
         setQuickViewProduct,
         isCartDrawerOpen,
         setIsCartDrawerOpen: (open) => (open ? openCart() : closeCart()),

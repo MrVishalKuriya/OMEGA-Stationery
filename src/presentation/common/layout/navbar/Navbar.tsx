@@ -332,7 +332,7 @@ export const Navbar: React.FC = () => {
                       {language === 'sw' ? 'Hakuna bidhaa iliyopatikana' : `No stationery found for "${desktopSearchQuery}"`}
                     </p>
                     <a
-                      href={`https://wa.me/255746268391?text=${encodeURIComponent('Habari OMEGA, ninatafuta: ' + desktopSearchQuery)}`}
+                      href={`https://wa.me/255624265480?text=${encodeURIComponent('Habari OMEGA, ninatafuta: ' + desktopSearchQuery)}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#25D366] hover:bg-[#16a34a] text-white text-[11px] font-mono font-bold"

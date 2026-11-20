@@ -1,5 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
+  compressCanvasToDataUrl,
+  compressImageDataUrl,
+} from '@/utils/imageCompression';
+import {
   Crop,
   RotateCw,
   RotateCcw,
@@ -185,12 +189,13 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
   const [bgPreset, setBgPreset] = useState<BackgroundPreset>('transparent');
   const [customBgColor, setCustomBgColor] = useState<string>('#f8f7f5');
   const [studioPadding, setStudioPadding] = useState<number>(0); // 0% to 25% padding for cutouts
-  const [shadowStyle, setShadowStyle] = useState<ShadowStyle>('soft');
+  const [shadowStyle, setShadowStyle] = useState<ShadowStyle>('none');
   const [shadowIntensity, setShadowIntensity] = useState<number>(35); // 0% to 100%
   const [storeImageFit, setStoreImageFit] = useState<'cover' | 'contain'>(initialImageFit);
 
   // Magic Background Remover state
   const [isRemovingBg, setIsRemovingBg] = useState<boolean>(false);
+  const [hasRemovedBg, setHasRemovedBg] = useState<boolean>(false);
   const [bgRemoveTolerance, setBgRemoveTolerance] = useState<number>(20);
 
   // Instagram Adjustments
@@ -253,8 +258,9 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
     setSharpness(0);
     setFitMode('fill');
     setBgPreset('transparent');
+    setHasRemovedBg(false);
     setStudioPadding(0);
-    setShadowStyle('soft');
+    setShadowStyle('none');
     setShadowIntensity(35);
     setStoreImageFit(initialImageFit || 'cover');
     setStudioTab('crop');
@@ -339,21 +345,26 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
     resetToDefaultCrop(sourceImg, mode);
   };
 
-  // Combined CSS filter string
+  // Combined CSS filter string — returns 'none' when untouched to avoid software blur on mobile
   const getComputedFilterString = useCallback(() => {
     const activePreset = INSTAGRAM_FILTERS.find((f) => f.id === selectedFilterId);
-    let base = activePreset && activePreset.cssFilter !== 'none' ? activePreset.cssFilter : '';
+    const hasPreset = Boolean(activePreset && activePreset.cssFilter !== 'none');
+    const hasManualAdjust =
+      brightness !== 0 || contrast !== 0 || saturation !== 0 || sharpness > 0;
 
-    const bVal = 100 + brightness;
-    const cVal = 100 + contrast;
-    const sVal = 100 + saturation;
-
-    let adjustStr = `brightness(${bVal}%) contrast(${cVal}%) saturate(${sVal}%)`;
-    if (sharpness > 0) {
-      adjustStr += ` contrast(${100 + sharpness * 0.4}%)`;
+    if (!hasPreset && !hasManualAdjust) {
+      return 'none';
     }
 
-    return base ? `${base} ${adjustStr}` : adjustStr;
+    const base = hasPreset && activePreset ? activePreset.cssFilter : '';
+    const parts: string[] = [];
+    if (base) parts.push(base);
+    if (brightness !== 0) parts.push(`brightness(${100 + brightness}%)`);
+    if (contrast !== 0) parts.push(`contrast(${100 + contrast}%)`);
+    if (saturation !== 0) parts.push(`saturate(${100 + saturation}%)`);
+    if (sharpness > 0) parts.push(`contrast(${100 + sharpness * 0.4}%)`);
+
+    return parts.length > 0 ? parts.join(' ') : 'none';
   }, [selectedFilterId, brightness, contrast, saturation, sharpness]);
 
   // Magic 1-Click Background Remover (Color Threshold Cutout)
@@ -404,9 +415,11 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
       const newImg = new Image();
       newImg.onload = () => {
         setSourceImg(newImg);
+        setHasRemovedBg(true);
         setIsRemovingBg(false);
         setStoreImageFit('contain'); // Auto switch to contain for clean cutout!
         setStudioPadding(8);
+        setShadowStyle('soft');
       };
       newImg.src = offCanvas.toDataURL('image/png');
     } catch {
@@ -793,8 +806,10 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
 
       const rect = container.getBoundingClientRect();
       const size = Math.min(rect.width, rect.height > 200 ? rect.height : 460);
-      canvas.width = Math.max(300, Math.floor(size));
-      canvas.height = Math.max(300, Math.floor(size));
+      const dprScale = Math.min(window.devicePixelRatio || 1, 2.5);
+      const targetDim = Math.max(640, Math.min(1200, Math.floor(size * dprScale)));
+      canvas.width = targetDim;
+      canvas.height = targetDim;
       redrawCanvas();
     };
 
@@ -1066,46 +1081,188 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
     setSharpness(0);
     setFitMode('fill');
     setBgPreset('transparent');
+    setHasRemovedBg(false);
     setStudioPadding(0);
-    setShadowStyle('soft');
+    setShadowStyle('none');
     setShadowIntensity(35);
     resetToDefaultCrop(sourceImg, aspectRatio);
   };
 
-  // Final Master Export
+  // Final Master Export (Lossless Single-Pass Native Crop Pipeline — zero quality drop on mobile)
   const handleApplyExport = async () => {
     if (!sourceImg || !canvasRef.current) return;
 
-    const exportDim = 1200;
-    const exportCanvas = document.createElement('canvas');
-    exportCanvas.width = exportDim;
-    exportCanvas.height =
-      aspectRatio === '1:1' ? exportDim : Math.round((exportDim * cropBox.height) / cropBox.width);
+    const naturalW = sourceImg.naturalWidth || sourceImg.width || 1200;
+    const naturalH = sourceImg.naturalHeight || sourceImg.height || 1200;
+    const filterStr = getComputedFilterString();
+    const activePreset = INSTAGRAM_FILTERS.find((f) => f.id === selectedFilterId);
+    const hasTint = Boolean(activePreset?.tint && filterIntensity > 0);
+    const hasEffects =
+      filterStr !== 'none' ||
+      warmth !== 0 ||
+      vignette > 0 ||
+      hasTint ||
+      (shadowStyle !== 'none' && shadowIntensity > 0);
+    const hasGeometryTransform =
+      rotation !== 0 || fineAngle !== 0 || flipH || flipV || studioPadding > 0;
+    const lowerName = (fileName || '').toLowerCase();
+    const isTransparentInput =
+      hasRemovedBg || lowerName.endsWith('.png') || lowerName.endsWith('.webp');
 
-    const exportCtx = exportCanvas.getContext('2d');
-    if (!exportCtx) return;
+    // FAST PATH 1: Original ratio with zero edits/crops -> optimize via canvas utility only if oversized, else keep untouched
+    const isFullOriginalBypass =
+      !hasEffects &&
+      !hasGeometryTransform &&
+      !hasRemovedBg &&
+      aspectRatio === 'original' &&
+      zoom === 1 &&
+      bgPreset === 'transparent' &&
+      imageSrc.startsWith('data:image/');
 
+    if (isFullOriginalBypass) {
+      const optimized = await compressImageDataUrl(imageSrc, {
+        maxWidth: 1600,
+        maxHeight: 1600,
+        maxSizeKB: 480,
+        initialQuality: 0.94,
+        minQuality: 0.84,
+        fileName,
+      });
+      await onApply(optimized.dataUrl, optimized.fileName, storeImageFit, undefined);
+      return;
+    }
+
+    // FAST PATH 2: Direct Single-Pass Native Pixel Crop from sourceImg (zero intermediate canvas / zero double-resampling!)
+    if (!hasEffects && !hasGeometryTransform) {
+      const imgAspect = naturalW / naturalH;
+      let drawW = 1;
+      let drawH = 1;
+      if (fitMode === 'fit') {
+        if (imgAspect > 1) {
+          drawW = zoom;
+          drawH = zoom / imgAspect;
+        } else {
+          drawH = zoom;
+          drawW = zoom * imgAspect;
+        }
+      } else {
+        if (imgAspect > 1) {
+          drawH = zoom;
+          drawW = zoom * imgAspect;
+        } else {
+          drawW = zoom;
+          drawH = zoom / imgAspect;
+        }
+      }
+
+      const imgLeft = 0.5 - drawW / 2;
+      const imgTop = 0.5 - drawH / 2;
+      const cropInsideImage =
+        cropBox.x >= imgLeft - 0.002 &&
+        cropBox.y >= imgTop - 0.002 &&
+        cropBox.x + cropBox.width <= imgLeft + drawW + 0.002 &&
+        cropBox.y + cropBox.height <= imgTop + drawH + 0.002;
+
+      if (cropInsideImage) {
+        const srcX = Math.max(0, Math.min(naturalW - 1, ((cropBox.x - imgLeft) / drawW) * naturalW));
+        const srcY = Math.max(0, Math.min(naturalH - 1, ((cropBox.y - imgTop) / drawH) * naturalH));
+        const srcW = Math.max(1, Math.min(naturalW - srcX, (cropBox.width / drawW) * naturalW));
+        const srcH = Math.max(1, Math.min(naturalH - srcY, (cropBox.height / drawH) * naturalH));
+
+        // Preserve exact native pixel resolution (cap at 1800px max, never upscale blurry pixels)
+        const maxExportDim = 1800;
+        const scaleDown = Math.min(1, maxExportDim / Math.max(srcW, srcH));
+        const exportWidth = Math.max(1, Math.round(srcW * scaleDown));
+        const exportHeight =
+          aspectRatio === '1:1'
+            ? exportWidth
+            : Math.max(1, Math.round(srcH * scaleDown));
+
+        const exportCanvas = document.createElement('canvas');
+        exportCanvas.width = exportWidth;
+        exportCanvas.height = exportHeight;
+        const exportCtx = exportCanvas.getContext('2d');
+        if (exportCtx) {
+          exportCtx.imageSmoothingEnabled = true;
+          exportCtx.imageSmoothingQuality = 'high';
+
+          const needsPngAlpha = bgPreset === 'transparent' && isTransparentInput;
+          if (!needsPngAlpha) {
+            if (bgPreset === 'transparent') {
+              exportCtx.fillStyle = '#ffffff';
+              exportCtx.fillRect(0, 0, exportWidth, exportHeight);
+            } else {
+              drawStudioBackground(exportCtx, exportWidth, exportHeight);
+            }
+          }
+
+          exportCtx.drawImage(sourceImg, srcX, srcY, srcW, srcH, 0, 0, exportWidth, exportHeight);
+
+          const compressed = compressCanvasToDataUrl(exportCanvas, {
+            maxWidth: 1600,
+            maxHeight: 1600,
+            maxSizeKB: 480,
+            initialQuality: 0.94,
+            minQuality: 0.84,
+            preserveAlpha: needsPngAlpha,
+            fileName,
+          });
+
+          await onApply(
+            compressed.dataUrl,
+            compressed.fileName,
+            storeImageFit,
+            bgPreset === 'custom' ? customBgColor : bgPreset !== 'transparent' ? bgPreset : undefined
+          );
+          return;
+        }
+      }
+    }
+
+    // TRANSFORM / FILTER PATH: Safe 2048px mobile-friendly master canvas (prevents Android Chrome silent downscale)
     const displayCanvas = canvasRef.current;
-    const offscreen = document.createElement('canvas');
-    offscreen.width = displayCanvas.width;
-    offscreen.height = displayCanvas.height;
-    const offCtx = offscreen.getContext('2d');
+    const cropMinFraction = Math.max(0.2, Math.min(cropBox.width, cropBox.height));
+    const nativeMax = Math.max(naturalW, naturalH);
+    const targetExportDim = Math.min(1600, Math.max(960, nativeMax));
+    const masterWidth = Math.min(2048, Math.max(1200, Math.ceil(targetExportDim / cropMinFraction)));
+    const masterHeight = Math.round(
+      masterWidth * (displayCanvas.height / Math.max(1, displayCanvas.width))
+    );
 
+    const offscreen = document.createElement('canvas');
+    offscreen.width = masterWidth;
+    offscreen.height = masterHeight;
+    const offCtx = offscreen.getContext('2d');
     if (!offCtx) return;
 
-    drawStudioBackground(offCtx, offscreen.width, offscreen.height);
+    offCtx.imageSmoothingEnabled = true;
+    offCtx.imageSmoothingQuality = 'high';
 
+    const needsAlpha =
+      bgPreset === 'transparent' &&
+      (hasRemovedBg || studioPadding > 0 || fitMode === 'fit' || rotation !== 0 || fineAngle !== 0);
+
+    if (bgPreset === 'transparent' && !needsAlpha) {
+      offCtx.fillStyle = '#ffffff';
+      offCtx.fillRect(0, 0, offscreen.width, offscreen.height);
+    } else {
+      drawStudioBackground(offCtx, offscreen.width, offscreen.height);
+    }
+
+    offCtx.save();
     offCtx.translate(offscreen.width / 2, offscreen.height / 2);
     const totalAngle = ((rotation + fineAngle) * Math.PI) / 180;
     offCtx.rotate(totalAngle);
     offCtx.scale((flipH ? -1 : 1) * zoom, (flipV ? -1 : 1) * zoom);
-    offCtx.filter = getComputedFilterString();
+    if (filterStr !== 'none') {
+      offCtx.filter = filterStr;
+    }
 
     const padFactor = 1 - (studioPadding / 100) * 0.7;
     const availW = offscreen.width * padFactor;
     const availH = offscreen.height * padFactor;
 
-    const imgAspect = sourceImg.width / sourceImg.height;
+    const imgAspect = naturalW / naturalH;
     const canvasAspect = availW / availH;
     let drawW = availW;
     let drawH = availH;
@@ -1127,11 +1284,12 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
       }
     }
 
+    const shadowScale = offscreen.width / Math.max(300, displayCanvas.width);
     if (shadowStyle !== 'none' && shadowIntensity > 0) {
       const alpha = (shadowIntensity / 100) * 0.45;
       offCtx.shadowColor = `rgba(0, 0, 0, ${alpha})`;
-      offCtx.shadowBlur = 24;
-      offCtx.shadowOffsetY = 14;
+      offCtx.shadowBlur = 24 * shadowScale;
+      offCtx.shadowOffsetY = 14 * shadowScale;
     }
 
     offCtx.drawImage(sourceImg, -drawW / 2, -drawH / 2, drawW, drawH);
@@ -1146,7 +1304,6 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
       offCtx.fillRect(-drawW / 2, -drawH / 2, drawW, drawH);
     }
 
-    const activePreset = INSTAGRAM_FILTERS.find((f) => f.id === selectedFilterId);
     if (activePreset?.tint && filterIntensity > 0) {
       offCtx.globalCompositeOperation = activePreset.tint.blend;
       const alpha = activePreset.tint.alpha * (filterIntensity / 100);
@@ -1163,22 +1320,52 @@ export const ImageEditorModal: React.FC<ImageEditorModalProps> = ({
       offCtx.fillStyle = grad;
       offCtx.fillRect(-drawW / 2, -drawH / 2, drawW, drawH);
     }
+    offCtx.restore();
 
     const sx = cropBox.x * offscreen.width;
     const sy = cropBox.y * offscreen.height;
     const sWidth = cropBox.width * offscreen.width;
     const sHeight = cropBox.height * offscreen.height;
 
+    const exportWidth = Math.min(1600, Math.max(1, Math.round(sWidth)));
+    const exportHeight =
+      aspectRatio === '1:1'
+        ? exportWidth
+        : Math.max(1, Math.round((exportWidth * sHeight) / Math.max(1, sWidth)));
+
+    const exportCanvas = document.createElement('canvas');
+    exportCanvas.width = exportWidth;
+    exportCanvas.height = exportHeight;
+    const exportCtx = exportCanvas.getContext('2d');
+    if (!exportCtx) return;
+
     exportCtx.imageSmoothingEnabled = true;
     exportCtx.imageSmoothingQuality = 'high';
-    exportCtx.drawImage(offscreen, sx, sy, sWidth, sHeight, 0, 0, exportCanvas.width, exportCanvas.height);
+    exportCtx.drawImage(
+      offscreen,
+      sx,
+      sy,
+      sWidth,
+      sHeight,
+      0,
+      0,
+      exportCanvas.width,
+      exportCanvas.height
+    );
 
-    const isPng = bgPreset === 'transparent';
-    const finalDataUrl = exportCanvas.toDataURL(isPng ? 'image/png' : 'image/jpeg', 0.92);
+    const compressed = compressCanvasToDataUrl(exportCanvas, {
+      maxWidth: 1600,
+      maxHeight: 1600,
+      maxSizeKB: 480,
+      initialQuality: 0.94,
+      minQuality: 0.84,
+      preserveAlpha: needsAlpha,
+      fileName,
+    });
 
     await onApply(
-      finalDataUrl,
-      fileName,
+      compressed.dataUrl,
+      compressed.fileName,
       storeImageFit,
       bgPreset === 'custom' ? customBgColor : bgPreset !== 'transparent' ? bgPreset : undefined
     );

@@ -141,7 +141,7 @@ export function omegaMongoApiPlugin(): Plugin {
     secondaryPhone: '+255 624 265 480',
     branchMbeya: '+255 746 268 391',
     branchMwanza: '+255 699 032 777',
-    whatsappNumber: '255715268391',
+    whatsappNumber: '255624265480',
     currencySymbol: 'TSh',
   };
 
@@ -450,6 +450,9 @@ export function omegaMongoApiPlugin(): Plugin {
               results = docs.map((d) => ({
                 ...d,
                 image: normalizeProductImageField(d.image),
+                gallery: Array.isArray(d.gallery)
+                  ? d.gallery.map((g: any) => normalizeProductImageField(g))
+                  : d.gallery,
               }));
               if (!category && !search && !featured && !bestSeller) {
                 inMemoryProducts = results;
@@ -631,9 +634,14 @@ export function omegaMongoApiPlugin(): Plugin {
           const { price, discountPrice, wholesalePrice } = body;
 
           const updateObj: Record<string, any> = { updatedAt: new Date() };
+          const unsetObj: Record<string, any> = {};
           if (price !== undefined) updateObj.price = Number(price);
           if (discountPrice !== undefined) {
-            updateObj.discountPrice = discountPrice === null || discountPrice === '' ? undefined : Number(discountPrice);
+            if (discountPrice === null || discountPrice === '') {
+              unsetObj.discountPrice = '';
+            } else {
+              updateObj.discountPrice = Number(discountPrice);
+            }
           }
           if (wholesalePrice !== undefined) updateObj.wholesalePrice = Number(wholesalePrice);
 
@@ -642,21 +650,38 @@ export function omegaMongoApiPlugin(): Plugin {
               ? { $or: [{ id }, { _id: new ObjectId(id) }] }
               : { id };
 
+            let updatedDoc: any = null;
             if (db) {
-              await db.collection('products').updateOne(filter, { $set: updateObj });
+              const mongoUpdate: Record<string, any> = { $set: updateObj };
+              if (Object.keys(unsetObj).length > 0) mongoUpdate.$unset = unsetObj;
+              await db.collection('products').updateOne(filter, mongoUpdate);
+              updatedDoc = await db.collection('products').findOne(filter);
             }
 
             const idx = inMemoryProducts.findIndex(
               (p) => p.id === id || (p._id && String(p._id) === id)
             );
             if (idx >= 0) {
-              inMemoryProducts[idx] = { ...inMemoryProducts[idx], ...updateObj };
+              const nextItem = { ...inMemoryProducts[idx], ...updateObj };
+              if (unsetObj.discountPrice !== undefined) delete nextItem.discountPrice;
+              inMemoryProducts[idx] = nextItem;
+              if (!updatedDoc) updatedDoc = nextItem;
             }
+
+            const responseData = updatedDoc
+              ? {
+                  ...updatedDoc,
+                  image: normalizeProductImageField(updatedDoc.image),
+                  gallery: Array.isArray(updatedDoc.gallery)
+                    ? updatedDoc.gallery.map((g: any) => normalizeProductImageField(g))
+                    : updatedDoc.gallery,
+                }
+              : updateObj;
 
             return sendJson(res, 200, {
               success: true,
               message: 'Price updated in MongoDB Atlas',
-              data: idx >= 0 ? inMemoryProducts[idx] : updateObj,
+              data: responseData,
             });
           } catch (err: any) {
             return sendJson(res, 500, { success: false, message: err.message });
@@ -748,10 +773,14 @@ export function omegaMongoApiPlugin(): Plugin {
               id: updateData.id || id,
               updatedAt: new Date(),
             };
+            const unsetPayload: Record<string, any> = {};
             if (updatePayload.price !== undefined) {
               updatePayload.price = Number(updatePayload.price);
             }
-            if (updatePayload.discountPrice !== undefined && updatePayload.discountPrice !== null) {
+            if (updatePayload.discountPrice === null || updatePayload.discountPrice === '') {
+              delete updatePayload.discountPrice;
+              unsetPayload.discountPrice = '';
+            } else if (updatePayload.discountPrice !== undefined) {
               updatePayload.discountPrice = Number(updatePayload.discountPrice);
             }
             if (updatePayload.wholesalePrice !== undefined && updatePayload.wholesalePrice !== null) {
@@ -763,21 +792,39 @@ export function omegaMongoApiPlugin(): Plugin {
             if (updatePayload.image) {
               updatePayload.image = normalizeProductImageField(updatePayload.image);
             }
+            if (Array.isArray(updatePayload.gallery)) {
+              updatePayload.gallery = updatePayload.gallery.map((g: any) =>
+                normalizeProductImageField(g)
+              );
+            }
 
             try {
               let updated: any = null;
               if (db) {
+                const mongoUpdate: Record<string, any> = { $set: updatePayload };
+                if (Object.keys(unsetPayload).length > 0) mongoUpdate.$unset = unsetPayload;
                 await db
                   .collection('products')
-                  .updateOne(filter, { $set: updatePayload }, { upsert: true });
-                updated = await db.collection('products').findOne({ id: updatePayload.id });
+                  .updateOne(filter, mongoUpdate, { upsert: true });
+                const freshDoc = await db.collection('products').findOne({ id: updatePayload.id });
+                if (freshDoc) {
+                  updated = {
+                    ...freshDoc,
+                    image: normalizeProductImageField(freshDoc.image),
+                    gallery: Array.isArray(freshDoc.gallery)
+                      ? freshDoc.gallery.map((g: any) => normalizeProductImageField(g))
+                      : freshDoc.gallery,
+                  };
+                }
               }
 
               const idx = inMemoryProducts.findIndex(
                 (p) => p.id === id || (p._id && String(p._id) === id)
               );
               if (idx >= 0) {
-                inMemoryProducts[idx] = { ...inMemoryProducts[idx], ...updatePayload };
+                const nextMem = { ...inMemoryProducts[idx], ...updatePayload };
+                if (unsetPayload.discountPrice !== undefined) delete nextMem.discountPrice;
+                inMemoryProducts[idx] = updated || nextMem;
                 if (!updated) updated = inMemoryProducts[idx];
               } else {
                 if (!updated) updated = updatePayload;

@@ -406,11 +406,11 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
           <div className="flex items-center gap-2 pointer-events-auto bg-[#09090b]/90 backdrop-blur-md p-1.5 rounded-xl border border-[#dc2626]/40 shadow-2xl">
             {/* Direct WhatsApp Orders Quick Pill */}
             <a
-              href="https://wa.me/255715268391?text=Hello%20OMEGA%20Stationery%20Tanzania,%20I%20would%20like%20to%20place%20an%20order."
+              href="https://wa.me/255624265480?text=Hello%20OMEGA%20Stationery%20Tanzania,%20I%20would%20like%20to%20place%20an%20order."
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold shadow-md transition-all hover:scale-105"
-              title="Chat with Sales Desk on WhatsApp"
+              title="Chat with Sales Desk on WhatsApp (+255 624 265 480)"
             >
               <MessageCircle className="w-3.5 h-3.5 fill-white" />
               <span className="hidden sm:inline">WhatsApp Orders</span>

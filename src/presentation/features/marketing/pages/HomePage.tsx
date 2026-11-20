@@ -15,13 +15,10 @@ import {
   Award,
   FileText,
   Building2,
-  ChevronDown,
   Layers,
   FileCheck2,
   Boxes,
   X,
-  ExternalLink,
-  ShoppingBag,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useStore } from '@/context/StoreContext';
@@ -43,20 +40,21 @@ export const HomePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<
     'all' | 'counter' | 'exercise' | 'bahasha' | 'registers'
   >('all');
-  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
   const [activeCollectionSlide, setActiveCollectionSlide] = useState(0);
   const [selectedCollection, setSelectedCollection] = useState<any | null>(null);
   const [selectedGalleryImg, setSelectedGalleryImg] = useState<string>('');
+  const [newsletterContact, setNewsletterContact] = useState('');
+  const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
   const bannerStudioPhoto = '/omega-products/q3-banner-light-red-bg.jpg';
-  const bannerVerticalPhoto = '/omega-products/q3-banner-light-red-vertical.jpg';
   const collectionScrollRef = React.useRef<HTMLDivElement>(null);
 
   const scrollToSlide = (index: number) => {
     setActiveCollectionSlide(index);
-    if (collectionScrollRef.current) {
-      const cardWidth = collectionScrollRef.current.clientWidth;
-      collectionScrollRef.current.scrollTo({
-        left: index * cardWidth,
+    const container = collectionScrollRef.current;
+    if (container) {
+      const targetChild = container.children[index] as HTMLElement | undefined;
+      container.scrollTo({
+        left: targetChild ? targetChild.offsetLeft : index * container.clientWidth,
         behavior: 'smooth',
       });
     }
@@ -64,9 +62,21 @@ export const HomePage: React.FC = () => {
 
   const handleCollectionScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const container = e.currentTarget;
-    const slideIndex = Math.round(container.scrollLeft / container.clientWidth);
-    if (slideIndex !== activeCollectionSlide && slideIndex >= 0 && slideIndex < 4) {
-      setActiveCollectionSlide(slideIndex);
+    const children = Array.from(container.children) as HTMLElement[];
+    if (children.length === 0) return;
+
+    let closestIdx = 0;
+    let smallestDelta = Infinity;
+    for (let i = 0; i < children.length; i++) {
+      const delta = Math.abs(container.scrollLeft - children[i].offsetLeft);
+      if (delta < smallestDelta) {
+        smallestDelta = delta;
+        closestIdx = i;
+      }
+    }
+
+    if (closestIdx !== activeCollectionSlide) {
+      setActiveCollectionSlide(closestIdx);
     }
   };
 
@@ -269,7 +279,7 @@ export const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="bg-[var(--bg)] min-h-screen font-sans text-[var(--text)] selection:bg-[var(--red)]/30 selection:text-white transition-colors duration-200">
+    <div className="bg-[var(--bg)] min-h-screen overflow-x-hidden font-sans text-[var(--text)] selection:bg-[var(--red)]/30 selection:text-white transition-colors duration-200">
       <SEOHead
         title="OMEGA Writing Notebooks & Stationery | Quality for Every Page | Tanzania"
         description="Tanzania's benchmark manufacturer of Smyth-sewn Counter Books (Q2, Q3, Q4), Exercise Books, Kraft Bahasha, and Office Files. Factory-direct wholesale and upcountry bus parcel delivery."
@@ -411,11 +421,11 @@ export const HomePage: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* Collection Cards: Vertical ONLY on Mobile (< md), Horizontal on Desktop (md+) */}
+          {/* Collection Cards: Always Horizontal (Desktop-style) across Mobile Carousel & Desktop 2-Column Grid */}
           <div
             ref={collectionScrollRef}
             onScroll={handleCollectionScroll}
-            className="flex md:grid md:grid-cols-1 lg:grid-cols-2 gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-4 md:pb-0 scrollbar-none scroll-smooth px-1"
+            className="flex lg:grid lg:grid-cols-2 gap-4 sm:gap-6 overflow-x-auto lg:overflow-visible snap-x snap-mandatory pb-3 lg:pb-0 scrollbar-none scroll-smooth"
           >
             {collections.map((col: any, idx) => {
               const hasFullBg = Boolean(col.bgImage);
@@ -431,60 +441,60 @@ export const HomePage: React.FC = () => {
                     setSelectedCollection(col);
                     setSelectedGalleryImg(col.image);
                   }}
-                  className="w-[88vw] sm:w-[90vw] md:w-full shrink-0 snap-center relative rounded-[24px] border border-[#DFCBB5]/80 bg-[#EADCC9] md:bg-[#EFE9DF] p-0 md:p-7 shadow-md hover:shadow-xl group text-left cursor-pointer transition-all duration-300 flex flex-col md:flex-row items-stretch justify-between gap-0 md:gap-5 overflow-hidden md:min-h-[300px]"
+                  className="w-full sm:w-[540px] lg:w-full shrink-0 snap-center relative rounded-[20px] sm:rounded-[24px] border border-[#DFCBB5]/80 bg-[#EFE9DF] p-3.5 sm:p-6 lg:p-7 shadow-md hover:shadow-xl group text-left cursor-pointer transition-all duration-300 flex flex-row items-stretch justify-between gap-2 sm:gap-5 overflow-hidden min-h-[192px] sm:min-h-[270px] lg:min-h-[300px]"
                 >
-                  {/* Desktop Full-Card Seamless Photo Background (md and up - Horizontal) */}
+                  {/* Full-Card Seamless Studio Photo Background (All Screens — Horizontal) */}
                   {hasFullBg ? (
-                    <div className="hidden md:block absolute inset-0 z-0 pointer-events-none overflow-hidden">
+                    <div className="block absolute inset-0 z-0 pointer-events-none overflow-hidden">
                       <img
                         src={col.bgImage}
                         alt={col.title}
                         className="w-full h-full object-cover object-right transition-transform duration-700 group-hover:scale-105"
                         loading="eager"
                       />
-                      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(214,196,172,0.32)_0%,rgba(228,214,194,0.12)_30%,transparent_46%)]" />
+                      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(232,217,196,0.92)_0%,rgba(232,217,196,0.72)_42%,rgba(232,217,196,0.18)_54%,transparent_64%)] sm:bg-[linear-gradient(90deg,rgba(214,196,172,0.32)_0%,rgba(228,214,194,0.12)_30%,transparent_46%)]" />
                     </div>
                   ) : (
-                    <div className="hidden md:block absolute inset-0 z-0 pointer-events-none bg-gradient-to-br from-[#FAF8F5] via-white to-[#F3ECE2]" />
+                    <div className="block absolute inset-0 z-0 pointer-events-none bg-gradient-to-br from-[#FAF8F5] via-white to-[#F3ECE2]" />
                   )}
 
                   {/* Top-Right: Number & Action Link */}
-                  <div className="absolute top-4 right-4 sm:top-5 sm:right-5 z-20 flex items-center gap-1.5">
-                    <span className="inline-flex items-center justify-center rounded-full bg-white/95 backdrop-blur-md px-2.5 py-1 font-mono text-[11px] font-bold text-zinc-800 border-0 shadow-xs">
+                  <div className="absolute top-2.5 right-2.5 sm:top-5 sm:right-5 z-20 flex items-center gap-1 sm:gap-1.5">
+                    <span className="inline-flex items-center justify-center rounded-full bg-white/95 backdrop-blur-md px-2 py-0.5 sm:px-2.5 sm:py-1 font-mono text-[9.5px] sm:text-[11px] font-bold text-zinc-800 border-0 shadow-xs">
                       0{idx + 1}
                     </span>
-                    <div className="w-8 h-8 rounded-full bg-white/95 backdrop-blur-md text-zinc-800 group-hover:bg-zinc-900 group-hover:text-white transition-colors flex items-center justify-center border-0 shadow-xs">
-                      <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-white/95 backdrop-blur-md text-zinc-800 group-hover:bg-zinc-900 group-hover:text-white transition-colors flex items-center justify-center border-0 shadow-xs">
+                      <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                     </div>
                   </div>
 
-                  {/* Top (Mobile Vertical) / Left (Desktop Horizontal): Product Details */}
-                  <div className="w-full md:w-[55%] min-w-0 flex flex-col justify-between self-stretch z-10 p-5 pb-3 md:p-0">
+                  {/* Left Side (All Screens): Product Details */}
+                  <div className="w-[56%] sm:w-[55%] min-w-0 flex flex-col justify-between self-stretch z-10">
                     <div>
                       {/* Badge & Tag */}
-                      <div className="flex flex-wrap items-center gap-1.5 mb-2.5 pr-16 md:pr-0">
-                        <span className="inline-flex items-center whitespace-nowrap rounded-full bg-white/95 backdrop-blur-xs px-3 py-1 text-[10px] font-mono font-bold tracking-wider uppercase text-zinc-800 border-0 leading-none shadow-2xs">
+                      <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 mb-1.5 sm:mb-2.5">
+                        <span className="inline-flex items-center whitespace-nowrap rounded-full bg-white/95 backdrop-blur-xs px-2 py-0.5 sm:px-3 sm:py-1 text-[7.5px] sm:text-[10px] font-mono font-bold tracking-wider uppercase text-zinc-800 border-0 leading-none shadow-2xs">
                           {col.badge}
                         </span>
-                        <span className="inline-flex items-center whitespace-nowrap rounded-full bg-[#F4F1EA]/95 backdrop-blur-xs px-2.5 py-1 text-[10px] font-mono font-bold tracking-wider uppercase text-[#7A6852] border-0 leading-none shadow-2xs">
+                        <span className="inline-flex items-center whitespace-nowrap rounded-full bg-[#F4F1EA]/95 backdrop-blur-xs px-1.5 py-0.5 sm:px-2.5 sm:py-1 text-[7.5px] sm:text-[10px] font-mono font-bold tracking-wider uppercase text-[#7A6852] border-0 leading-none shadow-2xs">
                           {col.tag}
                         </span>
                       </div>
 
                       {/* Book Title */}
-                      <h3 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 group-hover:text-[var(--red)] transition-colors leading-[1.12]">
+                      <h3 className="font-serif text-[16px] sm:text-2xl lg:text-3xl font-bold tracking-tight text-zinc-900 group-hover:text-[var(--red)] transition-colors leading-[1.1]">
                         {col.title}
                       </h3>
-                      <p className="text-xs sm:text-sm text-zinc-600 font-sans mt-1 mb-3 font-medium">
+                      <p className="text-[10px] sm:text-sm text-zinc-700 sm:text-zinc-600 font-sans mt-0.5 sm:mt-1 mb-1.5 sm:mb-3 font-medium leading-snug">
                         {col.subtitle}
                       </p>
 
                       {/* Refined Feature Checklist */}
-                      <ul className="space-y-1.5 sm:space-y-2 text-xs text-zinc-800 mb-4">
+                      <ul className="space-y-0.5 sm:space-y-2 text-[9.5px] sm:text-xs text-zinc-800 mb-2 sm:mb-4">
                         {col.features.map((feat: string, fIdx: number) => (
-                          <li key={fIdx} className="flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#8C7355] shrink-0" />
-                            <span className="font-sans text-xs text-zinc-800 font-medium leading-snug">
+                          <li key={fIdx} className="flex items-center gap-1.5 sm:gap-2">
+                            <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-[#8C7355] shrink-0" />
+                            <span className="font-sans text-[9.5px] sm:text-xs text-zinc-800 font-medium leading-snug">
                               {feat}
                             </span>
                           </li>
@@ -493,36 +503,26 @@ export const HomePage: React.FC = () => {
                     </div>
 
                     {/* Action Button & Brand */}
-                    <div className="pt-1 flex flex-wrap items-center gap-3.5 mt-auto">
+                    <div className="pt-1 flex flex-wrap items-center gap-2 sm:gap-3.5 mt-auto">
                       <Link
                         to={col.link}
                         onClick={(e) => e.stopPropagation()}
-                        className="inline-flex items-center justify-center gap-2 rounded-full bg-zinc-900 hover:bg-[#D63A3A] active:scale-95 text-white font-mono text-xs font-bold tracking-wider uppercase px-5 py-2.5 shadow-sm hover:shadow-md transition-all duration-200 group/btn whitespace-nowrap"
+                        className="inline-flex items-center justify-center gap-1.5 sm:gap-2 rounded-full bg-zinc-900 hover:bg-[#D63A3A] active:scale-95 text-white font-mono text-[9px] sm:text-xs font-bold tracking-wider uppercase px-3 py-1.5 sm:px-5 sm:py-2.5 shadow-sm hover:shadow-md transition-all duration-200 group/btn whitespace-nowrap"
                       >
                         <span>{col.cta}</span>
-                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
+                        <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-200 group-hover/btn:translate-x-1" />
                       </Link>
-                      <span className="text-[11px] font-mono text-zinc-600 font-medium whitespace-nowrap">
+                      <span className="text-[9px] sm:text-[11px] font-mono text-zinc-700 sm:text-zinc-600 font-medium whitespace-nowrap">
                         {col.brand}
                       </span>
                     </div>
                   </div>
 
-                  {/* Bottom (Mobile Vertical ONLY): Full-Width Uncropped Studio Podium Image */}
-                  <div className="w-full md:hidden relative z-10 overflow-hidden">
-                    <img
-                      src={col.verticalBgImage || col.image}
-                      alt={col.title}
-                      className="w-full h-auto object-contain object-bottom transition-transform duration-700 group-hover:scale-[1.02] block"
-                      loading="eager"
-                    />
-                  </div>
-
-                  {/* Right Side (Desktop Horizontal ONLY): Visual Space for Full-Bleed Background Book */}
+                  {/* Right Side (All Screens): Visual Space for Full-Bleed Studio Podium Book */}
                   {hasFullBg ? (
-                    <div className="hidden md:block md:w-[45%] shrink-0 z-10 pointer-events-none" aria-hidden="true" />
+                    <div className="w-[44%] sm:w-[45%] shrink-0 z-10 pointer-events-none" aria-hidden="true" />
                   ) : (
-                    <div className="hidden md:flex md:w-[45%] h-60 relative items-center justify-center shrink-0 z-10 self-center">
+                    <div className="flex w-[44%] sm:w-[45%] h-36 sm:h-60 relative items-center justify-center shrink-0 z-10 self-center">
                       <img
                         src={col.image}
                         alt={col.title}
@@ -536,8 +536,8 @@ export const HomePage: React.FC = () => {
             })}
           </div>
 
-          {/* Mobile Carousel Single-Slide Indicators (Dots) */}
-          <div className="flex md:hidden items-center justify-center gap-2 pt-1 pb-2">
+          {/* Mobile & Tablet Carousel Single-Slide Indicators (Dots) */}
+          <div className="flex lg:hidden items-center justify-center gap-2 pt-1 pb-2">
             {collections.map((_, dotIdx) => (
               <button
                 key={dotIdx}
@@ -725,52 +725,52 @@ export const HomePage: React.FC = () => {
       </AnimatePresence>
 
       {/* ========================================================================= */}
-      {/* 4. SIGNATURE FEATURED BANNER (Vertical ONLY on Mobile, Horizontal on Desktop) */}
+      {/* 4. SIGNATURE FEATURED BANNER (Always Horizontal — Desktop-style on Mobile & Desktop) */}
       {/* ========================================================================= */}
       <section
         aria-label="Signature Banner"
-        className="omega-fluid-container pt-2 sm:pt-4 pb-8 sm:pb-12 omega-banner-container"
+        className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-8 sm:pb-12 omega-banner-container"
       >
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.45 }}
-          className="relative w-full rounded-[24px] overflow-hidden bg-[#F1C1BD] md:bg-[#F2C4C0] border border-[#E2B0AC]/80 p-0 md:p-9 lg:p-12 shadow-xl transition-all duration-300 md:min-h-[360px] lg:min-h-[400px] flex flex-col md:flex-row items-stretch md:items-center group"
+          className="relative w-full rounded-[20px] sm:rounded-[24px] overflow-hidden bg-[#F1C1BD] border border-[#E2B0AC]/80 p-3.5 sm:p-8 lg:p-12 shadow-xl transition-all duration-300 min-h-[192px] sm:min-h-[290px] lg:min-h-[400px] flex flex-row items-center group"
         >
-          {/* Desktop Full-Card Seamless Soft Light-Red Studio Photo Background (Horizontal md+) */}
-          <div className="hidden md:block absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          {/* Full-Card Seamless Soft Light-Red Studio Photo Background (All Screens — Horizontal) */}
+          <div className="block absolute inset-0 z-0 pointer-events-none overflow-hidden">
             <img
               src={bannerStudioPhoto}
               alt="OMEGA Hardcover Counter Book 180° Lay-Flat Studio Photo"
               className="w-full h-full object-cover object-right transition-transform duration-700 group-hover:scale-[1.03]"
               loading="eager"
             />
-            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(186,118,114,0.26)_0%,rgba(210,148,144,0.10)_30%,transparent_46%)]" />
+            <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(241,193,189,0.92)_0%,rgba(241,193,189,0.78)_44%,rgba(241,193,189,0.22)_55%,transparent_65%)] sm:bg-[linear-gradient(90deg,rgba(186,118,114,0.26)_0%,rgba(210,148,144,0.10)_30%,transparent_46%)]" />
           </div>
 
-          <div className="relative z-10 w-full flex flex-col md:flex-row items-stretch md:items-center justify-between gap-0 md:gap-6">
+          <div className="relative z-10 w-full flex flex-row items-center justify-between gap-2 sm:gap-6">
             
-            {/* Top (Mobile Vertical) / Left (Desktop Horizontal): Content Block */}
-            <div className="w-full md:w-[50%] shrink-0 space-y-4 sm:space-y-5 text-left p-6 pb-3 md:p-0">
+            {/* Left Side (All Screens): Content Block */}
+            <div className="w-[54%] sm:w-[50%] min-w-0 shrink-0 space-y-2 sm:space-y-4 lg:space-y-5 text-left">
               
               {/* Headline with Gold Badge */}
-              <div className="space-y-2.5">
-                <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gradient-to-r from-[#F3D28A] via-[#E9B44C] to-[#B8862B] text-zinc-950 text-[10px] font-mono font-black uppercase tracking-wider shadow-xs border-0">
+              <div className="space-y-1 sm:space-y-2.5">
+                <div className="inline-flex items-center gap-1 sm:gap-1.5 px-2 py-0.5 sm:px-3.5 sm:py-1 rounded-full bg-gradient-to-r from-[#F3D28A] via-[#E9B44C] to-[#B8862B] text-zinc-950 text-[7.5px] sm:text-[10px] font-mono font-black uppercase tracking-wider shadow-xs border-0 whitespace-nowrap">
                   <span>★</span>
                   <span>BEST SELLER · QUIRE 3</span>
                 </div>
-                <h2 className="text-[28px] sm:text-3xl lg:text-[42px] font-serif font-bold text-zinc-950 tracking-tight leading-[1.1]">
+                <h2 className="text-[16px] sm:text-3xl lg:text-[42px] font-serif font-bold text-zinc-950 tracking-tight leading-[1.1]">
                   Counter Book Q3, Hardcover
                 </h2>
-                <p className="text-[13.5px] sm:text-sm lg:text-[15px] text-zinc-800 max-w-md font-sans font-medium leading-relaxed">
+                <p className="text-[9.5px] sm:text-sm lg:text-[15px] text-zinc-800 max-w-md font-sans font-medium leading-[1.35] sm:leading-relaxed">
                   288 pages of pure 70 GSM archival bond paper. Precision Smyth-sewn binding opens 180° flat, engineered for commercial accountants, schools, and tenders.
                 </p>
               </div>
 
               {/* Price & Action Row */}
-              <div className="pt-1 sm:pt-2 flex flex-wrap items-center gap-3.5">
-                <span className="text-2xl sm:text-3xl font-mono font-black text-zinc-950 tabular-nums">
+              <div className="pt-0.5 sm:pt-2 flex flex-wrap items-center gap-2 sm:gap-3.5">
+                <span className="text-[13.5px] sm:text-2xl lg:text-3xl font-mono font-black text-zinc-950 tabular-nums whitespace-nowrap">
                   TSh 8,500
                 </span>
 
@@ -780,27 +780,17 @@ export const HomePage: React.FC = () => {
                   whileTap={{ scale: 0.95 }}
                   type="button"
                   onClick={handleBannerBuyNow}
-                  className="inline-flex items-center gap-2 px-6 py-3 sm:px-7 sm:py-3 rounded-full bg-[#C92A2A] hover:bg-[#A61E1E] text-white font-mono text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-lg shadow-red-950/25 cursor-pointer whitespace-nowrap"
+                  className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-7 sm:py-3 rounded-full bg-[#C92A2A] hover:bg-[#A61E1E] text-white font-mono text-[9px] sm:text-xs font-bold uppercase tracking-wider transition-all duration-200 shadow-md sm:shadow-lg shadow-red-950/25 cursor-pointer whitespace-nowrap"
                 >
                   <span>BUY NOW</span>
-                  <ArrowRight className="w-4 h-4 stroke-[2.2]" />
+                  <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 stroke-[2.2]" />
                 </motion.button>
               </div>
 
             </div>
 
-            {/* Bottom (Mobile Vertical ONLY): Full-Width Uncropped Studio Book & 180° Spread */}
-            <div className="w-full md:hidden relative z-10 overflow-hidden">
-              <img
-                src={bannerVerticalPhoto}
-                alt="OMEGA Hardcover Counter Book Q3 180° Lay-Flat Spread"
-                className="w-full h-auto object-contain object-bottom transition-transform duration-700 group-hover:scale-[1.02] block"
-                loading="eager"
-              />
-            </div>
-
-            {/* Right Visual Space (Desktop Horizontal ONLY): Seamless Book & Open Spread on Studio Surface */}
-            <div className="hidden md:block md:w-[50%] shrink-0 pointer-events-none" aria-hidden="true" />
+            {/* Right Visual Space (All Screens): Seamless Book & 180° Open Spread on Studio Surface */}
+            <div className="w-[46%] sm:w-[50%] shrink-0 pointer-events-none" aria-hidden="true" />
 
           </div>
         </motion.div>
@@ -948,7 +938,7 @@ export const HomePage: React.FC = () => {
                     <Layers className="w-5 h-5 stroke-[2]" />
                   </div>
                   <div className="min-w-0 text-left">
-                    <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight truncate">
+                    <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight">
                       1.8mm Rigid Greyboard
                     </h3>
                   </div>
@@ -976,7 +966,7 @@ export const HomePage: React.FC = () => {
                     <BookOpen className="w-5 h-5 stroke-[2]" />
                   </div>
                   <div className="min-w-0 text-left">
-                    <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight truncate">
+                    <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight">
                       Smyth Thread Sewing
                     </h3>
                   </div>
@@ -1004,7 +994,7 @@ export const HomePage: React.FC = () => {
                     <Feather className="w-5 h-5 stroke-[2]" />
                   </div>
                   <div className="min-w-0 text-left">
-                    <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight truncate">
+                    <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight">
                       70 GSM Bleed-Proof Bond
                     </h3>
                   </div>
@@ -1032,7 +1022,7 @@ export const HomePage: React.FC = () => {
                     <FileCheck2 className="w-5 h-5 stroke-[2]" />
                   </div>
                   <div className="min-w-0 text-left">
-                    <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight truncate">
+                    <h3 className="font-serif text-base sm:text-lg font-bold text-zinc-900 leading-tight">
                       NECTA &amp; Standard Ruling
                     </h3>
                   </div>
@@ -1235,7 +1225,7 @@ export const HomePage: React.FC = () => {
               <motion.a
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
-                href="https://wa.me/255746268391?text=Habari%20OMEGA%2C%20ninaomba%20bei%20za%20jumla%20za%20katoni%206%2B%20(Tier%202%20Stockist)."
+                href="https://wa.me/255624265480?text=Habari%20OMEGA%2C%20ninaomba%20bei%20za%20jumla%20za%20katoni%206%2B%20(Tier%202%20Stockist)."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-3.5 rounded-full bg-[var(--red)] hover:bg-[var(--red-hover)] text-center text-xs font-mono font-bold text-white tracking-wider uppercase transition-colors shadow-md flex items-center justify-center gap-2 cursor-pointer"
@@ -1452,40 +1442,56 @@ export const HomePage: React.FC = () => {
             </p>
 
             {/* Form with ONE filled red button */}
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                alert(language === 'sw' ? 'Asante! Tumepokea mawasiliano yako.' : 'Thank you! We received your details.');
-              }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-2.5 max-w-md mx-auto pt-3"
-            >
-              <div className="relative w-full">
-                <Mail className="w-4 h-4 text-[var(--text-muted)] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none stroke-[1.75]" />
-                <input
-                  type="text"
-                  required
-                  placeholder={language === 'sw' ? 'Weka namba au barua pepe...' : 'Enter your email or phone number...'}
-                  className="w-full pl-11 pr-4 py-3 rounded-full text-xs sm:text-sm bg-[var(--surface-2)] text-[var(--text)] placeholder:text-[var(--text-muted)] border border-[var(--border)] focus:outline-none focus:border-[var(--gold)] focus:ring-1 focus:ring-[var(--gold)] transition-all font-sans"
-                />
+            {newsletterSubmitted ? (
+              <div className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-medium mt-3">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>
+                  {language === 'sw'
+                    ? 'Asante! Tumepokea mawasiliano yako.'
+                    : 'Thank you! We received your details.'}
+                </span>
               </div>
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.95 }}
-                type="submit"
-                className="w-full sm:w-auto px-7 py-3 rounded-full bg-[var(--red)] hover:bg-[var(--red-hover)] text-white text-xs sm:text-sm font-bold uppercase tracking-wider font-mono transition-all shadow-md shrink-0 flex items-center justify-center gap-1.5 cursor-pointer shadow-red-950/40"
+            ) : (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (newsletterContact.trim()) {
+                    setNewsletterSubmitted(true);
+                    setNewsletterContact('');
+                  }
+                }}
+                className="flex flex-col sm:flex-row items-center justify-center gap-2.5 max-w-md mx-auto pt-3"
               >
-                <span>{language === 'sw' ? 'JIUNGE' : 'SUBSCRIBE'}</span>
-                <ArrowUpRight className="w-4 h-4 stroke-[2]" />
-              </motion.button>
-            </form>
+                <div className="relative w-full">
+                  <Mail className="w-4 h-4 text-[var(--text-muted)] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none stroke-[1.75]" />
+                  <input
+                    type="text"
+                    required
+                    value={newsletterContact}
+                    onChange={(e) => setNewsletterContact(e.target.value)}
+                    placeholder={language === 'sw' ? 'Weka namba au barua pepe...' : 'Enter your email or phone number...'}
+                    className="w-full pl-11 pr-4 py-3 rounded-full text-xs sm:text-sm bg-[var(--surface-2)] text-[var(--text)] placeholder:text-[var(--text-muted)] border border-[var(--border)] focus:outline-none focus:border-[var(--gold)] focus:ring-1 focus:ring-[var(--gold)] transition-all font-sans"
+                  />
+                </div>
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.95 }}
+                  type="submit"
+                  className="w-full sm:w-auto px-7 py-3 rounded-full bg-[var(--red)] hover:bg-[var(--red-hover)] text-white text-xs sm:text-sm font-bold uppercase tracking-wider font-mono transition-all shadow-md shrink-0 flex items-center justify-center gap-1.5 cursor-pointer shadow-red-950/40"
+                >
+                  <span>{language === 'sw' ? 'JIUNGE' : 'SUBSCRIBE'}</span>
+                  <ArrowUpRight className="w-4 h-4 stroke-[2]" />
+                </motion.button>
+              </form>
+            )}
 
             {/* Bottom Guarantee Indicators */}
-            <div className="flex items-center justify-center gap-4 pt-3 text-[11px] font-mono text-[var(--text-muted)]">
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 pt-3 text-[11px] font-mono text-[var(--text-muted)]">
               <span className="flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-[var(--gold)] stroke-[2]" />
                 <span>Zero Spam Guarantee</span>
               </span>
-              <span>•</span>
+              <span className="hidden sm:inline">•</span>
               <span className="flex items-center gap-1.5">
                 <Package className="w-3.5 h-3.5 text-[var(--red)] stroke-[2]" />
                 <span>Instant 2026 Price Catalog</span>
