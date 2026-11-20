@@ -411,11 +411,11 @@ export const HomePage: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* Collection Cards: shadcn/ui Inspired 2-Column Grid + Mobile Single-Slide Carousel */}
+          {/* Collection Cards: Vertical ONLY on Mobile (< md), Horizontal on Desktop (md+) */}
           <div
             ref={collectionScrollRef}
             onScroll={handleCollectionScroll}
-            className="flex lg:grid lg:grid-cols-2 gap-6 overflow-x-auto snap-x snap-mandatory pb-4 lg:pb-0 scrollbar-none scroll-smooth px-1"
+            className="flex md:grid md:grid-cols-1 lg:grid-cols-2 gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-4 md:pb-0 scrollbar-none scroll-smooth px-1"
           >
             {collections.map((col: any, idx) => {
               const hasFullBg = Boolean(col.bgImage);
@@ -431,9 +431,9 @@ export const HomePage: React.FC = () => {
                     setSelectedCollection(col);
                     setSelectedGalleryImg(col.image);
                   }}
-                  className="w-[90vw] sm:w-[520px] lg:w-auto shrink-0 snap-center relative rounded-[24px] border border-[#DFCBB5]/80 bg-[#EADCC9] md:bg-[#EFE9DF] p-0 md:p-7 shadow-md hover:shadow-xl group text-left cursor-pointer transition-all duration-300 flex flex-col md:flex-row items-stretch justify-between gap-0 md:gap-5 overflow-hidden md:min-h-[300px]"
+                  className="w-[88vw] sm:w-[90vw] md:w-full shrink-0 snap-center relative rounded-[24px] border border-[#DFCBB5]/80 bg-[#EADCC9] md:bg-[#EFE9DF] p-0 md:p-7 shadow-md hover:shadow-xl group text-left cursor-pointer transition-all duration-300 flex flex-col md:flex-row items-stretch justify-between gap-0 md:gap-5 overflow-hidden md:min-h-[300px]"
                 >
-                  {/* Desktop Full-Card Seamless Photo Background (md and up) */}
+                  {/* Desktop Full-Card Seamless Photo Background (md and up - Horizontal) */}
                   {hasFullBg ? (
                     <div className="hidden md:block absolute inset-0 z-0 pointer-events-none overflow-hidden">
                       <img
@@ -458,7 +458,7 @@ export const HomePage: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Top (Mobile Vertical) / Left (Desktop): Product Details */}
+                  {/* Top (Mobile Vertical) / Left (Desktop Horizontal): Product Details */}
                   <div className="w-full md:w-[55%] min-w-0 flex flex-col justify-between self-stretch z-10 p-5 pb-3 md:p-0">
                     <div>
                       {/* Badge & Tag */}
@@ -508,18 +508,17 @@ export const HomePage: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Bottom (Mobile Vertical): Full-Width Centered Studio Podium Image */}
-                  <div className="w-full md:hidden relative z-10 overflow-hidden mt-1">
-                    <div className="absolute top-0 inset-x-0 h-7 bg-gradient-to-b from-[#EADCC9] via-[#EADCC9]/45 to-transparent z-10 pointer-events-none" />
+                  {/* Bottom (Mobile Vertical ONLY): Full-Width Uncropped Studio Podium Image */}
+                  <div className="w-full md:hidden relative z-10 overflow-hidden">
                     <img
                       src={col.verticalBgImage || col.image}
                       alt={col.title}
-                      className="w-full h-56 sm:h-64 object-cover object-center transition-transform duration-700 group-hover:scale-105 block"
+                      className="w-full h-auto object-contain object-bottom transition-transform duration-700 group-hover:scale-[1.02] block"
                       loading="eager"
                     />
                   </div>
 
-                  {/* Right Side (Desktop): Visual Space for Full-Bleed Background Book */}
+                  {/* Right Side (Desktop Horizontal ONLY): Visual Space for Full-Bleed Background Book */}
                   {hasFullBg ? (
                     <div className="hidden md:block md:w-[45%] shrink-0 z-10 pointer-events-none" aria-hidden="true" />
                   ) : (
@@ -726,9 +725,7 @@ export const HomePage: React.FC = () => {
       </AnimatePresence>
 
       {/* ========================================================================= */}
-      {/* 4. SIGNATURE FEATURED BANNER (Watermelon UI Depth + Motion) */}
-      {/* ========================================================================= */}
-      {/* 4. SIGNATURE FEATURED BANNER (Full-Bleed Soft Light-Red Studio Scene) */}
+      {/* 4. SIGNATURE FEATURED BANNER (Vertical ONLY on Mobile, Horizontal on Desktop) */}
       {/* ========================================================================= */}
       <section
         aria-label="Signature Banner"
@@ -739,9 +736,9 @@ export const HomePage: React.FC = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.45 }}
-          className="relative w-full rounded-[24px] overflow-hidden bg-[#EFC0BC] md:bg-[#F2C4C0] border border-[#E2B0AC]/80 p-0 md:p-9 lg:p-12 shadow-xl transition-all duration-300 md:min-h-[360px] lg:min-h-[400px] flex flex-col md:flex-row items-stretch md:items-center group"
+          className="relative w-full rounded-[24px] overflow-hidden bg-[#F1C1BD] md:bg-[#F2C4C0] border border-[#E2B0AC]/80 p-0 md:p-9 lg:p-12 shadow-xl transition-all duration-300 md:min-h-[360px] lg:min-h-[400px] flex flex-col md:flex-row items-stretch md:items-center group"
         >
-          {/* Desktop Full-Card Seamless Soft Light-Red Studio Photo Background */}
+          {/* Desktop Full-Card Seamless Soft Light-Red Studio Photo Background (Horizontal md+) */}
           <div className="hidden md:block absolute inset-0 z-0 pointer-events-none overflow-hidden">
             <img
               src={bannerStudioPhoto}
@@ -754,7 +751,7 @@ export const HomePage: React.FC = () => {
 
           <div className="relative z-10 w-full flex flex-col md:flex-row items-stretch md:items-center justify-between gap-0 md:gap-6">
             
-            {/* Top (Mobile Vertical) / Left (Desktop): Content Block Over Soft Light-Red Studio Backdrop */}
+            {/* Top (Mobile Vertical) / Left (Desktop Horizontal): Content Block */}
             <div className="w-full md:w-[50%] shrink-0 space-y-4 sm:space-y-5 text-left p-6 pb-3 md:p-0">
               
               {/* Headline with Gold Badge */}
@@ -792,18 +789,17 @@ export const HomePage: React.FC = () => {
 
             </div>
 
-            {/* Bottom (Mobile Vertical): Full-Width Centered Studio Book & 180° Spread */}
-            <div className="w-full md:hidden relative z-10 overflow-hidden mt-1">
-              <div className="absolute top-0 inset-x-0 h-8 bg-gradient-to-b from-[#EFC0BC] via-[#EFC0BC]/50 to-transparent z-10 pointer-events-none" />
+            {/* Bottom (Mobile Vertical ONLY): Full-Width Uncropped Studio Book & 180° Spread */}
+            <div className="w-full md:hidden relative z-10 overflow-hidden">
               <img
                 src={bannerVerticalPhoto}
                 alt="OMEGA Hardcover Counter Book Q3 180° Lay-Flat Spread"
-                className="w-full h-auto object-cover object-center transition-transform duration-700 group-hover:scale-[1.03] block"
+                className="w-full h-auto object-contain object-bottom transition-transform duration-700 group-hover:scale-[1.02] block"
                 loading="eager"
               />
             </div>
 
-            {/* Right Visual Space (Desktop): Seamless Book & Open Spread on Studio Surface */}
+            {/* Right Visual Space (Desktop Horizontal ONLY): Seamless Book & Open Spread on Studio Surface */}
             <div className="hidden md:block md:w-[50%] shrink-0 pointer-events-none" aria-hidden="true" />
 
           </div>

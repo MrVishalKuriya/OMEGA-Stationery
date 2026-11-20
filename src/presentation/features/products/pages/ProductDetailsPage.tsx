@@ -34,6 +34,8 @@ import { toast } from 'sonner';
 import { useStore } from '@/context/StoreContext';
 import { ProductCard } from '@/components/ProductCard';
 import { ProductImage, getProductImageSrc } from '@/components/ProductImage';
+import { WhatsAppNotifyBox } from '@/components/WhatsAppNotifyBox';
+import { StarRatingBadge, ProductReviewsSection } from '@/components/StarRatingBadge';
 import { SEOHead } from '@/components/SEOHead';
 import { TRANSLATIONS } from '@/data/translations';
 import { Product, formatPrice } from '@/types/store';
@@ -217,7 +219,9 @@ export const ProductDetailsPage: React.FC = () => {
       ? product.discountPrice
       : product.price;
   const hasDiscount = effectivePrice < product.price;
-  const isOutOfStock = product.stockStatus === 'Out of Stock';
+  const isOutOfStock =
+    product.stockStatus === 'Out of Stock' ||
+    (typeof product.stockQuantity === 'number' && product.stockQuantity <= 0);
 
   // Dynamic Tier Pricing Calculator
   const wholesaleMinMoq = product.wholesaleMinQty || 5;
@@ -593,17 +597,25 @@ export const ProductDetailsPage: React.FC = () => {
                 </p>
               )}
 
-              {/* Rating & Stock Badges - shadcn Badges */}
-              <div className="flex items-center gap-4 text-xs pt-1 flex-wrap">
-                <div className="flex items-center gap-1.5">
-                  <div className="flex text-amber-500">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                    ))}
-                  </div>
-                  <span className="font-bold text-zinc-900">{product.rating || 4.8}</span>
-                  <span className="text-zinc-500 font-mono">({product.reviewCount || 160} reviews)</span>
-                </div>
+              {/* Rating & Stock Badges - Live Star Rating & Quick Rate */}
+              <div className="flex items-center gap-3 text-xs pt-1 flex-wrap">
+                <StarRatingBadge
+                  product={product}
+                  size="lg"
+                  allowQuickRate={true}
+                />
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    document
+                      .getElementById('product-ratings-reviews')
+                      ?.scrollIntoView({ behavior: 'smooth' })
+                  }
+                  className="text-xs font-mono font-bold text-[#D63A3A] hover:underline cursor-pointer"
+                >
+                  {language === 'sw' ? 'Weka Maoni & Nyota ↓' : 'Write a Review ↓'}
+                </button>
 
                 <div className="flex items-center gap-2">
                   <span className="text-zinc-300">·</span>
@@ -881,45 +893,51 @@ export const ProductDetailsPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Action Buttons: shadcn Primary & Secondary Buttons */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={handleAdd}
-                  disabled={isOutOfStock}
-                  className={`w-full py-3.5 px-5 rounded-xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer ${
-                    isOutOfStock
-                      ? 'bg-zinc-100 text-zinc-400 cursor-not-allowed border border-zinc-200'
-                      : justAdded
-                      ? 'bg-emerald-600 text-white'
-                      : 'bg-zinc-900 hover:bg-[#D63A3A] active:scale-[0.98] text-white hover:shadow-md'
-                  }`}
-                >
-                  {isOutOfStock ? (
-                    t.outOfStock
-                  ) : justAdded ? (
-                    <>
-                      <Check className="w-4 h-4 text-white" />
-                      <span>{t.addedToOrder}</span>
-                    </>
-                  ) : (
-                    <>
-                      <ShoppingBag className="w-4 h-4" />
-                      <span>{t.addToOrder}</span>
-                    </>
-                  )}
-                </button>
+              {/* Action Buttons or Out-of-Stock WhatsApp Notify Me */}
+              {isOutOfStock ? (
+                <div className="pt-2">
+                  <WhatsAppNotifyBox
+                    product={product}
+                    quantity={quantity}
+                    language={language}
+                    storeWhatsappDigits={selectedPhoneDesk}
+                  />
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={handleAdd}
+                    className={`w-full py-3.5 px-5 rounded-xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer ${
+                      justAdded
+                        ? 'bg-emerald-600 text-white'
+                        : 'bg-zinc-900 hover:bg-[#D63A3A] active:scale-[0.98] text-white hover:shadow-md'
+                    }`}
+                  >
+                    {justAdded ? (
+                      <>
+                        <Check className="w-4 h-4 text-white" />
+                        <span>{t.addedToOrder}</span>
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingBag className="w-4 h-4" />
+                        <span>{t.addToOrder}</span>
+                      </>
+                    )}
+                  </button>
 
-                <a
-                  href={directWhatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-3.5 px-5 bg-[#25D366] hover:bg-[#20ba59] active:scale-[0.98] text-white rounded-xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer"
-                >
-                  <MessageCircle className="w-4 h-4 fill-white" />
-                  <span>Order on WhatsApp</span>
-                </a>
-              </div>
+                  <a
+                    href={directWhatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-3.5 px-5 bg-[#25D366] hover:bg-[#20ba59] active:scale-[0.98] text-white rounded-xl text-xs sm:text-sm font-mono font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer"
+                  >
+                    <MessageCircle className="w-4 h-4 fill-white" />
+                    <span>Order on WhatsApp</span>
+                  </a>
+                </div>
+              )}
             </div>
 
             {/* ================================================================= */}
@@ -1191,6 +1209,11 @@ export const ProductDetailsPage: React.FC = () => {
           </div>
 
         </div>
+
+        {/* ===================================================================== */}
+        {/* STAR-BASED PRODUCT RATINGS & CUSTOMER REVIEWS SECTION */}
+        {/* ===================================================================== */}
+        <ProductReviewsSection product={product} />
 
         {/* ===================================================================== */}
         {/* RELATED COMPLEMENTARY PRODUCTS SECTION */}

@@ -5,8 +5,10 @@ import { CartItem, Product } from '@/types/store';
 interface CartState {
   cart: CartItem[];
   wishlist: string[];
+  compareProductIds: string[];
   isCartOpen: boolean;
   isTrackingModalOpen: boolean;
+  isCompareModalOpen: boolean;
   quickViewProduct: Product | null;
   
   // Actions
@@ -18,6 +20,15 @@ interface CartState {
   // Wishlist
   toggleWishlist: (productId: string) => void;
   isInWishlist: (productId: string) => boolean;
+
+  // Compare (up to 2 OMEGA stationery items side-by-side)
+  toggleCompareProduct: (productId: string) => void;
+  openCompareWithProduct: (productId: string) => void;
+  setCompareProductAtSlot: (slotIndex: 0 | 1, productId: string) => void;
+  removeFromCompare: (productId: string) => void;
+  clearCompareProducts: () => void;
+  isInCompare: (productId: string) => boolean;
+  setIsCompareModalOpen: (isOpen: boolean) => void;
   
   // Modals
   openCart: () => void;
@@ -31,8 +42,10 @@ export const useCartStore = create<CartState>()(
     (set, get) => ({
       cart: [],
       wishlist: [],
+      compareProductIds: [],
       isCartOpen: false,
       isTrackingModalOpen: false,
+      isCompareModalOpen: false,
       quickViewProduct: null,
 
       addToCart: (productId, quantity = 1, isWholesale = false) => {
@@ -95,6 +108,79 @@ export const useCartStore = create<CartState>()(
         return get().wishlist.includes(productId);
       },
 
+      toggleCompareProduct: (productId) => {
+        set((state) => {
+          const exists = state.compareProductIds.includes(productId);
+          if (exists) {
+            return {
+              compareProductIds: state.compareProductIds.filter((id) => id !== productId),
+            };
+          }
+          // Keep up to 2 selected products
+          const next =
+            state.compareProductIds.length >= 2
+              ? [state.compareProductIds[1], productId]
+              : [...state.compareProductIds, productId];
+          return {
+            compareProductIds: next,
+          };
+        });
+      },
+
+      openCompareWithProduct: (productId) => {
+        set((state) => {
+          const exists = state.compareProductIds.includes(productId);
+          let next = state.compareProductIds;
+          if (!exists) {
+            next =
+              state.compareProductIds.length >= 2
+                ? [state.compareProductIds[0], productId]
+                : [...state.compareProductIds, productId];
+          }
+          return {
+            compareProductIds: next,
+            isCompareModalOpen: true,
+          };
+        });
+      },
+
+      setCompareProductAtSlot: (slotIndex, productId) => {
+        set((state) => {
+          const current = [...state.compareProductIds];
+          // Avoid duplicate in the other slot
+          const otherSlot = slotIndex === 0 ? 1 : 0;
+          if (current[otherSlot] === productId) {
+            // Swap them
+            const prevInTarget = current[slotIndex];
+            current[slotIndex] = productId;
+            if (prevInTarget) {
+              current[otherSlot] = prevInTarget;
+            }
+          } else {
+            current[slotIndex] = productId;
+          }
+          return {
+            compareProductIds: current.filter(Boolean).slice(0, 2),
+          };
+        });
+      },
+
+      removeFromCompare: (productId) => {
+        set((state) => ({
+          compareProductIds: state.compareProductIds.filter((id) => id !== productId),
+        }));
+      },
+
+      clearCompareProducts: () => {
+        set({ compareProductIds: [] });
+      },
+
+      isInCompare: (productId) => {
+        return get().compareProductIds.includes(productId);
+      },
+
+      setIsCompareModalOpen: (isOpen) => set({ isCompareModalOpen: isOpen }),
+
       openCart: () => set({ isCartOpen: true }),
       closeCart: () => set({ isCartOpen: false }),
       setIsTrackingModalOpen: (isOpen) => set({ isTrackingModalOpen: isOpen }),
@@ -102,7 +188,11 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: 'omega_cart_zustand_v1',
-      partialize: (state) => ({ cart: state.cart, wishlist: state.wishlist }),
+      partialize: (state) => ({
+        cart: state.cart,
+        wishlist: state.wishlist,
+        compareProductIds: state.compareProductIds,
+      }),
     }
   )
 );

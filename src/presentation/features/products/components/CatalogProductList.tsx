@@ -5,10 +5,17 @@ import {
   ChevronLeft,
   ChevronRight,
   ShoppingBag,
+  Eye,
+  BellRing,
+  Check,
+  ArrowLeftRight,
 } from 'lucide-react';
 import { Product, formatPrice } from '@/types/store';
 import { ProductCard } from '@/components/ProductCard';
 import { ProductImage } from '@/components/ProductImage';
+import { StarRatingBadge } from '@/components/StarRatingBadge';
+import { useStore } from '@/context/StoreContext';
+import { isProductSubscribedForAlert } from '@/services/api';
 
 interface CatalogProductListProps {
   products: Product[];
@@ -30,11 +37,12 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
   totalPages,
   onPageChange,
   currency,
-  cleanWhatsappDigits,
   language,
   onAddToCart,
   onResetFilters,
 }) => {
+  const { setQuickViewProduct, openCompareWithProduct, isInCompare } = useStore();
+
   if (products.length === 0) {
     return (
       <div className="bg-[var(--surface-1)] border border-[var(--border)] rounded-2xl p-12 text-center space-y-4 shadow-xs transition-colors duration-200">
@@ -74,14 +82,24 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
             const effectivePrice =
               p.discountPrice && p.discountPrice < p.price ? p.discountPrice : p.price;
             const hasDiscount = effectivePrice < p.price;
+            const isOutOfStock =
+              p.stockStatus === 'Out of Stock' ||
+              (typeof p.stockQuantity === 'number' && p.stockQuantity <= 0);
+            const hasAlert = Boolean(isProductSubscribedForAlert(p.id));
+            const isCompared = isInCompare ? isInCompare(p.id) : false;
 
             return (
               <div
                 key={p.id}
                 className="bg-white rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row items-center justify-between gap-5 transition-all border-0 shadow-none"
               >
-                {/* Image Thumbnail - Pure White BG, No Borders */}
-                <div className="w-full md:w-36 h-36 rounded-xl shrink-0 overflow-hidden relative bg-white flex items-center justify-center">
+                {/* Image Thumbnail - Click to Open Quick View Modal */}
+                <button
+                  type="button"
+                  onClick={() => setQuickViewProduct(p)}
+                  title="Click image for Quick View"
+                  className="group/thumb w-full md:w-36 h-36 rounded-xl shrink-0 overflow-hidden relative bg-white flex items-center justify-center cursor-pointer"
+                >
                   {p.badge && (
                     <span className="absolute top-2 left-2 z-10 bg-zinc-900 text-white text-[9px] font-bold px-2 py-0.5 rounded-full font-mono uppercase">
                       {p.badge}
@@ -92,9 +110,13 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                     alt={p.name}
                     variant="card"
                     bg="white"
-                    className="w-full h-full mix-blend-multiply"
+                    className="w-full h-full mix-blend-multiply transition-transform duration-300 group-hover/thumb:scale-105"
                   />
-                </div>
+                  <span className="absolute bottom-2 inset-x-2 z-10 inline-flex items-center justify-center gap-1 py-1 px-2 rounded-full bg-zinc-900/85 text-white text-[9.5px] font-mono font-bold uppercase tracking-wider opacity-0 group-hover/thumb:opacity-100 transition-opacity">
+                    <Eye className="w-3 h-3" />
+                    <span>Quick View</span>
+                  </span>
+                </button>
 
                 {/* Info Column */}
                 <div className="flex-1 space-y-2 w-full text-left">
@@ -102,10 +124,16 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                     <span className="text-[10px] font-mono uppercase font-bold text-[var(--text-muted)]">
                       SKU: {p.sku} · {p.category}
                     </span>
-                    <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                      <span>{p.stockStatus || 'In Stock'}</span>
+                    <span
+                      className={`inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full border ${
+                        isOutOfStock
+                          ? 'text-red-600 bg-red-50 border-red-200'
+                          : 'text-emerald-600 bg-emerald-50 border-emerald-200'
+                      }`}
+                    >
+                      <span>{isOutOfStock ? 'Out of Stock' : p.stockStatus || 'In Stock'}</span>
                     </span>
+                    <StarRatingBadge product={p} size="sm" allowQuickRate={true} />
                   </div>
 
                   <h3 className="font-heading text-base font-bold text-[var(--text)]">
@@ -144,7 +172,7 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                 </div>
 
                 {/* Price & Action Column */}
-                <div className="flex flex-row md:flex-col items-center md:items-end justify-between w-full md:w-44 gap-3 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-[var(--border)]">
+                <div className="flex flex-row md:flex-col items-center md:items-end justify-between w-full md:w-48 gap-3 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-[var(--border)]">
                   <div className="text-left md:text-right">
                     <div className="text-lg font-bold font-mono text-[var(--text)]">
                       {formatPrice(effectivePrice, currency)}
@@ -164,13 +192,48 @@ export const CatalogProductList: React.FC<CatalogProductListProps> = ({
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
-                      onClick={() => onAddToCart(p.id, 1, true)}
-                      className="px-3.5 py-2 rounded-full bg-[var(--red)] hover:bg-[var(--red-hover)] text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
-                      title="Add to Bag"
+                      onClick={() => openCompareWithProduct(p.id)}
+                      title="Compare specifications side-by-side"
+                      className={`px-3 py-2 rounded-full text-xs font-mono font-bold uppercase tracking-wider flex items-center gap-1.5 border transition-colors cursor-pointer ${
+                        isCompared
+                          ? 'bg-[#D63A3A]/10 text-[#D63A3A] border-[#D63A3A]/30'
+                          : 'bg-zinc-50 hover:bg-zinc-100 text-zinc-700 border-zinc-200'
+                      }`}
                     >
-                      <ShoppingBag className="w-3.5 h-3.5" />
-                      <span>Add</span>
+                      <ArrowLeftRight className="w-3.5 h-3.5" />
+                      <span>{language === 'sw' ? 'Linganisha' : 'Compare'}</span>
                     </button>
+
+                    {isOutOfStock ? (
+                      <button
+                        type="button"
+                        onClick={() => setQuickViewProduct(p)}
+                        className="px-3.5 py-2 rounded-full bg-[#25D366] hover:bg-[#1ebe5d] text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
+                        title="Notify me on WhatsApp when back in stock"
+                      >
+                        {hasAlert ? (
+                          <>
+                            <Check className="w-3.5 h-3.5" />
+                            <span>Alert Set</span>
+                          </>
+                        ) : (
+                          <>
+                            <BellRing className="w-3.5 h-3.5" />
+                            <span>Notify Me</span>
+                          </>
+                        )}
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => onAddToCart(p.id, 1, true)}
+                        className="px-3.5 py-2 rounded-full bg-[var(--red)] hover:bg-[var(--red-hover)] text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs transition-colors cursor-pointer"
+                        title="Add to Bag"
+                      >
+                        <ShoppingBag className="w-3.5 h-3.5" />
+                        <span>Add</span>
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

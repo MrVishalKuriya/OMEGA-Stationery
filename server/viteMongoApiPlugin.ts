@@ -129,6 +129,8 @@ export function omegaMongoApiPlugin(): Plugin {
 
   let inMemoryProducts: any[] = [...seedProducts];
   let inMemoryOrders: any[] = [];
+  let inMemoryStockAlerts: any[] = [];
+  let inMemoryReviews: any[] = [];
   let inMemoryConfig: Record<string, any> = {
     key: 'global_config',
     businessName: 'OMEGA Writing Notebooks & Stationery',
@@ -189,6 +191,73 @@ export function omegaMongoApiPlugin(): Plugin {
       mongoError = err?.message || 'MongoDB connection failed';
       console.warn(`⚠️ [MongoDB Atlas] Connection error: ${mongoError}`);
       return null;
+    }
+  }
+
+  async function triggerRestockNotifications(
+    db: any,
+    productId: string,
+    productObj: any
+  ): Promise<any[]> {
+    const isNowInStock =
+      productObj?.stockStatus === 'In Stock' ||
+      productObj?.stockStatus === 'Low Stock' ||
+      (typeof productObj?.stockQuantity === 'number' &&
+        productObj.stockQuantity > 0 &&
+        productObj?.stockStatus !== 'Out of Stock');
+
+    if (!isNowInStock) return [];
+
+    try {
+      let pendingAlerts: any[] = [];
+      if (db) {
+        pendingAlerts = await db
+          .collection('stock_alerts')
+          .find({ productId, status: 'pending' })
+          .toArray();
+        if (pendingAlerts.length > 0) {
+          await db.collection('stock_alerts').updateMany(
+            { productId, status: 'pending' },
+            {
+              $set: {
+                status: 'notified',
+                notifiedAt: new Date().toISOString(),
+              },
+            }
+          );
+        }
+      } else {
+        pendingAlerts = inMemoryStockAlerts.filter(
+          (a) => a.productId === productId && a.status === 'pending'
+        );
+        inMemoryStockAlerts = inMemoryStockAlerts.map((a) =>
+          a.productId === productId && a.status === 'pending'
+            ? { ...a, status: 'notified', notifiedAt: new Date().toISOString() }
+            : a
+        );
+      }
+
+      return pendingAlerts.map((alert) => {
+        const cleanDigits = String(alert.whatsappNumber || '').replace(/\D/g, '');
+        const msg = [
+          `*OMEGA Stationery Tanzania — Back in Stock Alert*`,
+          `Hello ${alert.customerName || 'Valued Customer'},`,
+          `Good news! *${productObj?.name || alert.productName}* (SKU: ${productObj?.sku || alert.sku || productId}) is now *Back in Stock* and ready for immediate factory dispatch.`,
+          alert.desiredQuantity ? `*Requested Quantity:* ${alert.desiredQuantity}` : null,
+          `Order now or reply to this message to confirm your dispatch!`,
+        ]
+          .filter(Boolean)
+          .join('\n');
+
+        return {
+          ...alert,
+          status: 'notified',
+          notifiedAt: new Date().toISOString(),
+          whatsappDispatchUrl: `https://wa.me/${cleanDigits}?text=${encodeURIComponent(msg)}`,
+        };
+      });
+    } catch {
+      return [];
     }
   }
 
@@ -621,10 +690,21 @@ export function omegaMongoApiPlugin(): Plugin {
               inMemoryProducts[idx] = { ...inMemoryProducts[idx], ...updateObj };
             }
 
+            const targetProd = idx >= 0 ? inMemoryProducts[idx] : { id, ...updateObj };
+            const notifiedAlerts = await triggerRestockNotifications(
+              db,
+              targetProd.id || id,
+              targetProd
+            );
+
             return sendJson(res, 200, {
               success: true,
-              message: 'Stock updated in MongoDB Atlas',
-              data: idx >= 0 ? inMemoryProducts[idx] : updateObj,
+              message:
+                notifiedAlerts.length > 0
+                  ? `Stock updated & ${notifiedAlerts.length} WhatsApp restock alert(s) triggered`
+                  : 'Stock updated in MongoDB Atlas',
+              data: targetProd,
+              notifiedAlerts,
             });
           } catch (err: any) {
             return sendJson(res, 500, { success: false, message: err.message });
@@ -704,10 +784,20 @@ export function omegaMongoApiPlugin(): Plugin {
                 inMemoryProducts.unshift(updated);
               }
 
+              const notifiedAlerts = await triggerRestockNotifications(
+                db,
+                updated?.id || id,
+                updated || updatePayload
+              );
+
               return sendJson(res, 200, {
                 success: true,
-                message: 'Product updated in MongoDB Atlas',
+                message:
+                  notifiedAlerts.length > 0
+                    ? `Product updated & ${notifiedAlerts.length} WhatsApp restock alert(s) triggered`
+                    : 'Product updated in MongoDB Atlas',
                 data: updated,
+                notifiedAlerts,
               });
             } catch (err: any) {
               return sendJson(res, 500, { success: false, message: err.message });
@@ -904,6 +994,252 @@ export function omegaMongoApiPlugin(): Plugin {
             success: false,
             message: 'Invalid administrative security key',
           });
+        }
+
+        // GET & POST /api/stock-alerts (WhatsApp Back-in-Stock Notifications)
+        if (pathname === '/api/stock-alerts' && method === 'GET') {
+          const productIdFilter = parsedUrl.searchParams.get('productId');
+          const query = productIdFilter ? { productId: productIdFilter } : {};
+          if (db) {
+            inMemoryStockAlerts = await db
+              .collection('stock_alerts')
+              .find(query)
+              .sort({ createdAt: -1 })
+              .toArray();
+          }
+          const filtered = productIdFilter
+            ? inMemoryStockAlerts.filter((a) => a.productId === productIdFilter)
+            : inMemoryStockAlerts;
+          return sendJson(res, 200, {
+            success: true,
+            count: filtered.length,
+            data: filtered,
+          });
+        }
+
+        if (pathname === '/api/stock-alerts' && method === 'POST') {
+          try {
+            const body = await parseJsonBody(req);
+            const { productId, productName, sku, whatsappNumber, customerName, desiredQuantity } =
+              body;
+
+            if (!productId || !whatsappNumber) {
+              return sendJson(res, 400, {
+                success: false,
+                message: 'Product ID and WhatsApp phone number are required',
+              });
+            }
+
+            // Normalize Tanzania & International WhatsApp Numbers
+            let digits = String(whatsappNumber).replace(/\D/g, '');
+            if (digits.startsWith('0') && digits.length === 10) {
+              digits = `255${digits.slice(1)}`;
+            } else if (digits.length === 9 && (digits.startsWith('7') || digits.startsWith('6'))) {
+              digits = `255${digits}`;
+            }
+
+            if (digits.length < 9 || digits.length > 15) {
+              return sendJson(res, 400, {
+                success: false,
+                message: 'Please enter a valid WhatsApp phone number (e.g. +255 715 268 391)',
+              });
+            }
+
+            const alertRecord = {
+              alertId: `ALT-${Date.now().toString().slice(-6)}`,
+              productId: String(productId),
+              productName: String(productName || 'OMEGA Stationery Product'),
+              sku: String(sku || ''),
+              whatsappNumber: `+${digits}`,
+              cleanWhatsappDigits: digits,
+              customerName: String(customerName || '').trim() || 'Wholesale / Retail Customer',
+              desiredQuantity: Number(desiredQuantity) || 1,
+              status: 'pending',
+              channel: 'WhatsApp Automated Alert',
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+            };
+
+            if (db) {
+              await db.collection('stock_alerts').updateOne(
+                { productId: alertRecord.productId, cleanWhatsappDigits: digits },
+                { $set: alertRecord },
+                { upsert: true }
+              );
+            }
+
+            const existingIdx = inMemoryStockAlerts.findIndex(
+              (a) => a.productId === alertRecord.productId && a.cleanWhatsappDigits === digits
+            );
+            if (existingIdx >= 0) {
+              inMemoryStockAlerts[existingIdx] = alertRecord;
+            } else {
+              inMemoryStockAlerts.unshift(alertRecord);
+            }
+
+            return sendJson(res, 201, {
+              success: true,
+              message: `WhatsApp restock alert registered for +${digits}`,
+              data: alertRecord,
+            });
+          } catch (err: any) {
+            return sendJson(res, 500, {
+              success: false,
+              message: err.message || 'Failed to save stock alert',
+            });
+          }
+        }
+
+        const stockAlertIdMatch = pathname.match(/^\/api\/stock-alerts\/([^/]+)$/);
+        if (stockAlertIdMatch && method === 'DELETE') {
+          const alertId = decodeURIComponent(stockAlertIdMatch[1]);
+          if (db) {
+            const filter = ObjectId.isValid(alertId)
+              ? { $or: [{ alertId }, { _id: new ObjectId(alertId) }] }
+              : { alertId };
+            await db.collection('stock_alerts').deleteOne(filter);
+          }
+          inMemoryStockAlerts = inMemoryStockAlerts.filter((a) => a.alertId !== alertId);
+          return sendJson(res, 200, {
+            success: true,
+            message: 'Stock alert removed',
+          });
+        }
+
+        // GET & POST /api/reviews and /api/products/:id/reviews (Star-Based Product Rating System)
+        const productReviewsMatch = pathname.match(/^\/api\/products\/([^/]+)\/reviews$/);
+        if ((pathname === '/api/reviews' || productReviewsMatch) && method === 'GET') {
+          const productId = productReviewsMatch
+            ? decodeURIComponent(productReviewsMatch[1])
+            : parsedUrl.searchParams.get('productId');
+
+          const query = productId ? { productId } : {};
+          if (db) {
+            const dbReviews = await db
+              .collection('product_reviews')
+              .find(query)
+              .sort({ createdAt: -1 })
+              .toArray();
+            if (!productId) {
+              inMemoryReviews = dbReviews;
+            } else {
+              inMemoryReviews = [
+                ...dbReviews,
+                ...inMemoryReviews.filter((r) => r.productId !== productId),
+              ];
+            }
+          }
+
+          const matchingReviews = productId
+            ? inMemoryReviews.filter((r) => r.productId === productId)
+            : inMemoryReviews;
+
+          const targetProd = productId
+            ? inMemoryProducts.find(
+                (p) => p.id === productId || String(p._id) === productId || p.sku === productId
+              )
+            : null;
+
+          return sendJson(res, 200, {
+            success: true,
+            count: matchingReviews.length,
+            rating: targetProd?.rating ?? 4.8,
+            reviewCount: targetProd?.reviewCount ?? Math.max(matchingReviews.length, 18),
+            data: matchingReviews,
+          });
+        }
+
+        if ((pathname === '/api/reviews' || productReviewsMatch) && method === 'POST') {
+          try {
+            const body = await parseJsonBody(req);
+            const productId = productReviewsMatch
+              ? decodeURIComponent(productReviewsMatch[1])
+              : String(body.productId || '').trim();
+            const rawRating = Number(body.rating);
+
+            if (!productId || Number.isNaN(rawRating) || rawRating < 1 || rawRating > 5) {
+              return sendJson(res, 400, {
+                success: false,
+                message: 'Valid productId and star rating (1 to 5) are required',
+              });
+            }
+
+            const clampedRating = Math.round(rawRating * 10) / 10;
+            const reviewRecord = {
+              reviewId: `REV-${Date.now().toString().slice(-6)}-${Math.floor(10 + Math.random() * 89)}`,
+              productId,
+              rating: clampedRating,
+              customerName: String(body.customerName || '').trim() || 'Verified OMEGA Customer',
+              buyerType: String(body.buyerType || '').trim() || 'Stationery Buyer',
+              comment: String(body.comment || '').trim(),
+              createdAt: new Date().toISOString(),
+            };
+
+            if (db) {
+              await db.collection('product_reviews').insertOne({ ...reviewRecord });
+            }
+            inMemoryReviews.unshift(reviewRecord);
+
+            // Recalculate product's average rating and reviewCount
+            const prodIdx = inMemoryProducts.findIndex(
+              (p) => p.id === productId || String(p._id) === productId || p.sku === productId
+            );
+
+            let newAverageRating = clampedRating;
+            let newReviewCount = 1;
+
+            if (prodIdx >= 0) {
+              const currentProd = inMemoryProducts[prodIdx];
+              const prevRating =
+                typeof currentProd.rating === 'number' && currentProd.rating > 0
+                  ? currentProd.rating
+                  : 4.8;
+              const prevCount =
+                typeof currentProd.reviewCount === 'number' && currentProd.reviewCount > 0
+                  ? currentProd.reviewCount
+                  : 18;
+
+              newReviewCount = prevCount + 1;
+              newAverageRating =
+                Math.round(((prevRating * prevCount + clampedRating) / newReviewCount) * 10) / 10;
+
+              inMemoryProducts[prodIdx] = {
+                ...currentProd,
+                rating: newAverageRating,
+                reviewCount: newReviewCount,
+                updatedAt: new Date().toISOString(),
+              };
+
+              if (db) {
+                const filter = ObjectId.isValid(productId)
+                  ? { $or: [{ id: productId }, { _id: new ObjectId(productId) }, { sku: productId }] }
+                  : { $or: [{ id: productId }, { sku: productId }] };
+                await db.collection('products').updateOne(filter, {
+                  $set: {
+                    rating: newAverageRating,
+                    reviewCount: newReviewCount,
+                    updatedAt: new Date().toISOString(),
+                  },
+                });
+              }
+            }
+
+            return sendJson(res, 201, {
+              success: true,
+              message: `Thank you! Your ${clampedRating}-star rating has been recorded.`,
+              data: {
+                review: reviewRecord,
+                rating: newAverageRating,
+                reviewCount: newReviewCount,
+                product: prodIdx >= 0 ? inMemoryProducts[prodIdx] : null,
+              },
+            });
+          } catch (err: any) {
+            return sendJson(res, 500, {
+              success: false,
+              message: err.message || 'Failed to submit product rating',
+            });
+          }
         }
 
         return next();

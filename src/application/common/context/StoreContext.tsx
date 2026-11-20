@@ -61,6 +61,16 @@ export interface StoreContextType {
   toggleWishlist: (productId: string) => void;
   isInWishlist: (productId: string) => boolean;
   clearWishlist: () => void;
+  // Compare feature (2-item side-by-side comparison)
+  compareProductIds: string[];
+  isCompareModalOpen: boolean;
+  setIsCompareModalOpen: (open: boolean) => void;
+  toggleCompareProduct: (productId: string) => void;
+  openCompareWithProduct: (productId: string) => void;
+  setCompareProductAtSlot: (slotIndex: 0 | 1, productId: string) => void;
+  removeFromCompare: (productId: string) => void;
+  clearCompareProducts: () => void;
+  isInCompare: (productId: string) => boolean;
   // Quick View Modal
   quickViewProduct: Product | null;
   setQuickViewProduct: (product: Product | null) => void;
@@ -135,12 +145,14 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     refetch: refetchProducts,
   } = useProductsQuery();
 
-  // 2. Zustand Cart & Wishlist Store
+  // 2. Zustand Cart, Wishlist & Compare Store
   const {
     cart,
     wishlist,
+    compareProductIds,
     isCartOpen: isCartDrawerOpen,
     isTrackingModalOpen,
+    isCompareModalOpen,
     quickViewProduct,
     addToCart: zustandAddToCart,
     updateCartQuantity,
@@ -148,6 +160,13 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     clearCart,
     toggleWishlist,
     isInWishlist,
+    toggleCompareProduct,
+    openCompareWithProduct,
+    setCompareProductAtSlot,
+    removeFromCompare,
+    clearCompareProducts,
+    isInCompare,
+    setIsCompareModalOpen,
     openCart,
     closeCart,
     setIsTrackingModalOpen,
@@ -448,6 +467,15 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         toggleWishlist,
         isInWishlist,
         clearWishlist,
+        compareProductIds,
+        isCompareModalOpen,
+        setIsCompareModalOpen,
+        toggleCompareProduct,
+        openCompareWithProduct,
+        setCompareProductAtSlot,
+        removeFromCompare,
+        clearCompareProducts,
+        isInCompare,
         quickViewProduct,
         setQuickViewProduct,
         isCartDrawerOpen,

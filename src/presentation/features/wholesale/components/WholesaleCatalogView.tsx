@@ -1,7 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Layers,
   List,
   Grid,
   Download,
@@ -9,10 +8,27 @@ import {
   Package,
   MessageCircle,
   ShoppingBag,
+  Eye,
+  Bell,
+  CheckCircle2,
+  Clock,
+  Trash2,
+  X,
+  ArrowUpLeft,
+  ArrowLeftRight,
 } from 'lucide-react';
 import { formatPrice, Product } from '@/types/store';
+import { useStore } from '@/context/StoreContext';
 import { ProductCard } from '@/components/ProductCard';
 import { ProductImage } from '@/components/ProductImage';
+import { isProductSubscribedForAlert } from '@/services/api';
+import {
+  getRecentSearches,
+  addRecentSearch,
+  removeRecentSearch,
+  clearRecentSearches,
+  subscribeRecentSearches,
+} from '@/utils/recentSearches';
 
 interface WholesaleCatalogViewProps {
   products: Product[];
@@ -29,10 +45,45 @@ export const WholesaleCatalogView: React.FC<WholesaleCatalogViewProps> = ({
   onAddToCart,
   onExportCSV,
 }) => {
+  const { setQuickViewProduct, openCompareWithProduct, isInCompare } = useStore();
   const [viewMode, setViewMode] = useState<'table' | 'grid'>('table');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [inStockOnly, setInStockOnly] = useState(false);
+  const [alertVersion, setAlertVersion] = useState(0);
+  const [recentSearches, setRecentSearches] = useState<string[]>(() => getRecentSearches());
+  const [isSearchDropdownOpen, setIsSearchDropdownOpen] = useState(false);
+  const searchBoxRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleAlertUpdate = () => setAlertVersion((v) => v + 1);
+    window.addEventListener('omega-stock-alert-updated', handleAlertUpdate);
+    return () => window.removeEventListener('omega-stock-alert-updated', handleAlertUpdate);
+  }, []);
+
+  useEffect(() => {
+    setRecentSearches(getRecentSearches());
+    return subscribeRecentSearches(() => setRecentSearches(getRecentSearches()));
+  }, []);
+
+  useEffect(() => {
+    const trimmed = searchTerm.trim();
+    if (trimmed.length < 2) return;
+    const timer = setTimeout(() => {
+      addRecentSearch(trimmed);
+    }, 900);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    const handleOutside = (e: MouseEvent) => {
+      if (searchBoxRef.current && !searchBoxRef.current.contains(e.target as Node)) {
+        setIsSearchDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutside);
+    return () => document.removeEventListener('mousedown', handleOutside);
+  }, []);
 
   const categories = useMemo<string[]>(() => {
     const set = new Set(products.map((p) => p.category));
@@ -114,15 +165,95 @@ export const WholesaleCatalogView: React.FC<WholesaleCatalogViewProps> = ({
 
       {/* Search & Category Filter Controls */}
       <div className="bg-[var(--surface-1)] p-3.5 sm:p-4 rounded-2xl border border-[var(--border)] shadow-xs mb-6 flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
-        <div className="relative w-full md:w-80 shrink-0">
-          <Search className="w-4 h-4 text-[var(--text-muted)] absolute left-3.5 top-1/2 -translate-y-1/2" />
+        <div ref={searchBoxRef} className="relative w-full md:w-80 shrink-0">
+          <Search className="w-4 h-4 text-[var(--text-muted)] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onFocus={() => setIsSearchDropdownOpen(true)}
+            onClick={() => setIsSearchDropdownOpen(true)}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              if (!isSearchDropdownOpen) setIsSearchDropdownOpen(true);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                if (searchTerm.trim().length >= 2) addRecentSearch(searchTerm.trim());
+                setIsSearchDropdownOpen(false);
+              } else if (e.key === 'Escape') {
+                setIsSearchDropdownOpen(false);
+              }
+            }}
             placeholder="Search products, SKU, or specs..."
-            className="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-[var(--border)] focus:outline-none focus:border-[var(--red)] bg-[var(--surface-2)] text-[var(--text)] placeholder:text-[var(--text-muted)] transition-all font-sans"
+            className="w-full pl-9 pr-8 py-2 text-xs rounded-xl border border-[var(--border)] focus:outline-none focus:border-[var(--red)] bg-[var(--surface-2)] text-[var(--text)] placeholder:text-[var(--text-muted)] transition-all font-sans"
           />
+          {searchTerm && (
+            <button
+              type="button"
+              onClick={() => setSearchTerm('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text)] cursor-pointer"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+
+          {isSearchDropdownOpen && recentSearches.length > 0 && (
+            <div className="absolute left-0 right-0 top-full mt-2 z-40 bg-white rounded-2xl border border-zinc-200 shadow-xl overflow-hidden">
+              <div className="px-3.5 py-2 bg-zinc-50 border-b border-zinc-100 flex items-center justify-between">
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-600">
+                  <Clock className="w-3 h-3 text-[#D63A3A]" />
+                  <span>Recent Searches ({recentSearches.length}/5)</span>
+                </span>
+                <button
+                  type="button"
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    clearRecentSearches();
+                  }}
+                  className="inline-flex items-center gap-1 text-[10px] font-mono font-bold text-zinc-500 hover:text-[#D63A3A] cursor-pointer"
+                >
+                  <Trash2 className="w-3 h-3" />
+                  <span>Clear</span>
+                </button>
+              </div>
+              <ul className="divide-y divide-zinc-100">
+                {recentSearches.slice(0, 5).map((item) => (
+                  <li key={item}>
+                    <div
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                        setSearchTerm(item);
+                        addRecentSearch(item);
+                        setIsSearchDropdownOpen(false);
+                      }}
+                      className="px-3.5 py-2 hover:bg-zinc-50 flex items-center justify-between gap-2 cursor-pointer group"
+                    >
+                      <div className="flex items-center gap-2 min-w-0">
+                        <Clock className="w-3.5 h-3.5 text-zinc-400 group-hover:text-[#D63A3A] shrink-0" />
+                        <span className="text-xs font-semibold text-zinc-800 group-hover:text-[#D63A3A] truncate">
+                          {item}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1 shrink-0">
+                        <ArrowUpLeft className="w-3 h-3 text-zinc-300" />
+                        <button
+                          type="button"
+                          onMouseDown={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            removeRecentSearch(item);
+                          }}
+                          className="p-1 text-zinc-400 hover:text-red-600"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
 
         <div className="flex items-center gap-2 overflow-x-auto w-full md:w-auto no-scrollbar pb-1 md:pb-0">
@@ -175,11 +306,15 @@ export const WholesaleCatalogView: React.FC<WholesaleCatalogViewProps> = ({
           {/* ======================================================== */}
           {/* 1. MOBILE RESPONSIVE SPEC CARDS (< md: NO CUTOFFS!)     */}
           {/* ======================================================== */}
-          <div className="block md:hidden space-y-3.5">
+          <div className="block md:hidden space-y-3.5" data-alert-v={alertVersion}>
             {wholesaleProducts.map((p) => {
               const wholesalePrice = p.wholesalePrice || Math.round(p.price * 0.7);
               const saving = p.price - wholesalePrice;
               const savePct = Math.round((saving / p.price) * 100);
+              const isOutOfStock =
+                p.stockStatus === 'Out of Stock' ||
+                (p.stockQuantity !== undefined && p.stockQuantity <= 0);
+              const hasAlert = isOutOfStock && isProductSubscribedForAlert(p.id);
               const minOrderQty =
                 p.wholesaleMinQty
                   ? `${p.wholesaleMinQty} Pcs`
@@ -198,14 +333,29 @@ export const WholesaleCatalogView: React.FC<WholesaleCatalogViewProps> = ({
                 >
                   {/* Top: Image + Info */}
                   <div className="flex items-start gap-3">
-                    <Link to={`/product/${p.id}`} className="shrink-0 w-16 h-16 rounded-xl overflow-hidden border border-[var(--border)] bg-[var(--surface-2)]">
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => setQuickViewProduct(p)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setQuickViewProduct(p);
+                        }
+                      }}
+                      title={`Quick View: ${p.name}`}
+                      className="shrink-0 w-16 h-16 rounded-xl overflow-hidden border border-[var(--border)] bg-[var(--surface-2)] relative group/img cursor-pointer"
+                    >
                       <ProductImage
                         image={p.image}
                         alt={p.name}
                         variant="thumb"
                         className="w-full h-full"
                       />
-                    </Link>
+                      <span className="absolute inset-0 bg-black/30 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                        <Eye className="w-4 h-4 text-white" />
+                      </span>
+                    </div>
 
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-1.5 flex-wrap mb-1">
@@ -260,23 +410,62 @@ export const WholesaleCatalogView: React.FC<WholesaleCatalogViewProps> = ({
 
                   {/* Bottom: Action Buttons */}
                   <div className="flex items-center gap-2 pt-1">
-                    <a
-                      href={directWa}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 py-2.5 px-3 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold font-mono uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-xs transition-colors"
-                    >
-                      <MessageCircle className="w-3.5 h-3.5 fill-white" />
-                      <span>Order on WhatsApp</span>
-                    </a>
                     <button
                       type="button"
-                      onClick={() => onAddToCart(p.id, 1, true)}
-                      className="py-2.5 px-3.5 rounded-full bg-[var(--surface-2)] hover:bg-[var(--surface-1)] text-[var(--text)] border border-[var(--border)] transition-colors flex items-center justify-center shadow-xs cursor-pointer"
-                      title="Add to cart / bag"
+                      onClick={() => openCompareWithProduct(p.id)}
+                      title="Compare specifications side-by-side"
+                      className={`py-2.5 px-3 rounded-xl text-xs font-bold font-mono uppercase tracking-wider flex items-center justify-center gap-1 border transition-colors cursor-pointer ${
+                        isInCompare(p.id)
+                          ? 'bg-[#D63A3A]/10 text-[#D63A3A] border-[#D63A3A]/30'
+                          : 'bg-[var(--surface-2)] text-[var(--text)] border-[var(--border)] hover:border-[var(--red)]'
+                      }`}
                     >
-                      <ShoppingBag className="w-4 h-4" />
+                      <ArrowLeftRight className="w-3.5 h-3.5" />
+                      <span>Compare</span>
                     </button>
+                    {isOutOfStock ? (
+                      <button
+                        type="button"
+                        onClick={() => setQuickViewProduct(p)}
+                        className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-bold font-mono uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-xs transition-colors cursor-pointer ${
+                          hasAlert
+                            ? 'bg-emerald-600/15 text-emerald-700 border border-emerald-500/30'
+                            : 'bg-[#25D366] hover:bg-[#1ebe5d] text-white'
+                        }`}
+                      >
+                        {hasAlert ? (
+                          <>
+                            <CheckCircle2 className="w-3.5 h-3.5" />
+                            <span>Alert Set</span>
+                          </>
+                        ) : (
+                          <>
+                            <Bell className="w-3.5 h-3.5" />
+                            <span>Notify Me on WhatsApp</span>
+                          </>
+                        )}
+                      </button>
+                    ) : (
+                      <>
+                        <a
+                          href={directWa}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 py-2.5 px-3 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold font-mono uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-xs transition-colors"
+                        >
+                          <MessageCircle className="w-3.5 h-3.5 fill-white" />
+                          <span>Order on WhatsApp</span>
+                        </a>
+                        <button
+                          type="button"
+                          onClick={() => onAddToCart(p.id, 1, true)}
+                          className="py-2.5 px-3.5 rounded-xl bg-[var(--surface-2)] hover:bg-[var(--surface-1)] text-[var(--text)] border border-[var(--border)] transition-colors flex items-center justify-center shadow-xs cursor-pointer"
+                          title="Add to cart / bag"
+                        >
+                          <ShoppingBag className="w-4 h-4" />
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               );
@@ -286,7 +475,7 @@ export const WholesaleCatalogView: React.FC<WholesaleCatalogViewProps> = ({
           {/* ======================================================== */}
           {/* 2. DESKTOP RICH DATA TABLE (>= md)                       */}
           {/* ======================================================== */}
-          <div className="hidden md:block bg-[var(--surface-1)] rounded-2xl border border-[var(--border)] shadow-xs overflow-hidden">
+          <div className="hidden md:block bg-[var(--surface-1)] rounded-2xl border border-[var(--border)] shadow-xs overflow-hidden" data-alert-v={alertVersion}>
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
@@ -305,6 +494,10 @@ export const WholesaleCatalogView: React.FC<WholesaleCatalogViewProps> = ({
                     const wholesalePrice = p.wholesalePrice || Math.round(p.price * 0.7);
                     const saving = p.price - wholesalePrice;
                     const savePct = Math.round((saving / p.price) * 100);
+                    const isOutOfStock =
+                      p.stockStatus === 'Out of Stock' ||
+                      (p.stockQuantity !== undefined && p.stockQuantity <= 0);
+                    const hasAlert = isOutOfStock && isProductSubscribedForAlert(p.id);
                     const minOrderQty =
                       p.wholesaleMinQty
                         ? `${p.wholesaleMinQty} Pcs`
@@ -319,27 +512,42 @@ export const WholesaleCatalogView: React.FC<WholesaleCatalogViewProps> = ({
                     return (
                       <tr key={p.id} className="hover:bg-[var(--surface-2)]/50 transition-colors group">
                         <td className="py-4 px-5 font-medium">
-                          <Link
-                            to={`/product/${p.id}`}
-                            className="flex items-center gap-3.5 group/item"
-                          >
-                            <div className="w-12 h-12 rounded-xl overflow-hidden border border-[var(--border)] shrink-0 group-hover/item:border-[var(--red)] transition-colors bg-[var(--surface-2)]">
+                          <div className="flex items-center gap-3.5 group/item">
+                            <div
+                              role="button"
+                              tabIndex={0}
+                              onClick={() => setQuickViewProduct(p)}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                  e.preventDefault();
+                                  setQuickViewProduct(p);
+                                }
+                              }}
+                              title={`Quick View: ${p.name}`}
+                              className="w-12 h-12 rounded-xl overflow-hidden border border-[var(--border)] shrink-0 hover:border-[var(--red)] transition-colors bg-[var(--surface-2)] relative group/img cursor-pointer"
+                            >
                               <ProductImage
                                 image={p.image}
                                 alt={p.name}
                                 variant="thumb"
                                 className="w-full h-full"
                               />
+                              <span className="absolute inset-0 bg-black/30 opacity-0 group-hover/img:opacity-100 transition-opacity flex items-center justify-center">
+                                <Eye className="w-3.5 h-3.5 text-white" />
+                              </span>
                             </div>
                             <div>
-                              <span className="font-bold block text-sm group-hover/item:text-[var(--red)] transition-colors line-clamp-1 text-[var(--text)]">
+                              <Link
+                                to={`/product/${p.id}`}
+                                className="font-bold block text-sm hover:text-[var(--red)] transition-colors line-clamp-1 text-[var(--text)]"
+                              >
                                 {p.name}
-                              </span>
+                              </Link>
                               <span className="text-[11px] text-[var(--text-muted)] font-mono">
                                 SKU: {p.sku} {p.packaging ? `· ${p.packaging}` : ''}
                               </span>
                             </div>
-                          </Link>
+                          </div>
                         </td>
                         <td className="py-4 px-4 text-[var(--text-muted)] font-medium whitespace-nowrap">
                           <span className="px-2.5 py-1 rounded-md bg-[var(--surface-2)] text-[var(--gold)] border border-[var(--border)] text-[11px] font-mono">
@@ -364,24 +572,64 @@ export const WholesaleCatalogView: React.FC<WholesaleCatalogViewProps> = ({
                         </td>
                         <td className="py-4 px-5 text-center whitespace-nowrap">
                           <div className="flex items-center justify-center gap-1.5">
-                            <a
-                              href={directWa}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="py-1.5 px-3 rounded-full bg-[#25D366] text-white hover:bg-[#20ba59] transition-colors text-xs font-bold font-mono uppercase tracking-wider inline-flex items-center gap-1 shadow-xs cursor-pointer"
-                              title="Order Carton on WhatsApp"
-                            >
-                              <MessageCircle className="w-3.5 h-3.5 fill-white" />
-                              <span>Order</span>
-                            </a>
                             <button
                               type="button"
-                              onClick={() => onAddToCart(p.id, 1, true)}
-                              className="p-1.5 rounded-full bg-[var(--surface-2)] hover:bg-[var(--surface-1)] text-[var(--text)] border border-[var(--border)] transition-colors shadow-xs cursor-pointer"
-                              title="Add to cart / bag"
+                              onClick={() => openCompareWithProduct(p.id)}
+                              title="Compare specifications side-by-side"
+                              className={`py-1.5 px-2.5 rounded-lg text-xs font-bold font-mono uppercase tracking-wider inline-flex items-center gap-1 border transition-colors cursor-pointer ${
+                                isInCompare(p.id)
+                                  ? 'bg-[#D63A3A]/10 text-[#D63A3A] border-[#D63A3A]/30'
+                                  : 'bg-[var(--surface-2)] text-[var(--text)] border-[var(--border)] hover:border-[var(--red)]'
+                              }`}
                             >
-                              <ShoppingBag className="w-3.5 h-3.5" />
+                              <ArrowLeftRight className="w-3.5 h-3.5" />
+                              <span>Compare</span>
                             </button>
+                            {isOutOfStock ? (
+                              <button
+                                type="button"
+                                onClick={() => setQuickViewProduct(p)}
+                                className={`py-1.5 px-3 rounded-lg transition-colors text-xs font-bold font-mono uppercase tracking-wider inline-flex items-center gap-1 shadow-xs cursor-pointer ${
+                                  hasAlert
+                                    ? 'bg-emerald-600/15 text-emerald-700 border border-emerald-500/30'
+                                    : 'bg-[#25D366] text-white hover:bg-[#1ebe5d]'
+                                }`}
+                                title="Get notified on WhatsApp when back in stock"
+                              >
+                                {hasAlert ? (
+                                  <>
+                                    <CheckCircle2 className="w-3.5 h-3.5" />
+                                    <span>Alert Set</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Bell className="w-3.5 h-3.5" />
+                                    <span>Notify Me</span>
+                                  </>
+                                )}
+                              </button>
+                            ) : (
+                              <>
+                                <a
+                                  href={directWa}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="py-1.5 px-3 rounded-lg bg-[#25D366] text-white hover:bg-[#20ba59] transition-colors text-xs font-bold font-mono uppercase tracking-wider inline-flex items-center gap-1 shadow-xs cursor-pointer"
+                                  title="Order Carton on WhatsApp"
+                                >
+                                  <MessageCircle className="w-3.5 h-3.5 fill-white" />
+                                  <span>Order</span>
+                                </a>
+                                <button
+                                  type="button"
+                                  onClick={() => onAddToCart(p.id, 1, true)}
+                                  className="p-1.5 rounded-lg bg-[var(--surface-2)] hover:bg-[var(--surface-1)] text-[var(--text)] border border-[var(--border)] transition-colors shadow-xs cursor-pointer"
+                                  title="Add to cart / bag"
+                                >
+                                  <ShoppingBag className="w-3.5 h-3.5" />
+                                </button>
+                              </>
+                            )}
                           </div>
                         </td>
                       </tr>
